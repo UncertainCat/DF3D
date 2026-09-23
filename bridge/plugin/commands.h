@@ -54,4 +54,11 @@ bool execute(const uint8_t* buf, size_t len, const df3d::mirror::Command& cmd,
 bool pending();
 bool resume(std::chrono::steady_clock::time_point deadline, Result& out);
 
+// Map / world unload with a rectangle still pending: fills `out` with the
+// Unknown result for its seq (at least one slice was applied; nothing can
+// be reverted or reported precisely) and drops the pending work. Returns
+// false when nothing was pending. Touches no map state, so it is safe
+// after the map is gone.
+bool abandon(Result& out);
+
 }  // namespace df3d_commands

@@ -124,6 +124,10 @@ try {
         $savesVerified = $true
         Set-Content -LiteralPath "$out/saves-unchanged.ok" -Value 'Non-test save hashes unchanged'
     }
+    foreach ($name in $captureBinaries.Keys) {
+        if ((Get-FileHash -LiteralPath $captureBinaries[$name] -Algorithm SHA256).Hash -ne $binaryHashes[$name]) { throw "Capture binary changed during run: $name" }
+    }
+    Set-Content -LiteralPath "$out/binaries-unchanged.ok" -Value 'Capture-start binary hashes verified at lane exit'
     # Verified-unchanged saves make the backup copy redundant; a failed or
     # unverified run keeps it (and the clone) as evidence. -KeepClone retains the
     # disposable saves; a reused clone or reused backup is never removed here.
@@ -139,9 +143,5 @@ try {
             }
         }
     }
-    foreach ($name in $captureBinaries.Keys) {
-        if ((Get-FileHash -LiteralPath $captureBinaries[$name] -Algorithm SHA256).Hash -ne $binaryHashes[$name]) { throw "Capture binary changed during run: $name" }
-    }
-    Set-Content -LiteralPath "$out/binaries-unchanged.ok" -Value 'Capture-start binary hashes verified at lane exit'
     Write-Output "Capture evidence retained: $out"
 }

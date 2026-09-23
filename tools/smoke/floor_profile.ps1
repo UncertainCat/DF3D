@@ -136,6 +136,7 @@ try {
    if(($flush.Output -join "`n") -notmatch 'ARENA_CAPTURE_FLUSHED'){throw 'Arena diagnostics flush failed'}
   }
   $native=Get-Content "$repo/build/targeted-attack-setup.json" -Raw | ConvertFrom-Json
+  if ($native.error) { throw "targeted-attack setup reported an error: $($native.error)" }
   Copy-Item -LiteralPath "$repo/build/targeted-attack-setup.json" -Destination "$repo/build/$OutputName-native-actions.json" -Force
   $render=Get-Content "$repo/build/$OutputName.json" -Raw | ConvertFrom-Json
   $nativeKeys=@{}

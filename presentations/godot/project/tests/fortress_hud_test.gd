@@ -93,6 +93,15 @@ func run():
 	assert(hud.fortress_calendar(104, 403199) == "28th Obsidian\nLate Winter\nYear 104")
 	var state = {"fortress_valid": true, "fort_name": "Chantmansion", "year": 104, "year_tick": 168260, "paused": true}
 	hud.update_state(true, true, state)
+	hud.update_state(true, true, state)  # settle side effects of the first pass
+	var passes: int = hud.state_pass_count
+	hud.update_state(true, true, state)
+	assert(hud.state_pass_count == passes, "unchanged inputs skip the HUD state pass")
+	state["paused"] = false
+	hud.update_state(true, true, state)
+	assert(hud.state_pass_count == passes + 1, "an in-place session change reruns the HUD state pass")
+	state["paused"] = true
+	hud.update_state(true, true, state)
 	for title in ["Stocks", "Reports", "Petitions", "Trade", "Tasks", "Places", "Objects", "Justice"]:
 		assert(not hud.navigation[title].visible, "Hidden HUD entry: " + title)
 	assert(not hud.notification_rail.visible, "Unfinished alert interaction is hidden")

@@ -289,8 +289,8 @@ func run():
 				if not frame_error.is_empty():
 					push_error(frame_error); quit(1); return
 				frames_written += 1
-				times.append(elapsed)
-				frame_ticks.append(scene.world.bridge_tick())
+			times.append(elapsed)
+			frame_ticks.append(scene.world.bridge_tick())
 	sound_clock.start = 0
 	sound_events = sound_events.filter(func(event): return event.seconds >= 0 and event.seconds < duration)
 	if not await set_paused(true):

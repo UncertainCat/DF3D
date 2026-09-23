@@ -1182,6 +1182,18 @@ void queueResult(const cmdx::Result& r) {
     ++state.resultsQueued;
 }
 
+// Map / world unload with a dig / smooth rectangle sliced across the
+// boundary: at least one slice was applied, so its outcome is Unknown and
+// must reach the client rather than vanish. No snapshot can be built
+// without a map, so the result is queued and published with the first
+// snapshot of the next map (SC_MAP_LOADED keeps queued results). Nothing
+// here touches map state.
+void abandonPendingCommand() {
+    cmdx::Result r;
+    if (cmdx::abandon(r)) queueResult(r);
+    cmdx::reset();
+}
+
 void drainCommands(color_ostream& out) {
     const auto started=Clock::now();
     const auto deadline = started + kCommandBudget;
@@ -1703,8 +1715,10 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         resetAppearances();
         ent::reset();
         cmdx::reset();
-        state.results.clear();
-        state.commandPublicationPending = false;
+        // Results queued while no map was loaded (a rectangle abandoned at
+        // unload, commands rejected between maps) were never publishable:
+        // they ride on this map's first snapshot; clients match by seq.
+        state.commandPublicationPending = !state.results.empty();
         state.entityFullPending = true;
         state.entityFullServed = shm::atomicLoadAcquire(&state.region->entityFullRequest);
         state.terrain.create(out,state.region);  // failure leaves a units-only mirror (logged)
@@ -1722,6 +1736,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         // change), so recording ends here.
         stopRecording(out, true);
         state.mapLoaded = false;
+        abandonPendingCommand();
         // Session channel remains enabled across map/world boundaries.
         destroyTerrain();
         resetAppearances();
@@ -1731,6 +1746,7 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         df3d_contact::setEnabled(false);
         stopRecording(out, true);
         state.mapLoaded = false;
+        abandonPendingCommand();
         // Session channel remains enabled across map/world boundaries.
         destroyRegion(out);
         break;

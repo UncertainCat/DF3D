@@ -792,6 +792,7 @@ const Df3dWorld::CompositeSlot* Df3dWorld::compositeFor(
         img->generate_mipmaps();
         slot.texture = submission::texture(img, submission::TextureSite::Composite,true);
         cs.slot = spriteResources_.slots.add(std::move(slot));
+        ERR_FAIL_COND_V_MSG(cs.slot < 0, nullptr, "composite sprite slots exhausted");
         spriteResources_.images[cs.slot] = img;
         cs.size = Vector2(static_cast<float>(r.cellsX), static_cast<float>(r.cellsY));
     } else {

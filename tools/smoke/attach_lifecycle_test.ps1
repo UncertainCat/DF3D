@@ -6,6 +6,7 @@ $ErrorActionPreference = 'Stop'
 if (@(Get-Process 'Dwarf Fortress' -ErrorAction SilentlyContinue).Count) { Write-Output 'QA_INCOMPLETE: Dwarf Fortress is running; close it before the isolated attach lifecycle test'; exit 77 }
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $dir = Join-Path $repo ('build\attach-test-' + [guid]::NewGuid().ToString('N'))
+try {
 New-Item -ItemType Directory -Force "$dir\hack", "$dir\prefs", "$dir\dfhack-config\init" | Out-Null
 Set-Content "$dir\prefs\init.txt" 'untouched preferences'
 Set-Content "$dir\dfhack-config\init\sentinel.init" 'untouched init'
@@ -27,6 +28,7 @@ Add-Type -TypeDefinition $source -OutputAssembly "$dir\Dwarf Fortress.exe" -Outp
 Copy-Item "$dir\Dwarf Fortress.exe" "$dir\hack\dfhack-run.exe"
 Copy-Item "$dir\Dwarf Fortress.exe" "$dir\viewer.exe"
 $external = Start-Process -FilePath "$dir\Dwarf Fortress.exe" -WindowStyle Hidden -PassThru
+} catch { if (Test-Path -LiteralPath $dir) { Remove-Item -LiteralPath $dir -Recurse -Force -ErrorAction SilentlyContinue }; throw }
 try {
  foreach ($abrupt in @($false, $true)) {
   $env:ATTACH_TEST_WAIT = if ($abrupt) { '1' } else { '0' }

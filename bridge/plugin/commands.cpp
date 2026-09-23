@@ -132,6 +132,19 @@ Result rejected(uint64_t seq, std::string why) {
 // Designation-relevant jobs, indexed once per drain (beginDrain) and walked
 // by every command of that drain instead of the whole linked list per
 // command. Jobs this module removes are nulled so no entry dangles.
+//
+// Invariant: every entry is either null or a live df::job. Within one drain
+// the job list may only change through remove() (which nulls the entry) or
+// through a DFHack API followed by invalidate() before the next get(). The
+// index cannot be tested without DF, so each mutation site is audited here:
+//  - removePendingJobs / restoreAndHoldJobs: remove() only.
+//  - stepDig / stepSmooth / execTrack: designation bits only, no jobs.
+//  - execPlants: Designations::unmarkPlant frees FellTree / GatherPlants jobs
+//    (which this index holds) via Job::removeJob; it invalidates afterwards.
+//    Designations::markPlant sets bits only.
+//  - execItemFlags / execBuildingFlags: no jobs.
+// A stale entry would be dereferenced (job->pos, job->job_type) by the next
+// Dig / Smooth command of the same update: use-after-free.
 struct JobIndex {
     std::vector<df::job*> jobs;
     bool valid = false;
@@ -486,14 +499,22 @@ Result finishSmooth(const mir::Command& cmd) {
     return Result{cmd.seq(), mir::CommandStatus::Ok, countMessage("tiles", p.applied, p.visited, p.skipped, reason)};
 }
 
+// The outcome of a rectangle whose walk was cut by a map unload: slices
+// already applied cannot be reported or reverted, so it is Unknown (never
+// replayed automatically, never silently dropped).
+Result unloaded(uint64_t seq) {
+    return Result{seq, mir::CommandStatus::Unknown, "map unloaded before the designation completed; applied slices are unknown"};
+}
+
 // Runs (or continues) the pending rectangle walk; true with `out` filled
 // when it finished, false when the deadline stopped it mid-walk.
 bool stepPending(Clock::time_point deadline, Result& out) {
     PendingRect& p = g_pending;
     const mir::Command* cmd = mir::parseCommand(p.buf.data(), p.buf.size());
     if (!cmd || !world || !Maps::IsValid()) {
-        // The map went away under a partial walk: an unknown outcome.
-        out = rejected(cmd ? cmd->seq() : 0, "map unloaded before the designation completed");
+        // The map went away under a partial walk: at least one slice was
+        // applied, so the outcome is Unknown, not Rejected.
+        out = unloaded(cmd ? cmd->seq() : 0);
         p = PendingRect();
         return true;
     }
@@ -538,6 +559,10 @@ Result execPlants(const mir::Command& cmd, const mir::TileRect* r, bool enable, 
             ++already;
         }
     }
+    // unmarkPlant removed FellTree / GatherPlants jobs behind the index
+    // (JobIndex invariant): drop it before anything walks it again, this
+    // command's restoreAndHoldJobs included.
+    g_jobs.invalidate();
     if(!held.empty()) restoreAndHoldJobs(*r,&held);
     g_stats.plantsMarked += applied;
     const char* what = trees ? "trees" : "shrubs";
@@ -621,6 +646,17 @@ void recordExecution(const Result& res, double us) {
     g_stats.lastMessage = res.message;
 }
 }  // namespace
+
+bool abandon(Result& out) {
+    if (!g_pending.active) return false;
+    // Only the command's own byte copy is touched: the map may already be gone.
+    const mir::Command* cmd = mir::parseCommand(g_pending.buf.data(), g_pending.buf.size());
+    out = unloaded(cmd ? cmd->seq() : 0);
+    const double us = g_pending.us;
+    g_pending = PendingRect();
+    recordExecution(out, us);
+    return true;
+}
 
 bool resume(Clock::time_point deadline, Result& out) {
     if (!g_pending.active) return true;

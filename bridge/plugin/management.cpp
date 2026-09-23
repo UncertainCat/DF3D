@@ -546,7 +546,10 @@ void printTiming(color_ostream& out) {
 }
 // A request that cannot be dispatched still gets a visible outcome: the
 // broadcast region carries Rejected with the reason (and the client/seq when
-// they parsed), and the console says so once per map load.
+// they parsed), and the console says so once per map load. Clients only
+// watch the broadcast for world-epoch changes and read outcomes from their
+// own mailbox, so when the caller could open that mailbox (`reply` set) the
+// Rejected is published there too; publish() releases it afterwards.
 void rejectRequest(color_ostream& out, bool& warned, const std::string& reason) {
   ++rejectedRequests;
   if(!warned){warned=true;out.printerr("df3d: management request rejected: {} (reported once per map load)\n",reason);}
@@ -595,6 +598,13 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(bytes);
     if (auto invalid=m::validateConstructionRequest(*r)) {
       client=r->client_id();seq=r->seq();action=r->action();
+      // client_id and seq parsed: address the Rejected to the client's
+      // mailbox exactly as the accept path does, else it waits for its
+      // timeout. A mailbox that cannot be opened or accept the seq leaves
+      // only the broadcast and the console.
+      auto rejectedReply=sh::ClientMailbox::open(m::kManagementRegionName,
+          sh::atomicLoadAcquire(&m::sessionOwner(region)->generation),r->client_id(),m::kManagementVersion,m::kManagementCapacity);
+      if(rejectedReply && rejectedReply->accept(r->seq())) reply=std::move(rejectedReply);
       rejectRequest(out,warnedMalformedRequest,"Invalid management request: "+*invalid);
       return;
     }

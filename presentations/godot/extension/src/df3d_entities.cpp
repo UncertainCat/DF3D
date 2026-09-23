@@ -512,7 +512,7 @@ void Df3dWorld::refresh_building_batches(int64_t id) {
 int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers) {
     if(layers.empty()) return -1;
     std::string key;
-    struct Source {int slot,x,y,w,h;};
+    struct Source {int slot,x,y,w,h; godot::Ref<godot::ImageTexture> texture;};
     std::vector<Source> sources;
     int w=0,h=0;
     for(const auto& [slot,region]:layers) {
@@ -522,14 +522,14 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
         const int x=std::lround(region.r*s.width), y=std::lround(region.g*s.height);
         const int sw=std::lround(region.b*s.width), sh=std::lround(region.a*s.height);
         key+=std::to_string(slot)+":"+std::to_string(x)+":"+std::to_string(y)+":"+std::to_string(sw)+":"+std::to_string(sh)+";";
-        sources.push_back({slot,x,y,sw,sh});
+        sources.push_back({slot,x,y,sw,sh,s.texture});
         w=std::max(w,sw);h=std::max(h,sh);
     }
     if(auto it=spriteResources_.buildings.find(key);it!=spriteResources_.buildings.end())return it->second;
     auto image=godot::Image::create(w,h,false,godot::Image::FORMAT_RGBA8);
     image->fill(Color(0,0,0,0));
     for(const auto& src:sources) {
-        auto& source=spriteResources_.images[src.slot];if(source.is_null())source=spriteResources_.slots.find(src.slot)->texture->get_image();
+        auto& source=spriteResources_.images[src.slot];if(source.is_null())source=src.texture->get_image();
         ERR_FAIL_COND_V_MSG(source.is_null(), -1, "composite layer slot without image");
         auto layer=source->get_region(godot::Rect2i(src.x,src.y,src.w,src.h));
         if(layer->get_width()!=w || layer->get_height()!=h)layer->resize(w,h,godot::Image::INTERPOLATE_NEAREST);
@@ -539,6 +539,7 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
     image->generate_mipmaps();
     TextureSlot slot;slot.width=w;slot.height=h;slot.texture=submission::texture(image, submission::TextureSite::BuildingArt,true);
     const int id=spriteResources_.slots.add(std::move(slot));
+    ERR_FAIL_COND_V_MSG(id < 0, -1, "composite building slots exhausted");
     spriteResources_.images[id]=image;
     spriteResources_.buildings[key]=id;return id;
 }
@@ -570,6 +571,7 @@ godot::Dictionary Df3dWorld::presentation_perf_stats() const {
     out["item_update_passes"]=int64_t(perfItemCount_); out["item_update_ms"]=perfItemMs_;
     out["corpse_item_changes_pending"]=int64_t(corpseItemChanges_.size());
     out["corpse_item_changes_dropped"]=int64_t(corpseItemChangesDropped_);
+    out["event_budget_drops"]=int64_t(source_.model().eventBudgetDrops());
     const auto layout = tileLayouts_.stats();
     if(df3d::profiling::global().mode()==df3d::profiling::Mode::Deep) {
         godot::Array history;

@@ -39,4 +39,4 @@ func run():
   root.get_texture().get_image().save_png(output+"-"+str(kind)+".png")
   scene._ui.controller("inspector").close_panel()
  var file=FileAccess.open(output+"-data.json",FileAccess.WRITE);file.store_string(JSON.stringify(evidence,"  "))
- print("FLOOR_PROFILE_PASS");quit()
+ print("CONTEXT_INSPECT_LIVE_PASS");quit()

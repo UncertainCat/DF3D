@@ -49,5 +49,5 @@ func run():
   await sample("moving_"+("batched" if enabled else "original"),false,true)
  var f=FileAccess.open(output+"-moving.json",FileAccess.WRITE)
  f.store_string(JSON.stringify(results,"  "))
- print("FLOOR_PROFILE_PASS")
+ print("MESH_BATCH_PROFILE_LIVE_PASS")
  quit()

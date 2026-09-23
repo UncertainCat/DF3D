@@ -70,10 +70,14 @@ static func _motion_position(motion: Dictionary, tick: float) -> Vector3:
 	var phase := clampf((tick - start) / (end - start), 0.0, 1.0) if end > start else 0.0
 	return Vector3(first.r, first.g, first.b).lerp(Vector3(last.r, last.g, last.b), phase)
 
+# worldmodel CombatEventKind: Wound = 1, Death = 2.
+const COMBAT_WOUND := 1
+const COMBAT_DEATH := 2
+
 func observe(events: Array, clock: float, animate := true):
 	for event in events:
 		cursor = maxi(cursor, int(event.id))
-		if animate and int(event.kind) == 2 and not active.has(int(event.victim_id)):
+		if animate and int(event.kind) == COMBAT_DEATH and not active.has(int(event.victim_id)):
 			var tile: Vector3i = event.get("position", Vector3i(-1,-1,-1))
 			var position := Vector3(tile.x + .5, tile.z, tile.y + .5) if tile.x >= 0 and tile.y >= 0 and tile.z >= 0 else Vector3.INF
 			pending[int(event.victim_id)] = {"clock":clock,"position":position,"tick":float(event.get("tick",-1))}

@@ -88,19 +88,37 @@ public:
 class CommandWriter {
     HANDLE mutex_=nullptr;
 public:
+    // Busy: another writer held the producer mutex for the whole bounded wait;
+    // the command was neither copied nor accounted, so the caller may retry.
+    enum class Status { Ok, Full, Busy, Unavailable };
+    // Every writer holds the mutex for one memcpy, so contention is short; a
+    // wait this long means a writer is stuck, and the caller reports Busy.
+    static constexpr DWORD kAcquireTimeoutMs=50;
     CommandWriter()=default;
     CommandWriter(const CommandWriter&)=delete;
     ~CommandWriter(){if(mutex_)CloseHandle(mutex_);}
+    static std::string mutexName(const std::string& channel,uint64_t generation=0) {
+        return channel+"_writers_v4_"+std::to_string(generation);
+    }
     bool open(const std::string& channel,uint64_t generation=0) {
-        mutex_=CreateMutexA(nullptr,FALSE,(channel+"_writers_v4_"+std::to_string(generation)).c_str());
+        mutex_=CreateMutexA(nullptr,FALSE,mutexName(channel,generation).c_str());
         return mutex_!=nullptr;
     }
+    // Holds the producer mutex across `body`, which returns true when it pushed.
+    // Use this when a sequence number must only be allocated once the ring is ours.
+    template<class Body> Status withLock(Body&& body,DWORD timeoutMs=kAcquireTimeoutMs) {
+        if(!mutex_)return Status::Unavailable;
+        const auto acquired=WaitForSingleObject(mutex_,timeoutMs);
+        if(acquired==WAIT_TIMEOUT)return Status::Busy;
+        if(acquired!=WAIT_OBJECT_0 && acquired!=WAIT_ABANDONED)return Status::Unavailable;
+        const bool result=body();
+        ReleaseMutex(mutex_);return result?Status::Ok:Status::Full;
+    }
+    Status tryPush(RegionHeader* region,const uint8_t* data,uint32_t size,DWORD timeoutMs=kAcquireTimeoutMs) {
+        return withLock([&]{return pushCommand(region,data,size);},timeoutMs);
+    }
     bool push(RegionHeader* region,const uint8_t* data,uint32_t size) {
-        if(!mutex_)return false;
-        const auto acquired=WaitForSingleObject(mutex_,0);
-        if(acquired!=WAIT_OBJECT_0 && acquired!=WAIT_ABANDONED)return false;
-        const bool result=pushCommand(region,data,size);
-        ReleaseMutex(mutex_);return result;
+        return tryPush(region,data,size)==Status::Ok;
     }
 };
 }

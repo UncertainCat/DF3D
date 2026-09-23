@@ -29,5 +29,5 @@ func run():
 	var file := FileAccess.open(output+".json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"census":{},"phases":results},"  "))
 	file.close()
-	print("FLOOR_PROFILE_PASS")
+	print("ITEM_CULLING_PROFILE_LIVE_PASS")
 	quit()

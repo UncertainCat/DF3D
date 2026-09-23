@@ -45,5 +45,5 @@ func run():
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(output+"-"+mode+"-blended.png")
 		for shader in restore: shader.code = restore[shader]
-	print("FLOOR_PROFILE_PASS")
+	print("RENDER_QUALITY_LIVE_PASS")
 	quit()

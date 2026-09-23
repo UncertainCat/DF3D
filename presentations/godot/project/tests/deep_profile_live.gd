@@ -89,7 +89,7 @@ func run():
 		var file = FileAccess.open(output + ".json", FileAccess.WRITE)
 		file.store_string(JSON.stringify(results, "  "))
 	if not await set_paused(true): push_error("Cannot restore pause"); quit(1); return
-	print("FLOOR_PROFILE_PASS")
+	print("DEEP_PROFILE_LIVE_PASS")
 	quit()
 
 func submission_counters() -> Dictionary:

@@ -48,7 +48,11 @@ Cell openCell() {
 Neighbourhood gather(const BlockSource& src, wm::BlockPos pos, const MeshOptions& options) {
   Neighbourhood n;
   const wm::TilePos map = src.mapSize();
-  // The 27 blocks touching this one, fetched once.
+  const int32_t bxCount = (map.x + kBlockSize - 1) / kBlockSize;
+  const int32_t byCount = (map.y + kBlockSize - 1) / kBlockSize;
+  // The 27 blocks touching this one, fetched once. Neighbours past the map
+  // edge (bx/by of -1 or the block count) are never requested from the source:
+  // they stay unobserved, which the face rules treat as open.
   std::array<std::optional<wm::BlockView>, 27> views;
   for (int dz = -1; dz <= 1; ++dz)
     for (int dy = -1; dy <= 1; ++dy)
@@ -56,6 +60,7 @@ Neighbourhood gather(const BlockSource& src, wm::BlockPos pos, const MeshOptions
         const wm::BlockPos b{pos.bx + dx, pos.by + dy, pos.bz + dz};
         auto& slot = views[static_cast<size_t>((dz + 1) * 9 + (dy + 1) * 3 + (dx + 1))];
         if (b.bz < 0 || b.bz >= map.z || b.bz > options.topZ) continue;  // cut / out of map
+        if (b.bx < 0 || b.by < 0 || b.bx >= bxCount || b.by >= byCount) continue;  // out of map
         slot = src.block(b);
       }
   const int32_t x0 = pos.bx * kBlockSize, y0 = pos.by * kBlockSize;

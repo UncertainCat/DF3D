@@ -10,6 +10,7 @@
 #endif
 #include <windows.h>
 
+#include <functional>
 #include <vector>
 
 #include "command_util.h"
@@ -26,6 +27,14 @@ namespace wm {
 
 namespace m = df3d::mirror;
 namespace shm = df3d::shm;
+
+// Actual byte size of a mapped view (the kernel rounds mappings up to whole
+// pages, so this is >= the size the creator asked for). 0 when unknown.
+static size_t mappedViewBytes(const void* view) {
+  MEMORY_BASIC_INFORMATION info{};
+  if (!VirtualQuery(view, &info, sizeof(info))) return 0;
+  return static_cast<size_t>(info.RegionSize);
+}
 
 struct MirrorClient::Impl {
   HANDLE mapping = nullptr;
@@ -90,7 +99,12 @@ struct MirrorClient::Impl {
       detachTerrain();
       return err;
     }
-    if (terrain->epoch != epoch) {
+    // Never trust header-declared extents beyond what was actually mapped.
+    if (const char* err = shm::checkTerrainSize(terrain, mappedViewBytes(view))) {
+      detachTerrain();
+      return err;
+    }
+    if (shm::atomicLoadAcquire(&terrain->epoch) != epoch) {
       detachTerrain();
       return "terrain grid epoch mismatch";
     }
@@ -120,13 +134,15 @@ MirrorClient::~MirrorClient() = default;
 
 std::unique_ptr<MirrorClient> MirrorClient::open(std::string& error, const std::string& regionName, OpenMode mode) {
   std::unique_ptr<MirrorClient> c(new MirrorClient());
+  // Capture only reads; Ingest / Commands write the ring and the request counters.
+  const DWORD access = mode == OpenMode::Capture ? FILE_MAP_READ : FILE_MAP_ALL_ACCESS;
   c->impl_->mapping =
-      OpenFileMappingA(FILE_MAP_ALL_ACCESS, FALSE, regionName.empty() ? shm::kDefaultRegionName : regionName.c_str());
+      OpenFileMappingA(access, FALSE, regionName.empty() ? shm::kDefaultRegionName : regionName.c_str());
   if (!c->impl_->mapping) {
     error = "mirror region not found (is DF running with the df3d bridge and a map loaded?)";
     return nullptr;
   }
-  void* view = MapViewOfFile(c->impl_->mapping, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+  void* view = MapViewOfFile(c->impl_->mapping, access, 0, 0, 0);
   if (!view) {
     error = "MapViewOfFile failed, error " + std::to_string(GetLastError());
     return nullptr;
@@ -134,6 +150,12 @@ std::unique_ptr<MirrorClient> MirrorClient::open(std::string& error, const std::
   c->impl_->region = static_cast<shm::RegionHeader*>(view);
   if (const char* err = shm::checkRegion(
           c->impl_->region, static_cast<uint32_t>(m::SchemaVersion::Current))) {
+    error = err;
+    return nullptr;
+  }
+  // Slot / ring / journal offsets come from header fields: prove they fit the
+  // view before any of them is dereferenced (also bounds the scratch resize).
+  if (const char* err = shm::checkRegionSize(c->impl_->region, mappedViewBytes(view))) {
     error = err;
     return nullptr;
   }
@@ -217,7 +239,7 @@ bool MirrorClient::capture(CapturedSnapshot& out, double wallSeconds) {
   const uint64_t latestIndex = shm::atomicLoadAcquire(&region->publicationIndex);
   if (latestIndex && latestIndex == impl_->capturedPublication.index) return false;
   shm::SnapshotPublication publication;
-  if (impl_->scratch.empty()) impl_->scratch.resize(region->snapshotCapacity);
+  if (impl_->scratch.empty()) impl_->scratch.resize(region->snapshotCapacity);  // bounded by checkRegionSize at open
   const size_t len = shm::readNextSnapshot(region, impl_->capturedPublication.index,
       impl_->scratch.data(), impl_->scratch.size(), 16, &publication);
   if (publication.latestIndex) {
@@ -360,82 +382,89 @@ namespace {
 m::TileRect toRect(const TileRect& r) { return m::TileRect(r.x1, r.y1, r.x2, r.y2, r.z); }
 }  // namespace
 
-// Validates the command with the schema validator (no map size: the
-// bridge checks the live map), then pushes it. Returns the seq or 0.
-uint64_t MirrorClient::sendBytes(const std::vector<uint8_t>& bytes) {
+// Takes the producer mutex (bounded wait) and only then allocates the sequence
+// number, builds the command with it, validates it with the schema validator
+// (no map size: the bridge checks the live map) and pushes it. A busy channel
+// therefore never consumes a seq. Returns the seq or 0.
+uint64_t MirrorClient::sendCommand(const std::function<std::vector<uint8_t>(uint64_t)>& build) {
   if (!commandEpoch_ || shm::atomicLoadAcquire(&impl_->region->terrainEpoch) != commandEpoch_) {
     lastError_ = "displayed world is unavailable or changed; command was not sent";
     return 0;
   }
-  const m::Command* cmd = m::parseCommand(bytes.data(), bytes.size());
-  if (!cmd) {
-    lastError_ = "command failed to build";
-    return 0;
+  uint64_t seq = 0;
+  std::string failure;
+  const auto status = impl_->writer.withLock([&] {
+    seq = shm::nextCommandSequence(impl_->region);
+    const std::vector<uint8_t> bytes = build(seq);
+    const m::Command* cmd = m::parseCommand(bytes.data(), bytes.size());
+    if (!cmd) { failure = "command failed to build"; return true; }
+    if (auto err = m::validateCommand(*cmd, nullptr)) {
+      failure = "command rejected before send: " + *err;
+      return true;
+    }
+    if (bytes.size() > shm::kMaxCommandBytes) {
+      failure = "command exceeds the " + std::to_string(shm::kMaxCommandBytes) + " byte limit";
+      return true;
+    }
+    return shm::pushCommand(impl_->region, bytes.data(), static_cast<uint32_t>(bytes.size()));
+  });
+  switch (status) {
+    case shm::CommandWriter::Status::Ok: break;
+    case shm::CommandWriter::Status::Full: lastError_ = "command ring full"; return 0;
+    case shm::CommandWriter::Status::Busy:
+      lastError_ = "command channel busy (another writer holds it); command was not sent";
+      return 0;
+    case shm::CommandWriter::Status::Unavailable: lastError_ = "command channel unavailable"; return 0;
   }
-  if (auto err = m::validateCommand(*cmd, nullptr)) {
-    lastError_ = "command rejected before send: " + *err;
-    return 0;
-  }
-  if (!impl_->writer.push(impl_->region, bytes.data(), static_cast<uint32_t>(bytes.size()))) {
-    lastError_ = "command ring full";
-    return 0;
-  }
-  return cmd->seq();
+  if (!failure.empty()) { lastError_ = failure; return 0; }
+  lastError_.clear();
+  commandSeq_ = seq;
+  return seq;
 }
 
 uint64_t MirrorClient::sendSetPause(bool paused) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
-  const uint64_t sent = sendBytes(m::buildSetPauseCommand(seq, paused, commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) { return m::buildSetPauseCommand(seq, paused, commandEpoch_); });
 }
 
 uint64_t MirrorClient::sendDesignateDig(const TileRect& rect, DigKind kind, uint8_t priority, bool marker, uint8_t mining_mode, int32_t max_z) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
-  const uint64_t sent = sendBytes(m::buildDesignateDigCommand(
-      seq, toRect(rect), static_cast<m::DigKind>(static_cast<uint8_t>(kind)), priority, marker, mining_mode, max_z, commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) {
+    return m::buildDesignateDigCommand(
+        seq, toRect(rect), static_cast<m::DigKind>(static_cast<uint8_t>(kind)), priority, marker, mining_mode, max_z, commandEpoch_);
+  });
 }
 
 uint64_t MirrorClient::sendDesignateSmooth(const TileRect& rect, SmoothKind kind, uint8_t priority, bool marker, bool from_east, bool from_south, int32_t max_z, int32_t track_end_z) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
-  const uint64_t sent = sendBytes(m::buildDesignateSmoothCommand(
-      seq, toRect(rect), static_cast<m::SmoothKind>(static_cast<uint8_t>(kind)), priority, marker, from_east, from_south, max_z, track_end_z, commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) {
+    return m::buildDesignateSmoothCommand(
+        seq, toRect(rect), static_cast<m::SmoothKind>(static_cast<uint8_t>(kind)), priority, marker, from_east, from_south, max_z, track_end_z, commandEpoch_);
+  });
 }
 
 uint64_t MirrorClient::sendDesignateChop(const TileRect& rect, bool enable, uint8_t priority, bool marker, int32_t max_z) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
-  const uint64_t sent = sendBytes(m::buildDesignateChopCommand(seq, toRect(rect), enable, priority, marker, max_z, commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) {
+    return m::buildDesignateChopCommand(seq, toRect(rect), enable, priority, marker, max_z, commandEpoch_);
+  });
 }
 
 uint64_t MirrorClient::sendDesignateGather(const TileRect& rect, bool enable, uint8_t priority, bool marker, int32_t max_z) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
-  const uint64_t sent = sendBytes(m::buildDesignateGatherCommand(seq, toRect(rect), enable, priority, marker, max_z, commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) {
+    return m::buildDesignateGatherCommand(seq, toRect(rect), enable, priority, marker, max_z, commandEpoch_);
+  });
 }
 
 uint64_t MirrorClient::sendSetItemFlags(ItemId item, OptionalBool forbidden, OptionalBool dump,
                                         OptionalBool melt) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
   const auto ob = [](OptionalBool v) { return static_cast<m::OptionalBool>(static_cast<uint8_t>(v)); };
-  const uint64_t sent =
-      sendBytes(m::buildSetItemFlagsCommand(seq, item, ob(forbidden), ob(dump), ob(melt), commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) {
+    return m::buildSetItemFlagsCommand(seq, item, ob(forbidden), ob(dump), ob(melt), commandEpoch_);
+  });
 }
 
 uint64_t MirrorClient::sendSetBuildingFlags(BuildingId building, OptionalBool forbidden) {
-  const uint64_t seq = shm::nextCommandSequence(impl_->region);
-  const uint64_t sent = sendBytes(m::buildSetBuildingFlagsCommand(
-      seq, building, static_cast<m::OptionalBool>(static_cast<uint8_t>(forbidden)), commandEpoch_));
-  if (sent) commandSeq_ = seq;
-  return sent;
+  return sendCommand([&](uint64_t seq) {
+    return m::buildSetBuildingFlagsCommand(
+        seq, building, static_cast<m::OptionalBool>(static_cast<uint8_t>(forbidden)), commandEpoch_);
+  });
 }
 
 PublicationStats MirrorClient::publicationStats() const {

@@ -200,3 +200,39 @@ TEST_CASE("Delta floor: a Delta not newer than the grid tick would roll a block 
   model.ingest(stale, 0.1);
   CHECK(model.tileAt(TilePos{0, 0, 0})->shape == TileShape::Floor);
 }
+
+TEST_CASE("grid path rejects every out-of-range tile value, not only the designation") {
+  auto g = makeGrid(16, 16, 1);
+  SnapshotData data;
+  data.tick = 1;
+  data.mapSize = {16, 16, 1};
+  detail::GridScratch scratch;
+  uint64_t tick = 0;
+  std::string error;
+  auto expectFault = [&](const shm::TerrainTile& tile, const char* text) {
+    shm::terrainBeginWrite(g.h);
+    fillBlock(g.h, 0, 0, 0, tile);
+    shm::terrainEndWrite(g.h, ++data.tick);
+    CHECK_FALSE(detail::synthesizeFullFromGrid(g.h, scratch, data, tick, error));
+    CHECK_MESSAGE(error.find(text) != std::string::npos, error);
+  };
+  expectFault(gridTile(200, 0, kNoMaterial), "shape");
+  expectFault(gridTile(1, 99, kNoMaterial), "material_kind");
+  auto liquid = gridTile(2, 0, kNoMaterial);
+  liquid.liquid_kind = 5;
+  liquid.liquid_level = 3;
+  expectFault(liquid, "liquid_kind");
+  auto level = gridTile(2, 0, kNoMaterial);
+  level.liquid_kind = 1;
+  level.liquid_level = 8;
+  expectFault(level, "liquid_level");
+  auto inconsistent = gridTile(2, 0, kNoMaterial);
+  inconsistent.liquid_level = 3;  // with liquid_kind None
+  expectFault(inconsistent, "inconsistent");
+  // In-range values on the same block are accepted afterwards.
+  shm::terrainBeginWrite(g.h);
+  fillBlock(g.h, 0, 0, 0, gridTile(2, 8, kNoMaterial));
+  shm::terrainEndWrite(g.h, ++data.tick);
+  CHECK(detail::synthesizeFullFromGrid(g.h, scratch, data, tick, error));
+  CHECK(error.empty());
+}

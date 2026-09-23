@@ -66,6 +66,7 @@ var rectangle := Rect2i()
 var drag_start := Vector3i(-1, -1, -1)
 var dragging := false
 var current_z := -1
+var _layout_view := Vector2(-1, -1)
 var next_cursor := 0
 var overlap_cursor := 0
 var overlap_tile := Vector3i()
@@ -477,8 +478,10 @@ func _process(_delta: float) -> void:
 	if not play_enabled or not panel.visible: return
 	_show_previous_outcome()
 	var view := get_viewport().get_visible_rect().size
-	panel.position = Vector2(maxf(12, view.x - panel.size.x - 12), 52)
-	panel.size = Vector2(390, maxf(220, view.y - 64))
+	if view != _layout_view:
+		_layout_view = view
+		panel.size = Vector2(390, maxf(220, view.y - 64))
+		panel.position = Vector2(maxf(12, view.x - panel.size.x - 12), 52)
 	var z := int(world.get_top_z())
 	if z != current_z:
 		current_z = z

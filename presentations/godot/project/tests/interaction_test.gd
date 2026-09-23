@@ -236,6 +236,7 @@ func run() -> void:
 	check(controller._pick_piece(camera.unproject_position(Vector3(2.5,5.705,3.65))).get("id",-1) == 7, "compressed marker bounds and geometry match")
 	fake.cached_mesh = null
 	fake.thickness = 0.12
+	controller.camera = null # Drop the reference before the node is freed.
 	camera.free()
 	controller.tool_picker.select(1)
 	mouse(controller, Vector2(800,700), true)
@@ -342,6 +343,17 @@ func run() -> void:
 	controller.item_picker.select(2)
 	controller._item_flags(-1, 1)
 	check(controller.item_picker.item_count == 3 and fake.calls[-1][1] == 99, "every stacked identity remains selectable and commandable")
+	# selected == -1 must never address _items[-1] (the last entry) and command it.
+	controller.item_picker.select(-1)
+	count = fake.calls.size()
+	for flags in [[1, -1, -1], [-1, 1, -1], [-1, -1, 1]]:
+		controller._item_flags(flags[0], flags[1], flags[2])
+	check(fake.calls.size() == count and controller._selected_item() == null and not controller._items.is_empty(), "no item selection sends no flag command")
+	controller.building_picker.select(-1)
+	controller._refresh_building_actions()
+	controller._building_flags(true)
+	check(fake.calls.size() == count and controller._selected_building() == null and not controller.building_row.visible, "no building selection sends no flag command and offers no actions")
+	controller.item_picker.select(0) # The building picker is empty here (removed above).
 	count = fake.calls.size()
 	fake.items = []
 	controller._item_flags(-1, 1)

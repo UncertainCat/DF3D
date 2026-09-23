@@ -130,23 +130,31 @@ def execute(spec, command, *, env, output_dir):
             process = subprocess.Popen(command, cwd=ROOT, env=env, stdout=stream,
                 stderr=subprocess.STDOUT, start_new_session=os.name != "nt",
                 creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+            kill_failure = None
             try:
                 code = process.wait(timeout=spec.get("timeout", 60))
             except subprocess.TimeoutExpired:
                 # Stop only the process tree launched for this check. A timed-out
                 # build must not leave compilers writing the next check's binaries.
-                if os.name == "nt":
-                    killer = Path(os.environ.get("SystemRoot", "C:/Windows")) / "System32/taskkill.exe"
-                    subprocess.run([str(killer), "/PID", str(process.pid), "/T", "/F"],
-                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10)
-                else:
-                    os.killpg(process.pid, signal.SIGKILL)
-                process.wait(timeout=10)
+                # A tree that survives the kill is recorded as a failure with its
+                # reason; it must not escape and abort the gate without summary.json.
+                try:
+                    if os.name == "nt":
+                        killer = Path(os.environ.get("SystemRoot", "C:/Windows")) / "System32/taskkill.exe"
+                        subprocess.run([str(killer), "/PID", str(process.pid), "/T", "/F"],
+                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10)
+                    else:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    process.wait(timeout=10)
+                except (subprocess.TimeoutExpired, OSError) as exc:
+                    kill_failure = f"process tree pid {process.pid} did not stop after timeout: {exc}"
                 code = "timeout"
     except OSError as exc:
         return {"id": spec["id"], "status": "incomplete", "reasons": [str(exc)], "log": str(log)}
     text = log.read_text(encoding="utf-8", errors="replace")
     status, reasons = classify(spec, code, text)
+    if kill_failure:
+        status, reasons = "failed", reasons + [kill_failure]
     return {"id": spec["id"], "status": status, "exit": code, "reasons": reasons,
             "diagnostics": error_summary(text),
             "command": [str(part) for part in command], "duration_seconds": round(time.monotonic()-started, 3),

@@ -5,9 +5,11 @@
 // and the item / building / creature glyph choices. No art is read.
 #include <doctest.h>
 
-#include <cstdlib>
+#include <atomic>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -53,10 +55,29 @@ RgbaImage makeSheet() {
   return s;
 }
 
+// A directory no earlier or concurrent run can have populated: unseeded
+// std::rand() named the same path every run, so stale cache files could
+// satisfy "cache miss" cases. create_directories reports whether this
+// process made the directory, so a collision is retried, never reused.
+fs::path uniqueTempDir(const char* prefix) {
+  static std::atomic<unsigned> counter{0};
+  std::random_device entropy;
+  const auto stamp = std::chrono::steady_clock::now().time_since_epoch().count();
+  for (int attempt = 0; attempt < 32; ++attempt) {
+    const fs::path candidate = fs::temp_directory_path() /
+        (std::string(prefix) + std::to_string(entropy()) + "_" + std::to_string(stamp) + "_" +
+         std::to_string(counter.fetch_add(1)));
+    std::error_code ec;
+    if (fs::create_directories(candidate, ec) && !ec) return candidate;
+  }
+  FAIL("could not create a unique temp directory");
+  return {};
+}
+
 struct TempInstall {
   fs::path root;
   TempInstall() {
-    root = fs::temp_directory_path() / ("df3d_glyph_test_" + std::to_string(std::rand()));
+    root = uniqueTempDir("df3d_glyph_test_");
     fs::create_directories(root / "data" / "art");
     fs::create_directories(root / "data" / "init");
     fs::create_directories(root / "prefs");

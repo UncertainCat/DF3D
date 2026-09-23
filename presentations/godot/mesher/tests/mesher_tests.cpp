@@ -615,18 +615,99 @@ TEST_CASE("liquids: translucent top at level/7 above the floor, sides toward low
   CHECK(find(c0, 1, 0, FaceDir::PosZ, FacePart::Liquid) != nullptr);
 }
 
-TEST_CASE("mesher is deterministic") {
-  MapSource map(16, 16, 2);
-  map.fill({0, 0, 0}, {15, 15, 0}, kFloor);
-  map.set(3, 3, 0, kWall);
-  map.set(4, 4, 0, liquid(kFloor, LiquidKind::Water, 2));
-  const BlockMesh a = meshBlock(map, {0, 0, 0});
-  const BlockMesh b = meshBlock(map, {0, 0, 0});
+namespace {
+bool sameFace(const Face& a, const Face& b) {
+  const FaceTag& x = a.tag;
+  const FaceTag& y = b.tag;
+  return a.v == b.v && a.normal == b.normal && x.shape == y.shape &&
+         x.materialKind == y.materialKind && x.material == y.material && x.liquid == y.liquid &&
+         x.liquidLevel == y.liquidLevel && x.flags == y.flags && x.dir == y.dir &&
+         x.part == y.part && x.slopeHigh == y.slopeHigh && x.walls == y.walls && x.lx == y.lx &&
+         x.ly == y.ly;
+}
+}  // namespace
+
+TEST_CASE("mesher is deterministic across independently built sources") {
+  // Two sources with the same content populated in different orders and with
+  // different neighbour-block insertion history; the manifests must agree
+  // face for face, including every tag field, and must not be trivially empty.
+  const auto populate = [](MapSource& map, bool reversed) {
+    // One edit per tile so the insertion order carries no last-write-wins meaning.
+    std::map<std::tuple<int32_t, int32_t, int32_t>, TileState> content;
+    for (int32_t y = 0; y < 16; ++y)
+      for (int32_t x = 0; x < 16; ++x) content[{x, y, 0}] = kFloor;
+    content[{3, 3, 0}] = kWall;
+    content[{4, 4, 0}] = liquid(kFloor, LiquidKind::Water, 2);
+    content[{7, 7, 0}] = tile(TileShape::Ramp);
+    content[{7, 6, 0}] = kWall;
+    content[{16, 3, 0}] = kWall;   // neighbouring block in x
+    content[{3, 16, 0}] = kFloor;  // neighbouring block in y
+    std::vector<std::pair<std::tuple<int32_t, int32_t, int32_t>, TileState>> edits(content.begin(), content.end());
+    if (reversed) std::reverse(edits.begin(), edits.end());
+    for (const auto& [pos, t] : edits) map.set(std::get<0>(pos), std::get<1>(pos), std::get<2>(pos), t);
+  };
+  MapSource first(48, 48, 2);
+  populate(first, false);
+  const BlockMesh a = meshBlock(first, {0, 0, 0});
+  MapSource second(48, 48, 2);
+  // An unrelated block (bx=2,by=2: outside the meshed block's 27-block
+  // neighbourhood) inserted before the content. An adjacent extra block would
+  // be a content change: an observed empty block is not an unobserved one.
+  second.set(40, 40, 1, kWall);
+  populate(second, true);
+  const BlockMesh b = meshBlock(second, {0, 0, 0});
+  REQUIRE(a.faces.size() > 16 * 16);
   REQUIRE(a.faces.size() == b.faces.size());
-  for (size_t i = 0; i < a.faces.size(); ++i) {
-    CHECK(a.faces[i].v == b.faces[i].v);
-    CHECK(a.faces[i].tag.dir == b.faces[i].tag.dir);
+  size_t mismatches = 0;
+  for (size_t i = 0; i < a.faces.size(); ++i) mismatches += sameFace(a.faces[i], b.faces[i]) ? 0 : 1;
+  CHECK(mismatches == 0);
+  // The comparison itself can detect a difference: a changed source diverges.
+  second.set(3, 3, 0, kFloor);
+  const BlockMesh c = meshBlock(second, {0, 0, 0});
+  bool diverged = c.faces.size() != a.faces.size();
+  for (size_t i = 0; !diverged && i < c.faces.size(); ++i) diverged = !sameFace(a.faces[i], c.faces[i]);
+  CHECK(diverged);
+}
+
+namespace {
+// Records every block the mesher asks for so edge handling is observable.
+class RecordingSource final : public BlockSource {
+ public:
+  explicit RecordingSource(const MapSource& inner) : inner_(inner) {}
+  wm::TilePos mapSize() const override { return inner_.mapSize(); }
+  std::optional<wm::BlockView> block(wm::BlockPos b) const override {
+    requested.push_back(b);
+    return inner_.block(b);
   }
+  mutable std::vector<wm::BlockPos> requested;
+
+ private:
+  const MapSource& inner_;
+};
+}  // namespace
+
+TEST_CASE("neighbour gather never requests blocks outside the map grid") {
+  // 20x20 tiles: two blocks per axis, the second one partial. Meshing the
+  // corner blocks must not ask the source for bx/by == -1 or == 2.
+  MapSource map(20, 20, 2);
+  map.fill({0, 0, 0}, {19, 19, 0}, kFloor);
+  map.set(0, 0, 0, kWall);
+  map.set(19, 19, 0, kWall);
+  RecordingSource recorder(map);
+  for (const wm::BlockPos pos : {wm::BlockPos{0, 0, 0}, wm::BlockPos{1, 1, 0}, wm::BlockPos{1, 0, 1}}) {
+    recorder.requested.clear();
+    const BlockMesh mesh = meshBlock(recorder, pos);
+    CHECK_FALSE(recorder.requested.empty());
+    int outside = 0;
+    for (const wm::BlockPos& b : recorder.requested)
+      if (b.bx < 0 || b.by < 0 || b.bz < 0 || b.bx >= 2 || b.by >= 2 || b.bz >= 2) ++outside;
+    CHECK(outside == 0);
+    if (pos.bz == 0) CHECK_FALSE(mesh.faces.empty());
+  }
+  // Map-edge neighbours count as open: the corner wall shows its outward sides.
+  const BlockMesh corner = meshBlock(recorder, {0, 0, 0});
+  CHECK(find(corner, 0, 0, FaceDir::NegX) != nullptr);
+  CHECK(find(corner, 0, 0, FaceDir::NegY) != nullptr);
 }
 
 // --- tier 1: the demo fixture --------------------------------------------------
@@ -1030,11 +1111,16 @@ TEST_CASE("connected image fragments remove coincident seam walls and retain exp
  const std::vector<CutoutEdgeCover> partial={{1,0,.03f,.09f}};
  const auto stepped=cutoutMesh(solid,1,1,partial);
  CHECK(stepped.size()==7*6); // uncovered lower + upper span on shared boundary
+ int eastFaces=0;
  for(size_t i=12;i<stepped.size();i+=6){
   bool east=true;float lo=1,hi=-1;
   for(size_t j=i;j<i+6;++j){east=east&&stepped[j].x==.5f;lo=std::min(lo,stepped[j].y);hi=std::max(hi,stepped[j].y);}
-  if(east)CHECK((hi<=.03f || lo>=.09f));
+  if(!east)continue;
+  ++eastFaces;
+  CHECK((hi<=.03f || lo>=.09f));
  }
+ // Exactly the two uncovered spans (below and above the partial cover) remain on the east side.
+ CHECK(eastFaces==2);
  const std::vector<CutoutEdgeCover> unionCover={{1,0,0,.06f},{1,0,.06f,.12f}};
  CHECK(cutoutMesh(solid,1,1,unionCover).size()==closed.size());
  // A transparent neighbouring edge does not create a cover entry.

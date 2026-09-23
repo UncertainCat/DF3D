@@ -32,4 +32,4 @@ func run():
 	view.close_panel()
 	var file := FileAccess.open(output+"-data.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify(evidence,"  "))
-	print("FLOOR_PROFILE_PASS"); quit()
+	print("READ_ONLY_INFO_LIVE_PASS"); quit()

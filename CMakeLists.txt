@@ -9,7 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_compile_options(-Wall -Wextra)
+include(cmake/df3d_flags.cmake)  # df3d_apply_warnings(target): per-toolchain warnings
 
 if(MINGW)
   # Static runtime: Strawberry Perl's c\bin (machine PATH) ships older MinGW
@@ -32,6 +32,14 @@ target_include_directories(flatbuffers_headers INTERFACE
 add_subdirectory(schema)
 add_subdirectory(worldmodel)
 add_subdirectory(consumers/inspector)
+foreach(_inspector_target inspector_lib inspector inspector_tests)
+  if(TARGET ${_inspector_target})
+    df3d_apply_warnings(${_inspector_target})
+  endif()
+endforeach()
+if(TEST inspector_tests AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.28)
+  set_property(TEST inspector_tests DIRECTORY consumers/inspector PROPERTY TIMEOUT 300)
+endif()
 add_subdirectory(presentations/godot/mesher)
 add_subdirectory(presentations/assets)
 add_subdirectory(tools)
@@ -61,3 +69,12 @@ add_test(NAME quiet_sources_tests COMMAND quiet_sources_tests)
 add_executable(effect_material_tests presentations/godot/extension/tests/effect_material_tests.cpp)
 target_link_libraries(effect_material_tests PRIVATE df3d_assets doctest)
 add_test(NAME effect_material_tests COMMAND effect_material_tests)
+add_executable(stable_resource_slots_tests presentations/godot/extension/tests/stable_resource_slots_tests.cpp)
+target_link_libraries(stable_resource_slots_tests PRIVATE doctest)
+add_test(NAME stable_resource_slots_tests COMMAND stable_resource_slots_tests)
+
+foreach(_root_test profiling_tests glyph_dependencies_tests terrain_visibility_dependencies_tests
+        sprite_ceiling_cache_tests quiet_sources_tests effect_material_tests stable_resource_slots_tests)
+  df3d_apply_warnings(${_root_test})
+  set_tests_properties(${_root_test} PROPERTIES TIMEOUT 300)
+endforeach()

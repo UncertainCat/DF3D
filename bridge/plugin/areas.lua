@@ -176,12 +176,15 @@ return function(r)
    if not loaded or type(value.stockpiles_import)~='function' then return fail('Native stockpile preset plugin unavailable') end
    presets=value
   end
-  local extents=df.reinterpret_cast(df.building_extents_type,df.new('uint8_t',a.width*a.height))
+  -- The extents buffer is owned by the building once construction succeeds;
+  -- on rejection nothing owns it, so release it here.
+  local extents_memory=df.new('uint8_t',a.width*a.height)
+  local extents=df.reinterpret_cast(df.building_extents_type,extents_memory)
   for i=0,a.width*a.height-1 do extents[i]=1 end
   local b,why=B.constructBuilding{type=a.kind==0 and df.building_type.Stockpile or df.building_type.Civzone,
    subtype=a.kind==0 and -1 or a.zone_type,abstract=true,pos={x=a.x,y=a.y,z=a.z},width=a.width,height=a.height,
    fields={room={x=a.x,y=a.y,width=a.width,height=a.height,extents=extents}}}
-  if not b then return fail('Native area construction rejected: '..tostring(why)) end
+  if not b then df.delete(extents_memory);return fail('Native area construction rejected: '..tostring(why)) end
   if a.kind==0 then
    local worked,problem=pcall(function()
     for i,c in ipairs(cats) do if math.floor(a.categories/2^(i-1))%2==1 then

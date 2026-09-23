@@ -1,6 +1,9 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 
+#include <chrono>
+#include <filesystem>
+
 #include "fixture_io.h"
 #include "synthetic_builder.h"
 #include "validate.h"
@@ -114,13 +117,31 @@ TEST_CASE("validator accepts empty unit list") {
   CHECK(!validateStream(mustParse(fort)));
 }
 
+namespace {
+// A private scratch directory removed on every exit path, so a failing
+// assertion never leaves files behind in the working directory.
+struct TempDir {
+  std::filesystem::path path;
+  TempDir() {
+    const auto stamp = std::chrono::steady_clock::now().time_since_epoch().count();
+    path = std::filesystem::temp_directory_path() /
+           ("df3d_validate_tests_" + std::to_string(static_cast<long long>(stamp)));
+    std::filesystem::create_directories(path);
+  }
+  ~TempDir() {
+    std::error_code ec;
+    std::filesystem::remove_all(path, ec);
+  }
+};
+}  // namespace
+
 TEST_CASE("fixture file round-trip via disk") {
+  TempDir dir;
   auto bytes = walkingDwarfFort().serialize();
-  std::string path = "validate_tests_roundtrip.df3dfix";
+  const std::string path = (dir.path / "validate_tests_roundtrip.df3dfix").string();
   std::string err;
   REQUIRE_MESSAGE(writeFixtureFile(path, bytes, err), err);
   FixtureStream fs;
   REQUIRE_MESSAGE(loadFixtureFile(path, fs, err), err);
   CHECK(fs.snapshots.size() == 2);
-  std::remove(path.c_str());
 }

@@ -32,7 +32,10 @@ end
 save()
 local seen = {}
 local remaining = 1500
-local function sample()
+-- Errors inside a timeout callback end the chain silently; record them in
+-- the output the PowerShell collector reads (data.error).
+local sample
+local function step()
     if not dfhack.isMapLoaded() then return end
     for _,u in ipairs(df.global.world.units.active) do
         for _,a in ipairs(u.actions) do
@@ -50,6 +53,14 @@ local function sample()
     end
     remaining=remaining-1
     if remaining>0 then dfhack.timeout(1,'ticks',sample) end
+end
+sample=function()
+    local ok,err=xpcall(step,debug.traceback)
+    if not ok then
+        data.error=err
+        pcall(save)
+        dfhack.printerr('ATTACK_DEMO_ERROR '..tostring(err))
+    end
 end
 dfhack.timeout(1,'ticks',sample)
 print('ATTACK_DEMO_SETUP '..json.encode({units=data.units, focus=focus}))

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -102,7 +103,7 @@ class MirrorClient {
   struct Impl;
   void syncTerrain(SnapshotData& data);
   void syncEntities(SnapshotData& data);
-  uint64_t sendBytes(const std::vector<uint8_t>& bytes);
+  uint64_t sendCommand(const std::function<std::vector<uint8_t>(uint64_t seq)>& build);
   std::unique_ptr<Impl> impl_;
   std::string lastError_;
   uint64_t lastIngestedTick_ = 0;

@@ -102,8 +102,9 @@ Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id) {
                     if(!resolved.found)continue;
                     const int palette=colorToken.empty()?resolved.paletteRow:assets_->index.paletteRow(colorToken);
                     slot=slotFor(resolved.sprite.page,palette,false);
-                    if(slot<0)continue;
-                    const auto& texture=spriteResources_.slots[slot];
+                    const TextureSlot* found=slot>=0?spriteResources_.slots.find(slot):nullptr;
+                    if(!found){slot=-1;continue;}
+                    const auto& texture=*found;
                     const auto px=assets_->index.pixels(resolved.sprite);
                     region=Color(float(px.px)/texture.width,float(px.py)/texture.height,
                                  float(px.pw)/texture.width,float(px.ph)/texture.height);
@@ -126,8 +127,9 @@ Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id) {
         for (const auto& tile:resolved.tiles) {
             if (tile.lx!=0 || tile.ly!=0) continue;
             const int page=slotFor(tile.sprite.page,resolved.paletteRow,false);
-            if (page<0) continue;
-            const auto& texture=spriteResources_.slots[page];const auto pixels=assets_->index.pixels(tile.sprite);
+            const TextureSlot* found=page>=0?spriteResources_.slots.find(page):nullptr;
+            if (!found) continue;
+            const auto& texture=*found;const auto pixels=assets_->index.pixels(tile.sprite);
             layers.push_back({page,Color(float(pixels.px)/texture.width,float(pixels.py)/texture.height,
                 float(pixels.pw)/texture.width,float(pixels.ph)/texture.height)});
         }
@@ -135,8 +137,9 @@ Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id) {
         slot=layers.size()==1 ? layers[0].first : compositeBuildingTile(layers);
         region=layers.size()==1 ? layers[0].second : Color(0,0,1,1);
     }
-    if (!spriteResources_.slots.contains(slot)) return {};
-    const auto& texture=spriteResources_.slots[slot];
+    const TextureSlot* found=spriteResources_.slots.find(slot);
+    if (!found || found->texture.is_null()) return {};
+    const auto& texture=*found;
     Ref<AtlasTexture> icon;icon.instantiate();icon->set_atlas(texture.texture);
     icon->set_region(Rect2(region.r*texture.width,region.g*texture.height,region.b*texture.width,region.a*texture.height));
     return icon;

@@ -13,6 +13,7 @@ const Preferences = preload("res://scripts/presentation_settings.gd")
 const Layout = preload("res://scripts/hud_layout.gd")
 const INFO_SLOTS = [["Citizens", "CREATURES"], ["Tasks", "TASKS"], ["Places", "PLACES"], ["Labor", "LABOR"], ["Work orders", "WORK_ORDERS"], ["Nobles and administrators", "NOBLES"], ["Objects", "OBJECTS"], ["Justice", "JUSTICE"]]
 const OriginalUI = preload("res://scripts/original_ui.gd")
+const Interaction = preload("res://scripts/interaction.gd")
 var world
 var interaction
 var camera_rig
@@ -67,6 +68,9 @@ var root_control: Control
 var active_launcher := ""
 var _layout_key: Array = []
 var layout_count := 0
+# update_state runs every frame; the state pass only reruns when an input changed.
+var _state_key: Array = []
+var state_pass_count := 0
 var scale_picker: SpinBox
 var scale_note: Label
 var grid_toggle: CheckButton
@@ -182,12 +186,13 @@ func _ready():
 	notification_rail.group_dismissed.connect(func(group): notification_dismissed.emit(group))
 	actions = HBoxContainer.new()
 	root_control.add_child(actions)
-	for entry in [["Dig", 1, "BUTTON_DIG_DIG_INACTIVE"], ["Chop trees", 10, "BUTTON_DES_CHOP_INACTIVE"], ["Gather plants", 12, "BUTTON_DES_GATHER_INACTIVE"], ["Smooth", 6, "BUTTON_DES_SMOOTH_INACTIVE"], ["Remove", 8, "BUTTON_DES_ERASE"]]:
-		var index: int = entry[1]
+	# A launcher selects its family's first tool (TOOL_FAMILIES order) and toggles back to inspect.
+	for entry in [["Dig", "BUTTON_DIG_DIG_INACTIVE"], ["Chop trees", "BUTTON_DES_CHOP_INACTIVE"], ["Gather plants", "BUTTON_DES_GATHER_INACTIVE"], ["Smooth", "BUTTON_DES_SMOOTH_INACTIVE"], ["Remove", "BUTTON_DES_ERASE"]]:
 		var family: String = entry[0]
-		var b = icon_button(actions, family, entry[2], func():
+		var index: int = Interaction.TOOL_FAMILIES[family][0]
+		var b = icon_button(actions, family, entry[1], func():
 			var current: int = interaction.tool_picker.selected
-			choose_tool(0 if current in tools.GROUPS[family] or (current in [19,20] and tools.family == family) else index))
+			choose_tool(Interaction.Tool.INSPECT_ITEMS if current in Interaction.TOOL_FAMILIES[family] or (current in Interaction.BLUEPRINT_TOOLS and tools.family == family) else index))
 		navigation[entry[0]] = b
 	tools = preload("res://scripts/designation_toolbar.gd").new()
 	tools.hud = self
@@ -491,10 +496,27 @@ static func fortress_calendar(year: int, year_tick: int) -> String:
 		["Early", "Mid", "Late"][month % 3],
 		["Spring", "Summer", "Autumn", "Winter"][month / 3], year]
 
+func _feedback_text() -> String:
+	if not "state" in interaction: return ""
+	if not interaction.state.pending.is_empty(): return "Waiting for Dwarf Fortress..."
+	return str(interaction.state.history.front()) if not interaction.state.history.is_empty() else ""
+
 func update_state(play: bool, in_fort: bool, state: Dictionary):
+	var view: Vector2 = get_viewport().get_visible_rect().size
+	var state_key := [play, in_fort, interaction.construction_active, interaction.tool_picker.selected,
+		interaction.shell_context_visible(), menu_open(), labor_menu.visible, world.get_top_z(), world.is_live(),
+		_feedback_text(), session_controls != null and session_controls.blocks_commands(), view,
+		Preferences.effective_scale(view), Preferences.ui_scale, active_launcher,
+		interaction.priority.value, interaction.marker_only, interaction.mining_mode, tools.advanced, tools.family]
+	# The caller mutates one session dictionary in place; keep a copy for the comparison.
+	if state_key == _state_key and state == session:
+		if entered: layout(logical_view_size()) # Container sizes settle over frames.
+		return
+	_state_key = state_key
+	state_pass_count += 1
 	enabled = play
 	entered = in_fort
-	session = state
+	session = state.duplicate(true)
 	visible = entered
 	if not entered:
 		minimap.set_allowed(false)
@@ -512,14 +534,13 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 	notification_rail.visible = Availability.allows("Reports")
 	notification_rail.update_groups(state if notification_rail.visible else {}, not blocked and notification_rail.visible)
 	if not interaction.construction_active: active_launcher = ""
-	var groups = {"Dig": [1,2,3,4,5,9,15,16], "Chop trees": [10,11], "Gather plants": [12,13], "Smooth": [6,7,17,18], "Remove": [8], "Inspect": [0], "Inspect buildings": [14]}
 	for key in navigation:
 		var b = navigation[key]
 		b.visible = Availability.allows_launcher(key)
 		if key == "Petitions": b.visible = b.visible and bool(state.get("petition", {}).get("can_review", false))
 		b.disabled = bool(b.get_meta("unsupported", false)) or ((not enabled or interaction.construction_active) if b.get_meta("utility", false) else blocked)
-		set_icon_active(b, (key == "Labor" and labor_menu.visible) or key == active_launcher or (not interaction.construction_active and interaction.tool_picker.selected in groups.get(key, [])))
-		if key in tools.GROUPS and not blocked and (interaction.tool_picker.selected in tools.GROUPS[key] or (interaction.tool_picker.selected in [19,20] and tools.family == key)):
+		set_icon_active(b, (key == "Labor" and labor_menu.visible) or key == active_launcher or (not interaction.construction_active and interaction.tool_picker.selected in Interaction.TOOL_FAMILIES.get(key, [])))
+		if key in tools.FAMILIES and not blocked and (interaction.tool_picker.selected in Interaction.TOOL_FAMILIES[key] or (interaction.tool_picker.selected in Interaction.BLUEPRINT_TOOLS and tools.family == key)):
 			var lower = ui.texture("BUTTON_LOWER_MENU")
 			if lower != null: b.icon = lower
 	pause.disabled = blocked or not world.is_live()
@@ -552,14 +573,12 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 		level_up.disabled = not enabled or interaction.construction_active or world.get_top_z() >= int(summary.level_count) - 1
 	else:
 		level.text = "Level %d" % world.get_top_z()
-	if "state" in interaction:
-		command_feedback.text = str(interaction.state.history.front()) if not interaction.state.history.is_empty() else ""
-		if not interaction.state.pending.is_empty(): command_feedback.text = "Waiting for Dwarf Fortress..."
+	if "state" in interaction: command_feedback.text = _feedback_text()
 	command_feedback.visible = not interaction.construction_active and not menu_open() and not labor_menu.visible
 	tools.refresh()
-	tools.visible = not blocked and interaction.tool_picker.selected not in [0,14]
+	tools.visible = not blocked and interaction.tool_picker.selected not in Interaction.INSPECT_TOOLS
 	interaction.panel.visible = enabled and not interaction.construction_active and not menu_open() and not labor_menu.visible and interaction.shell_context_visible()
-	interaction.update_shell_context(get_viewport().get_visible_rect().size)
+	interaction.update_shell_context(view)
 	if ui_host != null: ui_host.set_overlay_blocked(menu_open() or labor_menu.visible)
 	if not enabled and session_controls != null and session_controls.blocks_commands():
 		heading.text += " · Saving"

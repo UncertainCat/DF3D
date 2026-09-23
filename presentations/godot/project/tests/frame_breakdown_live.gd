@@ -73,5 +73,5 @@ func run():
 		root.scaling_3d_scale = 1.0
 		await measure(mode + "_render_only_repeat", mode, false, 360)
 		scene.process_mode = Node.PROCESS_MODE_INHERIT
-	print("FLOOR_PROFILE_PASS")
+	print("FRAME_BREAKDOWN_LIVE_PASS")
 	quit()

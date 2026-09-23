@@ -9,7 +9,9 @@
 #include "modules/MapCache.h"
 #include "modules/Materials.h"
 #include "modules/Job.h"
+#include "command_util.h"
 #include "pending_work.h"
+#include "rect_cursor.h"
 #include "track_route.h"
 #include "track_terrain.h"
 
@@ -28,6 +30,7 @@
 #include "df/world.h"
 
 #include <chrono>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -126,26 +129,52 @@ Result rejected(uint64_t seq, std::string why) {
     return Result{seq, mir::CommandStatus::Rejected, std::move(why)};
 }
 
-// Walk the job list once per removal command, never once per selected tile.
+// Designation-relevant jobs, indexed once per drain (beginDrain) and walked
+// by every command of that drain instead of the whole linked list per
+// command. Jobs this module removes are nulled so no entry dangles.
+struct JobIndex {
+    std::vector<df::job*> jobs;
+    bool valid = false;
+    const std::vector<df::job*>& get() {
+        if (valid) return jobs;
+        jobs.clear();
+        for (auto* link = world->jobs.list.next; link; link = link->next) {
+            auto* job = link->item;
+            if (!job) continue;
+            const auto type = job->job_type;
+            if (df3d_pending_work::classify(type) != df3d_pending_work::Kind::None ||
+                df3d_pending_work::operation<mir::DesignationKind>(type) != mir::DesignationKind::None ||
+                type == df::job_type::CarveTrack)
+                jobs.push_back(job);
+        }
+        valid = true;
+        return jobs;
+    }
+    void invalidate() { valid = false; jobs.clear(); }
+    bool remove(df::job* job) {
+        if (!Job::removeJob(job)) return false;
+        for (auto& j : jobs) if (j == job) { j = nullptr; break; }
+        return true;
+    }
+};
+JobIndex g_jobs;
+
 // DFHack removes worker/job links too; merely clearing the tile bit leaves an
 // already-created job alive (and may report that no designation was present).
 std::set<df3d_pending_work::Tile> removePendingJobs(const mir::TileRect& rect, bool detail, int32_t maxZ = -1) {
     std::set<df3d_pending_work::Tile> removed;
-    for(auto* link=world->jobs.list.next;link;) {
-        auto* next=link->next;
-        auto* job=link->item;
-        if(job) {
-            const df3d_pending_work::Tile tile{job->pos.x,job->pos.y,job->pos.z};
-            if((df3d_pending_work::matchesRemoval(df3d_pending_work::classify(job->job_type),detail) || (detail && job->job_type==df::job_type::CarveTrack) || (!detail && (job->job_type==df::job_type::FellTree || job->job_type==df::job_type::GatherPlants))) &&
-               tile[2]>=rect.z() && tile[2]<=(maxZ==-1?rect.z():maxZ) &&
-               df3d_pending_work::inRect(tile,rect.x1(),rect.y1(),rect.x2(),rect.y2(),tile[2])) {
-                if(Job::removeJob(job)) {
-                    removed.insert(tile);
-                    hintBlock(tile[0],tile[1],tile[2]);
-                }
+    auto jobs = g_jobs.get();  // copy: removal edits the index
+    for (auto* job : jobs) {
+        if (!job) continue;
+        const df3d_pending_work::Tile tile{job->pos.x,job->pos.y,job->pos.z};
+        if((df3d_pending_work::matchesRemoval(df3d_pending_work::classify(job->job_type),detail) || (detail && job->job_type==df::job_type::CarveTrack) || (!detail && (job->job_type==df::job_type::FellTree || job->job_type==df::job_type::GatherPlants))) &&
+           tile[2]>=rect.z() && tile[2]<=(maxZ==-1?rect.z():maxZ) &&
+           df3d_pending_work::inRect(tile,rect.x1(),rect.y1(),rect.x2(),rect.y2(),tile[2])) {
+            if(g_jobs.remove(job)) {
+                removed.insert(tile);
+                hintBlock(tile[0],tile[1],tile[2]);
             }
         }
-        link=next;
     }
     return removed;
 }
@@ -154,9 +183,8 @@ std::set<df3d_pending_work::Tile> removePendingJobs(const mir::TileRect& rect, b
 // DF can consume designation bits when it creates a job; preserving only bits
 // would lose work and leave assigned workers executing supposedly held plans.
 void restoreAndHoldJobs(const mir::TileRect& r, const std::set<df3d_pending_work::Tile>* replaced = nullptr, int32_t maxZ = -1) {
-    for (auto* link = world->jobs.list.next; link;) {
-        auto* next = link->next;
-        auto* job = link->item;
+    auto jobs = g_jobs.get();  // copy: removal edits the index
+    for (auto* job : jobs) {
         if (job && (replaced ? replaced->count({job->pos.x,job->pos.y,job->pos.z})!=0 : (job->pos.z>=r.z() && job->pos.z<=(maxZ==-1?r.z():maxZ) && df3d_pending_work::inRect({job->pos.x,job->pos.y,job->pos.z},r.x1(),r.y1(),r.x2(),r.y2(),job->pos.z)))) {
             auto* block = Maps::getTileBlock(job->pos);
             if (block) {
@@ -185,98 +213,30 @@ void restoreAndHoldJobs(const mir::TileRect& r, const std::set<df3d_pending_work
                     if(replaced) { des=originalDes; occ=originalOcc; }
                     occ.bits.dig_marked=true;
                     block->flags.bits.designated=true;
-                    if(!Job::removeJob(job)) { des=originalDes; occ=originalOcc; }
+                    if(!g_jobs.remove(job)) { des=originalDes; occ=originalOcc; }
                 }
             }
         }
-        link=next;
     }
 }
 
-Result execDig(const mir::Command& cmd) {
-    const mir::DesignateDig* d = cmd.payload_as_DesignateDig();
-    const mir::TileRect* r = d->rect();
-    MapExtras::MapCache cache;
-    if(d->kind()==mir::DigKind::Mark) restoreAndHoldJobs(*r,nullptr,d->max_z());
-    const int32_t prio = static_cast<int32_t>(d->priority()) * 1000;
-    const auto removedJobs = d->kind()==mir::DigKind::Remove ? removePendingJobs(*r,false,d->max_z()) : std::set<df3d_pending_work::Tile>{};
-    std::set<df3d_pending_work::Tile> held;
-    uint64_t visited = 0, applied = 0, notDiggable = 0, noBlock = 0, border = 0;
-    const int32_t maxZ=d->max_z()==-1?r->z():d->max_z();
-    for(int32_t z=r->z(); z<=maxZ; ++z) {
-    for (int32_t y = r->y1(); y <= r->y2(); ++y) {
-        for (int32_t x = r->x1(); x <= r->x2(); ++x) {
-            ++visited;
-            df::map_block* blk = Maps::getTileBlock(x, y, z);
-            if (!blk) {
-                ++noBlock;
-                continue;
-            }
-            const int lx = x & 15, ly = y & 15;
-            df::tile_designation& des = blk->designation[lx][ly];
-            auto kind=d->kind();
-            if(kind==mir::DigKind::StairsSpan) {
-                const auto shape=tileShape(blk->tiletype[lx][ly]);
-                const auto basic=ENUM_ATTR(tiletype_shape,basic_shape,shape);
-                kind=z==r->z()?mir::DigKind::StairsUp:z==maxZ?mir::DigKind::StairsDown:mir::DigKind::StairsUpDown;
-                if(!des.bits.hidden) {
-                    const bool wall=basic==df::tiletype_shape_basic::Wall;
-                    const bool floor=basic==df::tiletype_shape_basic::Floor || basic==df::tiletype_shape_basic::Ramp;
-                    const bool up=shape==df::tiletype_shape::STAIR_UP;
-                    if(z==r->z() ? !wall : !(wall || floor || up)) { ++notDiggable; continue; }
-                    if(kind==mir::DigKind::StairsUpDown && floor) kind=mir::DigKind::StairsDown;
-                }
-            }
-            auto &occ=blk->occupancy[lx][ly];
-            if(d->kind()==mir::DigKind::Activate || d->kind()==mir::DigKind::Mark) {
-                if(des.bits.dig==df::tile_dig_designation::No && !des.bits.smooth && !occ.bits.carve_track_north && !occ.bits.carve_track_south && !occ.bits.carve_track_east && !occ.bits.carve_track_west) continue;
-                occ.bits.dig_marked=d->kind()==mir::DigKind::Mark;
-            } else if (d->kind() == mir::DigKind::Remove) {
-                if (des.bits.dig == df::tile_dig_designation::No && !removedJobs.count({x,y,z})) continue;
-                des.bits.dig = df::tile_dig_designation::No;
-                occ.bits.dig_auto=false;
-                if(!des.bits.smooth) occ.bits.dig_marked=false;
-            } else {
-                if (onMapBorder(x, y)) {
-                    ++border;
-                    continue;
-                }
-                if (!digAllowed(blk->tiletype[lx][ly], des, kind)) {
-                    ++notDiggable;
-                    continue;
-                }
-                if(d->mining_mode()!=0) {
-                    const auto mat=cache.baseMaterialAt(df::coord(x,y,z));
-                    MaterialInfo info(mat);
-                    const bool gem=info.material && info.material->flags.is_set(df::material_flags::IS_GEM);
-                    // DFHack Materials::isOre includes both smelted and strand-extracted metals.
-                    const bool ore=info.inorganic && (!info.inorganic->metal_ore.mat_index.empty() || !info.inorganic->thread_metal.mat_index.empty());
-                    const bool matches=d->mining_mode()==1 ? tileMaterial(blk->tiletype[lx][ly])==df::tiletype_material::MINERAL : (gem || (d->mining_mode()==2 && ore));
-                    if(des.bits.hidden || !matches) { ++notDiggable; continue; }
-                }
-                des.bits.dig = mapDig(kind);
-                occ.bits.dig_auto=d->mining_mode()==1 && d->kind()==mir::DigKind::Dig;
-                occ.bits.dig_marked=d->marker();
-                if (auto* ev = priorityEvent(blk, true)) ev->priority[lx][ly] = prio;
-            }
-            blk->flags.bits.designated = true;
-            ++applied;
-            if(d->marker()) held.insert({x,y,z});
-            hintBlock(x, y, z);
-        }
-    }
-    }
-    if(!held.empty()) restoreAndHoldJobs(*r,&held);
-    g_stats.tilesVisited += visited;
-    g_stats.tilesApplied += applied;
-    const uint64_t skipped = notDiggable + noBlock + border;
-    const char* reason = notDiggable ? "not diggable" : (border ? "map border" : "no map block");
-    if (applied == 0) {
-        if (d->kind() == mir::DigKind::Remove) return rejected(cmd.seq(), "no dig designation in the rect");
-        return rejected(cmd.seq(), countMessage("tiles", 0, visited, skipped, reason));
-    }
-    return Result{cmd.seq(), mir::CommandStatus::Ok, countMessage("tiles", applied, visited, skipped, reason)};
-}
+// A rectangle command in progress: dig or smooth over up to 65 536 tiles per
+// level runs in slices across updates (the between-command budget is soft;
+// one command must not blow it). The command bytes are copied because the
+// drain buffer is reused; the cursor and counters carry the partial walk.
+// Sent is not succeeded: the result is queued only once the walk finished.
+struct PendingRect {
+    bool active = false;
+    bool smooth = false;
+    std::vector<uint8_t> buf;
+    df3d_rect_cursor::Cursor cursor;
+    uint64_t visited = 0, applied = 0, notDiggable = 0, noBlock = 0, border = 0, skipped = 0;
+    std::set<df3d_pending_work::Tile> removedJobs, held;
+    double us = 0;  // execution time accumulated over slices
+};
+PendingRect g_pending;
+// Tiles between two deadline checks inside a slice.
+constexpr uint64_t kDeadlineCheckTiles = 256;
 
 bool smoothableMaterial(df::tiletype tt) {
     switch (tileMaterial(tt)) {
@@ -288,6 +248,108 @@ bool smoothableMaterial(df::tiletype tt) {
     default:
         return false;
     }
+}
+
+void beginDig(const mir::Command& cmd) {
+    const mir::DesignateDig* d = cmd.payload_as_DesignateDig();
+    const mir::TileRect* r = d->rect();
+    PendingRect& p = g_pending;
+    if(d->kind()==mir::DigKind::Mark) restoreAndHoldJobs(*r,nullptr,d->max_z());
+    if(d->kind()==mir::DigKind::Remove) p.removedJobs = removePendingJobs(*r,false,d->max_z());
+    const int32_t maxZ=d->max_z()==-1?r->z():d->max_z();
+    p.cursor.begin(r->x1(), r->y1(), r->x2(), r->y2(), r->z(), maxZ);
+}
+
+// One slice of the dig walk; false when the deadline passed before the end.
+bool stepDig(const mir::Command& cmd, Clock::time_point deadline) {
+    const mir::DesignateDig* d = cmd.payload_as_DesignateDig();
+    const mir::TileRect* r = d->rect();
+    PendingRect& p = g_pending;
+    MapExtras::MapCache cache;
+    const int32_t prio = static_cast<int32_t>(d->priority()) * 1000;
+    const int32_t maxZ = p.cursor.z2;
+    uint64_t sinceCheck = 0;
+    for (; !p.cursor.done; p.cursor.next()) {
+        if (++sinceCheck >= kDeadlineCheckTiles) {
+            sinceCheck = 0;
+            if (Clock::now() >= deadline) return false;
+        }
+        const int32_t x = p.cursor.x, y = p.cursor.y, z = p.cursor.z;
+        ++p.visited;
+        df::map_block* blk = Maps::getTileBlock(x, y, z);
+        if (!blk) {
+            ++p.noBlock;
+            continue;
+        }
+        const int lx = x & 15, ly = y & 15;
+        df::tile_designation& des = blk->designation[lx][ly];
+        auto kind=d->kind();
+        if(kind==mir::DigKind::StairsSpan) {
+            const auto shape=tileShape(blk->tiletype[lx][ly]);
+            const auto basic=ENUM_ATTR(tiletype_shape,basic_shape,shape);
+            kind=z==r->z()?mir::DigKind::StairsUp:z==maxZ?mir::DigKind::StairsDown:mir::DigKind::StairsUpDown;
+            if(!des.bits.hidden) {
+                const bool wall=basic==df::tiletype_shape_basic::Wall;
+                const bool floor=basic==df::tiletype_shape_basic::Floor || basic==df::tiletype_shape_basic::Ramp;
+                const bool up=shape==df::tiletype_shape::STAIR_UP;
+                if(z==r->z() ? !wall : !(wall || floor || up)) { ++p.notDiggable; continue; }
+                if(kind==mir::DigKind::StairsUpDown && floor) kind=mir::DigKind::StairsDown;
+            }
+        }
+        auto &occ=blk->occupancy[lx][ly];
+        if(d->kind()==mir::DigKind::Activate || d->kind()==mir::DigKind::Mark) {
+            if(des.bits.dig==df::tile_dig_designation::No && !des.bits.smooth && !occ.bits.carve_track_north && !occ.bits.carve_track_south && !occ.bits.carve_track_east && !occ.bits.carve_track_west) continue;
+            occ.bits.dig_marked=d->kind()==mir::DigKind::Mark;
+        } else if (d->kind() == mir::DigKind::Remove) {
+            if (des.bits.dig == df::tile_dig_designation::No && !p.removedJobs.count({x,y,z})) continue;
+            des.bits.dig = df::tile_dig_designation::No;
+            occ.bits.dig_auto=false;
+            if(!des.bits.smooth) occ.bits.dig_marked=false;
+        } else {
+            if (onMapBorder(x, y)) {
+                ++p.border;
+                continue;
+            }
+            if (!digAllowed(blk->tiletype[lx][ly], des, kind)) {
+                ++p.notDiggable;
+                continue;
+            }
+            if(d->mining_mode()!=0) {
+                const auto mat=cache.baseMaterialAt(df::coord(x,y,z));
+                MaterialInfo info(mat);
+                const bool gem=info.material && info.material->flags.is_set(df::material_flags::IS_GEM);
+                // DFHack Materials::isOre includes both smelted and strand-extracted metals.
+                const bool ore=info.inorganic && (!info.inorganic->metal_ore.mat_index.empty() || !info.inorganic->thread_metal.mat_index.empty());
+                const bool matches=d->mining_mode()==1 ? tileMaterial(blk->tiletype[lx][ly])==df::tiletype_material::MINERAL : (gem || (d->mining_mode()==2 && ore));
+                if(des.bits.hidden || !matches) { ++p.notDiggable; continue; }
+            }
+            des.bits.dig = mapDig(kind);
+            occ.bits.dig_auto=d->mining_mode()==1 && d->kind()==mir::DigKind::Dig;
+            occ.bits.dig_marked=d->marker();
+            if (auto* ev = priorityEvent(blk, true)) ev->priority[lx][ly] = prio;
+        }
+        blk->flags.bits.designated = true;
+        ++p.applied;
+        if(d->marker()) p.held.insert({x,y,z});
+        hintBlock(x, y, z);
+    }
+    return true;
+}
+
+Result finishDig(const mir::Command& cmd) {
+    const mir::DesignateDig* d = cmd.payload_as_DesignateDig();
+    const mir::TileRect* r = d->rect();
+    PendingRect& p = g_pending;
+    if(!p.held.empty()) restoreAndHoldJobs(*r,&p.held);
+    g_stats.tilesVisited += p.visited;
+    g_stats.tilesApplied += p.applied;
+    const uint64_t skipped = p.notDiggable + p.noBlock + p.border;
+    const char* reason = p.notDiggable ? "not diggable" : (p.border ? "map border" : "no map block");
+    if (p.applied == 0) {
+        if (d->kind() == mir::DigKind::Remove) return rejected(cmd.seq(), "no dig designation in the rect");
+        return rejected(cmd.seq(), countMessage("tiles", 0, p.visited, skipped, reason));
+    }
+    return Result{cmd.seq(), mir::CommandStatus::Ok, countMessage("tiles", p.applied, p.visited, skipped, reason)};
 }
 
 Result execTrack(const mir::Command& cmd) {
@@ -321,9 +383,11 @@ Result execTrack(const mir::Command& cmd) {
         });
     if(path.empty()) return rejected(cmd.seq(),"no eligible track route within search limit");
     std::set<df3d_pending_work::Tile> held;
+    uint64_t applied=0, noBlock=0;
     for(const auto& tile:path) {
         const auto [x,y,z]=tile.point;
         auto* block=Maps::getTileBlock(x,y,z);
+        if(!block) { ++noBlock; continue; }  // routed through an unallocated block: skip, count
         auto& occ=block->occupancy[x&15][y&15];
         occ.bits.carve_track_north|=(tile.mask&1)!=0;
         occ.bits.carve_track_south|=(tile.mask&2)!=0;
@@ -334,83 +398,116 @@ Result execTrack(const mir::Command& cmd) {
         block->flags.bits.designated=true;
         if(d->marker()) held.insert({x,y,z});
         hintBlock(x,y,z);
+        ++applied;
     }
     if(!held.empty()) restoreAndHoldJobs(*r,&held);
-    g_stats.tilesApplied+=path.size(); g_stats.tilesVisited+=path.size();
-    return Result{cmd.seq(),mir::CommandStatus::Ok,std::to_string(path.size())+" track tiles"};
+    g_stats.tilesApplied+=applied; g_stats.tilesVisited+=path.size();
+    if(applied==0) return rejected(cmd.seq(),countMessage("track tiles",0,path.size(),noBlock,"no map block"));
+    return Result{cmd.seq(),mir::CommandStatus::Ok,countMessage("track tiles",applied,path.size(),noBlock,"no map block")};
 }
 
-Result execSmooth(const mir::Command& cmd) {
+void beginSmooth(const mir::Command& cmd) {
     const mir::DesignateSmooth* d = cmd.payload_as_DesignateSmooth();
-    if(d->kind()==mir::SmoothKind::Track) return execTrack(cmd);
     const mir::TileRect* r = d->rect();
-    const auto removedJobs = d->kind()==mir::SmoothKind::Remove ? removePendingJobs(*r,true,d->max_z()) : std::set<df3d_pending_work::Tile>{};
-    std::set<df3d_pending_work::Tile> held;
-    uint64_t visited = 0, applied = 0, skipped = 0;
+    PendingRect& p = g_pending;
+    if(d->kind()==mir::SmoothKind::Remove) p.removedJobs = removePendingJobs(*r,true,d->max_z());
     const int32_t maxZ=d->max_z()==-1?r->z():d->max_z();
-    for(int32_t z=r->z();z<=maxZ;++z) {
-    for (int32_t y = r->y1(); y <= r->y2(); ++y) {
-        for (int32_t x = r->x1(); x <= r->x2(); ++x) {
-            ++visited;
-            df::map_block* blk = Maps::getTileBlock(x, y, z);
-            if (!blk) {
-                ++skipped;
+    p.cursor.begin(r->x1(), r->y1(), r->x2(), r->y2(), r->z(), maxZ);
+}
+
+bool stepSmooth(const mir::Command& cmd, Clock::time_point deadline) {
+    const mir::DesignateSmooth* d = cmd.payload_as_DesignateSmooth();
+    PendingRect& p = g_pending;
+    uint64_t sinceCheck = 0;
+    for (; !p.cursor.done; p.cursor.next()) {
+        if (++sinceCheck >= kDeadlineCheckTiles) {
+            sinceCheck = 0;
+            if (Clock::now() >= deadline) return false;
+        }
+        const int32_t x = p.cursor.x, y = p.cursor.y, z = p.cursor.z;
+        ++p.visited;
+        df::map_block* blk = Maps::getTileBlock(x, y, z);
+        if (!blk) {
+            ++p.skipped;
+            continue;
+        }
+        const int lx = x & 15, ly = y & 15;
+        df::tile_designation& des = blk->designation[lx][ly];
+        if (d->kind() == mir::SmoothKind::Remove) {
+            auto &occ=blk->occupancy[lx][ly];
+            if (des.bits.smooth == 0 && !occ.bits.carve_track_north && !occ.bits.carve_track_south && !occ.bits.carve_track_east && !occ.bits.carve_track_west && !p.removedJobs.count({x,y,z})) continue;
+            des.bits.smooth = 0;
+            occ.bits.carve_track_north=occ.bits.carve_track_south=occ.bits.carve_track_east=occ.bits.carve_track_west=0;
+            if(des.bits.dig==df::tile_dig_designation::No) occ.bits.dig_marked=false;
+        } else {
+            const df::tiletype tt = blk->tiletype[lx][ly];
+            const df::tiletype_shape ts = tileShape(tt);
+            const df::tiletype_shape_basic tsb = ENUM_ATTR(tiletype_shape, basic_shape, ts);
+            const df::tiletype_special sp = tileSpecial(tt);
+            const bool smooth = sp == df::tiletype_special::SMOOTH ||
+                                sp == df::tiletype_special::SMOOTH_DEAD ||
+                                sp == df::tiletype_special::TRACK;
+            const bool shapeOk = (tsb == df::tiletype_shape_basic::Wall ||
+                                  tsb == df::tiletype_shape_basic::Floor) &&
+                                 ts != df::tiletype_shape::FORTIFICATION;
+            bool ok = !des.bits.hidden && shapeOk && smoothableMaterial(tt);
+            if (d->kind() == mir::SmoothKind::Smooth) ok = ok && !smooth;
+            else if(d->kind()==mir::SmoothKind::Fortify) ok = ok && smooth && tsb==df::tiletype_shape_basic::Wall;
+            else ok = ok && smooth;  // engrave wants a smoothed tile
+            if (!ok) {
+                ++p.skipped;
                 continue;
             }
-            const int lx = x & 15, ly = y & 15;
-            df::tile_designation& des = blk->designation[lx][ly];
-            if (d->kind() == mir::SmoothKind::Remove) {
-                auto &occ=blk->occupancy[lx][ly];
-                if (des.bits.smooth == 0 && !occ.bits.carve_track_north && !occ.bits.carve_track_south && !occ.bits.carve_track_east && !occ.bits.carve_track_west && !removedJobs.count({x,y,z})) continue;
-                des.bits.smooth = 0;
-                occ.bits.carve_track_north=occ.bits.carve_track_south=occ.bits.carve_track_east=occ.bits.carve_track_west=0;
-                if(des.bits.dig==df::tile_dig_designation::No) occ.bits.dig_marked=false;
-            } else {
-                const df::tiletype tt = blk->tiletype[lx][ly];
-                const df::tiletype_shape ts = tileShape(tt);
-                const df::tiletype_shape_basic tsb = ENUM_ATTR(tiletype_shape, basic_shape, ts);
-                const df::tiletype_special sp = tileSpecial(tt);
-                const bool smooth = sp == df::tiletype_special::SMOOTH ||
-                                    sp == df::tiletype_special::SMOOTH_DEAD ||
-                                    sp == df::tiletype_special::TRACK;
-                const bool shapeOk = (tsb == df::tiletype_shape_basic::Wall ||
-                                      tsb == df::tiletype_shape_basic::Floor) &&
-                                     ts != df::tiletype_shape::FORTIFICATION;
-                bool ok = !des.bits.hidden && shapeOk && smoothableMaterial(tt);
-                if (d->kind() == mir::SmoothKind::Smooth) ok = ok && !smooth;
-                else if(d->kind()==mir::SmoothKind::Fortify) ok = ok && smooth && tsb==df::tiletype_shape_basic::Wall;
-                else ok = ok && smooth;  // engrave wants a smoothed tile
-                if (!ok) {
-                    ++skipped;
-                    continue;
-                }
-                des.bits.smooth = d->kind() == mir::SmoothKind::Engrave ? 2 : 1;
-                blk->occupancy[lx][ly].bits.dig_marked=d->marker();
-                priorityEvent(blk,true)->priority[lx][ly]=int32_t(d->priority())*1000;
-            }
-            blk->flags.bits.designated = true;
-            ++applied;
-            if(d->marker()) held.insert({x,y,z});
-            hintBlock(x, y, z);
+            des.bits.smooth = d->kind() == mir::SmoothKind::Engrave ? 2 : 1;
+            blk->occupancy[lx][ly].bits.dig_marked=d->marker();
+            priorityEvent(blk,true)->priority[lx][ly]=int32_t(d->priority())*1000;
         }
+        blk->flags.bits.designated = true;
+        ++p.applied;
+        if(d->marker()) p.held.insert({x,y,z});
+        hintBlock(x, y, z);
     }
-    }
-    if(!held.empty()) restoreAndHoldJobs(*r,&held);
-    g_stats.tilesVisited += visited;
-    g_stats.tilesApplied += applied;
+    return true;
+}
+
+Result finishSmooth(const mir::Command& cmd) {
+    const mir::DesignateSmooth* d = cmd.payload_as_DesignateSmooth();
+    const mir::TileRect* r = d->rect();
+    PendingRect& p = g_pending;
+    if(!p.held.empty()) restoreAndHoldJobs(*r,&p.held);
+    g_stats.tilesVisited += p.visited;
+    g_stats.tilesApplied += p.applied;
     const char* reason = d->kind() == mir::SmoothKind::Engrave ? "not smoothed natural stone"
                                                                : "not rough natural stone";
-    if (applied == 0) {
+    if (p.applied == 0) {
         if (d->kind() == mir::SmoothKind::Remove) return rejected(cmd.seq(), "no smooth designation in the rect");
-        return rejected(cmd.seq(), countMessage("tiles", 0, visited, skipped, reason));
+        return rejected(cmd.seq(), countMessage("tiles", 0, p.visited, p.skipped, reason));
     }
-    return Result{cmd.seq(), mir::CommandStatus::Ok, countMessage("tiles", applied, visited, skipped, reason)};
+    return Result{cmd.seq(), mir::CommandStatus::Ok, countMessage("tiles", p.applied, p.visited, p.skipped, reason)};
+}
+
+// Runs (or continues) the pending rectangle walk; true with `out` filled
+// when it finished, false when the deadline stopped it mid-walk.
+bool stepPending(Clock::time_point deadline, Result& out) {
+    PendingRect& p = g_pending;
+    const mir::Command* cmd = mir::parseCommand(p.buf.data(), p.buf.size());
+    if (!cmd || !world || !Maps::IsValid()) {
+        // The map went away under a partial walk: an unknown outcome.
+        out = rejected(cmd ? cmd->seq() : 0, "map unloaded before the designation completed");
+        p = PendingRect();
+        return true;
+    }
+    const bool finished = p.smooth ? stepSmooth(*cmd, deadline) : stepDig(*cmd, deadline);
+    if (!finished) return false;
+    out = p.smooth ? finishSmooth(*cmd) : finishDig(*cmd);
+    p = PendingRect();
+    return true;
 }
 
 // Trees (Chop) or shrubs (Gather) whose designation tile lies in the rect.
 Result execPlants(const mir::Command& cmd, const mir::TileRect* r, bool enable, bool trees, uint8_t priority, bool marker, int32_t maxZ) {
     std::set<df3d_pending_work::Tile> held;
-    uint64_t candidates = 0, applied = 0, already = 0;
+    uint64_t candidates = 0, applied = 0, already = 0, noBlock = 0;
     for (df::plant* p : world->plants.all) {
         if (!p) continue;
         const bool isTree = p->tree_info != nullptr;
@@ -420,9 +517,12 @@ Result execPlants(const mir::Command& cmd, const mir::TileRect* r, bool enable, 
         if (pos.z < r->z() || pos.z > (maxZ==-1?r->z():maxZ) || pos.x < r->x1() || pos.x > r->x2() || pos.y < r->y1() || pos.y > r->y2())
             continue;
         ++candidates;
+        // A designation tile without an allocated block cannot carry the
+        // priority / marker bits: skip the plant entirely and count it.
+        auto* blk=Maps::getTileBlock(pos);
+        if (!blk) { ++noBlock; continue; }
         bool changed = enable ? Designations::markPlant(p) : Designations::unmarkPlant(p);
         if (enable && (changed || Designations::isPlantMarked(p))) {
-            auto* blk=Maps::getTileBlock(pos);
             priorityEvent(blk,true)->priority[pos.x&15][pos.y&15]=int32_t(priority)*1000;
             blk->occupancy[pos.x&15][pos.y&15].bits.dig_marked=marker;
             if(marker) {
@@ -443,6 +543,7 @@ Result execPlants(const mir::Command& cmd, const mir::TileRect* r, bool enable, 
     const char* what = trees ? "trees" : "shrubs";
     if (candidates == 0) return rejected(cmd.seq(), std::string("no ") + what + " in the rect");
     if (applied == 0) {
+        if (already == 0 && noBlock) return rejected(cmd.seq(), std::to_string(noBlock) + " " + what + " skipped: no map block");
         return rejected(cmd.seq(), std::to_string(already) + " " + what + (enable ? " already marked" : " not marked"));
     }
     return Result{cmd.seq(), mir::CommandStatus::Ok,
@@ -504,17 +605,56 @@ Result execBuildingFlags(const mir::Command& cmd) {
 void setHooks(const Hooks& hooks) { g_hooks = hooks; }
 const Stats& stats() { return g_stats; }
 void resetStatsMax() { g_stats.execUsMax = 0.0; }
-void reset() { g_stats = Stats(); }
+void reset() { g_stats = Stats(); g_pending = PendingRect(); g_jobs.invalidate(); }
+void beginDrain() { g_jobs.invalidate(); }
+bool pending() { return g_pending.active; }
 
-Result execute(const mir::Command& cmd) {
+namespace {
+void recordExecution(const Result& res, double us) {
+    g_stats.execUsLast = us;
+    g_stats.execUsEma = g_stats.execUsEma == 0.0 ? us : g_stats.execUsEma + (us - g_stats.execUsEma) / 16.0;
+    if (us > g_stats.execUsMax) g_stats.execUsMax = us;
+    ++g_stats.executed;
+    if (res.status == mir::CommandStatus::Ok) ++g_stats.ok;
+    else if (res.status == mir::CommandStatus::Rejected) ++g_stats.rejected;
+    else ++g_stats.unknown;
+    g_stats.lastMessage = res.message;
+}
+}  // namespace
+
+bool resume(Clock::time_point deadline, Result& out) {
+    if (!g_pending.active) return true;
+    const auto t0 = Clock::now();
+    const double before = g_pending.us;  // stepPending resets the record on completion
+    const bool finished = stepPending(deadline, out);
+    const double us = usSince(t0);
+    if (!finished) { g_pending.us += us; return false; }
+    recordExecution(out, before + us);
+    return true;
+}
+
+bool execute(const uint8_t* buf, size_t len, const mir::Command& cmd, Clock::time_point deadline, Result& out) {
     const auto t0 = Clock::now();
     Result res;
     if (!world || !Maps::IsValid()) {
         res = rejected(cmd.seq(), "no map loaded");
     } else {
         switch (cmd.payload_type()) {
-        case mir::CommandPayload::DesignateDig: res = execDig(cmd); break;
-        case mir::CommandPayload::DesignateSmooth: res = execSmooth(cmd); break;
+        case mir::CommandPayload::DesignateDig:
+        case mir::CommandPayload::DesignateSmooth: {
+            const bool smooth = cmd.payload_type() == mir::CommandPayload::DesignateSmooth;
+            if (smooth && cmd.payload_as_DesignateSmooth()->kind() == mir::SmoothKind::Track) { res = execTrack(cmd); break; }
+            g_pending = PendingRect();
+            g_pending.active = true;
+            g_pending.smooth = smooth;
+            g_pending.buf.assign(buf, buf + len);
+            if (smooth) beginSmooth(cmd); else beginDig(cmd);
+            if (!stepPending(deadline, res)) {
+                g_pending.us = usSince(t0);
+                return false;
+            }
+            break;
+        }
         case mir::CommandPayload::DesignateChop:
             res = execPlants(cmd, cmd.payload_as_DesignateChop()->rect(),
                              cmd.payload_as_DesignateChop()->enable(), true, cmd.payload_as_DesignateChop()->priority(), cmd.payload_as_DesignateChop()->marker(), cmd.payload_as_DesignateChop()->max_z());
@@ -531,16 +671,9 @@ Result execute(const mir::Command& cmd) {
             break;
         }
     }
-    const double us = usSince(t0);
-    g_stats.execUsLast = us;
-    g_stats.execUsEma = g_stats.execUsEma == 0.0 ? us : g_stats.execUsEma + (us - g_stats.execUsEma) / 16.0;
-    if (us > g_stats.execUsMax) g_stats.execUsMax = us;
-    ++g_stats.executed;
-    if (res.status == mir::CommandStatus::Ok) ++g_stats.ok;
-    else if (res.status == mir::CommandStatus::Rejected) ++g_stats.rejected;
-    else ++g_stats.unknown;
-    g_stats.lastMessage = res.message;
-    return res;
+    recordExecution(res, usSince(t0));
+    out = res;
+    return true;
 }
 
 }  // namespace df3d_commands

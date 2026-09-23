@@ -459,6 +459,10 @@ private:
     // Black plane under the z window so a camera inside rock never sees sky through culled bottoms.
     void updateBackdrop();
     bool inWindow(wm::BlockPos p) const;
+    // Block coordinates inside the current map's block grid (x/y/z >= 0 and
+    // below the block counts). Neighbour arithmetic at the map edge produces
+    // -1, which key() would otherwise alias to a bogus permanent entry.
+    bool blockInMap(wm::BlockPos p) const;
     static uint64_t key(wm::BlockPos p);
 
     // entities
@@ -627,6 +631,8 @@ private:
     bool itemsDirty_ = true;
     std::set<wm::ItemId> itemUpdateIDs_;
     godot::Array corpseItemChanges_;
+    // Corpse change entries beyond the per-drain cap; surfaced in presentation_perf_stats().
+    int64_t corpseItemChangesDropped_ = 0;
     std::set<wm::ItemId> hiddenCorpses_;
     std::map<wm::ItemId, int> pendingItemComposites_;
     std::vector<int> itemInstanceOrdinals_;

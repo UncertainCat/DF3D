@@ -66,5 +66,5 @@ func run(test, setup: Dictionary, fps_label: Label, survivor_label: Label) -> bo
 		if Time.get_ticks_msec() > deadline:
 			push_error("OBS did not finalize recording"); return false
 		await test.create_timer(0.1).timeout
-	print("FLOOR_PROFILE_PASS OBS frames=", frame_ms.size())
+	print("TARGETED_ATTACK_LIVE_PASS OBS frames=", frame_ms.size())
 	return true

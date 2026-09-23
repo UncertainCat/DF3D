@@ -29,6 +29,7 @@ var message: Label
 var mode_label: Label
 var refresh_button: Button
 var _poll_time := 0.0
+var _layout_key: Array = []
 var resident_header: HBoxContainer
 var footer: HBoxContainer
 var footer_note: Label
@@ -228,16 +229,21 @@ func render_rows():
 
 func _process(delta: float):
 	if panel == null or not panel.visible: return
-	info_frame.layout(get_viewport().get_visible_rect().size)
-	if page == "Residents":
-		var logical: Vector2 = get_viewport().get_visible_rect().size / panel.get_parent().scale
-		# Our current HUD is taller than native's 48px header. Keep the roster
-		# below it rather than concealing the population/resource readouts.
-		panel.position = Vector2(32,72)
-		var desired_width := maxf(560,logical.x-256)
-		update_resident_widths(desired_width)
-		panel.size = Vector2(desired_width,maxf(320,logical.y-108))
-		update_resident_icons()
+	var view: Vector2 = get_viewport().get_visible_rect().size
+	# Layout only reruns when its inputs change; icon loading stays incremental.
+	var key := [view, preload("res://scripts/presentation_settings.gd").effective_scale(view), page]
+	if key != _layout_key:
+		_layout_key = key
+		info_frame.layout(view)
+		if page == "Residents":
+			var logical: Vector2 = view / panel.get_parent().scale
+			# Our current HUD is taller than native's 48px header. Keep the roster
+			# below it rather than concealing the population/resource readouts.
+			panel.position = Vector2(32,72)
+			var desired_width := maxf(560,logical.x-256)
+			update_resident_widths(desired_width)
+			panel.size = Vector2(desired_width,maxf(320,logical.y-108))
+	if page == "Residents": update_resident_icons()
 	_poll_time += delta
 	if _poll_time < .1: return
 	_poll_time = 0

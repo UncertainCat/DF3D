@@ -7,6 +7,16 @@ static func _write_lane(images: Array[Image], directory: String, lane: int, lane
 		if error != OK: return "Cannot write capture frame %d: %s" % [i,error_string(error)]
 	return ""
 
+# Streaming variant: one frame at a time, so a long capture never holds every
+# image in memory. Frame names match the batch writer.
+static func prepare(directory: String) -> String:
+	var error := DirAccess.make_dir_recursive_absolute(directory)
+	return "" if error == OK else "Cannot create capture directory: " + error_string(error)
+
+static func write_frame(image: Image, directory: String, index: int) -> String:
+	var error := image.save_png(directory.path_join("%04d.png" % index))
+	return "" if error == OK else "Cannot write capture frame %d: %s" % [index, error_string(error)]
+
 static func write(images: Array[Image], directory: String) -> String:
 	var error := DirAccess.make_dir_recursive_absolute(directory)
 	if error != OK: return "Cannot create capture directory: " + error_string(error)

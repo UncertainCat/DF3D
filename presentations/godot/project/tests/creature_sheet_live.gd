@@ -92,4 +92,4 @@ func run():
      evidence[str(id)].pages.append(name)
   view.close_panel()
  var file=FileAccess.open(output+"-data.json",FileAccess.WRITE);file.store_string(JSON.stringify(evidence,"  "))
- print("FLOOR_PROFILE_PASS");quit()
+ print("CREATURE_SHEET_LIVE_PASS");quit()

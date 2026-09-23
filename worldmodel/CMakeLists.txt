@@ -26,6 +26,7 @@ add_library(worldmodel STATIC
   src/terrain_grid_sync.cpp)
 target_include_directories(worldmodel PUBLIC include)
 target_link_libraries(worldmodel PRIVATE mirror_support)
+df3d_apply_warnings(worldmodel)
 
 if(TARGET doctest)
 add_executable(worldmodel_tests
@@ -58,6 +59,8 @@ target_link_libraries(worldmodel_tests PRIVATE worldmodel mirror_support doctest
 target_include_directories(worldmodel_tests PRIVATE src)
 target_compile_definitions(worldmodel_tests PRIVATE
   DF3D_FIXTURE_DIR="${CMAKE_SOURCE_DIR}/fixtures")
+df3d_apply_warnings(worldmodel_tests)
 add_test(NAME worldmodel_tests COMMAND worldmodel_tests)
+set_tests_properties(worldmodel_tests PROPERTIES TIMEOUT 300)
 
 endif()

@@ -33,33 +33,29 @@ uint64_t blockKey(const MapBlock& b) {
 std::optional<std::string> validateTile(const TileState& t, size_t index,
                                         uint32_t materialCount) {
   const std::string tag = "tile " + std::to_string(index) + ": ";
-  if (t.designation() < DesignationKind::MIN || t.designation() > DesignationKind::MAX)
-    return tag + "invalid designation kind";
-  if (t.shape() < TileShape::MIN || t.shape() > TileShape::MAX) {
-    return tag + "invalid shape value " + std::to_string(static_cast<uint8_t>(t.shape()));
-  }
-  if (t.material_kind() < MaterialKind::MIN || t.material_kind() > MaterialKind::MAX) {
-    return tag + "invalid material_kind value " +
-           std::to_string(static_cast<uint8_t>(t.material_kind()));
-  }
-  if (t.liquid_kind() < LiquidKind::MIN || t.liquid_kind() > LiquidKind::MAX) {
-    return tag + "invalid liquid_kind value " +
-           std::to_string(static_cast<uint8_t>(t.liquid_kind()));
-  }
-  if ((static_cast<uint8_t>(t.flags()) & ~static_cast<uint8_t>(TileFlags::ANY)) != 0) {
-    return tag + "unknown flag bits in " + std::to_string(static_cast<uint8_t>(t.flags()));
+  const RawTileValues raw{static_cast<uint8_t>(t.shape()), static_cast<uint8_t>(t.material_kind()),
+                          t.liquid_level(), static_cast<uint8_t>(t.liquid_kind()),
+                          static_cast<uint8_t>(t.flags()), static_cast<uint8_t>(t.designation())};
+  // Range checks are shared with the grid path (terrain_grid_sync.cpp); only
+  // the material index depends on this snapshot's table.
+  switch (checkTileValues(raw)) {
+    case TileFault::None: break;
+    case TileFault::Designation: return tag + "invalid designation kind";
+    case TileFault::Shape: return tag + "invalid shape value " + std::to_string(raw.shape);
+    case TileFault::MaterialKind:
+      return tag + "invalid material_kind value " + std::to_string(raw.materialKind);
+    case TileFault::LiquidKind:
+      return tag + "invalid liquid_kind value " + std::to_string(raw.liquidKind);
+    case TileFault::Flags: return tag + "unknown flag bits in " + std::to_string(raw.flags);
+    case TileFault::LiquidLevel:
+      return tag + "liquid_level " + std::to_string(raw.liquidLevel) + " exceeds 7";
+    case TileFault::LiquidConsistency:
+      return tag + "liquid_level " + std::to_string(raw.liquidLevel) +
+             " inconsistent with liquid_kind " + std::to_string(raw.liquidKind);
   }
   if (t.material() != kNoMaterial && t.material() >= materialCount) {
     return tag + "material index " + std::to_string(t.material()) +
            " out of range (materials.size() = " + std::to_string(materialCount) + ")";
-  }
-  if (t.liquid_level() > kMaxLiquidLevel) {
-    return tag + "liquid_level " + std::to_string(t.liquid_level()) + " exceeds 7";
-  }
-  if ((t.liquid_level() > 0) != (t.liquid_kind() != LiquidKind::None)) {
-    return tag + "liquid_level " + std::to_string(t.liquid_level()) +
-           " inconsistent with liquid_kind " +
-           std::to_string(static_cast<uint8_t>(t.liquid_kind()));
   }
   return std::nullopt;
 }

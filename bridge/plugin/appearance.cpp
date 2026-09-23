@@ -722,9 +722,16 @@ bool resolveSimple(const Ctx& c, Result& out) {
 
 }  // namespace
 
+namespace {
+void freePaletteSurfaces();
+}
+
 void reset() {
     g_texmap.clear();
     g_texmapRaws = 0;
+    // Palette surfaces are keyed by df::palette_pagest*, which a reload
+    // reallocates: free them so neither the surfaces leak nor the keys dangle.
+    freePaletteSurfaces();
 }
 
 namespace {
@@ -972,6 +979,12 @@ const SdlSurfaceView* surfaceAt(int32_t texpos) {
 
 // Palette images loaded through DF's SDL_image for the diagnostic only.
 std::map<const df::palette_pagest*, void*> g_paletteSurfaces;
+
+void freePaletteSurfaces() {
+    for (auto& [pal, surface] : g_paletteSurfaces)
+        if (surface) DFSDL::DFSDL_FreeSurface(static_cast<SDL_Surface*>(surface));
+    g_paletteSurfaces.clear();
+}
 
 const SdlSurfaceView* paletteSurface(const df::palette_pagest* pal) {
     auto it = g_paletteSurfaces.find(pal);

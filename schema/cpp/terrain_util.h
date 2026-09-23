@@ -37,6 +37,40 @@ inline TileState emptyTile() {
                    TileFlags::NONE, df3d::mirror::DesignationKind::None);
 }
 
+// One shared range check for tile values, whichever transport carried them
+// (ring TileState or resident grid TerrainTile). Values are the raw wire
+// bytes; returns the first field that is out of range, or None.
+enum class TileFault : uint8_t {
+  None = 0, Designation, Shape, MaterialKind, LiquidKind, Flags, LiquidLevel, LiquidConsistency
+};
+struct RawTileValues {
+  uint8_t shape, materialKind, liquidLevel, liquidKind, flags, designation;
+};
+inline TileFault checkTileValues(const RawTileValues& t) {
+  if (t.designation > static_cast<uint8_t>(DesignationKind::MAX)) return TileFault::Designation;
+  if (t.shape > static_cast<uint8_t>(TileShape::MAX)) return TileFault::Shape;
+  if (t.materialKind > static_cast<uint8_t>(MaterialKind::MAX)) return TileFault::MaterialKind;
+  if (t.liquidKind > static_cast<uint8_t>(LiquidKind::MAX)) return TileFault::LiquidKind;
+  if ((t.flags & ~static_cast<uint8_t>(TileFlags::ANY)) != 0) return TileFault::Flags;
+  if (t.liquidLevel > kMaxLiquidLevel) return TileFault::LiquidLevel;
+  if ((t.liquidLevel > 0) != (t.liquidKind != static_cast<uint8_t>(LiquidKind::None)))
+    return TileFault::LiquidConsistency;
+  return TileFault::None;
+}
+inline const char* tileFaultName(TileFault f) {
+  switch (f) {
+    case TileFault::None: return "ok";
+    case TileFault::Designation: return "invalid designation kind";
+    case TileFault::Shape: return "invalid shape value";
+    case TileFault::MaterialKind: return "invalid material_kind value";
+    case TileFault::LiquidKind: return "invalid liquid_kind value";
+    case TileFault::Flags: return "unknown flag bits";
+    case TileFault::LiquidLevel: return "liquid_level exceeds 7";
+    case TileFault::LiquidConsistency: return "liquid_level inconsistent with liquid_kind";
+  }
+  return "?";
+}
+
 // Two tiles are equal iff every field matches (padding is ignored).
 inline bool tileEquals(const TileState& a, const TileState& b) {
   return a.shape() == b.shape() && a.material_kind() == b.material_kind() &&

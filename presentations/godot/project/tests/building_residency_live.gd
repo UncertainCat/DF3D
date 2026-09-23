@@ -61,7 +61,7 @@ func run():
 			push_error("Furniture meshes changed during moving-unit residency check: " + str(changed)); quit(1); return
 	var file := FileAccess.open(output + ".json", FileAccess.WRITE)
 	file.store_string(JSON.stringify(checks, "  "))
-	print("FLOOR_PROFILE_PASS")
+	print("BUILDING_RESIDENCY_LIVE_PASS")
 	quit()
 
 func building_mesh_ids() -> Dictionary:

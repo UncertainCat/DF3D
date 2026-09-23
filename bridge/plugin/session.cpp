@@ -32,9 +32,19 @@
 #include <filesystem>
 #include <algorithm>
 #include <set>
+// Same Windows prelude as df3d.cpp. The shared-memory transport (named
+// kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
+#ifdef _WIN32
 #include <windows.h>
+#else
+#error "df3d session channel: shared memory transport is Windows-only"
+#endif
 #include "client_mailbox.h"
 namespace df3d_session {
 // Saver stage and changed in-memory identity alone can report a false success
@@ -312,7 +322,6 @@ bool start(color_ostream& out) {
   const size_t size = sh::regionSize(m::kSessionCapacity, m::kSessionCommandCapacity);
   mapping = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, static_cast<DWORD>(size), m::kSessionRegionName);
   if (!mapping) {
-    if (mapping) CloseHandle(mapping); mapping = nullptr;
     out.printerr("df3d: cannot create exclusive session channel\n"); return false;
   }
   region = static_cast<sh::RegionHeader*>(MapViewOfFile(mapping, FILE_MAP_ALL_ACCESS, 0, 0, size));

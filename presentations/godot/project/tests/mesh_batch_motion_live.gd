@@ -49,5 +49,5 @@ func run():
  var f=FileAccess.open(output+".json",FileAccess.WRITE)
  f.store_string(JSON.stringify(results,"  "))
  if not scene.world.layout_matches_reference(): push_error("Tile layout differs from reference"); quit(1); return
- print("FLOOR_PROFILE_PASS")
+ print("MESH_BATCH_MOTION_LIVE_PASS")
  quit()

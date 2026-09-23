@@ -320,7 +320,9 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
             const wm::TilePos p{b->x1+t.lx,b->y1+t.ly,b->z};
             if(!tileVisible(p))continue;
             const int slot=slotFor(t.sprite.page,r.paletteRow,false);if(slot<0)continue;
-            const auto& s=spriteResources_.slots[slot];const auto px=assets_->index.pixels(t.sprite);
+            const TextureSlot* found=spriteResources_.slots.find(slot);
+            ERR_CONTINUE_MSG(!found, "stale building sprite slot " + godot::String::num_int64(slot));
+            const auto& s=*found;const auto px=assets_->index.pixels(t.sprite);
             tiles[{p.x,p.y}].push_back({slot,Color(float(px.px)/s.width,float(px.py)/s.height,float(px.pw)/s.width,float(px.ph)/s.height)});
         }
         struct Fragment {int slot,w,h;Color region;mesher::DepthInterval depth;std::shared_ptr<const BuildingAlphaRegion> alpha;};
@@ -330,7 +332,10 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
             const int slot=layers.size()==1?layers[0].first:compositeBuildingTile(layers);
             const Color region=layers.size()==1?layers[0].second:Color(0,0,1,1);
             auto depth=depthAt(x,y);
-            auto& image=spriteResources_.images[slot];if(image.is_null())image=spriteResources_.slots[slot].texture->get_image();
+            const TextureSlot* layer=slot>=0?spriteResources_.slots.find(slot):nullptr;
+            ERR_CONTINUE_MSG(!layer || layer->texture.is_null(), "stale building tile slot " + godot::String::num_int64(slot));
+            auto& image=spriteResources_.images[slot];if(image.is_null())image=layer->texture->get_image();
+            if(image.is_null())continue;
             const int iw=image->get_width(),ih=image->get_height();
             const int ox=std::lround(region.r*iw),oy=std::lround(region.g*ih);
             const int w=std::lround(region.b*iw),h=std::lround(region.a*ih);
@@ -455,8 +460,10 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
                 mat.instantiate();
                 mat->set_shader(godot::ResourceLoader::get_singleton()->load(sk.kind == kSurfGhost ? "res://shaders/standee_ghost.gdshader" : "res://shaders/unit_sprite.gdshader"));
                 godot::Dictionary parameters;
-                parameters["sprite_tex"]=spriteResources_.slots[static_cast<size_t>(sk.slot)].texture;
-                parameters["sprite_cell"]=spriteResources_.slots[static_cast<size_t>(sk.slot)].texture->get_meta("world_cell", Vector2());
+                const TextureSlot* sprite=spriteResources_.slots.find(sk.slot);
+                ERR_CONTINUE_MSG(!sprite || sprite->texture.is_null(), "stale building piece slot " + godot::String::num_int64(sk.slot));
+                parameters["sprite_tex"]=sprite->texture;
+                parameters["sprite_cell"]=sprite->texture->get_meta("world_cell", Vector2());
                 configureImmutableMaterial(mat,parameters);
             }
             mesh->surface_set_material(surface, mat);
@@ -509,7 +516,9 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
     std::vector<Source> sources;
     int w=0,h=0;
     for(const auto& [slot,region]:layers) {
-        const auto& s=spriteResources_.slots[slot];
+        const TextureSlot* found=spriteResources_.slots.find(slot);
+        ERR_FAIL_COND_V_MSG(!found || found->texture.is_null(), -1, "stale composite layer slot " + godot::String::num_int64(slot));
+        const auto& s=*found;
         const int x=std::lround(region.r*s.width), y=std::lround(region.g*s.height);
         const int sw=std::lround(region.b*s.width), sh=std::lround(region.a*s.height);
         key+=std::to_string(slot)+":"+std::to_string(x)+":"+std::to_string(y)+":"+std::to_string(sw)+":"+std::to_string(sh)+";";
@@ -520,7 +529,8 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
     auto image=godot::Image::create(w,h,false,godot::Image::FORMAT_RGBA8);
     image->fill(Color(0,0,0,0));
     for(const auto& src:sources) {
-        auto& source=spriteResources_.images[src.slot];if(source.is_null())source=spriteResources_.slots[src.slot].texture->get_image();
+        auto& source=spriteResources_.images[src.slot];if(source.is_null())source=spriteResources_.slots.find(src.slot)->texture->get_image();
+        ERR_FAIL_COND_V_MSG(source.is_null(), -1, "composite layer slot without image");
         auto layer=source->get_region(godot::Rect2i(src.x,src.y,src.w,src.h));
         if(layer->get_width()!=w || layer->get_height()!=h)layer->resize(w,h,godot::Image::INTERPOLATE_NEAREST);
         image->blend_rect(layer,godot::Rect2i(0,0,w,h),godot::Vector2i(0,0));
@@ -558,6 +568,8 @@ godot::Dictionary Df3dWorld::presentation_perf_stats() const {
     out["building_alpha_cache_regions"]=int64_t(buildingAlphaCache_.size());
     out["footprint_cache_evictions"]=int64_t(perfFootprintEvictions_); out["footprint_cache_resets"]=int64_t(perfFootprintResets_);
     out["item_update_passes"]=int64_t(perfItemCount_); out["item_update_ms"]=perfItemMs_;
+    out["corpse_item_changes_pending"]=int64_t(corpseItemChanges_.size());
+    out["corpse_item_changes_dropped"]=int64_t(corpseItemChangesDropped_);
     const auto layout = tileLayouts_.stats();
     if(df3d::profiling::global().mode()==df3d::profiling::Mode::Deep) {
         godot::Array history;
@@ -626,9 +638,10 @@ std::shared_ptr<const Df3dWorld::BuildingAlphaRegion> Df3dWorld::buildingAlphaRe
         buildingAlphaRecent_.splice(buildingAlphaRecent_.begin(),buildingAlphaRecent_,found->second.recent);
         return found->second.region;
     }
-    if(!spriteResources_.slots.contains(slot) || width<=0 || height<=0)return {};
+    const TextureSlot* source=spriteResources_.slots.find(slot);
+    if(!source || source->texture.is_null() || width<=0 || height<=0)return {};
     auto& image=spriteResources_.images[slot];
-    if(image.is_null())image=spriteResources_.slots[slot].texture->get_image();
+    if(image.is_null())image=source->texture->get_image();
     if(image.is_null())return {};
     ++perfBuildingAlphaMisses_;
     auto region=std::make_shared<BuildingAlphaRegion>();
@@ -744,9 +757,11 @@ void Df3dWorld::updateEntities() {
     for (const auto& event : iev) {
         if (event.change==wm::EntityChange::Removed) spriteResources_.collectionPending=true;
         const auto* item = source_.model().item(event.id);
-        if (event.change == wm::EntityChange::Added && item && item->kind == wm::ItemKind::Corpse && item->corpseUnitId >= 0 && corpseItemChanges_.size() < 1024) {
-            godot::Dictionary entry; entry["item_id"] = int64_t(item->id);
-            entry["unit_id"] = item->corpseUnitId; corpseItemChanges_.push_back(entry);
+        if (event.change == wm::EntityChange::Added && item && item->kind == wm::ItemKind::Corpse && item->corpseUnitId >= 0) {
+            if (corpseItemChanges_.size() < 1024) {
+                godot::Dictionary entry; entry["item_id"] = int64_t(item->id);
+                entry["unit_id"] = item->corpseUnitId; corpseItemChanges_.push_back(entry);
+            } else ++corpseItemChangesDropped_;  // capped per drain; visible in presentation_perf_stats
         }
         layoutItemChanges_.insert(event.id);
         itemUpdateIDs_.insert(event.id);

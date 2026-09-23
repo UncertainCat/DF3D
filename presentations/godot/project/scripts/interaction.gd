@@ -5,6 +5,28 @@ const Selection = preload("res://scripts/interaction_state.gd")
 const CutoutPicking = preload("res://scripts/cutout_picking.gd")
 const DesignationOverlay = preload("res://scripts/designation_overlay.gd")
 const TOOLS = ["Inspect items", "Dig", "Channel", "Stairs up", "Stairs down", "Stairs up/down", "Smooth", "Engrave", "Remove", "Ramp", "Chop trees", "Clear chop", "Gather plants", "Clear gather", "Inspect buildings", "Stairs", "Remove stairs/ramps", "Carve fortifications", "Carve track", "Convert blueprint to standard", "Convert standard to blueprint"]
+# Indices into TOOLS. Dispatch, families and the toolbar all key off these, never captions.
+enum Tool { INSPECT_ITEMS = 0, DIG = 1, CHANNEL = 2, STAIRS_UP = 3, STAIRS_DOWN = 4, STAIRS_UP_DOWN = 5, SMOOTH = 6, ENGRAVE = 7, REMOVE = 8, RAMP = 9, CHOP_TREES = 10, CLEAR_CHOP = 11, GATHER_PLANTS = 12, CLEAR_GATHER = 13, INSPECT_BUILDINGS = 14, STAIRS = 15, REMOVE_STAIRS_RAMPS = 16, CARVE_FORTIFICATIONS = 17, CARVE_TRACK = 18, CONVERT_TO_STANDARD = 19, CONVERT_TO_BLUEPRINT = 20 }
+# The single tool table: launcher family (ui_availability.gd AVAILABLE) -> member tools.
+# List order is the toolbar order; members without toolbar art stay picker-only.
+# fortress_hud.gd (launcher highlight) and designation_toolbar.gd (buttons) read this.
+const TOOL_FAMILIES = {
+	"Dig": [Tool.DIG, Tool.STAIRS, Tool.RAMP, Tool.CHANNEL, Tool.REMOVE_STAIRS_RAMPS, Tool.STAIRS_UP, Tool.STAIRS_DOWN, Tool.STAIRS_UP_DOWN],
+	"Chop trees": [Tool.CHOP_TREES, Tool.CLEAR_CHOP],
+	"Gather plants": [Tool.GATHER_PLANTS, Tool.CLEAR_GATHER],
+	"Smooth": [Tool.SMOOTH, Tool.ENGRAVE, Tool.CARVE_TRACK, Tool.CARVE_FORTIFICATIONS],
+	"Remove": [Tool.REMOVE],
+	"Inspect": [Tool.INSPECT_ITEMS],
+	"Inspect buildings": [Tool.INSPECT_BUILDINGS],
+}
+const INSPECT_TOOLS = [Tool.INSPECT_ITEMS, Tool.INSPECT_BUILDINGS]
+# Blueprint conversions belong to whichever family the toolbar currently shows.
+const BLUEPRINT_TOOLS = [Tool.CONVERT_TO_STANDARD, Tool.CONVERT_TO_BLUEPRINT]
+
+static func tool_family(index: int) -> String:
+	for family in TOOL_FAMILIES:
+		if index in TOOL_FAMILIES[family]: return family
+	return ""
 var world # Injected by world_view; untyped for headless fake-world tests.
 var selection_panel
 var construction_active := false
@@ -77,8 +99,7 @@ func _ready() -> void:
 	for tool in TOOLS:
 		tool_picker.add_item(tool)
 	row.add_child(tool_picker)
-	tool_picker.item_selected.connect(func(_i): cancel_selection(); _clear_items())
-	tool_picker.item_selected.connect(func(_i): _cue("select"); _draw_overlay())
+	tool_picker.item_selected.connect(_on_tool_picked)
 	var label := Label.new()
 	label.text = " Priority "
 	row.add_child(label)
@@ -159,6 +180,25 @@ func _ready() -> void:
 	add_child(_cursor_sprites)
 	_clear_items()
 
+# One ordered handler: cancel and clear before the overlay redraws for the new tool.
+func _on_tool_picked(_index: int) -> void:
+	cancel_selection()
+	_clear_items()
+	_cue("select")
+	_draw_overlay()
+
+# The picked entry, or null when the picker has no selection. OptionButton.selected
+# is -1 then, and a negative Array index would silently address the last item.
+func _selected_item():
+	var index: int = item_picker.selected if item_picker != null else -1
+	if index < 0 or index >= _items.size(): return null
+	return _items[index]
+
+func _selected_building():
+	var index: int = building_picker.selected if building_picker != null else -1
+	if index < 0 or index >= _buildings.size(): return null
+	return _buildings[index]
+
 func _refresh_camera() -> void:
 	if camera_rig == null: return
 	camera_button.text = "Camera: %s (F4)" % {"df":"DF", "isometric":"Isometric", "free":"Free", "walk":"Walk"}[camera_rig.get_mode()]
@@ -203,7 +243,7 @@ func set_play_enabled(value: bool) -> void:
 
 func select_tool(index: int) -> void:
 	if index < 0 or index >= TOOLS.size(): return
-	if index not in [0,14] and selection_panel != null: selection_panel.close_panel()
+	if index not in INSPECT_TOOLS and selection_panel != null: selection_panel.close_panel()
 	cancel_selection()
 	_clear_items()
 	tool_picker.select(index)
@@ -240,7 +280,7 @@ func _process_view(delta: float) -> void:
 			_draw_overlay()
 	var top := int(world.get_top_z())
 	if _order_sprites != null:
-		_order_sprites.update_grid(world.map_size(), top, preload("res://scripts/presentation_settings.gd").targeting_grid and world.terrain_loaded() and camera_rig != null and camera_rig.is_df_mode() and tool_picker.selected not in [0,14] and not construction_active and not shell_blocked)
+		_order_sprites.update_grid(world.map_size(), top, preload("res://scripts/presentation_settings.gd").targeting_grid and world.terrain_loaded() and camera_rig != null and camera_rig.is_df_mode() and tool_picker.selected not in INSPECT_TOOLS and not construction_active and not shell_blocked)
 	if top != _z:
 		_z = top
 		if _dragging:
@@ -254,7 +294,7 @@ func _process_view(delta: float) -> void:
 		if not world.is_live() and preview_env != "":
 			var parts := preview_env.split(",")
 			if parts.size() == 4:
-				tool_picker.select(1)
+				tool_picker.select(Tool.DIG)
 				_start = Vector3i(int(parts[0]), int(parts[1]), top)
 				_end = _start + Vector3i(maxi(1, int(parts[2])) - 1, maxi(1, int(parts[3])) - 1, 0)
 				_update_preview()
@@ -263,8 +303,8 @@ func _process_view(delta: float) -> void:
 		_cue("accepted" if outcome == 0 else "rejected")
 	state.expire(Time.get_ticks_msec())
 	if not results.is_empty() and _item_tile.z >= 0:
-		var selected_id: int = _items[item_picker.selected].id if not _items.is_empty() else -1
-		_refresh_items(selected_id)
+		var selected = _selected_item()
+		_refresh_items(int(selected.id) if selected != null else -1)
 	_marker_timer -= delta
 	if _marker_timer <= 0 and world.terrain_loaded():
 		_marker_timer = 0.35
@@ -272,7 +312,7 @@ func _process_view(delta: float) -> void:
 		var revision := int(world.terrain_revision()) if world.has_method("terrain_revision") else -1
 		if revision < 0 or revision != _marker_revision:
 			_marker_revision = revision
-			if _dragging and tool_picker.selected == 18: _update_preview()
+			if _dragging and tool_picker.selected == Tool.CARVE_TRACK: _update_preview()
 			marker_scan_count += 1
 			var markers: Array = world.designation_tiles(top)
 			if markers != _markers:
@@ -333,7 +373,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if tile.z < 0:
 				cancel_selection()
 				return
-			if tool_picker.selected == 0 or TOOLS[tool_picker.selected] == "Inspect buildings":
+			if tool_picker.selected in INSPECT_TOOLS:
 				_select_items(tile)
 			else:
 				# One press/release owns one rectangle. UI presses never reach here.
@@ -360,20 +400,21 @@ func _pick(screen: Vector2) -> Vector3i:
 	_preferred_unit = -1
 	_preferred_item = -1
 	_preferred_building = -1
-	if TOOLS[tool_picker.selected] == "Inspect buildings" and world.has_method("pick_building"):
+	if tool_picker.selected == Tool.INSPECT_BUILDINGS and world.has_method("pick_building"):
 		var hit: Dictionary = world.pick_building(camera.project_ray_origin(screen), camera.project_ray_normal(screen), world.get_top_z())
 		if not hit.is_empty():
 			_preferred_building = hit.id
 			return hit.tile
-	if tool_picker.selected == 0:
+	if tool_picker.selected == Tool.INSPECT_ITEMS:
 		var hit := _pick_piece(screen)
 		if not hit.is_empty():
-			if int(hit.get("kind",2)) == 1: _preferred_unit = hit.id
-			if int(hit.get("kind",2)) == 2: _preferred_item = hit.id
-			if int(hit.get("kind",2)) == 3: _preferred_building = hit.id
+			var kind := int(hit.get("kind", CutoutPicking.KIND_ITEM))
+			if kind == CutoutPicking.KIND_UNIT: _preferred_unit = hit.id
+			if kind == CutoutPicking.KIND_ITEM: _preferred_item = hit.id
+			if kind == CutoutPicking.KIND_BUILDING: _preferred_building = hit.id
 			return hit.tile
 	# Tools target the cut surface; items target their floor slab.
-	if tool_picker.selected != 0:
+	if tool_picker.selected != Tool.INSPECT_ITEMS:
 		return world.pick_tile(camera.project_ray_origin(screen), camera.project_ray_normal(screen), world.get_top_z())
 	var height := float(Df3dWorld.floor_height())
 	return Selection.project_tile(camera.project_ray_origin(screen), camera.project_ray_normal(screen), world.get_top_z(), world.map_size(), height)
@@ -385,7 +426,7 @@ func _update_preview() -> void:
 	_preview_height = maxf(0, world.selection_height(Vector3i(_start.x, _start.y, world.get_top_z())))
 	var size: Vector3 = world.map_size()
 	_preview = Selection.rectangle(Vector2i(_start.x, _start.y), Vector2i(_end.x, _end.y), Vector2i(int(size.x), int(size.z)))
-	_track_preview = world.preview_track(_preview, _start.z, _start.x > _end.x, _start.y > _end.y, _end.z) if tool_picker.selected == 18 and world.has_method("preview_track") else []
+	_track_preview = world.preview_track(_preview, _start.z, _start.x > _end.x, _start.y > _end.y, _end.z) if tool_picker.selected == Tool.CARVE_TRACK and world.has_method("preview_track") else []
 	_draw_overlay()
 
 func cancel_selection() -> void:
@@ -414,11 +455,11 @@ func _clear_items() -> void:
 
 func _select_items(tile: Vector3i) -> void:
 	if selection_panel != null and world.is_live():
-		var kind := 0
+		var kind := CutoutPicking.KIND_NONE
 		var id := -1
-		if _preferred_unit >= 0: kind = 1; id = _preferred_unit
-		elif _preferred_building >= 0: kind = 3; id = _preferred_building
-		elif _preferred_item >= 0: kind = 2; id = _preferred_item
+		if _preferred_unit >= 0: kind = CutoutPicking.KIND_UNIT; id = _preferred_unit
+		elif _preferred_building >= 0: kind = CutoutPicking.KIND_BUILDING; id = _preferred_building
+		elif _preferred_item >= 0: kind = CutoutPicking.KIND_ITEM; id = _preferred_item
 		selection_panel.open_target(tile,kind,id)
 		return
 	_cue("select")
@@ -448,7 +489,7 @@ func _pick_piece(screen: Vector2) -> Dictionary:
 	if world.has_method("pick_building"):
 		var building: Dictionary = world.pick_building(camera.project_ray_origin(screen),camera.project_ray_normal(screen),world.get_top_z())
 		if not building.is_empty():
-			building["kind"] = 3
+			building["kind"] = CutoutPicking.KIND_BUILDING
 			candidates.append(building)
 	return CutoutPicking.nearest(candidates)
 
@@ -469,48 +510,49 @@ func _submit(seq: int, description: String) -> void:
 		state.note("Not sent: %s — %s" % [description, world.last_error()])
 
 func _designate() -> void:
-	if tool_picker.selected == 15 and _start.z == _end.z:
+	var tool: int = tool_picker.selected
+	if tool == Tool.STAIRS and _start.z == _end.z:
 		state.note("Stairways must connect at least two elevations.")
 		cancel_selection()
 		return
 	if not _can_send():
 		return # Leave the rectangle visible for offline exploration.
-	var tool: String = TOOLS[tool_picker.selected]
+	var caption: String = TOOLS[tool]
 	var min_z := mini(_start.z, _end.z)
 	var max_z := maxi(_start.z, _end.z)
-	var description := "%s %d×%d at (%d,%d), z%d" % [tool, _preview.size.x, _preview.size.y, _preview.position.x, _preview.position.y, _start.z]
+	var description := "%s %d×%d at (%d,%d), z%d" % [caption, _preview.size.x, _preview.size.y, _preview.position.x, _preview.position.y, _start.z]
 	if min_z != max_z: description += " to z%d" % _end.z
 	match tool:
-		"Chop trees", "Clear chop":
-			_submit(world.designate_chop(_preview, min_z, tool == "Chop trees", int(priority.value), marker_only, max_z), description)
-		"Gather plants", "Clear gather":
-			_submit(world.designate_gather(_preview, min_z, tool == "Gather plants", int(priority.value), marker_only, max_z), description)
-		"Ramp":
+		Tool.CHOP_TREES, Tool.CLEAR_CHOP:
+			_submit(world.designate_chop(_preview, min_z, tool == Tool.CHOP_TREES, int(priority.value), marker_only, max_z), description)
+		Tool.GATHER_PLANTS, Tool.CLEAR_GATHER:
+			_submit(world.designate_gather(_preview, min_z, tool == Tool.GATHER_PLANTS, int(priority.value), marker_only, max_z), description)
+		Tool.RAMP:
 			_submit(world.designate_dig(_preview, min_z, Df3dWorld.DIG_RAMP_UP, int(priority.value), marker_only, 0, max_z), description)
-		"Smooth", "Engrave":
-			_submit(world.designate_smooth(_preview, min_z, Df3dWorld.SMOOTH_SMOOTH if tool == "Smooth" else Df3dWorld.SMOOTH_ENGRAVE, int(priority.value), marker_only, max_z), description)
-		"Stairs":
+		Tool.SMOOTH, Tool.ENGRAVE:
+			_submit(world.designate_smooth(_preview, min_z, Df3dWorld.SMOOTH_SMOOTH if tool == Tool.SMOOTH else Df3dWorld.SMOOTH_ENGRAVE, int(priority.value), marker_only, max_z), description)
+		Tool.STAIRS:
 			_submit(world.designate_stairs(_preview, min_z, max_z, int(priority.value), marker_only), description)
-		"Remove stairs/ramps":
+		Tool.REMOVE_STAIRS_RAMPS:
 			_submit(world.designate_dig(_preview, min_z, Df3dWorld.DIG_REMOVE_STAIRS_RAMPS, int(priority.value), marker_only, 0, max_z), description)
-		"Carve fortifications":
+		Tool.CARVE_FORTIFICATIONS:
 			_submit(world.designate_smooth(_preview, min_z, Df3dWorld.SMOOTH_FORTIFY, int(priority.value), marker_only, max_z), description)
-		"Carve track":
+		Tool.CARVE_TRACK:
 			_submit(world.designate_track(_preview, _start.z, _start.x > _end.x, _start.y > _end.y, int(priority.value), marker_only, _end.z), description)
-		"Convert blueprint to standard", "Convert standard to blueprint":
-			_submit(world.designate_dig(_preview, min_z, Df3dWorld.DIG_ACTIVATE if tool == "Convert blueprint to standard" else Df3dWorld.DIG_MARK, int(priority.value), false, 0, max_z), description)
-		"Remove":
+		Tool.CONVERT_TO_STANDARD, Tool.CONVERT_TO_BLUEPRINT:
+			_submit(world.designate_dig(_preview, min_z, Df3dWorld.DIG_ACTIVATE if tool == Tool.CONVERT_TO_STANDARD else Df3dWorld.DIG_MARK, int(priority.value), false, 0, max_z), description)
+		Tool.REMOVE:
 			_submit(world.designate_dig(_preview, min_z, Df3dWorld.DIG_REMOVE, int(priority.value), false, 0, max_z), description + " dig")
 			_submit(world.designate_smooth(_preview, min_z, Df3dWorld.SMOOTH_REMOVE, int(priority.value), false, max_z), description + " smooth/engrave")
 		_:
-			var kinds := {"Dig": Df3dWorld.DIG_DIG, "Channel": Df3dWorld.DIG_CHANNEL, "Stairs up": Df3dWorld.DIG_STAIRS_UP, "Stairs down": Df3dWorld.DIG_STAIRS_DOWN, "Stairs up/down": Df3dWorld.DIG_STAIRS_UP_DOWN}
-			_submit(world.designate_dig(_preview, min_z, kinds[tool], int(priority.value), marker_only, mining_mode if tool == "Dig" else 0, max_z), description)
+			var kinds := {Tool.DIG: Df3dWorld.DIG_DIG, Tool.CHANNEL: Df3dWorld.DIG_CHANNEL, Tool.STAIRS_UP: Df3dWorld.DIG_STAIRS_UP, Tool.STAIRS_DOWN: Df3dWorld.DIG_STAIRS_DOWN, Tool.STAIRS_UP_DOWN: Df3dWorld.DIG_STAIRS_UP_DOWN}
+			_submit(world.designate_dig(_preview, min_z, kinds[tool], int(priority.value), marker_only, mining_mode if tool == Tool.DIG else 0, max_z), description)
 	cancel_selection()
 
 func _item_flags(forbidden: int, dump: int, melt := -1) -> void:
-	if _items.is_empty() or not _can_send():
+	var item = _selected_item()
+	if item == null or not _can_send():
 		return
-	var item: Dictionary = _items[item_picker.selected]
 	# Re-query: an item may have moved/vanished since it was picked. Never
 	# apply an action to a stale selection that is no longer on this tile.
 	var present := false
@@ -530,7 +572,8 @@ func _item_flags(forbidden: int, dump: int, melt := -1) -> void:
 
 func _refresh_buildings() -> void:
 	if not world.has_method("buildings_at_tile"): return
-	var old_id: int = _buildings[building_picker.selected].id if not _buildings.is_empty() and building_picker.selected >= 0 else -1
+	var previous = _selected_building()
+	var old_id: int = int(previous.id) if previous != null else -1
 	_buildings = world.buildings_at_tile(_item_tile)
 	building_picker.clear()
 	for b in _buildings:
@@ -540,15 +583,15 @@ func _refresh_buildings() -> void:
 	_refresh_building_actions()
 
 func _refresh_building_actions() -> void:
-	building_row.visible = not _buildings.is_empty() and bool(_buildings[building_picker.selected].can_forbid)
+	var b = _selected_building()
+	building_row.visible = b != null and bool(b.can_forbid)
 	if building_row.visible:
-		var b: Dictionary = _buildings[building_picker.selected]
 		building_row.get_child(0).disabled = b.forbidden or not b.complete
 		building_row.get_child(1).disabled = not b.forbidden or not b.complete
 
 func _building_flags(forbidden: bool) -> void:
-	if _buildings.is_empty() or not _can_send(): return
-	var selected: Dictionary = _buildings[building_picker.selected]
+	var selected = _selected_building()
+	if selected == null or not _can_send(): return
 	for current in world.buildings_at_tile(_item_tile):
 		if current.id == selected.id and current.can_forbid and current.complete:
 			_submit(world.set_building_flags(current.id, Df3dWorld.FLAG_SET if forbidden else Df3dWorld.FLAG_CLEAR), "%s %s #%d" % ["Forbid" if forbidden else "Allow", current.name, current.id])
@@ -581,9 +624,9 @@ func _draw_overlay() -> void:
 	mat.vertex_color_use_as_albedo = true
 	mat.no_depth_test = true
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES, mat)
-	if _order_sprites != null: _order_sprites.update_markers(_markers, _z, show_priorities, show_traffic, tool_picker.selected in [1,2,3,4,5,9,15,16] and not shell_blocked and not construction_active)
+	if _order_sprites != null: _order_sprites.update_markers(_markers, _z, show_priorities, show_traffic, tool_picker.selected in TOOL_FAMILIES["Dig"] and not shell_blocked and not construction_active)
 	if _cursor_sprites != null:
-		if tool_picker.selected == 18: _cursor_sprites.update_track_cursor(_track_preview, world.get_top_z())
+		if tool_picker.selected == Tool.CARVE_TRACK: _cursor_sprites.update_track_cursor(_track_preview, world.get_top_z())
 		else: _cursor_sprites.update_cursor(_preview, world.get_top_z())
 	# ImmediateMesh requires vertices even when the overlay is empty.
 	mesh.surface_set_color(Color(0, 0, 0))

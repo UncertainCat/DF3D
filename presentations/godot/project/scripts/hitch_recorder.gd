@@ -50,6 +50,7 @@ var _mutex := Mutex.new()
 var _wake := Semaphore.new()
 var _writer: Thread
 var _stopping := false
+var _take_refused_warned := false
 var _output := ""
 var hitches := 0
 var peak_frame_us := 0
@@ -287,8 +288,15 @@ static func _lifecycle(raw: Dictionary, slot: int) -> Dictionary:
 	return result
 
 # For deterministic tests or an explicit in-memory diagnostics consumer.
-# Normal frames never expand dictionaries or serialize reports.
+# Normal frames never expand dictionaries or serialize reports. While a file
+# writer owns the queue (configure_output), taking would race its drain and
+# silently drop reports from the session file, so the request is refused.
 func take_reports() -> Array:
+	if _writer != null:
+		if not _take_refused_warned:
+			_take_refused_warned = true
+			push_warning("hitch recorder: take_reports() ignored while the session file writer owns the report queue")
+		return []
 	_mutex.lock()
 	var result := _reports
 	_reports = []

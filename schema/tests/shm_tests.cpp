@@ -412,3 +412,72 @@ TEST_CASE("disabled journal falls back to latest without redelivering an accepte
   REQUIRE(shm::readNextSnapshot(r.h,1,out,sizeof(out),16,&p)==1);
   CHECK(p.index==3);
 }
+
+// ---- regression: seqlock torn-read rejection, mapping size checks, ring length wrap ----
+
+TEST_CASE("slot reader rejects a torn read: odd sequence on the active slot") {
+  auto r = makeRegion();
+  const char* a = "snapshot-A";
+  REQUIRE(shm::publishSnapshot(r.h, reinterpret_cast<const uint8_t*>(a), 10, 100));
+  const unsigned slot = static_cast<unsigned>(r.h->activeSlot & 1u);
+  std::vector<uint8_t> out(4096, 0xEE);
+  shm::SnapshotPublication p;
+  p.index = 77;
+  const uint64_t even = r.h->slotSeq[slot];
+  shm::atomicStoreRelease(&r.h->slotSeq[slot], even + 1);  // writer mid-publish
+  CHECK(shm::readLatestSnapshot(r.h, out.data(), out.size(), 4, &p) == 0);
+  CHECK(p.index == 77);   // publication left untouched
+  CHECK(out[0] == 0xEE);  // nothing copied out of a slot being written
+  shm::atomicStoreRelease(&r.h->slotSeq[slot], even + 2);  // writer finished: next even seq
+  REQUIRE(shm::readLatestSnapshot(r.h, out.data(), out.size(), 4, &p) == 10);
+  CHECK(p.sequence == even + 2);
+  CHECK(std::memcmp(out.data(), a, 10) == 0);
+}
+
+TEST_CASE("checkRegionSize rejects header capacities that outgrow the mapping") {
+  auto r = makeRegion(4096, 256, 512);
+  const size_t mapped = shm::regionSize(4096, 256, 512);
+  CHECK(shm::checkRegionSize(r.h, mapped) == nullptr);
+  CHECK(shm::checkRegionSize(r.h, mapped + 4096) == nullptr);  // page rounding leaves slack
+  CHECK(shm::checkRegionSize(r.h, mapped - 1) != nullptr);
+  r.h->snapshotCapacity = 8192;  // declared slots would run past the view
+  CHECK(shm::checkRegionSize(r.h, mapped) != nullptr);
+  r.h->snapshotCapacity = 4096;
+  r.h->commandCapacity = 100000;
+  CHECK(shm::checkRegionSize(r.h, mapped) != nullptr);
+  r.h->commandCapacity = 256;
+  r.h->journalCapacity = uint64_t(1) << 40;
+  CHECK(shm::checkRegionSize(r.h, mapped) != nullptr);
+  r.h->journalCapacity = 512;
+  r.h->snapshotCapacity = shm::kMaxSnapshotCapacity + 1;
+  CHECK(shm::checkRegionSize(r.h, SIZE_MAX) != nullptr);  // insane even with unlimited space
+  r.h->snapshotCapacity = 4096;
+  CHECK(shm::checkRegionSize(r.h, sizeof(shm::RegionHeader) - 1) != nullptr);
+  CHECK(shm::checkRegionSize(r.h, mapped) == nullptr);  // restored header passes again
+}
+
+TEST_CASE("checkTerrainSize rejects a grid larger than its mapping") {
+  auto g = makeGrid(16, 16, 2, 7, 256);
+  const size_t mapped = shm::terrainRegionSize(g.h->blockCount, 256);
+  CHECK(shm::checkTerrainSize(g.h, mapped) == nullptr);
+  CHECK(shm::checkTerrainSize(g.h, mapped - 1) != nullptr);
+  g.h->materialsCapacity = 4096;
+  CHECK(shm::checkTerrainSize(g.h, mapped) != nullptr);
+  g.h->materialsCapacity = shm::kMaxTerrainMaterialsCapacity + 1;
+  CHECK(shm::checkTerrainSize(g.h, SIZE_MAX) != nullptr);
+}
+
+TEST_CASE("command ring: lengths near UINT32_MAX are refused before the arithmetic wraps") {
+  auto r = makeRegion(64, 256);
+  uint8_t byte = 1;
+  CHECK_FALSE(shm::pushCommand(r.h, &byte, UINT32_MAX));
+  CHECK_FALSE(shm::pushCommand(r.h, &byte, UINT32_MAX - 1));
+  CHECK_FALSE(shm::pushCommand(r.h, &byte, 0xFFFFFFF9u));  // 4 + alignUp4 wrapped to 0 in uint32
+  CHECK(r.h->cmdHead == 0);
+  // The same length as a corrupt ring entry is flagged, not consumed.
+  const uint32_t bogus = 0xFFFFFFF9u;
+  std::memcpy(shm::ringData(r.h), &bogus, 4);
+  shm::atomicStoreRelease(&r.h->cmdHead, 8);
+  std::vector<uint8_t> buf(64);
+  CHECK(shm::popCommand(r.h, buf.data(), buf.size()) == SIZE_MAX);
+}

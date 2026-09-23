@@ -57,5 +57,5 @@ func run():
 	FileAccess.open(output + ".json", FileAccess.WRITE).store_string(JSON.stringify({"kind":"live_fortress_activity", "tick_start":start_tick, "tick_end":end_tick, "frame_times":times, "duration":12.0, "focus":str(focus), "cell_units":highest, "combat_staged":false}, "  "))
 	if end_tick <= start_tick:
 		push_error("Simulation did not advance"); quit(1); return
-	print("FLOOR_PROFILE_PASS live_frames=", times.size(), " ticks=", end_tick - start_tick)
+	print("GAMEPLAY_DEMO_LIVE_PASS live_frames=", times.size(), " ticks=", end_tick - start_tick)
 	quit()

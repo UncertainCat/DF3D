@@ -1,5 +1,7 @@
 #include "terrain_grid_sync.h"
 
+#include "terrain_util.h"
+
 namespace wm::detail {
 
 namespace shm = df3d::shm;
@@ -65,11 +67,16 @@ bool synthesizeFullFromGrid(const shm::TerrainHeader* h, GridScratch& scratch, S
   }
   data.tileStorage.resize(nBlocks * kTilesPerBlock);
   for (size_t i = 0, n = data.tileStorage.size(); i < n; ++i) {
-    TileState t = fromGridTile(scratch.tiles[i]);
-    if(t.designation > DesignationKind::Unknown) {
-      error = "terrain grid has invalid designation kind";
+    const shm::TerrainTile& raw = scratch.tiles[i];
+    // Same range checks as the ring validator (schema/cpp/validate.cpp).
+    const auto fault = df3d::mirror::checkTileValues(df3d::mirror::RawTileValues{
+        raw.shape, raw.material_kind, raw.liquid_level, raw.liquid_kind, raw.flags,
+        shm::terrainOperation(raw.designation)});
+    if (fault != df3d::mirror::TileFault::None) {
+      error = std::string("terrain grid has ") + df3d::mirror::tileFaultName(fault);
       return false;
     }
+    TileState t = fromGridTile(raw);
     if (t.material != kNoMaterial && t.material >= scratch.materialViews.size())
       t.material = kNoMaterial;  // string not published yet: degrade to none
     if (t.material != kNoMaterial) t.material = remap[t.material];

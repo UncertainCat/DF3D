@@ -3,7 +3,9 @@ param(
     [string]$DfPath = $(if ($env:DF3D_DF_PATH) { $env:DF3D_DF_PATH } else { 'C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress' }),
     [string]$SourceSave = $(if ($env:DF3D_SOURCE_SAVE) { $env:DF3D_SOURCE_SAVE } else { 'region5' }),
     [string]$ReuseTestSave = '',
-    [string]$ReuseBackupManifest = ''
+    [string]$ReuseBackupManifest = '',
+    # Keep the disposable clone (and any save it generated) after a successful run.
+    [switch]$KeepClone
 )
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot 'Df3dLane.psm1') -Force
@@ -17,6 +19,9 @@ $out = Join-Path $repo "build/recorded-session-$suffix"
 $cloneName = "df3d-gameplay-test-$suffix"
 $backup = $null
 $initialDirectories = @()
+$succeeded = $false
+$backupOwned = $false
+$generatedSave = $null
 if ($SourceSave -notmatch '^[A-Za-z0-9_-]+$') { throw 'Expected one source save directory name' }
 if ($ReuseTestSave) {
     if ($ReuseTestSave -notmatch '^df3d-gameplay-test-[a-f0-9]{12}$' -or -not (Test-Path -LiteralPath (Join-Path $appSave $ReuseTestSave))) { throw 'Expected existing disposable clone' }
@@ -39,7 +44,8 @@ foreach ($name in $captureBinaries.Keys) { $binaryHashes[$name] = (Get-FileHash 
 function Native([string]$Code, [string]$Stage) {
     $receipt = "$outLua/receipt-$Stage"
     if ($Code.Contains(']]') -and $outLua.Contains(']]')) { throw 'Unsupported path' }
-    $result = Invoke-DfhackRaw -CommandArgs @('lua', "$Code; local f=assert(io.open([[$receipt]],'w')); f:write([[$suffix]]); f:close()")
+    # Fixture stages run whole verification passes inside DF; allow well beyond the module default.
+    $result = Invoke-DfhackRaw -CommandArgs @('lua', "$Code; local f=assert(io.open([[$receipt]],'w')); f:write([[$suffix]]); f:close()") -TimeoutSec 300
     $result.Output | Add-Content -LiteralPath "$out/native.log"
     if (-not (Test-Path -LiteralPath $receipt) -or (Get-Content -LiteralPath $receipt -Raw) -ne $suffix) { throw "Native stage failed: $Stage" }
 }
@@ -54,6 +60,7 @@ try {
         Assert-DfSaveBackupUnchanged -Manifest $backup
     } else {
         $backup = New-DfSaveBackup -SaveRoots @($steamSave, $appSave) -BackupRoot "$out-backup" -AllowedDirectories @('current', $cloneName)
+        $backupOwned = $true
     }
     if (-not $ReuseTestSave) { Copy-Item -LiteralPath (Join-Path $steamSave $SourceSave) -Destination $clone -Recurse }
     $env:DF3D_AUDIO_SILENT = '1'
@@ -96,9 +103,11 @@ try {
     $env:PATH = "$(if ($env:DF3D_MINGW_BIN) { $env:DF3D_MINGW_BIN } else { 'C:\msys64\mingw64\bin' });$env:PATH"
     & (Join-Path $repo 'build/tools/fixture_evidence.exe') "$out/before.df3dfix" "$out/after.df3dfix" $target.tile.x $target.tile.y $target.tile.z $target.unit_id | Tee-Object -FilePath "$out/replay.log"
     if ($LASTEXITCODE -ne 0) { throw 'Recorded replay semantics failed' }
+    $succeeded = $true
     Write-Output "RECORDED_SESSION_CAPTURE_PASS $out"
 } finally {
     Exit-Df3dLane
+    $savesVerified = $false
     if ($backup) {
         if (Test-Path -LiteralPath "$out/lifecycle.json") {
             $lifecycle = Get-Content -LiteralPath "$out/lifecycle.json" -Raw | ConvertFrom-Json
@@ -107,12 +116,28 @@ try {
             $sameClone = $savedPath -eq [IO.Path]::GetFullPath($clone)
             $newRegion = [IO.Path]::GetDirectoryName($savedPath) -eq [IO.Path]::GetFullPath($appSave) -and $savedName -match '^region[0-9]+$' -and $savedName -notin $initialDirectories
             if (-not $sameClone -and -not $newRegion) { throw 'Save-return did not name the owned clone or a new test-owned save' }
-            if ($newRegion) { $backup.AllowedDirectories += $savedName }
+            if ($newRegion) { $backup.AllowedDirectories += $savedName; $generatedSave = $savedPath }
             # Persist the allowance for this verified generated test save.
             $backup | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $backup.Backup 'manifest.json') -Encoding UTF8
         }
         Assert-DfSaveBackupUnchanged -Manifest $backup
+        $savesVerified = $true
         Set-Content -LiteralPath "$out/saves-unchanged.ok" -Value 'Non-test save hashes unchanged'
+    }
+    # Verified-unchanged saves make the backup copy redundant; a failed or
+    # unverified run keeps it (and the clone) as evidence. -KeepClone retains the
+    # disposable saves; a reused clone or reused backup is never removed here.
+    if ($savesVerified -and $backupOwned -and $backup -and (Test-Path -LiteralPath $backup.Backup)) {
+        Remove-Item -LiteralPath $backup.Backup -Recurse -Force -Confirm:$false
+        Set-Content -LiteralPath "$out/backup-removed.ok" -Value 'Verified-unchanged; backup copy removed'
+    }
+    if ($succeeded -and $savesVerified -and -not $KeepClone -and -not $ReuseTestSave) {
+        foreach ($testSave in @($clone, $generatedSave)) {
+            if ($testSave -and [IO.Path]::GetDirectoryName([IO.Path]::GetFullPath($testSave)) -eq [IO.Path]::GetFullPath($appSave) -and (Test-Path -LiteralPath $testSave)) {
+                Remove-Item -LiteralPath $testSave -Recurse -Force -Confirm:$false
+                Add-Content -LiteralPath "$out/test-saves-removed.txt" -Value $testSave
+            }
+        }
     }
     foreach ($name in $captureBinaries.Keys) {
         if ((Get-FileHash -LiteralPath $captureBinaries[$name] -Algorithm SHA256).Hash -ne $binaryHashes[$name]) { throw "Capture binary changed during run: $name" }

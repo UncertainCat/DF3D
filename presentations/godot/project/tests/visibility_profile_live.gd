@@ -31,7 +31,7 @@ func run():
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(output+"-"+label+".png")
    var f=FileAccess.open(output+".json",FileAccess.WRITE);f.store_string(JSON.stringify(results,"  "))
-  print("FLOOR_PROFILE_PASS");quit();return
+  print("VISIBILITY_PROFILE_LIVE_PASS");quit();return
  if OS.get_environment("DF3D_PERF_DEPTH_SWEEP")=="1":
   scene.camera_rig.set_df_mode(false);scene._sprite_presentation.set_style("billboard")
   scene.configure_sprite_batches(false,16,1)
@@ -44,7 +44,7 @@ func run():
     await sample("billboard_depth"+str(depth)+("_occlusion" if occlusion else "_open"),false,false,180,60)
     results.back()["mesh_batches"]=scene.world.mesh_batch_stats()
    var f=FileAccess.open(output+".json",FileAccess.WRITE);f.store_string(JSON.stringify(results,"  "))
-  print("FLOOR_PROFILE_PASS");quit();return
+  print("VISIBILITY_PROFILE_LIVE_PASS");quit();return
  var configs=[
   {"name":"global","enabled":false,"xy":16,"z":1,"occlusion":false},
   {"name":"spatial_16x1","enabled":true,"xy":16,"z":1,"occlusion":false},
@@ -68,5 +68,5 @@ func run():
     await RenderingServer.frame_post_draw
     root.get_texture().get_image().save_png(output+"-"+mode+"-"+config.name+".png")
    var f=FileAccess.open(output+".json",FileAccess.WRITE);f.store_string(JSON.stringify(results,"  "))
- print("FLOOR_PROFILE_PASS")
+ print("VISIBILITY_PROFILE_LIVE_PASS")
  quit()

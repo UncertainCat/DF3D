@@ -650,3 +650,114 @@ TEST_CASE("sparse designation details ingest independently of fixed tile operati
   CHECK(model.tileAt({0,0,0})->designationPriority==0);
   CHECK_FALSE(model.tileAt({0,0,0})->designationMarker);
 }
+
+// --- regression: event budget, departed-unit retention, unknown page sentinel ---
+
+TEST_CASE("over-budget receipts are dropped and counted; the model stays consistent and usable") {
+  WorldModel model;
+  SnapshotData s;
+  s.tick = 1;
+  s.mapSize = {16, 16, 1};
+  s.units = {{1, {1, 1, 0}, JobKind::Idle, "DWARF"}};
+  REQUIRE(model.ingest(s, 0.0));
+  // Two results that fit alone but not together: the first is kept, the
+  // second is refused before anything is mutated.
+  const std::string half(ModelEvents::kMaxRetainedBytes / 2, 'a');
+  const std::string tooMuch(ModelEvents::kMaxRetainedBytes / 2 + 100, 'b');
+  SnapshotData over = s;
+  over.tick = 2;
+  over.commandResults.push_back({5, CommandStatus::Ok, half});
+  over.commandResults.push_back({6, CommandStatus::Ok, tooMuch});
+  over.commandResults.push_back({7, CommandStatus::Ok, "small still fits"});
+  CHECK_FALSE(model.ingest(over, 0.1));
+  CHECK(model.eventBudgetDrops() == 1);
+  CHECK_FALSE(model.lastIngestError().empty());
+  CHECK(model.latestTick() == 2);  // the state was still applied
+  CHECK(model.commandResultsReceived() == 2);
+  CHECK(model.evaluate(1, 2.0).presence == Presence::Present);
+  // The next ingest is not poisoned by the earlier overflow.
+  SnapshotData next = s;
+  next.tick = 3;
+  next.units.clear();
+  CHECK(model.ingest(next, 0.2));
+  CHECK(model.eventBudgetDrops() == 1);
+  ModelEvents events = model.drainAllEvents();  // never throws
+  REQUIRE(events.commands.size() == 2);
+  CHECK(events.commands[0].seq == 5);
+  CHECK(events.commands[1].seq == 7);
+  REQUIRE(events.lifecycle.size() == 2);
+  CHECK(events.lifecycle[0].kind == LifecycleEvent::Kind::Appeared);
+  CHECK(events.lifecycle[1].kind == LifecycleEvent::Kind::Departed);
+  // The dropped seq was never marked seen: the bridge's repeat delivers it once drained.
+  SnapshotData repeat = next;
+  repeat.tick = 4;
+  repeat.commandResults.push_back({6, CommandStatus::Ok, tooMuch});
+  CHECK(model.ingest(repeat, 0.3));
+  events = model.drainAllEvents();
+  REQUIRE(events.commands.size() == 1);
+  CHECK(events.commands[0].seq == 6);
+  CHECK(model.commandResultsReceived() == 3);
+}
+
+TEST_CASE("departed units stay Departed for kDepartedRetentionTicks, then are evicted") {
+  WorldModel model;
+  SnapshotData s;
+  s.mapSize = {16, 16, 1};
+  s.units = {{1, {1, 1, 0}, JobKind::Idle, "DWARF"}, {2, {2, 2, 0}, JobKind::Idle, "CAT"}};
+  s.tick = 10;
+  model.ingest(s, 0.0);
+  s.units.pop_back();  // the cat departs at 20
+  s.tick = 20;
+  model.ingest(s, 0.1);
+  CHECK(model.evaluate(2, 20.0).presence == Presence::Departed);
+  const auto version = model.unitMembershipVersion();
+  s.tick = 20 + WorldModel::kDepartedRetentionTicks;  // at the boundary: still retained
+  model.ingest(s, 0.2);
+  CHECK(model.unitIds() == std::vector<UnitId>{1, 2});
+  CHECK(model.departedUnitsEvicted() == 0);
+  CHECK(model.unitMembershipVersion() == version);
+  CHECK(model.evaluate(2, double(s.tick)).presence == Presence::Departed);
+  s.tick += 1;  // one tick past: evicted
+  model.ingest(s, 0.3);
+  CHECK(model.unitIds() == std::vector<UnitId>{1});
+  CHECK(model.departedUnitsEvicted() == 1);
+  CHECK(model.unitMembershipVersion() == version + 1);
+  CHECK(model.evaluate(2, double(s.tick)).presence == Presence::NotYetSeen);
+  CHECK(model.unitSpecies(2) == nullptr);
+  CHECK(model.unitAppearance(2) == nullptr);
+  // Eviction is not a lifecycle transition: exactly the three real ones.
+  const auto events = model.drainEvents();
+  REQUIRE(events.size() == 3);
+  CHECK(events[2].kind == LifecycleEvent::Kind::Departed);
+  CHECK(events[2].id == 2);
+  // A unit that reappears after eviction is simply a fresh appearance.
+  s.units.push_back({2, {3, 3, 0}, JobKind::Idle, "CAT"});
+  s.tick += 1;
+  model.ingest(s, 0.4);
+  CHECK(model.unitIds() == std::vector<UnitId>{1, 2});
+  CHECK(model.evaluate(2, double(s.tick)).presence == Presence::Present);
+}
+
+TEST_CASE("an appearance layer with an unknown page index maps to kNoPage, never page 0") {
+  WorldModel model;
+  SnapshotData s;
+  s.tick = 1;
+  s.mapSize = {16, 16, 1};
+  s.units = {{1, {1, 1, 0}, JobKind::Idle, "DWARF"}};
+  s.tilePages = {"DWARF_BODY"};
+  s.appearanceScope = AppearanceScope::Full;
+  AppearanceLayer ok;
+  ok.page = 0;
+  AppearanceLayer bad;
+  bad.page = 5;  // outside the snapshot's page table
+  s.appearances.push_back({1, 1, {ok, bad}});
+  model.ingest(s, 0.0);
+  const auto* a = model.unitAppearance(1);
+  REQUIRE(a);
+  REQUIRE(a->layers.size() == 2);
+  CHECK(model.tilePageName(a->layers[0].page) == "DWARF_BODY");
+  CHECK(a->layers[1].page == kNoPage);
+  CHECK(a->layers[1].page != a->layers[0].page);
+  CHECK(model.tilePageName(a->layers[1].page).empty());
+  CHECK(model.tilePageCount() == 1);
+}

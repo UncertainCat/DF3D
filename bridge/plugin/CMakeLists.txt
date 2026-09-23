@@ -36,6 +36,18 @@ dfhack_plugin(df3d df3d.cpp terrain_publisher.cpp appearance.cpp entities.cpp co
     "${DF3D_ROOT}/schema/cpp/validate.cpp" LINK_LIBRARIES lua)
 
 add_dependencies(df3d df3d_generate_mirror)
+# Project-wide warning policy (cmake/df3d_flags.cmake); the plugin is built
+# from inside the DFHack tree, so include it from the DF3D root explicitly.
+if(EXISTS "${DF3D_ROOT}/cmake/df3d_flags.cmake")
+    include("${DF3D_ROOT}/cmake/df3d_flags.cmake")
+    df3d_apply_warnings(df3d)
+    # DFHack's tree adds /WX globally; the DFHack and fmt headers are not
+    # /W4-clean (C4100, C4201, C4245, C4458, C4459), so keep the project
+    # policy (warnings reviewed, not build breakers) for this target.
+    if(MSVC)
+        target_compile_options(df3d PRIVATE /WX-)
+    endif()
+endif()
 target_include_directories(df3d PRIVATE
     "${DF3D_GENERATED_DIR}"          # mirror_generated.h
     "${DF3D_ROOT}/schema/cpp"        # shm_layout.h, command_util.h, fixture_io.h

@@ -279,6 +279,9 @@ inline constexpr uint32_t tileIndexInBlock(int32_t localX, int32_t localY) {
 using PageId = uint16_t;
 using PaletteId = uint16_t;
 inline constexpr PaletteId kNoPalette = 0xFFFF;
+// A layer whose page reference could not be resolved (index outside the
+// snapshot's table, or the model's page table is full). Never a real page.
+inline constexpr PageId kNoPage = 0xFFFF;
 inline constexpr int16_t kNoPaletteRow = -1;
 
 // One drawn layer: a `cellsX` x `cellsY` tile region of a page starting at

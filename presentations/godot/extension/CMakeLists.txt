@@ -28,6 +28,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 get_filename_component(DF3D_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
 
+# Shared warning flags (cmake/df3d_flags.cmake provides df3d_apply_warnings when
+# present, and the layer 2/3 trees below expect it); the direct equivalent otherwise. Never -Werror.
+if(NOT COMMAND df3d_apply_warnings AND EXISTS "${DF3D_ROOT}/cmake/df3d_flags.cmake")
+  include("${DF3D_ROOT}/cmake/df3d_flags.cmake")
+endif()
+function(df3d_godot_warnings target)
+  if(COMMAND df3d_apply_warnings)
+    df3d_apply_warnings(${target})
+  else()
+    target_compile_options(${target} PRIVATE
+      $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra>
+      $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+  endif()
+endfunction()
+
+
 # Compile layer 2/3 in this optimized build tree. Target dependencies track
 # all source/header/schema changes; no prebuilt root archives are consumed.
 add_library(flatbuffers_headers INTERFACE)
@@ -38,7 +54,20 @@ add_subdirectory("${DF3D_ROOT}/worldmodel" worldmodel)
 # godot-cpp pinned at external/godot-cpp (see PINS.md). add_subdirectory is
 # the supported consumption route; target `godot-cpp` propagates includes,
 # WINDOWS_ENABLED, and MinGW static-runtime link options (PUBLIC).
-set(GODOTCPP_TARGET template_debug CACHE STRING "godot-cpp build target")
+# GODOTCPP_TARGET follows the build type: the optimized DLL links the
+# template_release library (no debug-feature bookkeeping, no hot-reload
+# accounting) instead of template_debug. DF3D_GODOTCPP_TARGET overrides.
+set(DF3D_GODOTCPP_TARGET "" CACHE STRING
+  "godot-cpp target to link (empty: template_release for Release/RelWithDebInfo/MinSizeRel, template_debug otherwise)")
+if(DF3D_GODOTCPP_TARGET)
+  set(_df3d_godotcpp_target "${DF3D_GODOTCPP_TARGET}")
+elseif(CMAKE_BUILD_TYPE MATCHES "^(Release|RelWithDebInfo|MinSizeRel)$")
+  set(_df3d_godotcpp_target template_release)
+else()
+  set(_df3d_godotcpp_target template_debug)
+endif()
+set(GODOTCPP_TARGET "${_df3d_godotcpp_target}" CACHE STRING "godot-cpp build target" FORCE)
+message(STATUS "df3d_godot: ${CMAKE_BUILD_TYPE} build links godot-cpp ${GODOTCPP_TARGET}")
 add_subdirectory("${DF3D_ROOT}/external/godot-cpp" godot-cpp)
 
 # The pure mesher (presentations/godot/mesher) is compiled into this build
@@ -82,6 +111,7 @@ target_link_libraries(df3d_godot PRIVATE
   df3d_mesher
   df3d_assets
   worldmodel)
+df3d_godot_warnings(df3d_godot)
 
 set_target_properties(df3d_godot PROPERTIES
   PREFIX ""

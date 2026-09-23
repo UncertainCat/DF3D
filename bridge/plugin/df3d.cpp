@@ -83,9 +83,12 @@
 #include "validate.h"
 
 #include "appearance.h"
+#include "appearance_eviction.h"
 #include "commands.h"
 #include "entities.h"
+#include "glyph_cursor.h"
 #include "item_visibility_policy.h"
+#include "scan_schedule.h"
 
 using std::string;
 using std::vector;
@@ -119,6 +122,10 @@ struct AppEntry {
 
 struct AppearanceState {
     std::unordered_map<int32_t, AppEntry> units;
+    // Round-robin of tracked ids for bounded eviction of units no longer
+    // walked (appearance_eviction.h: kTtlFrames, kMaxPerCall per update).
+    df3d_appearance_eviction::Ring evictionRing;
+    uint64_t evicted = 0;
     uint32_t nextSlot = 0;
     uint32_t resolvePeriod = 256;  // frames between forced re-resolves per unit
     uint32_t refreshPeriod = 128;  // frames between forced re-sends per unit
@@ -161,6 +168,10 @@ struct BridgeState {
     shm::RegionHeader* region = nullptr;
 
     bool mapLoaded = false;
+    // Session channel (load/save lifecycle): another bridge process may own
+    // it. Its absence never blocks the mirror; warned once per map load.
+    bool sessionAvailable = false;
+    bool warnedSessionUnavailable = false;
 
     // publish bookkeeping
     bool havePublished = false;
@@ -170,6 +181,7 @@ struct BridgeState {
     size_t lastSnapshotBytes = 0;
     uint64_t snapshotsPublished = 0;
     uint64_t commandsDrained = 0;
+    uint64_t commandsSliced = 0;  // commands that needed more than one update
 
     // per-update timing (microseconds): whole onupdate, terrain scan part,
     // snapshot build+publish part. EMA alpha 1/64; max resets on status.
@@ -507,7 +519,10 @@ AppEntry& updateAppearance(df::unit* u, int32_t frame, bool force) {
     AppearanceState& a = state.appearance;
     auto [it, inserted] = a.units.try_emplace(u->id);
     AppEntry& e = it->second;
-    if (inserted) e.slot = a.nextSlot++;
+    if (inserted) {
+        e.slot = a.nextSlot++;
+        a.evictionRing.push_back(u->id);
+    }
     e.lastSeenFrame = frame;
     const uint32_t fp = app::fingerprint(u);
     const bool rotation = a.resolvePeriod > 0 &&
@@ -612,6 +627,7 @@ struct GlyphBuilt {
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<mir::MaterialGlyph>>> materials;
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<mir::ItemDefGlyph>>> itemdefs;
     size_t rows = 0;
+    size_t materialsBuiltTo = 0;  // grid materials below this have a row in this build
 };
 
 // A material glyph row for one grid material string; false when the token
@@ -631,10 +647,11 @@ bool materialGlyphRow(flatbuffers::FlatBufferBuilder& fbb, const char* token, ui
 
 // Serializes the glyph tables: with `full` every creature raw, every grid
 // material and every tool itemdef; else the grid materials interned
-// since the last publication (scope None when there are none). `ring`
-// snapshots advance the published-materials mark; the recording Full
-// leaves it alone.
-void buildGlyphs(flatbuffers::FlatBufferBuilder& fbb, bool full, bool ring, GlyphBuilt& out) {
+// since the last acknowledged publication (scope None when there are none).
+// The published-materials mark advances only once the ring snapshot carrying
+// the rows is published (glyph_cursor.h): a failed attempt is retried with
+// the same rows, and the recording Full never moves it.
+void buildGlyphs(flatbuffers::FlatBufferBuilder& fbb, bool full, GlyphBuilt& out) {
     GlyphState& g = state.glyphs;
     auto& t = state.terrain;
     out = GlyphBuilt();
@@ -656,13 +673,13 @@ void buildGlyphs(flatbuffers::FlatBufferBuilder& fbb, bool full, bool ring, Glyp
             g.itemdefs.push_back(mir::CreateItemDefGlyph(fbb, mir::ItemKind::Tool, name, def->tile));
         }
     }
-    const size_t from = full ? 0 : g.materialsSent;
-    for (size_t i = from; i < matCount; ++i) {
+    const auto range = df3d_glyph_cursor::rowsToBuild(g.materialsSent, matCount, full);
+    for (size_t i = range.from; i < range.to; ++i) {
         flatbuffers::Offset<mir::MaterialGlyph> row;
         const auto token = t.materialToken(i);
         if (materialGlyphRow(fbb, token.data(), static_cast<uint16_t>(token.size()), row)) g.materials.push_back(row);
     }
-    if (ring) g.materialsSent = matCount;
+    out.materialsBuiltTo = range.to;
     out.rows = g.creatures.size() + g.materials.size() + g.itemdefs.size();
     if (!full && out.rows == 0) return;
     out.scope = full ? mir::ChangeScope::Full : mir::ChangeScope::Delta;
@@ -678,6 +695,7 @@ void buildGlyphs(flatbuffers::FlatBufferBuilder& fbb, bool full, bool ring, Glyp
 void resetAppearances() {
     AppearanceState& a = state.appearance;
     a.units.clear();
+    a.evictionRing.clear();
     a.nextSlot = 0;
     a.palettePaths.clear();
     app::reset();
@@ -978,7 +996,7 @@ void buildAndPublishSnapshot(color_ostream& out, int32_t frame) {
         // interned since the last snapshot (the entity scan ran already).
         GlyphBuilt glyphs;
         const size_t glyphStart = state.fbb.GetSize();
-        buildGlyphs(state.fbb, entityFull, true, glyphs);
+        buildGlyphs(state.fbb, entityFull, glyphs);
         const size_t glyphBytes = state.fbb.GetSize() - glyphStart;
         // Command results: every pending result rides along; the
         // repeat window is decremented once the snapshot is published.
@@ -1066,6 +1084,7 @@ void buildAndPublishSnapshot(color_ostream& out, int32_t frame) {
         }
         state.lastEntityBytes = entityBytes;
         t.published(frame);
+        state.glyphs.materialsSent = df3d_glyph_cursor::afterPublish(state.glyphs.materialsSent, glyphs.materialsBuiltTo, true);
 
         state.havePublished = true;
         state.lastFrame = frame;
@@ -1108,7 +1127,7 @@ bool writeFullToRecording(color_ostream& out) {
     const size_t entityBytes = fbb.GetSize() - entityStart;
     GlyphBuilt glyphs;
     const size_t glyphStart = fbb.GetSize();
-    buildGlyphs(fbb, true, false, glyphs);
+    buildGlyphs(fbb, true, glyphs);  // recording Full: the ring mark is not advanced
     const size_t glyphBytes = fbb.GetSize() - glyphStart;
     auto appsVec = buildAppearances(fbb, appSend);
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> pagesVec, palettesVec;
@@ -1148,10 +1167,34 @@ bool writeFullToRecording(color_ostream& out) {
 
 // ---- command drain ----
 
+// Per-update execution budget for commands. Soft between commands; inside a
+// dig / smooth rectangle the walk yields at the deadline and resumes on the
+// next update (commands.h), so one 65 536-tile command never owns a tick.
+constexpr auto kCommandBudget = std::chrono::microseconds(2000);
+
+void queueResult(const cmdx::Result& r) {
+    BridgeState::PendingResult res;
+    res.seq = r.seq;
+    res.status = r.status;
+    res.message = r.message;
+    state.results.push_back(std::move(res));
+    state.commandPublicationPending = true;
+    ++state.resultsQueued;
+}
+
 void drainCommands(color_ostream& out) {
     const auto started=Clock::now();
+    const auto deadline = started + kCommandBudget;
+    cmdx::beginDrain();
+    if (cmdx::pending()) {
+        // Finish (or advance) the command in progress before popping the
+        // next one: commands apply in the order they were sent.
+        cmdx::Result r;
+        if (!cmdx::resume(deadline, r)) return;
+        queueResult(r);
+    }
     for (uint32_t count=0; count<mir::kMaxCommandsPerUpdate; ++count) {
-        if(count && usSince(started)>=2000.0) return;
+        if(count && Clock::now()>=deadline) return;
         const size_t got = shm::popCommand(state.region, state.cmdBuf.data(),
                                            state.cmdBuf.size());
         if (got == 0)
@@ -1199,7 +1242,13 @@ void drainCommands(color_ostream& out) {
                 res.status = mir::CommandStatus::Rejected;
                 res.message = *err;
             } else {
-                const cmdx::Result r = cmdx::execute(*cmd);
+                cmdx::Result r;
+                if (!cmdx::execute(state.cmdBuf.data(), got, *cmd, deadline, r)) {
+                    // Budget exhausted mid-rectangle: the result is queued
+                    // by a later update's resume(); nothing is published yet.
+                    ++state.commandsSliced;
+                    return;
+                }
                 res.status = r.status;
                 res.message = r.message;
             }
@@ -1225,6 +1274,7 @@ command_result cmdStatus(color_ostream& out) {
     out.print("  mirroring enabled:   {}\n", is_enabled ? "yes" : "no");
     out.print("  map loaded:          {}\n", state.mapLoaded ? "yes" : "no");
     out.print("  shm region mapped:   {}\n", state.region ? "yes" : "no");
+    out.print("  session channel:     {}\n", state.sessionAvailable ? "owned" : "unavailable (another bridge owns it)");
     out.print("  paused:              {}\n", World::ReadPauseState() ? "yes" : "no");
     if (state.havePublished) {
         out.print("  last published tick: {}\n", state.lastTick);
@@ -1238,8 +1288,8 @@ command_result cmdStatus(color_ostream& out) {
     t.printStatus(out);
     {
         const AppearanceState& a = state.appearance;
-        out.print("  appearances:         {} units tracked, {} resolves, {} changes, {} sent ({} layers), last snapshot {}\n",
-                  a.units.size(), a.resolves, a.changes, a.sent, a.sentLayers, a.lastSent);
+        out.print("  appearances:         {} units tracked ({} evicted), {} resolves, {} changes, {} sent ({} layers), last snapshot {}\n",
+                  a.units.size(), a.evicted, a.resolves, a.changes, a.sent, a.sentLayers, a.lastSent);
         out.print("    periods:           resolve every {} frames, refresh every {} frames\n",
                   a.resolvePeriod, a.refreshPeriod);
     }
@@ -1261,10 +1311,11 @@ command_result cmdStatus(color_ostream& out) {
         const cmdx::Stats& c = cmdx::stats();
         out.print("  commands:            {} drained; {} executed ({} ok, {} rejected, {} unknown); "
                   "{} tiles applied of {} visited, {} plants, {} entities; results {} queued, {} sent, "
-                  "{} pending, last snapshot {}\n",
+                  "{} pending, last snapshot {}; {} sliced across updates{}\n",
                   state.commandsDrained, c.executed, c.ok, c.rejected, c.unknown, c.tilesApplied,
                   c.tilesVisited, c.plantsMarked, c.entitiesChanged, state.resultsQueued, state.resultsSent,
-                  state.results.size(), state.lastResultsSent);
+                  state.results.size(), state.lastResultsSent, state.commandsSliced,
+                  cmdx::pending() ? " (one in progress)" : "");
         out.print("    exec (us):         {:.0f} / {:.0f} / {:.0f} (last / ema / max per command); last: {}\n",
                   c.execUsLast, c.execUsEma, c.execUsMax, c.lastMessage);
         cmdx::resetStatsMax();
@@ -1351,13 +1402,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if (parameters.size() < 2) return CR_WRONG_USAGE;
         const int n = std::atoi(parameters[1].c_str());
         if (n <= 0) return CR_WRONG_USAGE;
-        state.terrain.setSliceBlocks(static_cast<uint32_t>(n));
-        out.print("df3d: rescan slice set to {} blocks per update\n", n);
+        const uint32_t clamped = df3d_scan_schedule::clampSlice(static_cast<uint32_t>(n));
+        state.terrain.setSliceBlocks(clamped);
+        if (clamped != static_cast<uint32_t>(n))
+            out.print("df3d: rescan slice clamped to the {} block maximum per update\n", clamped);
+        else
+            out.print("df3d: rescan slice set to {} blocks per update\n", clamped);
         return CR_OK;
     }
     if (parameters[0] == "rescan") {
         state.terrain.requestRescan();
-        out.print("df3d: full rescan scheduled for the next update\n");
+        out.print("df3d: full rescan scheduled: {} blocks, at most {} per update\n",
+                  state.terrain.blockCount(), std::max(df3d_scan_schedule::kRescanSliceBlocks, state.terrain.sliceBlocks()));
         return CR_OK;
     }
     if (parameters[0] == "apprate") {
@@ -1542,9 +1598,10 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d record stop\n"
         "    Stop recording and report the snapshot count.\n"
         "df3d scan <n>\n"
-        "    Rescan n blocks per update (amortized terrain change detection).\n"
+        "    Rescan n blocks per update (amortized terrain change detection;\n"
+        "    clamped to 4096).\n"
         "df3d rescan\n"
-        "    Rescan every block on the next update.\n"
+        "    Rescan every block, spread over the following updates.\n"
         "df3d apprate <resolve> <refresh>\n"
         "    Re-resolve every unit's appearance every <resolve> frames and\n"
         "    re-send it every <refresh> frames (0 = off).\n"
@@ -1595,10 +1652,21 @@ DFhackCExport command_result plugin_shutdown(color_ostream& out) {
     return CR_OK;
 }
 
+// The session channel is exclusive per machine: a second DF with the bridge
+// loaded cannot own it. That must not prevent this instance from mirroring.
+void startSession(color_ostream& out) {
+    state.sessionAvailable = df3d_session::start(out);
+    if (!state.sessionAvailable && !state.warnedSessionUnavailable) {
+        state.warnedSessionUnavailable = true;
+        out.printerr("df3d: session channel unavailable; load/save requests are disabled, "
+                     "the mirror keeps publishing (reported once per map load)\n");
+    }
+}
+
 DFhackCExport command_result plugin_enable(color_ostream& out, bool enable) {
     if(enable && !is_enabled) df3d_events::resetReports(false);
-    if (enable && !df3d_session::start(out)) return CR_FAILURE;
-    if (!enable) {df3d_session::stop();df3d_management::stop();}
+    if (enable) startSession(out);
+    if (!enable) {df3d_session::stop();df3d_management::stop();state.sessionAvailable=false;}
     // If region creation failed at map load (or the plugin was disabled and
     // torn down by hand), re-enabling with a loaded map retries it.
     if (enable && state.mapLoaded && !state.region && !createRegion(out))
@@ -1618,7 +1686,8 @@ DFhackCExport command_result plugin_onstatechange(color_ostream& out,
         df3d_contact::reset();
         df3d_events::resetReports();
         combatEvents.clear(); nextCombatEventId = 1; resetProjectiles();
-        if (!df3d_session::start(out)) return CR_FAILURE;
+        state.warnedSessionUnavailable = false;
+        startSession(out);  // non-fatal: see startSession
         if (!createRegion(out))
             return CR_FAILURE;
         state.mapLoaded = true;
@@ -1711,6 +1780,10 @@ DFhackCExport command_result plugin_onupdate(color_ostream& out) {
         });
         track(usSince(ts), state.scanUsLast, state.scanUsEma, state.scanUsMax);
     }
+    // Retire appearance entries of units the walk no longer sees (bounded
+    // per update). Runs before the walk so no entry pointer collected by
+    // buildUnits for this publication is erased underneath it.
+    state.appearance.evicted += df3d_appearance_eviction::evict(state.appearance.evictionRing, state.appearance.units, frame);
 
     // A newly attached viewer must receive its requested entity Full even
     // while paused. Keep the actual DF tick: bootstrap is not a sim advance.

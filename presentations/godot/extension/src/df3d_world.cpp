@@ -532,7 +532,13 @@ bool Df3dWorld::poll() {
         projectileDirections_.set(i,Vector3(p.direction.x,p.direction.z,p.direction.y));
     }
     // Clock-only frames between integral DF ticks need only interaction positions, not a visual-delta scan.
-    const auto tickNow = static_cast<uint64_t>(std::floor(renderTick_));
+    // Replay/rewind ticks may be negative or non-finite; clamp before the
+    // unsigned conversion (UB otherwise) and keep UINT64_MAX free as the
+    // "never rendered" sentinel.
+    const double flooredTick = std::floor(renderTick_);
+    const uint64_t tickNow = !(flooredTick > 0.0) ? 0
+        : flooredTick >= 18446744073709551615.0 ? UINT64_MAX - 1
+        : static_cast<uint64_t>(flooredTick);
     if (!sourceChanged && tickNow == lastRenderedTick_) {
         for (int i=0; i<positions_.size(); ++i) {
             const auto first=unitMotionFrom_[i], last=unitMotionTo_[i];
@@ -653,6 +659,14 @@ bool Df3dWorld::inWindow(wm::BlockPos p) const {
     return p.bz <= topZ_ && p.bz > topZ_ - windowDepth_;
 }
 
+bool Df3dWorld::blockInMap(wm::BlockPos p) const {
+    if (p.bx < 0 || p.by < 0 || p.bz < 0) return false;
+    const wm::TilePos map = source_.model().mapSize();
+    const int32_t bxCount = (map.x + wm::kBlockSize - 1) / wm::kBlockSize;
+    const int32_t byCount = (map.y + wm::kBlockSize - 1) / wm::kBlockSize;
+    return p.bx < bxCount && p.by < byCount && p.bz < map.z;
+}
+
 int Df3dWorld::suggest_top_z() const {
     std::map<int, int> perZ;
     for (wm::UnitId id : source_.model().unitIds()) {
@@ -750,7 +764,7 @@ void Df3dWorld::set_reveal_hidden(bool reveal) {
 }
 
 void Df3dWorld::enqueue(wm::BlockPos p) {
-    if (!inWindow(p)) return;
+    if (!inWindow(p) || !blockInMap(p)) return;
     const uint64_t k = key(p);
     if (queued_.insert(k).second) queue_.push_back(p);
 }
@@ -881,6 +895,7 @@ void Df3dWorld::buildBlock(wm::BlockPos p) {
         bm = mesher::meshBlock(src, p, opts);
     }
 
+    ERR_FAIL_COND_MSG(!blockInMap(p), "block outside the map grid");
     Built& b = built_[key(p)];
     freeBlock(b);
     b.version = bm.version;
@@ -991,6 +1006,7 @@ void Df3dWorld::updateTerrain() {
     // Source-only visual changes. Do not dirty unit/item layouts, roof queries,
     // semantic terrain versions or occluder dependencies for contamination.
     for (const auto p : source_.model().drainSpatterEvents()) {
+        if (!blockInMap(p)) continue;
         enqueue(p);
         std::array<uint64_t,4> edges{};
         for(const auto& e:source_.model().spattersAt(p)) {
@@ -1005,6 +1021,7 @@ void Df3dWorld::updateTerrain() {
         previous=edges;
     }
     for (const wm::TerrainBlockEvent& ev : source_.model().drainTerrainEvents()) {
+        if (!blockInMap(ev.pos)) continue;
         enqueue(ev.pos);
         refreshTerrainSupport(ev.pos);
         const auto p=ev.pos;

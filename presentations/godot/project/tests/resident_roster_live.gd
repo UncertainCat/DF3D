@@ -82,4 +82,4 @@ func run():
 	assert(not scene._interaction.construction_active,"Roster releases input")
 	var file=FileAccess.open(output+"-data.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify(evidence,"  "))
-	print("FLOOR_PROFILE_PASS");quit()
+	print("RESIDENT_ROSTER_LIVE_PASS");quit()

@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <doctest.h>
 #include "shm_layout.h"
+#include "client_mailbox.h"
 #include "command_util.h"
 #include "publication_clock.h"
 #include "synthetic_builder.h"
@@ -830,4 +831,39 @@ TEST_CASE("buffered release delay follows source publication time rather than la
   CHECK(frame->capturedAt==0);
   CHECK(frame->sourceAt<-0.4);
   CHECK(frame->releaseAt==doctest::Approx(frame->sourceAt+cfg.delaySeconds));
+}
+
+TEST_CASE("a held producer mutex yields a distinct busy error and consumes no sequence number") {
+  Publisher pub;auto f=fortWithEntities();auto client=pub.open();wm::WorldModel model;
+  pub.fill(100,1);pub.publish(f,100);REQUIRE(client->poll(model,0));
+  REQUIRE(client->sendSetPause(true)>0);
+  const auto seqBefore=shm::atomicLoadAcquire(&pub.h->commandSequence);
+  const auto lastSeq=client->lastCommandSeq();
+  // Another writer holds the cross-process mutex; a second thread stands in
+  // for that process and keeps it until this test says so (doctest asserts
+  // stay on the test thread).
+  std::mutex m;std::condition_variable cv;bool held=false,release=false,ok=false;
+  std::thread holder([&]{
+    HANDLE mutex=CreateMutexA(nullptr,FALSE,shm::CommandWriter::mutexName(pub.name).c_str());
+    const bool acquired=mutex && WaitForSingleObject(mutex,INFINITE)==WAIT_OBJECT_0;
+    {std::lock_guard<std::mutex> lock(m);held=true;ok=acquired;}cv.notify_all();
+    {std::unique_lock<std::mutex> lock(m);cv.wait(lock,[&]{return release;});}
+    if(acquired)ReleaseMutex(mutex);
+    if(mutex)CloseHandle(mutex);
+  });
+  {std::unique_lock<std::mutex> lock(m);cv.wait(lock,[&]{return held;});}
+  REQUIRE(ok);
+  CHECK(client->sendSetPause(false)==0);
+  CHECK(client->lastError().find("busy")!=std::string::npos);
+  CHECK(shm::atomicLoadAcquire(&pub.h->commandSequence)==seqBefore);  // no seq consumed
+  CHECK(client->lastCommandSeq()==lastSeq);
+  {std::lock_guard<std::mutex> lock(m);release=true;}cv.notify_all();holder.join();
+  // Released: the next command takes exactly the next sequence number.
+  const auto seq=client->sendSetPause(false);
+  CHECK(seq==seqBefore+1);
+  CHECK(client->lastError().empty());
+  uint8_t bytes[1024];
+  REQUIRE(shm::popCommand(pub.h,bytes,sizeof(bytes))>0);  // the first pause
+  REQUIRE(shm::popCommand(pub.h,bytes,sizeof(bytes))>0);  // the one sent after release
+  CHECK(shm::popCommand(pub.h,bytes,sizeof(bytes))==0);   // the busy attempt wrote nothing
 }

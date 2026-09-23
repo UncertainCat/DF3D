@@ -334,7 +334,10 @@ return function(output,name,diagnostics_path,population_scale)
         end
     end
     save();save_fps();local seen,projectiles={},{};local remaining=3600
-    local function sample()
+    -- The timeout chain runs outside any pcall: an error would stop sampling
+    -- silently. Record it in the capture (the collector reads data.error).
+    local sample
+    local function step()
         if not dfhack.isMapLoaded() or _G.df3d_arena_capture_state~=data then
             if diagnostics then diagnostics:finish('map_unloaded_or_capture_replaced') end
             return
@@ -377,6 +380,15 @@ return function(output,name,diagnostics_path,population_scale)
         remaining=remaining-1
         if remaining>0 then dfhack.timeout(1,'ticks',sample)
         elseif diagnostics then diagnostics:finish('sample_limit');save() end
+    end
+    sample=function()
+        local ok,err=xpcall(step,debug.traceback)
+        if not ok then
+            data.error=err
+            if diagnostics then diagnostics:finish('sample_error') end
+            pcall(save)
+            dfhack.printerr('ARENA_CAPTURE_ERROR '..tostring(err))
+        end
     end
     dfhack.timeout(1,'ticks',sample)
     print('ATTACK_DEMO_SETUP '..json.encode({units=data.units,focus=focus,arena=true,scenario=name}))

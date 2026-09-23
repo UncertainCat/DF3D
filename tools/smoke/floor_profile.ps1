@@ -81,7 +81,7 @@ try {
  }
  if($Test -eq 'creature_sheet_live'){
   $luaRepo=$repo.Replace('\','/')
-  $scar=Invoke-DfhackRaw -CommandArgs @('lua',"assert(loadfile('$luaRepo/tools/smoke/portrait-scar-test.lua'))(86)")
+  $scar=Invoke-DfhackRaw -CommandArgs @('lua',"assert(loadfile('$luaRepo/tools/smoke/portrait-scar-test.lua'))(86)") -TimeoutSec 120
   $scar.Output | Set-Content "$repo/build/$OutputName-scar-test.log"
   if($scar.ExitCode -ne 0 -or ($scar.Output -join "`n") -notmatch 'PORTRAIT_SCAR_TEST_PASS'){throw 'Portrait scar regression failed'}
  }
@@ -95,7 +95,7 @@ try {
    Remove-Item -LiteralPath "$repo/build/targeted-attack-setup.json"
   }
   $setup="assert(loadfile('$luaRepo/tools/smoke/$setupScript'))('$luaRepo/build/targeted-attack-setup.json','$ArenaScenario'$detailsArg)"
-  $setupResult=Invoke-DfhackRaw -CommandArgs @('lua',$setup)
+  $setupResult=Invoke-DfhackRaw -CommandArgs @('lua',$setup) -TimeoutSec 300
   $setupResult.Output | Set-Content "$repo/build/$OutputName-setup.log"
   if(($setupResult.Output -join "`n") -notmatch 'ATTACK_DEMO_SETUP'){throw 'Battle setup failed'}
  }
@@ -127,7 +127,9 @@ try {
  (Invoke-DfhackRaw -CommandArgs @('df3d','status')).Output | Set-Content "$repo/build/$OutputName-native-status.log"
  $g.ExitCode | Set-Content "$repo/build/$OutputName-exit.txt"
  $log=Get-Content "$repo/build/$OutputName.log" -Raw
- if($g.ExitCode -ne 0 -or $log -notmatch '(FLOOR_(PROFILE|ABLATION)_PASS|PROFILING_SCENE_PASS)' -or $log -match '(?m)SCRIPT ERROR|^ERROR:'){throw "Benchmark failed: $OutputName.log"}
+ # Each script prints its own marker (<TEST>_PASS), so a log from another test cannot pass this one.
+ $marker=if($Test -eq 'profiling_scene_test'){'PROFILING_SCENE_PASS'}else{$Test.ToUpperInvariant()+'_PASS'}
+ if($g.ExitCode -ne 0 -or $log -notmatch ('(?m)^'+[regex]::Escape($marker)) -or $log -match '(?m)SCRIPT ERROR|^ERROR:'){throw "Benchmark failed: $OutputName.log (expected $marker)"}
  if($Test -eq 'targeted_attack_live'){
   if($Arena){
    $flush=Invoke-DfhackRaw -CommandArgs @('lua', 'assert(df3d_arena_capture_flush)(); print("ARENA_CAPTURE_FLUSHED")')

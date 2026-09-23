@@ -12,6 +12,11 @@ extends Node3D
 @onready var item_markers: MultiMeshInstance3D = $ItemMarkers
 @onready var status: Label = $UI/Status
 @onready var camera_rig: Node3D = $CameraRig
+@onready var _camera: Camera3D = $CameraRig/Camera3D
+const PresentationDemand = preload("res://scripts/presentation_demand.gd")
+const Preferences = preload("res://scripts/presentation_settings.gd")
+const ItemPreparation = preload("res://scripts/item_preparation.gd")
+const ActorDeaths = preload("res://scripts/actor_death_visuals.gd")
 
 var _attach_timer := 0.0
 var _focused := false
@@ -301,8 +306,8 @@ func _process(delta: float) -> void:
 	stage_start = _frame_costs.mark("session_and_controls", stage_start)
 	status.visible = _debug_visible
 	if _presentation_demand_enabled and _focused and world.terrain_loaded():
-		world.set_presentation_region(preload("res://scripts/presentation_demand.gd").region(
-			$CameraRig/Camera3D,world.get_top_z(),world.get_window_depth(),world.presentation_art_margin()))
+		world.set_presentation_region(PresentationDemand.region(
+			_camera,world.get_top_z(),world.get_window_depth(),world.presentation_art_margin()))
 	elif not _presentation_demand_enabled:
 		world.set_presentation_region(Rect2i())
 	world.poll()
@@ -314,7 +319,7 @@ func _process(delta: float) -> void:
 		for key in _item_layers.keys():
 			_sprite_resources.remove(_item_layers, key, _instance_uploads, _item_storage)
 		_sprite_resources.prune_shared(_instance_uploads)
-		_item_preparation = preload("res://scripts/item_preparation.gd").new()
+		_item_preparation = ItemPreparation.new()
 		_item_active_layers.clear()
 	stage_start = _frame_costs.mark("world_poll", stage_start)
 	if world.session_generation() != _session_generation_seen:
@@ -330,7 +335,7 @@ func _process(delta: float) -> void:
 
 	stage_start = _frame_costs.mark("view_state", stage_start)
 	var unit_detail_start: int = _hitches.detail_start()
-	_gameplay_feedback.update_view(camera_rig.position, $CameraRig/Camera3D, _actor_animation.clock, _sprite_presentation.sprites_oriented())
+	_gameplay_feedback.update_view(camera_rig.position, _camera, _actor_animation.clock, _sprite_presentation.sprites_oriented())
 	unit_detail_start = _hitches.detail_mark("unit.feedback", unit_detail_start)
 	var motion_tick: float = world.render_tick()
 	RenderingServer.global_shader_parameter_set("unit_status_clock", float(Time.get_ticks_msec() % 7000))
@@ -344,7 +349,7 @@ func _process(delta: float) -> void:
 	unit_detail_start = _hitches.detail_mark("unit.view_parameters", unit_detail_start)
 	_update_units()
 	unit_detail_start = _hitches.detail_mark("unit.prepare", unit_detail_start)
-	world.set_hidden_corpses(_actor_deaths.corpse_handoff(world.corpse_item_changes(), _actor_animation.clock, preload("res://scripts/presentation_settings.gd").animation_strength > 0.0))
+	world.set_hidden_corpses(_actor_deaths.corpse_handoff(world.corpse_item_changes(), _actor_animation.clock, Preferences.animation_strength > 0.0))
 	_hitches.detail_mark("unit.corpse_handoff", unit_detail_start)
 	stage_start = _frame_costs.mark("unit_upload", stage_start)
 	_projectiles.update(world)
@@ -529,7 +534,7 @@ func _maybe_dump_composites() -> void:
 func _update_units() -> void:
 	if _unit_probe.enabled: _unit_probe.begin()
 	var preflight_started := Time.get_ticks_usec() if _unit_probe.enabled else 0
-	var demanded_stale: bool = _unit_demand.update_view($CameraRig/Camera3D)
+	var demanded_stale: bool = _unit_demand.update_view(_camera)
 	var generation: int = world.session_generation()
 	_actor_animation.reset_if_needed(generation)
 	_actor_motion.reset(generation)
@@ -545,7 +550,7 @@ func _update_units() -> void:
 		_projectile_release_cursor = maxi(_projectile_release_cursor, int(release.id))
 		_actor_animation.shoot(int(release.firer_id), release.target - release.origin)
 		dirty_ids[int(release.firer_id)] = true
-	var animate_deaths: bool = preload("res://scripts/presentation_settings.gd").animation_strength > 0.0
+	var animate_deaths: bool = Preferences.animation_strength > 0.0
 	var scope := [generation, world.get_top_z(), world.get_window_depth(), _sprite_presentation.billboard]
 	var scope_changed := scope != _unit_clip_scope
 	var terrain: int = world.terrain_revision()
@@ -556,7 +561,7 @@ func _update_units() -> void:
 	var events: Array = world.unit_combat_events(_actor_deaths.cursor)
 	_actor_deaths.observe(events, _actor_animation.clock, animate_deaths)
 	for event in events:
-		if int(event.kind) == 1:
+		if int(event.kind) == ActorDeaths.COMBAT_WOUND:
 			var attacker = _actor_animation.records.get(int(event.attacker_id))
 			_actor_animation.react(int(event.victim_id), attacker.position if attacker != null else Vector3.INF)
 			dirty_ids[int(event.victim_id)] = true

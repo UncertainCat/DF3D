@@ -49,6 +49,22 @@ inline void atomicStoreRelease(volatile uint64_t* p, uint64_t v) {
 #endif
 }
 
+// Seqlock protocol (every seqlock in this file follows it):
+//   writer: store seq odd; seqlockFence(); write payload; store seq even (release).
+//   reader: load seq (acquire); copy payload; seqlockFence(); reload seq; equal and even => valid.
+// The fence keeps the payload accesses between the two sequence accesses. A release
+// store alone does not stop the compiler hoisting the payload writes above the odd
+// store, and an acquire load alone does not stop it sinking the payload reads below
+// the validating reload. x86-64 hardware never reorders store/store or load/load, so
+// a compiler barrier is enough there; the GCC form spells the intent portably.
+inline void seqlockFence() {
+#if defined(_MSC_VER)
+  _ReadWriteBarrier();
+#else
+  __atomic_thread_fence(__ATOMIC_ACQ_REL);
+#endif
+}
+
 // ---- region layout ----
 
 inline constexpr char kShmMagic[8] = {'D', 'F', '3', 'D', 'S', 'H', 'M', '1'};
@@ -63,6 +79,14 @@ inline constexpr const char* kDefaultRegionName = "Local\\df3d_mirror_v1";
 
 inline constexpr uint32_t kDefaultSnapshotCapacity = 16u * 1024 * 1024;  // per slot
 inline constexpr uint32_t kDefaultCommandCapacity = 1u * 1024 * 1024;
+// Sanity ceilings for header-declared capacities. A client trusts the header
+// only after checkRegionSize() proves the declared layout fits the mapping.
+inline constexpr uint32_t kMaxSnapshotCapacity = 512u * 1024 * 1024;
+inline constexpr uint32_t kMaxCommandCapacity = 64u * 1024 * 1024;
+inline constexpr uint64_t kMaxJournalCapacity = 1024ull * 1024 * 1024;
+// Largest single command a client may push (commands are small FlatBuffers;
+// the default ring holds 1 MiB). Callers reject larger payloads before pushCommand.
+inline constexpr size_t kMaxCommandBytes = 64u * 1024;
 
 // Fixed-size header at offset 0. 64-bit fields are 8-aligned for the shims.
 struct RegionHeader {
@@ -193,6 +217,21 @@ inline const char* checkRegion(const RegionHeader* h, uint32_t expectSchemaVersi
   return nullptr;
 }
 
+// Validates that the layout the header declares fits inside `mappedBytes`
+// (the mapped view's actual size) and that the capacities are sane. Pure over
+// the header so it is unit-testable; run it after checkRegion and before
+// trusting any slot / ring / journal offset. nullptr on success.
+inline const char* checkRegionSize(const RegionHeader* h, size_t mappedBytes) {
+  if (mappedBytes < sizeof(RegionHeader)) return "shm mapping smaller than the header";
+  if (h->snapshotCapacity > kMaxSnapshotCapacity) return "shm snapshot capacity exceeds the sane maximum";
+  if (h->commandCapacity > kMaxCommandCapacity) return "shm command capacity exceeds the sane maximum";
+  if (h->journalCapacity > kMaxJournalCapacity) return "shm journal capacity exceeds the sane maximum";
+  const size_t need = regionSize(h->snapshotCapacity, h->commandCapacity,
+                                 static_cast<uint32_t>(h->journalCapacity));
+  if (need > mappedBytes) return "shm header declares a layout larger than the mapping";
+  return nullptr;
+}
+
 // ---- snapshot double buffer ----
 
 // Single producer, no acknowledgments: overwrite old publications when either
@@ -202,6 +241,7 @@ inline const char* checkRegion(const RegionHeader* h, uint32_t expectSchemaVersi
 inline void invalidateJournalEntry(JournalDescriptor& entry) {
   const uint64_t seq=atomicLoadAcquire(&entry.sequence);
   atomicStoreRelease(&entry.sequence,seq+1);
+  seqlockFence();
   atomicStoreRelease(&entry.index,0);
   atomicStoreRelease(&entry.sequence,seq+2);
 }
@@ -221,6 +261,7 @@ inline void appendJournal(RegionHeader* h, const uint8_t* bytes, size_t len,
   auto& entry = entries[index%kJournalEntries];
   const uint64_t seq=atomicLoadAcquire(&entry.sequence);
   atomicStoreRelease(&entry.sequence,seq+1);
+  seqlockFence();
   const size_t offset = size_t(head%h->journalCapacity);
   const size_t first = len < h->journalCapacity-offset ? len : size_t(h->journalCapacity-offset);
   std::memcpy(journalData(h)+offset,bytes,first);
@@ -243,6 +284,7 @@ inline bool publishSnapshot(RegionHeader* h, const uint8_t* bytes, size_t len,
   if (!len || len > h->snapshotCapacity || (h->journalCapacity && len > h->journalCapacity)) return false;
   const unsigned slot = 1u - static_cast<unsigned>(atomicLoadAcquire(&h->activeSlot) & 1u);
   atomicStoreRelease(&h->slotSeq[slot], atomicLoadAcquire(&h->slotSeq[slot]) + 1);  // odd
+  seqlockFence();
   const uint64_t index = atomicLoadAcquire(&h->publicationIndex) + 1;
   std::memcpy(slotData(h, slot), bytes, len);
   atomicStoreRelease(&h->slotPublicationIndex[slot], index);
@@ -271,6 +313,7 @@ inline void invalidateSnapshots(RegionHeader* h) {
   }
   for (unsigned slot = 0; slot < 2; ++slot) {
     atomicStoreRelease(&h->slotSeq[slot], atomicLoadAcquire(&h->slotSeq[slot]) + 1);
+    seqlockFence();
     atomicStoreRelease(&h->slotBytes[slot], 0);
     atomicStoreRelease(&h->slotSeq[slot], atomicLoadAcquire(&h->slotSeq[slot]) + 1);
   }
@@ -298,6 +341,7 @@ inline size_t readLatestSnapshot(const RegionHeader* h, uint8_t* out, size_t out
     const uint64_t timestamp = atomicLoadAcquire(&h->slotTimestampMicros[slot]);
     const uint64_t tick = atomicLoadAcquire(&h->slotTick[slot]);
     std::memcpy(out, slotData(h, slot), static_cast<size_t>(len));
+    seqlockFence();
     if (atomicLoadAcquire(&h->slotSeq[slot]) == seqBefore) {
       if (publication) *publication = {slot, seqBefore, index, timestamp, tick, index, index};
       return static_cast<size_t>(len);
@@ -344,6 +388,7 @@ inline size_t readNextSnapshot(const RegionHeader* h, uint64_t afterIndex,
     copied.tick=atomicLoadAcquire(&entry.tick);
     if (index!=wanted || len>h->journalCapacity || len>h->snapshotCapacity) continue;
     if (len>outCap) {
+      seqlockFence();
       if (atomicLoadAcquire(&entry.sequence)!=before || atomicLoadAcquire(&entry.index)!=wanted) continue;
       if (publication) *publication=copied;
       return 0;
@@ -352,6 +397,7 @@ inline size_t readNextSnapshot(const RegionHeader* h, uint64_t afterIndex,
     const size_t first=len<h->journalCapacity-offset ? size_t(len) : size_t(h->journalCapacity-offset);
     std::memcpy(out,journalData(h)+offset,first);
     if (len>first) std::memcpy(out+first,journalData(h),size_t(len)-first);
+    seqlockFence();
     if (atomicLoadAcquire(&entry.sequence)!=before || atomicLoadAcquire(&entry.index)!=wanted) continue;
     if (publication) *publication=copied;
     return size_t(len);
@@ -368,7 +414,8 @@ inline size_t readNextSnapshot(const RegionHeader* h, uint64_t afterIndex,
 inline constexpr uint32_t kRingWrapMarker = 0xFFFFFFFFu;
 
 namespace detail {
-inline uint32_t alignUp4(uint32_t v) { return (v + 3u) & ~3u; }
+// Widened so a length near UINT32_MAX cannot wrap to a small value.
+inline uint64_t alignUp4(uint32_t v) { return (static_cast<uint64_t>(v) + 3u) & ~uint64_t(3u); }
 }
 
 // Client: enqueue one serialized Command. False if the ring lacks space
@@ -376,8 +423,10 @@ inline uint32_t alignUp4(uint32_t v) { return (v + 3u) & ~3u; }
 // CommandWriter::push to hold the cross-process producer mutex around this copy.
 inline bool pushCommand(RegionHeader* h, const uint8_t* bytes, uint32_t len) {
   const uint32_t cap = h->commandCapacity;
-  const uint32_t need = 4u + detail::alignUp4(len);
-  if (need + 4u > cap) return false;  // never fits
+  if (len > cap) return false;  // never fits; also keeps the arithmetic below from wrapping
+  const uint64_t need64 = 4u + detail::alignUp4(len);
+  if (need64 + 4u > cap) return false;  // never fits
+  const uint32_t need = static_cast<uint32_t>(need64);
   uint64_t head = atomicLoadAcquire(&h->cmdHead);
   const uint64_t tail = atomicLoadAcquire(&h->cmdTail);
   uint32_t off = static_cast<uint32_t>(head % cap);
@@ -422,8 +471,9 @@ inline size_t popCommand(RegionHeader* h, uint8_t* out, size_t outCap) {
       tail += contiguous;
       continue;
     }
-    const uint32_t need = 4u + detail::alignUp4(len);
-    if (len > cap || need > contiguous || tail + need > head) return SIZE_MAX;
+    if (len > cap) return SIZE_MAX;
+    const uint64_t need = 4u + detail::alignUp4(len);
+    if (need > contiguous || tail + need > head) return SIZE_MAX;
     if (len > outCap) return SIZE_MAX;
     std::memcpy(out, ringData(h) + off + 4, len);
     atomicStoreRelease(&h->cmdTail, tail + need);
@@ -585,6 +635,20 @@ inline const char* checkTerrain(const TerrainHeader* h, uint32_t expectSchemaVer
   return nullptr;
 }
 
+inline constexpr uint32_t kMaxTerrainMaterialsCapacity = 256u * 1024 * 1024;
+inline constexpr uint64_t kMaxTerrainBlocks = 1ull << 24;  // 16M blocks: far beyond any DF map
+
+// Validates that the grid layout the header declares fits inside `mappedBytes`.
+// Run after checkTerrain (which proves blockCount consistent with the map size).
+inline const char* checkTerrainSize(const TerrainHeader* h, size_t mappedBytes) {
+  if (mappedBytes < sizeof(TerrainHeader)) return "terrain mapping smaller than the header";
+  if (h->materialsCapacity > kMaxTerrainMaterialsCapacity) return "terrain materials capacity exceeds the sane maximum";
+  if (h->blockCount > kMaxTerrainBlocks) return "terrain block count exceeds the sane maximum";
+  if (terrainRegionSize(h->blockCount, h->materialsCapacity) > mappedBytes)
+    return "terrain header declares a layout larger than the mapping";
+  return nullptr;
+}
+
 // Bridge: appends a material string, returning its index, or
 // kTerrainNoMaterial if the table is full (caller should log once and
 // publish the tile with no material). Not idempotent — the bridge keeps
@@ -607,6 +671,7 @@ inline uint16_t terrainAppendMaterial(TerrainHeader* h, const char* str, size_t 
 // Bridge: brackets one batch of tile/version writes.
 inline void terrainBeginWrite(TerrainHeader* h) {
   atomicStoreRelease(&h->seq, atomicLoadAcquire(&h->seq) + 1);  // odd
+  seqlockFence();
 }
 inline void terrainEndWrite(TerrainHeader* h, uint64_t simTick) {
   atomicStoreRelease(&h->gridTick, simTick);
@@ -650,6 +715,7 @@ inline bool readTerrainGrid(const TerrainHeader* h, TerrainTile* tiles, uint64_t
     std::memcpy(versions, terrainVersions(h), nBlocks * sizeof(uint64_t));
     std::memcpy(tiles, terrainTiles(h), nBlocks * kTerrainTilesPerBlock * sizeof(TerrainTile));
     std::memcpy(materials, terrainMaterials(h), static_cast<size_t>(out.materialBytes));
+    seqlockFence();
     if (atomicLoadAcquire(&h->seq) == s1) return true;
   }
   return false;

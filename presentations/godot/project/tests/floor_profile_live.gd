@@ -73,5 +73,5 @@ func run():
   scene.camera_rig.set_df_mode(true)
   await settle()
   await capture("df",360)
- print("FLOOR_PROFILE_PASS")
+ print("FLOOR_PROFILE_LIVE_PASS")
  quit()

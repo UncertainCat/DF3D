@@ -1274,7 +1274,7 @@
         "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
         "DF3D_FIXTURE_TICK": "1000",
         "DF3D_AUDIO_SILENT": "1",
-        "DF3D_UI_SETTINGS_PATH": "{output}/profiling_scene_test.cfg",
+        "DF3D_UI_SETTINGS_PATH": "{output}/profiling_scene_test_deep.cfg",
         "DF3D_PROFILE": "deep",
         "DF3D_PROFILE_OUT": "{output}/profiling_scene_deep"
       }

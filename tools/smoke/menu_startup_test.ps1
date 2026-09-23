@@ -1,6 +1,8 @@
 # Disposable stand-ins prove title-only owned startup and cleanup without DF.
 $ErrorActionPreference = 'Stop'
-if (@(Get-Process 'Dwarf Fortress' -ErrorAction SilentlyContinue).Count) { throw 'DF must be closed before this isolated test' }
+# A running DF is a missing prerequisite, not a defect: verify.py maps exit 77 plus
+# a QA_INCOMPLETE line to incomplete rather than failed.
+if (@(Get-Process 'Dwarf Fortress' -ErrorAction SilentlyContinue).Count) { Write-Output 'QA_INCOMPLETE: Dwarf Fortress is running; close it before the isolated menu startup test'; exit 77 }
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $dir = Join-Path $repo ('build\menu-startup-test-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Force "$dir\hack", "$dir\prefs", "$dir\dfhack-config\init" | Out-Null
@@ -52,4 +54,13 @@ try {
     Write-Host 'menu startup PASS: title-only bridge, no automatic load/unpause, owned cleanup and preferences restored'
 } finally {
     Remove-Item Env:MENU_STARTUP_TEST_ROOT -ErrorAction SilentlyContinue
+    if (Test-Path -LiteralPath "$dir\df.pid") {
+        # A launcher failure can leave the owned stand-in alive; it is ours to stop.
+        try { $leftover = [int](Get-Content "$dir\df.pid"); Stop-Process -Id $leftover -Force -Confirm:$false -ErrorAction Stop } catch {}
+    }
+    # Stand-in binaries may stay locked briefly after their processes die.
+    for ($attempt = 0; $attempt -lt 10 -and (Test-Path -LiteralPath $dir); $attempt++) {
+        try { Remove-Item -LiteralPath $dir -Recurse -Force -Confirm:$false -ErrorAction Stop } catch { Start-Sleep -Milliseconds 500 }
+    }
+    if (Test-Path -LiteralPath $dir) { Write-Warning "Could not remove temporary directory $dir" }
 }

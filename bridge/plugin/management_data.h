@@ -192,9 +192,11 @@ inline void read(lua_State* L,State& out) {
  rows("sections",25,[&]{Section s;s.kind=uint8_t(number(L,"kind"));s.available=boolean(L,"available");s.truncated=boolean(L,"truncated");s.reason=text(L,"reason");
   rows("records",256,[&]{Record r;r.id=int32_t(number(L,"id",-1));r.relatedId=int32_t(number(L,"related_id",-1));r.name=text(L,"name");
    rows("facts",12,[&]{r.facts.push_back({text(L,"key"),text(L,"text"),number(L,"number"),boolean(L,"has_number")});});s.records.push_back(std::move(r));});out.sections.push_back(std::move(s));});
- if(out.id>=0) {
+ // The Lua-reported id may be stale by the time of this readback; the
+ // resolver dereferences the unit, so an absent unit simply has no portrait.
+ if(auto* unit=out.id>=0 ? df::unit::find(out.id) : nullptr) {
   df3d_appearance::Result portrait;
-  if(df3d_appearance::resolvePortrait(df::unit::find(out.id),portrait)) {
+  if(df3d_appearance::resolvePortrait(unit,portrait)) {
    for(const auto& layer:portrait.layers) {
     if(out.layers.size()>=256){out.complete=false;break;}
     appendAppearanceLayer(out.pages,out.palettes,out.layers,layer);

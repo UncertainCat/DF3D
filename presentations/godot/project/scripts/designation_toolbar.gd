@@ -1,6 +1,9 @@
 extends HBoxContainer
 # Client-owned designation options; the bridge receives values, never UI state.
-const GROUPS = {"Dig":[1,15,9,2,16], "Chop trees":[10], "Gather plants":[12], "Smooth":[6,7,18,17], "Remove":[8]}
+# Membership and button order come from interaction.gd TOOL_FAMILIES; ART lists
+# the members that get a toolbar button (the rest stay picker-only).
+const Interaction = preload("res://scripts/interaction.gd")
+const FAMILIES = ["Dig", "Chop trees", "Gather plants", "Smooth", "Remove"]
 const ART = {1:"BUTTON_DIG_DIG_INACTIVE",15:"BUTTON_DIG_STAIRS_INACTIVE",9:"BUTTON_DIG_RAMP_INACTIVE",2:"BUTTON_DIG_CHANNEL_INACTIVE",16:"BUTTON_DIG_REMOVE_STAIRS_RAMPS_INACTIVE",10:"BUTTON_DES_CHOP_INACTIVE",12:"BUTTON_DES_GATHER_INACTIVE",6:"BUTTON_DES_SMOOTH_SMOOTH_INACTIVE",7:"BUTTON_DES_SMOOTH_ENGRAVE_INACTIVE",18:"BUTTON_DES_SMOOTH_TRACK_INACTIVE",17:"BUTTON_DES_SMOOTH_FORTIFY_INACTIVE",8:"BUTTON_DES_ERASE"}
 var hud
 var advanced := false
@@ -11,8 +14,8 @@ var buttons: Dictionary = {}
 func refresh() -> void:
 	var interaction = hud.interaction
 	var selected: int = interaction.tool_picker.selected
-	for group in GROUPS:
-		if selected in GROUPS[group]: family = group
+	for group in FAMILIES:
+		if selected in Interaction.TOOL_FAMILIES[group]: family = group
 	var signature := [selected, family, advanced, interaction.priority.value, interaction.marker_only, interaction.mining_mode]
 	if signature == _signature: return
 	_signature = signature
@@ -22,11 +25,12 @@ func refresh() -> void:
 	buttons.clear()
 	add_theme_constant_override("separation", 24)
 	var operations := _group()
-	for index in GROUPS[family]:
+	for index in Interaction.TOOL_FAMILIES[family]:
 		var id: int = index
+		if not ART.has(id): continue
 		var button := _icon_button(operations, interaction.TOOLS[id], ART[id], func(): hud.choose_tool(id)) as Button
-		if id == 18: button.tooltip_text = "Carve track: drag between endpoints; change elevation with PgUp/PgDn to follow ramps"
-		if id == 15: button.tooltip_text = "Stairs: drag and change elevation with PgUp/PgDn before releasing"
+		if id == Interaction.Tool.CARVE_TRACK: button.tooltip_text = "Carve track: drag between endpoints; change elevation with PgUp/PgDn to follow ramps"
+		if id == Interaction.Tool.STAIRS: button.tooltip_text = "Stairs: drag and change elevation with PgUp/PgDn before releasing"
 		button.set_meta("tool_index", id)
 		buttons[id] = button
 		hud.set_icon_active(button, selected == id)
@@ -62,10 +66,10 @@ func refresh() -> void:
 			interaction.marker_only = not interaction.marker_only
 			refresh()) as Button
 		hud.set_icon_active(marker, interaction.marker_only)
-		var activate := _icon_button(plans, "Convert blueprint to standard", "BUTTON_DES_FROM_BLUEPRINT_INACTIVE", func(): hud.choose_tool(19)) as Button
-		hud.set_icon_active(activate, selected == 19)
-		var hold := _icon_button(plans, "Convert standard to blueprint", "BUTTON_DES_TO_BLUEPRINT_INACTIVE", func(): hud.choose_tool(20)) as Button
-		hud.set_icon_active(hold, selected == 20)
+		var activate := _icon_button(plans, "Convert blueprint to standard", "BUTTON_DES_FROM_BLUEPRINT_INACTIVE", func(): hud.choose_tool(Interaction.Tool.CONVERT_TO_STANDARD)) as Button
+		hud.set_icon_active(activate, selected == Interaction.Tool.CONVERT_TO_STANDARD)
+		var hold := _icon_button(plans, "Convert standard to blueprint", "BUTTON_DES_TO_BLUEPRINT_INACTIVE", func(): hud.choose_tool(Interaction.Tool.CONVERT_TO_BLUEPRINT)) as Button
+		hud.set_icon_active(hold, selected == Interaction.Tool.CONVERT_TO_BLUEPRINT)
 	theme = hud.ui.theme
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	reset_size()

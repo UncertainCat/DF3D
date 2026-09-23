@@ -7,7 +7,15 @@ if action=='start' then
     local state={name=name,rows={},start_ms=start,start_tick=df.global.world.frame_counter,
         target_ms=tonumber(duration)*1000,done=false}
     df3d_stream_probe=state
-    local function sample()
+    -- A timeout callback error is otherwise swallowed and the chain simply
+    -- stops; record it where the PowerShell collector reads the result.
+    local function fail(err)
+        state.error=err;state.done=true;df3d_stream_probe=nil
+        local f=io.open(path,'w');if f then f:write(json.encode(state));f:close() end
+        dfhack.printerr('STREAM_PROBE_ERROR '..tostring(err))
+    end
+    local sample
+    local function step()
         if df3d_stream_probe~=state then return end
         local now=dfhack.getTickCount()
         if not state.last_ms or now-state.last_ms>=500 then
@@ -21,6 +29,10 @@ if action=='start' then
             state.sim_fps=(state.end_tick-state.start_tick)*1000/(now-start)
             local f=assert(io.open(path,'w'));f:write(json.encode(state));f:close()
         else dfhack.timeout(1,'frames',sample) end
+    end
+    sample=function()
+        local ok,err=xpcall(step,debug.traceback)
+        if not ok then fail(err) end
     end
     sample()
     print('STREAM_NATIVE_STARTED '..name)

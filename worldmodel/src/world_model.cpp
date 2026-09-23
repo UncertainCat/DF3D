@@ -4,6 +4,7 @@
 #include <iterator>
 #include <cmath>
 #include <stdexcept>
+#include <unordered_set>
 
 #include "wm/keyframes.h"
 #include "event_coalescing.h"
@@ -272,9 +273,11 @@ void WorldModel::resetSession() {
   sessionGeneration_ = next;
 }
 
-void WorldModel::ingest(const SnapshotData& snap, double arrivalWallSeconds) {
+bool WorldModel::ingest(const SnapshotData& snap, double arrivalWallSeconds) {
   if (latestTick_ && (snap.tick < *latestTick_ || snap.mapSize != mapSize_))
     resetSession();
+  ++ingestSerial_;
+  ingestBudgetExceeded_ = false;
   clock_.observe(snap.tick, arrivalWallSeconds);
   if (snap.mapSize != mapSize_ || blockIndex_.empty()) {
     // A new map: terrain and the entity stores start over (ids belong to
@@ -352,18 +355,19 @@ void WorldModel::ingest(const SnapshotData& snap, double arrivalWallSeconds) {
         (snap.tick > projectileSamples_.front().tick && snap.tick-projectileSamples_.front().tick > 120)))
     projectileSamples_.pop_front();
 
-  // Mark-and-sweep departure detection over units currently alive.
+  // Mark-and-sweep departure detection over units currently alive. Each
+  // listed unit is stamped with this ingest's serial; the sweep is one pass
+  // over the store with no per-unit search of the snapshot.
   for (const UnitObservation& obs : snap.units) {
     auto [it, inserted] = units_.try_emplace(obs.id);
     UnitEntry& e = it->second;
+    e.seenSerial = ingestSerial_;
     if (inserted || e.departedAt) {
       ++unitMembershipVersion_;
       e.species.assign(obs.species);
       e.departedAt.reset();
-      if (cfg_.collectLifecycleEvents) {
+      if (cfg_.collectLifecycleEvents && reservePendingEventBytes(sizeof(LifecycleEvent)))
         pendingEvents_.push_back({LifecycleEvent::Kind::Appeared, obs.id, snap.tick});
-        checkPendingEventBudget();
-      }
     }
     e.bodyVolumeCm3 = obs.bodyVolumeCm3;
     e.statusFlags = obs.statusFlags;
@@ -377,20 +381,28 @@ void WorldModel::ingest(const SnapshotData& snap, double arrivalWallSeconds) {
       if (e.attacks.size() > KeyframeHistory::kMaxFrames) e.attacks.pop_front();
     }
   }
-  for (auto& [id, e] : units_) {
-    if (e.departedAt) continue;
-    const bool seen = std::any_of(snap.units.begin(), snap.units.end(),
-                                  [id = id](const UnitObservation& o) { return o.id == id; });
-    if (!seen) {
+  for (auto it = units_.begin(); it != units_.end();) {
+    const UnitId id = it->first;
+    UnitEntry& e = it->second;
+    if (e.departedAt) {
+      // Evict once the sim is far enough past the departure that no render
+      // evaluation can still be asked about it (see kDepartedRetentionTicks).
+      if (snap.tick > *e.departedAt + kDepartedRetentionTicks) {
+        it = units_.erase(it);
+        ++departedEvictions_;
+        ++unitMembershipVersion_;
+        continue;
+      }
+    } else if (e.seenSerial != ingestSerial_) {
       ++unitMembershipVersion_;
       e.departedAt = snap.tick;
-      if (cfg_.collectLifecycleEvents) {
+      if (cfg_.collectLifecycleEvents && reservePendingEventBytes(sizeof(LifecycleEvent)))
         pendingEvents_.push_back({LifecycleEvent::Kind::Departed, id, snap.tick});
-        checkPendingEventBudget();
-      }
     }
+    ++it;
   }
   if (snap.appearanceScope != AppearanceScope::None) ingestAppearances(snap);
+  return !ingestBudgetExceeded_;
 }
 
 // --- unit appearance references ---
@@ -398,6 +410,7 @@ void WorldModel::ingest(const SnapshotData& snap, double arrivalWallSeconds) {
 PageId WorldModel::internTilePage(std::string_view name) {
   auto it = tilePageIds_.find(name);
   if (it != tilePageIds_.end()) return it->second;
+  if (tilePages_.size() >= kNoPage) return kNoPage;  // table full: degrade to none
   const PageId id = static_cast<PageId>(tilePages_.size());
   tilePages_.emplace_back(name);
   tilePageIds_.emplace(std::string(name), id);
@@ -429,7 +442,7 @@ void WorldModel::ingestAppearances(const SnapshotData& snap) {
     std::vector<AppearanceLayer> layers;
     layers.reserve(obs.layers.size());
     for (AppearanceLayer l : obs.layers) {
-      l.page = l.page < pageMap.size() ? pageMap[l.page] : 0;
+      l.page = l.page < pageMap.size() ? pageMap[l.page] : kNoPage;  // never a real page
       if (l.palette != kNoPalette) {
         l.palette = l.palette < paletteMap.size() ? paletteMap[l.palette] : kNoPalette;
         if (l.palette == kNoPalette) l.paletteRow = l.paletteKeyRow = kNoPaletteRow;
@@ -460,7 +473,7 @@ const UnitAppearance* WorldModel::unitAppearance(UnitId id) const {
 }
 
 std::string_view WorldModel::tilePageName(PageId id) const {
-  if (id >= tilePages_.size()) return {};
+  if (id == kNoPage || id >= tilePages_.size()) return {};
   return tilePages_[id];
 }
 
@@ -670,7 +683,7 @@ void WorldModel::ingestTerrain(const SnapshotData& snap, const std::vector<Mater
                            : remap[t.material];
         }
         if (!((*blk.tiles)[i] == t)) {
-          if (!blk.tiles.unique()) blk.tiles = std::make_shared<Block::Tiles>(*blk.tiles);
+          if (blk.tiles.use_count() != 1) blk.tiles = std::make_shared<Block::Tiles>(*blk.tiles);
           (*blk.tiles)[i] = t;
           changed = true;
         }
@@ -897,14 +910,14 @@ void WorldModel::ingestBuildings(const SnapshotData& snap, const std::vector<Mat
     any = true;
   }
   if (snap.buildingScope == ChangeScope::Full) {
-    // Anything the Full does not list no longer exists.
+    // Anything the Full does not list no longer exists. One id set per
+    // ingest keeps the sweep linear in the two table sizes.
+    std::unordered_set<BuildingId> listed;
+    listed.reserve(snap.buildings.size());
+    for (const BuildingObservation& o : snap.buildings) listed.insert(o.id);
     std::vector<size_t> gone;
-    for (size_t i = 0; i < buildings_.size(); ++i) {
-      const BuildingId id = buildings_[i].id;
-      const bool present = std::any_of(snap.buildings.begin(), snap.buildings.end(),
-                                       [id](const BuildingObservation& o) { return o.id == id; });
-      if (!present) gone.push_back(i);
-    }
+    for (size_t i = 0; i < buildings_.size(); ++i)
+      if (!listed.count(buildings_[i].id)) gone.push_back(i);
     // Remove from the back so swap-and-pop never disturbs a pending slot.
     for (auto it = gone.rbegin(); it != gone.rend(); ++it) removeBuildingSlot(*it, snap.tick);
     if (!gone.empty()) any = true;
@@ -947,13 +960,12 @@ void WorldModel::ingestItems(const SnapshotData& snap, const std::vector<Materia
     any = true;
   }
   if (snap.itemScope == ChangeScope::Full) {
+    std::unordered_set<ItemId> listed;
+    listed.reserve(snap.items.size());
+    for (const ItemObservation& o : snap.items) listed.insert(o.id);
     std::vector<size_t> gone;
-    for (size_t i = 0; i < items_.size(); ++i) {
-      const ItemId id = items_[i].id;
-      const bool present = std::any_of(snap.items.begin(), snap.items.end(),
-                                       [id](const ItemObservation& o) { return o.id == id; });
-      if (!present) gone.push_back(i);
-    }
+    for (size_t i = 0; i < items_.size(); ++i)
+      if (!listed.count(items_[i].id)) gone.push_back(i);
     for (auto it = gone.rbegin(); it != gone.rend(); ++it) removeItemSlot(*it, snap.tick);
     if (!gone.empty()) any = true;
     itemsKnown_ = true;
@@ -1021,25 +1033,25 @@ const MapItem* WorldModel::item(ItemId id) const {
 }
 
 void WorldModel::indexItem(ItemId id, TilePos p) {
-  if (!itemSpatial_.unique()) itemSpatial_ = std::make_shared<ItemSpatial>(*itemSpatial_);
+  if (itemSpatial_.use_count() != 1) itemSpatial_ = std::make_shared<ItemSpatial>(*itemSpatial_);
   auto& level = (*itemSpatial_)[p.z];
   if (!level) level = std::make_shared<ItemLevel>();
-  else if (!level.unique()) level = std::make_shared<ItemLevel>(*level);
+  else if (level.use_count() != 1) level = std::make_shared<ItemLevel>(*level);
   auto& bucket = (*level)[itemBlock(p)];
   if (!bucket) bucket = std::make_shared<ItemBucket>();
-  else if (!bucket.unique()) bucket = std::make_shared<ItemBucket>(*bucket);
+  else if (bucket.use_count() != 1) bucket = std::make_shared<ItemBucket>(*bucket);
   bucket->insert(id);
 }
 
 void WorldModel::unindexItem(ItemId id, TilePos p) {
-  if (!itemSpatial_.unique()) itemSpatial_ = std::make_shared<ItemSpatial>(*itemSpatial_);
+  if (itemSpatial_.use_count() != 1) itemSpatial_ = std::make_shared<ItemSpatial>(*itemSpatial_);
   auto level = itemSpatial_->find(p.z);
   if (level == itemSpatial_->end()) return;
-  if (!level->second.unique()) level->second = std::make_shared<ItemLevel>(*level->second);
+  if (level->second.use_count() != 1) level->second = std::make_shared<ItemLevel>(*level->second);
   auto& blocks = *level->second;
   auto bucket = blocks.find(itemBlock(p));
   if (bucket == blocks.end()) return;
-  if (!bucket->second.unique()) bucket->second = std::make_shared<ItemBucket>(*bucket->second);
+  if (bucket->second.use_count() != 1) bucket->second = std::make_shared<ItemBucket>(*bucket->second);
   bucket->second->erase(id);
   if (bucket->second->empty()) blocks.erase(bucket);
   if (blocks.empty()) itemSpatial_->erase(level);
@@ -1103,7 +1115,7 @@ void WorldModel::ingestItemAppearances(const SnapshotData& snap) {
     std::vector<AppearanceLayer> layers;
     layers.reserve(obs.layers.size());
     for (AppearanceLayer l : obs.layers) {
-      l.page = l.page < pageMap.size() ? pageMap[l.page] : 0;
+      l.page = l.page < pageMap.size() ? pageMap[l.page] : kNoPage;  // never a real page
       if (l.palette != kNoPalette) {
         l.palette = l.palette < paletteMap.size() ? paletteMap[l.palette] : kNoPalette;
         if (l.palette == kNoPalette) l.paletteRow = l.paletteKeyRow = kNoPaletteRow;
@@ -1204,6 +1216,9 @@ constexpr size_t kSeenCommandWindow = 4096;
 void WorldModel::ingestCommandResults(const SnapshotData& snap) {
   for (const CommandResultObservation& obs : snap.commandResults) {
     if (seenCommandSeqs_.count(obs.seq)) continue;  // a repeat
+    // Budget first: a result that does not fit stays unseen so the bridge's
+    // repeat can deliver it once the consumer drains.
+    if (!reservePendingEventBytes(sizeof(CommandResult) + obs.message.size())) continue;
     if (seenCommandOrder_.size() < kSeenCommandWindow) {
       seenCommandOrder_.push_back(obs.seq);
     } else {
@@ -1215,7 +1230,6 @@ void WorldModel::ingestCommandResults(const SnapshotData& snap) {
     pendingCommandResults_.push_back(
         CommandResult{obs.seq, obs.status, std::string(obs.message), snap.tick});
     pendingCommandBytes_ += sizeof(CommandResult) + obs.message.size();
-    checkPendingEventBudget();
     ++commandResultsReceived_;
   }
 }
@@ -1250,9 +1264,15 @@ const ItemDefGlyph* WorldModel::itemDefGlyph(ItemKind kind, std::string_view sub
 }  // namespace wm
 
 namespace wm {
-void WorldModel::checkPendingEventBudget() const {
-  if (pendingCommandBytes_ + pendingEvents_.size()*sizeof(LifecycleEvent) > ModelEvents::kMaxRetainedBytes)
-    throw std::length_error("ordered event backlog exceeded 32 MiB; command outcomes may be unknown; reconnect without replay");
+bool WorldModel::reservePendingEventBytes(size_t bytes) {
+  const size_t pending = pendingCommandBytes_ + pendingEvents_.size() * sizeof(LifecycleEvent);
+  if (pending + bytes <= ModelEvents::kMaxRetainedBytes) return true;
+  // Checked before anything is mutated: the model stays consistent, every
+  // earlier receipt is kept, and later ingests are not poisoned.
+  ++eventBudgetDrops_;
+  ingestBudgetExceeded_ = true;
+  lastIngestError_ = "ordered event backlog would exceed 32 MiB; receipts dropped; command outcomes may be unknown";
+  return false;
 }
 ModelEvents WorldModel::drainAllEvents() {
   ModelEvents out;

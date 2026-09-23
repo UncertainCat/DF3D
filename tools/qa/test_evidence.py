@@ -53,6 +53,51 @@ class EvidenceTests(unittest.TestCase):
             absent=execute(spec,[str(Path(directory)/"absent.exe")],env=os.environ.copy(),output_dir=directory)
             self.assertEqual(absent["status"],"incomplete")
 
+    def test_surviving_process_tree_is_recorded_as_failure_not_abort(self):
+        # A second TimeoutExpired (tree survives taskkill) used to escape execute().
+        from unittest.mock import patch
+        import subprocess as sp
+        class Stuck:
+            pid = 4242
+            def wait(self, timeout=None):
+                raise sp.TimeoutExpired("stuck", timeout)
+        with tempfile.TemporaryDirectory() as directory,              patch("evidence.subprocess.Popen", return_value=Stuck()),              patch("evidence.subprocess.run", return_value=None),              patch("evidence.os.killpg", create=True, return_value=None):
+            row = execute({"id":"stuck","completion":"^PASS$","timeout":0.01},["ignored"],env=os.environ.copy(),output_dir=directory)
+        self.assertEqual(row["status"], "failed")
+        self.assertEqual(row["exit"], "timeout")
+        self.assertTrue(any("did not stop" in reason for reason in row["reasons"]))
+
+    def test_run_dir_pruning_keeps_newest_and_named_outputs(self):
+        from verify import prune_run_dirs, RUN_DIR_PATTERN
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            names = [f"2026010{i // 10}-00000{i % 10}-000000" for i in range(15)]
+            for name in names + ["final-gpu", "anchor", "not-a-run"]:
+                (base / name).mkdir()
+                (base / name / "summary.json").write_text("{}")
+            (base / "extension_build.json").write_text("{}")
+            current = base / names[-1]
+            removed = prune_run_dirs(base, current, keep=10)
+            self.assertEqual([p.name for p in removed], names[:5])
+            self.assertTrue(current.is_dir())
+            remaining = sorted(p.name for p in base.iterdir())
+            self.assertEqual([n for n in remaining if RUN_DIR_PATTERN.match(n)], names[5:])
+            for kept in ["final-gpu", "anchor", "not-a-run", "extension_build.json"]:
+                self.assertTrue((base / kept).exists(), kept)
+            # A user-named output under build/qa is never a candidate, and pruning is idempotent.
+            self.assertEqual(prune_run_dirs(base, base / "final-gpu", keep=10), [])
+            self.assertEqual(prune_run_dirs(base / "missing", current), [])
+
+    def test_ctest_listing_failure_degrades_to_binary_products(self):
+        from unittest.mock import patch
+        import verify
+        with tempfile.TemporaryDirectory() as directory:
+            binary = Path(directory) / "worldmodel_tests.exe"
+            binary.write_bytes(b"x")
+            with patch("verify.subprocess.check_output", side_effect=OSError("no ctest")):
+                products = verify.products("root_build", binary, env={"PATH": directory})
+        self.assertIn(str(binary.resolve()), products)
+
     def test_result_precedence_and_exit_codes(self):
         def result(*statuses):
             return overall_status([{"status": s} for s in statuses])

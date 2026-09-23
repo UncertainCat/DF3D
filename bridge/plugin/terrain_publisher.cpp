@@ -36,7 +36,9 @@
 #include "df/unit.h"
 #include "df/world.h"
 #include "ground_spatters.h"
+#include "job_list_stamp.h"
 #include "pending_work.h"
+#include "scan_schedule.h"
 #include "track_terrain.h"
 #include "terrain_util.h"
 #include "entity_util.h"
@@ -65,26 +67,32 @@ double usSince(Clock::time_point start) {
 struct TerrainPublisher::Impl {
     // ---- terrain change detection state ----
 
-    // Raw shadow of what we last classified from a block: the tiletype array
-    // and the designation bits that feed the published TileState. Comparing
-    // this per block is the cheap gate in front of reclassification.
+    // Raw shadow of what we last classified from a block: the tiletype array,
+    // the designation bits that feed the published TileState and a per-tile
+    // signature of the occupancy / temperature / priority inputs of the
+    // designation details. Comparing these per block is the cheap gate in
+    // front of the expensive designationDetails() pass and reclassification.
     struct ShadowBlock {
         uint8_t allocated = 0;  // block pointer was non-null when last scanned
         uint8_t scanned = 0;    // scanned at least once (0 = grid block never written)
         uint8_t pad[6] = {};
         uint16_t tiletype[256] = {};
         uint32_t dsgn[256] = {};
+        uint16_t signature[256] = {};   // blockSignature(): occupancy, traffic, warm, priority
+        uint32_t dampBits[8] = {};      // miningDampSource() per tile: neighbours depend on it
         uint32_t designationDetails[256] = {};
     };
-    static_assert(sizeof(ShadowBlock) == 8 + 512 + 1024 + 1024, "shadow layout");
+    static_assert(sizeof(ShadowBlock) == 8 + 512 + 1024 + 512 + 32 + 1024, "shadow layout");
 
     // Designation bits that influence the published tile: liquid amount/type,
-    // dig designation, smooth, hidden, outside. Everything else (traffic,
-    // piles, light, biome, ...) changing must not trigger a reclassification.
+    // dig designation, smooth, hidden, outside, aquifer. Everything else
+    // (piles, light, biome, ...) changing must not trigger a reclassification;
+    // traffic rides in the signature below.
     static constexpr uint32_t kDsgnMask =
         df::tile_designation::mask_flow_size | df::tile_designation::mask_dig |
         df::tile_designation::mask_smooth | df::tile_designation::mask_hidden |
-        df::tile_designation::mask_outside | df::tile_designation::mask_liquid_type;
+        df::tile_designation::mask_outside | df::tile_designation::mask_liquid_type |
+        df::tile_designation::mask_water_table;
 
     struct TerrainState {
 #ifdef _WIN32
@@ -98,12 +106,20 @@ struct TerrainPublisher::Impl {
 
         vector<ShadowBlock> shadow;
         uint32_t scanCursor = 0;
-        uint32_t sliceBlocks = 256;  // amortized rescan: blocks per update
-        bool rescanAll = false;      // `df3d rescan`: next update scans everything
+        uint32_t sliceBlocks = 256;   // amortized rescan: blocks per update (scan_schedule.h clamps)
+        uint32_t rescanRemaining = 0; // `df3d rescan`: blocks still owed, spread over updates
 
         // Blocks to scan this update regardless of the slice (dig hints etc).
         vector<uint32_t> hinted;
         vector<uint8_t> hintMark;
+        // Blocks whose designation details depend on something that changed
+        // elsewhere (a neighbour's damp source, a door closing): the cheap
+        // raw compare cannot see it, so their details are recomputed once.
+        vector<uint32_t> detailHinted;
+        vector<uint8_t> detailHintMark;
+        // Job list identity at the last pending-work rebuild (job_list_stamp.h).
+        df3d_job_list_stamp::Stamp jobStamp;
+        bool jobStampValid = false;
         // Grid blocks changed since their last appearance in a ring Delta, in
         // change order. A FIFO with a head index (spill queue).
         vector<uint32_t> pendingDelta;
@@ -198,6 +214,10 @@ struct TerrainPublisher::Impl {
         vector<ShadowBlock>().swap(t.shadow);
         t.hinted.clear();
         t.hintMark.clear();
+        t.detailHinted.clear();
+        t.detailHintMark.clear();
+        t.jobStamp = {};
+        t.jobStampValid = false;
         t.pendingDelta.clear();
         t.pendingHead = 0;
         t.pendingMark.clear();
@@ -218,7 +238,7 @@ struct TerrainPublisher::Impl {
         t.pendingTracks = {};
         t.engravingsSeen = 0;
         t.scanCursor = 0;
-        t.rescanAll = false;
+        t.rescanRemaining = 0;
     }
 
     // ---- terrain: material interning ----
@@ -400,11 +420,25 @@ struct TerrainPublisher::Impl {
     // Native warning walkability rejects closed doors, wall grates and vertical
     // bars on Dynamic-occupied tiles. Index the three source vectors once per
     // bridge terrain scan, never search all buildings for each map tile.
+    // A tile whose dynamic barrier (closed door / grate / bars, forbidden
+    // hatch) entered or left one of the three indexes changes its details
+    // without any raw block change: schedule a details refresh of its block.
+    template<class Decode>
+    void hintIndexDifference(const std::unordered_set<uint64_t>& before, const std::unordered_set<uint64_t>& after, Decode decode) {
+        if (terrain.shadow.empty()) return;
+        for (const auto key : after) if (!before.count(key)) { int x,y,z; decode(key,x,y,z); hintDetails(x>>4,y>>4,z); }
+        for (const auto key : before) if (!after.count(key)) { int x,y,z; decode(key,x,y,z); hintDetails(x>>4,y>>4,z); }
+    }
     void refreshWarningBuildings() {
-        terrain.trackClearance=df3d_track_terrain::buildClearanceIndex();
-        terrain.trackHorizontal=df3d_track_terrain::buildHorizontalIndex();
-        auto& closed=terrain.closedWarningBuildings;
-        closed.clear();
+        auto trackDecode=[](uint64_t key,int& x,int& y,int& z) { x=int(int16_t(key&0xFFFF)); y=int(int16_t((key>>16)&0xFFFF)); z=int(int16_t((key>>32)&0xFFFF)); };
+        auto posDecode=[](uint64_t key,int& x,int& y,int& z) { x=int(key&0x1FFFFF); y=int((key>>21)&0x1FFFFF); z=int(key>>42); };
+        auto clearance=df3d_track_terrain::buildClearanceIndex();
+        hintIndexDifference(terrain.trackClearance,clearance,trackDecode);
+        terrain.trackClearance=std::move(clearance);
+        auto horizontal=df3d_track_terrain::buildHorizontalIndex();
+        hintIndexDifference(terrain.trackHorizontal,horizontal,trackDecode);
+        terrain.trackHorizontal=std::move(horizontal);
+        std::unordered_set<uint64_t> closed;
         auto add=[&](const df::building* b) { closed.insert(posKey(b->centerx,b->centery,b->z)); };
         for(auto* b:world->buildings.other[df::buildings_other_id::DOOR])
             if(auto* door=virtual_cast<df::building_doorst>(b); door && door->door_flags.bits.closed) add(door);
@@ -412,6 +446,33 @@ struct TerrainPublisher::Impl {
             if(auto* grate=virtual_cast<df::building_grate_wallst>(b); grate && grate->gate_flags.bits.closed) add(grate);
         for(auto* b:world->buildings.other[df::buildings_other_id::BARS_VERTICAL])
             if(auto* bars=virtual_cast<df::building_bars_verticalst>(b); bars && bars->gate_flags.bits.closed) add(bars);
+        hintIndexDifference(terrain.closedWarningBuildings,closed,posDecode);
+        terrain.closedWarningBuildings=std::move(closed);
+    }
+
+    // Cheap per-tile inputs of designationDetails() that live outside the
+    // tiletype / designation arrays: occupancy bits (marker, auto-dig, track
+    // carving, building occupancy), traffic, the warm-stone threshold of the
+    // temperature and the block's priority event. Plus the damp-source
+    // predicate the neighbouring blocks' warnings read (dampBits).
+    void blockSignature(const df::map_block* block, uint16_t* sig, uint32_t* damp) {
+        std::fill(sig,sig+256,uint16_t(0));
+        std::fill(damp,damp+8,0u);
+        if (!block) return;
+        const df::block_square_event_designation_priorityst* priority = nullptr;
+        for (auto* event : block->block_events)
+            if ((priority=virtual_cast<df::block_square_event_designation_priorityst>(event))) break;
+        for (int y=0;y<16;++y) for (int x=0;x<16;++x) {
+            const auto occ=block->occupancy[x][y].bits;
+            const auto des=block->designation[x][y].bits;
+            const int raw=priority ? priority->priority[x][y]/1000 : 4;
+            const uint16_t prio=uint16_t(raw>=1 && raw<=7 ? raw : 4);
+            sig[y*16+x]=uint16_t((occ.dig_marked?1:0) | (occ.dig_auto?2:0) |
+                (occ.carve_track_north?4:0) | (occ.carve_track_south?8:0) | (occ.carve_track_east?16:0) | (occ.carve_track_west?32:0) |
+                (uint16_t(occ.building)<<6) | (uint16_t(des.traffic)<<9) |
+                (block->temperature_1[x][y]>=10075 ? 1u<<11 : 0u) | (prio<<12));
+            if (miningDampSource(block,x,y)) damp[(y*16+x)>>5] |= 1u<<((y*16+x)&31);
+        }
     }
 
     // Native 53.16 helper 0x149f0b0: water or aquifer-bearing natural walls in
@@ -773,6 +834,21 @@ struct TerrainPublisher::Impl {
         t.hintMark[idx] = 1;
         t.hinted.push_back(idx);
     }
+    void hintDetails(int32_t bx, int32_t by, int32_t bz) {
+        TerrainState& t = terrain;
+        if (bx < 0 || by < 0 || bz < 0 || bx >= t.blocksX || by >= t.blocksY || bz >= t.sizeZ)
+            return;
+        const uint32_t idx = shm::terrainBlockIndex(t.grid, bx, by, bz);
+        if (t.detailHintMark[idx]) return;
+        t.detailHintMark[idx] = 1;
+        t.detailHinted.push_back(idx);
+    }
+    // Blocks whose mining warnings read this block's damp sources: the 3x3
+    // same-level neighbourhood and the block below (it reads its `above`).
+    void hintDampDependents(int32_t bx, int32_t by, int32_t bz) {
+        for (int dy=-1;dy<=1;++dy) for (int dx=-1;dx<=1;++dx) hintDetails(bx+dx,by+dy,bz);
+        hintDetails(bx,by,bz-1);
+    }
 
     // Hints every block touching the 3x3x3 tile neighbourhood of `pos` (digging
     // reveals neighbours, which may live in an adjacent block).
@@ -783,10 +859,13 @@ struct TerrainPublisher::Impl {
                     hintBlock((pos.x + dx) >> 4, (pos.y + dy) >> 4, pos.z + dz);
     }
 
-    // Scans one block: cheap raw compare against the shadow, reclassify on
-    // change, write to the grid on classified change. `batchOpen` tracks the
-    // grid seqlock across the calling loop. Returns true if the grid changed.
-    bool scanBlock(uint32_t idx, bool force, bool& batchOpen, bool queueDelta) {
+    // Scans one block: cheap raw compare against the shadow (tiletype,
+    // designation mask, signature), then the expensive designation details
+    // only when the raw state changed or `detailsRefresh` says a dependency
+    // did; reclassify on change, write to the grid on classified change.
+    // `batchOpen` tracks the grid seqlock across the calling loop. Returns
+    // true if the grid changed.
+    bool scanBlock(uint32_t idx, bool force, bool& batchOpen, bool queueDelta, bool detailsRefresh = false) {
         TerrainState& t = terrain;
         ++t.blocksScanned;
         int32_t bx, by, bz;
@@ -796,28 +875,37 @@ struct TerrainPublisher::Impl {
             world ? uint64_t(std::max(0,world->frame_counter)) : 0,[this](int16_t type, int32_t index) { return pairMaterial(type,index); });
         ShadowBlock& sh = t.shadow[idx];
         const uint8_t allocated = blk ? 1 : 0;
-        uint32_t details[256];
-        designationDetails(blk,details);
+        uint16_t signature[256];
+        uint32_t dampBits[8];
+        blockSignature(blk, signature, dampBits);
 
-        if (!force && sh.scanned) {
-            if (allocated == sh.allocated) {
-                if (!blk) return false;
-                static_assert(sizeof(blk->tiletype) == sizeof(sh.tiletype), "tiletype array");
-                if (std::memcmp(&blk->tiletype, sh.tiletype, sizeof(sh.tiletype)) == 0) {
-                    bool same = true;
-                    const uint32_t* d = reinterpret_cast<const uint32_t*>(&blk->designation);
-                    for (int i = 0; i < 256; ++i) {
-                        if ((d[i] & kDsgnMask) != sh.dsgn[i]) { same = false; break; }
-                    }
-                    if (same && std::memcmp(details,sh.designationDetails,sizeof(details))==0) return false;
+        bool rawSame = false;
+        if (!force && sh.scanned && allocated == sh.allocated) {
+            if (!blk) return false;
+            static_assert(sizeof(blk->tiletype) == sizeof(sh.tiletype), "tiletype array");
+            if (std::memcmp(&blk->tiletype, sh.tiletype, sizeof(sh.tiletype)) == 0 &&
+                std::memcmp(signature, sh.signature, sizeof(signature)) == 0) {
+                rawSame = true;
+                const uint32_t* d = reinterpret_cast<const uint32_t*>(&blk->designation);
+                for (int i = 0; i < 256; ++i) {
+                    if ((d[i] & kDsgnMask) != sh.dsgn[i]) { rawSame = false; break; }
                 }
             }
+            if (rawSame && !detailsRefresh) return false;
         }
 
-        // Raw state differs (or first look): refresh the shadow and reclassify.
+        // Raw state differs, a dependency changed, or first look: the
+        // expensive pass (neighbourhood lookups, per-tile indexes).
+        uint32_t details[256];
+        designationDetails(blk,details);
+        if (rawSame && std::memcmp(details,sh.designationDetails,sizeof(details))==0) return false;
+
+        const bool dampChanged = !sh.scanned || std::memcmp(dampBits, sh.dampBits, sizeof(dampBits)) != 0;
         sh.scanned = 1;
         sh.allocated = allocated;
         std::memcpy(sh.designationDetails,details,sizeof(details));
+        std::memcpy(sh.signature,signature,sizeof(signature));
+        std::memcpy(sh.dampBits,dampBits,sizeof(dampBits));
         if (blk) {
             std::memcpy(sh.tiletype, &blk->tiletype, sizeof(sh.tiletype));
             const uint32_t* d = reinterpret_cast<const uint32_t*>(&blk->designation);
@@ -826,6 +914,8 @@ struct TerrainPublisher::Impl {
             std::memset(sh.tiletype, 0, sizeof(sh.tiletype));
             std::memset(sh.dsgn, 0, sizeof(sh.dsgn));
         }
+        // The initial pass (queueDelta false) visits every block anyway.
+        if (dampChanged && queueDelta) hintDampDependents(bx, by, bz);
         ++t.blocksReclassified;
         shm::TerrainTile* fresh = t.classifyBuf.data();
         classifyBlock(blk, fresh, details);
@@ -850,6 +940,18 @@ struct TerrainPublisher::Impl {
     // late-attaching clients even while the sim is stopped.
     void refreshPendingWork() {
         TerrainState& t=terrain;
+        // One linear walk stamps the list; the three maps and their set
+        // differences are rebuilt only when it changed (a paused game with a
+        // static job list costs the walk alone).
+        df3d_job_list_stamp::Stamp stamp;
+        for(auto* link=world->jobs.list.next;link;link=link->next) {
+            const auto* job=link->item;
+            if(job) stamp.add(job->id,int32_t(job->job_type),job->pos.x,job->pos.y,job->pos.z,
+                job->job_type==df::job_type::CarveTrack ? job->specflag.carve_track_flags.whole : 0u);
+        }
+        if(t.jobStampValid && stamp==t.jobStamp) return;
+        t.jobStamp=stamp;
+        t.jobStampValid=true;
         df3d_pending_work::Tiles next;
         df3d_pending_work::Tiles nextOperations;
         df3d_pending_work::Tiles nextTracks;
@@ -914,8 +1016,9 @@ struct TerrainPublisher::Impl {
         }
         t.hinted.clear();
 
-        uint32_t n = t.rescanAll ? t.blockCount : std::min(t.sliceBlocks, t.blockCount);
-        t.rescanAll = false;
+        // A requested full rescan is spread over updates (scan_schedule.h).
+        const uint32_t n = df3d_scan_schedule::sliceThisUpdate(t.sliceBlocks, t.rescanRemaining, t.blockCount);
+        t.rescanRemaining -= std::min(n, t.rescanRemaining);
         for (uint32_t i = 0; i < n; ++i) {
             scanBlock(t.scanCursor, false, batchOpen, true);
             if (++t.scanCursor >= t.blockCount) {
@@ -923,6 +1026,14 @@ struct TerrainPublisher::Impl {
                 ++t.fullPasses;
             }
         }
+        // Dependency refreshes, including those the scans above produced
+        // (a refresh that finds a raw change may append more; marks bound it).
+        for (size_t i = 0; i < t.detailHinted.size(); ++i) {
+            const uint32_t idx = t.detailHinted[i];
+            t.detailHintMark[idx] = 0;
+            scanBlock(idx, false, batchOpen, true, true);
+        }
+        t.detailHinted.clear();
         if (batchOpen)
             shm::terrainEndWrite(t.grid, tick);
     }
@@ -973,6 +1084,10 @@ struct TerrainPublisher::Impl {
                          t.sizeZ, epoch);
         t.shadow.assign(t.blockCount, ShadowBlock{});
         t.hintMark.assign(t.blockCount, 0);
+        t.detailHinted.clear();
+        t.detailHintMark.assign(t.blockCount, 0);
+        t.jobStampValid = false;
+        t.rescanRemaining = 0;
         t.pendingMark.assign(t.blockCount, 0);
         t.pendingDelta.clear();
         t.pendingHead = 0;
@@ -992,6 +1107,10 @@ struct TerrainPublisher::Impl {
         for (uint32_t idx = 0; idx < t.blockCount; ++idx)
             scanBlock(idx, true, batchOpen, false);
         shm::terrainEndWrite(t.grid, static_cast<uint64_t>(world->frame_counter));
+        // Barrier-index differences against the empty pre-map indexes are
+        // covered by the forced pass above.
+        for (uint32_t idx : t.detailHinted) t.detailHintMark[idx] = 0;
+        t.detailHinted.clear();
         t.initialScanMs = usSince(t0) / 1000.0;
         t.blocksChanged = 0;  // the initial scan is not "change"
 
@@ -1182,8 +1301,8 @@ struct TerrainPublisher::Impl {
                       t.blockCount);
             out.print("    materials:         {}\n", t.grid->materialCount);
             out.print("    initial scan:      {:.1f} ms\n", t.initialScanMs);
-            out.print("    scan slice:        {} blocks/update ({} full passes, cursor {})\n",
-                      t.sliceBlocks, t.fullPasses, t.scanCursor);
+            out.print("    scan slice:        {} blocks/update ({} full passes, cursor {}, rescan owed {})\n",
+                      t.sliceBlocks, t.fullPasses, t.scanCursor, t.rescanRemaining);
             out.print("    blocks scanned:    {} (reclassified {}, changed {})\n", t.blocksScanned,
                       t.blocksReclassified, t.blocksChanged);
             out.print("    deltas published:  {} ({} blocks of which {} repeats, {} spills, {} queued, {} in the repeat window)\n",
@@ -1211,8 +1330,9 @@ void TerrainPublisher::hintAround(int32_t x,int32_t y,int32_t z) {
     if (mapped()) impl_->hintAround(df::coord(x,y,z));
 }
 void TerrainPublisher::scan(uint64_t tick,void (*hintRecentCombat)(uint64_t)) { impl_->scanTerrain(tick,hintRecentCombat); }
-void TerrainPublisher::setSliceBlocks(uint32_t n) { impl_->terrain.sliceBlocks=n; }
-void TerrainPublisher::requestRescan() { impl_->terrain.rescanAll=true; }
+void TerrainPublisher::setSliceBlocks(uint32_t n) { impl_->terrain.sliceBlocks=df3d_scan_schedule::clampSlice(n); }
+uint32_t TerrainPublisher::sliceBlocks() const { return impl_->terrain.sliceBlocks; }
+void TerrainPublisher::requestRescan() { impl_->terrain.rescanRemaining=impl_->terrain.blockCount; }
 void TerrainPublisher::printStatus(color_ostream& out) const { impl_->printStatus(out); }
 size_t TerrainPublisher::materialCount() const {
     return mapped() ? static_cast<size_t>(shm::atomicLoadAcquire(&impl_->terrain.grid->materialCount)) : 0;

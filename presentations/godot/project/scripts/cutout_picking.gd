@@ -1,4 +1,9 @@
 extends RefCounted
+# Entity kinds shared by pick results, inspect_entity and selection_panel.open_target.
+const KIND_NONE := 0
+const KIND_UNIT := 1
+const KIND_ITEM := 2
+const KIND_BUILDING := 3
 # Ray tests use the same bottom-anchored contours and transforms as rendering.
 # Candidate tiles remain authoritative even when their visuals interpolate.
 static func mesh_depth(mesh: Mesh, transform: Transform3D, origin: Vector3, direction: Vector3, ceiling: float = INF, animation: Dictionary = {}) -> float:
@@ -103,5 +108,5 @@ static func pieces(world, camera: Camera3D, screen: Vector2, top_z: int) -> Arra
 					transform.origin += transform.basis.z * scales[i].g * lift
 				ceiling = presentation.piece_ceiling(mesh, transform, clip_anchor)
 			var depth := mesh_depth(mesh,transform,origin,direction,ceiling,animation)
-			if depth<INF: candidates.append({"kind":1 if unit else 2,"id":ids[i],"tile":tile,"visible":true,"bounds":bounds,"depth":depth})
+			if depth<INF: candidates.append({"kind":KIND_UNIT if unit else KIND_ITEM,"id":ids[i],"tile":tile,"visible":true,"bounds":bounds,"depth":depth})
 	return candidates

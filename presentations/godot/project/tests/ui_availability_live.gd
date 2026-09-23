@@ -34,5 +34,5 @@ func run():
 		for i in 10: await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(output+"-"+str(view.x)+".png")
-	print("FLOOR_PROFILE_PASS")
+	print("UI_AVAILABILITY_LIVE_PASS")
 	quit()

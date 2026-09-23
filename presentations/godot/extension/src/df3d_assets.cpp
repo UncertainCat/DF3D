@@ -327,6 +327,7 @@ int Df3dWorld::slotFor(int page, int paletteRow, bool fill) {
         slot.texture->set_meta("world_cell", Vector2(pageInfo->tileW, pageInfo->tileH));
     }
     const int id = spriteResources_.slots.add(std::move(slot));
+    ERR_FAIL_COND_V_MSG(id < 0, -1, "sprite resource handle space exhausted");
     slotIndex_[key] = id;
     spriteResources_.images[id] = mip;
     return id;
@@ -387,14 +388,16 @@ int Df3dWorld::wallTopSlotFor(const assets::TerrainSprite& wall, uint8_t neighbo
     slot.height = image.height;
     slot.texture = submission::texture(img, submission::TextureSite::Walltop,true);
     const int id = spriteResources_.slots.add(std::move(slot));
+    ERR_FAIL_COND_V_MSG(id < 0, -1, "sprite resource handle space exhausted");
     wallTopIndex_[key] = id;
     spriteResources_.images[id] = img;
     return id;
 }
 
 Ref<godot::ArrayMesh> Df3dWorld::sprite_cutout_mesh(int slot, Color region) {
-    if(!spriteResources_.slots.contains(slot)) return {};
-    auto texture=spriteResources_.slots[slot].texture;
+    const TextureSlot* source=spriteResources_.slots.find(slot);
+    if(!source || source->texture.is_null()) return {};
+    auto texture=source->texture;
     const int x=std::lround(region.r*texture->get_width()), y=std::lround(region.g*texture->get_height());
     const int w=std::lround(region.b*texture->get_width()), h=std::lround(region.a*texture->get_height());
     const std::string key=std::to_string(slot)+":"+std::to_string(x)+":"+std::to_string(y)+":"+std::to_string(w)+":"+std::to_string(h);
@@ -407,7 +410,7 @@ Ref<godot::ArrayMesh> Df3dWorld::sprite_cutout_mesh(int slot, Color region) {
     const auto indexed=mesher::indexCutoutMesh(mesher::cutoutMesh(alpha,w,h));
     const auto& vertices=indexed.vertices;
     godot::PackedVector3Array positions; godot::PackedVector2Array uvs; godot::PackedColorArray colors;
-    for(const auto& v:vertices){positions.push_back(Vector3(v.x*spriteResources_.slots[slot].cutoutScale.x+spriteResources_.slots[slot].cutoutOffset.x,v.y,v.z*spriteResources_.slots[slot].cutoutScale.y+spriteResources_.slots[slot].cutoutOffset.y));uvs.push_back(Vector2(region.r+v.u*region.b,region.g+v.v*region.a));colors.push_back(Color(v.shade,v.shade,v.shade,1));}
+    for(const auto& v:vertices){positions.push_back(Vector3(v.x*source->cutoutScale.x+source->cutoutOffset.x,v.y,v.z*source->cutoutScale.y+source->cutoutOffset.y));uvs.push_back(Vector2(region.r+v.u*region.b,region.g+v.v*region.a));colors.push_back(Color(v.shade,v.shade,v.shade,1));}
     auto mesh = submission::createMesh(submission::MeshSite::Cutout);
     if(!vertices.empty()){
         godot::PackedInt32Array indices;indices.resize(static_cast<int64_t>(indexed.indices.size()));
@@ -419,8 +422,8 @@ Ref<godot::ArrayMesh> Df3dWorld::sprite_cutout_mesh(int slot, Color region) {
 }
 
 Ref<godot::Texture2D> Df3dWorld::sprite_texture(int slot) {
-    if (!spriteResources_.slots.contains(slot)) return Ref<godot::Texture2D>();
-    return spriteResources_.slots[static_cast<size_t>(slot)].texture;
+    const TextureSlot* source = spriteResources_.slots.find(slot);
+    return source ? Ref<godot::Texture2D>(source->texture) : Ref<godot::Texture2D>();
 }
 
 // --- classic glyph fallback ---
@@ -485,6 +488,7 @@ int Df3dWorld::glyphSlotFor(uint8_t fg, uint8_t bg, uint8_t bright) {
     slot.texture = submission::texture(img, submission::TextureSite::Glyph,true);
     slot.texture->set_meta("world_cell", Vector2(glyphs_.tileW(), glyphs_.tileH()));
     const int id = spriteResources_.slots.add(std::move(slot));
+    ERR_FAIL_COND_V_MSG(id < 0, -1, "sprite resource handle space exhausted");
     glyphSlots_[key] = id;
     spriteResources_.images[id] = img;
     return id;
@@ -547,8 +551,8 @@ const Df3dWorld::FaceLook& Df3dWorld::lookFor(const mesher::FaceTag& tag) {
                 return faceLooks_.emplace(key, look).first->second;
             }
             const int slot = slotFor(r.sprite.page, r.paletteRow, r.fill);
-            if (slot >= 0) {
-                const TextureSlot& s = spriteResources_.slots[static_cast<size_t>(slot)];
+            if (const TextureSlot* found = slot >= 0 ? spriteResources_.slots.find(slot) : nullptr) {
+                const TextureSlot& s = *found;
                 const assets::PixelRect px = assets_->index.pixels(r.sprite);
                 look.slot = slot;
                 look.u0 = static_cast<float>(px.px) / s.width;
@@ -607,8 +611,9 @@ Df3dWorld::FaceLook Df3dWorld::spatterLookFor(wm::TilePos pos) {
     const auto* sprite=assets_->index.tile(token);
     if(!sprite) return look;
     look.slot=slotFor(sprite->page,-1,false);
-    if(look.slot<0) return look;
-    const auto& slot=spriteResources_.slots[size_t(look.slot)];
+    const TextureSlot* found=look.slot>=0?spriteResources_.slots.find(look.slot):nullptr;
+    if(!found) { look.slot=-1; return look; }
+    const auto& slot=*found;
     const auto rect=assets_->index.pixels(*sprite);
     look.u0=float(rect.px)/slot.width;look.v0=float(rect.py)/slot.height;
     look.u1=float(rect.px+rect.pw)/slot.width;look.v1=float(rect.py+rect.ph)/slot.height;
@@ -667,7 +672,9 @@ const Df3dWorld::PreparedUnitArt& Df3dWorld::prepareUnitArt(wm::UnitId id,
 
 godot::Color Df3dWorld::unitScaleFor(int slot, Color region, Vector2 size, uint32_t volume) {
     if (slot < 0 || !volume) return Color(1,0,0,1);
-    const auto& source = spriteResources_.slots[slot];
+    const TextureSlot* sourceSlot = spriteResources_.slots.find(slot);
+    ERR_FAIL_NULL_V_MSG(sourceSlot, Color(1,0,0,1), "stale sprite slot " + godot::String::num_int64(slot));
+    const auto& source = *sourceSlot;
     const int x = std::lround(region.r*source.width), y = std::lround(region.g*source.height);
     const int w = std::lround(region.b*source.width), h = std::lround(region.a*source.height);
     if (w <= 0 || h <= 0) return Color(1,0,0,1);
@@ -700,8 +707,8 @@ const Df3dWorld::UnitLook& Df3dWorld::unitLookFor(const std::string& species) {
         const assets::CreatureSprite r = assets::resolveCreature(assets_->index, species);
         if (r.found) {
             const int slot = slotFor(r.sprite.page, -1, false);
-            if (slot >= 0) {
-                const TextureSlot& s = spriteResources_.slots[static_cast<size_t>(slot)];
+            if (const TextureSlot* found = slot >= 0 ? spriteResources_.slots.find(slot) : nullptr) {
+                const TextureSlot& s = *found;
                 const assets::PixelRect px = assets_->index.pixels(r.sprite);
                 look.slot = slot;
                 look.region = Color(static_cast<float>(px.px) / s.width,
@@ -930,20 +937,22 @@ Ref<godot::Material> Df3dWorld::materialFor(const SurfaceKey& key) {
         sm.instantiate();
         sm->set_shader(key.kind == kSurfCutout ? terrainCutoutShader_ : terrainShader_);
         Dictionary parameters;
-        if (key.spatterSlot >= 0) {
-            parameters["spatter_cell"] = spriteResources_.slots[static_cast<size_t>(key.spatterSlot)].texture->get_meta("world_cell", Vector2());
+        if (const TextureSlot* spatter = key.spatterSlot >= 0 ? spriteResources_.slots.find(key.spatterSlot) : nullptr) {
+            ERR_FAIL_COND_V_MSG(spatter->texture.is_null(), sm, "spatter slot without texture");
+            parameters["spatter_cell"] = spatter->texture->get_meta("world_cell", Vector2());
             parameters["spattered"] = true;
-            parameters["spatter_tex"] = spriteResources_.slots[static_cast<size_t>(key.spatterSlot)].texture;
-        }
+            parameters["spatter_tex"] = spatter->texture;
+        } else ERR_FAIL_COND_V_MSG(key.spatterSlot >= 0, sm, "stale spatter slot " + godot::String::num_int64(key.spatterSlot));
         if (key.kind == kSurfHidden) {
             parameters["rock_backing"] = true;
             parameters["rock_backing_color"] = rock_backing_color();
         }
-        if (key.slot >= 0) {
-            parameters["albedo_tex"] = spriteResources_.slots[static_cast<size_t>(key.slot)].texture;
-            parameters["albedo_cell"] = spriteResources_.slots[static_cast<size_t>(key.slot)].texture->get_meta("world_cell", Vector2());
+        if (const TextureSlot* albedo = key.slot >= 0 ? spriteResources_.slots.find(key.slot) : nullptr) {
+            ERR_FAIL_COND_V_MSG(albedo->texture.is_null(), sm, "albedo slot without texture");
+            parameters["albedo_tex"] = albedo->texture;
+            parameters["albedo_cell"] = albedo->texture->get_meta("world_cell", Vector2());
             parameters["textured"] = true;
-        }
+        } else ERR_FAIL_COND_V_MSG(key.slot >= 0, sm, "stale albedo slot " + godot::String::num_int64(key.slot));
         configureImmutableMaterial(sm,parameters);
         materials_[key] = sm;
         return sm;
@@ -956,8 +965,8 @@ Ref<godot::Material> Df3dWorld::materialFor(const SurfaceKey& key) {
     m->set_shading_mode(StandardMaterial3D::SHADING_MODE_UNSHADED);
     m->set_roughness(1.0f);
     m->set_specular(0.1f);
-    if (key.slot >= 0) {
-        m->set_texture(StandardMaterial3D::TEXTURE_ALBEDO, spriteResources_.slots[static_cast<size_t>(key.slot)].texture);
+    if (const TextureSlot* albedo = key.slot >= 0 ? spriteResources_.slots.find(key.slot) : nullptr) {
+        m->set_texture(StandardMaterial3D::TEXTURE_ALBEDO, albedo->texture);
         m->set_texture_filter(StandardMaterial3D::TEXTURE_FILTER_NEAREST_WITH_MIPMAPS);
     }
     switch (key.kind) {

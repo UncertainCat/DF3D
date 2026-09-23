@@ -356,7 +356,10 @@ function Invoke-DfhackRaw {
     a terminal crash. With
     CreateNoWindow the child gets a private console and hides only that.
     #>
-    param([string[]]$CommandArgs, [int]$TimeoutSec = 0)
+    param([string[]]$CommandArgs, [int]$TimeoutSec = 30)
+    # A 30 s default: a hung DFHack (DF inside a save, hidden console) must never
+    # park the lane in WaitForExit forever. Callers that legitimately run long
+    # Lua stages pass their own -TimeoutSec; 0 or less waits without limit.
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = $script:DfhackRun
     $psi.Arguments = ($CommandArgs | ForEach-Object { ConvertTo-Win32Argument $_ }) -join ' '
@@ -391,10 +394,10 @@ function Invoke-Dfhack {
     receive header" and a bogus nonzero exit even though the server is
     healthy.
     #>
-    param([string[]]$CommandArgs, [int]$Retries = 3, [switch]$Quiet)
+    param([string[]]$CommandArgs, [int]$Retries = 3, [switch]$Quiet, [int]$TimeoutSec = 30)
     $code = 1
     for ($attempt = 1; $attempt -le $Retries; $attempt++) {
-        $r = Invoke-DfhackRaw $CommandArgs
+        $r = Invoke-DfhackRaw $CommandArgs -TimeoutSec $TimeoutSec
         $code = $r.ExitCode
         if (-not $Quiet) { $r.Output | ForEach-Object { Write-Host "    $_" } }
         if ($code -eq 0) { return 0 }

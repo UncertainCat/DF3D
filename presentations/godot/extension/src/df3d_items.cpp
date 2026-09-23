@@ -45,8 +45,8 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
         look.rule = r.rule;
         if (r.found) {
             const int slot = slotFor(r.sprite.page, r.paletteRow, false);
-            if (slot >= 0) {
-                const TextureSlot& s = spriteResources_.slots[static_cast<size_t>(slot)];
+            if (const TextureSlot* found = slot >= 0 ? spriteResources_.slots.find(slot) : nullptr) {
+                const TextureSlot& s = *found;
                 const assets::PixelRect px = assets_->index.pixels(r.sprite);
                 look.slot = slot;
                 look.region = Color(static_cast<float>(px.px) / s.width,

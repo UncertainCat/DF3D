@@ -5,6 +5,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import subprocess
 import shutil
 import sys
@@ -14,6 +15,32 @@ from diagnostics import console_summary, status_label
 
 BRIDGE_BINARY = ROOT / "external/dfhack/build/VC2022/plugins/external/df3d-plugin/Release/df3d.plug.dll"
 MINGW_BIN_DEFAULT = "C:/msys64/mingw64/bin"
+RUN_DIR_FORMAT = "%Y%m%d-%H%M%S-%f"
+RUN_DIR_PATTERN = re.compile(r"^\d{8}-\d{6}-\d{6}$")
+RUN_DIRS_KEPT = 10
+
+def prune_run_dirs(base, current, keep=RUN_DIRS_KEPT):
+    """Drop the oldest auto-named run directories under build/qa beyond the newest `keep`.
+
+    Only directories named by RUN_DIR_FORMAT are candidates: user-named --output
+    directories and the build stamps are never touched, nor is the run being written.
+    """
+    current = Path(current).resolve()
+    try:
+        runs = sorted(p for p in Path(base).iterdir() if p.is_dir() and RUN_DIR_PATTERN.match(p.name) and p.resolve() != current)
+    except OSError:
+        return []
+    # Names sort chronologically; keep the newest, counting an auto-named current run among them.
+    current_counts = current.parent == Path(base).resolve() and bool(RUN_DIR_PATTERN.match(current.name))
+    doomed = runs[:max(0, len(runs) - (keep - 1 if current_counts else keep))]
+    removed = []
+    for path in doomed:
+        try:
+            shutil.rmtree(path)
+            removed.append(path)
+        except OSError as exc:
+            print(f"could not prune old QA run {path}: {exc}", file=sys.stderr, flush=True)
+    return removed
 
 def powershell_executable(path=None):
     # Lane scripts target Windows PowerShell 5.1 (Add-Type console apps); pwsh is the fallback.
@@ -73,13 +100,19 @@ def optional_readiness(df_path, godot, env, allow_live=False, identity=None):
                 recorded_mature_fixture=recorded_mature_fixture_ready(),
                 synthetic_demo_fixture=(ROOT / "fixtures/synthetic/demo_fort.df3dfix").is_file())
 
-def products(name, binary):
+def products(name, binary, env=None):
     paths = {binary}
     if name == "root_build" and binary.exists():
-        listing = subprocess.check_output(["ctest", "--test-dir", str(ROOT / "build"), "--show-only=json-v1"])
-        for test in json.loads(listing)["tests"]:
-            command = test.get("command", [])
-            if command and Path(command[0]).is_file(): paths.add(Path(command[0]))
+        # The listing needs the gate's PATH (MinGW first). A failing or missing
+        # ctest degrades to the binary itself instead of aborting the gate.
+        try:
+            listing = subprocess.check_output(["ctest", "--test-dir", str(ROOT / "build"), "--show-only=json-v1"],
+                                              env=env, timeout=120)
+            for test in json.loads(listing)["tests"]:
+                command = test.get("command", [])
+                if command and Path(command[0]).is_file(): paths.add(Path(command[0]))
+        except (OSError, subprocess.SubprocessError, ValueError, KeyError) as exc:
+            print(f"{name}: ctest listing unavailable ({exc}); recording build products without it", file=sys.stderr, flush=True)
         paths.update((ROOT / "build/tools").glob("*.exe"))
     return {str(p.resolve()): digest(p) for p in sorted(paths) if p.is_file()}
 
@@ -128,10 +161,11 @@ def main():
         selected = [dict(row, timeout=args.check_timeout) for row in selected]
     if not selected:
         parser.error("No registered checks in this lane")
-    output = (args.output or ROOT / "build" / "qa" / datetime.datetime.now().strftime("%Y%m%d-%H%M%S-%f")).resolve()
+    output = (args.output or ROOT / "build" / "qa" / datetime.datetime.now().strftime(RUN_DIR_FORMAT)).resolve()
     if output.exists() and any(output.iterdir()):
         parser.error("Output directory must be empty; evidence is never overwritten")
     output.mkdir(parents=True, exist_ok=True)
+    prune_run_dirs(ROOT / "build" / "qa", output)
     env = os.environ.copy()
     env["DF3D_DF_PATH"] = args.df_path
     env["DF3D_GODOT"] = args.godot
@@ -155,7 +189,7 @@ def main():
                 prior = json.loads(stamp.read_text()) if stamp.exists() else {}
             except (OSError, json.JSONDecodeError):
                 prior = {}
-            readiness[name] = bool(binary.exists() and prior.get("source") == identity and prior.get("products") == products(name, binary))
+            readiness[name] = bool(binary.exists() and prior.get("source") == identity and prior.get("products") == products(name, binary, env))
             results.append({"id": name, "status": "passed" if readiness[name] else "incomplete", "reused": True,
                             "reasons": [] if readiness[name] else ["No matching source/binary build evidence"]})
             continue
@@ -174,7 +208,7 @@ def main():
         readiness[name] = is_success(result["status"]) and binary.exists()
         if readiness[name]:
             stamp.parent.mkdir(parents=True, exist_ok=True)
-            stamp.write_text(json.dumps({"source": identity, "products": products(name, binary)}, indent=2))
+            stamp.write_text(json.dumps({"source": identity, "products": products(name, binary, env)}, indent=2))
         elif is_success(result["status"]):
             result.update(status="incomplete", reasons=["Expected built binary missing"])
     readiness.update(optional_readiness(args.df_path, args.godot, env, args.allow_live, identity))
@@ -205,7 +239,7 @@ def main():
     final_identity = source_identity()
     if final_identity != identity:
         results.append({"id": "stable_source", "status": "incomplete", "reasons": ["Source changed while checks were running; repeat the gate"]})
-    binaries = {name: products(name, binary) for name, (_, binary) in builds.items() if name in needed and binary.exists()}
+    binaries = {name: products(name, binary, env) for name, (_, binary) in builds.items() if name in needed and binary.exists()}
     if Path(args.godot).is_file() and any(c["kind"] == "godot" or c["lane"] in ("gpu", "live") for c in selected):
         binaries["godot"] = {args.godot: digest(args.godot)}
     if any(c["lane"] in ("bridge", "live") for c in selected):

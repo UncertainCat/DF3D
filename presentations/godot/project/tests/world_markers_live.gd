@@ -43,5 +43,5 @@ func run():
 	assert(not evidence.is_empty(),"At least one naturally occurring supported status")
 	var f=FileAccess.open(output+"-data.json",FileAccess.WRITE)
 	f.store_string(JSON.stringify(evidence,"  "))
-	print("FLOOR_PROFILE_PASS")
+	print("WORLD_MARKERS_LIVE_PASS")
 	quit()

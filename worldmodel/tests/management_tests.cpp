@@ -21,6 +21,7 @@ struct ManagementPublisher {
     mapping=CreateFileMappingA(INVALID_HANDLE_VALUE,nullptr,PAGE_READWRITE,0,
       DWORD(shm::regionSize(mm::kManagementCapacity,mm::kManagementCommandCapacity)),name.c_str());
     REQUIRE(mapping);
+    REQUIRE(GetLastError()!=ERROR_ALREADY_EXISTS);  // a stale publisher would alias this test
     region=static_cast<shm::RegionHeader*>(MapViewOfFile(mapping,FILE_MAP_ALL_ACCESS,0,0,0));
     REQUIRE(region);
     shm::initRegion(region,mm::kManagementVersion,mm::kManagementCapacity,mm::kManagementCommandCapacity);

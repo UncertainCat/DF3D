@@ -146,5 +146,5 @@ func run():
 	file.store_string(JSON.stringify({"census":inventory,"phases":results,"variant_materials":materials.size(),
 		"semantics":"Census is enabled application geometry before engine frustum/occlusion/pass expansion. Monitor frame IDs are observation IDs, not guaranteed GPU completion IDs. Census getters outside measured windows. Paused fixed camera except running phase; shader variant diagnostic only."},"  "))
 	file.close()
-	print("FLOOR_PROFILE_PASS")
+	print("RENDER_ATTRIBUTION_LIVE_PASS")
 	quit()

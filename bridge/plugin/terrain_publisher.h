@@ -28,7 +28,10 @@ public:
     // External event hints are added after native job/unit hints, preserving
     // the publication order without coupling this owner to combat retention.
     void scan(uint64_t tick, void (*hintRecentCombat)(uint64_t));
+    // Blocks per update from the rotating cursor; clamped (scan_schedule.h).
     void setSliceBlocks(uint32_t);
+    uint32_t sliceBlocks() const;
+    // A full rescan is owed block by block over the following updates.
     void requestRescan();
     void printStatus(DFHack::color_ostream&) const;
     size_t materialCount() const;

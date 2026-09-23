@@ -1,7 +1,9 @@
 # Run with Windows PowerShell 5.1: powershell -File tools/smoke/attach_lifecycle_test.ps1
 # Real launcher/Job Object lifecycle with disposable stand-ins; no game is opened.
 $ErrorActionPreference = 'Stop'
-if (@(Get-Process 'Dwarf Fortress' -ErrorAction SilentlyContinue).Count) { throw 'Close DF before the isolated lifecycle test' }
+# A running DF is a missing prerequisite, not a defect: verify.py maps exit 77 plus
+# a QA_INCOMPLETE line to incomplete rather than failed.
+if (@(Get-Process 'Dwarf Fortress' -ErrorAction SilentlyContinue).Count) { Write-Output 'QA_INCOMPLETE: Dwarf Fortress is running; close it before the isolated attach lifecycle test'; exit 77 }
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $dir = Join-Path $repo ('build\attach-test-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Force "$dir\hack", "$dir\prefs", "$dir\dfhack-config\init" | Out-Null
@@ -52,4 +54,9 @@ try {
 } finally {
  if (-not $external.HasExited) { Stop-Process -Id $external.Id -Force }
  Remove-Item Env:ATTACH_TEST_WAIT, Env:ATTACH_TEST_PID -ErrorAction SilentlyContinue
+ # Stand-in binaries may stay locked briefly after their processes die.
+ for ($attempt = 0; $attempt -lt 10 -and (Test-Path -LiteralPath $dir); $attempt++) {
+  try { Remove-Item -LiteralPath $dir -Recurse -Force -Confirm:$false -ErrorAction Stop } catch { Start-Sleep -Milliseconds 500 }
+ }
+ if (Test-Path -LiteralPath $dir) { Write-Warning "Could not remove temporary directory $dir" }
 }

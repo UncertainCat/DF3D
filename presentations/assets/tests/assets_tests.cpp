@@ -7,8 +7,10 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest.h>
 
+#include <atomic>
 #include <chrono>
 #include <filesystem>
+#include <random>
 #include <fstream>
 #include <string>
 #include <set>
@@ -720,10 +722,29 @@ TEST_CASE("cache: serialise / deserialise round trip and key checks") {
 
 namespace {
 
+// A directory no earlier or concurrent run can have populated: unseeded
+// std::rand() named the same path every run, so stale cache files could
+// satisfy "cache miss" cases. create_directories reports whether this
+// process made the directory, so a collision is retried, never reused.
+fs::path uniqueTempDir(const char* prefix) {
+  static std::atomic<unsigned> counter{0};
+  std::random_device entropy;
+  const auto stamp = std::chrono::steady_clock::now().time_since_epoch().count();
+  for (int attempt = 0; attempt < 32; ++attempt) {
+    const fs::path candidate = fs::temp_directory_path() /
+        (std::string(prefix) + std::to_string(entropy()) + "_" + std::to_string(stamp) + "_" +
+         std::to_string(counter.fetch_add(1)));
+    std::error_code ec;
+    if (fs::create_directories(candidate, ec) && !ec) return candidate;
+  }
+  FAIL("could not create a unique temp directory");
+  return {};
+}
+
 struct TempInstall {
   fs::path root;
   TempInstall() {
-    root = fs::temp_directory_path() / ("df3d_assets_test_" + std::to_string(std::rand()));
+    root = uniqueTempDir("df3d_assets_test_");
     const fs::path mod = root / "data" / "vanilla";
     fs::create_directories(mod / "env" / "graphics");
     fs::create_directories(mod / "mats" / "objects");
@@ -748,6 +769,29 @@ struct TempInstall {
 };
 
 }  // namespace
+
+TEST_CASE("provider: every synthetic install is a fresh, unique directory") {
+  fs::path first, second;
+  {
+    TempInstall a;
+    TempInstall b;
+    first = a.root;
+    second = b.root;
+    CHECK(first != second);
+    CHECK(fs::exists(first));
+    CHECK(fs::exists(second));
+    // A new install never starts with a cache directory: a "cache miss" case
+    // can only be satisfied by the provider writing one during the test.
+    CHECK_FALSE(fs::exists(first / "cache"));
+    CHECK_FALSE(fs::exists(second / "cache"));
+    fs::create_directories(first / "cache");
+  }
+  CHECK_FALSE(fs::exists(first));
+  CHECK_FALSE(fs::exists(second));
+  TempInstall again;
+  CHECK(again.root != first);
+  CHECK_FALSE(fs::exists(again.root / "cache"));
+}
 
 TEST_CASE("provider: synthetic install, cache miss then hit, key mismatch regenerates") {
   TempInstall ti;

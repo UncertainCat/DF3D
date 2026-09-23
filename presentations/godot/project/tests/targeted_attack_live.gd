@@ -136,7 +136,14 @@ func run():
 	var reaction_seen := {}
 	var dead := {}
 	var finish_at := -1.0
-	var images: Array[Image] = []
+	# Frames stream to disk as captured (each 1280x720 image is ~3.7 MB, so a 30 s
+	# capture at 60 fps held in memory is several GB); the count is capped too.
+	var frame_limit := int(OS.get_environment("DF3D_CAPTURE_FRAME_LIMIT")) if OS.has_environment("DF3D_CAPTURE_FRAME_LIMIT") else 120
+	var frame_directory := output + "-frames"
+	var frames_written := 0
+	var frame_error: String = preload("res://tests/capture_frame_writer.gd").prepare(frame_directory)
+	if not frame_error.is_empty():
+		push_error(frame_error); quit(1); return
 	var times: Array = []
 	var start_tick: int = scene.world.bridge_tick()
 	var spatter_start: int = scene.world.spatter_revision()
@@ -263,7 +270,7 @@ func run():
 				var rendered_items = scene.world.item_ids() if not observed_corpses.is_empty() else PackedInt64Array()
 				for actor_id in arena_ids:
 					var trace_index: int = trace_ids.find(actor_id)
-					var row := {"schema":1,"kind":"render_unit","frame":images.size(),"seconds":elapsed,"tick":scene.world.bridge_tick(),"unit_id":actor_id,"listed":trace_index >= 0,"animation_clock":scene._actor_animation.clock,"top_z":scene.world.get_top_z(),"window":scene.world.get_window_depth()}
+					var row := {"schema":1,"kind":"render_unit","frame":frames_written,"seconds":elapsed,"tick":scene.world.bridge_tick(),"unit_id":actor_id,"listed":trace_index >= 0,"animation_clock":scene._actor_animation.clock,"top_z":scene.world.get_top_z(),"window":scene.world.get_window_depth()}
 					row.death_pose = scene._actor_deaths.active.has(actor_id)
 					row.corpses = []
 					for item_id in observed_corpses:
@@ -277,9 +284,13 @@ func run():
 						row.animation = pose.get("animation", "")
 						row.animation_start = pose.get("start", -1.0)
 					detailed_trace.append(JSON.stringify(row))
-			images.append(root.get_texture().get_image())
-			times.append(elapsed)
-			frame_ticks.append(scene.world.bridge_tick())
+			if frames_written < frame_limit:
+				frame_error = preload("res://tests/capture_frame_writer.gd").write_frame(root.get_texture().get_image(), frame_directory, frames_written)
+				if not frame_error.is_empty():
+					push_error(frame_error); quit(1); return
+				frames_written += 1
+				times.append(elapsed)
+				frame_ticks.append(scene.world.bridge_tick())
 	sound_clock.start = 0
 	sound_events = sound_events.filter(func(event): return event.seconds >= 0 and event.seconds < duration)
 	if not await set_paused(true):
@@ -291,12 +302,8 @@ func run():
 	var sound_trace := FileAccess.open(output + "-sound-trace.jsonl", FileAccess.WRITE)
 	for event in sound_events: sound_trace.store_line(JSON.stringify(event))
 	sound_trace.close()
-	var directory := output + "-frames"
-	var write_error: String = preload("res://tests/capture_frame_writer.gd").write(images, directory)
-	if not write_error.is_empty():
-		push_error(write_error); quit(1); return
-	FileAccess.open(output + ".json", FileAccess.WRITE).store_string(JSON.stringify({"kind":"live_staged_combat", "arena":arena,"setup":setup,"duration":duration,"frame_times":times,"fps_samples":fps_samples,"audio_listener_samples":listener_samples,"observations":observations,"native_observations":native_observations,"combat_events":combat_events,"resolved_attacks":resolved_attacks,"projectile_combat_events":projectile_combat,"projectile_combat_stats":scene.world.projectile_combat_stats(),"resolved_attack_stats":scene.world.resolved_attack_stats(),"item_contacts":item_contacts,"item_contact_stats":scene.world.item_contact_stats(),"sound_events":sound_events,"spatter_revision_start":spatter_start,"spatter_revision_end":scene.world.spatter_revision(),"feedback_stats":scene._gameplay_feedback.counters,"source_effect_stats":scene.world.effect_event_stats() if scene.world.has_method("effect_event_stats") else {},"effect_stats":scene._combat_effects.counters,"sfx_stats":scene._audio.sfx.counters,"flinches":reactions,"rendered_deaths":scene._actor_deaths.rendered_deaths,"ground_items":scene.world.item_ground_flags().count(1),"projectile_releases":projectile_releases,"projectiles_seen":projectiles_seen.keys(),"projectile_peak":projectile_peak,"shot_reactions":shot_reactions,"frame_ticks":frame_ticks,"tick_start":start_tick,"tick_end":scene.world.bridge_tick()}, "  "))
+	FileAccess.open(output + ".json", FileAccess.WRITE).store_string(JSON.stringify({"kind":"live_staged_combat", "arena":arena,"setup":setup,"duration":duration,"frame_times":times,"frame_limit":frame_limit,"frames_written":frames_written,"fps_samples":fps_samples,"audio_listener_samples":listener_samples,"observations":observations,"native_observations":native_observations,"combat_events":combat_events,"resolved_attacks":resolved_attacks,"projectile_combat_events":projectile_combat,"projectile_combat_stats":scene.world.projectile_combat_stats(),"resolved_attack_stats":scene.world.resolved_attack_stats(),"item_contacts":item_contacts,"item_contact_stats":scene.world.item_contact_stats(),"sound_events":sound_events,"spatter_revision_start":spatter_start,"spatter_revision_end":scene.world.spatter_revision(),"feedback_stats":scene._gameplay_feedback.counters,"source_effect_stats":scene.world.effect_event_stats() if scene.world.has_method("effect_event_stats") else {},"effect_stats":scene._combat_effects.counters,"sfx_stats":scene._audio.sfx.counters,"flinches":reactions,"rendered_deaths":scene._actor_deaths.rendered_deaths,"ground_items":scene.world.item_ground_flags().count(1),"projectile_releases":projectile_releases,"projectiles_seen":projectiles_seen.keys(),"projectile_peak":projectile_peak,"shot_reactions":shot_reactions,"frame_ticks":frame_ticks,"tick_start":start_tick,"tick_end":scene.world.bridge_tick()}, "  "))
 	if observations.is_empty() and combat_events.is_empty() and projectile_releases.is_empty():
 		push_error("No real targeted attack reached the renderer"); quit(1); return
-	print("FLOOR_PROFILE_PASS targeted_attacks=", observations.size(), " flinches=", reactions.size(), " deaths=", scene._actor_deaths.rendered_deaths, " releases=", projectile_releases.size(), " flying_peak=", projectile_peak, " frames=", images.size())
+	print("TARGETED_ATTACK_LIVE_PASS targeted_attacks=", observations.size(), " flinches=", reactions.size(), " deaths=", scene._actor_deaths.rendered_deaths, " releases=", projectile_releases.size(), " flying_peak=", projectile_peak, " frames=", frames_written)
 	quit()

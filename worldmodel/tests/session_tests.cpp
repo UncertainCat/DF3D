@@ -20,7 +20,10 @@ struct Publisher {
   Publisher() {
     mapping = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0,
         DWORD(sh::regionSize(m::kSessionCapacity, m::kSessionCommandCapacity)), name.c_str());
+    REQUIRE(mapping);
+    REQUIRE(GetLastError() != ERROR_ALREADY_EXISTS);  // a stale publisher would alias this test
     r = static_cast<sh::RegionHeader*>(MapViewOfFile(mapping, FILE_MAP_ALL_ACCESS, 0, 0, 0));
+    REQUIRE(r);
     reset();
   }
   void reset() {

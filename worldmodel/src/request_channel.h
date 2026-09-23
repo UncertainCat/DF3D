@@ -41,6 +41,11 @@ public:
     if (const char* e = df3d::shm::checkRegion(c.region_, config.version)) {
       error = e; return {};
     }
+    MEMORY_BASIC_INFORMATION view{};
+    if (!VirtualQuery(c.region_, &view, sizeof(view)) ||
+        df3d::shm::checkRegionSize(c.region_, static_cast<size_t>(view.RegionSize))) {
+      error = config.mappingFailed; return {};
+    }
     if (c.region_->snapshotCapacity != config.snapshotCapacity ||
         c.region_->commandCapacity != config.commandCapacity) {
       error = config.capacityMismatch; return {};

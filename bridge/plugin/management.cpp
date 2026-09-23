@@ -16,9 +16,20 @@
 #include "management_util.h"
 #include "management_helpers.h"
 #include "management_result_contract.h"
+#include "retry_backoff.h"
+// Same Windows prelude as df3d.cpp. The shared-memory transport (named
+// kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
+#ifdef _WIN32
 #include <windows.h>
+#else
+#error "df3d management channel: shared memory transport is Windows-only"
+#endif
 #include "client_mailbox.h"
 namespace df3d_management {
 namespace m = df3d::mirror;
@@ -27,6 +38,19 @@ using namespace DFHack;
 namespace {
 HANDLE mapping = nullptr;
 sh::RegionHeader* region = nullptr;
+// Region creation retries at most once per kStartRetryUpdates updates
+// (600 updates: a few seconds at DF's frame rate), warned once.
+constexpr uint32_t kStartRetryUpdates = 600;
+df3d_retry_backoff::Backoff startBackoff;
+bool warnedStartFailure = false;
+// Once-per-map-load log throttles for dropped requests.
+bool warnedMalformedRequest = false, warnedMailboxUnavailable = false;
+uint64_t rejectedRequests = 0;
+// Citizen rows whose unit id no longer resolves (a stale Lua-reported id).
+uint64_t staleUnitsSkipped = 0;
+// publish() falls back to a fixed minimal Rejected state when the built
+// response fails validation; the fallback itself must not recurse.
+bool publishingFallback = false;
 std::unique_ptr<sh::ClientMailbox> reply;
 uint64_t epoch = 0, revision = 0, client = 0, seq = 0;
 // Lua scanners need producer-wide identity: separate clients can both send seq 1.
@@ -177,23 +201,41 @@ void publish() {
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
+    if (publishingFallback) {
+      // The minimal fallback failed validation too: nothing sane to publish.
+      Core::getInstance().getConsole().printerr("df3d: management fallback response invalid: {}\n", *e);
+      return;
+    }
+    publishingFallback = true;
     clearResult();
     status = m::ManagementStatus::Rejected;
     message = "Invalid native management response: " + *e;
     publish();
+    publishingFallback = false;
     return;
   }
   sh::publishSnapshot(region, b.GetBufferPointer(), b.GetSize(), revision);
   if(reply)sh::publishSnapshot(reply->region(),b.GetBufferPointer(),b.GetSize(),revision);
   if(status!=m::ManagementStatus::Pending)reply.reset();
 }
-bool start() {
+bool start(color_ostream& out) {
   auto size = sh::regionSize(m::kManagementCapacity, m::kManagementCommandCapacity);
   mapping = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, DWORD(size),
                                m::kManagementRegionName);
-  if (!mapping) return false;
+  if (!mapping) {
+    if (!warnedStartFailure) { warnedStartFailure = true; out.printerr("df3d: management channel CreateFileMapping failed (error {}); retrying every {} updates (reported once)\n", GetLastError(), kStartRetryUpdates); }
+    return false;
+  }
   region = static_cast<sh::RegionHeader*>(MapViewOfFile(mapping, FILE_MAP_ALL_ACCESS, 0, 0, size));
-  if (!region) return false;
+  if (!region) {
+    // Keep no handle across a failed attempt: a retry per update would leak one each.
+    const auto error = GetLastError();
+    CloseHandle(mapping);
+    mapping = nullptr;
+    if (!warnedStartFailure) { warnedStartFailure = true; out.printerr("df3d: management channel MapViewOfFile failed (error {}); retrying every {} updates (reported once)\n", error, kStartRetryUpdates); }
+    return false;
+  }
+  warnedStartFailure = false;
   sh::initRegion(region, m::kManagementVersion, m::kManagementCapacity,
                  m::kManagementCommandCapacity);
   FILETIME ct{}, et{}, kt{}, ut{};
@@ -353,11 +395,14 @@ void run(color_ostream& out) {
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1))for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     each("citizens",32,[&](){
       CitizenInfo u;u.professionColor=int32_t(number(L,"profession_color",-1));u.professionId=int32_t(number(L,"profession_id",-1));u.jobType=int32_t(number(L,"job_type",-1));u.id=int32_t(number(L,"id",-1));u.age=int32_t(number(L,"age",-1));u.stress=int32_t(number(L,"stress"));u.x=int32_t(number(L,"x"));u.y=int32_t(number(L,"y"));u.z=int32_t(number(L,"z"));u.name=text(L,"name");u.profession=text(L,"profession");u.job=text(L,"job");u.reason=text(L,"reason");u.hasStress=boolean(L,"has_stress");u.canFocus=boolean(L,"can_focus");u.eligible=boolean(L,"eligible");
+      // A stale Lua-reported id (unit removed between the scan and this
+      // readback) must not reach the appearance resolver: skip the row.
       auto* nativeUnit=df::unit::find(u.id);
+      if(!nativeUnit){++staleUnitsSkipped;return;}
       u.sheetIcon.collect(nativeUnit);
       // Same semantic lookup as DFHack manipulator: a social event replaces
       // the idle caption only when there is no ordinary job. No UI state read.
-      if(nativeUnit && !nativeUnit->job.current_job) {
+      if(!nativeUnit->job.current_job) {
         if(auto* event=Units::getMainSocialEvent(nativeUnit)) {
           std::string description;event->getName(nativeUnit->id,&description);
           u.job=DF2UTF(description);u.socialActivity=true;
@@ -469,6 +514,8 @@ void stop() {
   request.clear();
   clearResult();
   status = m::ManagementStatus::Idle;
+  startBackoff.reset();
+  warnedStartFailure = false;
 }
 bool takeMutation() {
   bool result = mutated;
@@ -486,17 +533,38 @@ bool takeTerrainHint(int32_t& x, int32_t& y, int32_t& z) {
   z = hintZ;
   return true;
 }
+// Timing rows start at the Residents domain: the construction, area,
+// production and work-order actions before it predate the timing table and
+// were never profiled through it.
+constexpr size_t kFirstTimedAction = size_t(m::ManagementAction::CitizenList);
 void printTiming(color_ostream& out) {
-  for(size_t i=28;i<actionTimings.size();++i) {
+  for(size_t i=kFirstTimedAction;i<actionTimings.size();++i) {
     const auto& t=actionTimings[i];
     if(t.count) out.print("  management action {}: {} callbacks; {} / {} us last/max (native + serialization)\n",i,t.count,t.last,t.max);
   }
+  out.print("  management requests: {} rejected before dispatch, {} stale citizen rows skipped\n",rejectedRequests,staleUnitsSkipped);
+}
+// A request that cannot be dispatched still gets a visible outcome: the
+// broadcast region carries Rejected with the reason (and the client/seq when
+// they parsed), and the console says so once per map load.
+void rejectRequest(color_ostream& out, bool& warned, const std::string& reason) {
+  ++rejectedRequests;
+  if(!warned){warned=true;out.printerr("df3d: management request rejected: {} (reported once per map load)\n",reason);}
+  clearResult();
+  status=m::ManagementStatus::Rejected;
+  message=reason;
+  publish();
 }
 void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
-  if (!region && !start()) return;
+  if (!region) {
+    if (!startBackoff.due()) return;
+    if (!start(out)) { startBackoff.failed(kStartRetryUpdates); return; }
+    startBackoff.reset();
+  }
   if (epoch != worldEpoch) {
     helpers.reset();
     actionTimings={};
+    warnedMalformedRequest=warnedMailboxUnavailable=false;
     areaHints.clear();terrainHint=false;mutated=false;
     if(reply && status==m::ManagementStatus::Pending){status=m::ManagementStatus::Rejected;message="World changed before operation completed";publish();}
     reply.reset();
@@ -517,12 +585,26 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
   if(n==SIZE_MAX){sh::atomicStoreRelease(&region->cmdTail,sh::atomicLoadAcquire(&region->cmdHead));return;}
   if (n) {
     flatbuffers::Verifier v(bytes, n);
-    if (!v.VerifyBuffer<m::ConstructionRequest>(nullptr)) return;
+    if (!v.VerifyBuffer<m::ConstructionRequest>(nullptr)) {
+      // Unparseable: no client id or seq to address; the broadcast state
+      // still says a request was dropped and why.
+      client=seq=0;
+      rejectRequest(out,warnedMalformedRequest,"Malformed management request (FlatBuffers verification failed)");
+      return;
+    }
     auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(bytes);
-    if (m::validateConstructionRequest(*r)) return;
+    if (auto invalid=m::validateConstructionRequest(*r)) {
+      client=r->client_id();seq=r->seq();action=r->action();
+      rejectRequest(out,warnedMalformedRequest,"Invalid management request: "+*invalid);
+      return;
+    }
     auto nextReply=sh::ClientMailbox::open(m::kManagementRegionName,
         sh::atomicLoadAcquire(&m::sessionOwner(region)->generation),r->client_id(),m::kManagementVersion,m::kManagementCapacity);
-    if(!nextReply || !nextReply->accept(r->seq()))return;
+    if(!nextReply || !nextReply->accept(r->seq())) {
+      client=r->client_id();seq=r->seq();action=r->action();
+      rejectRequest(out,warnedMailboxUnavailable,nextReply ? "Client mailbox did not accept the request sequence" : "Client mailbox unavailable");
+      return;
+    }
     reply=std::move(nextReply);
     client=r->client_id();
     seq = r->seq();

@@ -369,8 +369,17 @@ class WorldModel {
   void restoreEvents(ModelEvents events);
 
   // --- ingestion (mirror-facing) ---
-  // `arrivalWallSeconds` is injected by the caller.
-  void ingest(const SnapshotData& snap, double arrivalWallSeconds);
+  // `arrivalWallSeconds` is injected by the caller. Returns false when the
+  // ordered event backlog (lifecycle + command results awaiting a drain)
+  // would exceed ModelEvents::kMaxRetainedBytes: the state is still applied
+  // and every earlier pending event is kept, but the receipts that did not
+  // fit are dropped and counted in eventBudgetDrops() (a dropped command
+  // result is not marked seen, so a bridge repeat can still deliver it
+  // after a drain). Never throws.
+  bool ingest(const SnapshotData& snap, double arrivalWallSeconds);
+  uint64_t eventBudgetDrops() const { return eventBudgetDrops_; }
+  // Last ingest-time fault (empty when none); cleared by resetSession().
+  const std::string& lastIngestError() const { return lastIngestError_; }
 
   // Clears all session-owned state. Consumers must discard cached identities,
   // versions and pending events when sessionGeneration() changes.
@@ -388,8 +397,16 @@ class WorldModel {
 
   // --- queries ---
   TilePos mapSize() const { return mapSize_; }
-  std::vector<UnitId> unitIds() const;  // every unit ever seen, sorted
+  // Every unit currently retained, sorted: present units plus those that
+  // departed within the last kDepartedRetentionTicks ticks.
+  std::vector<UnitId> unitIds() const;
   uint64_t unitMembershipVersion() const { return unitMembershipVersion_; }
+  // Retiring state is an explicit ownership responsibility: a departed
+  // unit's record (history, attacks, appearance) is evicted once the sim is
+  // this many ticks past its departure. One DF day; render evaluation trails
+  // the sim by tens of ticks, so consumers still see Departed for a while.
+  static constexpr Tick kDepartedRetentionTicks = 1200;
+  uint64_t departedUnitsEvicted() const { return departedEvictions_; }
   const std::string* unitSpecies(UnitId id) const;
   uint32_t unitBodyVolume(UnitId id) const;
   uint64_t unitStatusFlags(UnitId id) const;
@@ -444,7 +461,7 @@ class WorldModel {
   // --- unit appearance references ---
   // The latest appearance published for the unit, or nullptr if none has
   // arrived yet (a consumer draws its placeholder until then). Kept for
-  // departed units too. The pointer stays valid until the next ingest().
+  // departed units until eviction. The pointer stays valid until the next ingest().
   const UnitAppearance* unitAppearance(UnitId id) const;
   // Resolves model-wide page / palette ids; empty for unknown ids or
   // kNoPalette. Page names are TILE_PAGE tokens (e.g. "DWARF_BODY");
@@ -608,6 +625,7 @@ class WorldModel {
     std::optional<Tick> departedAt;
     std::optional<UnitAppearance> appearance;
     bool appearancePending = false;  // already in pendingAppearances_
+    uint64_t seenSerial = 0;  // ingestSerial_ of the last snapshot listing it
   };
 
   void ingestAppearances(const SnapshotData& snap);
@@ -634,7 +652,14 @@ class WorldModel {
 
   ModelEvents restoredEvents_;
   size_t pendingCommandBytes_ = 0;
-  void checkPendingEventBudget() const;
+  // True when `bytes` more of ordered receipts fit under the budget; else
+  // records the drop and returns false (the caller keeps the event out).
+  bool reservePendingEventBytes(size_t bytes);
+  uint64_t eventBudgetDrops_ = 0;
+  bool ingestBudgetExceeded_ = false;  // for the current ingest() call
+  std::string lastIngestError_;
+  uint64_t ingestSerial_ = 0;  // one per ingest(): stamps units seen this snapshot
+  uint64_t departedEvictions_ = 0;
   WorldModelConfig cfg_;
   uint64_t sessionGeneration_ = 0;
   SimClockEstimator clock_{cfg_.clock};

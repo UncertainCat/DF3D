@@ -44,9 +44,10 @@ Ref<Texture2D> Df3dWorld::ui_texture(const String& name, int variant) {
     composite->fill(Color(0,0,0,0));
     auto copy = [&](const df3d::assets::SpriteRef& sprite, int x, int y) {
         const int slot = slotFor(sprite.page, -1, false);
-        if (slot < 0) return;
+        const TextureSlot* found = slot >= 0 ? spriteResources_.slots.find(slot) : nullptr;
+        if (!found || found->texture.is_null()) return;
         const auto rect = index.pixels(sprite);
-        composite->blit_rect(spriteResources_.slots[slot].texture->get_image(), Rect2i(rect.px, rect.py, rect.pw, rect.ph), Vector2i(x * page->tileW, y * page->tileH));
+        composite->blit_rect(found->texture->get_image(), Rect2i(rect.px, rect.py, rect.pw, rect.ph), Vector2i(x * page->tileW, y * page->tileH));
     };
     if (layout) {
         for (int y=0; y<height; ++y) for (int x=0; x<width; ++x)

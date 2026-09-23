@@ -1,0 +1,1389 @@
+// Mirror schema — the single canonical definition.
+//
+// GAME SEMANTICS ONLY: no sprite, color, mesh, atlas, or any
+// other visual vocabulary may appear in this file — with one ruled
+// exception: *appearance references* — DF's own
+// resolved creature-graphics layers, named by the install's raw
+// identifiers (tile page token, tile coordinates, palette file, palette
+// row), for units (v3) and for corpse items (v5) — and DF's own classic
+// glyph data from the raws (`CREATURE_TILE` / `COLOR`, material `TILE` /
+// `BASIC_COLOR`, itemdef `TILE`; v5), so a presentation can draw anything
+// DF has no sprite for the way classic DF draws it. Both are references
+// into the user's install, never pixels.
+//
+// Every snapshot carries SchemaVersion.Current; consumers reject mismatches.
+
+namespace df3d.mirror;
+
+file_identifier "DF3S";
+
+enum SchemaVersion : uint32 { Current = 7 }
+
+/// Semantic activity of a unit. Grows as bridge coverage grows; values are
+/// append-only (never renumber).
+enum JobKind : uint16 {
+  Idle = 0,
+  Mine,
+  HaulItem,
+  ConstructBuilding,
+  Sleep,
+  Eat,
+  Drink,
+  Fight,
+  Flee,
+}
+
+struct TilePos {
+  x: int32;
+  y: int32;
+  z: int32;
+}
+
+/// Currently observed melee attack intent, not evidence of a hit. DF action
+/// identity is scoped to the attacking unit. Targets must be mirrored units.
+table UnitAttack {
+  action_id:int32 = -1;
+  target_unit_id:int32 = -1;
+  /// Raw DF counters: timer1 is wind-up, timer2 is subsequent recovery.
+  /// No impact time or outcome is inferred from these counters.
+  timer1:int32;
+  timer2:int32;
+}
+
+table UnitState {
+  id: uint64 (key);
+  /// Required in practice; validators reject units without a position.
+  pos: TilePos;
+  /// Creature raw identifier, e.g. "DWARF", "GOBLIN". A string because DF
+  /// creatures are moddable and procedurally generated — a closed enum
+  /// cannot enumerate them.
+  species: string;
+  job: JobKind = Idle;
+  /// Optional additive v7 field; old recordings have no attack observations.
+  attack: UnitAttack;
+  /// Current physical body volume in cubic centimeters. Zero means unknown.
+  body_volume_cm3:uint32;
+  /// Optional semantic condition facts; absent in earlier recordings.
+  /// Bit43: Baby, from the source baby classification; not a size heuristic.
+  status_flags:uint64 = 0;
+}
+
+// --- Terrain ---
+// Granularity is the DF map block: 16x16 tiles at one z level. All enums
+// below are append-only (never renumber).
+
+/// Structural shape of a tile. Semantic vocabulary only.
+enum TileShape : uint8 {
+  Empty = 0,       // open air / nothing here
+  Wall,
+  Floor,
+  Ramp,
+  RampTop,         // the open tile above a ramp
+  StairUp,
+  StairDown,
+  StairUpDown,
+  Fortification,
+  Boulder,
+  Pebbles,
+  TreeTrunk,
+  TreeBranch,
+  Shrub,
+  Sapling,
+  Unknown,         // bridge could not classify; consumers treat as opaque
+}
+
+/// Broad class of the substance a tile is made of. The exact raw identifier
+/// is `TileState.material` (index into `Snapshot.materials`). Water/Magma
+/// are reserved for tiles whose own substance is a liquid product; flowing
+/// liquid on a tile is carried by `liquid_kind`/`liquid_level` instead so a
+/// flooded floor keeps its floor material.
+enum MaterialKind : uint8 {
+  None = 0,
+  Stone,
+  Soil,
+  Mineral,         // ore / gem veins embedded in stone layers
+  Gem,
+  Ice,
+  Wood,
+  Plant,
+  Grass,
+  Constructed,
+  Water,
+  Magma,
+  Unknown,
+}
+
+/// Liquid present on a tile (independent of the tile's own material).
+enum LiquidKind : uint8 {
+  None = 0,
+  Water,
+  Magma,
+}
+
+/// Per-tile flags (bitfield). Values are single bits.
+enum TileFlags : uint8 (bit_flags) {
+  Hidden,          // not yet revealed to the player
+  DigDesignated,   // any dig/channel/ramp/stair designation
+  Smooth,          // already smoothed (tiletype special SMOOTH / TRACK)
+  Engraved,
+  Outside,         // open to the sky
+  /// v6: a pending smooth designation (DF `designation.smooth`
+  /// = 1) — the work is not done yet; `Smooth` is the finished state.
+  SmoothDesignated,
+  /// v6: a pending engrave designation (`designation.smooth` = 2).
+  EngraveDesignated,
+  DigAuto, // native occupancy.dig_auto, automatic vein mining
+}
+
+/// Pending operation, whether represented by a native designation or an active
+/// tile job. Unknown is reserved for older fixtures that carried only flags.
+enum DesignationKind : uint8 {
+  None = 0, Dig, Channel, StairUp, StairDown, StairUpDown, Ramp,
+  RemoveConstruction, Chop, Gather, Smooth, Engrave, Fortify, Unknown
+}
+
+/// Fixed-size per-tile state (8 bytes; 256 per MapBlock).
+struct TileState {
+  shape: TileShape;
+  material_kind: MaterialKind;
+  /// Index into `Snapshot.materials` of the same snapshot; 0xFFFF = none.
+  material: uint16;
+  /// 0..7 on DF's scale; 0 means no liquid (then liquid_kind must be None,
+  /// and vice versa).
+  liquid_level: uint8;
+  liquid_kind: LiquidKind;
+  flags: TileFlags;
+  designation: DesignationKind;
+}
+
+/// Sparse per-block designation metadata. Absent entries mean unknown priority
+/// and ordinary (not marker-only) work. Does not change the fixed TileState ABI.
+struct DesignationDetail {
+  tile_index:uint16;
+  priority:uint8; // 0 unknown, 1 highest .. 7 lowest
+  marker:bool; // planned only: DF occupancy.dig_marked
+}
+
+/// One 16x16 block of tiles at z level `bz`. Coordinates are in block
+/// units (tile x = bx*16 + local x). `tiles` holds exactly 256 entries in
+/// row-major order (local y outer, local x inner). Tiles in a partial edge
+/// block that fall outside `Snapshot.map_size` are padding and ignored.
+struct MapIndicator {
+  tile_index:uint16;
+  track:uint8; // N=1, S=2, E=4, W=8; pending carve-track occupancy
+  traffic:uint8; // DF Normal=0, Low=1, High=2, Restricted=3
+  warnings:uint8; // damp=1, warm=2; known mining warning facts
+}
+
+table MapBlock {
+  bx: int32;
+  by: int32;
+  bz: int32;
+  tiles: [TileState];
+  designation_details:[DesignationDetail];
+  indicators:[MapIndicator];
+  track_clearance_blocked:[uint16]; // sparse tile indices; occupancy blocks ramp traversal
+  track_horizontal_blocked:[uint16]; // occupancy blocks candidate tile traversal
+  track_support:[uint16]; // native wall/fortification supports ramps, independent of render shape
+  track_open:[uint16]; // native OpenSpace/Chasm/EeriePit above ascending ramps
+}
+
+/// What `Snapshot.blocks` covers. Consumers apply blocks by upserting on
+/// (bx, by, bz) regardless of scope; the scope tells them what is absent.
+enum TerrainScope : uint8 {
+  /// No terrain information in this snapshot (units-only).
+  None = 0,
+  /// `blocks` holds only blocks changed since the previous snapshot in the
+  /// stream. Invalid before any Full has been seen in the stream.
+  Delta,
+  /// `blocks` holds every block of the map (the base state).
+  Full,
+}
+
+// --- Unit appearance references ---
+// How DF draws a unit, as DF resolved it: an ordered stack of tile-page
+// regions (bottom first), each optionally recoloured through a palette row.
+// Everything is a reference into the install's graphics raws; layer 4
+// resolves tile page tokens through its raw index and palette files
+// relative to the install root. Pixels never cross the mirror.
+
+/// One drawn layer (16 bytes). A large image spans `cells_x` x `cells_y`
+/// tiles starting at (tile_x, tile_y) on the page.
+struct AppearanceLayer {
+  /// Index into `Snapshot.tile_pages` (a TILE_PAGE token, e.g. "DWARF_BODY").
+  page: uint16;
+  tile_x: uint16;
+  tile_y: uint16;
+  cells_x: uint8;
+  cells_y: uint8;
+  /// Index into `Snapshot.palettes`; 0xFFFF = drawn as-is (no recolour).
+  palette: uint16;
+  /// Row of the palette file whose colours replace the key colours; -1
+  /// when `palette` is none.
+  palette_row: int16;
+  /// Row of the palette file the art is painted in (its key colours;
+  /// LS_PALETTE_DEFAULT); -1 when `palette` is none.
+  palette_key_row: int16;
+  /// Pixel offset of this layer within the unit's image (LG_OFFSET).
+  offset_x: int8;
+  offset_y: int8;
+}
+
+/// The appearance of one unit. `version` changes whenever the layer stack
+/// changes (a hash of the layers); consumers keep the latest per unit.
+/// An empty `layers` means DF has no graphics for the unit.
+table UnitAppearance {
+  unit: uint64;
+  version: uint32;
+  layers: [AppearanceLayer];
+}
+
+/// What `Snapshot.appearances` covers.
+enum AppearanceScope : uint8 {
+  /// No appearance information in this snapshot.
+  None = 0,
+  /// Only units whose appearance changed since their last publication,
+  /// plus a rotating refresh slice (so a late-attaching consumer converges
+  /// within one refresh period). Consumers upsert per unit.
+  Delta,
+  /// Every unit in `units` has an entry.
+  Full,
+}
+
+// --- Buildings and map items ---
+// Both tables are keyed by DF's own ids and streamed incrementally with a
+// shared ChangeScope (Full = every entity present, Delta = changed or new
+// entities plus `removed_*` ids, None = nothing about this table in the
+// snapshot). Consumers upsert by id regardless of scope; a Delta before any
+// Full is invalid (stream rule, like terrain). All enums are append-only.
+
+/// What a table of entities covers in this snapshot.
+enum ChangeScope : uint8 {
+  None = 0,
+  /// Only entities changed or new since the previous snapshot in the
+  /// stream, plus a `removed_*` id list. Invalid before any Full.
+  Delta,
+  /// Every entity present; anything a consumer holds that is absent here
+  /// no longer exists.
+  Full,
+}
+
+/// Mirrors DF's `building_type` (df-structures), same order, offset by one
+/// so 0 is Unknown. `Construction` is deliberately absent: constructions
+/// are terrain (TileShape / MaterialKind::Constructed), never buildings.
+enum BuildingKind : uint8 {
+  Unknown = 0,
+  Chair,           // building_chairst
+  Bed,             // building_bedst
+  Table,           // building_tablest
+  Coffin,          // building_coffinst
+  FarmPlot,        // building_farmplotst
+  Furnace,         // building_furnacest    subtype = furnace_type
+  TradeDepot,      // building_tradedepotst
+  Shop,            // building_shopst       subtype = shop_type
+  Door,            // building_doorst
+  Floodgate,       // building_floodgatest
+  Box,             // building_boxst (chest / coffer / bag)
+  Weaponrack,      // building_weaponrackst
+  Armorstand,      // building_armorstandst
+  Workshop,        // building_workshopst   subtype = workshop_type
+  Cabinet,         // building_cabinetst
+  Statue,          // building_statuest
+  WindowGlass,     // building_window_glassst
+  WindowGem,       // building_window_gemst
+  Well,            // building_wellst
+  Bridge,          // building_bridgest
+  RoadDirt,        // building_road_dirtst
+  RoadPaved,       // building_road_pavedst
+  SiegeEngine,     // building_siegeenginest subtype = siegeengine_type
+  Trap,            // building_trapst       subtype = trap_type
+  AnimalTrap,      // building_animaltrapst
+  Support,         // building_supportst
+  ArcheryTarget,   // building_archerytargetst
+  Chain,           // building_chainst (restraint)
+  Cage,            // building_cagest
+  Stockpile,       // building_stockpilest
+  Civzone,         // building_civzonest    subtype = civzone_type
+  Weapon,          // building_weaponst (upright spear / spike)
+  Wagon,           // building_wagonst
+  ScrewPump,       // building_screw_pumpst
+  Hatch,           // building_hatchst
+  GrateWall,       // building_grate_wallst
+  GrateFloor,      // building_grate_floorst
+  BarsVertical,    // building_bars_verticalst
+  BarsFloor,       // building_bars_floorst
+  GearAssembly,    // building_gear_assemblyst
+  AxleHorizontal,  // building_axle_horizontalst
+  AxleVertical,    // building_axle_verticalst
+  WaterWheel,      // building_water_wheelst
+  Windmill,        // building_windmillst
+  TractionBench,   // building_traction_benchst
+  Slab,            // building_slabst
+  Nest,            // building_nestst
+  NestBox,         // building_nest_boxst
+  Hive,            // building_hivest
+  Rollers,         // building_rollersst
+  Instrument,      // building_instrumentst
+  Bookcase,        // building_bookcasest
+  DisplayFurniture,// building_display_furniturest
+  OfferingPlace,   // building_offering_placest
+}
+
+/// Construction state of a building.
+enum BuildingStage : uint8 {
+  /// Designated, no work done yet.
+  Planned = 0,
+  /// Some construction stages done (DF `getBuildStage() > 0`) but not all.
+  InProgress,
+  /// DF `getBuildStage() == getMaxBuildStage()`.
+  Complete,
+}
+
+/// Per-building flags (bitfield). Kept small on purpose.
+enum BuildingFlags : uint8 (bit_flags) {
+  Forbidden,       // DF `flags.forbid`
+  RoomAssigned,    // DF: the building owns / belongs to an assigned room
+}
+
+/// One DF building: a rectangle at one z, optionally masked by `extents`.
+table Building {
+  /// DF `building.id`.
+  id: uint32;
+  kind: BuildingKind = Unknown;
+  /// DF per-kind subtype index: `workshop_type` for Workshop, `furnace_type`
+  /// for Furnace, `trap_type` for Trap, `siegeengine_type` for SiegeEngine,
+  /// `shop_type` for Shop, `civzone_type` for Civzone; 0xFFFF for kinds
+  /// without one (`kNoSubtype`).
+  subtype: uint16 = 65535;
+  /// Raw id of a custom workshop / furnace (`building_def.code`, e.g.
+  /// "SOAP_MAKER") when subtype is the kind's Custom value; else empty.
+  custom: string;
+  /// Inclusive bounding rectangle at one z level (DF x1/y1/x2/y2/z).
+  x1: int32;
+  y1: int32;
+  x2: int32;
+  y2: int32;
+  z: int32;
+  /// DF `centerx` / `centery`; inside the rectangle.
+  center_x: int32;
+  center_y: int32;
+  /// Optional per-tile occupancy, row-major over the rectangle (y outer),
+  /// exactly (x2-x1+1)*(y2-y1+1) bytes of 0 / 1 when present; empty = the
+  /// whole rectangle is occupied. DF `room.extents` for stockpiles, zones,
+  /// farm plots and other free-form buildings.
+  extents: [uint8];
+  /// Index into `Snapshot.materials` (shared with terrain); 0xFFFF = none.
+  material: uint16 = 65535;
+  stage: BuildingStage = Complete;
+  flags: BuildingFlags = 0;
+}
+
+/// Mirrors DF's `item_type` (df-structures), same order, offset by one so
+/// 0 is Unknown. Comments give DF's token.
+enum ItemKind : uint8 {
+  Unknown = 0,
+  Bar,               // BAR
+  SmallGem,          // SMALLGEM
+  Blocks,            // BLOCKS
+  Rough,             // ROUGH
+  Boulder,           // BOULDER
+  Wood,              // WOOD (a log)
+  Door,              // DOOR
+  Floodgate,         // FLOODGATE
+  Bed,               // BED
+  Chair,             // CHAIR
+  Chain,             // CHAIN
+  Flask,             // FLASK
+  Goblet,            // GOBLET
+  Instrument,        // INSTRUMENT
+  Toy,               // TOY
+  Window,            // WINDOW
+  Cage,              // CAGE
+  Barrel,            // BARREL
+  Bucket,            // BUCKET
+  AnimalTrap,        // ANIMALTRAP
+  Table,             // TABLE
+  Coffin,            // COFFIN
+  Statue,            // STATUE
+  Corpse,            // CORPSE
+  Weapon,            // WEAPON
+  Armor,             // ARMOR
+  Shoes,             // SHOES
+  Shield,            // SHIELD
+  Helm,              // HELM
+  Gloves,            // GLOVES
+  Box,               // BOX
+  Bag,               // BAG
+  Bin,               // BIN
+  Armorstand,        // ARMORSTAND
+  Weaponrack,        // WEAPONRACK
+  Cabinet,           // CABINET
+  Figurine,          // FIGURINE
+  Amulet,            // AMULET
+  Scepter,           // SCEPTER
+  Ammo,              // AMMO
+  Crown,             // CROWN
+  Ring,              // RING
+  Earring,           // EARRING
+  Bracelet,          // BRACELET
+  Gem,               // GEM
+  Anvil,             // ANVIL
+  CorpsePiece,       // CORPSEPIECE
+  Remains,           // REMAINS
+  Meat,              // MEAT
+  Fish,              // FISH
+  FishRaw,           // FISH_RAW
+  Vermin,            // VERMIN
+  Pet,               // PET
+  Seeds,             // SEEDS
+  Plant,             // PLANT
+  SkinTanned,        // SKIN_TANNED
+  PlantGrowth,       // PLANT_GROWTH
+  Thread,            // THREAD
+  Cloth,             // CLOTH
+  Totem,             // TOTEM
+  Pants,             // PANTS
+  Backpack,          // BACKPACK
+  Quiver,            // QUIVER
+  CatapultParts,     // CATAPULTPARTS
+  BallistaParts,     // BALLISTAPARTS
+  SiegeAmmo,         // SIEGEAMMO
+  BallistaArrowhead, // BALLISTAARROWHEAD
+  TrapParts,         // TRAPPARTS
+  TrapComp,          // TRAPCOMP
+  Drink,             // DRINK
+  PowderMisc,        // POWDER_MISC
+  Cheese,            // CHEESE
+  Food,              // FOOD
+  LiquidMisc,        // LIQUID_MISC
+  Coin,              // COIN
+  Glob,              // GLOB
+  Rock,              // ROCK
+  PipeSection,       // PIPE_SECTION
+  HatchCover,        // HATCH_COVER
+  Grate,             // GRATE
+  Quern,             // QUERN
+  Millstone,         // MILLSTONE
+  Splint,            // SPLINT
+  Crutch,            // CRUTCH
+  TractionBench,     // TRACTION_BENCH
+  OrthopedicCast,    // ORTHOPEDIC_CAST
+  Tool,              // TOOL
+  Slab,              // SLAB
+  Egg,               // EGG
+  Book,              // BOOK
+  Sheet,             // SHEET
+  Branch,            // BRANCH
+}
+
+/// Per-item flags (bitfield): DF `item.flags` bits of the same name.
+enum ItemFlags : uint8 (bit_flags) {
+  Forbidden,
+  Dump,
+  Melt,
+  OnFire,
+  Rotten,
+  Artifact,
+  /// DF `flags.spider_web`: a THREAD item that is a spider's web on the
+  /// ground (v5).
+  Web,
+}
+
+/// What a corpse or body-part item counts as: DF's
+/// `item_body_component.corpse_flags` (`ITEM_BODY_COMPONENT_FLAG_*`) bit
+/// for bit (v5). Only Corpse / CorpsePiece items carry any; 0 on
+/// every other kind. A whole corpse with `Bone` and without `Rottable` has
+/// rotted to a skeleton (derivation, verification PENDING).
+enum CorpseFlags : uint16 (bit_flags) {
+  Unbutchered,     // BUTCHERABLE
+  Plant,           // COUNTS_AS_PLANT_MATERIAL
+  Silk,
+  Leather,         // skin
+  Bone,
+  Shell,
+  Wood,
+  Soap,
+  Tooth,
+  Horn,
+  Pearl,
+  Rottable,        // rottable tissue remains
+  Skull,           // TOTEMABLE
+  HairWool,        // COUNTS_AS_STRAND_TISSUE
+  Yarn,
+}
+
+/// One item lying on a map tile (DF `flags.on_ground`): not in a unit's
+/// inventory, a container or a building, except items on a stockpile's
+/// floor, which are on the ground. Hauling removes it from the map;
+/// dropping adds it.
+table MapItem {
+  /// DF `item.id`.
+  id: uint32;
+  kind: ItemKind = Unknown;
+  /// DF `item.getSubtype()` (index into the itemdef list of the kind:
+  /// itemdef_weaponst for Weapon, itemdef_armorst for Armor, ...); 0xFFFF
+  /// for kinds without one.
+  subtype: uint16 = 65535;
+  /// The itemdef's raw id (e.g. "ITEM_WEAPON_PICK") when `subtype` is
+  /// set; else empty.
+  subtype_raw: string;
+  /// Index into `Snapshot.materials` (shared with terrain); 0xFFFF = none.
+  material: uint16 = 65535;
+  /// Required in practice; validators reject items without a position.
+  pos: TilePos;
+  /// DF `stack_size`; >= 1.
+  stack: uint32 = 1;
+  flags: ItemFlags = 0;
+  /// v5: what a Corpse / CorpsePiece counts as; 0 for every other kind.
+  corpse_flags: CorpseFlags = 0;
+  /// Native item_body_component.unit_id; -1 if unknown or not a body component.
+  corpse_unit_id: int32 = -1;
+}
+
+
+// --- Corpse appearance references and classic glyphs ---
+
+/// The appearance of one map item, as DF resolved it (today: items of
+/// kind Corpse and CorpsePiece, through the creature's CORPSE layer set
+/// or simple CORPSE sprite, or the hardcoded body-part tiles). Same layer
+/// vocabulary and tables (`tile_pages`, `palettes`) as UnitAppearance;
+/// `version` is the stack hash. An empty `layers` means DF has no
+/// page-resolvable art for the item.
+table ItemAppearance {
+  /// DF item id; must name an item present in `items` of this snapshot.
+  item: uint32;
+  version: uint32;
+  layers: [AppearanceLayer];
+}
+
+/// A classic (CP437 / curses) glyph as DF's raws define it: the tile's
+/// code point and DF's colour triple (foreground 0..7, background 0..7,
+/// bright 0/1). 4 bytes.
+struct Glyph {
+  tile: uint8;
+  fg: uint8;
+  bg: uint8;
+  bright: uint8;
+}
+
+/// Classic glyph of a creature: `[CREATURE_TILE]` + `[COLOR:f:b:br]` of the
+/// creature raw (caste overrides are not carried).
+table CreatureGlyph {
+  /// Creature raw identifier, as `UnitState.species`.
+  species: string;
+  glyph: Glyph;
+  /// `[SOLDIER_TILE]` when set, else the same as `glyph.tile`.
+  soldier_tile: uint8;
+}
+
+/// Classic glyph data of a material: `[TILE]` (the tile of boulders /
+/// walls of the material), `[ITEM_SYMBOL]` (gems), `[BASIC_COLOR:fg:br]`
+/// (items made of it), `[BUILD_COLOR]` and `[TILE_COLOR]` (constructions
+/// and tiles), as df-structures exposes them. Measured against the raws
+/// (DF 53.16): `tile_color` is `[DISPLAY_COLOR:fg:bg:br]`
+/// verbatim, `basic_fg` / `basic_bright` are DISPLAY_COLOR's fg and br
+/// (the colour of an item of the material on a black cell), and `build`
+/// is `[BUILD_COLOR]` when the raw gives one, else DF's default derived
+/// from DISPLAY_COLOR (granite 7:0:0 -> 0:7:0).
+table MaterialGlyph {
+  /// Raw material identifier, the same string as in `Snapshot.materials`.
+  material: string;
+  tile: uint8;
+  item_symbol: uint8;
+  basic_fg: uint8;
+  basic_bright: uint8;
+  build: Glyph;
+  tile_color: Glyph;
+}
+
+/// Classic tile of an itemdef that carries one (`[TILE]` on tools).
+table ItemDefGlyph {
+  kind: ItemKind = Unknown;
+  /// The itemdef's raw id, as `MapItem.subtype_raw`.
+  subtype_raw: string;
+  tile: uint8;
+}
+
+/// Per-tick snapshot. Units are full-state every snapshot; terrain is
+/// incremental via `terrain_scope`; appearances are incremental via
+/// `appearance_scope` (v3);
+/// buildings and map items via `building_scope` / `item_scope` (v4).
+/// Confirmed combat outcomes, retained briefly to survive skipped snapshots.
+enum CombatEventKind : uint8 { Wound = 1, Death = 2 }
+/// Item identity sampled at the source event, including carried items absent
+/// from the ground-item stream. Raw semantic identifiers, not presentation cues.
+table EventItem {
+  id: int32 = -1;
+  type: string;
+  subtype_raw: string;
+  material: string;
+  material_flags: uint32;
+  material_flags_known: bool;
+  melee_skill: string;
+}
+
+/// Positive physical impact between two identified items. Pair order does not
+/// imply attacker/defender roles. Intent, proximity and inferred pairs excluded.
+table ItemContactEvent {
+  id: uint64;
+  tick: uint64;
+  first: EventItem (required);
+  second: EventItem (required);
+  pos: TilePos;
+}
+/// Exact equipment contact within one native melee execution.
+table AttackContact {
+  first: EventItem (required);
+  second: EventItem (required);
+}
+// Stable semantic masks, deliberately independent of native bit positions.
+enum AttackDamageFlag:uint32 (bit_flags) {
+  Cut, Smashed, SmashedApart, Broken, Gouged, CompoundFracture,
+  MotorNerveSevered, SensoryNerveSevered, MajorArtery, GutsSpilled
+}
+enum AttackAnatomyFlag:uint32 (bit_flags) { Head, Thought, Circulation, Throat, Internal }
+table AttackWoundPart {
+  body_part_id: int32 = -1;
+  layer_id: int32 = -1;
+  body_part_token: string;
+  body_part_category: string;
+  damage_flags: uint32;
+  anatomy_flags: uint32;
+}
+table AttackWound {
+  wound_id: int32 = -1;
+  victim_id: int32 = -1;
+  severed_part: bool;
+  popped_out: bool;
+  parts: [AttackWoundPart];
+  parts_complete: bool;
+}
+
+/// Published after execution returns; empty results are not a proven miss.
+/// Each completeness flag covers only its named observation channel.
+enum ProjectileCombatKind:uint8 { Unknown, Release, HitCreature, Blocked, GroundImpact }
+enum WeaponLauncher:uint8 { Unknown, Bow, Crossbow, Ballista }
+table ProjectileCombatEvent {
+  id:uint64;
+  tick:uint64;
+  projectile_id:int32;
+  source_unit_id:int32 = -1;
+  target_unit_id:int32 = -1;
+  kind:ProjectileCombatKind;
+  launcher:WeaponLauncher;
+  ammunition:EventItem;
+  weapon:EventItem;
+  pos:TilePos;
+  context_complete:bool;
+}
+
+enum AttackOutcome:uint8 { Unknown, Miss, Hit, Blocked, ParrySuccess, ParryFailed, Wrestle }
+table ResolvedAttack {
+  id: uint64;
+  tick: uint64;
+  attacker_id: int32 = -1;
+  defender_id: int32 = -1;
+  action_id: int32 = -1;
+  weapon: EventItem;
+  pos: TilePos;
+  contacts: [AttackContact];
+  equipment_contacts_complete: bool;
+  wounds: [AttackWound];
+  wounds_complete: bool;
+  outcome: AttackOutcome = Unknown;
+  outcome_complete: bool;
+  weapon_context_complete: bool;
+}
+
+table CombatEvent {
+  id: uint64;
+  tick: uint64;
+  kind: CombatEventKind = Wound;
+  attacker_id: int32 = -1;
+  victim_id: int32 = -1;
+  wound_id: int32 = -1;
+  pos: TilePos;
+  report_id: int32 = -1;
+  /// Context only: exactly one matching recovering melee action was observed.
+  /// This is not proof that this action/weapon caused this particular wound.
+  source_action_id: int32 = -1;
+  weapon: EventItem;
+}
+
+/// Observed projectile samples, not inferred ballistic trajectories.
+table ProjectileSample {
+  sequence: uint64;
+  projectile_id: uint64;
+  tick: uint64;
+  item_id: int32 = -1;
+  firer_id: int32 = -1;
+  pos: TilePos;
+  previous: TilePos;
+  origin: TilePos;
+  target: TilePos;
+  active: bool = true;
+  first_observed: bool = false;
+  ammunition: EventItem;
+  launcher: EventItem;
+}
+
+/// Newly created native report. Its token is authoritative; tokens such as
+/// COMBAT_PARRY do not themselves distinguish a successful/failed defense.
+/// Continuation lines and updates to repeat_count are not additional events.
+table ReportEvent {
+  id: uint64;
+  tick: uint64;
+  report_id: int32 = -1;
+  type: string;
+  pos: TilePos;
+  pos2: TilePos;
+  repeat_count: uint32;
+  speaker_id: int32 = -1;
+}
+
+/// Native material contamination on one tile. Amount is DF's 1..255 value,
+/// independent of liquid depth. No record means the material is absent.
+enum MatterState : uint8 { Solid = 0, Liquid, Gas, Powder, Paste, Pressed }
+struct GroundSpatter {
+  tile: uint8; // row-major local y*16+x
+  amount: uint8;
+  material: uint16;
+  state: MatterState;
+}
+/// Complete replacement for the listed block, including empty removal records.
+table SpatterBlock {
+  bx: int32;
+  by: int32;
+  bz: int32;
+  entries: [GroundSpatter];
+}
+
+table Snapshot {
+  schema_version: uint32;
+  /// DF simulation tick this snapshot was captured at (a safe point).
+  tick: uint64;
+  /// Bridge wall clock when the snapshot was published (unix milliseconds).
+  /// Transport metadata: lets recorded fixtures replay with realistic
+  /// arrival timing. Not simulation state.
+  emitted_at_ms: uint64;
+  /// Exclusive upper bound for tile positions; all components positive.
+  map_size: TilePos;
+  units: [UnitState];
+  terrain_scope: TerrainScope = None;
+  blocks: [MapBlock];
+  /// Per-snapshot string table of raw material identifiers referenced by
+  /// `TileState.material`, `Building.material` and `MapItem.material`.
+  /// Opaque semantic strings; indices are scoped to this snapshot only (a
+  /// Delta carries its own table). Since v4 it may be present with
+  /// terrain_scope None (buildings / items reference it too).
+  materials: [string];
+  appearance_scope: AppearanceScope = None;
+  /// Every entry names a unit present in `units` (referential integrity);
+  /// at most one entry per unit.
+  appearances: [UnitAppearance];
+  /// Per-snapshot table of tile page tokens referenced by
+  /// `AppearanceLayer.page` (TILE_PAGE names from the install's graphics
+  /// raws). Indices are scoped to this snapshot only.
+  tile_pages: [string];
+  /// Per-snapshot table of palette files referenced by
+  /// `AppearanceLayer.palette`: paths relative to the DF install root with
+  /// forward slashes (e.g. "data/vanilla/vanilla_creatures_graphics/
+  /// graphics/images/dwarf/dwarf_body_palettes.png"). Never absolute.
+  palettes: [string];
+  building_scope: ChangeScope = None;
+  /// Buildings present (Full) or changed / new (Delta); ids unique.
+  buildings: [Building];
+  /// Ids of buildings that ceased to exist since the previous snapshot
+  /// (Delta); none of them may also appear in `buildings`.
+  removed_buildings: [uint32];
+  item_scope: ChangeScope = None;
+  /// Map items present (Full) or changed / new / moved (Delta); ids unique.
+  items: [MapItem];
+  /// Ids of items that left the map since the previous snapshot (Delta);
+  /// none of them may also appear in `items`.
+  removed_items: [uint32];
+  /// What `item_appearances` covers: None = no entries; Delta = entries
+  /// for some of the items in `items` (changed stacks travel with their
+  /// item record); Full = additionally every Corpse / CorpsePiece item in
+  /// `items` has exactly one entry (meaningful with item_scope Full).
+  item_appearance_scope: AppearanceScope = None;
+  /// Every entry names an item present in `items`; at most one per item.
+  /// Layers index the same `tile_pages` / `palettes` tables as unit
+  /// appearances.
+  item_appearances: [ItemAppearance];
+  /// Classic glyph tables: None = nothing here; Delta = entries new or
+  /// changed since the previous snapshot (consumers upsert by key); Full =
+  /// every entry the bridge knows (creature raws, interned materials,
+  /// itemdefs with a tile). Keys unique within a snapshot.
+  glyph_scope: ChangeScope = None;
+  creature_glyphs: [CreatureGlyph];
+  material_glyphs: [MaterialGlyph];
+  itemdef_glyphs: [ItemDefGlyph];
+  /// Outcomes of commands the bridge executed since it last published.
+  /// Each result is re-sent for a few consecutive snapshots so a
+  /// slow-polling client does not miss it; consumers keep the first
+  /// arrival per `seq` and ignore repeats. Unique `seq` per snapshot.
+  command_results: [CommandResult];
+  /// Strictly increasing session-local ids; at most 256
+  /// observations from the last 600 ticks. Victims may already be departed.
+  combat_events: [CombatEvent];
+  /// At most 512 samples retained for 120 ticks.
+  projectile_samples: [ProjectileSample];
+  /// Full lists every contaminated block; absent blocks
+  /// are clean. Delta replaces only listed blocks. None conveys no change.
+  spatter_scope: ChangeScope = None;
+  spatters: [SpatterBlock];
+  /// 512 reports / 600 ticks, session-local increasing
+  /// event IDs. Missing positions are valid for nonspatial announcements.
+  report_events: [ReportEvent];
+  /// Session-cumulative source records evicted by the capacity limit, not age.
+  report_events_dropped: uint64;
+  /// Positive item impacts, 512 records / 600 ticks.
+  item_contacts: [ItemContactEvent];
+  item_contacts_dropped: uint64;
+  item_contacts_available: bool;
+  resolved_attacks: [ResolvedAttack];
+  resolved_attacks_dropped: uint64;
+  resolved_attacks_available: bool;
+  projectile_combat_events:[ProjectileCombatEvent];
+  projectile_combat_events_dropped:uint64;
+  projectile_combat_events_available:bool;
+}
+
+// --- Command path (presentation → bridge) ---
+// Commands are semantic intents: defined here at the mirror
+// layer, produced by presentations, executed by the bridge. No
+// presentation-specific command types.
+
+table SetPause {
+  paused: bool;
+}
+
+/// An inclusive tile rectangle on one z level, in map tile coordinates
+/// (0 <= x1 <= x2 < map_size.x, same for y, 0 <= z < map_size.z).
+struct TileRect {
+  x1: int32;
+  y1: int32;
+  x2: int32;
+  y2: int32;
+  z: int32;
+}
+
+/// What a dig designation asks for. Maps onto DF's `tile_dig_designation`
+/// (Default / Channel / Ramp / UpStair / DownStair / UpDownStair / No).
+enum DigKind : uint8 {
+  Dig = 0,       // mine out a wall; removing ramps/stairs is a separate operation
+  Channel,
+  RampUp,
+  StairsUp,
+  StairsDown,
+  StairsUpDown,
+  Remove, // clear orders
+  RemoveStairsRamps,
+  Activate,
+  Mark,
+  StairsSpan,
+}
+
+/// Designate every diggable tile of `rect` (v6). Tiles DF would not
+/// accept (open air, constructions, map edge, floors for anything but
+/// channel / down stairs) are skipped; the result reports how many were
+/// applied and is Rejected when none were.
+table DesignateDig {
+  rect: TileRect;
+  kind: DigKind = Dig;
+  /// DF work priority 1 (highest) .. 7 (lowest); DF's default is 4.
+  priority: uint8 = 4;
+  marker: bool = false;
+  mining_mode: uint8 = 0; // All, Auto, OreGems, Gems
+  max_z: int32 = -1; // inclusive upper layer; -1 means rect.z
+}
+
+enum SmoothKind : uint8 {
+  Smooth = 0,
+  Engrave,
+  Remove,        // clear any smooth / engrave designation
+  Fortify,
+  Track,
+}
+
+/// Designate natural stone walls and floors of `rect` for smoothing /
+/// engraving (v6). Engrave applies to tiles already smoothed.
+table DesignateSmooth {
+  rect: TileRect;
+  kind: SmoothKind = Smooth;
+  priority: uint8 = 4;
+  marker: bool = false;
+  from_east: bool = false;
+  from_south: bool = false;
+  max_z: int32 = -1;
+  track_end_z: int32 = -1; // Track destination layer; rect.z is the press/start layer
+}
+
+/// Mark (or unmark) every tree whose designation tile lies in `rect` for
+/// felling (v6). DF stores this as a `Default` dig designation on the
+/// tree's south-east trunk tile.
+table DesignateChop {
+  rect: TileRect;
+  enable: bool = true;
+  priority: uint8 = 4;
+  marker: bool = false;
+  max_z: int32 = -1;
+}
+
+/// Mark (or unmark) every shrub in `rect` for plant gathering (v6): a
+/// `Default` dig designation on the shrub's tile.
+table DesignateGather {
+  rect: TileRect;
+  enable: bool = true;
+  priority: uint8 = 4;
+  marker: bool = false;
+  max_z: int32 = -1;
+}
+
+/// A tri-state flag change: leave as is, set, or clear.
+enum OptionalBool : uint8 {
+  Unchanged = 0,
+  Set,
+  Clear,
+}
+
+/// Change an item's player flags (v6): DF `item.flags.forbid`, `dump`,
+/// `melt`. Melt is Rejected on an item DF cannot melt (non-metal,
+/// artifact, bar).
+table SetItemFlags {
+  /// DF `item.id`; never 0.
+  item: uint32;
+  forbidden: OptionalBool = Unchanged;
+  dump: OptionalBool = Unchanged;
+  melt: OptionalBool = Unchanged;
+}
+
+/// Change a building's player flags (v6). DF has exactly one: the
+/// forbid bit of doors and hatches (`door_flags.forbidden`); any
+/// other kind is Rejected.
+table SetBuildingFlags {
+  /// DF `building.id`; never 0.
+  building: uint32;
+  forbidden: OptionalBool = Unchanged;
+}
+
+union CommandPayload {
+  SetPause,
+  DesignateDig,
+  DesignateSmooth,
+  DesignateChop,
+  DesignateGather,
+  SetItemFlags,
+  SetBuildingFlags,
+}
+
+table Command {
+  /// Client-assigned, strictly increasing per session; the bridge echoes it
+  /// in `CommandResult.seq`.
+  seq: uint64;
+  payload: CommandPayload;
+  world_epoch:uint64; // originating presented model; zero/old epochs are rejected by bridge
+}
+
+/// Outcome of one command, echoed in `Snapshot.command_results`.
+enum CommandStatus : uint8 {
+  /// Executed; `message` may carry a summary ("9 of 9 tiles").
+  Ok = 0,
+  /// Not executed (malformed, out of the map, nothing applicable, an
+  /// unknown id, a flag DF does not allow); `message` says why.
+  Rejected,
+  /// The bridge does not understand the payload (a newer schema).
+  Unknown,
+}
+
+table CommandResult {
+  seq: uint64;
+  status: CommandStatus = Ok;
+  message: string;
+}
+
+enum SessionPhase : uint8 { Starting, Menu, Loading, Ready, Unavailable, Error, Saving }
+enum SessionAction : uint8 { LoadFortress, SaveContinue, SaveReturn, AcknowledgeAnnouncement, ReviewPetition, ApprovePetition, DenyPetition, ClosePetition }
+enum InterruptionKind : uint8 { None, ManualPause, PassiveAnnouncement, AnnouncementViewer, Diplomacy, Petition, Trade, OtherDecision }
+table InterruptionState { kind:InterruptionKind; receipt:uint64; text:string; reason:string; popup_count:uint32; can_acknowledge:bool; }
+table PetitionReviewState { id:int32 = -1; receipt:uint64; can_review:bool; can_respond:bool; can_close:bool; reason:string; agreement:AgreementInfo; guildhall_value:int32; grand_guildhall_value:int32; }
+enum LoadRequestStatus : uint8 { None, Pending, Ok, Rejected }
+table FortressSave { id:string (required); fort_name:string; world_name:string; year:int32; }
+// Fortress-wide values, independent of the subscribed map window.
+// Stress counts are ordered from highest stress to lowest (seven DF categories).
+table FortressSummary {
+  population:int32;
+  stress_counts:[uint32];
+  stress_available:bool;
+  elevation_offset:int32;
+  level_count:uint32;
+  // Cached fortress resources: total food, drink, seeds, meat, fish, plant, other.
+  resource_counts:[int32];
+  resources_available:bool;
+}
+// Active fortress notifications, in native presentation-independent group order.
+enum NotificationCategory : uint8 { General, EraChange, Underground, Migrant, Monster, Ambush, Trade, Noble, Animal, Birth, Mood, LaborChange, Military, Marriage, Berserk, MartialTrance, LoseEmotion, Stress, ArtDefacement, Masterpiece, JobFailed, Death, Ghost, UndeadAttack, Weather, Vermin, CuriousGuzzler, ResearchBreakthrough, GuestArrival, Holdings, Rumor, Agreement, Crime, DeityCurse, Combat, Sparring, Hunting }
+enum UnitReportCategory : uint8 { Combat, Sparring, Hunting }
+table UnitReportReference { unit_id:int32; category:UnitReportCategory; }
+table ActiveNotificationGroup {
+  category:NotificationCategory;
+  report_ids:[int32] (required);
+  report_count:uint32;
+  unit_reports:[UnitReportReference] (required);
+  unit_report_count:uint32;
+  complete:bool = true;
+}
+table SessionState {
+  schema_version:uint32 = 8;
+  revision:uint64;
+  phase:SessionPhase;
+  saves:[FortressSave];
+  active_save_id:string;
+  request_seq:uint64;
+  request_status:LoadRequestStatus;
+  message:string;
+  request_action:SessionAction;
+  fortress_valid:bool;
+  paused:bool;
+  year:int32;
+  year_tick:int32;
+  fort_name:string;
+  can_save:bool;
+  can_save_return:bool;
+  // Durable destination of the matching successful save, including after unload.
+  saved_save_id:string;
+  fortress_epoch:uint64;
+  interruption:InterruptionState;
+  petition:PetitionReviewState;
+  fortress_summary:FortressSummary;
+  active_notifications:[ActiveNotificationGroup];
+  active_notifications_complete:bool = true;
+  request_client_id:uint64;
+}
+// IDs are opaque handles from the current advertised list, never filesystem commands.
+table SessionCommand { schema_version:uint32 = 8; seq:uint64; save_id:string; action:SessionAction; checkpoint_name:string; fortress_epoch:uint64; interruption_receipt:uint64; petition_id:int32 = -1; petition_receipt:uint64; client_id:uint64; }
+
+// Bounded fortress management channel; independently versioned from map snapshots.
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect }
+enum AreaKind : uint8 { Stockpile, Zone }
+table AreaRequest {
+  kind:AreaKind;
+  id:int32 = -1;
+  origin:TilePos;
+  width:uint16 = 1;
+  height:uint16 = 1;
+  zone_type:int16 = -1;
+  categories:uint32;
+  changed_categories:uint32;
+  barrels:int16 = -1;
+  bins:int16 = -1;
+  wheelbarrows:int16 = -1;
+  links_only:int8 = -1;
+  active:int8 = -1;
+  owner_id:int32 = -2;
+  link_id:int32 = -1;
+  give:bool = true;
+  unlink:bool;
+  query:string;
+  cursor:uint32;
+}
+table AreaInfo {
+  id:int32;
+  kind:AreaKind;
+  name:string;
+  origin:TilePos;
+  width:uint16;
+  height:uint16;
+  extents:[uint8];
+  zone_type:int16 = -1;
+  categories:uint32;
+  barrels:int16;
+  bins:int16;
+  wheelbarrows:int16;
+  links_only:bool;
+  active:bool;
+  owner_id:int32 = -1;
+  owner_name:string;
+  owner_allowed:bool;
+  gives:[int32];
+  takes:[int32];
+}
+table AreaChoice { id:int32; name:string; }
+table AreaState { areas:[AreaInfo]; choices:[AreaChoice]; next_cursor:uint32; truncated:bool; }
+// Production recipes are opaque semantic keys revalidated against the selected building.
+table ProductionRequest {
+  building_id:int32 = -1;
+  job_id:int32 = -1;
+  recipe:string;
+  query:string;
+  cursor:uint32;
+  repeat:int8 = -1;
+  suspend:int8 = -1;
+  cancel:bool;
+  season:int8 = -1;
+  crop_id:int32 = -1;
+}
+table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
+table ProductionRecipe { key:string; name:string; requirements:[ProductionRequirement]; }
+table ProductionJob {
+  id:int32; name:string; job_type:int16; repeat:bool; suspended:bool;
+  worker_id:int32 = -1; worker_name:string; completion_timer:int32 = -1;
+  attached_items:uint16; editable:bool; status:string;
+  requirements:[ProductionRequirement];
+}
+table ProductionBuilding {
+  id:int32; name:string; kind:string; origin:TilePos;
+  build_stage:int16; max_stage:int16; queue_size:uint16;
+}
+table FarmCrop { id:int32; name:string; seasons:uint8; seeds:uint32; }
+table ProductionState {
+  buildings:[ProductionBuilding]; next_cursor:uint32;
+  recipes:[ProductionRecipe]; jobs:[ProductionJob]; crops:[FarmCrop];
+  seasonal_crops:[int32]; current_season:int8 = -1;
+  selected_building:int32 = -1; created_job:int32 = -1;
+  detail:string;
+}
+table WorkOrderRequest {
+  id:int32 = -1;
+  expected_revision:uint64;
+  recipe:string;
+  query:string;
+  cursor:uint32;
+  remaining:int32 = -1;
+  frequency:int8 = -1;
+  workshop_id:int32 = -2;
+  max_workshops:int32 = -1;
+  condition_kind:uint8;
+  condition_index:int16 = -1;
+  remove_condition:bool;
+  compare:int8 = -1;
+  threshold:int32 = -1;
+  item_type:int16 = -1;
+  target_order:int32 = -1;
+  dependency:int8 = -1;
+  candidate_kind:uint8;
+}
+table WorkOrderCondition {
+  kind:uint8; index:uint16; description:string; editable:bool;
+  compare:int8 = -1; threshold:int32 = -1; item_type:int16 = -1;
+  target_order:int32 = -1; dependency:int8 = -1; satisfied:bool;
+}
+table WorkOrderInfo {
+  id:int32; revision:uint64; name:string;
+  total:int16; remaining:int16; frequency:int8;
+  validated:bool; active:bool;
+  finished_year:int32 = -1; finished_tick:int32 = -1;
+  workshop_id:int32 = -1; max_workshops:int32;
+  generated_jobs:[int32]; conditions:[WorkOrderCondition];
+  editable:bool; reason:string;
+}
+table ManagerRole {
+  unit_id:int32; name:string; position:string; offices:[int32]; job:string;
+}
+table WorkOrderState {
+  orders:[WorkOrderInfo]; recipes:[ProductionRecipe]; choices:[AreaChoice];
+  managers:[ManagerRole]; next_cursor:uint32; detail:string;
+}
+table CitizenRequest {
+  unit_id:int32 = -1;
+  detail_index:int32 = -1;
+  expected_revision:uint64;
+  cursor:uint32;
+  query:string;
+  member:int8 = -1;
+  mode:int8 = -1;
+}
+table CitizenRole { name:string; required_office:int32; }
+table CitizenWorkDetail { index:int32; icon:int32; name:string; }
+table CitizenInfo {
+  id:int32; name:string; profession:string; job:string;
+  age:int32 = -1; stress:int32; has_stress:bool;
+  origin:TilePos; can_focus:bool; eligible:bool; reason:string;
+  labors:[int16]; roles:[CitizenRole]; offices:[int32]; labor_names:[string];
+  profession_color:int32 = -1; profession_id:int32 = -1; job_type:int32 = -1;
+  sheet_icon:SelectionAppearance;
+  only_assigned_jobs:bool; assigned_details:[CitizenWorkDetail];
+  social_activity:bool;
+}
+table WorkDetailInfo {
+  index:int32; revision:uint64; name:string; mode:uint8;
+  no_modify:bool; cannot_be_everybody:bool; editable:bool; mode_editable:bool;
+  reason:string; labors:[int16]; assigned_units:[int32]; labor_names:[string];
+}
+table CitizenState {
+  citizens:[CitizenInfo]; details:[WorkDetailInfo]; next_cursor:uint32;
+  selected_unit:int32 = -1; selected_detail:int32 = -1;
+  external_controller:bool; detail:string;
+}
+enum SelectionOperation : uint8 { OpenTile, Inspect, SelectAlternative, InspectItem, ViewContainer, Back }
+enum SelectionKind : uint8 { None, Unit, Item, Building, Engraving, PlannedEngraving, UnitList, ItemList, Vermin }
+enum SelectionSection : uint8 { AgeSex, Traits, Health, Citizenship, Military, CurrentThought, RecentThoughts, Relationships, Hauling, LaborSkills, UnmetNeeds }
+table SelectionRequest { operation:SelectionOperation; tile:TilePos; receipt:uint64; index:int32 = -1; }
+table SelectionIdentity { kind:SelectionKind; id:int32 = -1; name:string (required); }
+table SelectionText { section:SelectionSection; text:string (required); }
+table SelectionItem { id:int32; name:string (required); }
+// Original-asset references under the existing appearance exception.
+table SelectionAppearance { tile_pages:[string] (required); palettes:[string] (required); layers:[AppearanceLayer] (required); }
+table SelectionState {
+ open:bool; receipt:uint64; kind:SelectionKind; id:int32 = -1; tile:TilePos;
+ title:string (required); subtitle:string (required); job:string (required); description:string (required);
+ alternatives:[SelectionIdentity] (required); items:[SelectionItem] (required); overview:[SelectionText] (required);
+ container:SelectionIdentity; weight:int32 = -1; value:int32 = -1; passable:bool; is_door:bool;
+ portrait:SelectionAppearance; complete:bool = true;
+}
+enum AlertOperation : uint8 { OpenCategory, Inspect, OpenUnit, Recenter, Back, Dismiss, OpenHistory, SelectTab, Scroll }
+enum AlertView : uint8 { Closed, Category, Unit, History }
+table AlertRequest {
+ operation:AlertOperation;
+ category:int16 = -1;
+ receipt:uint64;
+ entry:int32 = -1;
+ tab:int16 = -1;
+ delta:int16;
+}
+table AlertEntry {
+ text:string (required);
+ report_id:int32 = -1;
+ unit_id:int32 = -1;
+ unit_category:int8 = -1;
+ can_recenter:bool;
+}
+table AlertState {
+ view:AlertView;
+ receipt:uint64;
+ category:int16 = -1;
+ unit_id:int32 = -1;
+ unit_category:int8 = -1;
+ entries:[AlertEntry] (required);
+ tabs:[string] (required);
+ selected_tab:int16 = -1;
+ scroll:int32;
+ total:uint32;
+ complete:bool = true;
+ focus:TilePos;
+}
+table ReportRequest { id:int32 = -1; before_id:int32 = -1; query:string; announcements_only:bool = true; }
+table ReportInfo {
+  id:int32; category:string; text:string; year:int32; year_tick:int32;
+  repeat_count:int32; continuation:bool; text_complete:bool = true;
+  x:int32 = -1; y:int32 = -1; z:int32 = -1;
+  x2:int32 = -1; y2:int32 = -1; z2:int32 = -1;
+  position_visible:bool; position2_visible:bool;
+}
+table ReportState { reports:[ReportInfo]; next_before_id:int32 = -1; announcements_only:bool = true; detail:string; }
+// Pending comes from plotinfo.petitions, never the cached native menu vector.
+enum AgreementStatus : uint8 { Pending, Accepted, Unapproved, Concluded }
+table AgreementRequest { id:int32 = -1; before_id:int32 = -1; query:string; pending_only:bool; }
+table AgreementDetail {
+  id:int32; kind:int16 = -1; site_id:int32 = -1; year:int32; year_tick:int32;
+  applicant_party:int32 = -1; government_party:int32 = -1;
+  location_type:int16 = -1; tier:int32 = -1; profession:int16 = -1;
+  deity_type:int16 = -1; deity_id:int32 = -1; description:string;
+}
+table AgreementParty { id:int32; entity_ids:[int32]; histfig_ids:[int32]; name:string; }
+table AgreementInfo {
+  id:int32; status:AgreementStatus; not_approved:bool; concluded:bool; continuing:bool;
+  details:[AgreementDetail]; parties:[AgreementParty]; summary:string; complete:bool = true; reason:string;
+}
+table AgreementState { agreements:[AgreementInfo]; next_before_id:int32 = -1; pending_only:bool; detail:string; }
+table TradeRequest { depot_id:int32 = -1; item_id:int32 = -1; expected_revision:uint64; requested:int8 = -1; anyone:int8 = -1; cursor:uint32; query:string; receipt:uint64; side:uint8; selected:int8 = -1; }
+table TradeDepot { id:int32; origin:TilePos; revision:uint64; requested:bool; anyone:bool; accessible:bool; ready:bool; broker:string; hauling:uint32; goods:uint32; }
+table TradeCaravan { id:int32; name:string; state:string; days_remaining:int32; }
+table TradeGood { id:int32; description:string; quantity:uint32 = 1; selected:bool; selectable:bool; reason:string; }
+table TradeExchange { open:bool; receipt:uint64; side:uint8; can_submit:bool; merchant_count:uint32; fort_count:uint32; merchant_selected:uint32; fort_selected:uint32; entity_id:int32 = -1; merchant_id:int32 = -1; broker_id:int32 = -1; reply:string; reason:string; outcome:uint8; }
+table TradeState { depots:[TradeDepot]; caravans:[TradeCaravan]; goods:[TradeGood]; next_cursor:uint32; selected_depot:int32 = -1; detail:string; exchange:TradeExchange; }
+
+// Quantities are player-known counts, never hidden exact stock totals.
+enum StockAccuracy : uint8 { Unavailable, Exact, Approximate }
+table AppointmentRole { entity_id:int32; position_id:int32; assignment_id:int32 = -1; unit_id:int32 = -1; name:string; holder:string; office:int32; bedroom:int32; dining:int32; tomb:int32; boxes:int32; cabinets:int32; racks:int32; stands:int32; actionable:bool; reason:string; }
+table AppointmentCandidate { unit_id:int32 = -1; name:string; skill:string; selectable:bool; reason:string; }
+/// Exact native ingredient identity; permission 1=Cook, 2=Brew. One explicit edit.
+table KitchenRequest { item_type:int32 = -1; item_subtype:int16 = -1; mat_type:int16 = -1; mat_index:int32 = -1; permission:uint8; allowed:int8 = -1; receipt:uint64; cursor:uint32; query:string; }
+table KitchenIngredient { item_type:int32; item_subtype:int16 = -1; mat_type:int16 = -1; mat_index:int32 = -1; name:string; count:uint32; can_cook:bool; can_brew:bool; cook_allowed:bool; brew_allowed:bool; }
+table KitchenState { open:bool; receipt:uint64; ingredients:[KitchenIngredient]; next_cursor:uint32; total:uint32; detail:string; }
+
+table AppointmentsRequest { entity_id:int32 = -1; position_id:int32 = -1; assignment_id:int32 = -1; unit_id:int32 = -1; receipt:uint64; }
+table AppointmentsState { open:bool; choosing:bool; receipt:uint64; roles:[AppointmentRole]; candidates:[AppointmentCandidate]; detail:string; }
+table StockCount { amount:uint32; accuracy:StockAccuracy; }
+table StocksRequest { category:int32 = -1; cursor:uint32; query:string; item_id:int32 = -1; receipt:uint64; }
+table StockCategory { id:int32; name:string; available:StockCount; unavailable:StockCount; }
+table StockItem { id:int32; category:int32; description:string; quantity:uint32 = 1; x:int32 = -1; y:int32 = -1; z:int32 = -1; can_focus:bool; }
+table StocksState { open:bool; receipt:uint64; categories:[StockCategory]; items:[StockItem]; next_cursor:uint32; category:int32 = -1; detail:string; }
+enum ManagementStatus : uint8 { Idle, Pending, Ok, Rejected }
+table BuildingDefinition { key:string (required); name:string; width:uint16 = 1; height:uint16 = 1; supported:bool; reason:string; }
+table ConstructionInput { id:int32; description:string; quantity:uint32; }
+enum CreatureSectionKind : uint8 { Identity, Skills, Attributes, Health, Inventory, Relationships, Personality, Values, Needs, Dreams, Emotions, Preferences, Military, Labors, Rooms, Groups, Memories, Treatment, HealthHistory, Knowledge, Uniform, Kills, Workshops, Locations, WorkAnimals }
+table CreatureFact { key:string; text:string; number:int64; has_number:bool; }
+table CreatureRecord { id:int32 = -1; related_id:int32 = -1; name:string; facts:[CreatureFact]; }
+table CreatureSection { kind:CreatureSectionKind; available:bool; truncated:bool; reason:string; records:[CreatureRecord]; }
+table CreatureRequest { unit_id:int32 = -1; }
+table CreatureState {
+  unit_id:int32 = -1; captured_tick:uint64; name:string; species:string; profession:string; job:string;
+  age:int32 = -1; sex:int32 = -1; origin:TilePos; complete:bool; sections:[CreatureSection];
+  portrait:SelectionAppearance;
+}
+table ConstructionRequest {
+  schema_version:uint32 = 16;
+  client_id:uint64;
+  seq:uint64;
+  world_epoch:uint64;
+  action:ManagementAction;
+  definition:string;
+  origin:TilePos;
+  width:uint16 = 1;
+  height:uint16 = 1;
+  direction:uint8;
+  items:[int32];
+  cursor:uint32;
+  building_id:int32 = -1;
+  area:AreaRequest;
+  production:ProductionRequest;
+  work_order:WorkOrderRequest;
+  citizen:CitizenRequest;
+  report:ReportRequest;
+  agreement:AgreementRequest;
+  trade:TradeRequest;
+  stocks:StocksRequest;
+  appointments:AppointmentsRequest;
+  kitchen:KitchenRequest;
+  alert:AlertRequest;
+  selection:SelectionRequest;
+  creature:CreatureRequest;
+}
+table ManagementState {
+  schema_version:uint32 = 16;
+  revision:uint64;
+  world_epoch:uint64;
+  client_id:uint64;
+  request_seq:uint64;
+  action:ManagementAction;
+  status:ManagementStatus;
+  message:string;
+  catalog:[BuildingDefinition];
+  inputs:[ConstructionInput];
+  required:uint16;
+  next_cursor:uint32;
+  placement_valid:bool;
+  building_id:int32 = -1;
+  build_stage:int16 = -1;
+  max_stage:int16 = -1;
+  removing:bool;
+  jobs:uint16;
+  terrain_construction:bool;
+  area:AreaState;
+  production:ProductionState;
+  work_order:WorkOrderState;
+  citizen:CitizenState;
+  report:ReportState;
+  agreement:AgreementState;
+  trade:TradeState;
+  stocks:StocksState;
+  appointments:AppointmentsState;
+  kitchen:KitchenState;
+  alert:AlertState;
+  selection:SelectionState;
+  creature:CreatureState;
+}
+
+root_type Snapshot;

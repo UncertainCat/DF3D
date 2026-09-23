@@ -1,0 +1,603 @@
+{
+  "source": "Pinned DFHack df.skill_enum.xml and df.d_basics.xml profession attributes",
+  "skills": {
+    "0": {
+      "name": "Miner",
+      "color": 7
+    },
+    "1": {
+      "name": "Woodcutter",
+      "color": 14
+    },
+    "2": {
+      "name": "Carpenter",
+      "color": 14
+    },
+    "3": {
+      "name": "Engraver",
+      "color": 15
+    },
+    "4": {
+      "name": "Mason",
+      "color": 15
+    },
+    "5": {
+      "name": "Animal Trainer",
+      "color": 2
+    },
+    "6": {
+      "name": "Animal Caretaker",
+      "color": 2
+    },
+    "7": {
+      "name": "Fish Dissector",
+      "color": 1
+    },
+    "8": {
+      "name": "Animal Dissector",
+      "color": 2
+    },
+    "9": {
+      "name": "Fish Cleaner",
+      "color": 1
+    },
+    "10": {
+      "name": "Butcher",
+      "color": 6
+    },
+    "11": {
+      "name": "Trapper",
+      "color": 2
+    },
+    "12": {
+      "name": "Tanner",
+      "color": 6
+    },
+    "13": {
+      "name": "Weaver",
+      "color": 9
+    },
+    "14": {
+      "name": "Brewer",
+      "color": 6
+    },
+    "15": {
+      "name": "Clothier",
+      "color": 9
+    },
+    "16": {
+      "name": "Miller",
+      "color": 6
+    },
+    "17": {
+      "name": "Thresher",
+      "color": 6
+    },
+    "18": {
+      "name": "Cheese Maker",
+      "color": 6
+    },
+    "19": {
+      "name": "Milker",
+      "color": 6
+    },
+    "20": {
+      "name": "Cook",
+      "color": 6
+    },
+    "21": {
+      "name": "Planter",
+      "color": 6
+    },
+    "22": {
+      "name": "Herbalist",
+      "color": 6
+    },
+    "23": {
+      "name": "Fisherman",
+      "color": 1
+    },
+    "24": {
+      "name": "Furnace Operator",
+      "color": 8
+    },
+    "25": {
+      "name": "Strand Extractor",
+      "color": 9
+    },
+    "26": {
+      "name": "Weaponsmith",
+      "color": 8
+    },
+    "27": {
+      "name": "Armorsmith",
+      "color": 8
+    },
+    "28": {
+      "name": "Metalsmith",
+      "color": 8
+    },
+    "29": {
+      "name": "Gem Cutter",
+      "color": 10
+    },
+    "30": {
+      "name": "Gem Setter",
+      "color": 10
+    },
+    "31": {
+      "name": "Wood Crafter",
+      "color": 9
+    },
+    "32": {
+      "name": "Stone Crafter",
+      "color": 9
+    },
+    "33": {
+      "name": "Metal Crafter",
+      "color": 8
+    },
+    "34": {
+      "name": "Glassmaker",
+      "color": 9
+    },
+    "35": {
+      "name": "Leatherworker",
+      "color": 9
+    },
+    "36": {
+      "name": "Bone Carver",
+      "color": 9
+    },
+    "37": {
+      "name": "Axeman",
+      "color": 1
+    },
+    "38": {
+      "name": "Swordsman",
+      "color": 3
+    },
+    "39": {
+      "name": "Knife User",
+      "color": 7
+    },
+    "40": {
+      "name": "Maceman",
+      "color": 4
+    },
+    "41": {
+      "name": "Hammerman",
+      "color": 5
+    },
+    "42": {
+      "name": "Spearman",
+      "color": 6
+    },
+    "43": {
+      "name": "Crossbowman",
+      "color": 2
+    },
+    "44": {
+      "name": "Shield User",
+      "color": 7
+    },
+    "45": {
+      "name": "Armor User",
+      "color": 7
+    },
+    "46": {
+      "name": "Siege Engineer",
+      "color": 12
+    },
+    "47": {
+      "name": "Siege Operator",
+      "color": 12
+    },
+    "48": {
+      "name": "Bowyer",
+      "color": 14
+    },
+    "49": {
+      "name": "Pikeman",
+      "color": 6
+    },
+    "50": {
+      "name": "Lasher",
+      "color": 8
+    },
+    "51": {
+      "name": "Bowman",
+      "color": 2
+    },
+    "52": {
+      "name": "Blowgunner",
+      "color": 8
+    },
+    "53": {
+      "name": "Thrower",
+      "color": 7
+    },
+    "54": {
+      "name": "Mechanic",
+      "color": 12
+    },
+    "55": {
+      "name": "Druid",
+      "color": 7
+    },
+    "56": {
+      "name": "Ambusher",
+      "color": 2
+    },
+    "57": {
+      "name": "Wound Dresser",
+      "color": 7
+    },
+    "58": {
+      "name": "Diagnostician",
+      "color": 5
+    },
+    "59": {
+      "name": "Surgeon",
+      "color": 5
+    },
+    "60": {
+      "name": "Bone Doctor",
+      "color": 5
+    },
+    "61": {
+      "name": "Suturer",
+      "color": 5
+    },
+    "62": {
+      "name": "Crutch-walker",
+      "color": 7
+    },
+    "63": {
+      "name": "Wood Burner",
+      "color": 6
+    },
+    "64": {
+      "name": "Lye Maker",
+      "color": 6
+    },
+    "65": {
+      "name": "Soaper",
+      "color": 6
+    },
+    "66": {
+      "name": "Potash Maker",
+      "color": 6
+    },
+    "67": {
+      "name": "Dyer",
+      "color": 6
+    },
+    "68": {
+      "name": "Pump Operator",
+      "color": 12
+    },
+    "69": {
+      "name": "Swimmer",
+      "color": 7
+    },
+    "70": {
+      "name": "Persuader",
+      "color": 7
+    },
+    "71": {
+      "name": "Negotiator",
+      "color": 7
+    },
+    "72": {
+      "name": "Judge of Intent",
+      "color": 7
+    },
+    "73": {
+      "name": "Appraiser",
+      "color": 5
+    },
+    "74": {
+      "name": "Organizer",
+      "color": 5
+    },
+    "75": {
+      "name": "Record Keeper",
+      "color": 5
+    },
+    "76": {
+      "name": "Liar",
+      "color": 7
+    },
+    "77": {
+      "name": "Intimidator",
+      "color": 7
+    },
+    "78": {
+      "name": "Conversationalist",
+      "color": 7
+    },
+    "79": {
+      "name": "Comedian",
+      "color": 7
+    },
+    "80": {
+      "name": "Flatterer",
+      "color": 7
+    },
+    "81": {
+      "name": "Consoler",
+      "color": 7
+    },
+    "82": {
+      "name": "Pacifier",
+      "color": 7
+    },
+    "83": {
+      "name": "Tracker",
+      "color": 7
+    },
+    "84": {
+      "name": "Student",
+      "color": 7
+    },
+    "85": {
+      "name": "Concentration",
+      "color": 7
+    },
+    "86": {
+      "name": "Discipline",
+      "color": 7,
+      "category": "Combat"
+    },
+    "87": {
+      "name": "Observer",
+      "color": 7,
+      "category": "Combat"
+    },
+    "88": {
+      "name": "Wordsmith",
+      "color": 7
+    },
+    "89": {
+      "name": "Writer",
+      "color": 7
+    },
+    "90": {
+      "name": "Poet",
+      "color": 5
+    },
+    "91": {
+      "name": "Reader",
+      "color": 7
+    },
+    "92": {
+      "name": "Speaker",
+      "color": 7
+    },
+    "93": {
+      "name": "Coordination",
+      "color": 7
+    },
+    "94": {
+      "name": "Balance",
+      "color": 7
+    },
+    "95": {
+      "name": "Leader",
+      "color": 7
+    },
+    "96": {
+      "name": "Teacher",
+      "color": 7
+    },
+    "97": {
+      "name": "Fighter",
+      "color": 7
+    },
+    "98": {
+      "name": "Archer",
+      "color": 7
+    },
+    "99": {
+      "name": "Wrestler",
+      "color": 7
+    },
+    "100": {
+      "name": "Biter",
+      "color": 7
+    },
+    "101": {
+      "name": "Striker",
+      "color": 7
+    },
+    "102": {
+      "name": "Kicker",
+      "color": 7
+    },
+    "103": {
+      "name": "Dodger",
+      "color": 7
+    },
+    "104": {
+      "name": "Misc. Object User",
+      "color": 7
+    },
+    "105": {
+      "name": "Knapper",
+      "color": 7
+    },
+    "106": {
+      "name": "Tactician",
+      "color": 7
+    },
+    "107": {
+      "name": "Shearer",
+      "color": 6
+    },
+    "108": {
+      "name": "Spinner",
+      "color": 6
+    },
+    "109": {
+      "name": "Potter",
+      "color": 9
+    },
+    "110": {
+      "name": "Glazer",
+      "color": 9
+    },
+    "111": {
+      "name": "Presser",
+      "color": 6
+    },
+    "112": {
+      "name": "Beekeeper",
+      "color": 6
+    },
+    "113": {
+      "name": "Wax Worker",
+      "color": 9
+    },
+    "114": {
+      "name": "Climber",
+      "color": 7
+    },
+    "115": {
+      "name": "Gelder",
+      "color": 6
+    },
+    "116": {
+      "name": "Dancer",
+      "color": 5
+    },
+    "117": {
+      "name": "Musician",
+      "color": 5
+    },
+    "118": {
+      "name": "Singer",
+      "color": 5
+    },
+    "119": {
+      "name": "Keyboardist",
+      "color": 5
+    },
+    "120": {
+      "name": "Stringed Instrumentalist",
+      "color": 5
+    },
+    "121": {
+      "name": "Wind Instrumentalist",
+      "color": 5
+    },
+    "122": {
+      "name": "Percussionist",
+      "color": 5
+    },
+    "123": {
+      "name": "Critical Thinker",
+      "color": 7
+    },
+    "124": {
+      "name": "Logician",
+      "color": 7
+    },
+    "125": {
+      "name": "Mathematician",
+      "color": 7
+    },
+    "126": {
+      "name": "Astronomer",
+      "color": 7
+    },
+    "127": {
+      "name": "Chemist",
+      "color": 7
+    },
+    "128": {
+      "name": "Geographer",
+      "color": 7
+    },
+    "129": {
+      "name": "Optics Engineer",
+      "color": 7
+    },
+    "130": {
+      "name": "Fluid Engineer",
+      "color": 7
+    },
+    "131": {
+      "name": "Papermaker",
+      "color": 9
+    },
+    "132": {
+      "name": "Bookbinder",
+      "color": 9
+    },
+    "133": {
+      "name": "Schemer",
+      "color": 7
+    },
+    "134": {
+      "name": "Rider",
+      "color": 7
+    },
+    "135": {
+      "name": "Stonecutter",
+      "color": 7
+    },
+    "136": {
+      "name": "Stonecarver",
+      "color": 7
+    },
+    "137": {
+      "name": "Mod Skill 1",
+      "color": 7
+    },
+    "138": {
+      "name": "Mod Skill 2",
+      "color": 7
+    },
+    "139": {
+      "name": "Mod Skill 3",
+      "color": 7
+    },
+    "140": {
+      "name": "Mod Skill 4",
+      "color": 7
+    },
+    "141": {
+      "name": "Mod Skill 5",
+      "color": 7
+    },
+    "142": {
+      "name": "Mod Skill 6",
+      "color": 7
+    },
+    "143": {
+      "name": "Mod Skill 7",
+      "color": 7
+    },
+    "144": {
+      "name": "Mod Skill 8",
+      "color": 7
+    },
+    "145": {
+      "name": "Mod Skill 9",
+      "color": 7
+    },
+    "146": {
+      "name": "Mod Skill 10",
+      "color": 7
+    },
+    "147": {
+      "name": "UNUSED_01",
+      "color": 7
+    },
+    "148": {
+      "name": "UNUSED_02",
+      "color": 7
+    }
+  }
+}

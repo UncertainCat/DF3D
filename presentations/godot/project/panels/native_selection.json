@@ -1,0 +1,606 @@
+{
+  "format_version": 1,
+  "id": "native_selection",
+  "provenance": {
+    "record": "native DF 53.16 tile selection layout, captured from the supported build",
+    "df_version": "53.16",
+    "viewport": [
+      1200,
+      792
+    ],
+    "captures": [
+      "tile-select-02-unit",
+      "tile-select-05-bench",
+      "tile-select-07-bench-item-detail",
+      "tile-select-14-unit-item"
+    ],
+    "status": "reference-derived",
+    "authoring": "manual-reference-recipe",
+    "note": "ViewSheets is not a native widget tree. Geometry is editable product data, not runtime extraction."
+  },
+  "layout": {
+    "panel_right_offset": 784,
+    "panel_top": 48,
+    "panel_width": 488,
+    "panel_bottom": 36,
+    "panel_min_height": 120,
+    "viewport_margin": 8,
+    "body_insets": [
+      8,
+      12,
+      8,
+      12
+    ],
+    "font_size": 12,
+    "alternative_size": [
+      32,
+      36
+    ],
+    "entity_icon_size": [
+      32,
+      36
+    ],
+    "feedback_rect": [
+      8,
+      -48,
+      -16,
+      40
+    ],
+    "frame_selector": "HOVER_RECTANGLE",
+    "frame_margins": [
+      8,
+      12
+    ],
+    "tabs_origin": [
+      0,
+      96
+    ],
+    "tabs_row_step": 24,
+    "tabs_height": 24,
+    "tabs_character_width": 8,
+    "tabs_padding": 24,
+    "tab_margin": 16,
+    "tab_selector": "SHORT_TAB",
+    "selected_tab_selector": "SHORT_TAB_SELECTED",
+    "separator_selector": "HOVER_RECTANGLE",
+    "separator_horizontal_region": [
+      8,
+      2,
+      8,
+      2
+    ],
+    "separator_vertical_region": [
+      2,
+      12,
+      2,
+      12
+    ]
+  },
+  "nodes": [
+    {
+      "id": "common.fallback_title",
+      "type": "label",
+      "view": "common",
+      "rect": [
+        0,
+        0,
+        456,
+        24
+      ],
+      "binding": "selection.title"
+    },
+    {
+      "id": "unit.portrait",
+      "type": "texture",
+      "view": "unit",
+      "rect": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "binding": "selection.portrait"
+    },
+    {
+      "id": "unit.title",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        104,
+        8,
+        336,
+        24
+      ],
+      "binding": "selection.title",
+      "color": "white"
+    },
+    {
+      "id": "unit.subtitle",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        104,
+        20,
+        336,
+        24
+      ],
+      "binding": "selection.subtitle",
+      "color": "white"
+    },
+    {
+      "id": "unit.job",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        104,
+        44,
+        336,
+        24
+      ],
+      "binding": "selection.job",
+      "color": "cyan"
+    },
+    {
+      "id": "unit.age_sex",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        2,
+        144,
+        230,
+        76
+      ],
+      "binding": "selection.overview.age_sex"
+    },
+    {
+      "id": "unit.traits",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        238,
+        144,
+        230,
+        76
+      ],
+      "binding": "selection.overview.traits"
+    },
+    {
+      "id": "unit.health",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        2,
+        228,
+        230,
+        76
+      ],
+      "binding": "selection.overview.health"
+    },
+    {
+      "id": "unit.citizenship",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        238,
+        228,
+        230,
+        76
+      ],
+      "binding": "selection.overview.citizenship"
+    },
+    {
+      "id": "unit.hauling",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        2,
+        312,
+        230,
+        76
+      ],
+      "binding": "selection.overview.hauling"
+    },
+    {
+      "id": "unit.military",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        238,
+        312,
+        230,
+        76
+      ],
+      "binding": "selection.overview.military"
+    },
+    {
+      "id": "unit.labor_skills",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        2,
+        396,
+        230,
+        76
+      ],
+      "binding": "selection.overview.labor_skills"
+    },
+    {
+      "id": "unit.unmet_needs",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        238,
+        396,
+        230,
+        76
+      ],
+      "binding": "selection.overview.unmet_needs"
+    },
+    {
+      "id": "unit.separator_0",
+      "type": "separator",
+      "view": "unit",
+      "rect": [
+        0,
+        221,
+        472,
+        2
+      ]
+    },
+    {
+      "id": "unit.separator_1",
+      "type": "separator",
+      "view": "unit",
+      "rect": [
+        0,
+        305,
+        472,
+        2
+      ]
+    },
+    {
+      "id": "unit.separator_2",
+      "type": "separator",
+      "view": "unit",
+      "rect": [
+        0,
+        389,
+        472,
+        2
+      ]
+    },
+    {
+      "id": "unit.separator_3",
+      "type": "separator",
+      "view": "unit",
+      "rect": [
+        0,
+        473,
+        472,
+        2
+      ]
+    },
+    {
+      "id": "unit.separator_vertical",
+      "type": "separator",
+      "view": "unit",
+      "rect": [
+        236,
+        144,
+        2,
+        329
+      ],
+      "vertical": true
+    },
+    {
+      "id": "unit.current_thought",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        0,
+        480,
+        464,
+        24
+      ],
+      "binding": "selection.overview.current_thought"
+    },
+    {
+      "id": "unit.recent_thoughts",
+      "type": "label",
+      "view": "unit",
+      "rect": [
+        0,
+        504,
+        464,
+        12
+      ],
+      "binding": "selection.overview.recent_thoughts",
+      "grow_to_bottom": true
+    },
+    {
+      "id": "building.icon",
+      "type": "texture",
+      "view": "building",
+      "rect": [
+        0,
+        0,
+        32,
+        36
+      ],
+      "binding": "selection.icon"
+    },
+    {
+      "id": "building.title",
+      "type": "label",
+      "view": "building",
+      "rect": [
+        56,
+        8,
+        392,
+        32
+      ],
+      "binding": "selection.title"
+    },
+    {
+      "id": "building.door_status",
+      "type": "label",
+      "view": "building",
+      "rect": [
+        8,
+        56,
+        352,
+        24
+      ],
+      "binding": "selection.door_status"
+    },
+    {
+      "id": "building.separator",
+      "type": "separator",
+      "view": "building",
+      "rect": [
+        0,
+        -12,
+        472,
+        2
+      ],
+      "bottom_offset": 264,
+      "min_y": 96
+    },
+    {
+      "id": "building.item_icon",
+      "type": "texture",
+      "view": "building",
+      "rect": [
+        0,
+        0,
+        32,
+        36
+      ],
+      "bottom_offset": 264,
+      "min_y": 96,
+      "row_step": 36,
+      "repeat": "selection.items",
+      "binding": "row.icon"
+    },
+    {
+      "id": "building.item_name",
+      "type": "label",
+      "view": "building",
+      "rect": [
+        48,
+        0,
+        280,
+        32
+      ],
+      "bottom_offset": 264,
+      "min_y": 96,
+      "row_step": 36,
+      "repeat": "selection.items",
+      "binding": "row.name"
+    },
+    {
+      "id": "building.inspect_item",
+      "type": "button",
+      "view": "building",
+      "rect": [
+        336,
+        0,
+        24,
+        36
+      ],
+      "bottom_offset": 264,
+      "min_y": 96,
+      "row_step": 36,
+      "repeat": "selection.items",
+      "action": "selection.inspect_item",
+      "selector": "STOCKS_VIEW_ITEM"
+    },
+    {
+      "id": "item.icon",
+      "type": "texture",
+      "view": "item",
+      "rect": [
+        0,
+        0,
+        32,
+        36
+      ],
+      "binding": "selection.icon"
+    },
+    {
+      "id": "item.title",
+      "type": "label",
+      "view": "item",
+      "rect": [
+        48,
+        8,
+        304,
+        24
+      ],
+      "binding": "selection.title"
+    },
+    {
+      "id": "item.weight_value",
+      "type": "label",
+      "view": "item",
+      "rect": [
+        48,
+        32,
+        352,
+        24
+      ],
+      "binding": "selection.weight_value",
+      "color": "yellow"
+    },
+    {
+      "id": "item.description",
+      "type": "label",
+      "view": "item",
+      "rect": [
+        8,
+        64,
+        448,
+        100
+      ],
+      "binding": "selection.description"
+    },
+    {
+      "id": "item.container_name",
+      "type": "label",
+      "view": "item",
+      "rect": [
+        48,
+        180,
+        264,
+        32
+      ],
+      "binding": "selection.container_name"
+    },
+    {
+      "id": "item.view_container",
+      "type": "button",
+      "view": "item",
+      "rect": [
+        320,
+        180,
+        144,
+        24
+      ],
+      "text": "View",
+      "action": "selection.view_container"
+    },
+    {
+      "id": "item.item_name",
+      "type": "label",
+      "view": "item",
+      "rect": [
+        48,
+        228,
+        280,
+        32
+      ],
+      "binding": "row.name",
+      "row_step": 36,
+      "repeat": "selection.items"
+    },
+    {
+      "id": "item.inspect_item",
+      "type": "button",
+      "view": "item",
+      "rect": [
+        336,
+        228,
+        24,
+        36
+      ],
+      "action": "selection.inspect_item",
+      "selector": "STOCKS_VIEW_ITEM",
+      "row_step": 36,
+      "repeat": "selection.items"
+    }
+  ],
+  "tab_rows": [
+    [
+      {
+        "id": "relations",
+        "label": "Relations",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "groups",
+        "label": "Groups",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "military",
+        "label": "Military",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "thoughts",
+        "label": "Thoughts",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "personality",
+        "label": "Personality",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      }
+    ],
+    [
+      {
+        "id": "overview",
+        "label": "Overview",
+        "selected": true,
+        "enabled": false,
+        "status": "displayed"
+      },
+      {
+        "id": "items",
+        "label": "Items",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "health",
+        "label": "Health",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "skills",
+        "label": "Skills",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "rooms",
+        "label": "Rooms",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      },
+      {
+        "id": "labor",
+        "label": "Labor",
+        "selected": false,
+        "enabled": false,
+        "status": "unimplemented"
+      }
+    ]
+  ],
+  "unsupported_widgets": []
+}

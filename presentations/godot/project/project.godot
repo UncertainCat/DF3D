@@ -1,0 +1,58 @@
+; DF3D Godot presentation; needs the df3d GDExtension DLL in res://bin/ and a DF with the df3d bridge.
+
+config_version=5
+
+[application]
+
+config/name="DF3D"
+config/description="A 3D presentation of a running Dwarf Fortress game, rendered from your own Steam install."
+config/version="0.1.0-preview"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.7")
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+; D3D12: Vulkan swapchain failed when maximizing during fortress loading (README.md).
+rendering_device/driver.windows="d3d12"
+; Low-cost geometric edge AA; pixel interiors use the shared sharp sampler.
+anti_aliasing/quality/msaa_3d=1
+textures/default_filters/anisotropic_filtering_level=2
+; Separate render thread by default; headless QA passes --render-thread safe (tools/qa/verify.py, diagnostics.py).
+driver/threads/thread_model=2
+
+[shader_globals]
+
+unit_status_clock={
+"type": "float",
+"value": 0.0
+}
+
+actor_motion_clock={
+"type": "vec2",
+"value": Vector2(0, 0)
+}
+
+actor_truescale={
+"type": "bool",
+"value": false
+}
+
+actor_view_scale={
+"type": "float",
+"value": 1.0
+}
+
+actor_animation_time={
+"type": "float",
+"value": 0.0
+}
+actor_animation_strength={
+"type": "float",
+"value": 0.55
+}

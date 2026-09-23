@@ -1,0 +1,15 @@
+"AppState"
+{
+	"appid"		"975370"
+	"name"		"Dwarf Fortress"
+	"StateFlags"		"4"
+	"installdir"		"Dwarf Fortress"
+	"buildid"		"24557528"
+	"InstalledDepots"
+	{
+		"975371"
+		{
+			"manifest"		"4712032431285104732"
+		}
+	}
+}

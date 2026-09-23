@@ -1,0 +1,60 @@
+tile_page_test
+
+Synthetic tile pages in DF's raw format (no images exist; tier-0 data only).
+
+[OBJECT:TILE_PAGE]
+
+[TILE_PAGE:WALL_STONE]
+	[FILE:images/wall_stone.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:4:10]
+
+[TILE_PAGE:FLOORS]
+	[FILE:images/floors.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:9:15]
+
+[TILE_PAGE:GRASS]
+	[FILE:images/grass.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:32]
+
+[TILE_PAGE:GRASS]
+	[FILE:images/grass_duplicate.png]
+	[TILE_DIM:16:16]
+	[PAGE_DIM_PIXELS:64:16]
+
+[TILE_PAGE:CREATURES_DOMESTIC]
+	[FILE:images/creatures_domestic.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:384:1024]
+
+[TILE_PAGE:CREATURES_SURFACE_GIANT]
+	[FILE:images/creatures_surface_giant.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:384:11072]
+
+[TILE_PAGE:TREES]
+	[FILE:images/trees.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:384:960]
+
+[TILE_PAGE:STAIRS]
+	[FILE:images/stairs.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:96:288]
+
+[TILE_PAGE:STONE_RAMPS]
+	[FILE:images/ramps_stone.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:15:13]
+
+[TILE_PAGE:GRASS_RAMPS]
+	[FILE:images/ramps_grass.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:15:13]
+
+[TILE_PAGE:SAND_YELLOW_RAMPS]
+	[FILE:images/ramps_sand_yellow.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:15:13]

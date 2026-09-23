@@ -1,0 +1,1767 @@
+{
+  "version": 1,
+  "lanes": {
+    "core": "Asset-free C++ behavior, transport, and headless Godot management contract",
+    "assets": "Installed-asset headless Godot UI and adapter checks",
+    "gpu": "Real renderer storage and upload behavior",
+    "live": "Protected DF process and authoritative readback",
+    "bridge": "Pinned MSVC/DFHack build; no install or live game"
+  },
+  "checks": [
+    {
+      "id": "quality_harness",
+      "lane": "core",
+      "kind": "python",
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/qa",
+        "-p",
+        "test_*.py"
+      ],
+      "completion": "^OK$",
+      "timeout": 60,
+      "prerequisites": []
+    },
+    {
+      "id": "core",
+      "lane": "core",
+      "kind": "ctest",
+      "timeout": 180,
+      "prerequisites": [
+        "root_build"
+      ],
+      "completion": "100% tests passed"
+    },
+    {
+      "id": "management_contract_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/management_contract_test.gd",
+      "completion": "^MANAGEMENT_CONTRACT_TEST_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "root_build",
+        "extension_build"
+      ],
+      "notes": "Exclusive local fake producer; occupied management channel returns77/incomplete. Never attaches to DF."
+    },
+    {
+      "id": "management_lua_contract_tests",
+      "lane": "assets",
+      "kind": "native",
+      "executable": "build/tools/management_lua_contract_tests.exe",
+      "arguments": [
+        "{df_path}/hack/lua53.dll"
+      ],
+      "completion": "^MANAGEMENT_LUA_CONTRACT_PASS$",
+      "timeout": 20,
+      "prerequisites": [
+        "root_build",
+        "installed_lua"
+      ],
+      "notes": "Loads installed Lua library only; never starts or attaches to DF."
+    },
+    {
+      "id": "interaction_fixture",
+      "lane": "assets",
+      "kind": "native",
+      "executable": "build/tools/make_interaction_fixture.exe",
+      "arguments": [
+        "{root}/build/interaction.df3dfix"
+      ],
+      "completion": "wrote interaction fixture:",
+      "timeout": 15,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "interaction_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/interaction_test.gd",
+      "completion": "interaction\\ tests:\\ PASS\\ \\(0\\ failures\\)",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "interaction_fixture",
+        "synthetic_demo_fixture"
+      ]
+    },
+    {
+      "id": "session_controls_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/session_controls_test.gd",
+      "completion": "SESSION_CONTROLS_TEST\\ failures=0",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "fort_loader_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/fort_loader_test.gd",
+      "completion": "FORT_LOADER_TEST\\ failures=0",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "ui_host_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/ui_host_test.gd",
+      "completion": "UI_HOST_TEST_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "ui_composition_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/ui_composition_test.gd",
+      "completion": "ui_composition_test:\\ PASS\\ failures=0",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "synthetic_demo_fixture"
+      ]
+    },
+    {
+      "id": "semantic_action_service_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/semantic_action_service_test.gd",
+      "completion": "SEMANTIC_ACTION_SERVICE_TEST\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "release_close_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/release_close_test.gd",
+      "completion": "RELEASE_CLOSE_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "context_inspect_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/context_inspect_test.gd",
+      "completion": "CONTEXT_INSPECT_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "fortress_hud_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/fortress_hud_test.gd",
+      "completion": "FORTRESS_HUD_TEST_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "read_only_info_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/read_only_info_test.gd",
+      "completion": "READ_ONLY_INFO_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "construction_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_test.gd",
+      "completion": "CONSTRUCTION_TEST\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "areas_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/areas_test.gd",
+      "completion": "area\\ controller\\ tests:\\ PASS\\ \\(0\\ failures\\)",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "adapter_retirement_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/adapter_retirement_test.gd",
+      "completion": "ADAPTER_RETIREMENT_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "native_info_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/native_info_test.gd",
+      "completion": "NATIVE_INFO_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "panel_definition_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/panel_definition_test.gd",
+      "completion": "PANEL_DEFINITION_TEST_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "camera_mode_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/camera_mode_test.gd",
+      "completion": "camera_mode_test:\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "hud_scale_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/hud_scale_test.gd",
+      "completion": "HUD_SCALE_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "designation_overlay_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/designation_overlay_test.gd",
+      "completion": "DESIGNATION_OVERLAY_TEST_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "robustness_probe",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/robustness_probe.gd",
+      "completion": "PROBE_COMPLETE",
+      "observations": 2,
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "item_preparation_gpu",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/item_preparation_test.gd",
+      "completion": "ITEM_PREPARATION_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "font_atlas_gpu",
+      "lane": "gpu",
+      "kind": "python",
+      "command": [
+        "tools/qa/render_probe.py"
+      ],
+      "completion": "FONT_ATLAS_PASS",
+      "timeout": 75,
+      "prerequisites": [
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "bridge_compile",
+      "lane": "bridge",
+      "kind": "powershell",
+      "script": "tools/build_bridge.ps1",
+      "arguments": [
+        "-SkipInstall"
+      ],
+      "completion": "\\[build\\] done",
+      "timeout": 1800,
+      "prerequisites": [
+        "bridge_configured"
+      ]
+    },
+    {
+      "id": "recorded_session_live",
+      "lane": "live",
+      "kind": "powershell",
+      "script": "tools/smoke/recorded_session_smoke.ps1",
+      "completion": "RECORDED_SESSION_CAPTURE_PASS",
+      "timeout": 1200,
+      "prerequisites": [
+        "root_build",
+        "extension_build",
+        "df_assets",
+        "protected_live",
+        "bridge_attested"
+      ],
+      "covers": [
+        "presentations/godot/project/tests/recorded_session_live.gd"
+      ]
+    },
+    {
+      "id": "attach_lifecycle_test",
+      "lane": "core",
+      "kind": "powershell",
+      "script": "tools/smoke/attach_lifecycle_test.ps1",
+      "completion": "attach lifecycle PASS",
+      "timeout": 300,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "menu_startup_test",
+      "lane": "core",
+      "kind": "powershell",
+      "script": "tools/smoke/menu_startup_test.ps1",
+      "completion": "menu startup PASS",
+      "timeout": 300,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "save_isolation_test",
+      "lane": "core",
+      "kind": "powershell",
+      "script": "tools/smoke/save_isolation_test.ps1",
+      "completion": "Save isolation tests: PASS",
+      "timeout": 300,
+      "prerequisites": []
+    },
+    {
+      "id": "audio_takeover_test",
+      "lane": "live",
+      "kind": "powershell",
+      "script": "tools/smoke/audio_takeover_test.ps1",
+      "completion": "audio takeover PASS",
+      "timeout": 300,
+      "prerequisites": [
+        "root_build",
+        "protected_live"
+      ]
+    },
+    {
+      "id": "depth_cache_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_depth_cache_fixture",
+        "{root}/build/depth-cache.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS depth\\-cache\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "render_cache_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_render_cache_fixture",
+        "{root}/build/render-cache.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS render\\-cache\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "item_updates_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_item_updates_fixture",
+        "{root}/build/item-updates.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS item\\-updates\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "vertical_motion_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_vertical_motion_fixture",
+        "{root}/build/vertical-motion.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS vertical\\-motion\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "effect_events_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_effect_events_fixture",
+        "{root}/build/effect-events.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS effect\\-events\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "corpse_handoff_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_corpse_handoff_fixture",
+        "{root}/build/corpse-handoff.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS corpse\\-handoff\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "spatter_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_spatter_fixture",
+        "{root}/build/spatter.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS spatter\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "truescale_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_truescale_fixture",
+        "{root}/build/truescale-test.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS truescale\\-test\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "recorded_mature_fixture",
+      "lane": "core",
+      "kind": "python",
+      "command": [
+        "tools/qa/expand_fixtures.py"
+      ],
+      "completion": "^QA_FIXTURE_EXPAND_PASS count=[1-9][0-9]*$",
+      "timeout": 120,
+      "prerequisites": [],
+      "notes": "Expands fixtures/recorded/*.df3dfix.gz to the .df3dfix paths tests read, verifying manifest sha256; shares the builtin prerequisite name so dependents wait for it."
+    },
+    {
+      "id": "ramp_support_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_ramp_support_fixture",
+        "{root}/build/ramp-support.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS ramp\\-support\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "resource_lifetime_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_resource_lifetime_fixture",
+        "{root}/build/resource-lifetime.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS resource\\-lifetime\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "test_agreements_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_agreements_adapter.py"
+      ],
+      "completion": "^AGREEMENTS_ADAPTER_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_areas_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_areas_adapter.py"
+      ],
+      "completion": "^AREAS_ADAPTER\\ PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_citizens_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_citizens_adapter.py"
+      ],
+      "completion": "^CITIZENS_ADAPTER_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_construction_catalog",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_construction_catalog.py"
+      ],
+      "completion": "^CONSTRUCTION_CATALOG\\ PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_lua_embedding",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_lua_embedding.py"
+      ],
+      "completion": "^LUA_EMBEDDING_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "cmake_tool"
+      ]
+    },
+    {
+      "id": "test_notifications_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_notifications_adapter.py"
+      ],
+      "completion": "^NOTIFICATIONS_ADAPTER_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_production_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_production_adapter.py"
+      ],
+      "completion": "^PRODUCTION_ADAPTER\\ PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_trade_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_trade_adapter.py"
+      ],
+      "completion": "^TRADE_ADAPTER_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_work_orders_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_work_orders_adapter.py"
+      ],
+      "completion": "^WORK_ORDERS_ADAPTER\\ PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "profile_tools",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/smoke",
+        "-p",
+        "test_*.py"
+      ],
+      "completion": "^OK$",
+      "timeout": 60,
+      "prerequisites": []
+    },
+    {
+      "id": "ui_bake_tools",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ui_bake",
+        "-p",
+        "test_*.py"
+      ],
+      "completion": "^OK$",
+      "timeout": 60,
+      "prerequisites": []
+    },
+    {
+      "id": "actor_animation_catalog_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/actor_animation_catalog_test.gd",
+      "completion": "^ACTOR_ANIMATION_CATALOG_TEST_PASS\\ failures=0",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "actor_animation_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/actor_animation_state_test.gd",
+      "completion": "^ACTOR_ANIMATION_STATE_TEST_PASS\\ failures=0",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "actor_death_visuals_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/actor_death_visuals_test.gd",
+      "completion": "^ACTOR_DEATH_VISUALS_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ],
+      "notes": "Reads actual MultiMesh instance transforms; dummy headless renderer does not retain the tested GPU payload."
+    },
+    {
+      "id": "audio_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/audio_test.gd",
+      "completion": "^audio\\ tests:\\ PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "auxiliary_cache_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/auxiliary_cache_test.gd",
+      "completion": "^AUXILIARY_CACHE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "interaction_fixture"
+      ]
+    },
+    {
+      "id": "billboard_motion_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/billboard_motion_test.gd",
+      "completion": "^BILLBOARD_MOTION_TEST_PASS",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer",
+        "recorded_mature_fixture"
+      ],
+      "environment": {
+        "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+        "DF3D_FIXTURE_TICK": "1000",
+        "DF3D_AUDIO_SILENT": "1",
+        "DF3D_UI_SETTINGS_PATH": "{output}/billboard_motion_test.cfg",
+        "DF3D_BILLBOARD_OUT": "{output}/billboard-motion.json",
+        "DF3D_MOTION_STYLE": "billboard"
+      }
+    },
+    {
+      "id": "capture_frame_writer_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/capture_frame_writer_test.gd",
+      "completion": "^CAPTURE_FRAME_WRITER_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "combat_anchor_gpu_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/combat_anchor_gpu_test.gd",
+      "completion": "^COMBAT_ANCHOR_GPU_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "combat_audio_resolver_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/combat_audio_resolver_test.gd",
+      "completion": "^COMBAT_AUDIO_RESOLVER_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "combat_effects_gpu_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/combat_effects_gpu_test.gd",
+      "completion": "^COMBAT_EFFECTS_GPU_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "combat_effects_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/combat_effects_test.gd",
+      "completion": "^COMBAT_EFFECTS_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "composite_progress_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/composite_progress_test.gd",
+      "completion": "^COMPOSITE_PROGRESS_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "recorded_mature_fixture"
+      ]
+    },
+    {
+      "id": "corpse_handoff_adapter_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/corpse_handoff_adapter_test.gd",
+      "completion": "^CORPSE_HANDOFF_ADAPTER_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "corpse_handoff_fixture"
+      ]
+    },
+    {
+      "id": "creature_thought_text_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/creature_thought_text_test.gd",
+      "completion": "^CREATURE_THOUGHT_TEXT_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "cutout_picking_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/cutout_picking_test.gd",
+      "completion": "^CUTOUT_PICKING_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "depth_cache_lifecycle_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/depth_cache_lifecycle_test.gd",
+      "completion": "^DEPTH_CACHE_LIFECYCLE_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "depth_cache_fixture"
+      ]
+    },
+    {
+      "id": "depth_footprint_cache_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/depth_footprint_cache_test.gd",
+      "completion": "^DEPTH_FOOTPRINT_CACHE_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "interaction_fixture",
+        "recorded_mature_fixture"
+      ]
+    },
+    {
+      "id": "door_orientation_native_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/door_orientation_native_test.gd",
+      "completion": "^DOOR_ORIENTATION_NATIVE_PASS\\ comparisons=",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "recorded_mature_fixture"
+      ]
+    },
+    {
+      "id": "door_orientation_revision_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/door_orientation_revision_test.gd",
+      "completion": "^DOOR_ORIENTATION_REVISION_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "render_cache_fixture"
+      ]
+    },
+    {
+      "id": "effect_events_adapter_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/effect_events_adapter_test.gd",
+      "completion": "^EFFECT_EVENTS_ADAPTER_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "effect_events_fixture"
+      ]
+    },
+    {
+      "id": "elevation_overview_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/elevation_overview_test.gd",
+      "completion": "^ELEVATION_OVERVIEW_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "interaction_fixture"
+      ]
+    },
+    {
+      "id": "engine_submission_probe_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/engine_submission_probe_test.gd",
+      "completion": "^ENGINE_SUBMISSION_PROBE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "entity_upload_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/entity_upload_test.gd",
+      "completion": "^ENTITY_UPLOAD_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "interaction_fixture"
+      ]
+    },
+    {
+      "id": "fortress_minimap_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/fortress_minimap_test.gd",
+      "completion": "^FORTRESS_MINIMAP_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "frame_lifecycle_probe_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/frame_lifecycle_probe_test.gd",
+      "completion": "^FRAME_LIFECYCLE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "gameplay_feedback_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/gameplay_feedback_test.gd",
+      "completion": "^GAMEPLAY_FEEDBACK_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "ground_spatter_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/ground_spatter_test.gd",
+      "completion": "^GROUND_SPATTER_TEST .*\"failures\":\\[\\]",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer",
+        "spatter_fixture"
+      ]
+    },
+    {
+      "id": "hidden_rock_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/hidden_rock_test.gd",
+      "completion": "^HIDDEN_ROCK_TEST\\ failures=0",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "synthetic_demo_fixture"
+      ]
+    },
+    {
+      "id": "hitch_recorder_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/hitch_recorder_test.gd",
+      "completion": "^HITCH_RECORDER_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "instance_upload_cache_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/instance_upload_cache_test.gd",
+      "completion": "^INSTANCE_UPLOAD_CACHE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "instance_upload_scene_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/instance_upload_scene_test.gd",
+      "completion": "^INSTANCE_UPLOAD_SCENE_PASS",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "item_updates_fixture",
+        "recorded_mature_fixture"
+      ],
+      "environment": {
+        "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+        "DF3D_FIXTURE_TICK": "1000",
+        "DF3D_AUDIO_SILENT": "1",
+        "DF3D_UI_SETTINGS_PATH": "{output}/instance_upload_scene_test.cfg"
+      }
+    },
+    {
+      "id": "item_instance_capacity_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/item_instance_capacity_test.gd",
+      "completion": "^ITEM_INSTANCE_CAPACITY_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "item_updates_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/item_updates_test.gd",
+      "completion": "^ITEM_UPDATES_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "item_updates_fixture",
+        "depth_cache_fixture"
+      ],
+      "notes": "Also replays build/depth-cache.df3dfix for render-group revision/slice/ID-reuse checks (merged item_render_groups_test)."
+    },
+    {
+      "id": "item_upload_probe_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/item_upload_probe_test.gd",
+      "completion": "^ITEM_UPLOAD_PROBE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "mesh_batches_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/mesh_batches_test.gd",
+      "completion": "^MESH_BATCH_TEST\\ failures=0",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "interaction_fixture",
+        "recorded_mature_fixture"
+      ]
+    },
+    {
+      "id": "original_ui_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/original_ui_test.gd",
+      "completion": "^original\\ UI\\ tests:\\ PASS\\ \\(0\\ failures\\)",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "interaction_fixture"
+      ]
+    },
+    {
+      "id": "presentation_demand_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/presentation_demand_test.gd",
+      "completion": "^PRESENTATION_DEMAND_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "profiling_mode_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/profiling_mode_test.gd",
+      "completion": "^PROFILING_MODE_PASS off$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "item_updates_fixture"
+      ],
+      "environment": {
+        "DF3D_PROFILE": "off",
+        "DF3D_PROFILE_OUT": "{output}/profiling_mode_off"
+      }
+    },
+    {
+      "id": "profiling_mode_test_basic",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/profiling_mode_test.gd",
+      "completion": "^PROFILING_MODE_PASS basic$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "item_updates_fixture"
+      ],
+      "environment": {
+        "DF3D_PROFILE": "basic",
+        "DF3D_SUBMISSION_DETAIL": "0",
+        "DF3D_PROFILE_OUT": "{output}/profiling_mode_basic"
+      }
+    },
+    {
+      "id": "profiling_mode_test_deep",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/profiling_mode_test.gd",
+      "completion": "^PROFILING_MODE_PASS deep$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "item_updates_fixture"
+      ],
+      "environment": {
+        "DF3D_PROFILE": "deep",
+        "DF3D_SUBMISSION_DETAIL": "1",
+        "DF3D_PROFILE_OUT": "{output}/profiling_mode_deep"
+      }
+    },
+    {
+      "id": "profiling_scene_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/profiling_scene_test.gd",
+      "completion": "^PROFILING_SCENE_PASS\\ off",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "recorded_mature_fixture"
+      ],
+      "environment": {
+        "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+        "DF3D_FIXTURE_TICK": "1000",
+        "DF3D_AUDIO_SILENT": "1",
+        "DF3D_UI_SETTINGS_PATH": "{output}/profiling_scene_test.cfg",
+        "DF3D_PROFILE": "off",
+        "DF3D_PROFILE_OUT": "{output}/profiling_scene_off"
+      }
+    },
+    {
+      "id": "profiling_scene_test_deep",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/profiling_scene_test.gd",
+      "completion": "^PROFILING_SCENE_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "recorded_mature_fixture"
+      ],
+      "environment": {
+        "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+        "DF3D_FIXTURE_TICK": "1000",
+        "DF3D_AUDIO_SILENT": "1",
+        "DF3D_UI_SETTINGS_PATH": "{output}/profiling_scene_test.cfg",
+        "DF3D_PROFILE": "deep",
+        "DF3D_PROFILE_OUT": "{output}/profiling_scene_deep"
+      }
+    },
+    {
+      "id": "projectile_visuals_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/projectile_visuals_test.gd",
+      "completion": "^PROJECTILE_VISUALS_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "ramp_support_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/ramp_support_test.gd",
+      "completion": "^RAMP_SUPPORT_PASS",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer",
+        "ramp_support_fixture",
+        "recorded_mature_fixture"
+      ],
+      "environment": {
+        "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+        "DF3D_FIXTURE_TICK": "1000",
+        "DF3D_AUDIO_SILENT": "1",
+        "DF3D_UI_SETTINGS_PATH": "{output}/ramp_support_test.cfg"
+      }
+    },
+    {
+      "id": "render_attribution_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/render_attribution_test.gd",
+      "completion": "^RENDER_ATTRIBUTION_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "render_boundary_gate_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/render_boundary_gate_test.gd",
+      "completion": "^RENDER_BOUNDARY_GATE_PASS\\ enabled=",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ],
+      "environment": {
+        "DF3D_FRAME_BOUNDARIES": "0"
+      }
+    },
+    {
+      "id": "render_boundary_gate_test_enabled",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/render_boundary_gate_test.gd",
+      "completion": "^RENDER_BOUNDARY_GATE_PASS enabled=true$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ],
+      "environment": {
+        "DF3D_FRAME_BOUNDARIES": "1"
+      }
+    },
+    {
+      "id": "resident_actor_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/resident_actor_test.gd",
+      "completion": "^RESIDENT_ACTOR_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "vertical_motion_fixture"
+      ]
+    },
+    {
+      "id": "resource_lifetime_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/resource_lifetime_test.gd",
+      "completion": "^RESOURCE_LIFETIME_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "resource_lifetime_fixture"
+      ]
+    },
+    {
+      "id": "sfx_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/sfx_test.gd",
+      "completion": "^SFX_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "spatial_sprite_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/spatial_sprite_test.gd",
+      "completion": "^SPATIAL_SPRITE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "sprite_ceiling_native_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/sprite_ceiling_native_test.gd",
+      "completion": "^SPRITE_CEILING_NATIVE_PASS\\ comparisons=",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "recorded_mature_fixture"
+      ]
+    },
+    {
+      "id": "sprite_ceiling_revision_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/sprite_ceiling_revision_test.gd",
+      "completion": "^SPRITE_CEILING_REVISION_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "render_cache_fixture"
+      ]
+    },
+    {
+      "id": "sprite_presentation_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/sprite_presentation_test.gd",
+      "completion": "^SPRITE_PRESENTATION_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "sprite_resource_owner_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/sprite_resource_owner_test.gd",
+      "completion": "^SPRITE_RESOURCE_OWNER_TEST\\ PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "terrain_occluder_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/terrain_occluder_test.gd",
+      "completion": "^TERRAIN_OCCLUDER_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "render_cache_fixture"
+      ]
+    },
+    {
+      "id": "tick_zero_render_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/tick_zero_render_test.gd",
+      "completion": "^TICK_ZERO_RENDER\\ failures=0",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "interaction_fixture"
+      ]
+    },
+    {
+      "id": "tile_hover_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/tile_hover_test.gd",
+      "completion": "^TILE_HOVER_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "truescale_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/truescale_test.gd",
+      "completion": "^TRUESCALE_RUNTIME_PASS",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer",
+        "truescale_fixture",
+        "recorded_mature_fixture"
+      ],
+      "environment": {
+        "DF3D_FIXTURE": "{root}/fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+        "DF3D_FIXTURE_TICK": "1000",
+        "DF3D_AUDIO_SILENT": "1",
+        "DF3D_UI_SETTINGS_PATH": "{output}/truescale_test.cfg"
+      }
+    },
+    {
+      "id": "unit_partition_cache_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/unit_partition_cache_test.gd",
+      "completion": "^UNIT_PARTITION_CACHE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "unit_status_depth_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/unit_status_depth_test.gd",
+      "completion": "^UNIT_STATUS_DEPTH_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "unit_status_overlay_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/unit_status_overlay_test.gd",
+      "completion": "^UNIT_STATUS_OVERLAY_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "vertical_motion_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/vertical_motion_test.gd",
+      "completion": "^VERTICAL_MOTION_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "vertical_motion_fixture"
+      ]
+    },
+    {
+      "id": "walk_camera_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/walk_camera_test.gd",
+      "completion": "^walk_camera_test:\\ PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "walk_controller_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/walk_controller_test.gd",
+      "completion": "^walk_controller_test:\\ PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "walk_scale_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/walk_scale_test.gd",
+      "completion": "^walk_scale_test:\\ PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "world_sampling_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/world_sampling_test.gd",
+      "completion": "^WORLD_SAMPLING_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "resource_lifetime_scene_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/resource_lifetime_scene_test.gd",
+      "completion": "^RESOURCE_LIFETIME_SCENE_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "resource_lifetime_fixture"
+      ]
+    },
+    {
+      "id": "resource_lifetime_scene_gpu",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/resource_lifetime_scene_test.gd",
+      "completion": "^RESOURCE_LIFETIME_SCENE_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "resource_lifetime_fixture",
+        "real_renderer"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "path": "presentations/godot/project/tests/building_cutout_probe.gd",
+      "status": "helper",
+      "reason": "Preloaded by building_residency_live (tools/smoke/floor_profile.ps1 -Test building_residency_live) after scene readiness; no standalone runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/building_residency_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test building_residency_live. Owned live visual/residency check; never saves the fortress."
+    },
+    {
+      "path": "presentations/godot/project/tests/capture_frame_writer.gd",
+      "status": "helper",
+      "reason": "Frame PNG writer preloaded by capture_frame_writer_test and targeted_attack_live (tools/smoke/floor_profile.ps1); no standalone SceneTree runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/context_inspect_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test context_inspect_live."
+    },
+    {
+      "path": "presentations/godot/project/tests/creature_sheet_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test creature_sheet_live."
+    },
+    {
+      "path": "presentations/godot/project/tests/deep_profile_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test deep_profile_live. Capture running intervals before pausing: exit-only rolling traces otherwise Prepared inputs: DF3D_RENDER_PROBE, DF3D_SUBMISSION_DETAIL."
+    },
+    {
+      "path": "presentations/godot/project/tests/designation_acceptance_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/designation_acceptance.ps1. Prepared inputs: DF3D_DESIGNATION_ACCEPTANCE."
+    },
+    {
+      "path": "presentations/godot/project/tests/door_orientation.gd",
+      "status": "helper",
+      "reason": "Door orientation rules preloaded by door_orientation_native_test and door_orientation_revision_test; no standalone SceneTree runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/encounter_obs_capture.gd",
+      "status": "helper",
+      "reason": "OBS capture helper preloaded by targeted_attack_live (tools/smoke/floor_profile.ps1 -Test targeted_attack_live); no standalone runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/engine_submission_probe.gd",
+      "status": "helper",
+      "reason": "Engine submission probe preloaded by engine_submission_probe_test and deep_profile_live (tools/smoke/floor_profile.ps1); no standalone SceneTree runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/floor_profile_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test floor_profile_live. Paused, fixed-framing floor sweep; run only in an owned native lane. Prepared inputs: DF3D_FLOOR_PERF_OUT."
+    },
+    {
+      "path": "presentations/godot/project/tests/frame_breakdown_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test frame_breakdown_live. Diagnostic-only ablations. Main results never read render-server timers in Prepared inputs: DF3D_BREAKDOWN_FROZEN_ONLY."
+    },
+    {
+      "path": "presentations/godot/project/tests/frame_profile.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/frame_profile.ps1. Prepared inputs: DF3D_PERF_NO_RENDER_READBACK, DF3D_PERF_OUT."
+    },
+    {
+      "path": "presentations/godot/project/tests/gameplay_demo_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test gameplay_demo_live."
+    },
+    {
+      "path": "presentations/godot/project/tests/item_culling_profile_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test item_culling_profile_live. Fixed save/tick/camera; actor partitions and material policy never change. Prepared inputs: DF3D_CELL_SWEEP_NEAR."
+    },
+    {
+      "path": "presentations/godot/project/tests/mesh_batch_motion_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test mesh_batch_motion_live. Running simulation smoke, sequential comparisons are not identical DF frames. Prepared inputs: DF3D_PERF_FINAL_MODES, DF3D_PERF_SPATIAL_SWEEP."
+    },
+    {
+      "path": "presentations/godot/project/tests/mesh_batch_profile_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test mesh_batch_profile_live. Same save/frame/camera, old submission vs spatial batches; no fidelity toggles."
+    },
+    {
+      "path": "presentations/godot/project/tests/read_only_info_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test read_only_info_live."
+    },
+    {
+      "path": "presentations/godot/project/tests/render_attribution_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test render_attribution_live. Owned diagnostic lane only. Census/readbacks happen outside timing windows."
+    },
+    {
+      "path": "presentations/godot/project/tests/render_quality_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test render_quality_live. Paused visual comparison. Image readback is outside all performance captures."
+    },
+    {
+      "path": "presentations/godot/project/tests/render_thread_fixture_test.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/render_thread_fixture.ps1. Real renderer threading/resize/readback diagnostic; known engine diagnostic, see tools/qa/diagnostics.py. Requires a fixed mature recording, licensed assets, output directory and dedicated renderer-thread lane; revisit during planned engine work."
+    },
+    {
+      "path": "presentations/godot/project/tests/resident_roster_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test resident_roster_live."
+    },
+    {
+      "path": "presentations/godot/project/tests/stream_benchmark_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/stream_benchmark.ps1. Companion collector for stream_benchmark.ps1. No video/readback during samples. Prepared inputs: DF3D_STREAM_BENCH_OUT, DF3D_STREAM_BENCH_STYLE, DF3D_STREAM_FRAME_CAP."
+    },
+    {
+      "path": "presentations/godot/project/tests/targeted_attack_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test targeted_attack_live. Prepared inputs: DF3D_ARENA_DIAGNOSTICS, DF3D_CAPTURE_HEADROOM."
+    },
+    {
+      "path": "presentations/godot/project/tests/ui_availability_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test ui_availability_live. Product exposure test on an owned paused fort. No gameplay edits."
+    },
+    {
+      "path": "presentations/godot/project/tests/ui_test_support.gd",
+      "status": "helper",
+      "reason": "Shared assertion and UI fixture setup loaded by executable UI checks; no standalone SceneTree runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/visibility_profile_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test visibility_profile_live. Fixed paused world: separate spatial-batch and occlusion effects without sim drift. Prepared inputs: DF3D_PERF_DEMAND_CLOSE, DF3D_PERF_DEMAND_COMPARE, DF3D_PERF_DEPTH_SWEEP."
+    },
+    {
+      "path": "presentations/godot/project/tests/world_markers_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test world_markers_live."
+    }
+  ]
+}

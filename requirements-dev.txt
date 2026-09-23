@@ -1,0 +1,7 @@
+# Optional offline QA dependencies; validated with Python 3.12.
+lupa==2.8
+
+# Optional: maintainer probes (native binary inspection, asset image checks)
+Pillow==11.2.1
+pefile==2024.8.26
+capstone==5.0.9

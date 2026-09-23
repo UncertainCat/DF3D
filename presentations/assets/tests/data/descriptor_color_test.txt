@@ -1,0 +1,25 @@
+descriptor_color_test
+
+[OBJECT:DESCRIPTOR_COLOR]
+
+[COLOR:GRAY]
+	[NAME:gray]
+	[WORD:GRAY]
+	[RGB:128:128:128]
+
+[COLOR:CLEAR]
+	[NAME:clear]
+	[RGB:128:128:128]
+
+[COLOR:SCARLET]
+	[NAME:scarlet]
+	[RGB:255:36:0]
+
+[COLOR:BEIGE]
+	[RGB:245:245:220]
+
+[COLOR:AUBURN]
+	[RGB:165:42:42]
+
+[COLOR:BROWN]
+	[RGB:150:75:0]

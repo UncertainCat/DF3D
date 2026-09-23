@@ -1,0 +1,6 @@
+[submodule "external/dfhack"]
+	path = external/dfhack
+	url = https://github.com/UncertainCat/dfhack.git
+[submodule "external/godot-cpp"]
+	path = external/godot-cpp
+	url = https://github.com/godotengine/godot-cpp.git

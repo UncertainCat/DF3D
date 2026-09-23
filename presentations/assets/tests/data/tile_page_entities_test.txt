@@ -1,0 +1,152 @@
+tile_page_entities_test
+
+Synthetic building / item tile pages in DF's raw format (no images exist;
+tier-0 data only). Names and geometry follow vanilla 53.16's
+tile_page_buildings.txt / tile_page_items.txt.
+
+[OBJECT:TILE_PAGE]
+
+[TILE_PAGE:WORKSHOPS]
+	[FILE:images/workshops.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:768:3456]
+
+[TILE_PAGE:WORKSHOPS_1x1]
+	[FILE:images/workshops_1x1.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:64]
+
+[TILE_PAGE:WINDMILL]
+	[FILE:images/windmill.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:192:1024]
+
+[TILE_PAGE:SCREWPUMP]
+	[FILE:images/screwpump.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:160]
+
+[TILE_PAGE:SIEGE_WEAPONS]
+	[FILE:images/siege_weapons.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:768:480]
+
+[TILE_PAGE:STOCKPILE]
+	[FILE:images/stockpile.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:64:608]
+
+[TILE_PAGE:ACTIVITY_ZONES]
+	[FILE:images/activity_zones.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:224:512]
+
+[TILE_PAGE:BRIDGES]
+	[FILE:images/bridges.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:2432]
+
+[TILE_PAGE:TRAPS]
+	[FILE:images/traps.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:320:64]
+
+[TILE_PAGE:SUPPORT]
+	[FILE:images/support.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:3:1]
+
+[TILE_PAGE:WELL]
+	[FILE:images/well.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:224:64]
+
+[TILE_PAGE:ITEM_CHAIR]
+	[FILE:images/item_chair.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:352:128]
+
+[TILE_PAGE:ITEM_BED]
+	[FILE:images/beds.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:384:128]
+
+[TILE_PAGE:ITEM_DOOR]
+	[FILE:images/item_door.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:480:128]
+
+[TILE_PAGE:BOULDERS]
+	[FILE:images/boulders.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:64:512]
+
+[TILE_PAGE:ITEM_CONSTRUCTION]
+	[FILE:images/item_construction.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:320]
+
+[TILE_PAGE:WEAPONS]
+	[FILE:images/item_weapons.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:160:704]
+
+[TILE_PAGE:TRAPS_WEAPON]
+	[FILE:images/traps_weapon.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:320:160]
+
+[TILE_PAGE:TOOLS]
+	[FILE:images/item_tool.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:736]
+
+[TILE_PAGE:ITEM_TOY]
+	[FILE:images/item_toy.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:4:5]
+
+[TILE_PAGE:ITEM_AMMO]
+	[FILE:images/item_ammo.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:5:10]
+
+[TILE_PAGE:ITEM_EQUIPMENT]
+	[FILE:images/item_equipment.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:160:832]
+
+[TILE_PAGE:ITEM_FOOD]
+	[FILE:images/item_food.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:3:3]
+
+[TILE_PAGE:ITEM_COINS]
+	[FILE:images/item_coins.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:5:3]
+
+[TILE_PAGE:STATUES]
+	[FILE:images/statues.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:256:256]
+
+[TILE_PAGE:CONTAINERS]
+	[FILE:images/containers.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:256:448]
+
+[TILE_PAGE:ITEM_CLOTH]
+	[FILE:images/item_cloth.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:192:64]
+
+[TILE_PAGE:ITEM_NATURE]
+	[FILE:images/item_nature.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:4:4]
+
+[TILE_PAGE:PLANT_STANDARD]
+	[FILE:images/plant_standard.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:416:1216]

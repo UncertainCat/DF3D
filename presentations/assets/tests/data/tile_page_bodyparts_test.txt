@@ -1,0 +1,31 @@
+tile_page_bodyparts_test
+
+Synthetic pages for the body-part / bone-pile / web snippet (vanilla
+53.16 names; no images exist).
+
+[OBJECT:TILE_PAGE]
+
+[TILE_PAGE:BODYPARTS]
+	[FILE:images/bodyparts.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:96:960]
+
+[TILE_PAGE:HIDES]
+	[FILE:images/hides.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:160:128]
+
+[TILE_PAGE:GUTS]
+	[FILE:images/guts.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:96:384]
+
+[TILE_PAGE:BONE_PILE]
+	[FILE:images/bone_pile.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:32:32]
+
+[TILE_PAGE:ITEM_WEBS]
+	[FILE:images/webs.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM_PIXELS:128:64]

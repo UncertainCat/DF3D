@@ -1,0 +1,152 @@
+extends SceneTree
+const Service = preload("res://scripts/semantic_action_service.gd")
+var failures := 0
+class FakeWorld:
+	extends RefCounted
+	var state := {"world_epoch": 5, "revision": 1, "status": 0}
+	var generation := 1
+	var calls: Array = []
+	var reject := false
+	var reconnects := 0
+	func reconnect_management(): reconnects += 1
+	func poll_management(): return state.duplicate(true)
+	func session_generation(): return generation
+	func is_live(): return true
+	func last_error(): return "Target disappeared"
+	func construction_request(request):
+		if reject: return 0
+		calls.append(request.duplicate(true))
+		return calls.size()
+	func area_request(request): return construction_request(request)
+func check(ok: bool, message: String):
+	if not ok:
+		failures += 1
+		push_error(message)
+func _initialize(): call_deferred("run")
+func run():
+	test_queued_cancellation()
+	test_transport_replacement()
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	service.timeout_seconds = 1.0
+	var observed: Array = []
+	var callback := func(ticket, result, request): observed.append([ticket, result, request])
+	var mutation := service.submit("construction", {"action": 2}, callback)
+	service.poll()
+	var query := service.submit("areas", {"action": 7}, callback)
+	service.detach(mutation)
+	service.poll(0.2)
+	check(world.calls.size() == 1 and observed.is_empty(), "closing detaches view while another query queues")
+	world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":2,"action":2,"building_id":42}
+	service.poll()
+	check(observed.is_empty() and service.result(mutation).building_id == 42, "closed mutation result retained outside view")
+	check(world.calls.size() == 2 and world.calls.back().action == 7, "next view query starts only after old receipt drained")
+	service.poll(1.1)
+	check(service.result(query).outcome == "unknown" and observed.size() == 1, "timeout reports unknown exactly once")
+	var later := service.submit("construction", {"action": 0}, callback)
+	service.poll(2.0)
+	check(world.calls.size() == 2 and observed.size() == 1, "timed out sequence is never replayed or overwritten")
+	world.state = {"world_epoch":5,"revision":3,"request_seq":2,"status":2,"action":7}
+	service.poll()
+	check(service.result(query).status == 2 and observed.size() == 1, "late receipt updates retained result without reviving old view")
+	check(world.calls.size() == 3, "late receipt permits queued request to start")
+	var queued := service.submit("areas", {"action":10}, callback)
+	world.generation += 1
+	service.poll()
+	check(service.result(later).outcome == "unknown" and service.result(queued).outcome == "not_sent", "session generation invalidates sent and queued requests distinctly")
+	check(world.calls.size() == 3, "session switch never replays queued mutation")
+	world.reject = true
+	var gone := service.submit("areas", {"action":11,"id":77}, callback)
+	service.poll()
+	check(service.result(gone).message == "Target disappeared" and service.result(gone).outcome == "not_sent", "immediate admission failure retains disappearing-target outcome")
+	world.reject = false
+	var old := service.submit("areas", {"action":12,"id":77}, callback)
+	service.poll()
+	world.state.world_epoch = 6
+	service.poll()
+	check(service.result(old).outcome == "unknown", "epoch change invalidates an in-flight mutation without replay")
+	var calls_before: int = world.calls.size()
+	var unsupported := service.submit("unknown", {"action":10}, callback)
+	service.poll()
+	check(service.result(unsupported).outcome == "not_sent" and world.calls.size()==calls_before,"Unknown domain never routes into area mutation channel")
+	var callback_attempts: Array = []
+	var reentrant := func(_ticket, _result): callback_attempts.append(service.submit("areas", {"action":10}, callback))
+	service.completed.connect(reentrant)
+	service.submit("areas", {"action":12}, callback)
+	service.poll()
+	world.state.world_epoch = 7
+	service.poll()
+	service.completed.disconnect(reentrant)
+	check(callback_attempts == [0] and service._queue.is_empty(),"Invalidated callbacks cannot enqueue mutations into replacement world")
+	var uncertain := service.submit("areas", {"action":11,"id":77}, callback)
+	service.poll()
+	service.detach(uncertain)
+	service.poll(1.1)
+	check(service.last_detached_mutation("areas").result.outcome=="unknown","Closed timeout remains accessible for reopening/notification without replay")
+	world.state.world_epoch = 8
+	service.poll()
+	service.retention_limit = 2
+	for index in 4:
+		world.reject = true
+		service.submit("areas", {"action":11,"id":index}, callback)
+		service.poll()
+	check(service._results.size() == 2 and service.result(mutation).is_empty(), "terminal result retention is bounded")
+	service.free()
+	print("SEMANTIC_ACTION_SERVICE_TEST ", "PASS" if failures == 0 else "FAIL")
+	quit(failures)
+
+func test_queued_cancellation():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	service.submit("construction", {"action": 0}, Callable())
+	service.poll()
+	var observed: Array = []
+	var cancelled := service.submit("construction", {"action": 2}, func(t, r, q): observed.append(t))
+	# Exercise reentrant panel cleanup during the cancellation notification.
+	service.completed.connect(func(ticket, _result): service.detach(ticket))
+	service.detach(cancelled)
+	service.detach(cancelled)
+	check(service.result(cancelled).outcome == "not_sent", "queued draft cancellation has a definite unsent outcome")
+	check(observed.is_empty(), "cancelled draft does not call its detached observer")
+	world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":2}
+	service.poll()
+	check(world.calls.size() == 1 and service._queue.is_empty(), "cancelled mutation never reaches DF after active receipt arrives")
+	service.free()
+
+func test_transport_replacement():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var sent := service.submit("construction", {"action": 2}, Callable())
+	service.poll()
+	service.poll(16.0)
+	check(service.result(sent).outcome == "unknown", "timeout alone keeps ownership until a definite transport loss")
+	var queued := service.submit("areas", {"action": 10}, Callable())
+	world.state = {"transport_alive": false}
+	service.poll()
+	check(service.result(sent).outcome == "unknown" and service.result(queued).outcome == "not_sent", "owner loss distinguishes uncertain sent mutation from unsent drafts")
+	for index in 20: service.poll(1.0)
+	check(world.reconnects == 2 and world.calls.size() == 1, "owner loss reconnects once without replay or reset storm")
+	check(service.submit("areas", {"action":10}, Callable()) == 0, "unavailable connection cannot accumulate stale drafts")
+	# Replacement owner reuses epoch, model generation and sequence numbers.
+	world.calls.clear()
+	world.state = {"transport_alive":true,"world_epoch":5,"revision":1,"status":0}
+	service.poll()
+	check(world.calls.size() == 1 and world.calls[0].action == 0, "replacement owner starts with a fresh read-only catalog")
+	world.state = {"transport_alive":true,"world_epoch":5,"revision":2,"request_seq":1,"status":2}
+	service.poll()
+	service.submit("areas", {"action":10}, Callable())
+	service.poll()
+	check(world.calls.size() == 2 and world.calls[1].action == 10, "fresh user intent proceeds after owner recovery")
+	check(service.result(sent).outcome == "unknown", "new owner's matching sequence cannot resolve old mutation")
+	world.state = {"transport_alive":false}
+	service.poll()
+	world.generation += 1
+	world.state = {"transport_alive":true,"world_epoch":6,"revision":1,"status":0}
+	service.poll()
+	var before: int = world.calls.size()
+	service.poll()
+	check(world.calls.size() == before + 1 and world.calls.back().action == 0, "world replacement during outage cannot discard recovery catalog")
+	service.free()

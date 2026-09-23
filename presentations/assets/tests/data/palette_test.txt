@@ -1,0 +1,17 @@
+palette_test
+
+[OBJECT:PALETTE]
+
+[PALETTE:DEFAULT]
+	[FILE:images/palettes.png]
+	[PALETTE_DEFAULT:0] this is the one used in the images themselves
+	[PALETTE_COLOR:BEIGE:8]
+	[PALETTE_COLOR:BLACK:9]
+	[PALETTE_COLOR:CLEAR:25]
+	[PALETTE_COLOR:GRAY:50]
+	[PALETTE_COLOR:SCARLET:94]
+	[PALETTE_COLOR:AUBURN:6]
+
+[PALETTE:SECOND]
+	[FILE:images/other.png]
+	[PALETTE_COLOR:BEIGE:1]

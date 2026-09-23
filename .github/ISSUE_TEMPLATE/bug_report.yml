@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a problem with DF3D
+labels: [bug]
+body:
+  - type: input
+    id: df3d-commit
+    attributes:
+      label: DF3D commit
+      description: Output of `git rev-parse HEAD`.
+    validations:
+      required: true
+  - type: input
+    id: df-build
+    attributes:
+      label: Dwarf Fortress 53.16 Steam build id
+      description: See [PINS.md](https://github.com/UncertainCat/DF3D/blob/main/PINS.md) for the supported build.
+    validations:
+      required: true
+  - type: input
+    id: godot-version
+    attributes:
+      label: Godot version
+      description: The version banner Godot prints on startup.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log excerpt
+      description: Relevant lines from build/qa/ or the viewer console, with personal paths removed.
+      render: text
+  - type: checkboxes
+    id: no-assets
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have not attached saves or game assets
+          required: true

@@ -1,0 +1,13 @@
+{
+ "rows": [["Relations","Groups","Military","Thoughts","Personality"],["Overview","Items","Health","Skills","Rooms","Labor"]],
+ "subtab_widths": {"Personality":{"Traits":72,"Values":80,"Preferences":120,"Needs":72}},
+ "subtabs": {
+  "Health": {"Status":["health"],"Wounds":["health"],"Treatment":["treatment"],"History":["health_history"],"Description":["identity","health"]},
+  "Skills": {"Labor":["skills"],"Combat":["skills"],"Social":["skills"],"Other skills":["skills"],"Knowledge":["knowledge"]},
+  "Labor": {"Work details":["labors"],"Workshops":["workshops"],"Locations":["locations"],"Work animals":["work_animals"]},
+  "Military": {"Squad":["military"],"Uniform":["uniform"],"Kills":["kills"]},
+  "Thoughts": {"Recent thoughts":["emotions"],"Memories":["memories"]},
+  "Personality": {"Traits":["attributes","personality"],"Values":["values","dreams"],"Preferences":["preferences"],"Needs":["needs"]}
+ },
+ "sections": {"Relations":["relationships"],"Groups":["groups"],"Items":["inventory"],"Rooms":["rooms"]}
+}

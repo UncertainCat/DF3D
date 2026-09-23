@@ -1,0 +1,212 @@
+#include <godot_cpp/variant/array.hpp>
+#include <godot_cpp/variant/packed_byte_array.hpp>
+#include <godot_cpp/variant/vector3i.hpp>
+
+#include "management_codecs.h"
+#include "management_dictionary.h"
+
+namespace df3d_godot::management {
+using namespace godot;
+namespace {
+constexpr int actionValue(wm::ManagementAction a) {
+  return static_cast<int>(a);
+}
+using Action = wm::ManagementAction;
+}  // namespace
+
+void writeProduction(Dictionary& result, const wm::ProductionState& s) {
+  Dictionary prod;
+  const auto& p = s;
+  auto reqs = [](const auto& values) {
+    Array out;
+    for (const auto& v : values) {
+      Dictionary row;
+      row["description"] = String::utf8(v.description.c_str());
+      row["quantity"] = v.quantity;
+      row["item_type"] = v.itemType;
+      out.push_back(row);
+    }
+    return out;
+  };
+  Array buildings, recipes, jobs, crops, seasons;
+  for (const auto& v : p.buildings) {
+    Dictionary row;
+    row["id"] = v.id;
+    row["name"] = String::utf8(v.name.c_str());
+    row["kind"] = String::utf8(v.kind.c_str());
+    row["origin"] = Vector3i(v.x, v.y, v.z);
+    row["build_stage"] = v.buildStage;
+    row["max_stage"] = v.maxStage;
+    row["queue_size"] = v.queueSize;
+    buildings.push_back(row);
+  }
+  for (const auto& v : p.recipes) {
+    Dictionary row;
+    row["key"] = String::utf8(v.key.c_str());
+    row["name"] = String::utf8(v.name.c_str());
+    row["requirements"] = reqs(v.requirements);
+    recipes.push_back(row);
+  }
+  for (const auto& v : p.jobs) {
+    Dictionary row;
+    row["id"] = v.id;
+    row["name"] = String::utf8(v.name.c_str());
+    row["job_type"] = v.jobType;
+    row["repeat"] = v.repeat;
+    row["suspended"] = v.suspended;
+    row["worker_id"] = v.workerId;
+    row["worker_name"] = String::utf8(v.workerName.c_str());
+    row["completion_timer"] = v.completionTimer;
+    row["attached_items"] = v.attachedItems;
+    row["editable"] = v.editable;
+    row["status"] = String::utf8(v.status.c_str());
+    row["requirements"] = reqs(v.requirements);
+    jobs.push_back(row);
+  }
+  for (const auto& v : p.crops) {
+    Dictionary row;
+    row["id"] = v.id;
+    row["name"] = String::utf8(v.name.c_str());
+    row["seasons"] = v.seasons;
+    row["seeds"] = int64_t(v.seeds);
+    crops.push_back(row);
+  }
+  for (auto id : p.seasonalCrops)
+    seasons.push_back(id);
+  prod["buildings"] = buildings;
+  prod["recipes"] = recipes;
+  prod["jobs"] = jobs;
+  prod["crops"] = crops;
+  prod["seasonal_crops"] = seasons;
+  prod["next_cursor"] = int64_t(p.nextCursor);
+  prod["current_season"] = p.currentSeason;
+  prod["selected_building"] = p.selectedBuilding;
+  prod["created_job"] = p.createdJob;
+  prod["detail"] = String::utf8(p.detail.c_str());
+  result["production"] = prod;
+}
+
+void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
+  Dictionary work;
+  const auto& ws = s;
+  Array orders, orderRecipes, orderChoices, managers;
+  for (const auto& o : ws.orders) {
+    Dictionary row;
+    row["id"] = o.id;
+    row["revision"] = int64_t(o.revision);
+    row["name"] = String::utf8(o.name.c_str());
+    row["total"] = o.total;
+    row["remaining"] = o.remaining;
+    row["frequency"] = o.frequency;
+    row["validated"] = o.validated;
+    row["active"] = o.active;
+    row["finished_year"] = o.finishedYear;
+    row["finished_tick"] = o.finishedTick;
+    row["workshop_id"] = o.workshopId;
+    row["max_workshops"] = o.maxWorkshops;
+    row["editable"] = o.editable;
+    row["reason"] = String::utf8(o.reason.c_str());
+    Array ids, cs;
+    for (auto id : o.generatedJobs)
+      ids.push_back(id);
+    for (const auto& c : o.conditions) {
+      Dictionary v;
+      v["kind"] = c.kind;
+      v["index"] = c.index;
+      v["description"] = String::utf8(c.description.c_str());
+      v["editable"] = c.editable;
+      v["compare"] = c.compare;
+      v["threshold"] = c.threshold;
+      v["item_type"] = c.itemType;
+      v["target_order"] = c.targetOrder;
+      v["dependency"] = c.dependency;
+      v["satisfied"] = c.satisfied;
+      cs.push_back(v);
+    }
+    row["generated_jobs"] = ids;
+    row["conditions"] = cs;
+    orders.push_back(row);
+  }
+  for (const auto& r : ws.recipes) {
+    Dictionary v;
+    v["key"] = String::utf8(r.key.c_str());
+    v["name"] = String::utf8(r.name.c_str());
+    orderRecipes.push_back(v);
+  }
+  for (const auto& c : ws.choices) {
+    Dictionary v;
+    v["id"] = c.id;
+    v["name"] = String::utf8(c.name.c_str());
+    orderChoices.push_back(v);
+  }
+  for (const auto& m : ws.managers) {
+    Dictionary v;
+    v["unit_id"] = m.unitId;
+    v["name"] = String::utf8(m.name.c_str());
+    v["position"] = String::utf8(m.position.c_str());
+    v["job"] = String::utf8(m.job.c_str());
+    Array ids;
+    for (auto id : m.offices)
+      ids.push_back(id);
+    v["offices"] = ids;
+    managers.push_back(v);
+  }
+  work["orders"] = orders;
+  work["recipes"] = orderRecipes;
+  work["choices"] = orderChoices;
+  work["managers"] = managers;
+  work["next_cursor"] = int64_t(ws.nextCursor);
+  work["detail"] = String::utf8(ws.detail.c_str());
+  result["work_order"] = work;
+}
+
+bool validateWorkOrderShape(const Dictionary& data, String& error) {
+  if (!managementDictionaryTypes(
+          data,
+          {"id", "expected_revision", "cursor", "remaining", "frequency", "workshop_id",
+           "max_workshops", "condition_kind", "condition_index", "compare", "threshold",
+           "item_type", "target_order", "dependency", "candidate_kind"},
+          error) ||
+      !managementRequiredFields(data, error))
+    return false;
+  return true;
+}
+
+bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& error) {
+  bool valid = true;
+  auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
+    int64_t v = data.get(key, def);
+    if (v < low || v > high)
+      valid = false;
+    return v;
+  };
+  r.action = wm::ManagementAction(n("action", actionValue(Action::WorkOrderList),
+                                    actionValue(Action::WorkOrderList),
+                                    actionValue(Action::WorkOrderCatalog)));
+  auto& w = r.workOrder;
+  w.id = int32_t(n("id", -1, -1, INT32_MAX));
+  w.expectedRevision = uint64_t(n("expected_revision", 0, 0, INT64_MAX));
+  w.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
+  w.remaining = int32_t(n("remaining", -1, -1, 32767));
+  w.frequency = int8_t(n("frequency", -1, -1, 4));
+  w.workshopId = int32_t(n("workshop_id", -2, -2, INT32_MAX));
+  w.maxWorkshops = int32_t(n("max_workshops", -1, -1, 32767));
+  w.conditionKind = uint8_t(n("condition_kind", 0, 0, 1));
+  w.conditionIndex = int16_t(n("condition_index", -1, -1, 63));
+  w.removeCondition = data.get("remove_condition", false);
+  w.compare = int8_t(n("compare", -1, -1, 5));
+  w.threshold = int32_t(n("threshold", -1, -1, INT32_MAX));
+  w.itemType = int16_t(n("item_type", -1, -1, 32767));
+  w.targetOrder = int32_t(n("target_order", -1, -1, INT32_MAX));
+  w.dependency = int8_t(n("dependency", -1, -1, 1));
+  w.candidateKind = uint8_t(n("candidate_kind", 0, 0, 2));
+  String recipe = data.get("recipe", String()), query = data.get("query", String());
+  w.recipe = recipe.utf8().get_data();
+  w.query = query.utf8().get_data();
+  if (!valid) {
+    error = "Invalid bounded work order request";
+    return false;
+  }
+  return true;
+}
+}  // namespace df3d_godot::management

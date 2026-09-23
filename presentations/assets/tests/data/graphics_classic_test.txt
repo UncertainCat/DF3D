@@ -1,0 +1,22 @@
+graphics_classic_test
+
+Synthetic classic-mode glyph rows in the format of vanilla 53.16's
+vanilla_interface/graphics/graphics_classic.txt (ASCII_GRAPHICS:tile:fg:
+bg:bright:NAME[:x[:y]]; ASCII_RECTANGLE rows are ignored). Vanilla names
+only interface art; the ITEM_BAR / BUILDING_Shop rows below stand in for
+an install (or mod) that names an item / building kind so the override
+path is exercised.
+
+[OBJECT:GRAPHICS]
+
+[ASCII_GRAPHICS:' ':0:0:0:INTERFACE_BACKGROUND]
+[ASCII_GRAPHICS:218:6:0:1:BORDER_TOP_LEFT:2:1]
+[ASCII_GRAPHICS:196:6:0:1:BORDER_TOP_LEFT:3:1]
+[ASCII_GRAPHICS:'X':4:0:1:BUTTON_CLOSE]
+[ASCII_GRAPHICS:':':7:0:0:COLON_CELL]
+[ASCII_GRAPHICS:?:3:0:1:UNQUOTED_CELL:2:1]
+[ASCII_RECTANGLE:SINGLE:7:0:0:BUTTON_RECTANGLE]
+[ASCII_GRAPHICS:'T':3:0:1:BUILDING_ITEM_TASK:1:1]
+[ASCII_GRAPHICS:'=':6:0:1:ITEM_BAR]
+[ASCII_GRAPHICS:178:2:0:0:BUILDING_Shop]
+[ASCII_GRAPHICS:bad:1:2:3:MALFORMED]

@@ -1,0 +1,36 @@
+extends SceneTree
+const Overlay = preload("res://scripts/unit_status_overlay.gd")
+func _initialize(): call_deferred("run")
+func run():
+	var world := Df3dWorld.new()
+	root.add_child(world)
+	assert(world.load_assets(OS.get_environment("DF3D_DF_PATH")))
+	var motion = preload("res://scripts/actor_motion_pool.gd").new()
+	motion.reset(1)
+	var address: int = motion.write(11,Color(1,1,1,0),Color(2,1,1,1),Vector2.ZERO,Vector3.ONE,0)
+	motion.flush()
+	var overlay := Overlay.new()
+	overlay.world = world; overlay.motion = motion
+	root.add_child(overlay)
+	assert(Overlay.variant(0) == -1 and Overlay.variant(1<<60) == -1)
+	assert(Overlay.variant(1<<12) == 22, "Traumatized uses traced terrified art")
+	assert(Overlay.variant((1<<0)|(1<<3)) == 8, "Native sleep precedence")
+	assert(Overlay.primary_variant((1<<21)|(1<<20)) == 4, "Native thirst precedes hunger")
+	assert(Overlay.fallback_variant((1<<40)|(1<<1)) == 37, "Projectile precedes webbed")
+	var variants := {}
+	for value in Overlay.ART.values(): variants[value] = true
+	assert(variants.size() == 41, "All original status variants mapped")
+	for art in Overlay.ART.values(): assert(world.ui_texture("UNIT_STATUS",art) != null)
+	overlay.begin(1,[1,false],PackedInt64Array([11]))
+	overlay.observe(11,1,address,Vector3.ONE,Vector3(2,1,1),Vector2.ONE,Color(1,0,0,0),false)
+	overlay.flush()
+	assert(overlay.records.size() == 1 and overlay.uploads == 1)
+	var mesh: MultiMesh = overlay.batches[8].multimesh
+	overlay.observe(11,1,address,Vector3.ONE,Vector3(2,1,1),Vector2.ONE,Color(1,0,0,0),false)
+	overlay.flush()
+	assert(overlay.uploads == 1 and overlay.batches[8].multimesh == mesh, "Unchanged state must not upload")
+	overlay.begin(1,[1,false],PackedInt64Array())
+	overlay.flush()
+	assert(overlay.records.is_empty() and not overlay.batches[8].visible, "Removed actors lose badges")
+	print("UNIT_STATUS_OVERLAY_PASS")
+	quit()

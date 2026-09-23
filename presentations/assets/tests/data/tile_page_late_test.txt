@@ -1,0 +1,10 @@
+tile_page_late_test
+
+A page referenced by graphics_tiles_test.txt before this file is parsed.
+
+[OBJECT:TILE_PAGE]
+
+[TILE_PAGE:WALL_SOIL]
+	[FILE:images/wall_soil.png]
+	[TILE_DIM:32:32]
+	[PAGE_DIM:4:10]

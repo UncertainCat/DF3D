@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "target": {
+    "df_version": "v0.53.16 win64 STEAM",
+    "dfhack_version": "53.16-r1"
+  },
+  "files": {
+    "mature_fort_pause_53.16.df3dfix.gz": {
+      "sha256": "5062bbd11fd0432711b135ca6af284b455020d77f388a51d92b92b5898f159d1",
+      "uncompressed_sha256": "8d117421ef55853fb478de19673fae90d748140b54ab6381e014878d28f8da88",
+      "uncompressed_bytes": 63941328
+    }
+  },
+  "provenance_note": "Recorded from a maintainer development fortress on the supported build. Numeric bridge recording only: no game text or art. Personal paths absent. Expand with tools/qa/expand_fixtures.py; the uncompressed .df3dfix is not tracked."
+}

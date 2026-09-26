@@ -8,13 +8,22 @@
 #
 # Release config only: Debug is not ABI-compatible with DF (Compile.rst).
 param(
-    [string]$DfPath = $(if ($env:DF3D_DF_PATH) { $env:DF3D_DF_PATH } else { "C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress" }),
+    [string]$DfPath,
     [string]$Config = "Release",
     [switch]$SkipInstall
 )
 
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
+Import-Module (Join-Path $PSScriptRoot 'SteamPaths.psm1') -Force
+if ($SkipInstall) {
+    # Build-only checks do not require an installed game.
+    if (-not $DfPath) { $DfPath = $env:DF3D_DF_PATH }
+    if (-not $DfPath) { $DfPath = Join-Path $repo 'build\dfhack-stage' }
+    $DfPath = [IO.Path]::GetFullPath($DfPath)
+} else {
+    $DfPath = Resolve-Df3dDfPath -DfPath $DfPath
+}
 $dfhackSrc = Join-Path $repo "external\dfhack"
 $buildDir = Join-Path $dfhackSrc "build\VC2022"
 

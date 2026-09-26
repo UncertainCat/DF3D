@@ -197,7 +197,7 @@ def main():
                 (name == "root_build" and not shutil.which("ctest", path=env["PATH"])) or
                 not (directory / "CMakeCache.txt").exists()):
             readiness[name] = False
-            results.append({"id": name, "status": "incomplete", "reasons": ["CMake/CTest and a configured pinned build are required; see README.md"]})
+            results.append({"id": name, "status": "incomplete", "reasons": ["CMake/CTest and a configured pinned build are required; see ENGINEERING.md"]})
             continue
         # CMake success is the build contract; append our marker only after it returns 0.
         command = [sys.executable, str(Path(__file__).with_name("build_check.py")), str(directory)]

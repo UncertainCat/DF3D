@@ -1,7 +1,7 @@
 # DF3D base renderer: terrain from the mesher stage textured through the asset provider,
 # units/items as cutout volumes composited from DF's published layer stacks, buildings
 # as extension-owned meshes, all fed by the Df3dWorld GDExtension node (world model API only).
-# Requires a verified Steam DF install; no placeholder mode. Environment hooks: README.md.
+# Requires a verified Steam DF install; no placeholder mode. Environment hooks: ENGINEERING.md.
 # Keys: PageUp/PageDown or ] [ move the z-slice, F3 debug overlay (R reveal), P pause / O resume.
 extends Node3D
 

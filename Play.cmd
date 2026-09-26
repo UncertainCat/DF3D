@@ -4,7 +4,7 @@ rem choose a saved fort in Godot. Close Godot to end the session; closing
 rem this window also ends it (DF is closed automatically when this window closes).
 rem
 rem Needs: the repo built (build\ and the Godot extension), DFHack + the
-rem df3d plugin installed into the Steam DF folder. See README.md.
+rem df3d plugin installed into the Steam DF folder. See ENGINEERING.md.
 setlocal
 cd /d "%~dp0"
 title DF3D play

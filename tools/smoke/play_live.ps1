@@ -10,8 +10,9 @@
 # process's job object in owned mode; closing this window ends both.
 # Attach mode contains only Godot. Only one lane at a time.
 param(
-    [string]$DfPath = $(if ($env:DF3D_DF_PATH) { $env:DF3D_DF_PATH } else { "C:\Program Files (x86)\Steam\steamapps\common\Dwarf Fortress" }),
-    [string]$GodotExe = $(if ($env:DF3D_GODOT) { $env:DF3D_GODOT } else { "C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe" }),
+    [string]$DfPath,
+    [string]$GodotExe,
+    [switch]$CheckInstall,
     [switch]$Attach,
     [switch]$Silent,
     [ValidateSet('project','safe','separate')][string]$RenderThread = 'project',
@@ -25,13 +26,32 @@ $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path $PSScriptRoot "Df3dLane.psm1") -Force
 Import-Module (Join-Path $PSScriptRoot "AudioTakeover.psm1") -Force
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+Import-Module (Join-Path $repo 'tools\SteamPaths.psm1') -Force
+try {
+    $DfPath = Resolve-Df3dDfPath -DfPath $DfPath
+    $GodotExe = Resolve-Df3dGodotExe -GodotExe $GodotExe
+} catch {
+    Write-Host "[play] FAIL: $($_.Exception.Message)" -ForegroundColor Red; exit 1
+}
 $projectDir = Join-Path $repo "presentations\godot\project"
 $audioGuard = $null
 $gProc = $null
 $audioSilent = $Silent -or $env:DF3D_AUDIO_SILENT -eq '1'
 
-if (-not (Test-Path $GodotExe)) { Write-Host "[play] FAIL: Godot not found at $GodotExe" -ForegroundColor Red; exit 1 }
+if (-not (Test-Path -LiteralPath $GodotExe)) { Write-Host "[play] FAIL: Godot not found at $GodotExe" -ForegroundColor Red; exit 1 }
 if (-not (Test-Path (Join-Path $projectDir "bin\df3d_godot.dll"))) { Write-Host "[play] FAIL: extension not built (presentations/godot/project/bin/df3d_godot.dll)" -ForegroundColor Red; exit 1 }
+Write-Host "[play] Dwarf Fortress: $DfPath"
+Write-Host "[play] Godot: $GodotExe"
+if ($CheckInstall) {
+    foreach ($file in @('dfhooks.dll', 'hack\plugins\df3d.plug.dll', 'hack\dfhack-run.exe')) {
+        if (-not (Test-Path -LiteralPath (Join-Path $DfPath $file) -PathType Leaf)) {
+            Write-Host "[play] FAIL: missing $file. Build/install the pinned bridge with tools/build_bridge.ps1." -ForegroundColor Red
+            exit 1
+        }
+    }
+    Write-Host '[play] INSTALL_PATHS_PASS: executables, extension and bridge files found. This does not verify versions, DLL loading or a live connection.'
+    exit 0
+}
 
 try {
     Enter-Df3dLane -DfPath $DfPath -Port $Port -AttachOnly:$Attach

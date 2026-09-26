@@ -379,6 +379,15 @@
       ]
     },
     {
+      "id": "steam_paths_test",
+      "lane": "core",
+      "kind": "powershell",
+      "script": "tools/smoke/steam_paths_test.ps1",
+      "completion": "STEAM_PATHS_PASS",
+      "timeout": 30,
+      "prerequisites": []
+    },
+    {
       "id": "menu_startup_test",
       "lane": "core",
       "kind": "powershell",
@@ -397,6 +406,16 @@
       "completion": "Save isolation tests: PASS",
       "timeout": 300,
       "prerequisites": []
+    },
+    {
+      "id": "install_connection_smoke",
+      "lane": "live",
+      "kind": "powershell",
+      "script": "tools/smoke/install_connection_smoke.ps1",
+      "completion": "INSTALL_CONNECTION_PASS",
+      "timeout": 240,
+      "prerequisites": ["extension_build", "df_assets", "protected_live", "bridge_attested"],
+      "notes": "Title-screen bridge and headless viewer asset startup with system-only PATH; no fortress load or save."
     },
     {
       "id": "audio_takeover_test",

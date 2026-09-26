@@ -1,0 +1,28 @@
+DF3D Windows preview
+
+Back up your Dwarf Fortress saves before trying this preview. Expect bugs,
+crashes, incomplete interfaces and possible save corruption. Use a copy of
+your game installation and expendable forts where possible.
+
+Requires the Steam Windows x64 Dwarf Fortress 53.16 build 24557528.
+The original game is required and remains responsible for the simulation.
+Game artwork and audio are read from your own installation at runtime.
+
+Run DF3D-0.1.0-windows-x64.exe, select the game installation, and follow setup.
+Godot, the native extension and required runtimes are included; no build tools
+or separate Godot installation are needed. A Steam library is detected automatically;
+Browse or DF3D_DF_PATH can select another installation.
+This package includes a modified DFHack and matching DF3D bridge. It is not
+an official DFHack or Dwarf Fortress release. Setup preserves replaced files.
+Do not run setup while Dwarf Fortress is running.
+
+Closing DF3D does not terminate Dwarf Fortress. Save and quit from the game
+before closing it or restoring installation files. The launcher cannot protect
+saves against every crash or game bug, so keep your own backup outside the
+game's save directory.
+
+DF3D is MIT licensed; see notices/DF3D-LICENSE.txt.
+Third-party licenses are in notices/. The included DFHack distribution also
+contains its own license. No Dwarf Fortress executable, saves, installed mods,
+soundtrack or artwork extracted by DF3D is bundled. Upstream DFHack UI artwork
+is retained under its accompanying notices, including its Bay 12 permission notice.

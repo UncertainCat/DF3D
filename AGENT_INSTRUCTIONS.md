@@ -12,6 +12,19 @@ Terms used below:
 
 ## 1. Scope and documentation
 
+`README.md` is reserved for human authorship: the maintainer's own words to readers.
+An empty README is intentional until the maintainer writes it; do not fill it with a placeholder.
+Agents must not write, rewrite, polish, reformat or automatically update it, including
+badges, generated sections and link maintenance. When changes make README facts stale,
+tell the maintainer in conversation and update the agent-maintained technical reference;
+leave README wording and edits to the maintainer. Do not draft replacement README prose
+as part of routine documentation work.
+
+Other first-party files may be agent-maintained within the requested scope. Keep build,
+run, verification and release guidance in `ENGINEERING.md`, architecture and engineering
+rules here, and compatibility pins in `PINS.md`. This separation preserves a human voice
+in the README while letting technical documentation evolve with the implementation.
+
 DF remains the authoritative simulation; DF3D is a swappable presentation with a semantic command
 path back to DF. Godot is the current host, not a dependency of the foundation. Do not change
 engine, product UX/art direction or distribution posture without maintainer decision.
@@ -45,6 +58,8 @@ remove stale material instead of archiving it (Git keeps history).
 - Require the supported Steam DF installation and resolve art/graphics definitions from it; ship no
   DF-derived sprites, textures, fonts or audio. Missing/unrecognized installs fail clearly. Derived
   caches and captured art stay ignored and out of distribution. Exceptions require human review.
+  Maintainer-approved exception: retain upstream DFHack's bundled UI artwork unchanged with
+  its license/permission notices. This does not authorize DF3D to bundle extracted game assets.
 - Native DF is the UI reference. Inspect the supported build's actual layout and behavior before
   changing a surface; source/tests alone do not establish visual fidelity. Reuse valid evidence when
   available, otherwise capture through protected lanes; hand-supplied screenshots are a last resort.
@@ -104,7 +119,7 @@ remove stale material instead of archiving it (Git keeps history).
   `Invoke-Dfhack`/`Invoke-DfhackRaw` from the lane module, which provide a private console.
   `console_guard.ps1` diagnoses/restores a hidden console.
 - Preserve process/save ownership and verified backups. Owned development sessions end without
-  saving; attach sessions leave the game running (see README).
+  saving; attach sessions leave the game running (see `ENGINEERING.md`).
 - Compatibility baselines are in `PINS.md`; exact dependency revisions are Git submodule pointers.
   External trees are separate repositories: DFHack changes go to the fork in `.gitmodules` (the DF3D
   plugin stays in `bridge/plugin`) and are pushed there before this repository's pointer moves;

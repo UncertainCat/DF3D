@@ -279,6 +279,7 @@ func run() -> void:
 		assert(state.construction.building_key == request.definition)
 		assert(state.construction.filter == request.get("filter",-1))
 		assert(state.construction.footprint.direction == (4 if request.get("retracting",false) else 0))
+	await test_production()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -349,3 +350,97 @@ func assert_citizen_person(u: Dictionary, inspected: bool, member: int = 1, synt
 		"job_type":-1 if synthetic else 5 if u.id == 0 else -1,"social_activity":synthetic,
 		"labors":[0,1] if inspected else [],"labor_names":["mine","haul stone"] if inspected else [],
 		"roles":[{"name":"Manager","required_office":250}] if inspected else [],"offices":[]})
+
+func reject_production(request: Dictionary, error: String) -> void:
+	assert(world.management_request("production", request) == 0)
+	assert(world.last_error() == error)
+
+func test_production() -> void:
+	for request in [{"action":16,"building_id":1}, {"action":17,"building_id":1,"recipe":"builtin:28:2"},
+		{"action":18,"building_id":1,"job_id":12}, {"action":19,"building_id":3,"season":0,"crop_id":-1}]:
+		for key in request:
+			if key == "action": continue
+			var missing: Dictionary = request.duplicate()
+			missing.erase(key)
+			reject_production(missing, "Missing management field: " + key)
+	for key in ["building_id","job_id","crop_id","cursor","repeat","suspend","season"]:
+		for bad in [1.5,"1",true]:
+			var request := {"action":15}
+			request[key] = bad
+			reject_production(request, "Wrong management field type: " + key)
+	for key in ["recipe","query","cancel"]:
+		var request := {"action":15}
+		request[key] = 1
+		reject_production(request, "Wrong management field type: " + key)
+	var bounds := {"building_id":[-2,2147483648],"job_id":[-2,2147483648],"cursor":[-1,4294967296],
+		"repeat":[2],"suspend":[-2],"season":[4],"crop_id":[32768],
+		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
+	for key in bounds:
+		for bad in bounds[key]:
+			var request := {"action":15}
+			request[key] = bad
+			reject_production(request, "Invalid bounded production request")
+	for request in [{"action":18,"building_id":1,"job_id":12,"cancel":true,"repeat":1},
+		{"action":18,"building_id":1,"job_id":12}]:
+		assert(world.management_request("production",request) == 0)
+	var requests := [{"action":15,"query":"","cursor":0}, {"action":16,"building_id":1},
+		{"action":16,"building_id":3}, {"action":17,"building_id":1,"recipe":"builtin:28:2","repeat":0},
+		{"action":17,"building_id":1,"recipe":"builtin:28:2","repeat":1},
+		{"action":18,"building_id":1,"job_id":10,"repeat":0}, {"action":18,"building_id":1,"job_id":10,"repeat":1},
+		{"action":18,"building_id":1,"job_id":10,"suspend":0}, {"action":18,"building_id":1,"job_id":10,"suspend":1},
+		{"action":18,"building_id":1,"job_id":12,"cancel":true}]
+	for season in 4:
+		for crop in [0,-1]: requests.append({"action":19,"building_id":3,"season":season,"crop_id":crop})
+	requests.append({"action":15,"query":"#1024","cursor":1024})
+	for request in requests:
+		var sequence: int = world.management_request("production", request)
+		assert(sequence > 0)
+		var state: Dictionary = await receipt(sequence)
+		assert(not state.is_empty() and state.action == request.action)
+		assert_production(state.production, request)
+
+func assert_production(p: Dictionary, request: Dictionary) -> void:
+	var building := {"id":1,"name":"Kitchen","kind":"Kitchen","origin":Vector3i(5,6,2),"build_stage":3,"max_stage":3,"queue_size":2}
+	var farm := {"id":3,"name":"Farm","kind":"FarmPlot","origin":Vector3i(5,6,2),"build_stage":3,"max_stage":3,"queue_size":0}
+	var expected := {"buildings":[],"recipes":[],"jobs":[],"crops":[],"seasonal_crops":[],
+		"next_cursor":0,"current_season":-1,"selected_building":request.get("building_id",-1),"created_job":-1,"detail":""}
+	if request.action == 15:
+		var carp: Dictionary = building.duplicate()
+		carp.merge({"id":0,"name":"Carpenters","kind":"Carpenters","queue_size":0},true)
+		expected.buildings = [carp,farm]
+		expected.next_cursor = 1024
+		if request.cursor == 1024:
+			carp.id = 1024
+			expected.buildings = [carp]
+			expected.next_cursor = 0
+	elif request.building_id == 3:
+		expected.buildings = [farm]
+		expected.crops = [{"id":0,"name":"allseason","seasons":15,"seeds":600},{"id":1,"name":"spring only","seasons":1,"seeds":0}]
+		expected.seasonal_crops = [0,-1,0,-1]
+		if request.action == 19: expected.seasonal_crops[request.season] = request.crop_id
+		expected.current_season = 0
+		expected.detail = "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed."
+	else:
+		expected.buildings = [building]
+		var needs := [{"description":"Any item, cookable","quantity":1,"item_type":-1},{"description":"Any item, cookable","quantity":2,"item_type":-1}]
+		expected.recipes = [{"key":"builtin:28:2","name":"meal easy","requirements":needs}]
+		expected.jobs = [
+			{"id":10,"name":"job 10","job_type":28,"repeat":true,"suspended":false,
+			"worker_id":7,"worker_name":"Worker","completion_timer":17,"attached_items":1,"editable":true,"status":"Worker assigned","requirements":needs},
+			{"id":11,"name":"job 11","job_type":28,"repeat":false,"suspended":true,"worker_id":-1,"worker_name":"",
+			"completion_timer":-1,"attached_items":0,"editable":true,"status":"Suspended by native state","requirements":needs}]
+		if request.action == 18 and not request.get("cancel",false):
+			if request.has("repeat"): expected.jobs[0].repeat = request.repeat == 1
+			if request.get("suspend",-1) == 1:
+				expected.jobs[0].suspended = true
+				expected.jobs[0].worker_id = -1
+				expected.jobs[0].worker_name = ""
+				expected.jobs[0].status = "Suspended by native state"
+		if request.action == 17:
+			building.queue_size = 3
+			expected.jobs.append({"id":12,"name":"job 12","job_type":28,"repeat":request.repeat == 1,
+				"suspended":false,"worker_id":-1,"worker_name":"","completion_timer":-1,"attached_items":0,
+				"editable":true,"status":"Awaiting worker or inputs; native cause is not exposed","requirements":needs})
+		expected.created_job = 12 if request.action == 17 else -1
+		expected.detail = "Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed. Workshop restricts workers (2)."
+	assert(p == expected)

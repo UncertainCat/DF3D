@@ -29,6 +29,7 @@ func run():
 	test_construction_materials()
 	test_work_orders()
 	test_citizens()
+	test_production()
 	test_transport_replacement()
 	test_new_domain_detach()
 	var world := FakeWorld.new()
@@ -337,4 +338,32 @@ func test_construction_materials():
 	check(observed.size() == 2 and observed.back()[1].construction.placed == 256, "partial reply displayed once")
 	for i in 10: service.poll(1.0)
 	check(world.calls.size() == 2 and observed.size() == 2, "partial rejection never replays")
+	service.free()
+
+func test_production():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	var requests := [{"action":15,"query":"#0","cursor":0}, {"action":16,"building_id":0},
+		{"action":17,"building_id":0,"recipe":"builtin:27:-1","repeat":1},
+		{"action":18,"building_id":0,"job_id":10,"cancel":true},
+		{"action":19,"building_id":3,"season":0,"crop_id":-1}]
+	for request in requests:
+		var ticket := service.submit("production", request, func(t, r, q): observed.append([t,r,q]))
+		var before := observed.size()
+		service.poll(0.0)
+		check(world.calls.back() == {"domain":"production","request":request}, "all production actions dispatch intact")
+		var status: int = Contract.ManagementStatus.Rejected if request.action == 17 else Contract.ManagementStatus.Ok
+		var message := "Native workshop queue is full (10 jobs)" if request.action == 17 else "Observed"
+		world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),
+			"status":status,"action":request.action,"message":message}
+		service.poll(0.0)
+		check(observed.size() == before+1 and observed.back()[0] == ticket and observed.back()[2] == request, "production reply reaches matching ticket")
+		check(service.result(ticket).status == status and service.result(ticket).message == message, "production refusal preserved")
+		check(service._outcomes.has(ticket) == (request.action >= 17), "only production mutations retain receipts")
+		check(Contract.is_mutation(request.action) == (request.action >= 17), "production mutation classification")
+		var calls := world.calls.size()
+		for i in 3: service.poll(1.0)
+		check(world.calls.size() == calls and observed.size() == before+1, "production outcomes never replay")
 	service.free()

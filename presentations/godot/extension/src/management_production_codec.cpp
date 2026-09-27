@@ -281,6 +281,16 @@ bool validateProductionShape(const Dictionary& data, String& error) {
       managementRequiredFields(data, error);
 }
 
+// production payload (actions 15 List, 16 Inspect, 17 Queue, 18 JobEdit, 19 FarmSetCrop):
+// building_id: int, -1 none; required 16-19, ignored by 15.
+// job_id: int, -1 none; required 18, from Inspect jobs[].id.
+// recipe: String <=128 UTF-8 bytes; required 17, from Inspect recipes[].key.
+// query: String <=128 UTF-8 bytes (15); cursor: int >=0 (15), resume at next_cursor building id.
+// repeat: int -1..1; 17: 1 repeating, otherwise one-time; 18: -1 unchanged, 0 off, 1 on.
+// suspend: int -1..1 (18), -1 unchanged, 0 resume, 1 suspend and release worker.
+// cancel: bool (18), remove job; exclusive with repeat/suspend changes.
+// season: int 0..3 (Spring, Summer, Autumn, Winter), required 19.
+// crop_id: int -1..32767 (19), plant raw id from crops[].id, -1 fallow; required 19.
 bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {

@@ -131,7 +131,96 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
   c.add_selected_unit(selectedUnit);c.add_selected_detail(selectedDetail);c.add_next_cursor(next);
   c.add_external_controller(false);c.add_detail(info);return c.Finish();
 }
+// Synthetic adapter-producible observations, using the Kitchen two-input template
+// exercised in test_production_adapter.py; no native screen data is involved.
+flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
+  using A=m::ManagementAction;
+  const auto action=request.action();const auto* q=request.production();
+  const bool list=action==A::ProductionList;
+  const bool farm=!list && q->building_id()==3;
+  std::vector<flatbuffers::Offset<m::ProductionBuilding>> buildings;
+  auto building=[&](int id,const char* name,const char* kind,int queue) {
+    m::TilePos pos(5,6,2);
+    buildings.push_back(m::CreateProductionBuilding(b,id,b.CreateString(name),b.CreateString(kind),&pos,3,3,queue));
+  };
+  // A scan of 512 buildings can yield two visible production rows, then resume
+  // at id 1024; the intervening rows are hidden or not production buildings.
+  if(list) {
+    if(q->cursor()==1024)building(1024,"Carpenters","Carpenters",0);
+    else {building(0,"Carpenters","Carpenters",0);building(3,"Farm","FarmPlot",0);}
+  }
+  else if(farm)building(3,"Farm","FarmPlot",0);
+  else building(q->building_id(),"Kitchen","Kitchen",action==A::ProductionQueue?3:2);
+  std::vector<flatbuffers::Offset<m::ProductionRecipe>> recipes;
+  std::vector<flatbuffers::Offset<m::ProductionJob>> jobs;
+  std::vector<flatbuffers::Offset<m::FarmCrop>> crops;
+  std::vector<int32_t> seasons;
+  std::string detail;
+  if(!list && !farm) {
+    // Single flags make description order deterministic (Lua pairs order is unspecified).
+    auto first=m::CreateProductionRequirement(b,b.CreateString("Any item, cookable"),1,-1);
+    auto second=m::CreateProductionRequirement(b,b.CreateString("Any item, cookable"),2,-1);
+    auto needs=b.CreateVector(std::vector{first,second});
+    recipes.push_back(m::CreateProductionRecipe(b,b.CreateString("builtin:28:2"),b.CreateString("meal easy"),needs));
+    // Queue appends a new awaiting job; the existing assigned/suspended pair stays.
+    for(int i=0;i<(action==A::ProductionQueue?3:2);++i) {
+      const int jobId=action==A::ProductionJobEdit && !q->cancel() && i==0?q->job_id():10+i;
+      auto name=b.CreateString("job "+std::to_string(jobId));
+      const bool editing=action==A::ProductionJobEdit && !q->cancel() && i==0;
+      const bool suspended=i==1 || (editing && q->suspend()==1);
+      const bool assigned=i==0 && !suspended;
+      const bool repeating=i==2?q->repeat()==1:i==0 && (!editing || q->repeat()!=0);
+      auto worker=b.CreateString(assigned?"Worker":"");
+      auto status=b.CreateString(suspended?"Suspended by native state":assigned?"Worker assigned":"Awaiting worker or inputs; native cause is not exposed");
+      m::ProductionJobBuilder j(b);j.add_id(jobId);j.add_name(name);j.add_job_type(28);
+      j.add_repeat(repeating);j.add_suspended(suspended);
+      j.add_worker_id(assigned?7:-1);j.add_worker_name(worker);j.add_completion_timer(i==0?17:-1);
+      j.add_attached_items(i==0?1:0);j.add_editable(true);j.add_status(status);j.add_requirements(needs);
+      jobs.push_back(j.Finish());
+    }
+    detail="Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed. Workshop restricts workers (2).";
+  } else if(farm) {
+    crops.push_back(m::CreateFarmCrop(b,0,b.CreateString("allseason"),15,600));
+    crops.push_back(m::CreateFarmCrop(b,1,b.CreateString("spring only"),1,0));
+    seasons={0,-1,0,-1};
+    if(action==A::FarmSetCrop)seasons.at(q->season())=q->crop_id();
+    detail="Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.";
+  }
+  auto bs=b.CreateVector(buildings);auto rs=b.CreateVector(recipes);auto js=b.CreateVector(jobs);
+  auto cs=b.CreateVector(crops);auto ss=b.CreateVector(seasons);auto text=b.CreateString(detail);
+  m::ProductionStateBuilder p(b);p.add_buildings(bs);p.add_recipes(rs);p.add_jobs(js);p.add_crops(cs);
+  p.add_seasonal_crops(ss);p.add_current_season(farm?0:-1);p.add_selected_building(list?-1:q->building_id());
+  p.add_created_job(action==A::ProductionQueue?12:-1);p.add_next_cursor(list && q->cursor()==0?1024:0);p.add_detail(text);
+  return p.Finish();
+}
 int main(int argc,char** argv) {
+  if(argc>1 && std::string(argv[1])=="--validate-production-fixtures") {
+    try {
+      int checked=0;
+      for(int action=15;action<=19;++action)for(int variant=0;variant<(action==19?8:action==18?5:2);++variant) {
+        flatbuffers::FlatBufferBuilder rb;
+        auto payload=m::CreateProductionRequest(rb,action==15?-1:action==19 || (action==16 && variant==1)?3:1,
+            action==18?(variant==4?12:10):-1,rb.CreateString(action==17?"builtin:28:2":""),rb.CreateString(action==15 && variant==1?"#1024":""),action==15 && variant==1?1024:0,
+            action==17?variant:action==18 && variant<2?variant:-1,
+            action==18 && variant>=2 && variant<4?variant-2:-1,action==18 && variant==4,
+            action==19?variant/2:-1,action==19 && variant%2==0?0:-1);
+        m::ConstructionRequestBuilder request(rb);request.add_schema_version(m::kManagementVersion);
+        request.add_client_id(1);request.add_seq(1);request.add_world_epoch(epoch);
+        request.add_action(static_cast<m::ManagementAction>(action));request.add_production(payload);rb.Finish(request.Finish());
+        auto* q=flatbuffers::GetRoot<m::ConstructionRequest>(rb.GetBufferPointer());
+        if(auto error=m::validateConstructionRequest(*q))throw std::runtime_error(*error);
+        flatbuffers::FlatBufferBuilder b;auto fixture=productionFixture(b,*q);
+        m::ManagementStateBuilder state(b);state.add_schema_version(m::kManagementVersion);state.add_revision(1);
+        state.add_world_epoch(epoch);state.add_client_id(1);state.add_request_seq(1);state.add_action(q->action());
+        state.add_status(m::ManagementStatus::Ok);state.add_production(fixture);b.Finish(state.Finish());
+        flatbuffers::Verifier verifier(b.GetBufferPointer(),b.GetSize());
+        require(verifier.VerifyBuffer<m::ManagementState>(nullptr),"production fixture shape");
+        if(auto error=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))throw std::runtime_error(*error);
+        ++checked;
+      }
+      std::cout<<"PRODUCTION_CONTRACT_FIXTURES_PASS "<<checked<<"\n";return 0;
+    } catch(const std::exception& error) {std::cerr<<error.what()<<"\n";return 1;}
+  }
   // Validate the same response builder without opening a shared-memory channel.
   if(argc>1 && std::string(argv[1])=="--validate-fixtures") {
     try {
@@ -209,6 +298,9 @@ int main(int argc,char** argv) {
       flatbuffers::Offset<m::CitizenState> citizens;
       if(request && request->action()>=m::ManagementAction::CitizenList &&
           request->action()<=m::ManagementAction::WorkDetailMode)citizens=citizenFixture(b,*request);
+      flatbuffers::Offset<m::ProductionState> production;
+      if(request && request->action()>=m::ManagementAction::ProductionList &&
+          request->action()<=m::ManagementAction::FarmSetCrop)production=productionFixture(b,*request);
 
       flatbuffers::Offset<m::ConstructionState> construction;
       if(request && (request->action()==m::ManagementAction::ConstructionMaterials || request->action()==m::ManagementAction::Preview)) {
@@ -219,7 +311,7 @@ int main(int argc,char** argv) {
         m::ConstructionStateBuilder c(b);c.add_building_key(key);c.add_filter(request->filter());
         c.add_filters(fs);c.add_list_revision(INT64_MAX);c.add_footprint(fp);construction=c.Finish();
       }
-      m::ManagementStateBuilder state(b);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      m::ManagementStateBuilder state(b);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_status(m::ManagementStatus::Ok);state.add_message(text);
@@ -242,7 +334,10 @@ int main(int argc,char** argv) {
         A::CitizenList,A::CitizenList,A::CitizenInspect,A::WorkDetailMembership,A::WorkDetailMembership,
         A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailInspect,
         A::WorkOrderUpdate,A::WorkOrderUpdate,A::WorkOrderCondition,
-        A::ConstructionMaterials,A::Preview,A::Preview};
+        A::ConstructionMaterials,A::Preview,A::Preview,
+        A::ProductionList,A::ProductionInspect,A::ProductionInspect,A::ProductionQueue,A::ProductionQueue,
+        A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,
+        A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::ProductionList};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -280,8 +375,25 @@ int main(int argc,char** argv) {
           else require(received==43 && r->definition()->str()=="Bridge" && r->depth()==1 && r->retracting() && r->direction()==0,"retracting bridge");
           break;
         case A::ProductionJobEdit: {
-          auto* v=r->production();require(v && v->building_id()==2147483000 && v->job_id()==2147483001 && v->repeat()==1 && v->suspend()==-1 && !v->cancel(),"production payload");break;
+          auto* v=r->production();
+          if(received>43) {
+            int variant=int(received)-49;
+            require(v && v->building_id()==1 && v->job_id()==(variant==4?12:10) &&
+                v->repeat()==(variant<2?variant:-1) && v->suspend()==(variant>=2 && variant<4?variant-2:-1) &&
+                v->cancel()==(variant==4),"production edit variants");break;
+          }
+          require(v && v->building_id()==2147483000 && v->job_id()==2147483001 && v->repeat()==1 && v->suspend()==-1 && !v->cancel(),"production payload");break;
         }
+        case A::ProductionList:
+          require(r->production()->query()->str()==(received==62?"#1024":"") && r->production()->cursor()==(received==62?1024:0),"production list payload");break;
+        case A::ProductionInspect:
+          require(r->production()->building_id()==(received==45?1:3),"production inspect payload");break;
+        case A::ProductionQueue:
+          require(r->production()->building_id()==1 && r->production()->recipe()->str()=="builtin:28:2" &&
+              r->production()->repeat()==int(received)-47,"production queue payload");break;
+        case A::FarmSetCrop:
+          require(r->production()->building_id()==3 && r->production()->season()==int(received-54)/2 &&
+              r->production()->crop_id()==(received%2==0?0:-1),"farm crop payload");break;
         case A::WorkOrderUpdate: {
           auto* v=r->work_order();
           if(received==38){require(v && v->id()==0 && v->expected_revision()==epoch && v->move()==-1 && v->expected_neighbor()==9 && v->expected_list_revision()==INT64_MAX && !v->traits(),"move fields");break;}

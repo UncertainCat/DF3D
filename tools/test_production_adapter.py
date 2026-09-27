@@ -21,7 +21,7 @@ end
 function clone(t) if type(t)~='table' then return t end local r={};for k,v in pairs(t)do r[k]=clone(v)end;return r end
 function assign(t,v)for k,x in pairs(v)do if type(x)=='table' and type(t[k])=='table' then assign(t[k],x)else t[k]=clone(x)end end end
 local utils={clone=clone,assign=assign,call_with_string=function(o,m,...)return o[m](o,...)end}
-local recipes={input_filter_defaults={item_type=-1,item_subtype=-1,mat_type=-1,mat_index=-1,quantity=1,flags1={},flags2={},flags3={}},jobs_workshop={
+recipes={input_filter_defaults={item_type=-1,item_subtype=-1,mat_type=-1,mat_index=-1,quantity=1,flags1={},flags2={},flags3={}},jobs_workshop={
  [1]={defaults={item_type=5,vector_id=5},{name='construct bed',items={{}},job_fields={job_type=27}}},
  [2]={{name='meal easy',items={{flags1={cookable=true,solid=true}},{flags1={cookable=true}}},job_fields={job_type=28,mat_type=2}}}
 },jobs_furnace={}}
@@ -31,6 +31,7 @@ local jobs={}
 local next_id=10
 local filters_alive=0
 local jobs_alive=0
+local refs_alive=0
 local function instance(k)return {is_instance=function(_,b)return b.kind==k end}end
 df={building_workshopst=instance('workshop'),building_furnacest=instance('furnace'),building_farmplotst=instance('farm'),
  workshop_type={[1]='Carpenters',[2]='Kitchen',[3]='Still'},furnace_type={},item_type={[5]='WOOD',[-1]='Any'},biome_type={[0]='SUBTERRANEAN_WATER'},
@@ -49,8 +50,8 @@ df.job={new=function()
  j.delete=function()jobs_alive=jobs_alive-1 end
  return j
 end}
-df.general_ref_building_holderst={new=function()return {delete=function()end}end}
-local function building(id,t,k)
+df.general_ref_building_holderst={new=function()refs_alive=refs_alive+1;return {delete=function()refs_alive=refs_alive-1 end}end}
+function building(id,t,k)
  return {id=id,type=t,kind=k or 'workshop',centerx=5,centery=6,z=2,jobs=vec(),plant_id={[-0]=-1,[1]=-1,[2]=-1,[3]=-1},
  getBuildStage=function()return 3 end,getMaxBuildStage=function()return 3 end,getWorkshopProfile=function()return {permitted_workers=vec()}end,
  getType=function()return 0 end,getSubtype=function()return t end,getCustomType=function()return -1 end}
@@ -79,9 +80,10 @@ J.removeWorker=function(j,cooldown)assert(cooldown==0);j.worker=nil;removed_work
 J.removeJob=function(j)
  local b=J.getHolder(j);for i,v in ipairs(b.jobs)do if v==j then b.jobs:erase(i);break end end
  for _,f in ipairs(j.job_items.elements)do f:delete()end
+ for _,ref in ipairs(j.general_refs)do ref:delete()end
  jobs[j.id]=nil;j:delete();return true
 end
-function counts()return filters_alive,jobs_alive end
+function counts()return filters_alive,jobs_alive,refs_alive end
 ''')
 adapter = lua.execute((Path(__file__).resolve().parents[1] / 'bridge/plugin/production.lua').read_text())
 lua.globals().adapter = adapter
@@ -125,6 +127,143 @@ local scan=adapter{action=16,seq=999,production={building_id=3}}
 assert(scan.ok and scan.pending,'seed scan is budgeted over updates')
 scan=adapter{action=16,seq=999,production={building_id=3}}
 assert(scan.ok and not scan.pending and scan.crops[1].seeds==600,'seed scan includes entries beyond first update budget')
-local f,j=counts();assert(f==0 and j==0,'read-only and canceled job allocations all freed')
+local f,j,r=counts();assert(f==0 and j==0 and r==0,'read-only and canceled job allocations all freed')
 ''')
+lua.execute(r"""
+local seq=1000
+local function req(action,p)
+ seq=seq+1
+ return adapter{action=action,seq=seq,production=p or {}}
+end
+local function refusal(action,p,message)
+ local result=req(action,p)
+ assert(not result.ok and result.message==message,message)
+end
+local function freed()
+ local f,j,r=counts();assert(f==0 and j==0 and r==0,'all job, filter and holder allocations freed')
+end
+-- Paging is by stable building id, excludes hidden rows, and has both scan and row budgets.
+local original=df.global.world.buildings.all
+local flags=dfhack.maps.getTileFlags
+local rows={}
+for i=0,69 do local b=building(i*3,1);b.centerx=i;rows[#rows+1]=b end
+local hidden=rows[2]
+dfhack.maps.getTileFlags=function(p)return {subterranean=true,hidden=p.x==hidden.centerx}end
+df.global.world.buildings.all=vec(rows)
+local page=req(15,{cursor=0,query=''})
+assert(page.ok and #page.buildings==64 and page.next_cursor==195)
+for _,b in ipairs(page.buildings)do assert(b.id~=hidden.id)end
+local tail=req(15,{cursor=page.next_cursor,query=''})
+assert(tail.ok and #tail.buildings==5 and tail.buildings[1].id==195 and tail.next_cursor==0)
+assert(req(15,{cursor=1,query='#3'}).buildings[1].id==30,'cursor is an id lower bound; hidden #3 excluded')
+rows={};for i=0,519 do rows[#rows+1]=building(i*2,1)end
+df.global.world.buildings.all=vec(rows)
+local scan=req(15,{cursor=0,query='no match'})
+assert(scan.ok and #scan.buildings==0 and scan.next_cursor==1024,'512-building scan budget')
+df.global.world.buildings.all=original;dfhack.maps.getTileFlags=flags
+local recipe=req(16,{building_id=0}).recipes[1].key
+refusal(17,{building_id=0,recipe='builtin:999:-1'},'Recipe is no longer available at this building')
+local stage=carp.getBuildStage;carp.getBuildStage=function()return 2 end
+refusal(17,{building_id=0,recipe=recipe},'Building construction is unfinished');carp.getBuildStage=stage
+force_link_failure=true
+refusal(17,{building_id=0,recipe=recipe},'Native job linking rejected');freed();force_link_failure=false
+-- Both queue repeat values, all three status paths, toggles, and cancellation allocation ownership.
+for repeating=0,1 do
+ local queued=req(17,{building_id=0,recipe=recipe,repeat_job=repeating})
+ assert(queued.ok and queued.created_job>=0 and queued.production_jobs[1].repeat_job==(repeating==1))
+ local j=carp.jobs[0]
+ local row=req(16,{building_id=0}).production_jobs[1]
+ assert(row.status=='Awaiting worker or inputs; native cause is not exposed' and not row.suspended and row.worker_id==-1)
+ j.worker={id=7}
+ row=req(16,{building_id=0}).production_jobs[1]
+ assert(row.status=='Worker assigned' and not row.suspended and row.worker_id==7 and row.worker_name=='Worker')
+ for _,flag in ipairs{'by_manager','special'}do
+  j.flags[flag]=true
+  assert(not req(16,{building_id=0}).production_jobs[1].editable)
+  refusal(18,{building_id=0,job_id=j.id,cancel=true},'Job is not an editable production job in this building')
+  refusal(17,{building_id=0,recipe=recipe},'Building has a special or unsupported job; queue unchanged')
+  j.flags[flag]=false
+ end
+ local job_type=j.job_type;j.job_type=999
+ assert(not req(16,{building_id=0}).production_jobs[1].editable)
+ refusal(18,{building_id=0,job_id=j.id,cancel=true},'Job is not an editable production job in this building')
+ refusal(17,{building_id=0,recipe=recipe},'Building has a special or unsupported job; queue unchanged')
+ j.job_type=job_type
+ for _,repeat_job in ipairs{1,0}do
+  assert(req(18,{building_id=0,job_id=j.id,repeat_job=repeat_job,suspend=-1}).ok)
+  assert(j.flags['repeat']==(repeat_job==1))
+ end
+ local suspended=req(18,{building_id=0,job_id=j.id,repeat_job=-1,suspend=1})
+ row=suspended.production_jobs[1]
+ assert(suspended.ok and row.suspended and row.worker_id==-1 and row.status=='Suspended by native state' and not j.worker)
+ assert(req(18,{building_id=0,job_id=j.id,repeat_job=-1,suspend=0}).ok and not j.flags.suspend)
+ assert(req(18,{building_id=0,job_id=j.id,cancel=true}).ok and #carp.jobs==0);freed()
+end
+for i=1,10 do assert(req(17,{building_id=0,recipe=recipe,repeat_job=0}).ok)end
+refusal(17,{building_id=0,recipe=recipe},'Native workshop queue is full (10 jobs)')
+assert(#carp.jobs==10)
+while #carp.jobs>0 do assert(req(18,{building_id=0,job_id=carp.jobs[0].id,cancel=true}).ok)end
+freed()
+local profile=carp.getWorkshopProfile
+local base=req(16,{building_id=0}).detail
+assert(base=='Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed.')
+carp.getWorkshopProfile=function()return {permitted_workers=vec{7,8}}end
+assert(req(16,{building_id=0}).detail==base..' Workshop restricts workers (2).')
+carp.getWorkshopProfile=profile
+-- Material text and reaction reagent text are taken from native description helpers.
+local input=recipes.jobs_workshop[1][1].items[1]
+input.mat_type=0;input.mat_index=5;input.quantity=2
+input.reaction_class='WOOD_CLASS';input.has_material_reaction_product='PRODUCT'
+dfhack.matinfo.decode=function(mt,mi)assert(mt==0 and mi==5);return {toString=function()return 'oak' end}end
+local need=req(16,{building_id=0}).recipes[1].requirements[1]
+assert(need.description=='WOOD, oak, WOOD_CLASS, PRODUCT' and need.quantity==2 and need.item_type==5)
+input.mat_type=nil;input.mat_index=nil;input.quantity=nil;input.reaction_class=nil;input.has_material_reaction_product=nil
+reaction.reagents[0].getDescription=function(_,id)assert(id==0);return 'native brew reagent' end
+reaction.reagents[0].contribute_to_job_req=function(_,target,ri,rx)
+ local f=df.job_item.new();f.reaction_id=rx;f.reagent_index=ri;f.quantity=3;f.item_type=5;target.elements:insert('#',f)
+end
+df.reaction.find=function(id)assert(id==0);return reaction end
+need=req(16,{building_id=2}).recipes[1].requirements[1]
+assert(need.description=='native brew reagent' and need.quantity==3 and need.item_type==5)
+-- Reproduce the host's two-input Kitchen recipe and job requirement vectors.
+recipes.jobs_workshop[2][1].items={{flags1={cookable=true}},{quantity=2,flags1={cookable=true}}}
+df.item_type[-1]=nil
+local kitchen_state=req(16,{building_id=1})
+assert(kitchen_state.recipes[1].key=='builtin:28:2' and kitchen_state.recipes[1].name=='meal easy')
+for i,need in ipairs(kitchen_state.recipes[1].requirements)do
+ assert(need.description=='Any item, cookable' and need.quantity==i and need.item_type==-1)
+end
+local queued=req(17,{building_id=1,recipe='builtin:28:2',repeat_job=1})
+assert(queued.ok and #queued.production_jobs[1].requirements==2)
+assert(req(18,{building_id=1,job_id=queued.created_job,cancel=true}).ok);freed()
+-- Zero seeds do not gate any season; fallow works in all four seasons.
+df.global.world.items.other.SEEDS=vec()
+refusal(17,{building_id=3,recipe=recipe},'Select seasonal farm crops instead')
+refusal(19,{building_id=0,season=0,crop_id=0},'A farm plot is required')
+for season=0,3 do
+ local selected=req(19,{building_id=3,season=season,crop_id=0})
+ assert(selected.ok and selected.seasonal_crops[season+1]==0 and selected.crops[1].seeds==0)
+ assert(req(19,{building_id=3,season=season,crop_id=-1}).ok and farm.plant_id[season]==-1)
+end
+refusal(19,{building_id=3,season=1,crop_id=1},'Crop is not eligible for this farm and growing season')
+refusal(19,{building_id=3,season=0,crop_id=99},'Crop is not eligible for this farm and growing season')
+df.global.cur_season_tick=0
+local early=req(16,{building_id=3})
+assert(early.ok and #early.crops==2 and early.crops[1].seasons==15 and early.crops[2].seasons==1)
+assert(early.current_season==0 and #early.seasonal_crops==4 and #early.production_jobs==0 and #early.recipes==0)
+farm.x1=4;farm.x2=5;farm.y1=6;farm.y2=6
+for _,mode in ipairs{'hidden','mixed underground'}do
+ dfhack.maps.getTileFlags=function(p)return {subterranean=p.x~=4 or mode=='hidden',hidden=p.x==4 and mode=='hidden'}end
+ refusal(16,{building_id=3},'Mixed or hidden farm environment is not supported')
+end
+dfhack.maps.getTileFlags=function()return {subterranean=false}end
+dfhack.maps.getTileBiomeRgn=function(p)return p.x end
+dfhack.maps.getBiomeType=function(x)return x end
+df.biome_type[4]='FOREST';df.biome_type[5]='GRASSLAND'
+refusal(16,{building_id=3},'Mixed-biome farm is not supported')
+dfhack.maps.getTileFlags=flags;farm.x2=35
+refusal(16,{building_id=3},'Farm exceeds supported 31 by 31 inspector')
+farm.x1=nil;farm.x2=nil;farm.y1=nil;farm.y2=nil
+freed()
+""")
 print('PRODUCTION_ADAPTER PASS')

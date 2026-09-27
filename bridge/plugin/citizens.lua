@@ -93,7 +93,7 @@ local function citizen_info(u,inspect,selected)
  h=fnv_int(h,row.only_assigned_jobs and 1 or 0)
  for _,d in ipairs(row.assigned_details) do h=fnv_int(h,d.index) end
  row.revision=revision(h)
- local d=selected and selected>=0 and details()[selected] or nil
+ local all=details();local d=selected and selected>=0 and selected<#all and all[selected] or nil
  if d then
   row.detail_member=0
   for _,v in ipairs(row.assigned_details) do if v.index==selected then row.detail_member=1 end end
@@ -139,7 +139,7 @@ local function receipt()
  list_revision=revision(h);return list_revision
 end
 local function detail_info(index,rev)
- local d=details()[index]
+ local all=details();local d=index>=0 and index<#all and all[index] or nil
  if not d then return nil end
  local h=0xcbf29ce484222325
  local count=#d.assigned_units
@@ -179,8 +179,6 @@ local function advance(rollback)
  while lo<hi do local mid=(lo+hi)//2;if all[mid].id<recalc.cursor then lo=mid+1 else hi=mid end end
  local called={}
  while recalc.active and steps<budget do
-  -- Reserve restoration calls when an inline mode change can be rolled back.
-  if rollback and budget-steps<=#called+2 then break end
   if recalc.unit_id then
    local u=df.unit.find(recalc.unit_id);recalc.unit_id=nil
    if u and eligibility(u) then
@@ -364,10 +362,11 @@ return function(request)
   if action~=65 then out=inspect_detail(p.detail_index,p.unit_id,rev) end
   if full then
    queue_recalc();local failure=advance(rollback)
-   if failure then
+   if failure and rollback then
     local rejected=fail(failure);rejected.retired=out.retired;return rejected
    end
   end
  end
+ if not out.ok then return finish(out) end
  out.message='Native work-detail change applied';return finish(out)
 end

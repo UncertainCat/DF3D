@@ -26,7 +26,16 @@ TEST_CASE("work detail request boundaries and absent optional edits") {
   r.citizen.expectedRevision=uint64_t(INT64_MAX)+1;check(r,"invalid citizen request");r.citizen.expectedRevision=INT64_MAX;
   r.citizen.name="x";check(r,"unexpected work detail name");r.citizen.name="";
   r.citizen.unitId=0;check(r,"unexpected new work detail identity");r.citizen.unitId=-1;
-  r.citizen.expectedRevision=0;check(r,"work detail receipt required");r.citizen.expectedRevision=1;
+  r.citizen.expectedRevision=0;check(r,"citizen receipt required");r.citizen.expectedRevision=1;
+  for(auto action:{wm::ManagementAction::WorkDetailCreate,wm::ManagementAction::WorkDetailDelete,wm::ManagementAction::WorkDetailEdit,wm::ManagementAction::CitizenWorkScope}) {
+    auto search=r;search.action=action;
+    if(action==wm::ManagementAction::WorkDetailDelete || action==wm::ManagementAction::WorkDetailEdit)search.citizen.detailIndex=0;
+    if(action==wm::ManagementAction::WorkDetailEdit)search.citizen.edit=1;
+    if(action==wm::ManagementAction::CitizenWorkScope){search.citizen.unitId=0;search.citizen.onlyAssigned=0;}
+    check(search,"");search.citizen.cursor=1;check(search,"unexpected citizen search");search.citizen.cursor=0;
+    search.citizen.query="x";check(search,"unexpected citizen search");search.citizen.query="";check(search,"");
+    search.citizen.expectedRevision=0;check(search,"citizen receipt required");
+  }
   for(auto action:{wm::ManagementAction::WorkDetailDelete,wm::ManagementAction::WorkDetailEdit}) {
     r.action=action;r.citizen.edit=action==wm::ManagementAction::WorkDetailEdit?1:0;
     check(r,"work detail index required");r.citizen.detailIndex=0;check(r,"");

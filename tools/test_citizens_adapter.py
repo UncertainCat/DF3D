@@ -231,6 +231,62 @@ def extended_work_details(lua):
         assert not reply['ok'] and reply['message'] == message, reply['message']
     def values(table):
         return list(table.values())
+    # The shared mock must fail exactly as DFHack does, including empty vectors.
+    lua.execute("""
+    for _,v in ipairs{vec{},vec{42}}do
+      for _,index in ipairs{-1,#v,#v+1}do
+        local success,message=pcall(function()return v[index]end)
+        assert(not success and message=='index out of bounds')
+      end
+    end
+    assert(vec{42}[0]==42)
+    """)
+    for index in (-1, 1, 127):
+        row = ok(call(28, detail_index=index))['citizens'][1]
+        assert row['detail_member'] == -1 and row['detail_skill'] == -1
+        for action in (31, 32, 33, 65, 66):
+            refused(call(action, detail_index=index, expected_revision=1), 'Work detail no longer exists')
+    stale = observed()['revision']
+    ok(edit(65))
+    refused(call(31, detail_index=0), 'Work detail no longer exists')
+    refused(call(66, detail_index=0, expected_revision=stale, edit=1, name='Stale'), 'Work detail no longer exists')
+    # Applied deletes/labor edits retain Ok and publish the recalc error separately.
+    for action, selector in ((65, 0), (66, 2), (66, 3)):
+        helper = reset()
+        if selector == 2:
+            lua.execute('wd[0].allowed_labors[1]=true')
+        if selector == 3:
+            lua.execute('wd[0].flags.no_modify=true;wd[0].icon=0;df.unit_labor.MINE=0;wd[0].allowed_labors={[1]=true}')
+        lua.execute('fail_next=true')
+        r = ok(edit(action, edit=selector))
+        assert r['message'] == 'Native work-detail change applied'
+        assert r['recalc_error'] == 'Native recalculation failed; labors may be stale' and r['active_kinds'] == 0
+        if action == 65:
+            assert len(r['retired']) == 1 and lua.eval('#wd') == 0
+        else:
+            assert values(observed()['labors']) == [0]
+            assert not lua.globals().wd[0]['allowed_labors'][1]
+    # Native recalculation may change membership before the post-write inspection.
+    helper = reset()
+    lua.execute("saved_recalc=dfhack.units.setAutomaticProfessions;dfhack.units.setAutomaticProfessions=function(u)saved_recalc(u);wd[0].assigned_units=vec{0,0}end")
+    refused(edit(32, unit_id=0, member=1), 'Native work-detail membership is not sorted and unique')
+    lua.execute('dfhack.units.setAutomaticProfessions=saved_recalc')
+    # A last-step mode failure still restores every touched unit without reserve.
+    for refresh_fails in (False, True):
+        helper = reset(100)
+        lua.globals().refresh_fails = refresh_fails
+        lua.execute("""
+        saved_recalc=dfhack.units.setAutomaticProfessions
+        dfhack.units.setAutomaticProfessions=function(u)
+          saved_recalc(u)
+          if #calls==31 or (refresh_fails and #calls>31)then error('native failure')end
+        end
+        """)
+        r = edit(33, mode=1, step_budget=64)
+        refused(r, 'Native recalculation failed; mode restored' + (' but labor refresh failed' if refresh_fails else ''))
+        assert r['steps'] == 64 and r['active_kinds'] == 0 and len(lua.globals().calls) == 62
+        assert observed()['mode'] == 3
+        lua.execute('dfhack.units.setAutomaticProfessions=saved_recalc')
     # Add uses the native custom count, wraps the icon, and does no recalculation.
     for count in (0, 1, 8, 127):
         helper = reset(d=count)
@@ -452,6 +508,7 @@ def extended_work_details(lua):
             updates += 1
             assert updates < 20
         assert len(lua.globals().calls) == 5000 and r['recalc_done'] == r['recalc_total'] == 5000
+        print('CITIZENS_SCHEDULING', 'competing' if competing else 'alone', inline, updates)
         if inline != 2032 or (updates > 9 if competing else updates != 5):
             scheduling_failures.append((competing, inline, updates))
     assert not scheduling_failures, ('mode scheduling (competing, inline, updates)', scheduling_failures)

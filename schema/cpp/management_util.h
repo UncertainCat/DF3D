@@ -130,7 +130,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if((r.action()==ManagementAction::CitizenInspect || r.action()==ManagementAction::WorkDetailMembership) && c->unit_id()<0) return "citizen id required";
     if(((r.action()>=ManagementAction::WorkDetailInspect && r.action()<=ManagementAction::WorkDetailMode) ||
         r.action()==ManagementAction::WorkDetailDelete || r.action()==ManagementAction::WorkDetailEdit) && c->detail_index()<0) return "work detail index required";
-    if(r.action()>=ManagementAction::WorkDetailMembership && !c->expected_revision()) return "work detail receipt required";
+    if(r.action()>=ManagementAction::WorkDetailMembership && !c->expected_revision()) return "citizen receipt required";
+    if(r.action()>=ManagementAction::WorkDetailCreate && (c->cursor() || (c->query() && c->query()->size()))) return "unexpected citizen search";
     if(r.action()==ManagementAction::WorkDetailMembership && (c->member()<0 || c->mode()!=-1)) return "membership edit requires only member field";
     if(r.action()==ManagementAction::WorkDetailMode && (c->mode()<0 || c->member()!=-1)) return "mode edit requires only mode field";
     if(r.action()!=ManagementAction::WorkDetailMembership && r.action()!=ManagementAction::WorkDetailMode &&

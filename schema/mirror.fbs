@@ -1065,7 +1065,7 @@ table SessionState {
 table SessionCommand { schema_version:uint32 = 8; seq:uint64; save_id:string; action:SessionAction; checkpoint_name:string; fortress_epoch:uint64; interruption_receipt:uint64; petition_id:int32 = -1; petition_receipt:uint64; client_id:uint64; }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials }
 enum AreaKind : uint8 { Stockpile, Zone }
 table AreaRequest {
   kind:AreaKind;
@@ -1340,7 +1340,15 @@ table StockCategory { id:int32; name:string; available:StockCount; unavailable:S
 table StockItem { id:int32; category:int32; description:string; quantity:uint32 = 1; x:int32 = -1; y:int32 = -1; z:int32 = -1; can_focus:bool; }
 table StocksState { open:bool; receipt:uint64; categories:[StockCategory]; items:[StockItem]; next_cursor:uint32; category:int32 = -1; detail:string; }
 enum ManagementStatus : uint8 { Idle, Pending, Ok, Rejected }
-table BuildingDefinition { key:string (required); name:string; width:uint16 = 1; height:uint16 = 1; supported:bool; reason:string; }
+table BuildingDefinition { key:string (required); name:string; width:uint16 = 1; height:uint16 = 1; supported:bool; reason:string;
+  family:string; subtype_key:string; custom_code:string; native_name:string;
+  // 0 unknown, 1 fixed, 2 sized, 3 per-tile, 4 stairs.
+  area_mode:uint8;
+  // Direction bits 0-3, retracting bit 4; 0 unknown.
+  orientations:uint8;
+  max_width:uint16; max_height:uint16; max_depth:uint16;
+  filters:[ConstructionFilter]; footprints:[ConstructionFootprint];
+}
 table ConstructionInput { id:int32; description:string; quantity:uint32; }
 enum CreatureSectionKind : uint8 { Identity, Skills, Attributes, Health, Inventory, Relationships, Personality, Values, Needs, Dreams, Emotions, Preferences, Military, Labors, Rooms, Groups, Memories, Treatment, HealthHistory, Knowledge, Uniform, Kills, Workshops, Locations, WorkAnimals }
 table CreatureFact { key:string; text:string; number:int64; has_number:bool; }
@@ -1353,7 +1361,7 @@ table CreatureState {
   portrait:SelectionAppearance;
 }
 table ConstructionRequest {
-  schema_version:uint32 = 17;
+  schema_version:uint32 = 18;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1379,9 +1387,14 @@ table ConstructionRequest {
   alert:AlertRequest;
   selection:SelectionRequest;
   creature:CreatureRequest;
+  depth:uint16 = 1;
+  retracting:bool;
+  filter:int16 = -1;
+  selections:[ConstructionSelection];
+  expected_list_revision:uint64;
 }
 table ManagementState {
-  schema_version:uint32 = 17;
+  schema_version:uint32 = 18;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -1413,6 +1426,7 @@ table ManagementState {
   alert:AlertState;
   selection:SelectionState;
   creature:CreatureState;
+  construction:ConstructionState;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }
@@ -1422,5 +1436,34 @@ table WorkOrderItemType { item_type:int16 = -1; item_subtype:int16 = -1; name:st
 table WorkOrderGroup { type:int16 = -1; subtype:int16 = -1; custom:int32 = -1; name:string; count:uint32; }
 // Task keys and reactions <=64 B; names <=128 B. Identity fields must be >= -1.
 table WorkOrderTask { key:string; name:string; job_type:int16 = -1; reaction:string; item_type:int16 = -1; item_subtype:int16 = -1; mat_type:int16 = -1; mat_index:int32 = -1; }
+
+table ConstructionSelection {
+  filter:int16 = -1; item_type:int16 = -1; item_subtype:int16 = -1;
+  mat_type:int16 = -1; mat_index:int32 = -1; count:uint32;
+}
+table ConstructionFilter {
+  index:int16 = -1; item_type:int16 = -1; item_subtype:int16 = -1;
+  caption:string; requirement:string; quantity:int32 = -1;
+}
+table ConstructionMaterial {
+  item_type:int16 = -1; item_subtype:int16 = -1; mat_type:int16 = -1;
+  mat_index:int32 = -1; name:string; caption:string; count:uint32;
+}
+table ConstructionFootprint {
+  direction:uint8; width:uint16; height:uint16;
+  center_x:int16 = -1; center_y:int16 = -1;
+}
+table ConstructionState {
+  building_key:string; filter:int16 = -1;
+  filters:[ConstructionFilter]; materials:[ConstructionMaterial];
+  total:uint32; list_revision:uint64; estimated:bool;
+  build_phase:uint8; build_done:uint32; build_total:uint32;
+  placed:uint32; skipped:uint32; first_building:int32 = -1;
+  // One byte per tile: x fastest, then y, then z upward from origin.z.
+  valid_mask:[ubyte];
+  // 0 unknown, 1 UpStair, 2 DownStair, 3 UpDownStair.
+  pieces:[ubyte];
+  footprint:ConstructionFootprint;
+}
 
 root_type Snapshot;

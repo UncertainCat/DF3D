@@ -59,6 +59,7 @@ def outputs():
         return {domain: {n for n, v in actions.items() if actions[first] <= v <= actions[last]}
                 for domain, (first, last) in ranges.items()}
     domains, retired = members(DOMAINS), members(RETIRED)
+    domains["construction"].add("ConstructionMaterials")
     partitions = [*domains.values(), *retired.values(), UNROUTED]
     if not all(sum(n in group for group in partitions) == 1 for n in actions):
         raise SystemExit("Every ManagementAction must belong to exactly one domain, retired range, or UNROUTED")

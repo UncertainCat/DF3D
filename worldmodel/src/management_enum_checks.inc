@@ -62,7 +62,8 @@ static_assert(static_cast<int>(wm::ManagementAction::KitchenClose) == static_cas
 static_assert(static_cast<int>(wm::ManagementAction::Alert) == static_cast<int>(df3d::mirror::ManagementAction::Alert));
 static_assert(static_cast<int>(wm::ManagementAction::Selection) == static_cast<int>(df3d::mirror::ManagementAction::Selection));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureInspect) == static_cast<int>(df3d::mirror::ManagementAction::CreatureInspect));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 63);
+static_assert(static_cast<int>(wm::ManagementAction::ConstructionMaterials) == static_cast<int>(df3d::mirror::ManagementAction::ConstructionMaterials));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 64);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -204,3 +205,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenClose) == df3d::m
 static_assert(wm::isRuntimeAction(wm::ManagementAction::Alert) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::Alert));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::Selection) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::Selection));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureInspect) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureInspect));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ConstructionMaterials) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ConstructionMaterials));

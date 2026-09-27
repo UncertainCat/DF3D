@@ -63,6 +63,13 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
   auto str = [](const flatbuffers::String* s) { return s ? s->str() : std::string(); };
   n.nextCursor = w->next_cursor();
   n.detail = str(w->detail());
+  n.total=w->total();n.listRevision=int64_t(w->list_revision());n.buildPhase=w->build_phase();
+  n.buildDone=w->build_done();n.buildTotal=w->build_total();
+  if(w->materials())for(const auto* v:*w->materials())n.materials.push_back({v->mat_type(),v->mat_index(),str(v->name())});
+  if(w->traits())for(const auto* v:*w->traits())n.traits.push_back({str(v->key()),str(v->name())});
+  if(w->types())for(const auto* v:*w->types())n.types.push_back({v->item_type(),v->item_subtype(),str(v->name())});
+  if(w->groups())for(const auto* v:*w->groups())n.groups.push_back({v->type(),v->subtype(),v->custom(),str(v->name()),v->count()});
+  if(w->tasks())for(const auto* v:*w->tasks())n.tasks.push_back({str(v->key()),str(v->name()),v->job_type(),str(v->reaction()),v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()});
   if (w->orders())
     for (const auto* v : *w->orders()) {
       WorkOrderInfo o;
@@ -80,13 +87,20 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
       o.workshopId = v->workshop_id();
       o.maxWorkshops = v->max_workshops();
       o.editable = v->editable();
+      o.position=v->position();o.detailKind=v->detail_kind();o.sizeRaw=v->size_raw();o.encrustFlags=v->encrust_flags();
+      o.matType=v->mat_type();o.matIndex=v->mat_index();o.materialCategory=v->material_category();
+      if(v->inputs())for(const auto* i:*v->inputs())o.inputs.push_back({i->index(),str(i->description()),i->mat_type(),i->mat_index(),i->editable()});
       if (v->generated_jobs())
         o.generatedJobs.assign(v->generated_jobs()->begin(), v->generated_jobs()->end());
       if (v->conditions())
-        for (const auto* c : *v->conditions())
-          o.conditions.push_back({c->kind(), c->index(), str(c->description()), c->editable(),
-                                  c->satisfied(), c->compare(), c->dependency(), c->item_type(),
-                                  c->threshold(), c->target_order()});
+        for (const auto* c : *v->conditions()) {
+          o.conditions.emplace_back();
+          auto& row=o.conditions.back();row.kind=c->kind();row.index=c->index();row.description=str(c->description());
+          row.editable=c->editable();row.satisfied=c->satisfied();row.compare=c->compare();row.dependency=c->dependency();
+          row.itemType=c->item_type();row.threshold=c->threshold();row.targetOrder=c->target_order();row.itemSubtype=c->item_subtype();row.matType=c->mat_type();row.matIndex=c->mat_index();
+          row.satisfaction=c->satisfaction();row.estimated=c->estimated();row.estimateCount=c->estimate_count();
+          if(c->traits())for(const auto* t:*c->traits())row.traits.push_back(str(t));
+        }
       n.orders.push_back(std::move(o));
     }
   if (w->recipes())
@@ -153,7 +167,11 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
                                    b.CreateString(w.query), w.cursor, w.remaining, w.frequency,
                                    w.workshopId, w.maxWorkshops, w.conditionKind, w.conditionIndex,
                                    w.removeCondition, w.compare, w.threshold, w.itemType,
-                                   w.targetOrder, w.dependency, w.candidateKind);
+                                   w.targetOrder, w.dependency, w.candidateKind, w.move, w.expectedNeighbor,
+                                   uint64_t(w.expectedListRevision), w.itemSubtype, w.matType, w.matIndex,
+                                   w.traits && (!w.traits->empty() || (!w.move && w.inputIndex < 0))
+                                       ? b.CreateVectorOfStrings(*w.traits) : 0,
+                                   w.inputIndex, w.groupType, w.groupSubtype, w.groupCustom, w.encrustFlags);
 }
 
 flatbuffers::Offset<m::KitchenRequest> encodeKitchen(flatbuffers::FlatBufferBuilder& b,

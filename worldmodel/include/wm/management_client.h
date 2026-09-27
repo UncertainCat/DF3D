@@ -2,6 +2,7 @@
 #include "wm/types.h"
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 #include "wm/management_enums.h"
@@ -160,6 +161,10 @@ struct WorkOrderRequest {
   int8_t frequency=-1,compare=-1,dependency=-1;
   uint8_t conditionKind=0,candidateKind=0;
   bool removeCondition=false;
+  int8_t move=0; int32_t expectedNeighbor=-1; int64_t expectedListRevision=0;
+  int16_t itemSubtype=-1,matType=-1; int32_t matIndex=-1;
+  std::optional<std::vector<std::string>> traits;
+  int16_t inputIndex=-1,groupType=-1,groupSubtype=-1; int32_t groupCustom=-1,encrustFlags=-1;
 };
 struct WorkOrderCondition {
   uint8_t kind=0; uint16_t index=0;
@@ -168,7 +173,15 @@ struct WorkOrderCondition {
   int8_t compare=-1,dependency=-1;
   int16_t itemType=-1;
   int32_t threshold=-1,targetOrder=-1;
+  int16_t itemSubtype=-1,matType=-1; int32_t matIndex=-1;
+  std::vector<std::string> traits; uint8_t satisfaction=0; bool estimated=false; int32_t estimateCount=-1;
 };
+struct WorkOrderInput { uint16_t index=0; std::string description; int16_t matType=-1; int32_t matIndex=-1; bool editable=false; };
+struct WorkOrderMaterial { int16_t matType=-1; int32_t matIndex=-1; std::string name; };
+struct WorkOrderTrait { std::string key,name; };
+struct WorkOrderItemType { int16_t itemType=-1,itemSubtype=-1; std::string name; };
+struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; };
+struct WorkOrderTask { std::string key,name; int16_t jobType=-1; std::string reaction; int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; };
 struct WorkOrderInfo {
   int32_t id=-1,finishedYear=-1,finishedTick=-1,workshopId=-1,maxWorkshops=0;
   uint64_t revision=0;
@@ -178,6 +191,9 @@ struct WorkOrderInfo {
   bool validated=false,active=false,editable=false;
   std::vector<int32_t> generatedJobs;
   std::vector<WorkOrderCondition> conditions;
+  int32_t position=-1; uint8_t detailKind=0; int32_t sizeRaw=-1,encrustFlags=0;
+  int16_t matType=-1; int32_t matIndex=-1; uint32_t materialCategory=0;
+  std::vector<WorkOrderInput> inputs;
 };
 struct ManagerRole { int32_t unitId=-1; std::string name,position,job; std::vector<int32_t> offices; };
 struct WorkOrderState {
@@ -187,6 +203,12 @@ struct WorkOrderState {
   std::vector<ManagerRole> managers;
   uint32_t nextCursor=0;
   std::string detail;
+  std::vector<WorkOrderMaterial> materials;
+  std::vector<WorkOrderTrait> traits;
+  std::vector<WorkOrderItemType> types;
+  std::vector<WorkOrderGroup> groups;
+  std::vector<WorkOrderTask> tasks;
+  uint32_t total=0; int64_t listRevision=0; uint8_t buildPhase=0; uint32_t buildDone=0,buildTotal=0;
 };
 struct BuildingDefinition {
   std::string key, name;

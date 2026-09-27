@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "management_helper_owners.h"
 #include "LuaTools.h"
 #include "mirror_generated.h"
 #include "construction_script.h"
@@ -32,7 +33,7 @@ static_assert(int(A::TradeList)==38 && int(A::TradeInspect)==39 && int(A::TradeU
 }
 // Each live domain owns one cached Lua closure. Retirement is structural: no
 // retired source or registry entry is compiled into the plugin.
-class ManagementHelpers {
+class ManagementHelpers : public ManagementHelperOwners {
     struct Helper {
         df3d::mirror::ManagementAction first,last;
         std::string_view source;
@@ -40,15 +41,15 @@ class ManagementHelpers {
     };
     using Action=df3d::mirror::ManagementAction;
     std::array<Helper,9> entries_{{
-        {Action::Catalog,Action::RemoveConstruction,kConstructionScript},
-        {Action::AreaCatalog,Action::AreaCandidates,kAreasScript},
-        {Action::ProductionList,Action::FarmSetCrop,kProductionScript},
-        {Action::WorkOrderList,Action::WorkOrderCatalog,kWorkOrdersScript},
-        {Action::CitizenList,Action::WorkDetailMode,kCitizensScript},
-        {Action::ReportList,Action::ReportInspect,kReportsScript},
-        {Action::AgreementList,Action::AgreementInspect,kAgreementsScript},
-        {Action::TradeList,Action::TradeBring,kTradeScript},
-        {Action::CreatureInspect,Action::CreatureInspect,kCreatureScript}
+        {ranges_[0].first,ranges_[0].last,kConstructionScript},
+        {ranges_[1].first,ranges_[1].last,kAreasScript},
+        {ranges_[2].first,ranges_[2].last,kProductionScript},
+        {ranges_[3].first,ranges_[3].last,kWorkOrdersScript},
+        {ranges_[4].first,ranges_[4].last,kCitizensScript},
+        {ranges_[5].first,ranges_[5].last,kReportsScript},
+        {ranges_[6].first,ranges_[6].last,kAgreementsScript},
+        {ranges_[7].first,ranges_[7].last,kTradeScript},
+        {ranges_[8].first,ranges_[8].last,kCreatureScript}
     }};
 public:
     ManagementHelpers()=default;
@@ -57,7 +58,16 @@ public:
     ~ManagementHelpers(){reset();}
     void reset() {
         for(auto& helper:entries_) if(helper.reference!=LUA_NOREF) {
-            luaL_unref(DFHack::Core::getInstance().getLuaState(),LUA_REGISTRYINDEX,helper.reference);
+            auto* state=DFHack::Core::getInstance().getLuaState();
+            if(helper.first==Action::WorkOrderList) {
+                // Release synthesized estimate filters before discarding the closure.
+                const int top=lua_gettop(state);
+                lua_rawgeti(state,LUA_REGISTRYINDEX,helper.reference);lua_newtable(state);
+                lua_pushboolean(state,true);lua_setfield(state,-2,"cancel_builders");
+                DFHack::Lua::SafeCall(DFHack::Core::getInstance().getConsole(),state,1,0);
+                lua_settop(state,top);
+            }
+            luaL_unref(state,LUA_REGISTRYINDEX,helper.reference);
             helper.reference=LUA_NOREF;
         }
     }

@@ -106,6 +106,15 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     row["max_workshops"] = o.maxWorkshops;
     row["editable"] = o.editable;
     row["reason"] = String::utf8(o.reason.c_str());
+    row["position"]=o.position;row["detail_kind"]=o.detailKind;row["size_raw"]=o.sizeRaw;
+    row["encrust_flags"]=o.encrustFlags;row["mat_type"]=o.matType;row["mat_index"]=o.matIndex;
+    row["material_category"]=int64_t(o.materialCategory);
+    Array inputRows;
+    for(const auto& i:o.inputs) {
+      Dictionary v;v["index"]=i.index;v["description"]=String::utf8(i.description.c_str());
+      v["mat_type"]=i.matType;v["mat_index"]=i.matIndex;v["editable"]=i.editable;inputRows.push_back(v);
+    }
+    row["inputs"]=inputRows;
     Array ids, cs;
     for (auto id : o.generatedJobs)
       ids.push_back(id);
@@ -121,6 +130,9 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
       v["target_order"] = c.targetOrder;
       v["dependency"] = c.dependency;
       v["satisfied"] = c.satisfied;
+      v["item_subtype"]=c.itemSubtype;v["mat_type"]=c.matType;v["mat_index"]=c.matIndex;
+      v["satisfaction"]=c.satisfaction;v["estimated"]=c.estimated;v["estimate_count"]=c.estimateCount;
+      Array traits;for(const auto& t:c.traits)traits.push_back(String::utf8(t.c_str()));v["traits"]=traits;
       cs.push_back(v);
     }
     row["generated_jobs"] = ids;
@@ -151,6 +163,15 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     v["offices"] = ids;
     managers.push_back(v);
   }
+  Array materials,traits,types,groups,tasks;
+  for(const auto& r:ws.materials){Dictionary v;v["mat_type"]=r.matType;v["mat_index"]=r.matIndex;v["name"]=String::utf8(r.name.c_str());materials.push_back(v);}
+  for(const auto& r:ws.traits){Dictionary v;v["key"]=String::utf8(r.key.c_str());v["name"]=String::utf8(r.name.c_str());traits.push_back(v);}
+  for(const auto& r:ws.types){Dictionary v;v["item_type"]=r.itemType;v["item_subtype"]=r.itemSubtype;v["name"]=String::utf8(r.name.c_str());types.push_back(v);}
+  for(const auto& r:ws.groups){Dictionary v;v["type"]=r.type;v["subtype"]=r.subtype;v["custom"]=r.custom;v["name"]=String::utf8(r.name.c_str());v["count"]=int64_t(r.count);groups.push_back(v);}
+  for(const auto& r:ws.tasks){Dictionary v;v["key"]=String::utf8(r.key.c_str());v["name"]=String::utf8(r.name.c_str());v["job_type"]=r.jobType;v["reaction"]=String::utf8(r.reaction.c_str());v["item_type"]=r.itemType;v["item_subtype"]=r.itemSubtype;v["mat_type"]=r.matType;v["mat_index"]=r.matIndex;tasks.push_back(v);}
+  work["materials"]=materials;work["traits"]=traits;work["types"]=types;work["groups"]=groups;work["tasks"]=tasks;
+  work["total"]=int64_t(ws.total);work["list_revision"]=ws.listRevision;work["build_phase"]=ws.buildPhase;
+  work["build_done"]=int64_t(ws.buildDone);work["build_total"]=int64_t(ws.buildTotal);
   work["orders"] = orders;
   work["recipes"] = orderRecipes;
   work["choices"] = orderChoices;
@@ -165,10 +186,17 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
           data,
           {"id", "expected_revision", "cursor", "remaining", "frequency", "workshop_id",
            "max_workshops", "condition_kind", "condition_index", "compare", "threshold",
-           "item_type", "target_order", "dependency", "candidate_kind"},
+           "item_type", "target_order", "dependency", "candidate_kind", "move", "expected_neighbor",
+           "expected_list_revision", "item_subtype", "mat_type", "mat_index", "input_index",
+           "group_type", "group_subtype", "group_custom", "encrust_flags"},
           error) ||
       !managementRequiredFields(data, error))
     return false;
+  if(data.has("traits")) {
+    if(data["traits"].get_type()!=Variant::ARRAY){error="Work-order traits must be an Array of String";return false;}
+    Array traits=data["traits"];
+    for(int i=0;i<traits.size();++i)if(traits[i].get_type()!=Variant::STRING){error="Work-order traits must be an Array of String";return false;}
+  }
   return true;
 }
 
@@ -176,7 +204,7 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
 // List(20): query, cursor. Inspect(21): required id.
 // Create(22): required recipe, remaining; optional frequency, workshop_id, max_workshops.
 // Update(23): required id, expected_revision; remaining, frequency, workshop_id, max_workshops.
-// Delete(24): required id, expected_revision (bridge currently refuses retirement).
+// Delete(24): required id, expected_revision (retains removed native storage).
 // Condition(25): required id, expected_revision; condition_kind, condition_index,
 //   remove_condition, compare, threshold, item_type, target_order, dependency.
 // Candidates(26): candidate_kind, query, cursor. Catalog(27): no additional keys.
@@ -184,16 +212,16 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
 // for edits, from Inspect/List revision (otherwise 0). The reader accepts 0;
 // the model enforces >0 for actions 23..25 ("work order revision required").
 // cursor 0..UINT32_MAX.
-// recipe (Catalog key) and query are STRING, at most 128 UTF-8 bytes each.
+// recipe (Catalog key) and query are STRING, at most 128/64 UTF-8 bytes respectively.
 // remaining -1..32767 (-1 unchanged, Create requires >=0; 0 indefinite);
 // frequency -1..4 (-1 unchanged/OneTime; 0 OneTime, 1 Daily, 2 Monthly,
 // 3 Seasonally, 4 Yearly); workshop_id -2..INT32_MAX (-2 unchanged, -1 any shop);
 // max_workshops -1..32767 (-1 unchanged, 0 unlimited); condition_kind 0 item/1 order;
 // condition_index -1..63 (-1 new); remove_condition BOOL (default false);
 // compare -1..5 (-1 unset; AtLeast, AtMost, GreaterThan, LessThan, Exactly, Not);
-// threshold -1..INT32_MAX (-1 unset); item_type int16 -1..32767 (-1 unset);
+// threshold -1..INT32_MAX (-1 unset); item_type int16 -1..32767 (-1 any item);
 // target_order -1..INT32_MAX (-1 none); dependency -1..1 (-1 unset, 0 Activated,
-// 1 Completed); candidate_kind 0 orders/1 workshops/2 item types (default 0).
+// 1 Completed); candidate_kind 0 orders/1 workshops/2 base types/3 types/4 materials/5 traits.
 bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
@@ -209,7 +237,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
   w.id = int32_t(n("id", -1, -1, INT32_MAX));
   w.expectedRevision = uint64_t(n("expected_revision", 0, 0, INT64_MAX));
   w.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  w.remaining = int32_t(n("remaining", -1, -1, 32767));
+  w.remaining = int32_t(n("remaining", r.action == wm::ManagementAction::WorkOrderCreate ? 10 : -1, -1, 32767));
   w.frequency = int8_t(n("frequency", -1, -1, 4));
   w.workshopId = int32_t(n("workshop_id", -2, -2, INT32_MAX));
   w.maxWorkshops = int32_t(n("max_workshops", -1, -1, 32767));
@@ -221,11 +249,26 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
   w.itemType = int16_t(n("item_type", -1, -1, 32767));
   w.targetOrder = int32_t(n("target_order", -1, -1, INT32_MAX));
   w.dependency = int8_t(n("dependency", -1, -1, 1));
-  w.candidateKind = uint8_t(n("candidate_kind", 0, 0, 2));
+  w.candidateKind = uint8_t(n("candidate_kind", 0, 0, 5));
+  w.move=int8_t(n("move",0,-1,1));w.expectedNeighbor=int32_t(n("expected_neighbor",-1,-1,INT32_MAX));
+  w.expectedListRevision=n("expected_list_revision",0,0,INT64_MAX);
+  w.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));w.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));w.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));
+  w.inputIndex=int16_t(n("input_index",-1,-1,INT16_MAX));w.groupType=int16_t(n("group_type",-1,-1,INT16_MAX));w.groupSubtype=int16_t(n("group_subtype",-1,-1,INT16_MAX));
+  w.groupCustom=int32_t(n("group_custom",-1,-1,INT32_MAX));w.encrustFlags=int32_t(n("encrust_flags",-1,-1,INT32_MAX));
+  w.traits.reset();
+  if(data.has("traits")) {
+    Array values=data["traits"];w.traits.emplace();
+    if(values.size()>256)valid=false;
+    else for(int i=0;i<values.size();++i) {
+      String t=values[i];std::string value=t.utf8().get_data();
+      if(value.size()>64)valid=false;
+      w.traits->push_back(std::move(value));
+    }
+  }
   String recipe = data.get("recipe", String()), query = data.get("query", String());
   w.recipe = recipe.utf8().get_data();
   w.query = query.utf8().get_data();
-  if (w.recipe.size() > 128 || w.query.size() > 128) valid = false;
+  if (w.recipe.size() > 128 || w.query.size() > 64) valid = false;
   if (!valid) {
     error = "Invalid bounded work order request";
     return false;

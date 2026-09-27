@@ -1692,6 +1692,11 @@
       "reason": "Protected live workflow; launched by tools/smoke/designation_acceptance.ps1. Prepared inputs: DF3D_DESIGNATION_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/work_orders_acceptance_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/work_orders_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_WORK_ORDERS_ACCEPTANCE."
+    },
+    {
       "path": "presentations/godot/project/tests/door_orientation.gd",
       "status": "helper",
       "reason": "Door orientation rules preloaded by door_orientation_native_test and door_orientation_revision_test; no standalone SceneTree runner."

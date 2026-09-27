@@ -1163,11 +1163,28 @@ table WorkOrderRequest {
   target_order:int32 = -1;
   dependency:int8 = -1;
   candidate_kind:uint8;
+  move:int8;
+  expected_neighbor:int32 = -1;
+  expected_list_revision:uint64;
+  item_subtype:int16 = -1;
+  mat_type:int16 = -1;
+  mat_index:int32 = -1;
+  traits:[string];
+  input_index:int16 = -1;
+  group_type:int16 = -1;
+  group_subtype:int16 = -1;
+  group_custom:int32 = -1;
+  encrust_flags:int32 = -1;
 }
 table WorkOrderCondition {
   kind:uint8; index:uint16; description:string; editable:bool;
   compare:int8 = -1; threshold:int32 = -1; item_type:int16 = -1;
   target_order:int32 = -1; dependency:int8 = -1; satisfied:bool;
+  item_subtype:int16 = -1; mat_type:int16 = -1; mat_index:int32 = -1;
+  traits:[string];
+  satisfaction:uint8; // 0 unknown, 1 pending, 2 known
+  estimated:bool;
+  estimate_count:int32 = -1;
 }
 table WorkOrderInfo {
   id:int32; revision:uint64; name:string;
@@ -1177,6 +1194,13 @@ table WorkOrderInfo {
   workshop_id:int32 = -1; max_workshops:int32;
   generated_jobs:[int32]; conditions:[WorkOrderCondition];
   editable:bool; reason:string;
+  position:int32 = -1;
+  detail_kind:uint8; // 0 unknown, 1 none, 2 material, 3 plant, 4 size, 5 gem, 6 cloth+size
+  size_raw:int32 = -1;
+  encrust_flags:int32;
+  mat_type:int16 = -1; mat_index:int32 = -1;
+  material_category:uint32;
+  inputs:[WorkOrderInput]; // <=64 per order, <=128 across the page; descriptions <=1024 B
 }
 table ManagerRole {
   unit_id:int32; name:string; position:string; offices:[int32]; job:string;
@@ -1184,6 +1208,11 @@ table ManagerRole {
 table WorkOrderState {
   orders:[WorkOrderInfo]; recipes:[ProductionRecipe]; choices:[AreaChoice];
   managers:[ManagerRole]; next_cursor:uint32; detail:string;
+  materials:[WorkOrderMaterial]; traits:[WorkOrderTrait]; types:[WorkOrderItemType];
+  groups:[WorkOrderGroup]; tasks:[WorkOrderTask];
+  total:uint32; list_revision:uint64;
+  build_phase:uint8; // 0 done, 1 read, 2 sort, 3 filter
+  build_done:uint32; build_total:uint32;
 }
 table CitizenRequest {
   unit_id:int32 = -1;
@@ -1324,7 +1353,7 @@ table CreatureState {
   portrait:SelectionAppearance;
 }
 table ConstructionRequest {
-  schema_version:uint32 = 16;
+  schema_version:uint32 = 17;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1352,7 +1381,7 @@ table ConstructionRequest {
   creature:CreatureRequest;
 }
 table ManagementState {
-  schema_version:uint32 = 16;
+  schema_version:uint32 = 17;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -1385,5 +1414,13 @@ table ManagementState {
   selection:SelectionState;
   creature:CreatureState;
 }
+
+table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }
+table WorkOrderMaterial { mat_type:int16 = -1; mat_index:int32 = -1; name:string; }
+table WorkOrderTrait { key:string; name:string; }
+table WorkOrderItemType { item_type:int16 = -1; item_subtype:int16 = -1; name:string; }
+table WorkOrderGroup { type:int16 = -1; subtype:int16 = -1; custom:int32 = -1; name:string; count:uint32; }
+// Task keys and reactions <=64 B; names <=128 B. Identity fields must be >= -1.
+table WorkOrderTask { key:string; name:string; job_type:int16 = -1; reaction:string; item_type:int16 = -1; item_subtype:int16 = -1; mat_type:int16 = -1; mat_index:int32 = -1; }
 
 root_type Snapshot;

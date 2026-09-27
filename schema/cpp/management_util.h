@@ -2,8 +2,8 @@
 #include <tuple>
 #include "session_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 16;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v16";
+inline constexpr uint32_t kManagementVersion = 17;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v17";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 inline constexpr uint32_t kManagementCommandCapacity = 4096;
 // Catalog discovers the current epoch, so it does not require a matching
@@ -84,13 +84,41 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        w->workshop_id() < -2 || w->max_workshops() < -1 || w->max_workshops()>32767 || w->condition_kind()>1 ||
        w->condition_index() < -1 || w->condition_index()>63 || w->compare() < -1 || w->compare()>5 ||
        w->threshold() < -1 || w->item_type() < -1 || w->target_order() < -1 || w->dependency() < -1 || w->dependency()>1 ||
-       w->candidate_kind()>2 || (w->recipe() && w->recipe()->size()>128) || (w->query() && w->query()->size()>128)) return "invalid work order request";
+       w->candidate_kind()>5 || (w->recipe() && w->recipe()->size()>128) || (w->query() && w->query()->size()>64)) return "invalid work order request";
+    if(w->move() < -1 || w->move()>1 || w->expected_list_revision()>INT64_MAX ||
+       w->expected_neighbor() < -1 || w->input_index() < -1 || w->item_subtype() < -1 ||
+       w->mat_type() < -1 || w->mat_index() < -1 || w->group_type() < -1 ||
+       w->group_subtype() < -1 || w->group_custom() < -1 || w->encrust_flags() < -1)
+      return "invalid work order edit";
+    if(w->traits()) {
+      if(w->traits()->size()>256) return "too many work order traits";
+      for(const auto* t:*w->traits()) if(!t || t->size()>64) return "invalid work order trait";
+    }
+    // Move and input edits are separate intents; input edits carry only material/decoration.
+    const bool otherUpdate = w->remaining()!=-1 || w->frequency()!=-1 ||
+        w->workshop_id()!=-2 || w->max_workshops()!=-1 || (w->recipe() && w->recipe()->size()) ||
+        (w->query() && w->query()->size()) ||
+        w->cursor() || w->condition_kind() || w->condition_index()!=-1 || w->remove_condition() ||
+        w->compare()!=-1 || w->threshold()!=-1 || w->item_type()!=-1 ||
+        w->target_order()!=-1 || w->dependency()!=-1 || w->candidate_kind() ||
+        w->item_subtype()!=-1 || w->traits() || w->group_type()!=-1 ||
+        w->group_subtype()!=-1 || w->group_custom()!=-1;
+    const bool inputValue = w->mat_type()!=-1 || w->mat_index()!=-1 || w->encrust_flags()!=-1;
+    if(r.action()==ManagementAction::WorkOrderUpdate && w->input_index()<0 && inputValue)
+      return "work order input index required";
+    if(w->move() && (r.action()!=ManagementAction::WorkOrderUpdate || w->id()<0 ||
+       !w->expected_revision() || w->expected_neighbor()<0 || !w->expected_list_revision() ||
+       otherUpdate || w->input_index()!=-1 || w->mat_type()!=-1 || w->mat_index()!=-1 ||
+       w->encrust_flags()!=-1)) return "invalid exclusive work order move";
+    if(w->input_index()>=0 && (r.action()!=ManagementAction::WorkOrderUpdate || w->id()<0 ||
+       !w->expected_revision() || w->move() || w->expected_neighbor()!=-1 ||
+       w->expected_list_revision() || otherUpdate || !inputValue)) return "invalid exclusive work order input edit";
     if((r.action()==ManagementAction::WorkOrderInspect || r.action()==ManagementAction::WorkOrderUpdate || r.action()==ManagementAction::WorkOrderDelete || r.action()==ManagementAction::WorkOrderCondition) && w->id()<0) return "work order id required";
     if((r.action()==ManagementAction::WorkOrderUpdate || r.action()==ManagementAction::WorkOrderDelete || r.action()==ManagementAction::WorkOrderCondition) && !w->expected_revision()) return "work order revision required";
     if(r.action()==ManagementAction::WorkOrderCreate && (!w->recipe() || !w->recipe()->size() || w->remaining()<0)) return "new work order recipe and quantity required";
     if(r.action()==ManagementAction::WorkOrderCondition) {
       if(w->remove_condition() && w->condition_index()<0) return "condition identity required";
-      if(!w->remove_condition() && ((w->condition_kind()==0 && (w->compare()<0 || w->threshold()<0 || w->item_type()<0)) ||
+      if(!w->remove_condition() && ((w->condition_kind()==0 && (w->compare()<0 || w->threshold()<0)) ||
         (w->condition_kind()==1 && (w->target_order()<0 || w->target_order()==w->id() || w->dependency()<0)))) return "invalid work order condition";
     }
   } else if(r.work_order()) return "unexpected work order payload";
@@ -318,24 +346,56 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     auto textOk=[](const flatbuffers::String* v,size_t max){return !v || v->size()<=max;};
     if((w->orders() && w->orders()->size()>16) || (w->recipes() && w->recipes()->size()>128) ||
        (w->choices() && w->choices()->size()>128) || (w->managers() && w->managers()->size()>32) || !textOk(w->detail(),2048)) return "work order response too large";
-    std::set<int32_t> ids;size_t conditionCount=0,jobCount=0;
+    if(w->build_phase()>3 || w->build_done()>w->build_total() || w->list_revision()>INT64_MAX)
+      return "invalid work order build state";
+    auto rowsOk=[](const auto* rows){return !rows || rows->size()<=128;};
+    if(!rowsOk(w->materials()) || !rowsOk(w->traits()) || !rowsOk(w->types()) ||
+       !rowsOk(w->groups()) || !rowsOk(w->tasks())) return "work order catalog too large";
+    if(w->materials())for(const auto* row:*w->materials())
+      if(!row || row->mat_type() < -1 || row->mat_index() < -1 ||
+         !textOk(row->name(),128))return "invalid work order material";
+    if(w->traits())for(const auto* row:*w->traits())
+      if(!row || !textOk(row->key(),64) || !textOk(row->name(),128))return "invalid work order trait row";
+    if(w->types())for(const auto* row:*w->types())
+      if(!row || row->item_type() < -1 || row->item_subtype() < -1 ||
+         !textOk(row->name(),128))return "invalid work order type";
+    if(w->groups())for(const auto* row:*w->groups())
+      if(!row || row->type() < -1 || row->subtype() < -1 || row->custom() < -1 ||
+         !textOk(row->name(),128))return "invalid work order group";
+    if(w->tasks())for(const auto* row:*w->tasks())
+      if(!row || row->job_type() < -1 || row->item_type() < -1 || row->item_subtype() < -1 ||
+         row->mat_type() < -1 || row->mat_index() < -1 || !textOk(row->reaction(),64) ||
+         !textOk(row->key(),64) || !textOk(row->name(),128))return "invalid work order task";
+    std::set<int32_t> ids;size_t conditionCount=0,jobCount=0,traitCount=0,inputCount=0;
     if(w->orders()) for(const auto* o:*w->orders()) {
       if(!o || o->id()<0 || !ids.insert(o->id()).second || !o->revision() || o->revision()>INT64_MAX || !textOk(o->name(),512) || !textOk(o->reason(),1024) ||
-         o->total()<0 || o->remaining()<0 || o->remaining()>o->total() || o->frequency() < -1 || o->frequency()>4 ||
+         o->position() < -1 || o->size_raw() < -1 || o->mat_type() < -1 || o->mat_index() < -1 ||
+         o->detail_kind()>6 || o->total()<0 || o->remaining()<0 || o->remaining()>o->total() || o->frequency() < -1 || o->frequency()>4 ||
          o->finished_year() < -1 || o->finished_tick() < -1 || o->workshop_id() < -1 || o->max_workshops()<0 ||
-         (o->conditions() && o->conditions()->size()>64) || (o->generated_jobs() && o->generated_jobs()->size()>1024)) return "invalid work order";
+         (o->inputs() && o->inputs()->size()>64) || (o->conditions() && o->conditions()->size()>64) || (o->generated_jobs() && o->generated_jobs()->size()>1024)) return "invalid work order";
+      if(o->inputs())for(const auto* input:*o->inputs()) {
+        if(!input || input->mat_type() < -1 || input->mat_index() < -1 ||
+           !textOk(input->description(),1024))return "invalid work order input";
+        ++inputCount;
+      }
       std::set<int32_t> jobs; if(o->generated_jobs()) for(auto id:*o->generated_jobs()) {if(id<0 || !jobs.insert(id).second)return "invalid generated job";++jobCount;}
       std::set<uint32_t> conditions;
       if(o->conditions()) for(const auto* c:*o->conditions()) {
-        if(!c || c->kind()>1 || c->index()>63 || !conditions.insert(uint32_t(c->kind())*64+c->index()).second ||
+        if(!c || c->estimate_count() < -1 || c->item_subtype() < -1 || c->mat_type() < -1 || c->mat_index() < -1 ||
+           c->satisfaction()>2 || c->kind()>1 || c->index()>63 || !conditions.insert(uint32_t(c->kind())*64+c->index()).second ||
            !textOk(c->description(),1024) || c->compare() < -1 || c->compare()>5 || c->threshold() < -1 || c->item_type() < -1 ||
            c->target_order() < -1 || c->dependency() < -1 || c->dependency()>1) return "invalid work order condition";
-        if(c->editable() && ((c->kind()==0 && (c->compare()<0 || c->threshold()<0 || c->item_type()<0)) ||
+        if(c->editable() && ((c->kind()==0 && (c->compare()<0 || c->threshold()<0)) ||
           (c->kind()==1 && (c->target_order()<0 || c->dependency()<0 || c->target_order()==o->id())))) return "invalid editable condition";
+        if(c->traits()) {
+          if(c->traits()->size()>256)return "too many condition traits";
+          traitCount+=c->traits()->size();
+          for(const auto* t:*c->traits())if(!t || !textOk(t,64))return "invalid condition trait";
+        }
         ++conditionCount;
       }
     }
-    if(conditionCount>128 || jobCount>2048)return "work order aggregate limit exceeded";
+    if(conditionCount>128 || jobCount>2048 || traitCount>2048 || inputCount>128)return "work order aggregate limit exceeded";
     ids.clear();if(w->choices())for(const auto* c:*w->choices())if(!c || c->id()<0 || !ids.insert(c->id()).second || !textOk(c->name(),512))return "invalid work order choice";
     ids.clear();if(w->managers())for(const auto* m:*w->managers()){
       if(!m || m->unit_id()<0 || !ids.insert(m->unit_id()).second || !textOk(m->name(),512) || !textOk(m->position(),512) || !textOk(m->job(),512) || (m->offices() && m->offices()->size()>64))return "invalid manager role";

@@ -203,7 +203,7 @@ flatbuffers::Offset<m::ReportState> reportFixture(flatbuffers::FlatBufferBuilder
   if(request.action()==m::ManagementAction::ReportInspect) {
     if(q.id()!=999999)ids.push_back(q.id());
   } else if(!q.query() || q.query()->size()==0) {
-    // e7/findings.md:6: native is oldest-first; pin current bridge newest-first for 08-B.
+    // build/evidence/native/e7/findings.md:36: native is oldest-first; pin current bridge newest-first for 08-B.
     for(int id=1099;id>=1083;--id)if(q.before_id()<0 || id<q.before_id())ids.push_back(id);
     for(int id:{41,0})if(q.before_id()<0 || id<q.before_id())ids.push_back(id);
     if(ids.size()>16){ids.resize(16);next=ids.back();}
@@ -220,7 +220,9 @@ flatbuffers::Offset<m::ReportState> reportFixture(flatbuffers::FlatBufferBuilder
     if(kind==0){row.add_x2(5);row.add_y2(6);row.add_z2(7);row.add_position2_visible(true);}
     rows.push_back(row.Finish());
   }
-  return m::CreateReportState(b,b.CreateVector(rows),next,q.announcements_only(),b.CreateString(""));
+  // reports.lua:30 and management.cpp:616: missing reports omit announcements_only (false).
+  const bool missing=request.action()==m::ManagementAction::ReportInspect && q.id()==999999;
+  return m::CreateReportState(b,b.CreateVector(rows),next,!missing && q.announcements_only(),b.CreateString(""));
 }
 int validateReportFixtures() {
   try {
@@ -283,11 +285,14 @@ int sessionNotifications(const char* path) {
     if(auto error=m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())))throw std::runtime_error(*error);
     require(sh::publishSnapshot(region,b.GetBufferPointer(),b.GetSize(),0),"session publish");
     {std::ofstream(path)<<"ready";}
-    while(std::filesystem::exists(path))std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
+    while(std::chrono::steady_clock::now()<stop && std::filesystem::exists(path))
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
   } catch(const std::exception& error){std::ofstream(path)<<"failed";std::cerr<<error.what()<<"\n";result=1;}
   UnmapViewOfFile(region);CloseHandle(mapping);return result;
 #else
-  std::ofstream(path)<<"incomplete";return 77;
+  std::ofstream(path)<<"unsupported";
+  std::cout<<"QA_INCOMPLETE: Windows shared memory required\n";return 77;
 #endif
 }
 int main(int argc,char** argv) {

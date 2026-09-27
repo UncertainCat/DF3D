@@ -13,11 +13,12 @@ func finish(code: int, message: String) -> void:
 	print(message)
 	quit(code)
 
-func receipt(sequence: int) -> Dictionary:
+func receipt(sequence: int, expected_status: int = S.Ok) -> Dictionary:
 	for i in 300:
 		var value: Dictionary = world.poll_management()
 		if int(value.get("request_seq",0)) == sequence and int(value.get("status",S.Idle)) in [S.Ok, S.Rejected]:
-			return value
+			assert(value.status == expected_status)
+			return value if value.status == expected_status else {}
 		await create_timer(0.01).timeout
 	return {}
 
@@ -280,7 +281,6 @@ func run() -> void:
 		assert(state.construction.filter == request.get("filter",-1))
 		assert(state.construction.footprint.direction == (4 if request.get("retracting",false) else 0))
 	await test_production()
-	# Host signals only after validating every expected payload.
 	# Exact local refusals must not consume host requests.
 	reject_report({"action":35}, "Missing management field: id")
 	reject_report({"action":35,"id":-1}, "invalid report inspection")
@@ -306,14 +306,16 @@ func run() -> void:
 	for request in report_requests:
 		sequence = world.management_request("reports", request)
 		assert(sequence > 0)
-		state = await receipt(sequence)
+		state = await receipt(sequence, S.Rejected if request.get("id", -1) == 999999 else S.Ok)
 		assert(not state.is_empty() and state.action == request.action)
 		if request.get("id", -1) == 999999:
 			assert(state.status == S.Rejected and state.message == "Report no longer exists")
+			assert(state.report.announcements_only == false)
 			continue
 		assert(state.status == S.Ok and state.message == ("Native report" if request.action == 35 else "Native reports"))
 		var report: Dictionary = state.report
 		assert(report.announcements_only == request.get("announcements_only", true) and report.detail == "")
+		# build/evidence/native/e7/findings.md:36: pin bridge newest-first pending 08-B.
 		var ids: Array = []
 		if request.action == 35: ids = [request.id]
 		elif request.get("before_id", -1) == 1084: ids = [1083,41,0]
@@ -322,6 +324,7 @@ func run() -> void:
 		assert(report.next_before_id == (1084 if ids.size() == 16 else -1))
 		assert(report.reports.size() == ids.size())
 		for index in ids.size(): assert_report_row(report.reports[index], ids[index])
+	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
 		await create_timer(0.01).timeout

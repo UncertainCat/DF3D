@@ -59,7 +59,7 @@
         "root_build",
         "extension_build"
       ],
-      "notes": "Exclusive local fake producer; occupied session channel returns77/incomplete. Never attaches to DF."
+      "notes": "Exclusive local fake producer; same root_build and extension_build prerequisites as management_contract_test. Exits 77/incomplete while DF, a live lane or a viewer holds the session channel; do not run alongside protected_live lanes. Never attaches to DF."
     },
     {
       "id": "report_contract_fixtures",
@@ -469,12 +469,7 @@
       "script": "tools/smoke/install_connection_smoke.ps1",
       "completion": "INSTALL_CONNECTION_PASS",
       "timeout": 240,
-      "prerequisites": [
-        "extension_build",
-        "df_assets",
-        "protected_live",
-        "bridge_attested"
-      ],
+      "prerequisites": ["extension_build", "df_assets", "protected_live", "bridge_attested"],
       "notes": "Title-screen bridge and headless viewer asset startup with system-only PATH; no fortress load or save."
     },
     {

@@ -46,6 +46,15 @@ TEST_CASE("notification category and reference boundaries preserve completeness"
     CHECK(g.units.size()==(category>=0 && category<=2?2:1));
     CHECK(g.reportCount==2);CHECK(g.unitCount==2);
   }
+  // Valid report IDs isolate unit category 3 as the only completeness failure.
+  for(int category:{2,3}) {
+    NativeGroup group{34,{0,41},{17},{category}};
+    auto data=df3d_session::readNotificationGroups(std::vector<NativeGroup*>{&group});
+    REQUIRE(data.groups.size()==1);const auto& g=data.groups[0];
+    CHECK(data.complete);CHECK(g.complete==(category==2));
+    CHECK(g.reports==std::vector<int32_t>{0,41});CHECK(g.reportCount==2);
+    CHECK(g.units.size()==(category==2?1:0));CHECK(g.unitCount==1);
+  }
   NativeGroup group{0,{},{},{}};
   for(int count:{64,65}) {
     auto data=df3d_session::readNotificationGroups(std::vector<NativeGroup*>(count,&group));

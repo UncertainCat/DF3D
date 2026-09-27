@@ -692,6 +692,7 @@ TEST_CASE("report response preserves every list field and both focus positions")
   flatbuffers::FlatBufferBuilder b;
   std::vector<flatbuffers::Offset<mm::ReportInfo>> records;
   // reports.lua:11-23,57-63; 16 rows and last scanned ID, not an invented cursor.
+  // build/evidence/native/e7/findings.md:36: pin bridge newest-first pending 08-B.
   for(int id=1099;id>=1084;--id) {
     auto category=b.CreateString("CANCEL_JOB"),text=b.CreateString(id==1099?std::string(16384,'x'):"Native text");
     mm::ReportInfoBuilder row(b);row.add_id(id);row.add_category(category);row.add_text(text);
@@ -736,6 +737,7 @@ TEST_CASE("report inspection preserves ID zero false source and hidden second po
   CHECK_FALSE(v.position2Visible);CHECK(v.x2==-1);CHECK(v.y2==-1);CHECK(v.z2==-1);
 }
 TEST_CASE("report validation bounds total text and rejects hidden or malformed focus coordinates") {
+  // Intentional malformed-wire fixtures exercise rejection beyond reports.lua output.
   for(int which=0;which<6;++which){
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::ReportInfo>> rows;
     const int count=which==0?9:which==1?2:1;
@@ -758,6 +760,7 @@ TEST_CASE("report validation bounds total text and rejects hidden or malformed f
   }
 }
 TEST_CASE("report wire bounds accept limits and reject over limits with exact reasons") {
+  // Intentional malformed-wire over-limit variants; reports.lua cannot emit these.
   for(int which=0;which<8;++which)for(bool over:{false,true}) {
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::ReportInfo>> rows;
     const int count=which==0?(over?17:16):which==1?(over?9:8):1;

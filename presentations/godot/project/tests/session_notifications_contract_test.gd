@@ -10,6 +10,7 @@ func finish(code: int, message: String) -> void:
 		if child <= 0 or not OS.is_process_running(child): break
 		await create_timer(0.01).timeout
 	if child > 0 and OS.is_process_running(child):
+		OS.kill(child)
 		push_error("Session producer did not exit after status removal")
 		code = 1
 	print(message)
@@ -30,6 +31,9 @@ func run() -> void:
 		if FileAccess.file_exists(status_path) and not FileAccess.get_file_as_string(status_path).is_empty(): break
 		await create_timer(0.01).timeout
 	var ready := FileAccess.get_file_as_string(status_path) if FileAccess.file_exists(status_path) else "failed"
+	if ready == "unsupported":
+		await finish(77, "QA_INCOMPLETE: Windows shared memory required")
+		return
 	if ready != "ready":
 		await finish(77 if ready == "incomplete" else 1, "QA_INCOMPLETE: session channel occupied" if ready == "incomplete" else "SESSION_HOST_START_FAILED")
 		return
@@ -39,13 +43,10 @@ func run() -> void:
 	assert(state.active_notifications_complete)
 	var groups: Array = state.active_notifications
 	assert(groups.size() == 3)
-	for group in groups:
-		assert(group.category_name is String and not group.category_name.is_empty())
-		group.erase("category_name")
-	assert(groups[0] == {"category":20,"report_ids":[0,41],"report_count":2,"unit_reports":[],"unit_report_count":0,"complete":true})
-	assert(groups[1] == {"category":34,"report_ids":[],"report_count":0,"unit_reports":[{"unit_id":17,"category":0},{"unit_id":18,"category":1}],"unit_report_count":2,"complete":true})
+	assert(groups[0] == {"category":20,"category_name":"JobFailed","report_ids":[0,41],"report_count":2,"unit_reports":[],"unit_report_count":0,"complete":true})
+	assert(groups[1] == {"category":34,"category_name":"Combat","report_ids":[],"report_count":0,"unit_reports":[{"unit_id":17,"category":0},{"unit_id":18,"category":1}],"unit_report_count":2,"complete":true})
 	var weather: Dictionary = groups[2]
-	assert(weather.category == 24)
+	assert(weather.category == 24 and weather.category_name == "Weather")
 	assert(weather.report_count == 300 and weather.report_ids.size() == 256 and not weather.complete)
 	assert(weather.unit_reports.is_empty() and weather.unit_report_count == 0)
 	for id in 256: assert(weather.report_ids[id] == id)

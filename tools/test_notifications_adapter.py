@@ -54,7 +54,7 @@ assert len(unicode['text'].encode('utf-8'))==16383
 assert unicode['text'].endswith('\u263a') and not unicode['text_complete']
 
 # reports.lua:13-23. Current coordinate filtering differs from native:
-# e7/findings.md:2 (Unit/Item stored coordinates), e11/findings.md:2,6
+# build/evidence/native/e7/findings.md:12-16; e11/findings.md:10-11,21-23
 # (hidden and out-of-map positions still have native go-to buttons). Pin for 08-B.
 lua.execute("dfhack.df2utf=function(s)return s end;rows={report(0),report(41)};df.global.world.status.announcements=vec(rows)")
 for first, second in [(0,0),(1,0),(2,0),(0,1),(0,2)]:
@@ -76,7 +76,7 @@ for kind,category in [(0,'CANCEL_JOB'),(1,'MOOD_BUILDING_CLAIMED'),(999,'Unknown
     row=call(id=0)['reports'][1]
     assert row['category']==category and row['year']==106 and row['year_tick']==139200
 
-# e7/findings.md:6: bridge newest-first differs from native oldest-first.
+# build/evidence/native/e7/findings.md:36: pin bridge newest-first pending 08-B.
 lua.execute("rows={report(0),report(41,'Doren cancels Store item')};for i=1083,1099 do rows[#rows+1]=report(i)end;df.global.world.status.announcements=vec(rows);df.global.world.status.reports=vec({report(12,'Combat line')})")
 page=call(seq=20)
 assert [r['id'] for r in page['reports'].values()]==list(range(1099,1083,-1))
@@ -119,7 +119,7 @@ for count in (8,9):
     if count==9:
         page=call(seq=710,before=page['next_before_id'])
         assert len(page['reports'])==1 and page['reports'][1]['id']==0
-# e11/findings.md:1: native All excludes deaths by type. reports.lua does not
+# build/evidence/native/e11/findings.md:6-9: native All excludes deaths by type. reports.lua does not
 # apply tab membership; preserve its unfiltered announcement source for 08-B/E1.
 lua.execute("rows={report(0)};rows[1].type=2;df.global.world.status.announcements=vec(rows)")
 page=call(seq=800)

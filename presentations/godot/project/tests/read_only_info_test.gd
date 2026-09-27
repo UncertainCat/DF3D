@@ -40,6 +40,17 @@ func run():
 	world.data={"world_epoch":7,"generation":1,"complete":true,"rows":{"citizens":[{"id":3,"name":"Urist","profession":"Miner","job":"Dig","can_focus":true}]}}
 	view.read_resident_state()
 	check(view.people.size()==1,"Completed resident rows displayed")
+	world.data.detail_list_revision=7
+	world.data.rows.details=[{"index":0,"name":"Miners"},{"index":1,"name":"Custom"}]
+	world.data.rows.citizens[0].assigned_details=[{"index":1,"icon":9,"name":""}]
+	world.data.generation=2; view.read_resident_state()
+	check(view.assigned_detail_name(1)=="Custom","Badge name resolves from revision-guarded definitions")
+	check(view.assigned_detail_name(2)=="","Missing definition has no invented badge name")
+	world.data.detail_list_revision=0; world.data.generation=3; view.read_resident_state()
+	check(view.assigned_detail_name(1)=="","Unguarded definitions cannot label roster badges")
+	world.data.detail_list_revision=8; world.data.rows.details[1].name="Renamed"
+	world.data.generation=4; view.read_resident_state()
+	check(view.assigned_detail_name(1)=="Renamed","New publication replaces badge names")
 	check(view.resident_header.visible and not view.refresh_button.visible,"Residents replaces generic footer with native search")
 	check(view.resident_mood(50000)==6 and view.resident_mood(-100000)==0,"Original stress art ordering and endpoints")
 	view.people=[{"id":4,"name":"Zul"},{"id":2,"name":"Cerol"},{"id":1,"name":"Cerol"}]
@@ -73,6 +84,7 @@ func run():
 	world.data={"world_epoch":8,"generation":0,"complete":false,"rows":{}}
 	view.read_resident_state()
 	check(view.orders.is_empty(),"World replacement clears old UI")
+	check(view.assigned_detail_name(1)=="","World replacement clears badge definitions")
 	view.close_panel()
 	check(not controls.construction_active and world.demand==0,"Close releases local ownership and interest")
 	view.read_resident_state()

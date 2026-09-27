@@ -543,7 +543,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
               (s.action()>=ManagementAction::WorkDetailInspect && s.action()<=ManagementAction::WorkDetailMode) ||
               (s.action()>=ManagementAction::WorkDetailCreate && s.action()<=ManagementAction::CitizenWorkScope)) {
       if(citizenCount>1 || detailCount>1) return "invalid citizen inspection page";
-    } else return "unexpected citizen state";
+    } else if(citizenCount || detailCount) return "unexpected citizen state";
     auto textOk=[](const flatbuffers::String* v,size_t cap){return v && v->size()<=cap;};
     auto namesOk=[](const auto* names,const auto* ids){if(!names||!ids||names->size()!=ids->size())return false;for(const auto* name:*names)if(!name||name->size()>128)return false;return true;};
     auto laborsOk=[](const auto* values){if(!values || values->size()>94)return false;int prior=-1;for(auto v:*values){if(v<0 || v>93 || v<=prior)return false;prior=v;}return true;};

@@ -133,6 +133,7 @@ Dictionary Df3dWorld::resident_info_state() {
     result["error"]=String::utf8(status.error.c_str());result["rows"]=residentInfoRows_;
     result["capture_started_ms"]=snapshot?int64_t(snapshot->captureStartedMs):0;
     result["capture_completed_ms"]=snapshot?int64_t(snapshot->captureCompletedMs):0;
+    result["detail_list_revision"]=snapshot?int64_t(snapshot->detailListRevision):0;
     result["update_us"]=int64_t(residentInfoLastUpdateUs_);
     return result;
 }

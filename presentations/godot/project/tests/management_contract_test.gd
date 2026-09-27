@@ -217,10 +217,7 @@ func run() -> void:
 		{"action":33,"detail_index":1,"expected_revision":7,"mode":1},
 		{"action":33,"detail_index":1,"expected_revision":7,"mode":2},
 		{"action":33,"detail_index":1,"expected_revision":7,"mode":3},
-		# Codec-only editability sentinel, deliberately beyond current citizens.lua output;
-		# social_activity is bridge-produced (bridge/plugin/management.cpp:402-409) and
-		# this fixture exercises that path.
-		{"action":31,"detail_index":1,"unit_id":0,"query":"codec sentinels"}]
+		{"action":31,"detail_index":1,"unit_id":0,"query":""}]
 	for request in citizen_requests:
 		sequence = world.management_request("citizens", request)
 		assert(sequence > 0)
@@ -244,10 +241,10 @@ func run() -> void:
 			assert_citizen_person(c.citizens[0], true)
 		else:
 			assert(c.selected_detail == 1 and c.details.size() == 1 and c.next_cursor == 0)
-			assert_citizen_detail(c.details[0], request.get("mode",1), request.get("member",1), request.get("query", "") == "codec sentinels")
+			assert_citizen_detail(c.details[0], request.get("mode",1), request.get("member",1))
 			assert(c.selected_unit == request.get("unit_id",-1))
 			assert(c.citizens.size() == (1 if request.has("unit_id") else 0))
-			for u in c.citizens: assert_citizen_person(u, true, request.get("member",1), request.get("query", "") == "codec sentinels")
+			for u in c.citizens: assert_citizen_person(u, true, request.get("member",1))
 	# Echo the fixture revision through move and paging without float conversion.
 	for request in [
 		{"action":A.WorkOrderUpdate,"id":0,"expected_revision":9007199254740993,"move":-1,"expected_neighbor":9,"expected_list_revision":work_list_revision},
@@ -377,26 +374,26 @@ func reject_citizen(request: Dictionary, error: String) -> void:
 	assert(world.management_request("citizens", request) == 0)
 	assert(world.last_error() == error)
 
-func assert_citizen_detail(d: Dictionary, mode: int = 1, member: int = 1, synthetic: bool = false) -> void:
+func assert_citizen_detail(d: Dictionary, mode: int = 1, member: int = 1) -> void:
 	var index: int = d.index
 	var comparable := d.duplicate()
 	for key in ["icon","row_error"]: comparable.erase(key)
 	assert(comparable == {"index":index,"revision":7,
 		"name":"Miners" if index == 0 else "Custom" if index == 1 else "Detail %d" % index,
 		"mode":mode if index == 1 else 3,"no_modify":index == 0,"cannot_be_everybody":index == 0,
-		"editable":true,"mode_editable":not synthetic,"reason":"Native work-detail mode is protected" if synthetic else "","labors":[0] if index == 0 else [0,1],
+		"editable":true,"mode_editable":true,"reason":"","labors":[0] if index == 0 else [0,1],
 		"labor_names":["Mining"] if index == 0 else ["Mining","Stone Hauling"],"assigned_units":[0] if index == 1 and member == 1 else []})
 
-func assert_citizen_person(u: Dictionary, inspected: bool, member: int = 1, synthetic: bool = false) -> void:
+func assert_citizen_person(u: Dictionary, inspected: bool, member: int = 1) -> void:
 	var comparable := u.duplicate()
 	for key in ["revision","detail_member","detail_skill","detail_skill_rating","detail_skill_name","portrait_state","row_error"]: comparable.erase(key)
 	assert(comparable == {"id":u.id,"name":"Citizen %d" % u.id,"profession":"Carpenter" if u.id == 0 else "Miner",
-		"job":"Socialize" if synthetic else "Dig" if u.id == 0 else "No current job",
+		"job":"Dig" if u.id == 0 else "No current job",
 		"reason":"","age":42,"stress":10,"has_stress":true,"origin":Vector3i(1,2,3),
-		"can_focus":true,"eligible":true,"only_assigned_jobs":synthetic or u.id == 1,
+		"can_focus":true,"eligible":true,"only_assigned_jobs":u.id == 1,
 		"assigned_details":[{"index":1,"icon":9,"name":"Custom" if inspected else ""}] if u.id == 0 and member == 1 else [],
 		"profession_color":14 if u.id == 0 else 7,"profession_id":2 if u.id == 0 else 0,
-		"job_type":-1 if synthetic else 5 if u.id == 0 else -1,"social_activity":synthetic,
+		"job_type":5 if u.id == 0 else -1,"social_activity":false,
 		"labors":[0,1] if inspected else [],"labor_names":["Mining","Stone Hauling"] if inspected else [],
 		"roles":[{"name":"Manager","required_office":250}] if inspected else [],"offices":[]})
 

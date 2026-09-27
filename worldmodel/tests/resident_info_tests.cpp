@@ -18,6 +18,7 @@ struct FakeResidentTransport final : wm::ResidentInfoTransport {
   void reply(wm::ManagementStatus status=wm::ManagementStatus::Ok) {
     value={}; value.worldEpoch=42; value.requestSeq=sequence;
     value.action=requests.back().action; value.status=status;
+    value.citizen.detailListRevision=7;
   }
 };
 struct Fixture {
@@ -34,6 +35,10 @@ struct Fixture {
     fake->reply(); wm::CitizenInfo row; row.id=id;
     fake->value.citizen.citizens.push_back(row); fake->value.citizen.nextCursor=cursor;
   }
+  void finishDetails(uint64_t now) {
+    REQUIRE(fake->requests.back().action==wm::ManagementAction::WorkDetailList);
+    fake->reply(); service.update(now,42);
+  }
 };
 }
 TEST_CASE("resident collection publishes atomically and deduplicates pages") {
@@ -43,11 +48,12 @@ TEST_CASE("resident collection publishes atomically and deduplicates pages") {
   CHECK(f.fake->requests.back().citizen.cursor==10);
   f.citizen(2); wm::CitizenInfo row; row.id=11; f.fake->value.citizen.citizens.push_back(row);
   f.service.update(3,42);
+  CHECK_FALSE(f.service.snapshot()); f.finishDetails(3);
   auto first=f.service.snapshot(); REQUIRE(first); CHECK(first->citizens.size()==2);
   CHECK(first->captureStartedMs==0); CHECK(first->captureCompletedMs==3);
   f.service.refresh(); f.service.update(4,42);
   CHECK(f.service.snapshot()==first); CHECK(f.service.status().loading);
-  f.citizen(12); f.service.update(5,42);
+  f.citizen(12); f.service.update(5,42); f.finishDetails(5);
   CHECK(f.service.snapshot()!=first); CHECK(first->citizens.size()==2);
 }
 TEST_CASE("resident collection ignores unrelated responses and times out") {
@@ -60,7 +66,7 @@ TEST_CASE("resident collection ignores unrelated responses and times out") {
   CHECK_FALSE(f.service.status().error.empty());
 }
 TEST_CASE("resident collection retains stale success after rejection or cursor failure") {
-  Fixture f; f.start(); f.citizen(2); f.service.update(2,42);
+  Fixture f; f.start(); f.citizen(2); f.service.update(2,42); f.finishDetails(2);
   auto first=f.service.snapshot(); f.service.refresh(); f.service.update(3,42);
   f.citizen(3,10); f.service.update(4,42);
   f.citizen(4,10); f.service.update(5,42);
@@ -71,7 +77,7 @@ TEST_CASE("resident collection retains stale success after rejection or cursor f
   f.service.update(8,42); CHECK(f.service.snapshot()==first); CHECK(f.service.status().error=="unavailable");
 }
 TEST_CASE("resident demand cache survives navigation and discards in-flight old demand") {
-  Fixture f; f.start(); f.citizen(2); f.service.update(2,42);
+  Fixture f; f.start(); f.citizen(2); f.service.update(2,42); f.finishDetails(2);
   auto residents=f.service.snapshot();
   f.service.refresh(); f.service.update(3,42);
   f.service.setDemand(wm::ResidentInfoDemand::WorkOrders); CHECK_FALSE(f.service.snapshot());
@@ -91,7 +97,7 @@ TEST_CASE("resident demand cache survives navigation and discards in-flight old 
   f.service.setDemand(wm::ResidentInfoDemand::Residents); CHECK_FALSE(f.service.snapshot());
 }
 TEST_CASE("resident epoch change clears idle caches and refuses wrong-world replies") {
-  Fixture f; f.start(); f.citizen(2); f.service.update(2,42);
+  Fixture f; f.start(); f.citizen(2); f.service.update(2,42); f.finishDetails(2);
   f.fake->value.worldEpoch=43; f.service.update(3,42); CHECK_FALSE(f.service.snapshot());
   f.service.setDemand(wm::ResidentInfoDemand::None); f.service.update(4,43);
   f.service.setDemand(wm::ResidentInfoDemand::Residents); CHECK_FALSE(f.service.snapshot());
@@ -104,7 +110,7 @@ TEST_CASE("work details collect roster and one revision of definitions together"
   f.fake->reply(); wm::WorkDetailInfo detail; detail.index=0; detail.revision=7;
   f.fake->value.citizen.details.push_back(detail); f.fake->value.citizen.nextCursor=1;
   f.service.update(3,42); CHECK_FALSE(f.service.snapshot());
-  f.fake->reply(); detail.index=1; detail.revision=8; f.fake->value.citizen.details.push_back(detail);
+  f.fake->reply(); f.fake->value.citizen.detailListRevision=8; detail.index=1; detail.revision=8; f.fake->value.citizen.details.push_back(detail);
   f.service.update(4,42); CHECK_FALSE(f.service.snapshot()); CHECK_FALSE(f.service.status().error.empty());
   f.service.refresh(); f.service.update(5,42); f.fake->reply(); f.service.update(6,42);
   f.citizen(2); f.service.update(7,42); f.fake->reply();
@@ -112,12 +118,12 @@ TEST_CASE("work details collect roster and one revision of definitions together"
   REQUIRE(f.service.snapshot()); CHECK(f.service.snapshot()->citizens.size()==1); CHECK(f.service.snapshot()->details.size()==1);
 }
 TEST_CASE("resident periodic refresh sleeps when no demand and sends once per update") {
-  Fixture f; f.start(); f.citizen(2); f.service.update(2,42);
-  f.service.update(5001,42); CHECK(f.fake->requests.size()==2);
-  f.service.update(5002,42); CHECK(f.fake->requests.size()==3);
-  f.citizen(3); f.service.update(5003,42);
+  Fixture f; f.start(); f.citizen(2); f.service.update(2,42); f.finishDetails(2);
+  f.service.update(5001,42); CHECK(f.fake->requests.size()==3);
+  f.service.update(5002,42); CHECK(f.fake->requests.size()==4);
+  f.citizen(3); f.service.update(5003,42); f.finishDetails(5003);
   f.service.setDemand(wm::ResidentInfoDemand::None); f.service.update(15000,42);
-  CHECK(f.fake->requests.size()==3);
+  CHECK(f.fake->requests.size()==5);
 }
 TEST_CASE("work details reject empty continuation after definitions shrink") {
   Fixture f; f.start(wm::ResidentInfoDemand::WorkDetails);
@@ -130,10 +136,38 @@ TEST_CASE("work details reject empty continuation after definitions shrink") {
   f.fake->reply(); f.fake->value.citizen.details.push_back(detail);
   f.fake->value.citizen.nextCursor=1; f.service.update(6,42);
   CHECK(f.service.snapshot()==first);
-  f.fake->reply(); f.service.update(7,42);
+  f.fake->reply(); f.fake->value.citizen.detailListRevision=8; f.service.update(7,42);
   CHECK(f.service.snapshot()==first); CHECK(f.service.status().stale);
   CHECK_FALSE(f.service.status().loading);
   CHECK(f.service.status().error.find("changed during collection")!=std::string::npos);
+}
+TEST_CASE("resident badges join definitions by list revision, not row revision") {
+  for(auto demand : {wm::ResidentInfoDemand::Residents,wm::ResidentInfoDemand::WorkDetails}) {
+    Fixture f; f.start(demand); f.citizen(2);
+    f.fake->value.citizen.citizens[0].assignedDetails.push_back({1,9,""});
+    f.service.update(2,42); CHECK_FALSE(f.service.snapshot());
+    f.fake->reply(); wm::WorkDetailInfo detail; detail.index=0; detail.revision=11; detail.name="Miners";
+    f.fake->value.citizen.details.push_back(detail); f.fake->value.citizen.nextCursor=1;
+    f.service.update(3,42); CHECK_FALSE(f.service.snapshot());
+    CHECK(f.fake->requests.back().citizen.expectedListRevision==7);
+    f.fake->reply(); detail.index=1; detail.revision=12; detail.name="Custom"; detail.assignedUnits={2};
+    f.fake->value.citizen.details.push_back(detail); f.service.update(4,42);
+    auto first=f.service.snapshot(); REQUIRE(first);
+    CHECK(first->detailListRevision==7); CHECK(first->details.size()==2);
+    CHECK(first->citizens[0].assignedDetails[0].name.empty()); CHECK(first->details[1].name=="Custom");
+    f.service.refresh(); f.service.update(5,42); f.citizen(2); f.service.update(6,42);
+    f.fake->reply(); f.fake->value.citizen.detailListRevision=8; f.service.update(7,42);
+    CHECK(f.service.snapshot()==first); CHECK(f.service.status().stale);
+    CHECK(f.service.status().error=="Work details changed during collection; refresh required");
+  }
+}
+TEST_CASE("resident roster pages reject changed or absent definition revisions") {
+  for(uint64_t revision : {uint64_t(0),uint64_t(8)}) {
+    Fixture f; f.start(); f.citizen(2,1); f.service.update(2,42);
+    f.citizen(3); f.fake->value.citizen.detailListRevision=revision; f.service.update(3,42);
+    CHECK_FALSE(f.service.snapshot());
+    CHECK(f.service.status().error=="Work details changed during collection; refresh required");
+  }
 }
 TEST_CASE("creature facts publish by identity and retain stale per-ID snapshots") {
  auto transport=std::make_unique<FakeResidentTransport>();auto* fake=transport.get();

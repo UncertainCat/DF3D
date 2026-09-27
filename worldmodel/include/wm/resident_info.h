@@ -15,6 +15,7 @@ struct ResidentInfoSnapshot {
   std::vector<CitizenInfo> citizens;
   std::vector<WorkDetailInfo> details;
   std::vector<WorkOrderInfo> orders;
+  uint64_t detailListRevision = 0;
 };
 struct ResidentInfoStatus {
   ResidentInfoDemand demand = ResidentInfoDemand::None;

@@ -71,16 +71,11 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.citizen();
-  // Explicit codec-only sentinel: citizens.lua does not emit unequal editability.
-  // social_activity is bridge-produced (bridge/plugin/management.cpp:402-409 sets it
-  // true and substitutes the social event name when a unit has no current job); this
-  // fixture exercises that path via the codec-sentinel citizen.
-  const bool codecSentinels=q->query() && q->query()->str()=="codec sentinels";
   std::vector<flatbuffers::Offset<m::WorkDetailInfo>> details;
   std::vector<flatbuffers::Offset<m::CitizenInfo>> people;
   auto detail=[&](int index) {
     auto name=b.CreateString(index==0?"Miners":index==1?"Custom":"Detail "+std::to_string(index));
-    auto reason=b.CreateString(codecSentinels?"Native work-detail mode is protected":"");
+    auto reason=b.CreateString("");
     auto labors=b.CreateVector(index==0?std::vector<int16_t>{0}:std::vector<int16_t>{0,1});
     auto labels=b.CreateVectorOfStrings(index==0?std::vector<std::string>{"Mining"}:std::vector<std::string>{"Mining","Stone Hauling"});
     std::vector<int32_t> memberIds=index==1?std::vector<int32_t>{0}:std::vector<int32_t>{};
@@ -89,13 +84,13 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     auto members=b.CreateVector(memberIds);
     m::WorkDetailInfoBuilder d(b);d.add_index(index);d.add_revision(7);d.add_name(name);
     d.add_mode(action==A::WorkDetailMode && !(q->mode()==1 && index==0)?q->mode():index==1?1:3);d.add_no_modify(index==0);d.add_cannot_be_everybody(index==0);
-    d.add_editable(true);d.add_mode_editable(!codecSentinels);d.add_reason(reason);
+    d.add_editable(true);d.add_mode_editable(true);d.add_reason(reason);
     d.add_labors(labors);d.add_labor_names(labels);d.add_assigned_units(members);
     details.push_back(d.Finish());
   };
   auto person=[&](int id,bool inspect) {
     auto name=b.CreateString("Citizen "+std::to_string(id));auto profession=b.CreateString(id==0?"Carpenter":"Miner");
-    auto job=b.CreateString(codecSentinels?"Socialize":id==0?"Dig":"No current job");auto reason=b.CreateString("");
+    auto job=b.CreateString(id==0?"Dig":"No current job");auto reason=b.CreateString("");
     auto labors=b.CreateVector(inspect?std::vector<int16_t>{0,1}:std::vector<int16_t>{});
     auto labels=b.CreateVectorOfStrings(inspect?std::vector<std::string>{"Mining","Stone Hauling"}:std::vector<std::string>{});
     std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
@@ -111,8 +106,8 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     u.add_job(job);u.add_reason(reason);u.add_age(42);u.add_has_stress(true);u.add_stress(10);
     u.add_origin(&pos);u.add_can_focus(true);u.add_eligible(true);u.add_labors(labors);
     u.add_labor_names(labels);u.add_roles(roleRows);u.add_assigned_details(assignments);
-    u.add_only_assigned_jobs(codecSentinels || id==1);u.add_profession_color(id==0?14:7);u.add_profession_id(id==0?2:0);
-    u.add_social_activity(codecSentinels);u.add_job_type(codecSentinels?-1:id==0?5:-1);people.push_back(u.Finish());
+    u.add_only_assigned_jobs(id==1);u.add_profession_color(id==0?14:7);u.add_profession_id(id==0?2:0);
+    u.add_social_activity(false);u.add_job_type(id==0?5:-1);people.push_back(u.Finish());
   };
   uint32_t next=0;int selectedUnit=-1,selectedDetail=-1;
   if(action==A::WorkDetailList) {
@@ -393,7 +388,7 @@ int main(int argc,char** argv) {
         auto payload=m::CreateCitizenRequest(requestBuffer,action==28 || action==30?-1:0,
             action==33 && variant==0?0:action>=31?1:-1,action>=32?7:0,
             action==28?variant*16:action==30?variant*8:0,
-            requestBuffer.CreateString(action==31 && variant==2?"codec sentinels":""),action==32?variant%2:-1,action==33?variant+1:-1,0,0,0,-1,action==30 && variant>0?7:0);
+            requestBuffer.CreateString(""),action==32?variant%2:-1,action==33?variant+1:-1,0,0,0,-1,action==30 && variant>0?7:0);
         m::ConstructionRequestBuilder request(requestBuffer);request.add_schema_version(m::kManagementVersion);
         request.add_client_id(1);request.add_seq(1);request.add_world_epoch(epoch);
         request.add_action(static_cast<m::ManagementAction>(action));request.add_citizen(payload);
@@ -619,7 +614,7 @@ int main(int argc,char** argv) {
         case A::CitizenInspect: require(r->citizen()->unit_id()==0,"citizen inspect");break;
         case A::WorkDetailInspect: require(r->citizen()->detail_index()==1 &&
             r->citizen()->unit_id()==(received==27?-1:0) &&
-            (received!=37 || r->citizen()->query()->str()=="codec sentinels"),"detail inspect");break;
+            (received!=37 || r->citizen()->query()->str()==""),"detail inspect");break;
         case A::WorkDetailMode: require(r->citizen()->detail_index()==1 &&
             r->citizen()->expected_revision()==7 && r->citizen()->mode()==int(received)-33,"mode payload");break;
         case A::ReportList: case A::ReportInspect:

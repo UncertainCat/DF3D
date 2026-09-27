@@ -18,6 +18,7 @@ var epoch := 0
 var page := "Residents"
 var people: Array = []
 var details: Array = []
+var detail_list_revision: int = 0
 var orders: Array = []
 var selected_detail := -1
 var rows: VBoxContainer
@@ -145,6 +146,7 @@ func read_resident_state():
 		if complete and not palette_loaded and world.has_method("assets_root"):
 			preload("res://scripts/native_creature_text.gd").load_text(world); palette_loaded = true
 		details = records.get("details",[])
+		detail_list_revision = int(state.get("detail_list_revision",0)) if complete else 0
 		orders = records.get("orders",[])
 		# Keep local selection only when the native definition revision still matches.
 		var selection_valid := false
@@ -378,7 +380,13 @@ func resident_row(citizen: Dictionary):
 		var icon := int(detail.get("icon",-1))
 		if icon<0 or icon>=WORK_DETAIL_ART.size(): continue
 		var badge := resident_art(assignments,info_frame.ui.texture("WORK_DETAIL_"+WORK_DETAIL_ART[icon]),Vector2(32,36))
-		badge.tooltip_text=str(detail.get("name",""))
+		badge.tooltip_text=assigned_detail_name(int(detail.get("index",-1)))
+
+func assigned_detail_name(index: int) -> String:
+	if detail_list_revision <= 0: return ""
+	for detail in details:
+		if int(detail.get("index",-1)) == index: return str(detail.get("name",""))
+	return ""
 
 func update_resident_icons():
 	if not world.has_method("resident_icon"): return

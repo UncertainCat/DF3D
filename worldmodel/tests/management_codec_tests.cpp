@@ -192,11 +192,30 @@ TEST_CASE("maximal producer order page fits the management channel") {
   }
   auto os=b.CreateVector(orders);
   mm::WorkOrderStateBuilder w(b);w.add_orders(os);w.add_list_revision(INT64_MAX);auto ws=w.Finish();
+  auto citizen=mm::CreateCitizenState(b,
+    b.CreateVector(std::vector<flatbuffers::Offset<mm::CitizenInfo>>{}),
+    b.CreateVector(std::vector<flatbuffers::Offset<mm::WorkDetailInfo>>{}));
   mm::ManagementStateBuilder s(b);s.add_schema_version(mm::kManagementVersion);s.add_revision(1);
-  s.add_action(mm::ManagementAction::WorkOrderList);s.add_status(mm::ManagementStatus::Ok);s.add_work_order(ws);
+  s.add_action(mm::ManagementAction::WorkOrderList);s.add_status(mm::ManagementStatus::Ok);s.add_work_order(ws);s.add_citizen(citizen);
   b.Finish(s.Finish());
   CHECK(b.GetSize()<mm::kManagementCapacity);
   CHECK_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+}
+
+TEST_CASE("non-citizen replies reject populated citizen tables") {
+  for(bool detail : {false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<mm::CitizenInfo>> people;
+    std::vector<flatbuffers::Offset<mm::WorkDetailInfo>> details;
+    if(detail) details.push_back(mm::CreateWorkDetailInfo(b));
+    else people.push_back(mm::CreateCitizenInfo(b));
+    auto citizens=mm::CreateCitizenState(b,b.CreateVector(people),b.CreateVector(details));
+    mm::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(mm::ManagementAction::WorkOrderList);state.add_citizen(citizens);
+    b.Finish(state.Finish());
+    auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    REQUIRE(error);CHECK(*error=="unexpected citizen state");
+  }
 }
 
 TEST_CASE("work-order request fields and exclusive intents survive encoding") {

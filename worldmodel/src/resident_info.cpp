@@ -81,21 +81,20 @@ void ResidentInfoService::update(uint64_t nowMs, uint64_t epoch) {
     else if(expected_==ManagementAction::Catalog) ready_=true;
     else if(collecting_) {
       uint32_t next=0;
+      if(expected_==ManagementAction::CitizenList || expected_==ManagementAction::WorkDetailList) {
+        const auto revision=s.citizen.detailListRevision;
+        if(revision<=0 || (haveDetailRevision_ && uint64_t(revision)!=detailRevision_)) {
+          fail("Work details changed during collection; refresh required",nowMs); return;
+        }
+        detailRevision_=revision; haveDetailRevision_=true;
+        collecting_->detailListRevision=revision;
+      }
       if(expected_==ManagementAction::CitizenList) {
         for(const auto& row:s.citizen.citizens) if(seen_.insert(row.id).second) collecting_->citizens.push_back(row);
         next=s.citizen.nextCursor;
       } else if(expected_==ManagementAction::WorkDetailList) {
-        // This collector never filters definitions. An empty continuation can
-        // mean the vector shrank, and carries no row revision to validate.
-        // A future filtered endpoint needs a revision on the response envelope.
-        if(cursor_>0 && s.citizen.details.empty()) {
-          fail("Work details changed during collection; refresh required",nowMs); return;
-        }
-        for(const auto& row:s.citizen.details) {
-          if(haveDetailRevision_ && row.revision!=detailRevision_) { fail("Work details changed during collection; refresh required",nowMs); return; }
-          detailRevision_=row.revision; haveDetailRevision_=true;
+        for(const auto& row:s.citizen.details)
           if(seen_.insert(row.index).second) collecting_->details.push_back(row);
-        }
         next=s.citizen.nextCursor;
       } else {
         for(const auto& row:s.workOrder.orders) if(seen_.insert(row.id).second) collecting_->orders.push_back(row);
@@ -105,7 +104,7 @@ void ResidentInfoService::update(uint64_t nowMs, uint64_t epoch) {
       if(next && next<=cursor_) { fail("Resident information cursor did not advance",nowMs); return; }
       cursor_=next;
       if(!next) {
-        if(collecting_->demand==ResidentInfoDemand::WorkDetails && !detailPhase_) {
+        if((collecting_->demand==ResidentInfoDemand::WorkDetails || collecting_->demand==ResidentInfoDemand::Residents) && !detailPhase_) {
           detailPhase_=true; seen_.clear();
         } else {
           collecting_->captureCompletedMs=nowMs;
@@ -135,8 +134,10 @@ void ResidentInfoService::update(uint64_t nowMs, uint64_t epoch) {
   }
   ManagementRequest request;
   request.action=ready_?actionFor(status_.demand):ManagementAction::Catalog;
-  if(ready_ && status_.demand==ResidentInfoDemand::WorkDetails && !detailPhase_)
-    request.action=ManagementAction::CitizenList;
+  if(ready_ && (status_.demand==ResidentInfoDemand::WorkDetails || status_.demand==ResidentInfoDemand::Residents))
+    request.action=detailPhase_?ManagementAction::WorkDetailList:ManagementAction::CitizenList;
+  if(request.action==ManagementAction::WorkDetailList && cursor_>0)
+    request.citizen.expectedListRevision=detailRevision_;
   request.citizen.cursor=cursor_; request.workOrder.cursor=cursor_;
   expected_=request.action;
   pending_=transport_->send(request); sentMs_=nowMs;

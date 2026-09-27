@@ -9,6 +9,10 @@
 #include "../bridge/plugin/retry_backoff.h"
 #include "../bridge/plugin/scan_schedule.h"
 #include <unordered_map>
+#include "../bridge/plugin/builder_schedule.h"
+#include "../bridge/plugin/management_helper_owners.h"
+#include <array>
+#include <vector>
 
 TEST_CASE("glyph cursor advances only after an acknowledged ring publication") {
     namespace gc = df3d_glyph_cursor;
@@ -129,4 +133,85 @@ TEST_CASE("rescan schedule clamps the slice and spreads a full rescan across upd
     CHECK_MESSAGE((scanned == blocks && updates == 30), "a rescan of 30 000 blocks takes 30 updates of 1024");
     CHECK_MESSAGE(ss::sliceThisUpdate(4096, 30000, blocks) == 4096, "a larger configured slice is honoured during a rescan");
     CHECK_MESSAGE(ss::sliceThisUpdate(256, 30000, 100) == 100, "never more than the map has");
+}
+
+TEST_CASE("management builders share the request remainder by rotating job kind") {
+    struct Entry { bool enabled; };
+    const std::array<Entry,5> table{{{true},{true},{true},{false},{false}}};
+    uint32_t active=7,start=0;
+    std::vector<size_t> order;
+    std::array<uint32_t,3> shares{};
+    // A request consumed 512 of the global 2048. Every active kind gets 512.
+    auto step=[&](size_t kind,uint32_t share) {order.push_back(kind);shares[kind]=share;return share;};
+    CHECK(df3d_builder::advance(table,active,start,2048-512,step)==1536);
+    CHECK(order==std::vector<size_t>{0,1,2});
+    CHECK(shares==std::array<uint32_t,3>{512,512,512});
+    order.clear();
+    CHECK(df3d_builder::advance(table,active,start,2,step)==2);
+    CHECK(order==std::vector<size_t>{1,2});
+    order.clear();
+    CHECK(df3d_builder::advance(table,active,start,0,step)==0);
+    CHECK(order.empty());
+    // Reserved/inactive slots must not give kind 0 extra turns at the front.
+    start=0;
+    for(size_t expected:{0,1,2,0,1,2}) {
+        order.clear();df3d_builder::advance(table,active,start,1,step);
+        REQUIRE(order.size()==1);CHECK(order.front()==expected);
+    }
+    // A short job passes all unused steps to the remaining entries.
+    start=0;
+    CHECK(df3d_builder::advance(table,active,start,2048,[&](size_t kind,uint32_t share) {
+        shares[kind]=share;return kind==0 ? 2u : share;
+    })==2048);
+    CHECK(shares==std::array<uint32_t,3>{683,1023,1023});
+    // Failure can clear a whole Lua's bits; later callbacks must not run.
+    unsigned calls=0;start=0;
+    CHECK(df3d_builder::advance(table,active,start,2048,[&](size_t,uint32_t) {
+        ++calls;active=0;return 0u;
+    })==0);
+    CHECK(calls==1);
+}
+
+TEST_CASE("request builder masks follow enabled helper ownership") {
+    struct Entry { unsigned action; uint32_t domainMask; bool enabled; };
+    std::array<Entry,5> table{{{20,7,true},{20,7,true},{20,7,true},
+                             {0,8,false},{28,16,false}}};
+    const df3d_management::ManagementHelperOwners helpers;
+    using Action=df3d::mirror::ManagementAction;
+    auto mask=[&](unsigned action) {
+        return df3d_builder::requestMask(table,[&](unsigned owner) {
+            return helpers.sameOwner(Action(action),Action(owner));
+        });
+    };
+    CHECK(mask(26)==7);
+    CHECK(mask(0)==0);
+    CHECK(mask(28)==0);
+    table[3].enabled=table[4].enabled=true;
+    CHECK(mask(0)==8);
+    CHECK(mask(28)==16);
+    CHECK(mask(99)==0);
+    const uint32_t active=31,reported=8|16;
+    CHECK(((active & ~mask(0)) | (reported & mask(0)))==31);
+    CHECK(((active & ~mask(26)) | (reported & mask(26)))==24);
+}
+
+TEST_CASE("real helper ownership includes endpoints and excludes adjacent domains") {
+    const df3d_management::ManagementHelperOwners helpers;
+    using A=df3d::mirror::ManagementAction;
+    const std::array<std::pair<A,A>,9> ranges{{
+        {A::Catalog,A::RemoveConstruction}, {A::AreaCatalog,A::AreaCandidates},
+        {A::ProductionList,A::FarmSetCrop}, {A::WorkOrderList,A::WorkOrderCatalog},
+        {A::CitizenList,A::WorkDetailMode}, {A::ReportList,A::ReportInspect},
+        {A::AgreementList,A::AgreementInspect}, {A::TradeList,A::TradeBring},
+        {A::CreatureInspect,A::CreatureInspect}
+    }};
+    for(const auto& range:ranges) {
+        for(int a=int(range.first);a<=int(range.second);++a) {
+            CHECK(helpers.sameOwner(A(a),range.first));
+            CHECK(helpers.sameOwner(A(a),range.second));
+            CHECK_FALSE(helpers.sameOwner(A(a),A(int(range.first)-1)));
+            CHECK_FALSE(helpers.sameOwner(A(a),A(int(range.second)+1)));
+        }
+    }
+    CHECK_FALSE(helpers.sameOwner(A(255),A::Catalog));
 }

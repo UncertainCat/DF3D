@@ -987,4 +987,22 @@ TEST_CASE("management transport rejects replaced producer identity before sendin
   CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
   CHECK_FALSE(c->poll()); CHECK(c->state().status==wm::ManagementStatus::Rejected);
 }
+
+TEST_CASE("management refuses a v16 work-order reply without replacing accepted state") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);auto owner=claim(p,*c);
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderCatalog;
+  auto seq=c->send(request);REQUIRE(seq>0);p.pop();
+  flatbuffers::FlatBufferBuilder b;
+  auto work=mm::CreateWorkOrderState(b);
+  mm::ManagementStateBuilder state(b);state.add_schema_version(16);state.add_revision(3);
+  state.add_world_epoch(7);state.add_client_id(owner.id);state.add_request_seq(seq);
+  state.add_action(mm::ManagementAction::WorkOrderCatalog);state.add_status(mm::ManagementStatus::Ok);
+  state.add_work_order(work);b.Finish(state.Finish());
+  CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+  REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));CHECK_FALSE(c->poll());
+  CHECK(c->state().revision==2);CHECK_FALSE(c->lastError().empty());
+  // A later valid reply resolves the same request, without sending it again.
+  p.publish(4,owner.id,seq,7,mm::ManagementAction::WorkOrderCatalog);REQUIRE(c->poll());
+  CHECK(c->state().revision==4);CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+}
 #endif

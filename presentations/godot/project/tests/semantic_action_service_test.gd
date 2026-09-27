@@ -221,7 +221,7 @@ func test_work_orders():
 	service.configure(world)
 	var observed: Array = []
 	var callback := func(t, r, q): observed.append([t, r, q])
-	var refusal := "Removal is unavailable until safe work-order retirement is supported"
+	var refusal := "Deleted-order capacity reached; restart DF"
 	for action in range(20,28):
 		var request := {"action":action,"id":0,"expected_revision":9}
 		var ticket := service.submit("work_orders", request, callback)
@@ -253,6 +253,28 @@ func test_work_orders():
 	var count := world.calls.size()
 	for index in 3: service.poll(1.0)
 	check(world.calls.size() == count, "refused removal never replays")
+	for request in [
+		{"action":24,"id":0,"expected_revision":9},
+		{"action":25,"id":0,"expected_revision":9,"condition_kind":1,"condition_index":0,"remove_condition":true},
+		{"action":23,"id":0,"expected_revision":9,"move":1,"expected_neighbor":2,"expected_list_revision":9223372036854775807}]:
+		var mutation := service.submit("work_orders", request, callback)
+		service.poll(0.0)
+		check(world.calls.back() == {"domain":"work_orders","request":request}, "delete, remove and move retain semantic intent")
+		world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),"status":Contract.ManagementStatus.Ok,"action":request.action}
+		service.poll(0.0)
+		check(service.result(mutation).status == Contract.ManagementStatus.Ok and service._outcomes.has(mutation), "successful mutation retains receipt")
+	for phase in [1,2,3]:
+		var before := observed.size()
+		var candidate := service.submit("work_orders", {"action":26,"candidate_kind":4}, callback)
+		service.poll(0.0)
+		var sent := world.calls.size()
+		world.state = {"world_epoch":5,"revision":sent+1,"request_seq":sent,"status":Contract.ManagementStatus.Ok,"action":26,
+			"work_order":{"materials":[],"build_phase":phase,"build_done":0,"build_total":100}}
+		service.poll(0.0)
+		check(service.result(candidate).status == Contract.ManagementStatus.Ok and observed.size() == before+1, "builder progress is an ordinary Ok reply")
+		check(service._active == 0 and not service._requests.has(candidate) and not service._outcomes.has(candidate), "builder progress releases transport without pending mutation")
+		for index in 3: service.poll(1.0)
+		check(world.calls.size() == sent and observed.size() == before+1, "builder progress never replays; panel owns future polling")
 	service.free()
 
 func test_citizens():

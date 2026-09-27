@@ -145,3 +145,279 @@ TEST_CASE("selection transport request payloads preserve ownership") {
   request.selection.receipt=77;REQUIRE_FALSE(encoded.invalid(request));
   CHECK(encoded.get()->selection()->receipt()==77); // replacement click carries ownership
 }
+
+TEST_CASE("empty work-order traits do not turn moves or details into another edit") {
+  EncodedRequest encoded;
+  wm::ManagementRequest r;r.action=wm::ManagementAction::WorkOrderUpdate;
+  auto& w=r.workOrder;w.id=0;w.expectedRevision=1;w.move=1;
+  w.expectedNeighbor=1;w.expectedListRevision=1;w.traits.emplace();
+  REQUIRE_FALSE(encoded.invalid(r));CHECK(encoded.get()->work_order()->traits()==nullptr);
+  w.traits->push_back("f1:0");CHECK(encoded.invalid(r));
+  w.traits->clear();w.move=0;w.expectedNeighbor=-1;w.expectedListRevision=0;
+  w.inputIndex=0;w.matType=0;w.matIndex=0;
+  REQUIRE_FALSE(encoded.invalid(r));CHECK(encoded.get()->work_order()->traits()==nullptr);
+  w.traits->push_back("f1:0");CHECK(encoded.invalid(r));
+  // Condition edits retain an explicit empty replacement, distinct from absence.
+  w={};w.id=0;w.expectedRevision=1;w.compare=0;w.threshold=0;w.traits.emplace();
+  r.action=wm::ManagementAction::WorkOrderCondition;
+  REQUIRE_FALSE(encoded.invalid(r));REQUIRE(encoded.get()->work_order()->traits());
+  CHECK(encoded.get()->work_order()->traits()->size()==0);
+  w={};r.action=wm::ManagementAction::WorkOrderCatalog;
+  w.query=std::string(64,'q');REQUIRE_FALSE(encoded.invalid(r));
+  w.query.push_back('q');CHECK(encoded.invalid(r));
+}
+
+TEST_CASE("maximal producer order page fits the management channel") {
+  flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<mm::WorkOrderInfo>> orders;
+  for(int id=0;id<16;++id) {
+    std::vector<flatbuffers::Offset<mm::WorkOrderCondition>> conditions;
+    std::vector<flatbuffers::Offset<mm::WorkOrderInput>> inputs;
+    for(int index=0;index<8;++index) {
+      std::vector<std::string> traits;
+      for(int t=0;t<16;++t)traits.push_back("rc:"+std::string(59,'x')+char('a'+t)+char('a'+index));
+      conditions.push_back(mm::CreateWorkOrderCondition(b,0,index,b.CreateString(std::string(256,'c')),
+        true,0,1,-1,-1,-1,false,-1,-1,-1,b.CreateVectorOfStrings(traits),1,true,-1));
+      // The producer currently emits empty input descriptions.
+      inputs.push_back(mm::CreateWorkOrderInput(b,index,b.CreateString(""),-1,-1,true));
+    }
+    std::vector<int32_t> jobs;for(int j=0;j<128;++j)jobs.push_back(id*128+j);
+    auto name=b.CreateString(std::string(512,'n')),reason=b.CreateString(std::string(1024,'r'));
+    auto cs=b.CreateVector(conditions);auto ins=b.CreateVector(inputs);auto js=b.CreateVector(jobs);
+    mm::WorkOrderInfoBuilder o(b);o.add_id(id);o.add_revision(1);o.add_name(name);o.add_reason(reason);
+    o.add_total(10);o.add_remaining(10);o.add_conditions(cs);o.add_inputs(ins);o.add_generated_jobs(js);
+    orders.push_back(o.Finish());
+  }
+  auto os=b.CreateVector(orders);
+  mm::WorkOrderStateBuilder w(b);w.add_orders(os);w.add_list_revision(INT64_MAX);auto ws=w.Finish();
+  mm::ManagementStateBuilder s(b);s.add_schema_version(mm::kManagementVersion);s.add_revision(1);
+  s.add_action(mm::ManagementAction::WorkOrderList);s.add_status(mm::ManagementStatus::Ok);s.add_work_order(ws);
+  b.Finish(s.Finish());
+  CHECK(b.GetSize()<mm::kManagementCapacity);
+  CHECK_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+}
+
+TEST_CASE("work-order v17 request fields and exclusive intents survive encoding") {
+  EncodedRequest encoded;
+  wm::ManagementRequest r;r.action=wm::ManagementAction::WorkOrderCondition;
+  auto& w=r.workOrder;w.id=0;w.expectedRevision=1;w.compare=0;w.threshold=0;
+  w.itemSubtype=2;w.matType=419;w.matIndex=7;w.traits=std::vector<std::string>{"f1:0","rc:X"};
+  REQUIRE_FALSE(encoded.invalid(r));auto* q=encoded.get()->work_order();
+  CHECK(q->item_subtype()==2);CHECK(q->mat_type()==419);CHECK(q->mat_index()==7);
+  REQUIRE(q->traits());CHECK(q->traits()->Get(1)->str()=="rc:X");
+  w.traits=std::vector<std::string>(256,std::string(64,'t'));CHECK_FALSE(encoded.invalid(r));
+  w.traits->push_back("x");CHECK(encoded.invalid(r));w.traits->pop_back();
+  w.traits->front().push_back('x');CHECK(encoded.invalid(r));
+  w={};r.action=wm::ManagementAction::WorkOrderCatalog;
+  w.groupType=0;w.groupSubtype=2;w.groupCustom=3;w.expectedListRevision=INT64_MAX;
+  REQUIRE_FALSE(encoded.invalid(r));q=encoded.get()->work_order();
+  CHECK(q->group_type()==0);CHECK(q->group_subtype()==2);CHECK(q->group_custom()==3);
+  CHECK(q->expected_list_revision()==INT64_MAX);
+  w={};r.action=wm::ManagementAction::WorkOrderUpdate;w.id=0;w.expectedRevision=1;
+  w.move=1;w.expectedNeighbor=2;w.expectedListRevision=INT64_MAX;
+  REQUIRE_FALSE(encoded.invalid(r));q=encoded.get()->work_order();
+  CHECK(q->move()==1);CHECK(q->expected_neighbor()==2);CHECK(q->expected_list_revision()==INT64_MAX);
+  w.move=-1;CHECK_FALSE(encoded.invalid(r));w.move=2;CHECK(encoded.invalid(r));
+  w.move=-2;CHECK(encoded.invalid(r));w.move=1;
+  const auto move=r;
+  for(int missing=0;missing<5;++missing) {
+    r=move;
+    if(missing==0)r.action=wm::ManagementAction::WorkOrderDelete;
+    if(missing==1)w.id=-1;
+    if(missing==2)w.expectedRevision=0;
+    if(missing==3)w.expectedNeighbor=-1;
+    if(missing==4)w.expectedListRevision=0;
+    CHECK(encoded.invalid(r));
+  }
+  r=move;w.move=0;w.expectedNeighbor=-1;w.expectedListRevision=0;
+  w.inputIndex=0;w.matType=0;w.matIndex=0;w.encrustFlags=1092;
+  REQUIRE_FALSE(encoded.invalid(r));q=encoded.get()->work_order();
+  CHECK(q->input_index()==0);CHECK(q->mat_type()==0);CHECK(q->mat_index()==0);CHECK(q->encrust_flags()==1092);
+  const auto input=r;
+  for(int missing=0;missing<7;++missing) {
+    r=input;
+    if(missing==0)r.action=wm::ManagementAction::WorkOrderDelete;
+    if(missing==1)w.id=-1;
+    if(missing==2)w.expectedRevision=0;
+    if(missing==3)w.expectedNeighbor=0;
+    if(missing==4)w.expectedListRevision=1;
+    if(missing==5)w.move=1;
+    if(missing==6){w.matType=-1;w.matIndex=-1;w.encrustFlags=-1;}
+    CHECK(encoded.invalid(r));
+  }
+  // New scalar identities retain -1 and zero, and refuse values below -1.
+  for(int field=0;field<9;++field) for(int value:{-1,0,-2}) {
+    r={};r.action=wm::ManagementAction::WorkOrderCatalog;
+    switch(field) {
+      case 0:w.expectedNeighbor=value;break;case 1:w.itemSubtype=value;break;
+      case 2:w.matType=value;break;case 3:w.matIndex=value;break;
+      case 4:w.groupType=value;break;case 5:w.groupSubtype=value;break;
+      case 6:w.groupCustom=value;break;case 7:w.encrustFlags=value;break;
+      case 8:w.inputIndex=value;if(value==0)r=input;break;
+    }
+    CHECK(encoded.invalid(r)==(value==-2));
+  }
+  r=move;w.expectedListRevision=-1;CHECK(encoded.invalid(r));
+  // Every unrelated field must leave its default only in a separate intent.
+  for(const auto& base:{move,input}) for(int field=0;field<25;++field) {
+    r=base;
+    switch(field) {
+      case 0:w.remaining=0;break;case 1:w.frequency=0;break;
+      case 2:w.workshopId=-1;break;case 3:w.maxWorkshops=0;break;
+      case 4:w.recipe="x";break;case 5:w.query="x";break;case 6:w.cursor=1;break;
+      case 7:w.conditionKind=1;break;case 8:w.conditionIndex=0;break;
+      case 9:w.removeCondition=true;break;case 10:w.compare=0;break;
+      case 11:w.threshold=0;break;case 12:w.itemType=0;break;
+      case 13:w.targetOrder=1;break;case 14:w.dependency=0;break;
+      case 15:w.candidateKind=1;break;case 16:w.itemSubtype=0;break;
+      case 17:w.traits=std::vector<std::string>{"f1:0"};break;
+      case 18:w.groupType=0;break;case 19:w.groupSubtype=0;break;case 20:w.groupCustom=0;break;
+      case 21:if(base.workOrder.move)w.inputIndex=0;else w.inputIndex=-1;break;
+      case 22:if(base.workOrder.move)w.matType=0;else w.move=1;break;
+      case 23:if(base.workOrder.move)w.matIndex=0;else w.expectedNeighbor=0;break;
+      case 24:if(base.workOrder.move)w.encrustFlags=0;else w.expectedListRevision=1;break;
+    }
+    CAPTURE(field);CHECK(encoded.invalid(r));
+  }
+}
+
+TEST_CASE("work-order v17 response fields decode with owned strings and absent defaults") {
+  for(bool present:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto ts=b.CreateVectorOfStrings(std::vector<std::string>{"f5:31","rp:X"});
+    mm::WorkOrderConditionBuilder c(b);
+    if(present){c.add_item_subtype(3);c.add_mat_type(419);c.add_mat_index(7);c.add_traits(ts);
+      c.add_satisfaction(2);c.add_estimated(true);c.add_estimate_count(42);}
+    auto cs=b.CreateVector(std::vector{c.Finish()});
+    auto in=mm::CreateWorkOrderInput(b,2,b.CreateString("input"),0,5,true);
+    auto ins=b.CreateVector(std::vector{in});
+    mm::WorkOrderInfoBuilder o(b);o.add_id(0);o.add_revision(1);o.add_conditions(cs);
+    if(present){o.add_position(12);o.add_detail_kind(6);o.add_size_raw(17);o.add_encrust_flags(1092);
+      o.add_mat_type(19);o.add_mat_index(8);o.add_material_category(4096);o.add_inputs(ins);}
+    auto os=b.CreateVector(std::vector{o.Finish()});
+    auto mat=mm::CreateWorkOrderMaterial(b,0,4,b.CreateString("material"));
+    auto mats=b.CreateVector(std::vector{mat});
+    auto trait=mm::CreateWorkOrderTrait(b,b.CreateString("rc:X"),b.CreateString("trait"));
+    auto traits=b.CreateVector(std::vector{trait});
+    auto type=mm::CreateWorkOrderItemType(b,3,2,b.CreateString("type"));
+    auto types=b.CreateVector(std::vector{type});
+    auto group=mm::CreateWorkOrderGroup(b,0,2,7,b.CreateString("group"),9);
+    auto groups=b.CreateVector(std::vector{group});
+    auto task=mm::CreateWorkOrderTask(b,b.CreateString("key"),b.CreateString("task"),11,b.CreateString("reaction"),3,2,419,7);
+    auto tasks=b.CreateVector(std::vector{task});
+    mm::WorkOrderStateBuilder state(b);state.add_orders(os);
+    if(present){state.add_materials(mats);state.add_traits(traits);state.add_types(types);state.add_groups(groups);state.add_tasks(tasks);
+      state.add_total(128);state.add_list_revision(INT64_MAX);state.add_build_phase(3);state.add_build_done(17);state.add_build_total(128);}
+    b.Finish(state.Finish());auto decoded=codec::decodeWorkOrder(flatbuffers::GetRoot<mm::WorkOrderState>(b.GetBufferPointer()));
+    std::fill_n(b.GetBufferPointer(),b.GetSize(),uint8_t(0));
+    REQUIRE(decoded.orders.size()==1);const auto& order=decoded.orders[0];REQUIRE(order.conditions.size()==1);const auto& cond=order.conditions[0];
+    CHECK(order.position==(present?12:-1));CHECK(order.detailKind==(present?6:0));CHECK(order.sizeRaw==(present?17:-1));
+    CHECK(order.encrustFlags==(present?1092:0));CHECK(order.matType==(present?19:-1));CHECK(order.matIndex==(present?8:-1));CHECK(order.materialCategory==(present?4096:0));
+    CHECK(cond.itemSubtype==(present?3:-1));CHECK(cond.matType==(present?419:-1));CHECK(cond.matIndex==(present?7:-1));
+    CHECK(cond.satisfaction==(present?2:0));CHECK(cond.estimated==present);CHECK(cond.estimateCount==(present?42:-1));
+    CHECK(decoded.total==(present?128:0));CHECK(decoded.listRevision==(present?INT64_MAX:0));
+    CHECK(decoded.buildPhase==(present?3:0));CHECK(decoded.buildDone==(present?17:0));CHECK(decoded.buildTotal==(present?128:0));
+    if(present) {
+      CHECK(cond.traits==std::vector<std::string>{"f5:31","rp:X"});
+      REQUIRE(order.inputs.size()==1);const auto& i=order.inputs[0];CHECK(i.index==2);CHECK(i.description=="input");CHECK(i.matType==0);CHECK(i.matIndex==5);CHECK(i.editable);
+      REQUIRE(decoded.materials.size()==1);CHECK(decoded.materials[0].matType==0);CHECK(decoded.materials[0].matIndex==4);CHECK(decoded.materials[0].name=="material");
+      REQUIRE(decoded.traits.size()==1);CHECK(decoded.traits[0].key=="rc:X");CHECK(decoded.traits[0].name=="trait");
+      REQUIRE(decoded.types.size()==1);CHECK(decoded.types[0].itemType==3);CHECK(decoded.types[0].itemSubtype==2);CHECK(decoded.types[0].name=="type");
+      REQUIRE(decoded.groups.size()==1);const auto& g=decoded.groups[0];CHECK(g.type==0);CHECK(g.subtype==2);CHECK(g.custom==7);CHECK(g.name=="group");CHECK(g.count==9);
+      REQUIRE(decoded.tasks.size()==1);const auto& t=decoded.tasks[0];CHECK(t.key=="key");CHECK(t.name=="task");CHECK(t.jobType==11);CHECK(t.reaction=="reaction");CHECK(t.itemType==3);CHECK(t.itemSubtype==2);CHECK(t.matType==419);CHECK(t.matIndex==7);
+    } else {
+      CHECK(cond.traits.empty());CHECK(order.inputs.empty());CHECK(decoded.materials.empty());CHECK(decoded.traits.empty());CHECK(decoded.types.empty());CHECK(decoded.groups.empty());CHECK(decoded.tasks.empty());
+    }
+  }
+}
+
+namespace {
+// One boundary changes per case; the valid baseline saturates every page cap.
+struct WorkOrderPageBounds {
+  int orders=16,conditions=128,traits=2048,jobs=2048,rows=128,keyBytes=64,nameBytes=128;
+  int detailKind=6,satisfaction=2,phase=3,done=128,total=128;
+  uint64_t revision=INT64_MAX;
+  int list=-1; // -1: all catalogs; otherwise select one catalog for its boundary.
+};
+void workOrderPage(flatbuffers::FlatBufferBuilder& b,const WorkOrderPageBounds& n) {
+  std::vector<flatbuffers::Offset<mm::WorkOrderInfo>> orders;
+  for(int id=0;id<n.orders;++id) {
+    std::vector<flatbuffers::Offset<mm::WorkOrderCondition>> conditions;
+    const int count=n.conditions/n.orders+(id<n.conditions%n.orders);
+    for(int index=0;index<count;++index) {
+      const int ordinal=id*(n.conditions/n.orders)+std::min(id,n.conditions%n.orders)+index;
+      const int traitCount=n.traits/n.conditions+(ordinal<n.traits%n.conditions);
+      auto traits=b.CreateVectorOfStrings(std::vector<std::string>(traitCount,std::string(n.keyBytes,'t')));
+      mm::WorkOrderConditionBuilder c(b);c.add_index(index);c.add_traits(traits);c.add_satisfaction(n.satisfaction);
+      conditions.push_back(c.Finish());
+    }
+    std::vector<int32_t> jobs;
+    for(int j=0;j<n.jobs/n.orders+(id<n.jobs%n.orders);++j)jobs.push_back(id*1024+j);
+    auto cs=b.CreateVector(conditions);auto js=b.CreateVector(jobs);
+    mm::WorkOrderInfoBuilder o(b);o.add_id(id);o.add_revision(1);o.add_detail_kind(n.detailKind);o.add_conditions(cs);o.add_generated_jobs(js);
+    orders.push_back(o.Finish());
+  }
+  std::vector<flatbuffers::Offset<mm::WorkOrderMaterial>> mats;
+  std::vector<flatbuffers::Offset<mm::WorkOrderTrait>> traits;
+  std::vector<flatbuffers::Offset<mm::WorkOrderItemType>> types;
+  std::vector<flatbuffers::Offset<mm::WorkOrderGroup>> groups;
+  std::vector<flatbuffers::Offset<mm::WorkOrderTask>> tasks;
+  for(int i=0;i<n.rows;++i) {
+    if(n.list<0 || n.list==0)mats.push_back(mm::CreateWorkOrderMaterial(b,0,i,b.CreateString(std::string(n.nameBytes,'m'))));
+    if(n.list<0 || n.list==1)traits.push_back(mm::CreateWorkOrderTrait(b,b.CreateString(std::string(n.keyBytes,'t')),b.CreateString(std::string(n.nameBytes,'t'))));
+    if(n.list<0 || n.list==2)types.push_back(mm::CreateWorkOrderItemType(b,0,i,b.CreateString(std::string(n.nameBytes,'y'))));
+    if(n.list<0 || n.list==3)groups.push_back(mm::CreateWorkOrderGroup(b,0,0,i,b.CreateString(std::string(n.nameBytes,'g')),1));
+    if(n.list<0 || n.list==4)tasks.push_back(mm::CreateWorkOrderTask(b,b.CreateString(std::string(n.keyBytes,'k')),b.CreateString(std::string(n.nameBytes,'n')),0,b.CreateString(std::string(64,'r')),0,0,0,i));
+  }
+  auto os=b.CreateVector(orders);auto ms=b.CreateVector(mats);auto ts=b.CreateVector(traits);auto ys=b.CreateVector(types);auto gs=b.CreateVector(groups);auto ks=b.CreateVector(tasks);
+  mm::WorkOrderStateBuilder w(b);w.add_orders(os);w.add_materials(ms);w.add_traits(ts);w.add_types(ys);w.add_groups(gs);w.add_tasks(ks);
+  w.add_list_revision(n.revision);w.add_build_phase(n.phase);w.add_build_done(n.done);w.add_build_total(n.total);auto ws=w.Finish();
+  mm::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(mm::ManagementAction::WorkOrderList);state.add_status(mm::ManagementStatus::Ok);state.add_work_order(ws);b.Finish(state.Finish());
+}
+}
+TEST_CASE("maximal v17 page and individual state validator boundaries") {
+  auto valid=[](const WorkOrderPageBounds& n) {
+    flatbuffers::FlatBufferBuilder b;workOrderPage(b,n);
+    flatbuffers::Verifier v(b.GetBufferPointer(),b.GetSize());REQUIRE(v.VerifyBuffer<mm::ManagementState>(nullptr));
+    CHECK(b.GetSize()<mm::kManagementCapacity);
+    return !mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value();
+  };
+  CHECK(valid({}));
+  for(int boundary=0;boundary<10;++boundary) {
+    WorkOrderPageBounds n;CAPTURE(boundary);
+    switch(boundary) {
+      case 0:n.orders=17;break;case 1:n.conditions=129;break;case 2:n.traits=2049;break;
+      case 3:n.jobs=2049;break;case 4:n.detailKind=7;break;case 5:n.satisfaction=3;break;
+      case 6:n.phase=4;break;case 7:n.done=129;break;case 8:n.revision=uint64_t(INT64_MAX)+1;break;
+      case 9:n.keyBytes=65;n.rows=0;break;
+    }
+    CHECK_FALSE(valid(n));
+  }
+  for(int list=0;list<5;++list) {
+    WorkOrderPageBounds n;n.list=list;CHECK(valid(n));n.rows=129;CHECK_FALSE(valid(n));
+    n.rows=128;n.nameBytes=129;CHECK_FALSE(valid(n));
+    if(list==1 || list==4){n.nameBytes=128;n.traits=0;n.keyBytes=65;CHECK_FALSE(valid(n));}
+  }
+}
+
+TEST_CASE("work-order default catalog identities and per-condition trait boundaries") {
+  for(int size:{256,257}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto ts=b.CreateVectorOfStrings(std::vector<std::string>(size,"f1:0"));
+    mm::WorkOrderConditionBuilder c(b);c.add_traits(ts);auto cs=b.CreateVector(std::vector{c.Finish()});
+    mm::WorkOrderInfoBuilder o(b);o.add_revision(1);o.add_conditions(cs);auto os=b.CreateVector(std::vector{o.Finish()});
+    auto mat=mm::CreateWorkOrderMaterial(b);auto mats=b.CreateVector(std::vector{mat});
+    auto type=mm::CreateWorkOrderItemType(b);auto types=b.CreateVector(std::vector{type});
+    auto group=mm::CreateWorkOrderGroup(b);auto groups=b.CreateVector(std::vector{group});
+    auto task=mm::CreateWorkOrderTask(b);auto tasks=b.CreateVector(std::vector{task});
+    mm::WorkOrderStateBuilder w(b);w.add_orders(os);w.add_materials(mats);w.add_types(types);w.add_groups(groups);w.add_tasks(tasks);auto ws=w.Finish();
+    mm::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(mm::ManagementAction::WorkOrderList);state.add_status(mm::ManagementStatus::Ok);state.add_work_order(ws);b.Finish(state.Finish());
+    const auto* wire=flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer());
+    CHECK(mm::validateManagementState(*wire).has_value()==(size==257));
+    const auto decoded=codec::decodeWorkOrder(wire->work_order());
+    CHECK(decoded.materials[0].matType==-1);CHECK(decoded.materials[0].matIndex==-1);
+    CHECK(decoded.types[0].itemType==-1);CHECK(decoded.types[0].itemSubtype==-1);
+    CHECK(decoded.groups[0].type==-1);CHECK(decoded.groups[0].subtype==-1);CHECK(decoded.groups[0].custom==-1);CHECK(decoded.groups[0].count==0);
+    const auto& t=decoded.tasks[0];CHECK(t.jobType==-1);CHECK(t.itemType==-1);CHECK(t.itemSubtype==-1);CHECK(t.matType==-1);CHECK(t.matIndex==-1);
+  }
+}

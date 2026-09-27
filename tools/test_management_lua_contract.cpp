@@ -24,12 +24,18 @@ template<class T> T function(const char* name) {
     {"lua_pcallk","?lua_pcallk@@YAHPEAUlua_State@@HHH_JP6AH0H1@Z@Z"},
     {"lua_close","?lua_close@@YAXPEAUlua_State@@@Z"},
     {"lua_gettop","?lua_gettop@@YAHPEAUlua_State@@@Z"},
+    {"lua_rawlen","?lua_rawlen@@YA_KPEAUlua_State@@H@Z"},
+    {"lua_rawgeti","?lua_rawgeti@@YAHPEAUlua_State@@H_J@Z"},
+    {"lua_pushinteger","?lua_pushinteger@@YAXPEAUlua_State@@_J@Z"},
   };
   if(!address)for(const auto& alias:aliases)if(std::string(name)==alias.name)address=GetProcAddress(library,alias.symbol);
   if(!address)throw std::runtime_error(std::string("Lua export missing: ")+name);
   return std::bit_cast<T>(address);
 }
 extern "C" {
+int lua_gettop(lua_State* L) {static auto f=function<decltype(&lua_gettop)>("lua_gettop");return f(L);}
+size_t lua_rawlen(lua_State* L,int index) {static auto f=function<decltype(&lua_rawlen)>("lua_rawlen");return f(L,index);}
+int lua_rawgeti(lua_State* L,int index,lua_Integer n) {static auto f=function<decltype(&lua_rawgeti)>("lua_rawgeti");return f(L,index,n);}
 int lua_getfield(lua_State* L,int index,const char* key) {static auto f=function<decltype(&lua_getfield)>("lua_getfield");return f(L,index,key);}
 void lua_settop(lua_State* L,int index) {static auto f=function<decltype(&lua_settop)>("lua_settop");f(L,index);}
 int lua_type(lua_State* L,int index) {static auto f=function<decltype(&lua_type)>("lua_type");return f(L,index);}
@@ -74,6 +80,55 @@ int main(int argc,char** argv) {
     test(A::CreatureInspect,"return {ok=true,message='ok',unit_id=1.5,captured_tick=1,complete=true,sections={}}",false);
     test(A::CreatureInspect,"return {ok=true,message='ok',unit_id=-1,captured_tick=1,complete=true,sections={}}",false);
     test(A::CreatureInspect,"return {ok=true,message='ok',unit_id=1,captured_tick=1,complete=true}",false);
+    for(auto action:{A::WorkOrderList,A::WorkOrderCandidates,A::WorkOrderCatalog}) {
+      test(action,"return {ok=true,message='ok',list_revision=9223372036854775807,build_phase=3}",true);
+      if(df3d_management::lua_fields::number(L,"list_revision")!=INT64_MAX)
+        throw std::runtime_error("63-bit revision rounded");
+      for(const auto* code:{
+          "return {ok=true,message='bad',list_revision=1.5}",
+          "return {ok=true,message='bad',list_revision=1.0}",
+          "return {ok=true,message='bad',list_revision='1'}",
+          "return {ok=true,message='bad',list_revision=-1}",
+          "return {ok=true,message='bad',list_revision=9223372036854775808.0}",
+          "return {ok=true,message='bad',build_phase=4}",
+          "return {ok=true,message='bad',build_phase=-1}",
+          "return {ok=true,message='bad',build_phase=1.5}"}) test(action,code,false);
+      test(action,"return {ok=true,message='building',build_phase=1,active=true}",true);
+    }
+    test(A::WorkOrderInspect,"return {ok=true,message='ok',orders={{conditions={{traits={'rc:CLASS',''}}}}}}",true);
+    test(A::WorkOrderInspect,"return {ok=true,message='ok',orders={{conditions={{traits={}}}}}}",true);
+    for(const auto* value:{"false","{}","1","42"}) {
+      const auto code=std::string("return {ok=true,message='ok',orders={{conditions={{traits={")+value+"}}}}}}";
+      test(A::WorkOrderInspect,code.c_str(),false);
+      if(df3d_management::managementResultError(L,A::WorkOrderInspect)!="condition trait must be a string")
+        throw std::runtime_error("wrong trait refusal");
+    }
+    for(const auto& fixture:std::initializer_list<std::pair<const char*,const char*>>{
+        {"orders={false}","order must be a table"},
+        {"orders={{conditions={false}}}","condition must be a table"},
+        {"orders={{conditions={{traits=false}}}}","condition traits must be a table"},
+        {"active_kinds=32","active_kinds must be an integer in 0..31"},
+        {"active_kinds=-1","active_kinds must be an integer in 0..31"},
+        {"steps=2049","steps must be an integer in 0..2048"},
+        {"steps=-1","steps must be an integer in 0..2048"}}) {
+      const auto code=std::string("return {ok=true,message='ok',")+fixture.first+"}";
+      test(A::WorkOrderInspect,code.c_str(),false);
+      if(df3d_management::managementResultError(L,A::WorkOrderInspect)!=fixture.second)
+        throw std::runtime_error("wrong contract refusal");
+    }
+    test(A::WorkOrderInspect,"return {ok=true,message='ok',active_kinds=31,steps=2048}",true);
+    test(A::WorkOrderInspect,"return {ok=true,message='ok',active_kinds=0,steps=0}",true);
+    // Transport preserves all 64 bits even though published revisions deliberately
+    // mask the high bit. Use integer push, the bridge's Lua::Push integral path.
+    auto pushInteger=function<decltype(&lua_pushinteger)>("lua_pushinteger");
+    for(uint64_t bits:{uint64_t(1)<<63,(uint64_t(1)<<63)+123,UINT64_MAX}) {
+      lua_settop(L,0);
+      if(load(L,"local value=...; return {value=value}"))throw std::runtime_error("roundtrip parse");
+      pushInteger(L,std::bit_cast<int64_t>(bits));
+      if(call(L,1,1,0,0,nullptr))throw std::runtime_error("roundtrip call");
+      if(uint64_t(df3d_management::lua_fields::number(L,"value"))!=bits || top(L)!=1)
+        throw std::runtime_error("unsigned integer transport lost bits");
+    }
     std::cout<<"MANAGEMENT_LUA_CONTRACT_PASS\n";
   } catch(const std::exception& e){std::cerr<<e.what()<<"\n";result=1;}
   close(L);FreeLibrary(library);return result;

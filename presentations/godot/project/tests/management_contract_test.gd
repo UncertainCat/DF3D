@@ -132,7 +132,8 @@ func run() -> void:
 	reject_work_order({"action":A.WorkOrderCreate,"recipe":"Carpenters:10:-1"}, "Missing management field: remaining")
 	for key in ["id","expected_revision","cursor","remaining","frequency","workshop_id",
 		"max_workshops","condition_kind","condition_index","compare","threshold","item_type",
-		"target_order","dependency","candidate_kind"]:
+		"target_order","dependency","candidate_kind","move","expected_neighbor","expected_list_revision",
+		"item_subtype","mat_type","mat_index","input_index","group_type","group_subtype","group_custom","encrust_flags"]:
 		for bad in [1.5,"1",true]:
 			var request := {"action":A.WorkOrderList}
 			request[key] = bad
@@ -141,37 +142,44 @@ func run() -> void:
 		var request := {"action":A.WorkOrderList}
 		request[key] = 1
 		reject_work_order(request, "Wrong management field type: " + key)
+	for bad in ["f1:0", PackedStringArray(["f1:0"]), [1], ["f1:0", null]]:
+		reject_work_order({"action":A.WorkOrderList,"traits":bad}, "Work-order traits must be an Array of String")
 	var bounds := {"id":[-2,2147483648],"expected_revision":[-1],"cursor":[-1,4294967296],
 		"remaining":[-2,32768],"frequency":[-2,5],"workshop_id":[-3,2147483648],
 		"max_workshops":[-2,32768],"condition_kind":[-1,2],"condition_index":[-2,64],
 		"compare":[-2,6],"threshold":[-2,2147483648],"item_type":[-2,32768],
-		"target_order":[-2,2147483648],"dependency":[-2,2],"candidate_kind":[-1,3],
-		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(129),String.chr(233).repeat(65)]}
+		"target_order":[-2,2147483648],"dependency":[-2,2],"candidate_kind":[-1,6],"move":[-2,2],"expected_neighbor":[-2,2147483648],
+		"expected_list_revision":[-1],"item_subtype":[-2,32768],"mat_type":[-2,32768],"mat_index":[-2,2147483648],
+		"input_index":[-2,32768],"group_type":[-2,32768],"group_subtype":[-2,32768],
+		"group_custom":[-2,2147483648],"encrust_flags":[-2,2147483648],"traits":[["x".repeat(65)]],
+		"recipe":["x".repeat(129),String.chr(233).repeat(65)],"query":["x".repeat(65),String.chr(233).repeat(33)]}
 	for key in bounds:
 		for bad in bounds[key]:
 			var request := {"action":A.WorkOrderList}
 			request[key] = bad
 			reject_work_order(request, "Invalid bounded work order request")
+	var work_list_revision: int = 0
 	var requests := [
 		{"action":A.WorkOrderList,"query":"bed","cursor":71},
 		{"action":A.WorkOrderInspect,"id":0},
 		{"action":A.WorkOrderCreate,"recipe":"Carpenters:10:-1","remaining":0,"frequency":2,"workshop_id":4,"max_workshops":3},
 		{"action":A.WorkOrderUpdate,"id":2147483000,"expected_revision":9007199254740993,"remaining":12,"frequency":4,"max_workshops":3},
 		{"action":A.WorkOrderDelete,"id":0,"expected_revision":9007199254740993},
-		{"action":A.WorkOrderCondition,"id":0,"expected_revision":9007199254740993,"condition_kind":0,"condition_index":-1,"compare":3,"threshold":10,"item_type":2},
+		{"action":A.WorkOrderCondition,"id":0,"expected_revision":9007199254740993,"condition_kind":0,"condition_index":-1,"compare":3,"threshold":10,"item_type":2,"item_subtype":3,"mat_type":419,"mat_index":7,"traits":["f1:0","rc:X"]},
 		{"action":A.WorkOrderCondition,"id":0,"expected_revision":9007199254740993,"condition_kind":1,"condition_index":0,"target_order":9,"dependency":1},
 		{"action":A.WorkOrderCondition,"id":0,"expected_revision":9007199254740993,"condition_index":0,"remove_condition":true},
 		{"action":A.WorkOrderCandidates,"candidate_kind":0,"query":"bed","cursor":4},
 		{"action":A.WorkOrderCandidates,"candidate_kind":1,"query":"bed","cursor":4},
 		{"action":A.WorkOrderCandidates,"candidate_kind":2,"query":"bed","cursor":4},
-		{"action":A.WorkOrderCatalog},
-		{"action":A.WorkOrderList,"query":"x".repeat(128)}]
+		{"action":A.WorkOrderCatalog,"group_type":0,"group_subtype":0,"group_custom":-1,"expected_list_revision":9223372036854775807},
+		{"action":A.WorkOrderList,"query":"x".repeat(64)}]
 	for request in requests:
 		sequence = world.management_request("work_orders", request)
 		assert(sequence > 0)
 		state = await receipt(sequence)
 		assert(not state.is_empty() and state.action == request.action)
-		assert_work_order(state.work_order)
+		assert_work_order(state.work_order, request.action == A.WorkOrderCatalog)
+		work_list_revision = state.work_order.list_revision
 	# Every required citizen mutation field is checked independently before transport.
 	for request in [{"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":1},
 		{"action":33,"detail_index":1,"expected_revision":7,"mode":1}]:
@@ -231,6 +239,16 @@ func run() -> void:
 			assert(c.selected_unit == request.get("unit_id",-1))
 			assert(c.citizens.size() == (1 if request.has("unit_id") else 0))
 			for u in c.citizens: assert_citizen_person(u, true, request.get("member",1), request.get("query", "") == "codec sentinels")
+	# Echo the fixture revision through move and paging without float conversion.
+	for request in [
+		{"action":A.WorkOrderUpdate,"id":0,"expected_revision":9007199254740993,"move":-1,"expected_neighbor":9,"expected_list_revision":work_list_revision},
+		{"action":A.WorkOrderUpdate,"id":0,"expected_revision":9007199254740993,"input_index":0,"mat_type":0,"mat_index":5,"encrust_flags":1092},
+		{"action":A.WorkOrderCondition,"id":0,"expected_revision":9007199254740993,"compare":0,"threshold":0,"item_type":-1,"traits":[]}]:
+		sequence = world.management_request("work_orders", request)
+		assert(sequence > 0)
+		state = await receipt(sequence)
+		assert(not state.is_empty() and state.action == request.action)
+		assert_work_order(state.work_order, request.action == A.WorkOrderCatalog)
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -242,24 +260,41 @@ func reject_work_order(request: Dictionary, error: String) -> void:
 	assert(world.management_request("work_orders", request) == 0)
 	assert(world.last_error() == error)
 
-func assert_work_order(work: Dictionary) -> void:
+func assert_work_order(work: Dictionary, progress: bool = false) -> void:
+	if progress:
+		# work_orders.lua:651-653,676: progress has no candidate or order rows.
+		assert(work == {"orders":[],"recipes":[],"choices":[],"managers":[],
+			"materials":[],"traits":[],"types":[],"groups":[],"tasks":[],
+			"total":0,"list_revision":0,"build_phase":3,"build_done":17,"build_total":128,
+			"next_cursor":0,"detail":""})
+		return
 	# Full dictionary equality detects missing, misspelled and incorrectly decoded fields.
 	assert(work == {
 		"orders":[{
 			"id":0,"revision":9007199254740993,"name":"Make wooden bed","total":12,"remaining":3,
 			"frequency":1,"validated":true,"active":false,"finished_year":106,"finished_tick":400000,
 			"workshop_id":4,"max_workshops":2,"generated_jobs":[555],"editable":false,
-			"reason":"Finish outstanding jobs before editing","conditions":[
-				{"kind":0,"index":0,"description":"BLOCKS LessThan 10","editable":true,"compare":3,
-				"threshold":10,"item_type":2,"target_order":-1,"dependency":-1,"satisfied":false},
-				{"kind":1,"index":0,"description":"Order #9 Completed","editable":true,"compare":-1,
-				"threshold":-1,"item_type":-1,"target_order":9,"dependency":1,"satisfied":true}]},
+			"reason":"Finish outstanding jobs before editing",
+			"position":0,"detail_kind":2,"size_raw":42,"encrust_flags":1092,"mat_type":0,"mat_index":5,"material_category":2,
+			"inputs":[{"index":0,"description":"","mat_type":0,"mat_index":5,"editable":false}],"conditions":[
+				{"kind":0,"index":0,"description":"BLOCKS LessThan 10; DF3D estimate: 6 matching (rule met)","editable":true,"compare":3,
+				"threshold":10,"item_type":2,"target_order":-1,"dependency":-1,"satisfied":true,
+				"item_subtype":3,"mat_type":419,"mat_index":7,"traits":["f1:0","rc:X"],"satisfaction":2,"estimated":true,"estimate_count":6},
+				{"kind":1,"index":0,"description":"Order #9 Completed; Satisfied for next check","editable":true,"compare":-1,
+				"threshold":-1,"item_type":-1,"target_order":9,"dependency":1,"satisfied":true,
+				"item_subtype":-1,"mat_type":-1,"mat_index":-1,"traits":[],"satisfaction":2,"estimated":false,"estimate_count":-1}]},
 			{"id":9,"revision":17,"name":"Any shop order","total":0,"remaining":0,"frequency":4,
 			"validated":false,"active":true,"finished_year":-1,"finished_tick":-1,"workshop_id":-1,
-			"max_workshops":0,"generated_jobs":[],"editable":true,"reason":"Your manager approves new or changed orders","conditions":[]}],
+			"max_workshops":0,"generated_jobs":[],"editable":true,"reason":"Your manager approves new or changed orders","conditions":[],
+			"position":1,"detail_kind":0,"size_raw":-1,"encrust_flags":0,"mat_type":-1,"mat_index":-1,"material_category":0,"inputs":[]}],
 		"recipes":[{"key":"Carpenters:10:-1","name":"make bed"}],
 		"choices":[{"id":4,"name":"Carpenter's Workshop #4"}],
 		"managers":[{"unit_id":42,"name":"Urist","position":"Manager","offices":[1492,1493],"job":"Validate work orders"}],
+		"materials":[{"mat_type":0,"mat_index":5,"name":"material"}],
+		"traits":[{"key":"rc:X","name":""}],"types":[{"item_type":2,"item_subtype":3,"name":"type"}],
+		"groups":[{"type":0,"subtype":0,"custom":-1,"name":"Carpenter's Workshop","count":1}],
+		"tasks":[{"key":"0:1:a0:0:0:1:/1:21:0","name":"Bed order -1","job_type":10,"reaction":"","item_type":-1,"item_subtype":-1,"mat_type":-1,"mat_index":-1}],
+		"total":128,"list_revision":9223372036854775807,"build_phase":0,"build_done":0,"build_total":0,
 		"next_cursor":71,"detail":"Role and office presence are observations, not approval."})
 
 func reject_citizen(request: Dictionary, error: String) -> void:

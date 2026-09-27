@@ -10,21 +10,33 @@ namespace m=df3d::mirror;
 namespace sh=df3d::shm;
 constexpr uint64_t epoch=9007199254740993ULL;
 void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
-flatbuffers::Offset<m::WorkOrderState> workOrderFixture(flatbuffers::FlatBufferBuilder& b) {
-  auto countDescription=b.CreateString("BLOCKS LessThan 10");
+flatbuffers::Offset<m::WorkOrderState> workOrderFixture(flatbuffers::FlatBufferBuilder& b,bool progress=false) {
+  if(progress) {
+    // work_orders.lua:651-653,676: filtering progress never includes rows.
+    m::WorkOrderStateBuilder domain(b);domain.add_build_phase(3);
+    domain.add_build_done(17);domain.add_build_total(128);return domain.Finish();
+  }
+  // Field provenance: tools/test_work_orders_adapter.py fixture producibility table.
+  auto countDescription=b.CreateString("BLOCKS LessThan 10; DF3D estimate: 6 matching (rule met)");
+  auto conditionTraits=b.CreateVectorOfStrings(std::vector<std::string>{"f1:0","rc:X"});
   m::WorkOrderConditionBuilder count(b);count.add_kind(0);count.add_index(0);count.add_description(countDescription);
-  count.add_editable(true);count.add_compare(3);count.add_threshold(10);count.add_item_type(2);auto countRecord=count.Finish();
-  auto depDescription=b.CreateString("Order #9 Completed");
+  count.add_editable(true);count.add_compare(3);count.add_threshold(10);count.add_item_type(2);count.add_item_subtype(3);count.add_mat_type(419);count.add_mat_index(7);
+  count.add_traits(conditionTraits);count.add_satisfaction(2);count.add_satisfied(true);count.add_estimated(true);count.add_estimate_count(6);auto countRecord=count.Finish();
+  auto depDescription=b.CreateString("Order #9 Completed; Satisfied for next check");
   m::WorkOrderConditionBuilder dependency(b);dependency.add_kind(1);dependency.add_index(0);
   dependency.add_description(depDescription);dependency.add_target_order(9);dependency.add_dependency(1);
-  dependency.add_satisfied(true);dependency.add_editable(true);auto dependencyRecord=dependency.Finish();
+  dependency.add_satisfaction(2);dependency.add_satisfied(true);dependency.add_editable(true);auto dependencyRecord=dependency.Finish();
   auto conditions=b.CreateVector(std::vector<flatbuffers::Offset<m::WorkOrderCondition>>{countRecord,dependencyRecord});
   auto generated=b.CreateVector(std::vector<int32_t>{555});auto name=b.CreateString("Make wooden bed");
   auto reason=b.CreateString("Finish outstanding jobs before editing");
+  auto input=m::CreateWorkOrderInput(b,0,b.CreateString(""),0,5,false);
+  auto inputs=b.CreateVector(std::vector{input});
   m::WorkOrderInfoBuilder order(b);order.add_id(0);order.add_revision(epoch);order.add_name(name);
   order.add_total(12);order.add_remaining(3);order.add_frequency(1);order.add_validated(true);order.add_active(false);
   order.add_finished_year(106);order.add_finished_tick(400000);order.add_workshop_id(4);order.add_max_workshops(2);
   order.add_generated_jobs(generated);order.add_conditions(conditions);order.add_editable(false);order.add_reason(reason);
+  order.add_position(0);order.add_detail_kind(2);order.add_size_raw(42);order.add_encrust_flags(1092);
+  order.add_mat_type(0);order.add_mat_index(5);order.add_material_category(2);order.add_inputs(inputs);
   auto orderRecord=order.Finish();
   auto offices=b.CreateVector(std::vector<int32_t>{1492,1493});auto managerName=b.CreateString("Urist");
   auto position=b.CreateString("Manager");auto job=b.CreateString("Validate work orders");
@@ -34,7 +46,7 @@ flatbuffers::Offset<m::WorkOrderState> workOrderFixture(flatbuffers::FlatBufferB
   m::WorkOrderInfoBuilder any(b);any.add_id(9);any.add_revision(17);any.add_name(anyName);
   any.add_total(0);any.add_remaining(0);any.add_frequency(4);any.add_active(true);
   any.add_workshop_id(-1);any.add_max_workshops(0);any.add_editable(true);any.add_reason(anyReason);
-  auto anyRecord=any.Finish();
+  any.add_position(1);auto anyRecord=any.Finish();
   auto recipe=m::CreateProductionRecipe(b,b.CreateString("Carpenters:10:-1"),b.CreateString("make bed"));
   auto recipes=b.CreateVector(std::vector<flatbuffers::Offset<m::ProductionRecipe>>{recipe});
   auto choice=m::CreateAreaChoice(b,4,b.CreateString("Carpenter's Workshop #4"));
@@ -42,7 +54,14 @@ flatbuffers::Offset<m::WorkOrderState> workOrderFixture(flatbuffers::FlatBufferB
   auto detail=b.CreateString("Role and office presence are observations, not approval.");
   auto orders=b.CreateVector(std::vector<flatbuffers::Offset<m::WorkOrderInfo>>{orderRecord,anyRecord});
   auto managers=b.CreateVector(std::vector<flatbuffers::Offset<m::ManagerRole>>{managerRecord});
-  m::WorkOrderStateBuilder domain(b);domain.add_orders(orders);domain.add_managers(managers);
+  auto mat=m::CreateWorkOrderMaterial(b,0,5,b.CreateString("material"));auto mats=b.CreateVector(std::vector{mat});
+  auto trait=m::CreateWorkOrderTrait(b,b.CreateString("rc:X"),b.CreateString(""));auto traits=b.CreateVector(std::vector{trait});
+  auto type=m::CreateWorkOrderItemType(b,2,3,b.CreateString("type"));auto types=b.CreateVector(std::vector{type});
+  auto group=m::CreateWorkOrderGroup(b,0,0,-1,b.CreateString("Carpenter's Workshop"),1);auto groups=b.CreateVector(std::vector{group});
+  auto task=m::CreateWorkOrderTask(b,b.CreateString("0:1:a0:0:0:1:/1:21:0"),b.CreateString("Bed order -1"),10,b.CreateString(""),-1,-1,-1,-1);auto tasks=b.CreateVector(std::vector{task});
+  m::WorkOrderStateBuilder domain(b);domain.add_materials(mats);domain.add_traits(traits);domain.add_types(types);domain.add_groups(groups);domain.add_tasks(tasks);
+  domain.add_total(128);domain.add_list_revision(INT64_MAX);domain.add_build_phase(0);domain.add_build_done(0);domain.add_build_total(0);
+  domain.add_orders(orders);domain.add_managers(managers);
   domain.add_recipes(recipes);domain.add_choices(choices);domain.add_detail(detail);
   domain.add_next_cursor(71);return domain.Finish();
 }
@@ -141,6 +160,17 @@ int main(int argc,char** argv) {
               "cannot-be-everybody fixture preserves stored mode");
         ++checked;
       }
+      for(int action=20;action<=27;++action) {
+        flatbuffers::FlatBufferBuilder b;auto fixture=workOrderFixture(b,action==27);
+        m::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(epoch);
+        state.add_action(static_cast<m::ManagementAction>(action));state.add_status(m::ManagementStatus::Ok);state.add_work_order(fixture);
+        b.Finish(state.Finish());
+        flatbuffers::Verifier verifier(b.GetBufferPointer(),b.GetSize());
+        require(verifier.VerifyBuffer<m::ManagementState>(nullptr),"work-order fixture shape");
+        if(auto error=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))
+          throw std::runtime_error(*error);
+      }
+      std::cout<<"WORK_ORDER_CONTRACT_FIXTURES_PASS 8\n";
       std::cout<<"CITIZEN_CONTRACT_FIXTURES_PASS "<<checked<<"\n";return 0;
     } catch(const std::exception& error) {std::cerr<<error.what()<<"\n";return 1;}
   }
@@ -175,7 +205,7 @@ int main(int argc,char** argv) {
       auto areas=m::CreateAreaState(b,rows,0,UINT32_MAX,false);
       flatbuffers::Offset<m::WorkOrderState> work;
       if(request && request->action()>=m::ManagementAction::WorkOrderList &&
-          request->action()<=m::ManagementAction::WorkOrderCatalog)work=workOrderFixture(b);
+          request->action()<=m::ManagementAction::WorkOrderCatalog)work=workOrderFixture(b,request->action()==m::ManagementAction::WorkOrderCatalog);
       flatbuffers::Offset<m::CitizenState> citizens;
       if(request && request->action()>=m::ManagementAction::CitizenList &&
           request->action()<=m::ManagementAction::WorkDetailMode)citizens=citizenFixture(b,*request);
@@ -200,7 +230,8 @@ int main(int argc,char** argv) {
         A::WorkOrderCandidates,A::WorkOrderCandidates,A::WorkOrderCandidates,A::WorkOrderCatalog,A::WorkOrderList,
         A::WorkDetailList,A::WorkDetailList,A::WorkDetailInspect,A::WorkDetailInspect,
         A::CitizenList,A::CitizenList,A::CitizenInspect,A::WorkDetailMembership,A::WorkDetailMembership,
-        A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailInspect};
+        A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailInspect,
+        A::WorkOrderUpdate,A::WorkOrderUpdate,A::WorkOrderCondition};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -234,11 +265,14 @@ int main(int argc,char** argv) {
           auto* v=r->production();require(v && v->building_id()==2147483000 && v->job_id()==2147483001 && v->repeat()==1 && v->suspend()==-1 && !v->cancel(),"production payload");break;
         }
         case A::WorkOrderUpdate: {
-          auto* v=r->work_order();require(v && v->id()==2147483000 && v->expected_revision()==epoch && v->remaining()==12 && v->workshop_id()==-2 && (received==7 || (v->frequency()==4 && v->max_workshops()==3)),"work order payload");break;
+          auto* v=r->work_order();
+          if(received==38){require(v && v->id()==0 && v->expected_revision()==epoch && v->move()==-1 && v->expected_neighbor()==9 && v->expected_list_revision()==INT64_MAX && !v->traits(),"move fields");break;}
+          if(received==39){require(v && v->id()==0 && v->expected_revision()==epoch && v->input_index()==0 && v->mat_type()==0 && v->mat_index()==5 && v->encrust_flags()==1092 && !v->traits(),"input fields");break;}
+          require(v && v->id()==2147483000 && v->expected_revision()==epoch && v->remaining()==12 && v->workshop_id()==-2 && (received==7 || (v->frequency()==4 && v->max_workshops()==3)),"work order payload");break;
         }
         case A::WorkOrderList: {
           auto* v=r->work_order();
-          if(received==24)require(v && v->query()->str()==std::string(128,'x') && v->cursor()==0,"128-byte query");
+          if(received==24)require(v && v->query()->str()==std::string(64,'x') && v->cursor()==0,"64-byte query");
           else require(v && v->query()->str()=="bed" && v->cursor()==71,"list paging");
           break;
         }
@@ -252,8 +286,10 @@ int main(int argc,char** argv) {
           require(r->work_order()->id()==0 && r->work_order()->expected_revision()==epoch,"delete identity");break;
         case A::WorkOrderCondition: {
           auto* v=r->work_order();require(v && v->id()==0 && v->expected_revision()==epoch,"condition identity");
+          if(received==40){require(v->traits() && v->traits()->size()==0 && v->item_type()==-1 && v->compare()==0 && v->threshold()==0,"explicit empty traits");break;}
           if(received==17)require(v->condition_kind()==0 && v->condition_index()==-1 && !v->remove_condition() &&
-              v->compare()==3 && v->threshold()==10 && v->item_type()==2,"item condition");
+              v->compare()==3 && v->threshold()==10 && v->item_type()==2 && v->item_subtype()==3 && v->mat_type()==419 && v->mat_index()==7 &&
+              v->traits() && v->traits()->size()==2 && v->traits()->Get(0)->str()=="f1:0" && v->traits()->Get(1)->str()=="rc:X","item condition");
           else if(received==18)require(v->condition_kind()==1 && v->condition_index()==0 && !v->remove_condition() &&
               v->target_order()==9 && v->dependency()==1,"order condition");
           else require(received==19 && v->condition_index()==0 && v->remove_condition(),"condition removal");
@@ -264,7 +300,9 @@ int main(int argc,char** argv) {
               v->cursor()==4 && v->query()->str()=="bed","candidate fields");break;
         }
         case A::WorkOrderCatalog:
-          require(r->work_order()->id()==-1 && r->work_order()->expected_revision()==0,"catalog sentinels");break;
+          require(r->work_order()->id()==-1 && r->work_order()->expected_revision()==0 && r->work_order()->group_type()==0 &&
+              r->work_order()->group_subtype()==0 && r->work_order()->group_custom()==-1 &&
+              r->work_order()->expected_list_revision()==INT64_MAX,"catalog identities");break;
         case A::WorkDetailMembership: {
           auto* v=r->citizen();if(received>24){require(v && v->mode()==-1 && v->unit_id()==0 && v->detail_index()==1 && v->expected_revision()==7 && v->member()==(received==32?1:0),"membership payload");break;}require(v && v->unit_id()==2147483000 && v->detail_index()==127 && v->expected_revision()==epoch && v->member()==1 && v->mode()==-1,"citizen payload");break;
         }

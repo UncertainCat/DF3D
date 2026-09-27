@@ -786,11 +786,11 @@ TEST_CASE("report wire bounds accept limits and reject over limits with exact re
 TEST_CASE("agreement requests retain ID zero pending filter and exclusive cursor ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest inspect;inspect.action=wm::ManagementAction::AgreementInspect;inspect.agreement.id=0;
-  CHECK(c->send(inspect)==0);
+  CHECK(c->send(inspect)==0);CHECK(c->lastError()=="Refresh the management catalog first");
   auto [seq,client]=claim(p,*c);
   seq=c->send(inspect);REQUIRE(seq>0);auto* wire=p.pop();REQUIRE(wire->agreement());
   CHECK(wire->agreement()->id()==0);CHECK(wire->agreement()->before_id()==-1);
-  CHECK(wire->report()==nullptr);CHECK(wire->citizen()==nullptr);CHECK(c->send(inspect)==0);
+  CHECK(wire->report()==nullptr);CHECK(wire->citizen()==nullptr);CHECK(c->send(inspect)==0);CHECK(c->lastError()=="Wait for the current management request");
   p.publish(3,client,seq,7,mm::ManagementAction::AgreementInspect);REQUIRE(c->poll());
   wm::ManagementRequest list;list.action=wm::ManagementAction::AgreementList;
   list.agreement.beforeId=0;list.agreement.pendingOnly=true;list.agreement.query="guild";
@@ -804,10 +804,10 @@ TEST_CASE("agreement requests retain ID zero pending filter and exclusive cursor
     if(which==2)bad.agreement.id=0;
     if(which==3){bad.action=wm::ManagementAction::AgreementInspect;bad.agreement.id=-1;}
     if(which==4){bad=inspect;bad.agreement.beforeId=0;}
-    CHECK(c->send(bad)==0);
+    CHECK(c->send(bad)==0);CHECK(c->lastError()==(which<2?"invalid agreement request":which==2?"unexpected agreement identity":"invalid agreement inspection"));
   }
   p.publish(5,0,seq,8,mm::ManagementAction::Catalog,mm::ManagementStatus::Idle);REQUIRE(c->poll());
-  CHECK(c->send(inspect)==0);CHECK(c->send(list)==0);
+  CHECK(c->send(inspect)==0);CHECK(c->lastError()=="Refresh the management catalog first");CHECK(c->send(list)==0);CHECK(c->lastError()=="Refresh the management catalog first");
 }
 TEST_CASE("agreement response preserves party identities native approval flags and typed terms") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
@@ -815,19 +815,23 @@ TEST_CASE("agreement response preserves party identities native approval flags a
   wm::ManagementRequest request;request.action=wm::ManagementAction::AgreementInspect;request.agreement.id=0;
   seq=c->send(request);REQUIRE(seq>0);p.pop();
   flatbuffers::FlatBufferBuilder b;
-  auto applicant=mm::CreateAgreementParty(b,3,b.CreateVector(std::vector<int32_t>{0}),b.CreateVector(std::vector<int32_t>{42}),b.CreateString("Blacksmiths"));
+  auto applicant=mm::CreateAgreementParty(b,3,b.CreateVector(std::vector<int32_t>{0}),b.CreateVector(std::vector<int32_t>{42}),b.CreateString("Blacksmiths, Urist Lorbamoth"));
   auto government=mm::CreateAgreementParty(b,7,b.CreateVector(std::vector<int32_t>{1930}),b.CreateVector(std::vector<int32_t>{}),b.CreateString("Fortress government"));
   auto parties=b.CreateVector(std::vector<flatbuffers::Offset<mm::AgreementParty>>{applicant,government});
-  auto description=b.CreateString("Build a guildhall");
+  auto description=b.CreateString("GUILDHALL tier 2 for MASON");
   mm::AgreementDetailBuilder term(b);term.add_id(0);term.add_kind(12);term.add_site_id(55);
   term.add_year(117);term.add_year_tick(94234);term.add_applicant_party(3);term.add_government_party(7);
   term.add_location_type(11);term.add_tier(2);term.add_profession(9);term.add_description(description);
-  auto details=b.CreateVector(std::vector<flatbuffers::Offset<mm::AgreementDetail>>{term.Finish()});
-  auto summary=b.CreateString("Accepted guildhall agreement"),reason=b.CreateString("Additional unsupported terms");
+  auto location=term.Finish();auto residencyName=b.CreateString("Residency");
+  mm::AgreementDetailBuilder residency(b);residency.add_id(1);residency.add_kind(2);residency.add_site_id(55);
+  residency.add_year(117);residency.add_year_tick(94234);residency.add_applicant_party(3);residency.add_government_party(7);residency.add_description(residencyName);
+  auto details=b.CreateVector(std::vector<flatbuffers::Offset<mm::AgreementDetail>>{location,residency.Finish()});
+  auto summary=b.CreateString("GUILDHALL tier 2 for MASON"),reason=b.CreateString("Partial record: some native subject terms are not yet displayed");
   mm::AgreementInfoBuilder row(b);row.add_id(0);row.add_status(mm::AgreementStatus::Accepted);
   row.add_continuing(true);row.add_complete(false);row.add_details(details);row.add_parties(parties);row.add_summary(summary);row.add_reason(reason);
   auto records=b.CreateVector(std::vector<flatbuffers::Offset<mm::AgreementInfo>>{row.Finish()});
-  mm::AgreementStateBuilder domain(b);domain.add_agreements(records);auto data=domain.Finish();
+  auto explanation=b.CreateString("Pending means a native unapproved petition. Accepted and concluded are native states; no denial or expiry is inferred.");
+  mm::AgreementStateBuilder domain(b);domain.add_detail(explanation);domain.add_agreements(records);auto data=domain.Finish();
   mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
   state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);state.add_action(mm::ManagementAction::AgreementInspect);
   state.add_status(mm::ManagementStatus::Ok);state.add_agreement(data);b.Finish(state.Finish());
@@ -835,15 +839,63 @@ TEST_CASE("agreement response preserves party identities native approval flags a
   REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
   const auto& domainState=c->state().agreement;REQUIRE(domainState.agreements.size()==1);CHECK(domainState.nextBeforeId==-1);
   const auto& v=domainState.agreements[0];CHECK(v.id==0);CHECK(v.status==1);CHECK_FALSE(v.notApproved);CHECK_FALSE(v.concluded);
-  CHECK(v.continuing);CHECK_FALSE(v.complete);CHECK(v.reason=="Additional unsupported terms");
+  CHECK(v.continuing);CHECK_FALSE(v.complete);CHECK(v.reason=="Partial record: some native subject terms are not yet displayed");
   REQUIRE(v.parties.size()==2);CHECK(v.parties[0].id==3);CHECK(v.parties[0].entityIds==std::vector<int32_t>{0});
   CHECK(v.parties[0].histfigIds==std::vector<int32_t>{42});CHECK(v.parties[1].id==7);
-  REQUIRE(v.details.size()==1);const auto& d=v.details[0];CHECK(d.id==0);CHECK(d.kind==12);CHECK(d.siteId==55);
+  REQUIRE(v.details.size()==2);const auto& d=v.details[0];CHECK(d.id==0);CHECK(d.kind==12);CHECK(d.siteId==55);
   CHECK(d.applicantParty==3);CHECK(d.governmentParty==7);CHECK(d.year==117);CHECK(d.yearTick==94234);
-  CHECK(d.tier==2);CHECK(d.profession==9);CHECK(d.deityId==-1);CHECK(d.description=="Build a guildhall");
+  CHECK(d.tier==2);CHECK(d.profession==9);CHECK(d.deityId==-1);CHECK(d.description=="GUILDHALL tier 2 for MASON");
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,client,seq);REQUIRE(c->poll());CHECK(c->state().agreement.agreements.empty());
 }
+TEST_CASE("agreement list preserves every field with producible pending and unapproved pages") {
+  // agreements.lua:116 and :21 cannot emit Unapproved with pending_only=true.
+  // Test both producible pages. 16 rows (1099..1084) precede more native records.
+  for(bool pendingOnly:{false,true}) {
+    ManagementPublisher p;p.publish(1);auto c=openClient(p);auto [seq,client]=claim(p,*c);
+    wm::ManagementRequest request;request.action=wm::ManagementAction::AgreementList;request.agreement.pendingOnly=pendingOnly;
+    seq=c->send(request);REQUIRE(seq>0);p.pop();flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<mm::AgreementInfo>> records;
+    const std::string explanation="Pending means a native unapproved petition. Accepted and concluded are native states; no denial or expiry is inferred.";
+    for(int id=1099;id>=1084;--id) {
+      auto applicant=mm::CreateAgreementParty(b,0,b.CreateVector(std::vector<int32_t>{2210}),b.CreateVector(std::vector<int32_t>{5120}),b.CreateString("The Bejeweled Creed, Urist Lorbamoth"));
+      auto government=mm::CreateAgreementParty(b,1,b.CreateVector(std::vector<int32_t>{483}),b.CreateVector(std::vector<int32_t>{}),b.CreateString("The Iron Realm"));
+      auto parties=b.CreateVector(std::vector{applicant,government});
+      auto description=b.CreateString("TEMPLE tier 1 / The Bejeweled Creed");
+      mm::AgreementDetailBuilder d(b);d.add_id(0);d.add_kind(12);d.add_site_id(378);d.add_year(106);d.add_year_tick(168260);
+      d.add_applicant_party(0);d.add_government_party(1);d.add_location_type(2);d.add_tier(1);d.add_profession(-1);d.add_deity_type(1);d.add_deity_id(2210);d.add_description(description);
+      auto details=b.CreateVector(std::vector{d.Finish()});
+      const bool pending=pendingOnly || id!=1098;
+      auto reason=b.CreateString(pending?"Pending native petition; response controls are not yet verified":"");
+      mm::AgreementInfoBuilder row(b);row.add_id(id);row.add_status(pending?mm::AgreementStatus::Pending:mm::AgreementStatus::Unapproved);
+      row.add_not_approved(true);row.add_concluded(false);row.add_continuing(id==1097);row.add_complete(true);
+      row.add_summary(description);row.add_reason(reason);row.add_details(details);row.add_parties(parties);records.push_back(row.Finish());
+    }
+    auto domain=mm::CreateAgreementState(b,b.CreateVector(records),1084,pendingOnly,b.CreateString(explanation));
+    auto message=b.CreateString("Native agreements");
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
+    state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);state.add_action(mm::ManagementAction::AgreementList);
+    state.add_status(mm::ManagementStatus::Ok);state.add_message(message);state.add_agreement(domain);b.Finish(state.Finish());
+    REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+    REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
+    const auto& a=c->state().agreement;REQUIRE(a.agreements.size()==16);CHECK(a.nextBeforeId==1084);CHECK(a.pendingOnly==pendingOnly);CHECK(a.detail==explanation);
+    for(size_t i=0;i<a.agreements.size();++i) {
+      const auto& v=a.agreements[i];CHECK(v.id==1099-int(i));CHECK(v.status==(pendingOnly || i!=1?0:2));
+      CHECK(v.notApproved);CHECK_FALSE(v.concluded);CHECK(v.continuing==(i==2));CHECK(v.complete);
+      CHECK(v.summary=="TEMPLE tier 1 / The Bejeweled Creed");
+      CHECK(v.reason==(pendingOnly || i!=1?"Pending native petition; response controls are not yet verified":""));
+      REQUIRE(v.parties.size()==2);
+      for(size_t j=0;j<2;++j){const auto& party=v.parties[j];CHECK(party.id==int(j));
+        CHECK(party.name==(j==0?"The Bejeweled Creed, Urist Lorbamoth":"The Iron Realm"));
+        CHECK(party.entityIds==std::vector<int32_t>{j==0?2210:483});CHECK(party.histfigIds==(j==0?std::vector<int32_t>{5120}:std::vector<int32_t>{}));}
+      REQUIRE(v.details.size()==1);const auto& d=v.details[0];CHECK(d.id==0);CHECK(d.kind==12);CHECK(d.siteId==378);CHECK(d.year==106);CHECK(d.yearTick==168260);
+      CHECK(d.applicantParty==0);CHECK(d.governmentParty==1);CHECK(d.locationType==2);CHECK(d.tier==1);CHECK(d.profession==-1);
+      CHECK(d.deityType==1);CHECK(d.deityId==2210);CHECK(d.description==v.summary);
+    }
+    seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,client,seq);REQUIRE(c->poll());CHECK(c->state().agreement.agreements.empty());
+  }
+}
 TEST_CASE("agreement validators bound nested terms and enforce identity integrity") {
+  // Intentionally malformed wire, not native reply fixtures.
   for(int which=-1;which<10;++which){
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::AgreementInfo>> records;
     const int count=which==0?2:which==7?9:1;
@@ -854,19 +906,89 @@ TEST_CASE("agreement validators bound nested terms and enforce identity integrit
       std::vector<flatbuffers::Offset<mm::AgreementDetail>> terms;
       const int termCount=which==4?9:which==7?8:1;
       for(int j=0;j<termCount;++j){
-        auto description=b.CreateString(which==7?std::string(2048,'x'):"Native term");
+        auto description=b.CreateString(which==7?"TEMPLE tier 1 / "+std::string(2032,'x'):"GUILDHALL tier 1 for MASON");
         mm::AgreementDetailBuilder term(b);term.add_id(j);term.add_kind(12);term.add_description(description);
-        term.add_applicant_party(which==2?99:3);
+        term.add_applicant_party(which==2?99:3);term.add_site_id(378);term.add_location_type(which==7?2:11);term.add_tier(1);term.add_profession(which==7?-1:9);term.add_deity_type(which==7?1:-1);term.add_deity_id(which==7?2210:-1);
         term.add_year(which==8?-2:-1);term.add_year_tick(which==3?403200:which==9?-2:-1);terms.push_back(term.Finish());
       }
-      auto details=b.CreateVector(terms);auto summary=b.CreateString("Agreement"),reason=b.CreateString("");
+      auto details=b.CreateVector(terms);auto summary=b.CreateString(which==7?"TEMPLE tier 1 / "+std::string(2032,'x'):"GUILDHALL tier 1 for MASON"),reason=b.CreateString("");
       mm::AgreementInfoBuilder row(b);row.add_id(which==0?0:n);row.add_status(which==6?static_cast<mm::AgreementStatus>(4):mm::AgreementStatus::Accepted);
       row.add_details(details);row.add_parties(parties);row.add_summary(summary);row.add_reason(reason);records.push_back(row.Finish());
     }
     auto rows=b.CreateVector(records);mm::AgreementStateBuilder domain(b);domain.add_agreements(rows);auto data=domain.Finish();
     mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);state.add_world_epoch(7);
     state.add_action(mm::ManagementAction::AgreementList);state.add_status(mm::ManagementStatus::Ok);state.add_agreement(data);b.Finish(state.Finish());
-    CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(which>=0));
+    auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    REQUIRE(error.has_value()==(which>=0));
+    if(error)CHECK(*error==(which==1?"invalid agreement party":which==2?"missing agreement party":
+        which==3 || which==8 || which==9?"invalid agreement detail":which==5?"invalid agreement member":
+        which==7?"agreement text budget exceeded":"invalid agreement row"));
+  }
+}
+
+TEST_CASE("agreement wire bounds and integrity reject exact malformed variants") {
+  // Accepted controls use agreements.lua:33-90 shapes. Over-limit and inconsistent
+  // variants intentionally corrupt the wire; they are not claimed Lua replies.
+  for(int which=0;which<13;++which)for(bool bad:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::AgreementInfo>> records;
+    int rowCount=which==0?(bad?17:16):which==12?2:1;
+    for(int i=0;i<rowCount;++i) {
+      std::vector<flatbuffers::Offset<mm::AgreementParty>> parties;
+      int partyCount=which==1?(bad?9:8):which==8?2:1;
+      for(int j=0;j<partyCount;++j) {
+        std::vector<int32_t> members;
+        int memberCount=which==3 || which==4?(bad?33:32):0;
+        for(int k=0;k<memberCount;++k)members.push_back(k);
+        auto entity=b.CreateVector(which==4?std::vector<int32_t>{}:members);
+        auto histfig=b.CreateVector(which==4?members:std::vector<int32_t>{});
+        parties.push_back(mm::CreateAgreementParty(b,which==8 && bad?0:j,entity,histfig,b.CreateString(memberCount?"Entity 0, Entity 1, Entity 2, Entity 3, Entity 4, Entity 5, Entity 6, Entity 7":"")));
+      }
+      auto ps=b.CreateVector(parties);std::vector<flatbuffers::Offset<mm::AgreementDetail>> terms;
+      int termCount=which==2?(bad?9:8):which==9?2:1;
+      for(int j=0;j<termCount;++j) {
+        // A TEMPLE name can fill the entire 2048-byte description (:50-57).
+        auto description=b.CreateString(which==5?"TEMPLE tier 1 / "+std::string(2032+(bad?1:0),'x'):"GUILDHALL tier 1 for MASON");
+        mm::AgreementDetailBuilder d(b);d.add_id(which==9 && bad?0:j);d.add_kind(12);d.add_site_id(378);d.add_year(106);
+        d.add_year_tick(which==6?(bad?403200:403199):0);d.add_location_type(which==5?2:11);d.add_tier(1);
+        d.add_profession(which==5?-1:9);d.add_deity_type(which==5?1:-1);d.add_deity_id(which==5?2210:-1);
+        d.add_applicant_party(which==10 && bad?99:0);d.add_government_party(0);d.add_description(description);terms.push_back(d.Finish());
+      }
+      auto ds=b.CreateVector(terms);auto summary=b.CreateString(which==5?"TEMPLE tier 1 / "+std::string(2032,'x'):"GUILDHALL tier 1 for MASON");
+      auto reason=b.CreateString(which==3 || which==4?"Partial record: native data, names or text are unavailable or exceed display limits":"");
+      mm::AgreementInfoBuilder row(b);row.add_id(which==12 && bad?0:i);
+      row.add_status(which==7?mm::AgreementStatus::Unapproved:which==11?mm::AgreementStatus::Concluded:mm::AgreementStatus::Accepted);
+      row.add_not_approved(which==7 && !bad);row.add_concluded(which==11 && !bad);
+      row.add_complete(which!=3 && which!=4);row.add_summary(summary);row.add_reason(reason);row.add_parties(ps);row.add_details(ds);records.push_back(row.Finish());
+    }
+    auto domain=mm::CreateAgreementState(b,b.CreateVector(records),-1,false,b.CreateString(""));
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);state.add_world_epoch(7);
+    state.add_action(mm::ManagementAction::AgreementList);state.add_status(mm::ManagementStatus::Ok);state.add_agreement(domain);b.Finish(state.Finish());
+    auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    REQUIRE(error.has_value()==bad);
+    if(error)CHECK(*error==(which==0?"invalid agreement state":which==1 || which==2 || which==12?"invalid agreement row":
+        which==3 || which==4?"invalid agreement members":which==5 || which==6 || which==9?"invalid agreement detail":
+        which==7 || which==11?"inconsistent agreement status":which==8?"invalid agreement party":"missing agreement party"));
+  }
+}
+
+TEST_CASE("agreement aggregate wire text accepts its limit and rejects one extra byte") {
+  // Defensive wire boundary, deliberately beyond the Lua page search budget.
+  for(bool over:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::AgreementInfo>> rows;
+    for(int i=0;i<8;++i) {
+      auto text=b.CreateString("TEMPLE tier 1 / "+std::string(2032,'x'));
+      std::vector<flatbuffers::Offset<mm::AgreementDetail>> terms;
+      for(int j=0;j<7;++j){mm::AgreementDetailBuilder d(b);d.add_id(j);d.add_kind(12);d.add_description(text);terms.push_back(d.Finish());}
+      auto ds=b.CreateVector(terms);auto ps=b.CreateVector(std::vector<flatbuffers::Offset<mm::AgreementParty>>{});
+      auto reason=b.CreateString(over && i==0?"x":"");
+      mm::AgreementInfoBuilder row(b);row.add_id(i);row.add_status(mm::AgreementStatus::Accepted);
+      row.add_details(ds);row.add_parties(ps);row.add_summary(text);row.add_reason(reason);rows.push_back(row.Finish());
+    }
+    auto domain=mm::CreateAgreementState(b,b.CreateVector(rows));
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);state.add_world_epoch(7);
+    state.add_action(mm::ManagementAction::AgreementList);state.add_status(mm::ManagementStatus::Ok);state.add_agreement(domain);b.Finish(state.Finish());
+    auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    REQUIRE(error.has_value()==over);if(error)CHECK(*error=="agreement text budget exceeded");
   }
 }
 

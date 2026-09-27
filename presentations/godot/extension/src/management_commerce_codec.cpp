@@ -113,6 +113,20 @@ bool validateAgreementShape(const Dictionary& data, String& error) {
       managementRequiredFields(data, error);
 }
 
+// management_request("agreements", request): action 36 lists, 37 inspects.
+// id: int -1..INT32_MAX; -1 absent, required native agreements[].id for 37;
+//     36 must omit it or use -1.
+// before_id: int -1..INT32_MAX, 36 only; exclusive previous next_before_id,
+//     -1 starts newest. query: String <=128 UTF-8 bytes, 36 only; exact decimal
+//     id or case-insensitive substring of summary, party names, descriptions.
+// pending_only: bool, default false, 36 only; plotinfo.petitions membership, echoed.
+// Reply poll_management()["agreement"]: agreements[]{id, status (0 Pending,
+// 1 Accepted, 2 Unapproved, 3 Concluded), not_approved, concluded, continuing,
+// complete, summary, reason, details[]{id, kind, site_id, year, year_tick,
+// applicant_party, government_party, location_type, tier, profession, deity_type,
+// deity_id, description}, parties[]{id, name, entity_ids[], histfig_ids[]}},
+// next_before_id, pending_only, detail. Pending is native petition membership;
+// neither denial nor expiry is inferred (e12/findings.md item 8).
 bool readAgreement(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
@@ -129,6 +143,9 @@ bool readAgreement(const Dictionary& data, wm::ManagementRequest& r, String& err
   value.query = query.utf8().get_data();
   if (value.query.size() > 128) valid = false;
   value.pendingOnly = data.get("pending_only", false);
+  if (r.action == wm::ManagementAction::AgreementList && value.id != -1) valid = false;
+  if (r.action == wm::ManagementAction::AgreementInspect &&
+      (value.beforeId != -1 || !value.query.empty() || value.pendingOnly)) valid = false;
   if (!valid) { error = "Invalid bounded agreement request"; return false; }
   return true;
 }

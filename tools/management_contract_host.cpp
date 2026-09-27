@@ -295,7 +295,66 @@ int sessionNotifications(const char* path) {
   std::cout<<"QA_INCOMPLETE: Windows shared memory required\n";return 77;
 #endif
 }
+// agreements.lua:19-21,33-90,98-104: synthetic native records, not UI prose.
+// e8/findings.md Native wording and e12/findings.md items 2,4,5: pin current
+// enum descriptions and continuing membership; native captions/link need 07-B.
+constexpr const char* agreementDetail="Pending means a native unapproved petition. Accepted and concluded are native states; no denial or expiry is inferred.";
+flatbuffers::Offset<m::AgreementState> agreementFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
+  const auto* q=request.agreement();const bool inspect=request.action()==m::ManagementAction::AgreementInspect;
+  std::vector<flatbuffers::Offset<m::AgreementInfo>> rows;
+  for(int source:{212,205,190,150,120}) {
+    if(inspect && source!=212)continue;
+    if(!inspect) {
+      if(q->before_id()>=0 && source>=q->before_id())continue;
+      if(q->pending_only() && source!=212 && source!=190)continue;
+      const auto query=q->query()?q->query()->str():"";
+      if(!query.empty() && !(query=="guild" && (source==212 || source==120)) && query!=std::to_string(source))continue;
+    }
+    const bool pending=source==212 || source==190, partial=source==190 || source==150;
+    const bool temple=source==205;
+    auto description=b.CreateString(partial?(source==190?"Residency":"Citizenship"):
+        temple?"TEMPLE tier 1 / The Bejeweled Creed":"GUILDHALL tier 1 for MASON");
+    m::AgreementDetailBuilder term(b);term.add_id(0);term.add_kind(partial?(source==190?2:3):12);
+    term.add_site_id(378);term.add_year(106);term.add_year_tick(168260);term.add_applicant_party(0);term.add_government_party(1);
+    if(!partial){term.add_location_type(temple?2:11);term.add_tier(1);term.add_profession(temple?-1:9);term.add_deity_type(temple?1:-1);term.add_deity_id(temple?2210:-1);}
+    term.add_description(description);auto terms=b.CreateVector(std::vector{term.Finish()});
+    auto applicant=m::CreateAgreementParty(b,0,b.CreateVector(partial?std::vector<int32_t>{}:std::vector<int32_t>{temple?2210:780}),
+        b.CreateVector(partial?std::vector<int32_t>{5120}:std::vector<int32_t>{}),
+        b.CreateString(partial?"Urist Lorbamoth":temple?"The Bejeweled Creed":"The Whiskered Guild"));
+    auto government=m::CreateAgreementParty(b,1,b.CreateVector(std::vector<int32_t>{483}),b.CreateVector(std::vector<int32_t>{}),b.CreateString("The Iron Realm"));
+    auto parties=b.CreateVector(std::vector{applicant,government});
+    std::string reason=partial?"Partial record: some native subject terms are not yet displayed":"";
+    if(pending)reason+=(partial?"; ":"")+std::string("Pending native petition; response controls are not yet verified");
+    auto why=b.CreateString(reason);
+    m::AgreementInfoBuilder row(b);row.add_id(inspect?q->id():source);
+    row.add_status(pending?m::AgreementStatus::Pending:source==150?m::AgreementStatus::Unapproved:source==120?m::AgreementStatus::Concluded:m::AgreementStatus::Accepted);
+    row.add_not_approved(pending || source==150);row.add_concluded(source==120);row.add_continuing(temple);
+    row.add_complete(!partial);row.add_summary(description);row.add_reason(why);row.add_details(terms);row.add_parties(parties);rows.push_back(row.Finish());
+  }
+  return m::CreateAgreementState(b,b.CreateVector(rows),-1,q->pending_only(),b.CreateString(agreementDetail));
+}
+int validateAgreementFixtures() {
+  try {
+    for(int variant=0;variant<8;++variant) {
+      flatbuffers::FlatBufferBuilder rb;const bool inspect=variant>=5;
+      auto payload=m::CreateAgreementRequest(rb,inspect?(variant==5?212:variant==6?0:2147483000):-1,
+          variant==4?205:-1,rb.CreateString(variant==2?"guild":variant==3?"205":""),variant==1);
+      m::ConstructionRequestBuilder r(rb);r.add_schema_version(m::kManagementVersion);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(epoch);
+      r.add_action(inspect?m::ManagementAction::AgreementInspect:m::ManagementAction::AgreementList);r.add_agreement(payload);rb.Finish(r.Finish());
+      auto* q=flatbuffers::GetRoot<m::ConstructionRequest>(rb.GetBufferPointer());
+      if(auto error=m::validateConstructionRequest(*q))throw std::runtime_error(*error);
+      flatbuffers::FlatBufferBuilder b;auto fixture=agreementFixture(b,*q);auto message=b.CreateString("Native agreements");
+      m::ManagementStateBuilder state(b);state.add_schema_version(m::kManagementVersion);state.add_revision(1);state.add_world_epoch(epoch);
+      state.add_client_id(1);state.add_request_seq(1);state.add_action(q->action());state.add_status(m::ManagementStatus::Ok);state.add_message(message);state.add_agreement(fixture);
+      b.Finish(state.Finish());flatbuffers::Verifier verifier(b.GetBufferPointer(),b.GetSize());
+      require(verifier.VerifyBuffer<m::ManagementState>(nullptr),"agreement fixture shape");
+      if(auto error=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))throw std::runtime_error(*error);
+    }
+    std::cout<<"AGREEMENT_CONTRACT_FIXTURES_PASS 8\n";return 0;
+  } catch(const std::exception& error){std::cerr<<error.what()<<"\n";return 1;}
+}
 int main(int argc,char** argv) {
+  if(argc>1 && std::string(argv[1])=="--validate-agreement-fixtures")return validateAgreementFixtures();
   if(argc>1 && std::string(argv[1])=="--validate-report-fixtures")return validateReportFixtures();
   if(argc==3 && std::string(argv[1])=="--session-notifications")return sessionNotifications(argv[2]);
   if(argc>1 && std::string(argv[1])=="--validate-production-fixtures") {
@@ -406,6 +465,10 @@ int main(int argc,char** argv) {
       if(request && request->action()>=m::ManagementAction::ProductionList &&
           request->action()<=m::ManagementAction::FarmSetCrop)production=productionFixture(b,*request);
 
+      flatbuffers::Offset<m::AgreementState> agreements;
+      if(request && (request->action()==m::ManagementAction::AgreementList || request->action()==m::ManagementAction::AgreementInspect)) {
+        agreements=agreementFixture(b,*request);text=b.CreateString("Native agreements");
+      }
       flatbuffers::Offset<m::ReportState> reports;
       const bool isReport=request && (request->action()==m::ManagementAction::ReportList || request->action()==m::ManagementAction::ReportInspect);
       const bool missing=isReport && request->action()==m::ManagementAction::ReportInspect && request->report()->id()==999999;
@@ -419,7 +482,7 @@ int main(int argc,char** argv) {
         m::ConstructionStateBuilder c(b);c.add_building_key(key);c.add_filter(request->filter());
         c.add_filters(fs);c.add_list_revision(INT64_MAX);c.add_footprint(fp);construction=c.Finish();
       }
-      m::ManagementStateBuilder state(b);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      m::ManagementStateBuilder state(b);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_status(missing?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
@@ -447,7 +510,10 @@ int main(int argc,char** argv) {
         A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,
         A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::ProductionList,
         A::ReportList,A::ReportList,A::ReportList,A::ReportList,A::ReportList,A::ReportList,
-        A::ReportInspect,A::ReportInspect,A::ReportInspect,A::ReportInspect};
+        A::ReportInspect,A::ReportInspect,A::ReportInspect,A::ReportInspect,
+        A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,
+        A::AgreementInspect,A::AgreementInspect,A::AgreementInspect,A::AgreementList,
+        A::AgreementList,A::AgreementList,A::AgreementInspect};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -565,7 +631,15 @@ int main(int argc,char** argv) {
             require((q->query()?q->query()->size():0)==(variant==3?128:0),"report query bytes");break;
           }
           require(r->report() && r->report()->id()==2147483000 && r->report()->before_id()==-1,"report payload");break;
-        case A::AgreementInspect: require(r->agreement() && r->agreement()->id()==2147483000 && r->agreement()->before_id()==-1 && !r->agreement()->pending_only(),"agreement payload");break;
+        case A::AgreementList: case A::AgreementInspect:
+          if(received>72) {
+            const int variant=int(received)-73;const auto* q=r->agreement();require(q!=nullptr,"agreement payload");
+            require(q->id()==(variant==5?212:variant==6?0:variant==7?2147483000:variant==11?INT32_MAX:-1),"agreement id");
+            require(q->before_id()==(variant==4?205:variant==9?0:variant==10?INT32_MAX:-1),"agreement cursor");
+            require(q->pending_only()==(variant==1),"agreement filter");
+            require((q->query()?q->query()->str():"")==(variant==2?"guild":variant==3?"205":variant==8?std::string(128,'q'):""),"agreement query");break;
+          }
+          require(r->agreement() && r->agreement()->id()==2147483000 && r->agreement()->before_id()==-1 && !r->agreement()->pending_only(),"agreement payload");break;
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;
         }

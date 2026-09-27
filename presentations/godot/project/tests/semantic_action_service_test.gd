@@ -31,6 +31,7 @@ func run():
 	test_citizens()
 	test_production()
 	test_reports()
+	test_agreements()
 	test_transport_replacement()
 	test_new_domain_detach()
 	var world := FakeWorld.new()
@@ -398,4 +399,34 @@ func test_reports():
 		for i in 3: service.poll(1.0)
 		check(world.calls.size() == sent and observed.size() == before+1, "report never replays")
 	check(not Contract.is_runtime(Service.Action.Alert), "native Alert stays retired")
+	service.free()
+
+func test_agreements():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	for action in [36,37]:
+		var request := {"action":action}
+		if action == 37: request.id = 999999
+		var ticket := service.submit("agreements", request, func(t,r,q): observed.append([t,r,q]))
+		var before := observed.size()
+		service.poll(0.0)
+		var sent := world.calls.size()
+		check(world.calls.back() == {"domain":"agreements","request":request}, "both agreement actions route intact")
+		check(not Contract.is_mutation(action), "agreements are read-only")
+		if action == 36:
+			world.state = {"world_epoch":5,"revision":sent+10,"request_seq":sent,"action":action,
+				"status":Contract.ManagementStatus.Pending,"message":"Searching native agreements"}
+			service.poll(0.0)
+			check(service.result(ticket).is_empty() and observed.size() == before and service._active == ticket, "Pending retains ticket without publishing")
+		var status: int = Contract.ManagementStatus.Ok if action == 36 else Contract.ManagementStatus.Rejected
+		var message := "Native agreements" if action == 36 else "Agreement is unavailable or unrelated to this fortress"
+		world.state = {"world_epoch":5,"revision":sent+20,"request_seq":sent,"action":action,"status":status,"message":message}
+		service.poll(0.0)
+		check(observed.size() == before+1 and observed.back()[0] == ticket and observed.back()[2] == request, "agreement resolves matching ticket once")
+		check(service.result(ticket).status == status and service.result(ticket).message == message and observed.back()[1].message == message, "exact agreement reply retained")
+		check(not service._outcomes.has(ticket), "agreement has no mutation receipt")
+		for i in 3: service.poll(1.0)
+		check(world.calls.size() == sent and observed.size() == before+1, "agreement never replays")
 	service.free()

@@ -324,6 +324,7 @@ func run() -> void:
 		assert(report.next_before_id == (1084 if ids.size() == 16 else -1))
 		assert(report.reports.size() == ids.size())
 		for index in ids.size(): assert_report_row(report.reports[index], ids[index])
+	await test_agreements()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -506,3 +507,69 @@ func assert_report_row(row: Dictionary, id: int) -> void:
 	assert(row.position_visible == (id != 1097) and row.position2_visible == (id not in [1097,1098]))
 	assert(row.position == (Vector3i(-1,-1,-1) if id == 1097 else Vector3i(2,3,4)))
 	assert(row.position2 == (Vector3i(-1,-1,-1) if id in [1097,1098] else Vector3i(5,6,7)))
+
+func reject_agreement(request: Dictionary, message: String) -> void:
+	assert(world.management_request("agreements", request) == 0)
+	assert(world.last_error() == message)
+
+func test_agreements() -> void:
+	reject_agreement({"action":37}, "Missing management field: id")
+	reject_agreement({"action":37,"id":-1}, "invalid agreement inspection")
+	for key in ["id","before_id"]:
+		for bad in [1.5,"1",true]:
+			var request := {"action":36}
+			request[key] = bad
+			reject_agreement(request, "Wrong management field type: " + key)
+	for pair in [["query",1],["query",[]],["pending_only",1],["pending_only",""]]:
+		var request := {"action":36}
+		request[pair[0]] = pair[1]
+		reject_agreement(request, "Wrong management field type: " + pair[0])
+	for request in [{"action":36,"query":"q".repeat(129)}, {"action":36,"query":String.chr(233).repeat(65)},
+		{"action":36,"id":5}, {"action":36,"id":0}, {"action":37,"id":212,"before_id":3},
+		{"action":37,"id":212,"query":"guild"}, {"action":37,"id":212,"pending_only":true},
+		{"action":36,"id":-2}, {"action":36,"before_id":-2},
+		{"action":37,"id":2147483648}, {"action":36,"before_id":2147483648}]:
+		reject_agreement(request, "Invalid bounded agreement request")
+	var requests := [{"action":36}, {"action":36,"pending_only":true}, {"action":36,"query":"guild"},
+		{"action":36,"query":"205"}, {"action":36,"before_id":205}, {"action":37,"id":212},
+		{"action":37,"id":0,"before_id":-1,"query":"","pending_only":false}, {"action":37,"id":2147483000},
+		{"action":36,"query":"q".repeat(128)}, {"action":36,"id":-1,"before_id":0,"query":"","pending_only":false},
+		{"action":36,"before_id":2147483647}, {"action":37,"id":2147483647}]
+	for index in requests.size():
+		var request: Dictionary = requests[index]
+		var sequence: int = world.management_request("agreements", request)
+		assert(sequence > 0)
+		var state: Dictionary = await receipt(sequence)
+		assert(not state.is_empty() and state.action == request.action and state.message == "Native agreements")
+		var ids: Array = [212,205,190,150,120]
+		if index == 1: ids = [212,190]
+		elif index == 2: ids = [212,120]
+		elif index == 3: ids = [205]
+		elif index == 4: ids = [190,150,120]
+		elif request.action == 37: ids = [request.id]
+		elif index in [8,9]: ids = []
+		var rows: Array = []
+		for id in ids: rows.append(agreement_row(id, request.action == 37))
+		assert(state.agreement == {"agreements":rows,"next_before_id":-1,"pending_only":index == 1,
+			"detail":"Pending means a native unapproved petition. Accepted and concluded are native states; no denial or expiry is inferred."})
+
+func agreement_row(id: int, inspect: bool) -> Dictionary:
+	var source := 212 if inspect else id
+	var partial := source in [190,150]
+	var pending := source in [212,190]
+	var temple := source == 205
+	# agreements.lua:35-57; e8/findings.md Native wording and e12/findings.md 2,4:
+	# pin enum descriptions; native captions require 07-B bridge work.
+	var description := ("Residency" if source == 190 else "Citizenship") if partial else ("TEMPLE tier 1 / The Bejeweled Creed" if temple else "GUILDHALL tier 1 for MASON")
+	var reason := "Partial record: some native subject terms are not yet displayed" if partial else ""
+	if pending: reason += ("; " if partial else "") + "Pending native petition; response controls are not yet verified"
+	return {"id":id,"status":0 if pending else 2 if source == 150 else 3 if source == 120 else 1,
+		"not_approved":pending or source == 150,"concluded":source == 120,"continuing":temple,"complete":not partial,
+		"summary":description,"reason":reason,
+		"details":[{"id":0,"kind":(2 if source == 190 else 3) if partial else 12,"site_id":378,"year":106,"year_tick":168260,
+			"applicant_party":0,"government_party":1,"location_type":-1 if partial else 2 if temple else 11,
+			"tier":-1 if partial else 1,"profession":-1 if partial or temple else 9,"deity_type":1 if temple else -1,
+			"deity_id":2210 if temple else -1,"description":description}],
+		"parties":[{"id":0,"name":"Urist Lorbamoth" if partial else "The Bejeweled Creed" if temple else "The Whiskered Guild",
+			"entity_ids":[] if partial else [2210] if temple else [780],"histfig_ids":[5120] if partial else []},
+			{"id":1,"name":"The Iron Realm","entity_ids":[483],"histfig_ids":[]}]}

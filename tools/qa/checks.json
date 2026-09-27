@@ -90,6 +90,20 @@
       ]
     },
     {
+      "id": "agreement_contract_fixtures",
+      "lane": "core",
+      "kind": "native",
+      "executable": "build/tools/management_contract_host.exe",
+      "arguments": [
+        "--validate-agreement-fixtures"
+      ],
+      "completion": "^AGREEMENT_CONTRACT_FIXTURES_PASS 8$",
+      "timeout": 20,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
       "id": "citizen_contract_fixtures",
       "lane": "core",
       "kind": "native",

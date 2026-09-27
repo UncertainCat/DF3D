@@ -36,6 +36,20 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
     row["origin"] = Vector3i(u.x, u.y, u.z);
     row["can_focus"] = u.canFocus;
     row["eligible"] = u.eligible;
+    row["only_assigned_jobs"] = u.onlyAssignedJobs;
+    row["profession_color"] = u.professionColor;
+    row["profession_id"] = u.professionId;
+    row["job_type"] = u.jobType;
+    row["social_activity"] = u.socialActivity;
+    Array assignments;
+    for (const auto& d : u.assignedDetails) {
+      Dictionary assignment;
+      assignment["index"] = d.index;
+      assignment["icon"] = d.icon;
+      assignment["name"] = String::utf8(d.name.c_str());
+      assignments.push_back(assignment);
+    }
+    row["assigned_details"] = assignments;
     row["labors"] = ids(u.labors);
     row["labor_names"] = names(u.laborNames);
     row["offices"] = ids(u.offices);
@@ -81,6 +95,13 @@ bool validateCitizenShape(const Dictionary& data, String& error) {
       managementRequiredFields(data, error);
 }
 
+// Citizen payload keys (actions 28..33):
+// unit_id: int, -1 none; required for 29/32, optional for 31 to include that citizen.
+// detail_index: int 0..127, native vector index; required for 31..33.
+// expected_revision: int >0 from 30/31 revision; required for 32/33.
+// query: String <=128 UTF-8 bytes; cursor: int (28 unit id, 30 detail index).
+// member: 0/1, action 32 only. mode: 1 Everybody / 2 Nobody / 3 Only selected,
+// action 33 only. Omitted member/mode retain the wire sentinel -1.
 bool readCitizen(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
@@ -97,6 +118,7 @@ bool readCitizen(const Dictionary& data, wm::ManagementRequest& r, String& error
   value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
   value.member = int8_t(n("member", -1, -1, 1));
   value.mode = int8_t(n("mode", -1, -1, 3));
+  if (r.action == wm::ManagementAction::WorkDetailMode && value.mode < 1) valid = false;
   String query = data.get("query", String());
   value.query = query.utf8().get_data();
   if (value.query.size() > 128) valid = false;

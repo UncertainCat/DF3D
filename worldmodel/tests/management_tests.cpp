@@ -543,8 +543,8 @@ TEST_CASE("citizen response preserves native labor roles and built-in definition
   wm::ManagementRequest request;request.action=wm::ManagementAction::CitizenInspect;request.citizen.unitId=0;
   seq=c->send(request);REQUIRE(seq>0);p.pop();
   flatbuffers::FlatBufferBuilder b;mm::TilePos pos(17,29,128);
-  auto labors=b.CreateVector(std::vector<int16_t>{0,93});
-  auto laborNames=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("Mining"),b.CreateString("Last labor")});
+  auto labors=b.CreateVector(std::vector<int16_t>{0,1});
+  auto laborNames=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("mine"),b.CreateString("haul stone")});
   auto role=mm::CreateCitizenRole(b,b.CreateString("Manager"),250);
   auto roles=b.CreateVector(std::vector<flatbuffers::Offset<mm::CitizenRole>>{role});
   auto offices=b.CreateVector(std::vector<int32_t>{2348});
@@ -562,15 +562,17 @@ TEST_CASE("citizen response preserves native labor roles and built-in definition
   unit.add_age(42);unit.add_stress(-10000);unit.add_has_stress(true);unit.add_origin(&pos);unit.add_can_focus(true);
   unit.add_eligible(true);unit.add_labors(labors);unit.add_labor_names(laborNames);unit.add_roles(roles);unit.add_offices(offices);auto person=unit.Finish();
   auto groupName=b.CreateString("Woodworkers");auto assigned=b.CreateVector(std::vector<int32_t>{0,42});
+  // The extended case deliberately distinguishes codec flags; the base case matches citizens.lua.
+  auto detailReason=b.CreateString(extended?"Native work-detail mode is protected":"An external labor controller owns assignments");
   mm::WorkDetailInfoBuilder detail(b);detail.add_index(0);detail.add_revision((uint64_t(1)<<40)+3);
-  detail.add_reason(emptyReason);
-  detail.add_name(groupName);detail.add_mode(3);detail.add_no_modify(true);detail.add_cannot_be_everybody(true);
-  detail.add_editable(true);detail.add_mode_editable(true);detail.add_labors(labors);detail.add_labor_names(laborNames);detail.add_assigned_units(assigned);
+  detail.add_reason(detailReason);
+  detail.add_name(groupName);detail.add_mode(3);detail.add_no_modify(true);detail.add_cannot_be_everybody(false);
+  detail.add_editable(extended);detail.add_mode_editable(false);detail.add_labors(labors);detail.add_labor_names(laborNames);detail.add_assigned_units(assigned);
   auto group=detail.Finish();
   auto citizens=b.CreateVector(std::vector<flatbuffers::Offset<mm::CitizenInfo>>{person});
   auto groups=b.CreateVector(std::vector<flatbuffers::Offset<mm::WorkDetailInfo>>{group});
   mm::CitizenStateBuilder domain(b);domain.add_citizens(citizens);domain.add_details(groups);domain.add_next_cursor(64);
-  domain.add_selected_unit(0);domain.add_selected_detail(0);auto data=domain.Finish();
+  domain.add_external_controller(!extended);domain.add_selected_unit(0);domain.add_selected_detail(0);auto data=domain.Finish();
   mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
   state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);
   state.add_action(mm::ManagementAction::CitizenInspect);state.add_status(mm::ManagementStatus::Ok);state.add_citizen(data);
@@ -582,13 +584,18 @@ TEST_CASE("citizen response preserves native labor roles and built-in definition
   const auto& u=result.citizens[0];CHECK(u.professionColor==(extended?13:-1));CHECK(u.professionId==(extended?17:-1));CHECK(u.jobType==(extended?32:-1));CHECK(u.id==0);CHECK(u.name=="Urist");CHECK(u.age==42);CHECK(u.stress==-10000);
   CHECK(u.socialActivity==extended);CHECK(u.onlyAssignedJobs==extended);CHECK(u.assignedDetails.size()==(extended?1:0));CHECK(u.sheetIcon.layers.size()==(extended?1:0));
   if(extended){CHECK(u.assignedDetails[0].index==2);CHECK(u.assignedDetails[0].icon==10);CHECK(u.assignedDetails[0].name=="Millers");CHECK(u.sheetIcon.tilePages[0]=="DWARF");CHECK(u.sheetIcon.palettes[0]=="graphics/images/palette.png");CHECK(u.sheetIcon.layers[0].tileX==2);CHECK(u.sheetIcon.layers[0].paletteRow==4);}
-  CHECK(u.hasStress);CHECK(u.canFocus);CHECK(u.z==128);CHECK(u.eligible);REQUIRE(u.labors.size()==2);CHECK(u.labors[1]==93);
-  REQUIRE(u.laborNames.size()==2);CHECK(u.laborNames[0]=="Mining");
+  CHECK(u.hasStress);CHECK(u.canFocus);CHECK(u.z==128);CHECK(u.eligible);REQUIRE(u.labors.size()==2);CHECK(u.labors[1]==1);
+  REQUIRE(u.laborNames.size()==2);CHECK(u.laborNames[0]=="mine");
   REQUIRE(u.roles.size()==1);CHECK(u.roles[0].name=="Manager");CHECK(u.roles[0].requiredOffice==250);
   REQUIRE(u.offices.size()==1);CHECK(u.offices[0]==2348);
   const auto& d=result.details[0];CHECK(d.index==0);CHECK(d.revision==(uint64_t(1)<<40)+3);
-  CHECK(d.noModify);CHECK(d.editable);CHECK(d.modeEditable);CHECK(d.cannotBeEverybody);CHECK(d.mode==3);
-  REQUIRE(d.assignedUnits.size()==2);CHECK(d.assignedUnits[0]==0);
+  CHECK(d.noModify);CHECK(d.editable==extended);CHECK_FALSE(d.modeEditable);CHECK_FALSE(d.cannotBeEverybody);CHECK(d.mode==3);
+  CHECK(d.name=="Woodworkers");CHECK(d.reason==(extended?"Native work-detail mode is protected":"An external labor controller owns assignments"));
+  CHECK(d.labors==std::vector<int16_t>{0,1});
+  CHECK(d.laborNames==std::vector<std::string>{"mine","haul stone"});
+  CHECK(d.assignedUnits==std::vector<int32_t>{0,42});
+  CHECK(u.reason.empty());CHECK(u.profession=="Carpenter");
+  CHECK(u.laborNames==std::vector<std::string>{"mine","haul stone"});
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,client,seq);REQUIRE(c->poll());
   CHECK(c->state().citizen.citizens.empty());CHECK(c->state().citizen.details.empty());CHECK(c->state().citizen.selectedUnit==-1);
  }

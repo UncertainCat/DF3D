@@ -56,8 +56,11 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         return require("id") && require("expected_revision");
     case A::WorkOrderCreate: return require("recipe") && require("remaining");
     case A::CitizenInspect: return require("unit_id");
-    case A::WorkDetailInspect: case A::WorkDetailMembership: case A::WorkDetailMode:
-        return require("detail_index");
+    case A::WorkDetailInspect: return require("detail_index");
+    case A::WorkDetailMembership:
+        return require("detail_index") && require("expected_revision") && require("unit_id") && require("member");
+    case A::WorkDetailMode:
+        return require("detail_index") && require("expected_revision") && require("mode");
     case A::AgreementInspect: return require("id");
     case A::TradeInspect: case A::TradeUpdate: case A::TradeGoods: case A::TradeBring:
         return require("depot_id");

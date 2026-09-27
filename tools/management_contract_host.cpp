@@ -46,7 +46,104 @@ flatbuffers::Offset<m::WorkOrderState> workOrderFixture(flatbuffers::FlatBufferB
   domain.add_recipes(recipes);domain.add_choices(choices);domain.add_detail(detail);
   domain.add_next_cursor(71);return domain.Finish();
 }
+// Synthetic native records: two named definitions plus paging filler; no external controller.
+flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuilder& b,
+    const m::ConstructionRequest& request) {
+  using A=m::ManagementAction;
+  const auto action=request.action();const auto* q=request.citizen();
+  // Explicit codec-only sentinel: citizens.lua does not emit unequal editability.
+  // social_activity is bridge-produced (bridge/plugin/management.cpp:402-409 sets it
+  // true and substitutes the social event name when a unit has no current job); this
+  // fixture exercises that path via the codec-sentinel citizen.
+  const bool codecSentinels=q->query() && q->query()->str()=="codec sentinels";
+  std::vector<flatbuffers::Offset<m::WorkDetailInfo>> details;
+  std::vector<flatbuffers::Offset<m::CitizenInfo>> people;
+  auto detail=[&](int index) {
+    auto name=b.CreateString(index==0?"Miners":index==1?"Custom":"Detail "+std::to_string(index));
+    auto reason=b.CreateString(codecSentinels?"Native work-detail mode is protected":"");
+    auto labors=b.CreateVector(index==0?std::vector<int16_t>{0}:std::vector<int16_t>{0,1});
+    auto labels=b.CreateVectorOfStrings(index==0?std::vector<std::string>{"mine"}:std::vector<std::string>{"mine","haul stone"});
+    std::vector<int32_t> memberIds=index==1?std::vector<int32_t>{0}:std::vector<int32_t>{};
+    if(action==A::WorkDetailMembership && index==q->detail_index())
+      memberIds=q->member()==1?std::vector<int32_t>{q->unit_id()}:std::vector<int32_t>{};
+    auto members=b.CreateVector(memberIds);
+    m::WorkDetailInfoBuilder d(b);d.add_index(index);d.add_revision(7);d.add_name(name);
+    d.add_mode(action==A::WorkDetailMode && !(q->mode()==1 && index==0)?q->mode():index==1?1:3);d.add_no_modify(index==0);d.add_cannot_be_everybody(index==0);
+    d.add_editable(true);d.add_mode_editable(!codecSentinels);d.add_reason(reason);
+    d.add_labors(labors);d.add_labor_names(labels);d.add_assigned_units(members);
+    details.push_back(d.Finish());
+  };
+  auto person=[&](int id,bool inspect) {
+    auto name=b.CreateString("Citizen "+std::to_string(id));auto profession=b.CreateString(id==0?"Carpenter":"Miner");
+    auto job=b.CreateString(codecSentinels?"Socialize":id==0?"Dig":"No current job");auto reason=b.CreateString("");
+    auto labors=b.CreateVector(inspect?std::vector<int16_t>{0,1}:std::vector<int16_t>{});
+    auto labels=b.CreateVectorOfStrings(inspect?std::vector<std::string>{"mine","haul stone"}:std::vector<std::string>{});
+    std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
+    if(inspect)roles.push_back(m::CreateCitizenRole(b,b.CreateString("Manager"),250));
+    auto roleRows=b.CreateVector(roles);
+    std::vector<flatbuffers::Offset<m::CitizenWorkDetail>> assigned;
+    if(action==A::WorkDetailMembership && id==q->unit_id()) {
+      if(q->member()==1)assigned.push_back(m::CreateCitizenWorkDetail(b,q->detail_index(),9,
+          b.CreateString(q->detail_index()==1?"Custom":"Detail "+std::to_string(q->detail_index()))));
+    } else if(id==0)assigned.push_back(m::CreateCitizenWorkDetail(b,1,9,b.CreateString("Custom")));
+    auto assignments=b.CreateVector(assigned);m::TilePos pos(1,2,3);
+    m::CitizenInfoBuilder u(b);u.add_id(id);u.add_name(name);u.add_profession(profession);
+    u.add_job(job);u.add_reason(reason);u.add_age(42);u.add_has_stress(true);u.add_stress(10);
+    u.add_origin(&pos);u.add_can_focus(true);u.add_eligible(true);u.add_labors(labors);
+    u.add_labor_names(labels);u.add_roles(roleRows);u.add_assigned_details(assignments);
+    u.add_only_assigned_jobs(codecSentinels || id==1);u.add_profession_color(id==0?14:7);u.add_profession_id(id==0?2:0);
+    u.add_social_activity(codecSentinels);u.add_job_type(codecSentinels?-1:id==0?5:-1);people.push_back(u.Finish());
+  };
+  uint32_t next=0;int selectedUnit=-1,selectedDetail=-1;
+  if(action==A::WorkDetailList) {
+    for(int i=q->cursor();i<18 && details.size()<16;++i)detail(i);
+    if(q->cursor()+details.size()<18)next=q->cursor()+details.size();
+  } else if(action==A::CitizenList) {
+    for(int i=q->cursor();i<34 && people.size()<32;++i)person(i,false);
+    if(q->cursor()+people.size()<34)next=q->cursor()+people.size();
+  } else if(action==A::CitizenInspect) {person(q->unit_id(),true);selectedUnit=q->unit_id();}
+  else {
+    detail(q->detail_index());selectedDetail=q->detail_index();
+    if(q->unit_id()>=0){person(q->unit_id(),true);selectedUnit=q->unit_id();}
+  }
+  auto rows=b.CreateVector(details);auto citizens=b.CreateVector(people);
+  auto info=b.CreateString("Existing work details only. Roles and office ownership are read-only; appointments are not exposed.");
+  m::CitizenStateBuilder c(b);c.add_details(rows);c.add_citizens(citizens);
+  c.add_selected_unit(selectedUnit);c.add_selected_detail(selectedDetail);c.add_next_cursor(next);
+  c.add_external_controller(false);c.add_detail(info);return c.Finish();
+}
 int main(int argc,char** argv) {
+  // Validate the same response builder without opening a shared-memory channel.
+  if(argc>1 && std::string(argv[1])=="--validate-fixtures") {
+    try {
+      int checked=0;
+      for(int action=28;action<=33;++action)for(int variant=0;variant<3;++variant) {
+        flatbuffers::FlatBufferBuilder requestBuffer;
+        auto payload=m::CreateCitizenRequest(requestBuffer,action==28 || action==30?-1:0,
+            action==33 && variant==0?0:action>=31?1:-1,action>=32?7:0,
+            action==28?variant*16:action==30?variant*8:0,
+            requestBuffer.CreateString(action==31 && variant==2?"codec sentinels":""),action==32?variant%2:-1,action==33?variant+1:-1);
+        m::ConstructionRequestBuilder request(requestBuffer);request.add_schema_version(m::kManagementVersion);
+        request.add_client_id(1);request.add_seq(1);request.add_world_epoch(epoch);
+        request.add_action(static_cast<m::ManagementAction>(action));request.add_citizen(payload);
+        requestBuffer.Finish(request.Finish());
+        auto* q=flatbuffers::GetRoot<m::ConstructionRequest>(requestBuffer.GetBufferPointer());
+        if(auto error=m::validateConstructionRequest(*q))throw std::runtime_error(*error);
+        flatbuffers::FlatBufferBuilder b;auto fixture=citizenFixture(b,*q);
+        m::ManagementStateBuilder state(b);state.add_schema_version(m::kManagementVersion);
+        state.add_revision(1);state.add_world_epoch(epoch);state.add_client_id(1);state.add_request_seq(1);
+        state.add_action(q->action());state.add_status(m::ManagementStatus::Ok);state.add_citizen(fixture);
+        b.Finish(state.Finish());
+        if(auto error=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))
+          throw std::runtime_error(*error);
+        if(action==33 && variant==0)
+          require(flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())->citizen()->details()->Get(0)->mode()==3,
+              "cannot-be-everybody fixture preserves stored mode");
+        ++checked;
+      }
+      std::cout<<"CITIZEN_CONTRACT_FIXTURES_PASS "<<checked<<"\n";return 0;
+    } catch(const std::exception& error) {std::cerr<<error.what()<<"\n";return 1;}
+  }
   auto signal=[&](const char* value){if(argc>1)std::ofstream(argv[1])<<value;};
 #ifdef _WIN32
   const auto size=sh::regionSize(m::kManagementCapacity,m::kManagementCommandCapacity);
@@ -79,7 +176,10 @@ int main(int argc,char** argv) {
       flatbuffers::Offset<m::WorkOrderState> work;
       if(request && request->action()>=m::ManagementAction::WorkOrderList &&
           request->action()<=m::ManagementAction::WorkOrderCatalog)work=workOrderFixture(b);
-      m::ManagementStateBuilder state(b);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      flatbuffers::Offset<m::CitizenState> citizens;
+      if(request && request->action()>=m::ManagementAction::CitizenList &&
+          request->action()<=m::ManagementAction::WorkDetailMode)citizens=citizenFixture(b,*request);
+      m::ManagementStateBuilder state(b);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_status(m::ManagementStatus::Ok);state.add_message(text);
@@ -97,7 +197,10 @@ int main(int argc,char** argv) {
         A::AgreementInspect,A::TradeUpdate,
         A::WorkOrderList,A::WorkOrderInspect,A::WorkOrderCreate,A::WorkOrderUpdate,
         A::WorkOrderDelete,A::WorkOrderCondition,A::WorkOrderCondition,A::WorkOrderCondition,
-        A::WorkOrderCandidates,A::WorkOrderCandidates,A::WorkOrderCandidates,A::WorkOrderCatalog,A::WorkOrderList};
+        A::WorkOrderCandidates,A::WorkOrderCandidates,A::WorkOrderCandidates,A::WorkOrderCatalog,A::WorkOrderList,
+        A::WorkDetailList,A::WorkDetailList,A::WorkDetailInspect,A::WorkDetailInspect,
+        A::CitizenList,A::CitizenList,A::CitizenInspect,A::WorkDetailMembership,A::WorkDetailMembership,
+        A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailInspect};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -163,8 +266,18 @@ int main(int argc,char** argv) {
         case A::WorkOrderCatalog:
           require(r->work_order()->id()==-1 && r->work_order()->expected_revision()==0,"catalog sentinels");break;
         case A::WorkDetailMembership: {
-          auto* v=r->citizen();require(v && v->unit_id()==2147483000 && v->detail_index()==127 && v->expected_revision()==epoch && v->member()==1 && v->mode()==-1,"citizen payload");break;
+          auto* v=r->citizen();if(received>24){require(v && v->mode()==-1 && v->unit_id()==0 && v->detail_index()==1 && v->expected_revision()==7 && v->member()==(received==32?1:0),"membership payload");break;}require(v && v->unit_id()==2147483000 && v->detail_index()==127 && v->expected_revision()==epoch && v->member()==1 && v->mode()==-1,"citizen payload");break;
         }
+        case A::WorkDetailList: case A::CitizenList: {
+          auto* v=r->citizen();require(v->query()->str()==(r->action()==A::CitizenList?"Citizen":"") &&
+              v->cursor()==(received==26?16:received==30?32:0),"citizen paging payload");break;
+        }
+        case A::CitizenInspect: require(r->citizen()->unit_id()==0,"citizen inspect");break;
+        case A::WorkDetailInspect: require(r->citizen()->detail_index()==1 &&
+            r->citizen()->unit_id()==(received==27?-1:0) &&
+            (received!=37 || r->citizen()->query()->str()=="codec sentinels"),"detail inspect");break;
+        case A::WorkDetailMode: require(r->citizen()->detail_index()==1 &&
+            r->citizen()->expected_revision()==7 && r->citizen()->mode()==int(received)-33,"mode payload");break;
         case A::ReportInspect: require(r->report() && r->report()->id()==2147483000 && r->report()->before_id()==-1,"report payload");break;
         case A::AgreementInspect: require(r->agreement() && r->agreement()->id()==2147483000 && r->agreement()->before_id()==-1 && !r->agreement()->pending_only(),"agreement payload");break;
         case A::TradeUpdate: {

@@ -49,6 +49,20 @@
       "notes": "Exclusive local fake producer; occupied management channel returns77/incomplete. Never attaches to DF."
     },
     {
+      "id": "citizen_contract_fixtures",
+      "lane": "core",
+      "kind": "native",
+      "executable": "build/tools/management_contract_host.exe",
+      "arguments": [
+        "--validate-fixtures"
+      ],
+      "completion": "^CITIZEN_CONTRACT_FIXTURES_PASS 18$",
+      "timeout": 20,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
       "id": "management_lua_contract_tests",
       "lane": "assets",
       "kind": "native",

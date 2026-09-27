@@ -172,6 +172,65 @@ func run() -> void:
 		state = await receipt(sequence)
 		assert(not state.is_empty() and state.action == request.action)
 		assert_work_order(state.work_order)
+	# Every required citizen mutation field is checked independently before transport.
+	for request in [{"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":1},
+		{"action":33,"detail_index":1,"expected_revision":7,"mode":1}]:
+		for key in request:
+			if key == "action": continue
+			var missing: Dictionary = request.duplicate()
+			missing.erase(key)
+			reject_citizen(missing, "Missing management field: " + key)
+	for key in ["unit_id","detail_index","expected_revision","cursor","member","mode"]:
+		for bad in [1.5,"1",true]:
+			var invalid := {"action":28}
+			invalid[key] = bad
+			reject_citizen(invalid, "Wrong management field type: " + key)
+	reject_citizen({"action":28,"query":1}, "Wrong management field type: query")
+	for mode in [0,4]:
+		reject_citizen({"action":33,"detail_index":1,"expected_revision":7,"mode":mode}, "Invalid bounded citizen request")
+	reject_citizen({"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":2}, "Invalid bounded citizen request")
+	for query in ["x".repeat(129),String.chr(233).repeat(65)]:
+		reject_citizen({"action":30,"query":query}, "Invalid bounded citizen request")
+	var citizen_requests := [{"action":30,"query":"","cursor":0}, {"action":30,"query":"","cursor":16},
+		{"action":31,"detail_index":1}, {"action":31,"detail_index":1,"unit_id":0},
+		{"action":28,"query":"Citizen","cursor":0}, {"action":28,"query":"Citizen","cursor":32},
+		{"action":29,"unit_id":0},
+		{"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":1},
+		{"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":0},
+		{"action":33,"detail_index":1,"expected_revision":7,"mode":1},
+		{"action":33,"detail_index":1,"expected_revision":7,"mode":2},
+		{"action":33,"detail_index":1,"expected_revision":7,"mode":3},
+		# Codec-only editability sentinel, deliberately beyond current citizens.lua output;
+		# social_activity is bridge-produced (bridge/plugin/management.cpp:402-409) and
+		# this fixture exercises that path.
+		{"action":31,"detail_index":1,"unit_id":0,"query":"codec sentinels"}]
+	for request in citizen_requests:
+		sequence = world.management_request("citizens", request)
+		assert(sequence > 0)
+		state = await receipt(sequence)
+		assert(not state.is_empty() and state.action == request.action)
+		var c: Dictionary = state.citizen
+		assert(not c.external_controller)
+		assert(c.detail == "Existing work details only. Roles and office ownership are read-only; appointments are not exposed.")
+		if request.action == 30:
+			assert(c.details.size() == (16 if request.cursor == 0 else 2))
+			assert(c.next_cursor == (16 if request.cursor == 0 else 0))
+			assert(c.selected_detail == -1 and c.selected_unit == -1 and c.citizens.is_empty())
+			for d in c.details: assert_citizen_detail(d)
+		elif request.action == 28:
+			assert(c.citizens.size() == (32 if request.cursor == 0 else 2))
+			assert(c.next_cursor == (32 if request.cursor == 0 else 0))
+			assert(c.details.is_empty() and c.selected_unit == -1)
+			for u in c.citizens: assert_citizen_person(u, false)
+		elif request.action == 29:
+			assert(c.selected_unit == 0 and c.citizens.size() == 1 and c.details.is_empty())
+			assert_citizen_person(c.citizens[0], true)
+		else:
+			assert(c.selected_detail == 1 and c.details.size() == 1 and c.next_cursor == 0)
+			assert_citizen_detail(c.details[0], request.get("mode",1), request.get("member",1), request.get("query", "") == "codec sentinels")
+			assert(c.selected_unit == request.get("unit_id",-1))
+			assert(c.citizens.size() == (1 if request.has("unit_id") else 0))
+			for u in c.citizens: assert_citizen_person(u, true, request.get("member",1), request.get("query", "") == "codec sentinels")
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -202,3 +261,26 @@ func assert_work_order(work: Dictionary) -> void:
 		"choices":[{"id":4,"name":"Carpenter's Workshop #4"}],
 		"managers":[{"unit_id":42,"name":"Urist","position":"Manager","offices":[1492,1493],"job":"Validate work orders"}],
 		"next_cursor":71,"detail":"Role and office presence are observations, not approval."})
+
+func reject_citizen(request: Dictionary, error: String) -> void:
+	assert(world.management_request("citizens", request) == 0)
+	assert(world.last_error() == error)
+
+func assert_citizen_detail(d: Dictionary, mode: int = 1, member: int = 1, synthetic: bool = false) -> void:
+	var index: int = d.index
+	assert(d == {"index":index,"revision":7,
+		"name":"Miners" if index == 0 else "Custom" if index == 1 else "Detail %d" % index,
+		"mode":mode if index == 1 else 3,"no_modify":index == 0,"cannot_be_everybody":index == 0,
+		"editable":true,"mode_editable":not synthetic,"reason":"Native work-detail mode is protected" if synthetic else "","labors":[0] if index == 0 else [0,1],
+		"labor_names":["mine"] if index == 0 else ["mine","haul stone"],"assigned_units":[0] if index == 1 and member == 1 else []})
+
+func assert_citizen_person(u: Dictionary, inspected: bool, member: int = 1, synthetic: bool = false) -> void:
+	assert(u == {"id":u.id,"name":"Citizen %d" % u.id,"profession":"Carpenter" if u.id == 0 else "Miner",
+		"job":"Socialize" if synthetic else "Dig" if u.id == 0 else "No current job",
+		"reason":"","age":42,"stress":10,"has_stress":true,"origin":Vector3i(1,2,3),
+		"can_focus":true,"eligible":true,"only_assigned_jobs":synthetic or u.id == 1,
+		"assigned_details":[{"index":1,"icon":9,"name":"Custom"}] if u.id == 0 and member == 1 else [],
+		"profession_color":14 if u.id == 0 else 7,"profession_id":2 if u.id == 0 else 0,
+		"job_type":-1 if synthetic else 5 if u.id == 0 else -1,"social_activity":synthetic,
+		"labors":[0,1] if inspected else [],"labor_names":["mine","haul stone"] if inspected else [],
+		"roles":[{"name":"Manager","required_office":250}] if inspected else [],"offices":[]})

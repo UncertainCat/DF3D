@@ -264,7 +264,7 @@ local function queue(e)
         for i,v in ipairs(cache) do if v~=e and (not oldest or v.used<cache[oldest].used) then oldest=i end end
         slots=slots-generations(cache[oldest]);table.remove(cache,oldest)
     end
-    e.phase=1;e.done=0;e.total=0;e.build_ids=0;e.error=nil;e.error_reported=false
+    e.phase=1;e.done=0;e.total=0;e.build_ids=0;e.error=nil;e.error_reported=false;e.retry_requested=nil
     local vids=vectors(e.raw)
     for _,vid in ipairs(vids) do e.total=e.total+#df.global.world.items.other[df.job_item_vector_id.attrs[vid].other] end
     e.total=e.total+#df.global.world.units.active;e.started=tick()
@@ -350,13 +350,15 @@ local function materials(r,d)
     if not raw then return fail('Building has no recipe') end
     local e=entry(r.epoch,raw,{x=r.x,y=r.y,z=r.z})
     if e.error then
-        if not e.error_reported then
+        -- A deterministic cap error stays stopped across Materials polls. A
+        -- first-page Catalog refresh explicitly arms one retry. Other errors
+        -- retain their existing report-once, subsequent-request retry behavior.
+        if not e.retry_requested and (e.error=='list exceeds cap' or not e.error_reported) then
             e.error_reported=true
             return {ok=false,message='Materials list unavailable: '..e.error,build_phase=3,
                 build_done=e.done,build_total=e.total}
         end
-        -- Only a subsequent explicit Materials request retries, never stepBuilder.
-        queue(e)
+        e.retry_requested=nil;queue(e)
     elseif not e.job and e.rows and (e.dirty or tick()-e.scan_tick>1200 or tick()<e.scan_tick) then queue(e) end
     local result={ok=true,building_key=d.key,filter=r.filter,filters=d.filters,estimated=true,materials={},total=e.ids or 0,
         build_phase=e.phase,build_done=e.done,build_total=e.total,list_revision=e.revision or 0,message='DF3D estimate: '..tostring(e.ids or 0)..' accessible'}
@@ -521,6 +523,9 @@ return function(r)
         local rev=revision(hash(0xcbf29ce484222325,tostring(r.epoch or 0)..'|1|'..#catalog))
         if (r.expected_list_revision or 0)~=0 and r.expected_list_revision~=rev then result=fail('List changed; refresh')
         else local page={};local cursor=r.cursor or 0
+            if cursor==0 and (r.expected_list_revision or 0)==0 then
+                for _,e in ipairs(cache) do if e.error then e.retry_requested=true end end
+            end
             for i=cursor+1,math.min(cursor+128,#catalog) do page[#page+1]=catalog[i] end
             result={ok=true,catalog=page,total=#catalog,list_revision=rev,next_cursor=cursor+128<#catalog and cursor+128 or 0,message='Construction catalog ready'}
         end

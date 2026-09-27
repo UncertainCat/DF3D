@@ -1360,6 +1360,11 @@ table CreatureState {
   age:int32 = -1; sex:int32 = -1; origin:TilePos; complete:bool; sections:[CreatureSection];
   portrait:SelectionAppearance;
 }
+// Materials orders candidates for the exact origin (rectangle minimum corner,
+// bottom level). Place requires that same origin and each filter's Materials
+// list revision; moving origin requires a fresh Materials scan at the new origin.
+// A Materials "list exceeds cap" error stays failed across polls. Retry: request
+// Catalog with cursor=0 and expected_list_revision=0, then request Materials.
 table ConstructionRequest {
   schema_version:uint32 = 18;
   client_id:uint64;

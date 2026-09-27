@@ -1,0 +1,488 @@
+extends SceneTree
+const Contract = preload("res://scripts/management_contract.gd")
+const S = Contract.ManagementStatus
+var world
+var directory: String
+var reasons: Array[String] = []
+var failed := false
+var stopped := false
+var step := "startup"
+var handshake := 0
+
+func _initialize() -> void:
+	call_deferred("run")
+
+func check(value: bool, message: String) -> bool:
+	if not value:
+		failed = true
+		stopped = true
+		reasons.append("step " + step + ": " + message)
+		push_error(reasons.back())
+	return value
+
+func incomplete(message: String, stop: bool = false) -> void:
+	reasons.append("step " + step + ": " + message)
+	stopped = stopped or stop
+	print("CONSTRUCTION_INCOMPLETE ", reasons.back())
+
+func write_json(path: String, value: Variant) -> void:
+	var file := FileAccess.open(directory + "/" + path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(value))
+	file.close()
+
+func native(op: String, args: Dictionary = {}) -> Dictionary:
+	if stopped: return {}
+	handshake += 1
+	var request := args.duplicate()
+	request.op = op
+	write_json("request-%d.json" % handshake, request)
+	var file := FileAccess.open(directory + "/verify.tmp", FileAccess.WRITE)
+	file.store_string(str(handshake))
+	file.close()
+	if not check(DirAccess.rename_absolute(directory + "/verify.tmp", directory + "/verify.txt") == OK, "verify handshake rename failed"): return {}
+	var deadline := Time.get_ticks_msec() + 45000
+	while not FileAccess.file_exists(directory + "/ack-%d" % handshake):
+		if Time.get_ticks_msec() >= deadline:
+			incomplete("native handshake wait cap hit; no command replay", true)
+			return {}
+		world.poll()
+		await create_timer(0.02).timeout
+	var result: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(directory + "/response-%d.json" % handshake))
+	if result.status == "incomplete": incomplete(result.reason)
+	elif not check(result.status == "passed", str(result.get("reason", op))): return {}
+	return result
+
+# Bridge-bound intents use this helper. Each intent is sent exactly once;
+# a lost/unknown outcome ends the run and is never retried.
+func request(data: Dictionary, refusal: String = "") -> Dictionary:
+	if stopped: return {}
+	world.poll()
+	var seq: int = world.management_request("construction", data)
+	if seq <= 0:
+		check(not refusal.is_empty() and world.last_error() == refusal, "request not sent: " + world.last_error())
+		return {}
+	var deadline := Time.get_ticks_msec() + 30000
+	while Time.get_ticks_msec() < deadline:
+		world.poll()
+		var state: Dictionary = world.poll_management()
+		if int(state.get("request_seq", 0)) == seq and int(state.get("status", S.Idle)) not in [S.Idle, S.Pending]:
+			print("CONSTRUCTION_RECEIPT step=", step, " seq=", seq, " ", state)
+			if refusal.is_empty():
+				if not check(int(state.status) == S.Ok, str(state.get("message", "request failed"))): return {}
+			elif not check(int(state.status) == S.Rejected and str(state.get("message", "")) == refusal, "expected exact refusal: " + refusal): return {}
+			return state
+		await create_timer(0.01).timeout
+	incomplete("receipt wait cap hit; outcome unknown, no replay", true)
+	return {}
+
+func request_pause(want_paused: bool) -> bool:
+	world.poll()
+	var seq: int = world.send_set_pause(want_paused)
+	if not check(seq > 0, "pause command not sent: " + world.last_error()): return false
+	var deadline := Time.get_ticks_msec() + 30000
+	var accepted := false
+	while Time.get_ticks_msec() < deadline:
+		world.poll()
+		for receipt in world.drain_command_results():
+			if int(receipt.seq) == seq:
+				if not check(int(receipt.status) == 0 and receipt.message == ("paused" if want_paused else "unpaused"), "pause command refused: " + str(receipt.message)): return false
+				accepted = true
+		var session: Dictionary = world.poll_session()
+		if accepted and session.get("fortress_valid", false) and session.get("paused", not want_paused) == want_paused: return true
+		await create_timer(0.02).timeout
+	incomplete("pause receipt/readback wait cap hit; no replay", true)
+	return false
+
+
+var catalog: Dictionary = {}
+var placed: Array = []
+var observed: Dictionary = {}
+var observed_material_rows: Array = []
+var fixture: Dictionary
+
+func point(value: Dictionary) -> Vector3i:
+	return Vector3i(int(value.x), int(value.y), int(value.z))
+
+func native_point(value: Vector3i) -> Dictionary:
+	return {"x":value.x, "y":value.y, "z":value.z}
+
+func guarded(data: Dictionary, message: String) -> void:
+	await native("guard_before")
+	if stopped: return
+	await request(data, message)
+	# Run the after guard even when the receipt assertion failed.
+	var was_stopped := stopped
+	stopped = false
+	await native("guard_after")
+	stopped = stopped or was_stopped
+
+func materials(key: String, filter_index: int, origin: Vector3i, observe: bool = false) -> Dictionary:
+	var query := {"action":63, "definition":key, "filter":filter_index, "origin":origin}
+	var rows: Array = []
+	var seen: Array = []
+	var first: Dictionary = {}
+	var deadline := Time.get_ticks_msec() + 120000
+	while not stopped:
+		if Time.get_ticks_msec() >= deadline:
+			incomplete(key + " materials wait cap hit")
+			return {}
+		var state := await request(query)
+		if stopped: return {}
+		var c: Dictionary = state.construction
+		if observe: await native("status")
+		if int(c.build_phase) != 0:
+			# Phase 3 is terminal. Never poll it into an automatic retry.
+			if int(c.build_phase) == 3:
+				incomplete("materials builder error: " + str(state.message))
+				return {}
+			await create_timer(0.25).timeout
+			continue
+		if first.is_empty(): first = c.duplicate(true)
+		var cursor := int(query.get("cursor", 0))
+		if not check(not seen.has(cursor), "materials cursor repeated"): return {}
+		seen.append(cursor)
+		rows.append_array(c.materials)
+		if int(state.next_cursor) == 0: break
+		query.cursor = int(state.next_cursor)
+		query.expected_list_revision = int(c.list_revision)
+	if stopped: return {}
+	if not check(rows.size() == int(first.total), "materials page total"): return {}
+	first.materials = rows
+	return first
+
+func selection_rows(key: String, origin: Vector3i, filters: Array, weapon_count: int = -1) -> Array:
+	var selections: Array = []
+	for filter_row in filters:
+		var page := await materials(key, int(filter_row.index), origin)
+		if page.is_empty(): return []
+		var needed := int(filter_row.quantity)
+		if key == "Trap:WeaponTrap" and int(filter_row.index) == 1 and weapon_count >= 0: needed = weapon_count
+		for row in page.materials:
+			if needed == 0: break
+			var count := mini(needed, int(row.count))
+			selections.append({"filter":int(filter_row.index), "item_type":int(row.item_type), "item_subtype":int(row.item_subtype), "mat_type":int(row.mat_type), "mat_index":int(row.mat_index), "count":count, "expected_list_revision":int(page.list_revision)})
+			needed -= count
+		if needed > 0:
+			incomplete(key + " lacks stock for filter " + str(filter_row.index))
+			return []
+	if selections.size() > 16:
+		incomplete(key + " requires more than 16 material groups")
+		return []
+	return selections
+
+func place(key: String, site_name: String, direction: int = 0, retracting: bool = false, dimensions: Vector3i = Vector3i.ZERO, weapon_count: int = -1, explicit_origin: Dictionary = {}) -> Dictionary:
+	if stopped: return {}
+	if not catalog.has(key) or not catalog[key].supported:
+		incomplete(key + " unavailable in catalog")
+		return {}
+	if explicit_origin.is_empty() and (not fixture.sites.has(site_name) or fixture.incomplete.has(site_name)):
+		incomplete(site_name + ": " + str(fixture.incomplete.get(site_name, "site missing")))
+		return {}
+	for filter_row in catalog[key].filters:
+		var identity := str(int(filter_row.item_type))
+		if fixture.get("unavailable_types", {}).has(identity):
+			incomplete(key + ": " + str(fixture.unavailable_types[identity]))
+			return {}
+	var origin := point(explicit_origin if not explicit_origin.is_empty() else fixture.sites[site_name])
+	var size := dimensions
+	if size == Vector3i.ZERO:
+		for fp in catalog[key].footprints:
+			if int(fp.direction) == (4 if retracting else direction): size = Vector3i(int(fp.width), int(fp.height), 1)
+	if not check(size != Vector3i.ZERO, "catalog footprint missing"): return {}
+	var query := {"action":1, "definition":key, "origin":origin, "width":size.x, "height":size.y, "depth":size.z, "direction":direction, "retracting":retracting}
+	var preview := await request(query)
+	if stopped: return {}
+	var c: Dictionary = preview.construction
+	var mask: Array = Array(c.valid_mask)
+	if int(catalog[key].area_mode) >= 3:
+		await native("mask", {"origin":native_point(origin), "width":size.x, "height":size.y, "depth":size.z, "mask":mask})
+	if key == "Construction:Stairs":
+		if not check(Array(c.pieces) == [1, 3, 2], "three-level pieces must be up/updown/down"): return {}
+	var selections := await selection_rows(key, origin, c.filters, weapon_count)
+	if stopped or (selections.is_empty() and int(preview.required) > 0): return {}
+	query.action = 2
+	query.selections = selections
+	query.expected_list_revision = int(selections[0].expected_list_revision) if not selections.is_empty() else 0
+	var receipt := await request(query)
+	if stopped: return {}
+	c = receipt.construction
+	var args := {"definition":key, "origin":native_point(origin), "width":size.x, "height":size.y, "depth":size.z, "direction":direction, "retracting":retracting, "mode":int(catalog[key].area_mode), "mask":mask, "placed":int(c.placed), "skipped":int(c.skipped)}
+	if weapon_count >= 0: args.weapon_count = weapon_count
+	var verified := await native("placed", args)
+	if stopped: return {}
+	for id in verified.get("ids", []): placed.append({"id":int(id), "key":key, "origin":origin})
+	return {"receipt":receipt, "origin":origin, "ids":verified.get("ids", [])}
+
+func collect_keys(value: Variant, keys: Array) -> void:
+	if value is Array:
+		for child in value: collect_keys(child, keys)
+	elif value is Dictionary:
+		for field in ["key", "catalog_key", "definition"]:
+			if value.get(field) is String and not value[field].is_empty(): keys.append(value[field])
+		for child in value.values():
+			if child is Array or child is Dictionary: collect_keys(child, keys)
+
+func catalog_pages() -> void:
+	var query := {"action":0}
+	var seen: Array = []
+	var total := -1
+	while not stopped:
+		var state := await request(query)
+		if stopped: return
+		total = int(state.construction.total)
+		if not check(not seen.has(int(query.get("cursor", 0))), "catalog cursor repeated"): return
+		seen.append(int(query.get("cursor", 0)))
+		for row in state.catalog:
+			if not check(not catalog.has(row.key), "duplicate catalog key"): return
+			catalog[row.key] = row
+			if not row.supported:
+				var fixed_reasons := {"Windmill":"Windmill placement rule not captured", "Construction:Track":"Track piece selection not captured", "Trap:PressurePlate":"Pressure plate options not captured", "Trap:TrackStop":"Track stop options not captured"}
+				if fixed_reasons.has(row.key): check(row.reason == fixed_reasons[row.key], "catalog refusal mismatch " + row.key)
+				if not check(row.reason in ["Building has no recipe", "Recipe has more than 8 inputs", "Placed from the stockpile and zone menus", "Magma placement rule not captured", "Windmill placement rule not captured", "Pressure plate options not captured", "Track stop options not captured", "Track piece selection not captured", "Not permitted for this civilization", "Native placement check rejected this site"], "unknown unsupported reason: " + row.reason): return
+		if int(state.next_cursor) == 0: break
+		query.cursor = int(state.next_cursor)
+		query.expected_list_revision = int(state.construction.list_revision)
+	check(catalog.size() == total, "catalog page total")
+	var keys: Array = []
+	var menu := "res://panels/build_menu.json"
+	if FileAccess.file_exists(menu):
+		collect_keys(JSON.parse_string(FileAccess.get_file_as_string(menu)), keys)
+		check(not keys.is_empty(), "build_menu.json has no catalog keys")
+	else:
+		incomplete("build_menu.json missing; checking 03-U spec leaf keys")
+		keys = ["TradeDepot", "Workshop:Ashery", "Workshop:Bowyers", "Workshop:Carpenters", "Workshop:Craftsdwarfs", "Workshop:Jewelers", "Workshop:MagmaForge", "Workshop:Mechanics", "Workshop:MetalsmithsForge", "Workshop:Siege", "Workshop:Masons", "Workshop:Leatherworks", "Workshop:Loom", "Workshop:Clothiers", "Workshop:Dyers", "FarmPlot", "Workshop:Still", "Workshop:Butchers", "Workshop:Tanners", "Workshop:Fishery", "Workshop:Kitchen", "Workshop:Farmers", "Workshop:Quern", "Workshop:Kennels", "NestBox", "Hive", "Furnace:GlassFurnace", "Furnace:Kiln", "Furnace:MagmaGlassFurnace", "Furnace:MagmaKiln", "Furnace:MagmaSmelter", "Furnace:Smelter", "Furnace:WoodFurnace", "Bed", "Chair", "Table", "Box", "Cabinet", "Coffin", "Slab", "Statue", "TractionBench", "Bookcase", "DisplayFurniture", "OfferingPlace", "Instrument", "Door", "Hatch", "Construction:Wall", "Construction:Floor", "Construction:Ramp", "Construction:Stairs", "Bridge", "RoadPaved", "RoadDirt", "Construction:Fortification", "GrateWall", "GrateFloor", "BarsVertical", "BarsFloor", "WindowGlass", "WindowGem", "Support", "Construction:Track", "Trap:TrackStop", "Trap:Lever", "Well", "Floodgate", "ScrewPump", "WaterWheel", "Windmill", "GearAssembly", "AxleHorizontal", "AxleVertical", "Workshop:Millstone", "Rollers", "Chain", "Cage", "AnimalTrap", "Trap:PressurePlate", "Trap:StoneFallTrap", "Trap:WeaponTrap", "Trap:CageTrap", "Weapon", "ArcheryTarget", "Weaponrack", "Armorstand", "SiegeEngine:Ballista", "SiegeEngine:Catapult"]
+		# These native leaves have raw-defined keys; use sourced raw names only.
+		for label in ["Screw Press", "Soap Maker's Workshop", "Reinforced Wall", "Bolt thrower"]:
+			var found := false
+			for row in catalog.values():
+				if str(row.native_name).to_lower() == label.to_lower(): keys.append(row.key); found = true
+			if not found: incomplete("03-U raw-defined leaf unavailable: " + label)
+	for key in keys: check(catalog.has(key), "catalog missing menu key " + str(key))
+
+func wait_wall(origin: Vector3i) -> bool:
+	await native("wait_start", {"origin":native_point(origin)})
+	if stopped or not await request_pause(false): return false
+	var complete := false
+	while not stopped:
+		await create_timer(0.25).timeout
+		var result := await native("wait_poll")
+		if not result.get("waiting", false):
+			complete = result.get("status", "") == "passed"
+			break
+	# Re-pause after every wait, including an interrupted handshake.
+	var was_stopped := stopped
+	stopped = false
+	await request_pause(true)
+	await native("wait_finish")
+	stopped = stopped or was_stopped
+	return complete and not stopped
+
+func material_tuples(rows: Variant) -> Array:
+	if not rows is Array: return []
+	var tuples: Array = []
+	for row in rows:
+		if not row is Dictionary: return []
+		var tuple: Array = []
+		for field in ["item_type", "item_subtype", "mat_type", "mat_index", "count"]:
+			if not row.has(field) or not str(row[field]).is_valid_int(): return []
+			tuple.append(int(row[field]))
+		tuples.append(tuple)
+	return tuples
+
+func compare_dump(repo: String, relative: String, finding: Dictionary) -> String:
+	var path := repo.path_join(relative)
+	if not FileAccess.file_exists(path):
+		var folder := "e5" if str(finding.line).begins_with("e5/") else "e4"
+		path = repo.path_join("build/evidence/native/" + folder).path_join(relative)
+	if not FileAccess.file_exists(path): return "incomplete: evidence missing; " + finding.line
+	var rows: Variant = []
+	if path.get_extension().to_lower() == "json":
+		rows = JSON.parse_string(FileAccess.get_file_as_string(path))
+		if rows is Dictionary: rows = rows.get("materials", [])
+	else:
+		var file := FileAccess.open(path, FileAccess.READ)
+		var delimiter := "\t" if path.get_extension().to_lower() == "tsv" else ","
+		var headers := file.get_csv_line(delimiter)
+		while not file.eof_reached():
+			var values := file.get_csv_line(delimiter)
+			if values.size() != headers.size(): continue
+			var row := {}
+			for i in range(headers.size()): row[headers[i]] = values[i]
+			rows.append(row)
+		file.close()
+	var expected := material_tuples(rows)
+	var actual := material_tuples(observed_material_rows)
+	if expected.is_empty(): return "incomplete: evidence missing (material identity/count rows absent); " + finding.line
+	if actual.is_empty(): return "incomplete: live material rows unavailable; " + finding.line
+	return ("match " if actual == expected else "mismatch ") + finding.line + " (material identities/counts/order)"
+
+func departure_report() -> void:
+	var repo := FileAccess.get_file_as_string(directory + "/repo.txt").strip_edges()
+	var evidence: Array = []
+	for folder in ["e4", "e5"]:
+		var path := repo + "/build/evidence/native/" + folder + "/findings.md"
+		if not FileAccess.file_exists(path): continue
+		var lines := FileAccess.get_file_as_string(path).split("\n")
+		for i in range(lines.size()): evidence.append({"line":folder + "/findings.md:" + str(i + 1) + " " + lines[i], "text":lines[i]})
+	var needles := {"D2":"sorted by distance", "D3":"two-level drag", "D4":"Invalid tiles inside are skipped", "D5":"Weapon and spike counts", "D6":"8 facings", "D7":"Bridge and paved road", "D8":"acts immediately"}
+	var rows: Array = []
+	for n in range(1, 10):
+		var id := "D" + str(n)
+		var text := id + ": incomplete: evidence missing"
+		for finding in evidence:
+			if needles.has(id) and str(finding.text).contains(needles[id]):
+				text = id + ": " + (("match " if observed[id] else "mismatch ") if observed.has(id) else "incomplete: live comparison unavailable; ") + finding.line
+				break
+		rows.append({"id":id, "text":text})
+	# Preserve unresolved subquestions; do not turn one answered part into full parity.
+	rows.append({"id":"uncaptured", "text":"D2 metric/reference tile, D3 three-level middle/rebuild, D7 farm footprint, D8 refusal wording: incomplete: evidence missing"})
+	for finding in evidence:
+		if str(finding.text).contains("Track stop: dump") or str(finding.text).contains("Pressure plate: Resets"):
+			rows.append({"id":"D5_options", "text":"D5: mismatch " + finding.line + " (catalog explicitly refuses these options)"})
+		if str(finding.text).contains("5 speeds"):
+			rows.append({"id":"D6_speed", "text":"D6: mismatch " + finding.line + " (request carries no speed selection)"})
+	# Discover named native dumps at run time. Compare only explicit material
+	# identities/counts/order; absent columns do not imply any native answer.
+	var dump_found := false
+	var pattern := RegEx.new()
+	pattern.compile("`([^`]+\\.(?:json|tsv|csv))`")
+	for finding in evidence:
+		for matched in pattern.search_all(str(finding.text)):
+			if not str(finding.text).to_lower().contains("material"): continue
+			dump_found = true
+			rows.append({"id":"materials_dump", "text":compare_dump(repo, matched.get_string(1), finding)})
+	if not dump_found: rows.append({"id":"materials_dump", "text":"incomplete: evidence missing (no materials dump named in findings)"})
+	write_json("departures.json", rows)
+
+func exercise() -> void:
+	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
+	if fixture.incomplete.has("all"):
+		incomplete(str(fixture.incomplete.all))
+		return
+	step = "1"
+	await catalog_pages()
+	if stopped: return
+	step = "2"
+	if fixture.sites.has("depot"):
+		var origin := point(fixture.sites.depot)
+		await native("guard_before")
+		var page := await materials("TradeDepot", 0, origin, true)
+		if not page.is_empty():
+			observed_material_rows = page.materials.duplicate(true)
+			await native("materials", {"definition":"TradeDepot", "filter":0, "origin":native_point(origin), "rows":page.materials})
+			observed.D2 = not stopped and fixture.get("binned", []).size() > 0
+		await native("guard_after")
+		if not page.is_empty():
+			step = "7 stale revision"
+			var stale := int(page.list_revision) ^ 1
+			if stale == 0: stale = 2
+			await guarded({"action":63, "definition":"TradeDepot", "filter":0, "origin":origin, "expected_list_revision":stale}, "List changed; refresh")
+	else: incomplete("Trade depot material site unavailable")
+	if stopped: return
+	step = "3"
+	await place("Well", "well")
+	for direction in range(4): await place("ScrewPump", "pump" + str(direction), direction)
+	await place("WaterWheel", "wheel")
+	await place("FarmPlot", "farm", 0, false, Vector3i(3, 3, 1))
+	await place("Bridge", "bridge", 2, false, Vector3i(3, 3, 1))
+	await place("Bridge", "retracting", 0, true, Vector3i(3, 3, 1))
+	var facings := 0
+	for direction in range(8):
+		if not (await place("SiegeEngine:Ballista", "ballista" + str(direction), direction)).is_empty(): facings += 1
+	if facings == 8: observed.D6 = true
+	var press := ""
+	for row in catalog.values():
+		if str(row.native_name).to_lower() == "screw press": press = row.key
+	if press.is_empty(): incomplete("Screw Press custom raw absent")
+	else: await place(press, "press")
+	step = "3 traps"
+	var traps := 0
+	for count in [1, 10]:
+		if not (await place("Trap:WeaponTrap", "trap" + str(count), 0, false, Vector3i.ZERO, count)).is_empty(): traps += 1
+	if traps == 2: observed.D5 = true
+	for count in [0, 11]:
+		var site := "trap" + str(count)
+		if not fixture.sites.has(site): incomplete(site + " site missing"); continue
+		var origin := point(fixture.sites[site])
+		var row: Dictionary = catalog["Trap:WeaponTrap"]
+		var query := {"action":1, "definition":"Trap:WeaponTrap", "origin":origin, "width":int(row.width), "height":int(row.height)}
+		var preview := await request(query)
+		if stopped: return
+		var selections := await selection_rows("Trap:WeaponTrap", origin, preview.construction.filters, count)
+		if selections.is_empty(): continue
+		query.action = 2; query.selections = selections; query.expected_list_revision = int(selections[0].expected_list_revision)
+		await guarded(query, "Weapon count must be between 1 and 10")
+	if stopped: return
+	step = "4"
+	if fixture.has("obstacle") and fixture.obstacle != null:
+		var o: Dictionary = fixture.obstacle
+		step = "4 partial footprint"
+		for key in ["Bridge", "RoadPaved"]:
+			await guarded({"action":1, "definition":key, "origin":point(o), "width":2, "height":1}, "Site is occupied by a building")
+		if not stopped: observed.D7 = true
+		step = "4 wall drag"
+		var drag := await place("Construction:Wall", "wall", 0, false, Vector3i(int(o.width), 1, 1), -1, o)
+		if not drag.is_empty(): observed.D4 = true
+	else: incomplete("occupied tile prerequisite absent")
+	step = "5"
+	if fixture.sites.has("stairs"):
+		await guarded({"action":1, "definition":"Construction:Stairs", "origin":point(fixture.sites.stairs)}, "Must span multiple elevations")
+		if not (await place("Construction:Stairs", "stairs", 0, false, Vector3i(1, 1, 3))).is_empty(): observed.D3 = true
+	else: incomplete("three loaded stair levels unavailable")
+	if stopped: return
+	step = "7 stale key"
+	if placed.is_empty(): incomplete("no placed building for stale-key refusal")
+	else:
+		var row: Dictionary = placed[0]
+		var inspection := await request({"action":3, "building_id":int(row.id)})
+		if stopped: return
+		await guarded({"action":4, "building_id":int(row.id), "definition":"Chair" if inspection.construction.building_key != "Chair" else "Table"}, "Building changed; inspect again")
+	step = "6"
+	var wall := await place("Construction:Wall", "wall")
+	# Cancel every queued object, then finish one separate wall for action 6.
+	for row in placed:
+		if not wall.is_empty() and wall.ids.has(row.id): continue
+		var inspection := await request({"action":3, "building_id":int(row.id)})
+		if stopped: return
+		await request({"action":4, "building_id":int(row.id), "definition":inspection.construction.building_key})
+		await native("removed", {"id":int(row.id)})
+		if not stopped: observed.D8 = true
+	if not wall.is_empty() and await wait_wall(wall.origin):
+		await request({"action":6, "origin":wall.origin})
+		await native("removed_construction", {"origin":native_point(wall.origin)})
+	else: incomplete("RemoveConstruction requires a completed wall")
+	step = "8"
+	incomplete(FileAccess.get_file_as_string(directory + "/reload.txt").strip_edges())
+	step = "final"
+	await native("final")
+
+func run() -> void:
+	directory = OS.get_environment("DF3D_CONSTRUCTION_ACCEPTANCE")
+	if directory.is_empty():
+		push_error("Run through tools/smoke/construction_acceptance.ps1 with prepared clone input")
+		quit(77)
+		return
+	world = Df3dWorld.new()
+	root.add_child(world)
+	if check(world.attach(), "bridge attach failed"):
+		var deadline := Time.get_ticks_msec() + 30000
+		while not world.terrain_loaded() and Time.get_ticks_msec() < deadline:
+			world.poll()
+			await create_timer(0.01).timeout
+		if not world.terrain_loaded(): incomplete("presented world wait cap hit", true)
+		deadline = Time.get_ticks_msec() + 30000
+		var management_ready := false
+		while not stopped and Time.get_ticks_msec() < deadline:
+			world.poll()
+			var management: Dictionary = world.poll_management()
+			if management.get("transport_alive", false):
+				management_ready = true
+				break
+			await create_timer(0.01).timeout
+		if not stopped and not management_ready: incomplete("management transport wait cap hit", true)
+		if not stopped: await exercise()
+	departure_report()
+	var status := "failed" if failed else ("incomplete" if not reasons.is_empty() else "passed")
+	write_json("result.json", {"status":status, "reasons":reasons})
+	print("CONSTRUCTION_ACCEPTANCE ", status, " ", reasons)
+	quit(1 if failed else (77 if status == "incomplete" else 0))

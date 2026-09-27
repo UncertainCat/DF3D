@@ -356,7 +356,7 @@ func reject_production(request: Dictionary, error: String) -> void:
 	assert(world.last_error() == error)
 
 func test_production() -> void:
-	for request in [{"action":16,"building_id":1}, {"action":17,"building_id":1,"recipe":"builtin:28:2"},
+	for request in [{"action":16,"building_id":1}, {"action":17,"building_id":1,"recipe":"builtin:114:2"},
 		{"action":18,"building_id":1,"job_id":12}, {"action":19,"building_id":3,"season":0,"crop_id":-1}]:
 		for key in request:
 			if key == "action": continue
@@ -382,10 +382,10 @@ func test_production() -> void:
 			reject_production(request, "Invalid bounded production request")
 	for request in [{"action":18,"building_id":1,"job_id":12,"cancel":true,"repeat":1},
 		{"action":18,"building_id":1,"job_id":12}]:
-		assert(world.management_request("production",request) == 0)
+		reject_production(request, "invalid job edit")
 	var requests := [{"action":15,"query":"","cursor":0}, {"action":16,"building_id":1},
-		{"action":16,"building_id":3}, {"action":17,"building_id":1,"recipe":"builtin:28:2","repeat":0},
-		{"action":17,"building_id":1,"recipe":"builtin:28:2","repeat":1},
+		{"action":16,"building_id":3}, {"action":17,"building_id":1,"recipe":"builtin:114:2","repeat":0},
+		{"action":17,"building_id":1,"recipe":"builtin:114:2","repeat":1},
 		{"action":18,"building_id":1,"job_id":10,"repeat":0}, {"action":18,"building_id":1,"job_id":10,"repeat":1},
 		{"action":18,"building_id":1,"job_id":10,"suspend":0}, {"action":18,"building_id":1,"job_id":10,"suspend":1},
 		{"action":18,"building_id":1,"job_id":12,"cancel":true}]
@@ -400,8 +400,12 @@ func test_production() -> void:
 		assert_production(state.production, request)
 
 func assert_production(p: Dictionary, request: Dictionary) -> void:
-	var building := {"id":1,"name":"Kitchen","kind":"Kitchen","origin":Vector3i(5,6,2),"build_stage":3,"max_stage":3,"queue_size":2}
-	var farm := {"id":3,"name":"Farm","kind":"FarmPlot","origin":Vector3i(5,6,2),"build_stage":3,"max_stage":3,"queue_size":0}
+	var building := {"id":1,"name":"Kitchen","kind":"Kitchen","origin":Vector3i(5,6,2),"build_stage":2,"max_stage":3,"queue_size":2}
+	var farm := {"id":3,"name":"Farm","kind":"FarmPlot","origin":Vector3i(5,6,2),"build_stage":2,"max_stage":3,"queue_size":0}
+	# Mutations require complete construction (production.lua:221).
+	if request.action >= 17:
+		building.build_stage = 3
+		farm.build_stage = 3
 	var expected := {"buildings":[],"recipes":[],"jobs":[],"crops":[],"seasonal_crops":[],
 		"next_cursor":0,"current_season":-1,"selected_building":request.get("building_id",-1),"created_job":-1,"detail":""}
 	if request.action == 15:
@@ -422,12 +426,12 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 		expected.detail = "Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed."
 	else:
 		expected.buildings = [building]
-		var needs := [{"description":"Any item, cookable","quantity":1,"item_type":-1},{"description":"Any item, cookable","quantity":2,"item_type":-1}]
-		expected.recipes = [{"key":"builtin:28:2","name":"meal easy","requirements":needs}]
+		var needs := [{"description":"NONE, unrotten, cookable, solid","quantity":1,"item_type":-1},{"description":"NONE, unrotten, cookable","quantity":1,"item_type":-1}]
+		expected.recipes = [{"key":"builtin:114:2","name":"prepare easy meal","requirements":needs}]
 		expected.jobs = [
-			{"id":10,"name":"job 10","job_type":28,"repeat":true,"suspended":false,
+			{"id":10,"name":"job 10","job_type":114,"repeat":true,"suspended":false,
 			"worker_id":7,"worker_name":"Worker","completion_timer":17,"attached_items":1,"editable":true,"status":"Worker assigned","requirements":needs},
-			{"id":11,"name":"job 11","job_type":28,"repeat":false,"suspended":true,"worker_id":-1,"worker_name":"",
+			{"id":11,"name":"job 11","job_type":114,"repeat":false,"suspended":true,"worker_id":-1,"worker_name":"",
 			"completion_timer":-1,"attached_items":0,"editable":true,"status":"Suspended by native state","requirements":needs}]
 		if request.action == 18 and not request.get("cancel",false):
 			if request.has("repeat"): expected.jobs[0].repeat = request.repeat == 1
@@ -438,7 +442,7 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 				expected.jobs[0].status = "Suspended by native state"
 		if request.action == 17:
 			building.queue_size = 3
-			expected.jobs.append({"id":12,"name":"job 12","job_type":28,"repeat":request.repeat == 1,
+			expected.jobs.append({"id":12,"name":"job 12","job_type":114,"repeat":request.repeat == 1,
 				"suspended":false,"worker_id":-1,"worker_name":"","completion_timer":-1,"attached_items":0,
 				"editable":true,"status":"Awaiting worker or inputs; native cause is not exposed","requirements":needs})
 		expected.created_job = 12 if request.action == 17 else -1

@@ -141,7 +141,7 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
   std::vector<flatbuffers::Offset<m::ProductionBuilding>> buildings;
   auto building=[&](int id,const char* name,const char* kind,int queue) {
     m::TilePos pos(5,6,2);
-    buildings.push_back(m::CreateProductionBuilding(b,id,b.CreateString(name),b.CreateString(kind),&pos,3,3,queue));
+    buildings.push_back(m::CreateProductionBuilding(b,id,b.CreateString(name),b.CreateString(kind),&pos,(list || action==A::ProductionInspect)?2:3,3,queue));
   };
   // A scan of 512 buildings can yield two visible production rows, then resume
   // at id 1024; the intervening rows are hidden or not production buildings.
@@ -157,11 +157,12 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
   std::vector<int32_t> seasons;
   std::string detail;
   if(!list && !farm) {
-    // Single flags make description order deterministic (Lua pairs order is unspecified).
-    auto first=m::CreateProductionRequirement(b,b.CreateString("Any item, cookable"),1,-1);
-    auto second=m::CreateProductionRequirement(b,b.CreateString("Any item, cookable"),2,-1);
+    // workshops.lua:325-331; production.lua:23-34; DFHack bitfields iterate by bit index.
+    // NONE prose is a native gap escalated to 06-B; preserve the emitted text.
+    auto first=m::CreateProductionRequirement(b,b.CreateString("NONE, unrotten, cookable, solid"),1,-1);
+    auto second=m::CreateProductionRequirement(b,b.CreateString("NONE, unrotten, cookable"),1,-1);
     auto needs=b.CreateVector(std::vector{first,second});
-    recipes.push_back(m::CreateProductionRecipe(b,b.CreateString("builtin:28:2"),b.CreateString("meal easy"),needs));
+    recipes.push_back(m::CreateProductionRecipe(b,b.CreateString("builtin:114:2"),b.CreateString("prepare easy meal"),needs));
     // Queue appends a new awaiting job; the existing assigned/suspended pair stays.
     for(int i=0;i<(action==A::ProductionQueue?3:2);++i) {
       const int jobId=action==A::ProductionJobEdit && !q->cancel() && i==0?q->job_id():10+i;
@@ -172,7 +173,7 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
       const bool repeating=i==2?q->repeat()==1:i==0 && (!editing || q->repeat()!=0);
       auto worker=b.CreateString(assigned?"Worker":"");
       auto status=b.CreateString(suspended?"Suspended by native state":assigned?"Worker assigned":"Awaiting worker or inputs; native cause is not exposed");
-      m::ProductionJobBuilder j(b);j.add_id(jobId);j.add_name(name);j.add_job_type(28);
+      m::ProductionJobBuilder j(b);j.add_id(jobId);j.add_name(name);j.add_job_type(114);
       j.add_repeat(repeating);j.add_suspended(suspended);
       j.add_worker_id(assigned?7:-1);j.add_worker_name(worker);j.add_completion_timer(i==0?17:-1);
       j.add_attached_items(i==0?1:0);j.add_editable(true);j.add_status(status);j.add_requirements(needs);
@@ -200,7 +201,7 @@ int main(int argc,char** argv) {
       for(int action=15;action<=19;++action)for(int variant=0;variant<(action==19?8:action==18?5:2);++variant) {
         flatbuffers::FlatBufferBuilder rb;
         auto payload=m::CreateProductionRequest(rb,action==15?-1:action==19 || (action==16 && variant==1)?3:1,
-            action==18?(variant==4?12:10):-1,rb.CreateString(action==17?"builtin:28:2":""),rb.CreateString(action==15 && variant==1?"#1024":""),action==15 && variant==1?1024:0,
+            action==18?(variant==4?12:10):-1,rb.CreateString(action==17?"builtin:114:2":""),rb.CreateString(action==15 && variant==1?"#1024":""),action==15 && variant==1?1024:0,
             action==17?variant:action==18 && variant<2?variant:-1,
             action==18 && variant>=2 && variant<4?variant-2:-1,action==18 && variant==4,
             action==19?variant/2:-1,action==19 && variant%2==0?0:-1);
@@ -389,7 +390,7 @@ int main(int argc,char** argv) {
         case A::ProductionInspect:
           require(r->production()->building_id()==(received==45?1:3),"production inspect payload");break;
         case A::ProductionQueue:
-          require(r->production()->building_id()==1 && r->production()->recipe()->str()=="builtin:28:2" &&
+          require(r->production()->building_id()==1 && r->production()->recipe()->str()=="builtin:114:2" &&
               r->production()->repeat()==int(received)-47,"production queue payload");break;
         case A::FarmSetCrop:
           require(r->production()->building_id()==3 && r->production()->season()==int(received-54)/2 &&

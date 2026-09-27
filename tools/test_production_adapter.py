@@ -23,7 +23,8 @@ function assign(t,v)for k,x in pairs(v)do if type(x)=='table' and type(t[k])=='t
 local utils={clone=clone,assign=assign,call_with_string=function(o,m,...)return o[m](o,...)end}
 recipes={input_filter_defaults={item_type=-1,item_subtype=-1,mat_type=-1,mat_index=-1,quantity=1,flags1={},flags2={},flags3={}},jobs_workshop={
  [1]={defaults={item_type=5,vector_id=5},{name='construct bed',items={{}},job_fields={job_type=27}}},
- [2]={{name='meal easy',items={{flags1={cookable=true,solid=true}},{flags1={cookable=true}}},job_fields={job_type=28,mat_type=2}}}
+ -- workshops.lua:325-331: real Kitchen defaults and inputs; job_type.h:147.
+ [2]={defaults={flags1={unrotten=true}},{name='prepare easy meal',items={{flags1={solid=true,cookable=true}},{flags1={cookable=true}}},job_fields={job_type=114,mat_type=2}}}
 },jobs_furnace={}}
 package.preload.utils=function()return utils end
 package.preload['dfhack.workshops']=function()return recipes end
@@ -34,11 +35,19 @@ local jobs_alive=0
 local refs_alive=0
 local function instance(k)return {is_instance=function(_,b)return b.kind==k end}end
 df={building_workshopst=instance('workshop'),building_furnacest=instance('furnace'),building_farmplotst=instance('farm'),
- workshop_type={[1]='Carpenters',[2]='Kitchen',[3]='Still'},furnace_type={},item_type={[5]='WOOD',[-1]='Any'},biome_type={[0]='SUBTERRANEAN_WATER'},
+ workshop_type={[1]='Carpenters',[2]='Kitchen',[3]='Still'},furnace_type={},item_type={[5]='WOOD',[-1]='NONE'},biome_type={[0]='SUBTERRANEAN_WATER'},
  job_type={CustomReaction=99},reaction={find=function()return nil end},historical_entity={find=function()return {id=7,entity_raw={workshops={permitted_reaction_id=vec{0}}}}end}}
+-- DFHack LuaTypes.cpp:1161-1193 iterates bitfields by bit index, not Lua table order.
+-- job_item_flags1.h:51,60,67: unrotten=4, cookable=13, solid=20.
+local function input_flags()
+ return setmetatable({},{__pairs=function(t)
+  local names={'unrotten','cookable','solid'};local i=0
+  return function()i=i+1;local name=names[i];if name then return name,t[name] or false end end
+ end})
+end
 df.job_item={new=function()
  filters_alive=filters_alive+1
- local f={item_type=-1,quantity=1,mat_type=-1,mat_index=-1,flags1={},flags2={},flags3={},reaction_class='',has_material_reaction_product='',reaction_id=-1,reagent_index=-1}
+ local f={item_type=-1,quantity=1,mat_type=-1,mat_index=-1,flags1=input_flags(),flags2={},flags3={},reaction_class='',has_material_reaction_product='',reaction_id=-1,reagent_index=-1}
  f.assign=function(self,v)assign(self,v)end
  f.delete=function()filters_alive=filters_alive-1 end
  return f
@@ -107,6 +116,7 @@ local queued=req(17,{building_id=0,recipe=recipe})
 assert(queued.ok and queued.created_job==10 and #carp.jobs==1 and checked,'native queue links and wakes scheduler')
 local j=carp.jobs[0];j.worker={id=7}
 assert(j.material_category.wood,'carpenter job carries native wooden material category')
+-- Current bridge pin, not native parity: e3/findings.md Work-order jobs; 06-B E2.
 j.flags.by_manager=true
 assert(not req(18,{building_id=0,job_id=j.id,cancel=true}).ok,'manager jobs are read-only')
 j.flags.by_manager=false
@@ -164,6 +174,8 @@ df.global.world.buildings.all=original;dfhack.maps.getTileFlags=flags
 local recipe=req(16,{building_id=0}).recipes[1].key
 refusal(17,{building_id=0,recipe='builtin:999:-1'},'Recipe is no longer available at this building')
 local stage=carp.getBuildStage;carp.getBuildStage=function()return 2 end
+local unfinished=req(16,{building_id=0}).buildings[1]
+assert(unfinished.build_stage==2 and unfinished.max_stage==3)
 refusal(17,{building_id=0,recipe=recipe},'Building construction is unfinished');carp.getBuildStage=stage
 force_link_failure=true
 refusal(17,{building_id=0,recipe=recipe},'Native job linking rejected');freed();force_link_failure=false
@@ -177,6 +189,7 @@ for repeating=0,1 do
  j.worker={id=7}
  row=req(16,{building_id=0}).production_jobs[1]
  assert(row.status=='Worker assigned' and not row.suspended and row.worker_id==7 and row.worker_name=='Worker')
+ -- Current bridge pin: e3/findings.md Work-order jobs allows edits; escalated to 06-B E2.
  for _,flag in ipairs{'by_manager','special'}do
   j.flags[flag]=true
   assert(not req(16,{building_id=0}).production_jobs[1].editable)
@@ -225,16 +238,18 @@ end
 df.reaction.find=function(id)assert(id==0);return reaction end
 need=req(16,{building_id=2}).recipes[1].requirements[1]
 assert(need.description=='native brew reagent' and need.quantity==3 and need.item_type==5)
--- Reproduce the host's two-input Kitchen recipe and job requirement vectors.
-recipes.jobs_workshop[2][1].items={{flags1={cookable=true}},{quantity=2,flags1={cookable=true}}}
-df.item_type[-1]=nil
+-- Reproduce the real Kitchen template; NONE requirement prose is a 06-B native gap.
 local kitchen_state=req(16,{building_id=1})
-assert(kitchen_state.recipes[1].key=='builtin:28:2' and kitchen_state.recipes[1].name=='meal easy')
+assert(kitchen_state.recipes[1].key=='builtin:114:2' and kitchen_state.recipes[1].name=='prepare easy meal')
+local descriptions={'NONE, unrotten, cookable, solid','NONE, unrotten, cookable'}
 for i,need in ipairs(kitchen_state.recipes[1].requirements)do
- assert(need.description=='Any item, cookable' and need.quantity==i and need.item_type==-1)
+ assert(need.description==descriptions[i] and need.quantity==1 and need.item_type==-1)
 end
-local queued=req(17,{building_id=1,recipe='builtin:28:2',repeat_job=1})
-assert(queued.ok and #queued.production_jobs[1].requirements==2)
+local queued=req(17,{building_id=1,recipe='builtin:114:2',repeat_job=1})
+assert(queued.ok and queued.production_jobs[1].job_type==114 and #queued.production_jobs[1].requirements==2)
+for i,need in ipairs(queued.production_jobs[1].requirements)do
+ assert(need.description==descriptions[i] and need.quantity==1 and need.item_type==-1)
+end
 assert(req(18,{building_id=1,job_id=queued.created_job,cancel=true}).ok);freed()
 -- Zero seeds do not gate any season; fallow works in all four seasons.
 df.global.world.items.other.SEEDS=vec()
@@ -261,6 +276,7 @@ dfhack.maps.getTileBiomeRgn=function(p)return p.x end
 dfhack.maps.getBiomeType=function(x)return x end
 df.biome_type[4]='FOREST';df.biome_type[5]='GRASSLAND'
 refusal(16,{building_id=3},'Mixed-biome farm is not supported')
+-- Current bridge pin: e10/findings.md #10 has no size cap; escalated to 06-B E7.
 dfhack.maps.getTileFlags=flags;farm.x2=35
 refusal(16,{building_id=3},'Farm exceeds supported 31 by 31 inspector')
 farm.x1=nil;farm.x2=nil;farm.y1=nil;farm.y2=nil

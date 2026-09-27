@@ -363,7 +363,7 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   mm::ProductionJobBuilder suspended(b);suspended.add_id(505);suspended.add_job_type(12);suspended.add_name(waitingName);
   suspended.add_suspended(true);suspended.add_worker_name(emptyWorker);suspended.add_status(suspendedStatus);suspended.add_requirements(emptyNeeds);
   auto suspendedRecord=suspended.Finish();
-  auto building=mm::CreateProductionBuilding(b,72,b.CreateString("Carpenters #72"),b.CreateString("Carpenters"),&pos,3,3,2);
+  auto building=mm::CreateProductionBuilding(b,72,b.CreateString("Carpenters #72"),b.CreateString("Carpenters"),&pos,2,3,2);
   auto buildings=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionBuilding>>{building});
   auto recipes=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRecipe>>{recipe});
   auto jobs=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionJob>>{jobRecord,suspendedRecord});
@@ -386,7 +386,7 @@ TEST_CASE("production response preserves native job progress and recipe requirem
   CHECK(v.detail=="Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed.");
   const auto& buildingValue=v.buildings[0];
   CHECK(buildingValue.id==72);CHECK(buildingValue.name=="Carpenters #72");CHECK(buildingValue.kind=="Carpenters");
-  CHECK(buildingValue.x==2);CHECK(buildingValue.y==3);CHECK(buildingValue.buildStage==3);CHECK(buildingValue.maxStage==3);CHECK(buildingValue.queueSize==2);
+  CHECK(buildingValue.x==2);CHECK(buildingValue.y==3);CHECK(buildingValue.buildStage==2);CHECK(buildingValue.maxStage==3);CHECK(buildingValue.queueSize==2);
   CHECK(v.recipes[0].key=="builtin:12:-1");CHECK(v.recipes[0].name=="Construct bed");
   REQUIRE(v.recipes[0].requirements.size()==1);CHECK(v.recipes[0].requirements[0].quantity==1);CHECK(v.recipes[0].requirements[0].itemType==5);
   CHECK(v.jobs[0].name=="Construct bed");CHECK(v.jobs[0].jobType==12);CHECK_FALSE(v.jobs[0].suspended);CHECK(v.jobs[0].status=="Worker assigned");

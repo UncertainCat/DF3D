@@ -120,7 +120,7 @@ bool readConstruction(const Dictionary& data, wm::ManagementRequest& r, String& 
           h = data.get("height", 1), d = data.get("direction", 0);
   int64_t cursor = data.get("cursor", 0), building = data.get("building_id", -1);
   if (a < actionValue(Action::Catalog) || (a > actionValue(Action::RemoveConstruction) && a != actionValue(Action::ConstructionMaterials)) || w < 1 ||
-      w > 31 || h < 1 || h > 31 || d < 0 || d > 3 || cursor < 0 || cursor > UINT32_MAX ||
+      w > 31 || h < 1 || h > 31 || d < 0 || d > 7 || cursor < 0 || cursor > UINT32_MAX ||
       building < -1 || building > INT32_MAX) {
     error = "Invalid management request";
     return false;
@@ -133,7 +133,7 @@ bool readConstruction(const Dictionary& data, wm::ManagementRequest& r, String& 
   for(int i=0;i<selections.size();++i) {
     Dictionary row=selections[i];bool valid=true;
     auto n=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=row.get(key,def);if(v<low || v>high)valid=false;return v;};
-    wm::ConstructionSelection v;v.filter=int16_t(n("filter",-1,0,7));v.itemType=int16_t(n("item_type",-1,-1,INT16_MAX));v.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));v.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));v.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));v.count=uint32_t(n("count",0,1,UINT32_MAX));v.expectedListRevision=n("expected_list_revision",-1,-1,INT64_MAX);
+    wm::ConstructionSelection v;v.filter=int16_t(n("filter",-1,0,7));v.itemType=int16_t(n("item_type",-1,-1,INT16_MAX));v.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));v.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));v.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));v.count=uint32_t(n("count",1,1,UINT32_MAX));v.expectedListRevision=n("expected_list_revision",-1,-1,INT64_MAX);
     if(!valid){error="Invalid construction selection";return false;}r.selections.push_back(v);
   }
   r.action = wm::ManagementAction(a);

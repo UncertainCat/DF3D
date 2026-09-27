@@ -185,12 +185,15 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       !r.origin())
     return "inspection tile required";
   if (r.definition() && r.definition()->size() > 128) return "definition too long";
-  if (r.width() < 1 || r.width() > 31 || r.height() < 1 || r.height() > 31 || r.direction() > 3)
+  if (r.width() < 1 || r.width() > 31 || r.height() < 1 || r.height() > 31 || r.direction() > 7)
     return "invalid dimensions or orientation";
   if (r.action() == ManagementAction::Preview || r.action() == ManagementAction::Place) {
     if (!r.definition() || !r.definition()->size() || !r.origin())
       return "definition and origin required";
   }
+  if ((r.action() == ManagementAction::Preview || r.action() == ManagementAction::Place) &&
+      r.definition() && r.definition()->str() == "Construction:Stairs" && r.depth() == 1)
+    return "Must span multiple elevations";
   if (r.depth() < 1 || r.depth() > 256 ||
       uint64_t(r.width()) * r.height() * r.depth() > 1024)
     return "invalid construction depth or volume";
@@ -202,8 +205,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if (r.filter() >= 0 && r.action() != ManagementAction::ConstructionMaterials)
     return "unexpected construction filter";
   if (r.action() == ManagementAction::ConstructionMaterials &&
-      (!r.definition() || !r.definition()->size() || r.filter() < 0))
-    return "definition and filter required";
+      (!r.definition() || !r.definition()->size() || r.filter() < 0 || !r.origin()))
+    return "definition, filter and origin required";
   if (r.expected_list_revision() && r.action() != ManagementAction::Catalog &&
       r.action() != ManagementAction::Place && r.action() != ManagementAction::ConstructionMaterials)
     return "unexpected construction list revision";
@@ -218,6 +221,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
           !keys.emplace(v->filter(),v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()).second)
         return "invalid or duplicate construction selection";
     }
+  }
+  if(r.action()==ManagementAction::Place && r.definition() &&
+      (r.definition()->str()=="Weapon" || r.definition()->str()=="Trap:WeaponTrap")) {
+    uint64_t count=0;
+    if(r.selections())for(const auto* v:*r.selections())
+      if(v->filter()==(r.definition()->str()=="Weapon" ? 0 : 1))count+=v->count();
+    if(count<1 || count>10)return "Weapon count must be between 1 and 10";
   }
   if (r.origin() && (r.origin()->x() < 0 || r.origin()->y() < 0 || r.origin()->z() < 0))
     return "negative origin";
@@ -268,7 +278,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
     }
   }
-  if (s.required() > 64 || s.jobs() > 1024 || s.build_stage() < -1 || s.max_stage() < -1)
+  if ((s.required() > 64 && !s.construction()) || s.jobs() > 1024 || s.build_stage() < -1 || s.max_stage() < -1)
     return "invalid construction state";
   if (s.max_stage() >= 0 && s.build_stage() > s.max_stage()) return "invalid build stage";
   auto constructionTextOk = [](const flatbuffers::String* v, size_t cap) {
@@ -285,7 +295,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     return true;
   };
   auto constructionFootprintOk = [](const ConstructionFootprint* v) {
-    return !v || (v->direction() <= 4 && v->width() >= 1 && v->width() <= 31 && v->height() >= 1 && v->height() <= 31 &&
+    return !v || (v->direction() <= 7 && v->width() >= 1 && v->width() <= 31 && v->height() >= 1 && v->height() <= 31 &&
         v->center_x() >= -1 && v->center_x() < v->width() && v->center_y() >= -1 && v->center_y() < v->height());
   };
   if (const auto* c = s.construction()) {
@@ -321,11 +331,11 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           d->height() < 1 || d->height() > 31 || !constructionTextOk(d->name(),128) ||
           !constructionTextOk(d->reason(),128) || !constructionTextOk(d->native_name(),128) ||
           !constructionTextOk(d->family(),64) || !constructionTextOk(d->subtype_key(),64) ||
-          !constructionTextOk(d->custom_code(),64) || d->area_mode() > 4 || d->orientations() > 0x1F ||
+          !constructionTextOk(d->custom_code(),64) || d->area_mode() > 4 ||
           d->max_width() > 31 || d->max_height() > 31 || d->max_depth() > 256 ||
           !constructionFiltersOk(d->filters())) return "invalid definition";
       if (d->footprints()) {
-        if (d->footprints()->size() > 5) return "too many construction footprints";
+        if (d->footprints()->size() > 8) return "too many construction footprints";
         std::set<uint8_t> directions;
         for (const auto* v : *d->footprints())
           if (!v || !constructionFootprintOk(v) || !directions.insert(v->direction()).second)

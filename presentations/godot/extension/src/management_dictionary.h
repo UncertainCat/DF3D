@@ -53,7 +53,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         error=godot::String("Missing management field: ")+key;return false;
     };
     switch(action) {
-    case A::ConstructionMaterials: return require("definition") && require("filter");
+    case A::ConstructionMaterials: return require("definition") && require("filter") && require("origin");
     case A::Preview: case A::Place:
         return require("definition") && require("origin");
     case A::InspectAtTile: case A::RemoveConstruction: case A::AreaInspectAtTile: case A::AreaCreate:

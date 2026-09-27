@@ -447,3 +447,73 @@ TEST_CASE("construction selection revisions are optional signed int64 values per
   builder.Clear();codec::encodeRequest(builder,request,1,2,3);
   CHECK_FALSE(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(builder.GetBufferPointer())));
 }
+
+TEST_CASE("construction native decisions survive request codecs and validation") {
+  auto error=[](const wm::ManagementRequest& r) {
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* v=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(v->direction()==r.direction);CHECK(v->depth()==r.depth);
+    CHECK(v->origin()->x()==r.x);CHECK(v->origin()->y()==r.y);CHECK(v->origin()->z()==r.z);
+    if(!r.selections.empty())CHECK(v->selections()->Get(0)->count()==r.selections[0].count);
+    return wire::validateConstructionRequest(*v);
+  };
+  wm::ManagementRequest r;r.action=wm::ManagementAction::Preview;r.definition="Construction:Stairs";
+  REQUIRE(error(r));CHECK(*error(r)=="Must span multiple elevations");
+  r.depth=2;CHECK_FALSE(error(r));r.depth=1;r.definition="SiegeEngine:Ballista";
+  for(uint8_t d=0;d<8;++d){r.direction=d;CHECK_FALSE(error(r));}
+  r.direction=8;REQUIRE(error(r));CHECK(*error(r)=="invalid dimensions or orientation");r.direction=0;
+  r.action=wm::ManagementAction::Place;
+  for(const char* key:{"Weapon","Trap:WeaponTrap"}) {
+    r.definition=key;r.selections={{int16_t(r.definition=="Weapon" ? 0 : 1)}};
+    CHECK(r.selections[0].count==1);CHECK_FALSE(error(r));
+    r.selections[0].count=10;CHECK_FALSE(error(r));
+    r.selections[0].count=11;REQUIRE(error(r));CHECK(*error(r)=="Weapon count must be between 1 and 10");
+    r.selections[0].count=0;REQUIRE(error(r));CHECK(*error(r)=="invalid or duplicate construction selection");
+    r.selections.clear();REQUIRE(error(r));CHECK(*error(r)=="Weapon count must be between 1 and 10");
+  }
+  r.action=wm::ManagementAction::ConstructionMaterials;r.definition="Chair";r.filter=0;
+  r.x=10;r.y=20;r.z=3;CHECK_FALSE(error(r));
+}
+
+TEST_CASE("construction codec preserves eight facings and per-tile totals") {
+  flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<wire::ConstructionFootprint>> footprints;
+  for(uint8_t d=0;d<8;++d)footprints.push_back(wire::CreateConstructionFootprint(b,d,1,1,0,0));
+  const auto fps=b.CreateVector(footprints);const auto key=b.CreateString("SiegeEngine:Ballista");
+  wire::BuildingDefinitionBuilder def(b);def.add_key(key);def.add_width(1);def.add_height(1);
+  def.add_orientations(255);def.add_footprints(fps);const auto definition=def.Finish();
+  const auto catalog=b.CreateVector(std::vector{definition});
+  const auto filter=wire::CreateConstructionFilter(b,0,-1,-1,0,0,1024);
+  const auto filters=b.CreateVector(std::vector{filter});
+  wire::ConstructionStateBuilder c(b);c.add_filters(filters);c.add_placed(1024);const auto construction=c.Finish();
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_catalog(catalog);
+  state.add_required(1024);state.add_construction(construction);b.Finish(state.Finish());
+  const auto* encoded=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateManagementState(*encoded));
+  wm::ManagementState decoded;codec::decodeConstruction(encoded,decoded);
+  REQUIRE(decoded.catalog.size()==1);CHECK(decoded.catalog[0].orientations==255);
+  REQUIRE(decoded.catalog[0].footprints.size()==8);CHECK(decoded.catalog[0].footprints[7].direction==7);
+  CHECK(decoded.required==1024);CHECK(decoded.construction.placed==1024);
+  CHECK(decoded.construction.filters[0].quantity==1024);
+}
+
+TEST_CASE("material lists require a placement origin and eight footprints is the limit") {
+  for(int missing=0;missing<3;++missing) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto key=b.CreateString(missing==0 ? "" : "Chair");const wire::TilePos origin(0,0,0);
+    wire::ConstructionRequestBuilder request(b);request.add_client_id(1);request.add_seq(1);request.add_world_epoch(1);
+    request.add_action(wire::ManagementAction::ConstructionMaterials);request.add_definition(key);
+    request.add_filter(missing==1 ? -1 : 0);if(missing!=2)request.add_origin(&origin);b.Finish(request.Finish());
+    const auto error=wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()));
+    REQUIRE(error);CHECK(*error=="definition, filter and origin required");
+  }
+  flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<wire::ConstructionFootprint>> rows;
+  for(uint8_t d=0;d<9;++d)rows.push_back(wire::CreateConstructionFootprint(b,d%8,1,1,0,0));
+  const auto fps=b.CreateVector(rows);const auto key=b.CreateString("SiegeEngine:Ballista");
+  wire::BuildingDefinitionBuilder definition(b);definition.add_key(key);definition.add_width(1);definition.add_height(1);
+  definition.add_footprints(fps);const auto def=definition.Finish();const auto catalog=b.CreateVector(std::vector{def});
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_catalog(catalog);b.Finish(state.Finish());
+  const auto error=wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer()));
+  REQUIRE(error);CHECK(*error=="too many construction footprints");
+}

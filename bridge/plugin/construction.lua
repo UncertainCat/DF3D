@@ -1,4 +1,23 @@
 -- Semantic construction adapter; closure lifetime owns all cached state.
+local function clipped_utf8(text,cap)
+    if #text<=cap then return text end
+    while cap>0 and (text:byte(cap+1) & 0xc0)==0x80 do cap=cap-1 end
+    return text:sub(1,cap)
+end
+-- HANDOFF (design D1-D9, e4/e5, PM fix decisions):
+-- D1: quickfort/buildingplan site rules and uncaptured refusals remain; magma and
+-- Windmill are disabled pending placement evidence. D2: whole-stack consumption
+-- and walkability-group reach remain estimates. Grouping, bins, unreachable-item
+-- exclusion and distance ordering are resolved. D3: existing-stair adaptation and
+-- construction rebuild restrictions remain uncaptured; depth 1 is refused and
+-- multi-level endpoints are up/down. D4: filled drags skip invalid tiles; material
+-- run-out rejects without replay (non-atomic Place). D5: PressurePlate, TrackStop
+-- and connected Track remain disabled; weapon/spike selection counts are 1-10.
+-- D6: siege has eight facings; Rollers speed keeps the constructor default (e5
+-- exposes five speeds). D7: full valid footprints match bridge/road evidence;
+-- farm footprints remain uncaptured. D8: removal/stale-key refusals are semantic
+-- safeguards. D9: non-permitted custom visibility remains uncaptured.
+-- Commit C owns duplicate-key, exhaustive site-rule and general limit tests.
 local B=dfhack.buildings
 local function fail(message) return {ok=false,message=message} end
 local function filter_call(raw,fn)
@@ -43,10 +62,11 @@ local function definitions()
         local key=family..(subtype~='' and ':'..subtype or '')..(raw and ':'..raw.code or '')
         if seen[key] then error('Duplicate construction catalog key: '..key) end;seen[key]=true
         local d={key=key,name=key:gsub(':',' / '),type=t,subtype=st,family=family,subtype_key=subtype,
-            custom_code=raw and raw.code or '',native_name=raw and dfhack.df2utf(raw.name) or '',
+            custom_code=raw and raw.code or '',native_name=raw and clipped_utf8(dfhack.df2utf(raw.name),128) or '',
             area_mode=family=='Construction' and (synthetic=='Stairs' and 4 or 3) or (sized[family] and 2 or 1),
             orientations=1,max_depth=synthetic=='Stairs' and 256 or 1,filters={},footprints={}}
-        if family=='ScrewPump' or family=='Rollers' or family=='SiegeEngine' then d.orientations=15
+        if family=='SiegeEngine' then d.orientations=255
+        elseif family=='ScrewPump' or family=='Rollers' then d.orientations=15
         elseif family=='WaterWheel' or family=='AxleHorizontal' then d.orientations=3
         elseif family=='Bridge' then d.orientations=31 end
         local success,inputs=pcall(recipe,d);local reason=''
@@ -60,10 +80,10 @@ local function definitions()
         elseif subtype=='TrackStop' then reason='Track stop options not captured'
         elseif synthetic=='Track' then reason='Track piece selection not captured' end
         if raw and not permitted(raw) then reason='Not permitted for this civilization' end
-        for dir=0,4 do if d.orientations & (1<<dir)~=0 then
-            local ok,f=pcall(footprint,d,1,1,dir==4 and -1 or dir)
+        for dir=0,7 do if d.orientations & (1<<dir)~=0 then
+            local ok,f=pcall(footprint,d,1,1,family=='Bridge' and dir==4 and -1 or dir)
             if ok and f.width and f.height and f.width>=1 and f.height>=1 and f.width<=31 and f.height<=31 then d.footprints[#d.footprints+1]=f
-            else reason='Building has no recipe' end
+            else reason='Native placement check rejected this site' end
         end end
         local f=d.footprints[1];d.width=f and f.width or 1;d.height=f and f.height or 1
         d.max_width=d.area_mode==1 and d.width or 31;d.max_height=d.area_mode==1 and d.height or 31
@@ -111,10 +131,8 @@ local function adjacent(p,predicate)
 end
 local function basic_floor(a) return a and df.tiletype_shape.attrs[a.shape].basic_shape==df.tiletype_shape_basic.Floor end
 local function stair_piece(r,p)
-    if r.depth==1 then return 1 end
-    local a=attrs(p);local shape=a and df.tiletype_shape[a.shape]
-    if p.z==r.z then return (shape=='STAIR_DOWN' or shape=='STAIR_UPDOWN') and 3 or 1 end
-    if p.z==r.z+r.depth-1 then return (shape=='STAIR_UP' or shape=='STAIR_UPDOWN') and 3 or 2 end;return 3
+    if p.z==r.z then return 1 end
+    if p.z==r.z+r.depth-1 then return 2 end;return 3
 end
 local piece_names={'UpStair','DownStair','UpDownStair'}
 local function tile_rule(r,d,p,piece)
@@ -201,22 +219,17 @@ local function screen(item,j,groups)
 end
 local function key(v) return table.concat({v.item_type,v.item_subtype,v.mat_type,v.mat_index},':') end
 local function item_key(item) return key{item_type=item:getType(),item_subtype=item:getSubtype(),mat_type=item:getMaterial(),mat_index=item:getMaterialIndex()} end
-local function clipped_utf8(text,cap)
-    if #text<=cap then return text end
-    while cap>0 and (text:byte(cap+1) & 0xc0)==0x80 do cap=cap-1 end
-    return text:sub(1,cap)
-end
 local function item_row(item)
     local mi=dfhack.matinfo.decode(item);if not mi then return end
     local name=mi:toString();if not name or name=='' then return end
     return {item_type=item:getType(),item_subtype=item:getSubtype(),mat_type=item:getMaterial(),mat_index=item:getMaterialIndex(),name=clipped_utf8(dfhack.df2utf(name),128),caption='',count=0,ids={}}
 end
-local function signature(raw)
+local function signature(raw,site)
     return filter_call(raw,function(j)
         local out={}
         for _,k in ipairs{'item_type','item_subtype','mat_type','mat_index','vector_id','has_tool_use','metal_ore','min_dimension','reaction_class','has_material_reaction_product','flags4','flags5'} do out[#out+1]=tostring(j[k]) end
         for _,k in ipairs{'flags1','flags2','flags3'} do out[#out+1]=tostring(j[k].whole) end
-        return table.concat(out,'|')
+        return table.concat(out,'|')..'|'..site.x..':'..site.y..':'..site.z
     end)
 end
 local function vectors(raw)
@@ -270,6 +283,10 @@ local function queue(e)
                         if e.build_ids>=65536 then e.error='list exceeds cap';item=nil;step();return end
                         local k=key(row);local g=grouped[k]
                         if not g then g=row;grouped[k]=g;rows[#rows+1]=g end
+                        local p=dfhack.items.getPosition(item)
+                        -- Nearest eligible member's squared 3D tile distance to origin.
+                        local distance=(p.x-e.site.x)^2+(p.y-e.site.y)^2+(p.z-e.site.z)^2
+                        g.distance=math.min(g.distance or math.huge,distance)
                         g.ids[#g.ids+1]=item.id;g.count=g.count+1;seen[item.id]=true;e.build_ids=e.build_ids+1
                     end
                 end
@@ -278,7 +295,13 @@ local function queue(e)
         end
         e.phase=2
         local width=1
-        local function less(a,b) return a.name<b.name or (a.name==b.name and key(a)<key(b)) end
+        local function less(a,b)
+            if a.distance~=b.distance then return a.distance<b.distance end
+            -- Distance ties keep numeric type/subtype/material order.
+            for _,k in ipairs{'item_type','item_subtype','mat_type','mat_index'} do
+                if a[k]~=b[k] then return a[k]<b[k] end
+            end;return false
+        end
         while width<#rows do
             local merged={}
             for start=1,#rows,2*width do
@@ -298,11 +321,11 @@ local function queue(e)
         e.rows=rows;e.by_key=grouped;e.groups=groups;e.revision=revision(h);e.ids=e.build_ids;e.build_ids=0;e.dirty=(e.reservation_version or 0)~=reservation_version;e.scan_tick=e.started;e.phase=0;e.total=e.done
     end)
 end
-local function entry(epoch,raw)
-    local sig=signature(raw);clock=clock+1
+local function entry(epoch,raw,site)
+    local sig=signature(raw,site);clock=clock+1
     for _,e in ipairs(cache) do if e.epoch==epoch and e.signature==sig then e.used=clock;return e end end
     if #cache==4 then local oldest=1;for i=2,4 do if cache[i].used<cache[oldest].used then oldest=i end end;table.remove(cache,oldest) end
-    local e={epoch=epoch,signature=sig,raw=raw,used=clock};cache[#cache+1]=e;queue(e);return e
+    local e={epoch=epoch,signature=sig,raw=raw,site=site,used=clock};cache[#cache+1]=e;queue(e);return e
 end
 local function build(budget)
     local steps=0
@@ -318,8 +341,8 @@ end
 local function materials(r,d)
     local inputs=recipe(d);local raw=inputs and inputs[(r.filter or -1)+1]
     if not raw then return fail('Building has no recipe') end
-    local e=entry(r.epoch,raw)
-    if e.rows and not e.job and (e.dirty or tick()-e.scan_tick>1200 or tick()<e.scan_tick) then queue(e) end
+    local e=entry(r.epoch,raw,{x=r.x,y=r.y,z=r.z})
+    if not e.job and (e.error or (e.rows and (e.dirty or tick()-e.scan_tick>1200 or tick()<e.scan_tick))) then queue(e) end
     if e.error then return fail(e.error) end
     local result={ok=true,building_key=d.key,filter=r.filter,filters=d.filters,estimated=true,materials={},total=e.ids or 0,
         build_phase=e.phase,build_done=e.done,build_total=e.total,list_revision=e.revision or 0,message='DF3D estimate: '..tostring(e.ids or 0)..' accessible'}
@@ -345,8 +368,9 @@ local function inspect(b)
 end
 local function position(r,index) return {x=r.x+index%r.width,y=r.y+(index//r.width)%r.height,z=r.z+index//(r.width*r.height)} end
 local function placement(r,d)
+    if d.area_mode==4 and r.depth==1 then return fail('Must span multiple elevations') end
     local dir=r.retracting and -1 or r.direction
-    if d.orientations & (1<<(r.retracting and 4 or dir))==0 then return fail('Orientation not available for this building') end
+    if (r.direction>3 and d.family~='SiegeEngine') or (r.retracting and d.family~='Bridge') or d.orientations & (1<<(r.retracting and 4 or dir))==0 then return fail('Orientation not available for this building') end
     if r.depth>1 and d.area_mode~=4 then return fail('Depth applies to stairs only') end
     local mw,mh=d.max_width,d.max_height
     if d.family=='AxleHorizontal' then mw=dir==1 and 1 or 31;mh=dir==1 and 31 or 1
@@ -378,14 +402,25 @@ local function placement(r,d)
         local count=0;for _,v in ipairs(o.mask) do count=count+v end
         o.required=0;o.per={}
         for i,raw in ipairs(o.raw) do local f=filter_row(raw,i-1)
-            f.quantity=f.quantity==-1 and (r.width*r.height//4+1) or f.quantity
+            f.quantity=f.quantity==-1 and ((d.area_mode>=3 and 1 or r.width*r.height)//4+1) or f.quantity
             if d.family=='Weapon' or (d.subtype_key=='WeaponTrap' and i==2) then f.quantity=1 end
             o.per[i]=f.quantity
             if d.area_mode>=3 then f.quantity=f.quantity*count end
             o.filters[i]=f;o.required=o.required+f.quantity
         end
         if r.action==1 then return reply('',true,false) end
-        local sums={};for _,s in ipairs(r.selections or {}) do sums[s.filter]=(sums[s.filter] or 0)+s.count end
+        local sums={};for _,s in ipairs(r.selections or {}) do
+            local count=s.count or 1
+            if math.type(count)~='integer' or count<1 then return reply('Selections do not cover the recipe',false,false) end
+            sums[s.filter]=(sums[s.filter] or 0)+count
+        end
+        for _,f in ipairs(o.filters) do
+            if d.family=='Weapon' or (d.subtype_key=='WeaponTrap' and f.index==1) then
+                local count=sums[f.index] or 0
+                if count<1 or count>10 then return reply('Weapon count must be between 1 and 10',false,false) end
+                o.required=o.required-f.quantity+count;f.quantity=count;o.per[f.index+1]=count
+            end
+        end
         for _,f in ipairs(o.filters) do if (sums[f.index] or 0)~=f.quantity then return reply('Selections do not cover the recipe',false,false) end;sums[f.index]=nil end
         if next(sums) then return reply('Selections do not cover the recipe',false,false) end
         -- Validate every selection before reserving any ids or dirtying any entry.
@@ -393,7 +428,7 @@ local function placement(r,d)
         for _,s in ipairs(r.selections or {}) do
             local e=o.entries[s.filter+1]
             if not e then
-                local sig=signature(o.raw[s.filter+1])
+                local sig=signature(o.raw[s.filter+1],{x=r.x,y=r.y,z=r.z})
                 for _,v in ipairs(cache) do if v.epoch==r.epoch and v.signature==sig then e=v;break end end
                 if e and e.rows then
                     e={rows=e.rows,by_key=e.by_key,groups=e.groups,revision=e.revision,owner=e}
@@ -417,7 +452,7 @@ local function placement(r,d)
             o.used[id]=true;o.reserved[s.filter+1]=o.reserved[s.filter+1] or {};table.insert(o.reserved[s.filter+1],id);o.taken=o.taken+1
         end
         e.owner.dirty=true;e.owner.reservation_version=(e.owner.reservation_version or 0)+1
-        if o.taken==s.count then o.selection=o.selection+1;o.group=nil end
+        if o.taken==(s.count or 1) then o.selection=o.selection+1;o.group=nil end
     end
     if o.phase=='reserve' and o.selection>#selections then o.phase='create';o.offsets={} end
     while o.phase=='create' and o.create<(d.area_mode>=3 and volume or 1) and attempts<128 do
@@ -427,7 +462,9 @@ local function placement(r,d)
         if steps+tile_cost+needed+1>budget then break end
         if d.area_mode>=3 then ok=tile_rule(r,d,p,piece);steps=steps+1
         else for i=0,volume-1 do local good=tile_rule(r,d,position(r,i));steps=steps+1;if not good then ok=false end end end
-        if not ok or o.mask[idx+1]==0 then o.skipped=o.skipped+1;o.create=o.create+1
+        if not ok or o.mask[idx+1]==0 then
+            o.skipped=o.skipped+1;o.create=o.create+1
+            if d.area_mode<=2 then return reply('Native construction rejected',false,false) end
         else
             local items,advances={},{}
             for i,per in ipairs(o.per) do
@@ -444,10 +481,17 @@ local function placement(r,d)
                 width=d.area_mode>=3 and 1 or r.width,height=d.area_mode>=3 and 1 or r.height,direction=dir,full_rectangle=true,items=items,fields=fields}
             steps=steps+1;o.create=o.create+1;attempts=attempts+1
             if b then o.offsets=advances;o.placed=o.placed+1;chunk=chunk+1;if o.first<0 then o.first=b.id end
-            else o.skipped=o.skipped+1 end
+            else
+                o.skipped=o.skipped+1
+                if d.area_mode<=2 then return reply('Native construction rejected',false,false) end
+            end
         end
     end
-    if o.phase=='create' and o.create==(d.area_mode>=3 and volume or 1) then return reply('Native construction job queued',true,false) end
+    if o.phase=='create' and o.create==(d.area_mode>=3 and volume or 1) then
+        if o.placed==0 then return reply('Native construction rejected',false,false) end
+        if d.area_mode>=3 then return reply('Painted '..o.placed..' of '..volume,true,false) end
+        return reply('Native construction job queued',true,false)
+    end
     return reply('',true,true)
 end
 return function(r)

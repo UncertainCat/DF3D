@@ -211,7 +211,7 @@ struct WorkOrderState {
   uint32_t total=0; int64_t listRevision=0; uint8_t buildPhase=0; uint32_t buildDone=0,buildTotal=0;
 };
 struct ConstructionSelection {
-  int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=0;
+  int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=1;
   int64_t expectedListRevision=-1;
 };
 struct ConstructionFilter {

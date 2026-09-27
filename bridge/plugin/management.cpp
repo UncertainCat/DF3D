@@ -67,12 +67,23 @@ size_t workOrderHoldingCount=0;
 constexpr uint32_t kWorkOrderStepBudget=2048;
 // Global job-kind bits. Extend the reserved entries when those Lua builders land.
 struct BuilderEntry { m::ManagementAction action; uint32_t domainMask; bool enabled; };
-constexpr std::array<BuilderEntry,5> builderTable{{
+constexpr std::array<BuilderEntry,16> builderTable{{
   {m::ManagementAction::WorkOrderList,0x7,true}, // 0 candidates (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 1 task catalog (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 2 item-condition estimates
   {m::ManagementAction::Catalog,0x8,true},     // 3 construction materials
   {m::ManagementAction::CitizenList,0x10,false}, // 4 citizens recalculation
+  {m::ManagementAction::Catalog,0,false}, // 5 areas settings labels
+  {m::ManagementAction::Catalog,0,false}, // 6 areas per-pile summary
+  {m::ManagementAction::Catalog,0,false}, // 7 areas candidates/locations
+  {m::ManagementAction::Catalog,0,false}, // 8 production add-task tree
+  {m::ManagementAction::Catalog,0,false}, // 9 production materials
+  {m::ManagementAction::Catalog,0,false}, // 10 production workers
+  {m::ManagementAction::Catalog,0,false}, // 11 production crops/seeds
+  {m::ManagementAction::Catalog,0,false}, // 12 reports tab lists
+  {m::ManagementAction::Catalog,0,false}, // 13 reports unit list
+  {m::ManagementAction::Catalog,0,false}, // 14 reports unit log
+  {m::ManagementAction::Catalog,0,false}, // 15 agreements history
 }};
 uint32_t builderActive=0, builderStart=0, remainingSteps=kWorkOrderStepBudget;
 uint64_t builderSteps=0,builderLastUs=0,builderMaxUs=0;
@@ -145,7 +156,7 @@ struct Def {
   std::vector<ConstructionFootprint> footprints;
 };
 struct BuilderTiming { uint32_t stepsLast=0,stepsMax=0; uint64_t usLast=0,usMax=0; };
-std::array<BuilderTiming,5> builderTiming{};
+std::array<BuilderTiming,builderTable.size()> builderTiming{};
 uint32_t constructionCacheEntries=0,constructionCacheIds=0;
 
 struct Input {
@@ -441,6 +452,8 @@ void run(color_ostream& out) {
   if (!Lua::SafeCall(out, L, 1, 1) || !lua_istable(L, -1)) {
     status = m::ManagementStatus::Rejected;
     message = "Native management helper failed; no success reported";
+    // A Place helper can throw after creating buildings; force a world refresh.
+    if(action==m::ManagementAction::Place)mutated=true;
     remainingSteps=0; // No trustworthy work count after a helper error.
     lua_settop(L, top);
     publish();
@@ -449,6 +462,7 @@ void run(color_ostream& out) {
   if(const auto error=managementResultError(L,action); !error.empty()) {
     status=m::ManagementStatus::Rejected;
     message="Management helper contract failure: "+error;
+    if(action==m::ManagementAction::Place)mutated=true;
     remainingSteps=0;
     lua_settop(L,top);publish();return;
   }
@@ -671,9 +685,9 @@ void run(color_ostream& out) {
       each("filters",8,[&](){ConstructionFilter v;v.index=int16_t(n("index",0,7,-1));v.item_type=int16_t(n("item_type",-1,INT16_MAX,-1));v.item_subtype=int16_t(n("item_subtype",-1,INT16_MAX,-1));v.caption=str("caption",64);v.requirement=str("requirement",64);v.quantity=int32_t(n("quantity",-1,INT32_MAX,-1));rows.push_back(std::move(v));});
       return rows;
     };
-    auto readFootprint=[&]() {ConstructionFootprint v;v.direction=uint8_t(n("direction",0,4));v.width=uint16_t(n("width",1,31));v.height=uint16_t(n("height",1,31));v.center_x=int16_t(n("center_x",-1,30,-1));v.center_y=int16_t(n("center_y",-1,30,-1));return v;};
+    auto readFootprint=[&]() {ConstructionFootprint v;v.direction=uint8_t(n("direction",0,7));v.width=uint16_t(n("width",1,31));v.height=uint16_t(n("height",1,31));v.center_x=int16_t(n("center_x",-1,30,-1));v.center_y=int16_t(n("center_y",-1,30,-1));return v;};
     catalog.clear();
-    each("catalog",128,[&](){Def d;d.key=str("key",64);d.name=str("name",128);d.reason=str("reason",128);d.w=uint16_t(n("width",1,31,1));d.h=uint16_t(n("height",1,31,1));d.supported=boolean(L,"supported");d.family=str("family",64);d.subtype_key=str("subtype_key",64);d.custom_code=str("custom_code",64);d.native_name=str("native_name",128);d.area_mode=uint8_t(n("area_mode",0,4));d.orientations=uint8_t(n("orientations",0,31));d.max_width=uint16_t(n("max_width",0,31));d.max_height=uint16_t(n("max_height",0,31));d.max_depth=uint16_t(n("max_depth",0,256));d.filters=readFilters();each("footprints",5,[&](){d.footprints.push_back(readFootprint());});catalog.push_back(std::move(d));});
+    each("catalog",128,[&](){Def d;d.key=str("key",64);d.name=str("name",128);d.reason=str("reason",128);d.w=uint16_t(n("width",1,31,1));d.h=uint16_t(n("height",1,31,1));d.supported=boolean(L,"supported");d.family=str("family",64);d.subtype_key=str("subtype_key",64);d.custom_code=str("custom_code",64);d.native_name=str("native_name",128);d.area_mode=uint8_t(n("area_mode",0,4));d.orientations=uint8_t(n("orientations",0,255));d.max_width=uint16_t(n("max_width",0,31));d.max_height=uint16_t(n("max_height",0,31));d.max_depth=uint16_t(n("max_depth",0,256));d.filters=readFilters();each("footprints",8,[&](){d.footprints.push_back(readFootprint());});catalog.push_back(std::move(d));});
     construction.building_key=str("building_key",64);construction.filter=int16_t(n("filter",-1,7,-1));construction.filters=readFilters();
     construction.materials.clear();each("materials",128,[&](){ConstructionMaterial v;v.item_type=int16_t(n("item_type",-1,INT16_MAX,-1));v.item_subtype=int16_t(n("item_subtype",-1,INT16_MAX,-1));v.mat_type=int16_t(n("mat_type",-1,INT16_MAX,-1));v.mat_index=int32_t(n("mat_index",-1,INT32_MAX,-1));v.name=str("name",128);v.caption=str("caption",64);v.count=uint32_t(n("count",1,UINT32_MAX));construction.materials.push_back(std::move(v));});
     construction.total=uint32_t(n("total",0,UINT32_MAX));construction.list_revision=n("list_revision",0,INT64_MAX);construction.estimated=boolean(L,"estimated");

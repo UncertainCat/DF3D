@@ -16,7 +16,7 @@ func finish(code: int, message: String) -> void:
 func receipt(sequence: int) -> Dictionary:
 	for i in 300:
 		var value: Dictionary = world.poll_management()
-		if int(value.get("request_seq",0)) == sequence and int(value.get("status",S.Idle)) == S.Ok:
+		if int(value.get("request_seq",0)) == sequence and int(value.get("status",S.Idle)) in [S.Ok, S.Rejected]:
 			return value
 		await create_timer(0.01).timeout
 	return {}
@@ -281,6 +281,47 @@ func run() -> void:
 		assert(state.construction.footprint.direction == (4 if request.get("retracting",false) else 0))
 	await test_production()
 	# Host signals only after validating every expected payload.
+	# Exact local refusals must not consume host requests.
+	reject_report({"action":35}, "Missing management field: id")
+	reject_report({"action":35,"id":-1}, "invalid report inspection")
+	for key in ["id", "before_id"]:
+		for bad in [1.5, "1", true]:
+			var invalid := {"action":34}
+			invalid[key] = bad
+			reject_report(invalid, "Wrong management field type: " + key)
+	for pair in [["query", 1], ["announcements_only", 1]]:
+		var invalid := {"action":34}
+		invalid[pair[0]] = pair[1]
+		reject_report(invalid, "Wrong management field type: " + pair[0])
+	for invalid in [{"action":34,"query":"x".repeat(129)}, {"action":34,"query":String.chr(233).repeat(65)},
+		{"action":34,"id":5}, {"action":35,"id":0,"before_id":3}, {"action":35,"id":0,"query":"x"},
+		{"action":34,"id":-2}, {"action":34,"before_id":-2}, {"action":35,"id":2147483648}, {"action":34,"before_id":2147483648}]:
+		reject_report(invalid, "Invalid bounded report request")
+	var report_requests := [{"action":34}, {"action":34,"before_id":1084},
+		{"action":34,"id":-1,"before_id":-1,"query":"","announcements_only":false},
+		{"action":34,"query":String.chr(233).repeat(64)}, {"action":34,"before_id":0},
+		{"action":34,"before_id":2147483647}, {"action":35,"id":0,"query":"","before_id":-1},
+		# 41 is a report_ids reference in the session fixture.
+		{"action":35,"id":41}, {"action":35,"id":999999}, {"action":35,"id":2147483647}]
+	for request in report_requests:
+		sequence = world.management_request("reports", request)
+		assert(sequence > 0)
+		state = await receipt(sequence)
+		assert(not state.is_empty() and state.action == request.action)
+		if request.get("id", -1) == 999999:
+			assert(state.status == S.Rejected and state.message == "Report no longer exists")
+			continue
+		assert(state.status == S.Ok and state.message == ("Native report" if request.action == 35 else "Native reports"))
+		var report: Dictionary = state.report
+		assert(report.announcements_only == request.get("announcements_only", true) and report.detail == "")
+		var ids: Array = []
+		if request.action == 35: ids = [request.id]
+		elif request.get("before_id", -1) == 1084: ids = [1083,41,0]
+		elif request.get("before_id", -1) != 0 and request.get("query", "").is_empty():
+			for id in range(1099,1083,-1): ids.append(id)
+		assert(report.next_before_id == (1084 if ids.size() == 16 else -1))
+		assert(report.reports.size() == ids.size())
+		for index in ids.size(): assert_report_row(report.reports[index], ids[index])
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
 		await create_timer(0.01).timeout
@@ -448,3 +489,17 @@ func assert_production(p: Dictionary, request: Dictionary) -> void:
 		expected.created_job = 12 if request.action == 17 else -1
 		expected.detail = "Native workers select and haul inputs; queueing does not guarantee materials or labor. Work orders are not yet exposed. Workshop restricts workers (2)."
 	assert(p == expected)
+
+func reject_report(request: Dictionary, message: String) -> void:
+	assert(world.management_request("reports", request) == 0)
+	assert(world.last_error() == message)
+
+func assert_report_row(row: Dictionary, id: int) -> void:
+	assert(row.id == id)
+	assert(row.category == ("MOOD_BUILDING_CLAIMED" if id == 1098 else "Unknown" if id == 1097 else "CANCEL_JOB"))
+	assert(row.text == ("x".repeat(16384) if id == 1096 else "Doren Thosbutalath, Dwarven Child cancels Store item in stockpile: Item inaccessible."))
+	assert(row.year == 106 and row.year_tick == 139200 and row.repeat_count == 2)
+	assert(row.continuation == (id == 1099) and row.text_complete == (id != 1096))
+	assert(row.position_visible == (id != 1097) and row.position2_visible == (id not in [1097,1098]))
+	assert(row.position == (Vector3i(-1,-1,-1) if id == 1097 else Vector3i(2,3,4)))
+	assert(row.position2 == (Vector3i(-1,-1,-1) if id in [1097,1098] else Vector3i(5,6,7)))

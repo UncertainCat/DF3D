@@ -30,6 +30,7 @@ func run():
 	test_work_orders()
 	test_citizens()
 	test_production()
+	test_reports()
 	test_transport_replacement()
 	test_new_domain_detach()
 	var world := FakeWorld.new()
@@ -366,4 +367,35 @@ func test_production():
 		var calls := world.calls.size()
 		for i in 3: service.poll(1.0)
 		check(world.calls.size() == calls and observed.size() == before+1, "production outcomes never replay")
+	service.free()
+
+func test_reports():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	for action in [34,35]:
+		var request := {"action":action}
+		if action == 35: request.id = 999999
+		var ticket := service.submit("reports", request, func(t,r,q): observed.append([t,r,q]))
+		var before := observed.size()
+		service.poll(0.0)
+		var sent := world.calls.size()
+		check(world.calls.back() == {"domain":"reports","request":request}, "both report actions route intact")
+		check(not Contract.is_mutation(action), "reports are read-only")
+		if action == 34:
+			world.state = {"world_epoch":5,"revision":sent+10,"request_seq":sent,"action":action,
+				"status":Contract.ManagementStatus.Pending,"message":"Searching native reports"}
+			service.poll(0.0)
+			check(service.result(ticket).is_empty() and observed.size() == before and service._active == ticket, "Pending retains ticket without publishing")
+		var status: int = Contract.ManagementStatus.Ok if action == 34 else Contract.ManagementStatus.Rejected
+		var message := "Native reports" if action == 34 else "Report no longer exists"
+		world.state = {"world_epoch":5,"revision":sent+20,"request_seq":sent,"action":action,"status":status,"message":message}
+		service.poll(0.0)
+		check(observed.size() == before+1 and observed.back()[0] == ticket and observed.back()[2] == request, "report resolves matching ticket once")
+		check(service.result(ticket).status == status and service.result(ticket).message == message and observed.back()[1].message == message, "exact report reply retained")
+		check(not service._outcomes.has(ticket), "report has no mutation receipt")
+		for i in 3: service.poll(1.0)
+		check(world.calls.size() == sent and observed.size() == before+1, "report never replays")
+	check(not Contract.is_runtime(Service.Action.Alert), "native Alert stays retired")
 	service.free()

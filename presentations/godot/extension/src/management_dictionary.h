@@ -74,7 +74,7 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         return require("detail_index") && require("expected_revision") && require("unit_id") && require("member");
     case A::WorkDetailMode:
         return require("detail_index") && require("expected_revision") && require("mode");
-    case A::AgreementInspect: return require("id");
+    case A::ReportInspect: case A::AgreementInspect: return require("id");
     case A::TradeInspect: case A::TradeUpdate: case A::TradeGoods: case A::TradeBring:
         return require("depot_id");
     default: return true; // other domain identities retain their typed model/schema validation

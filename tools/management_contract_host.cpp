@@ -6,6 +6,7 @@
 #include <fstream>
 #include <thread>
 #include <stdexcept>
+#include <filesystem>
 namespace m=df3d::mirror;
 namespace sh=df3d::shm;
 constexpr uint64_t epoch=9007199254740993ULL;
@@ -194,7 +195,104 @@ flatbuffers::Offset<m::ProductionState> productionFixture(flatbuffers::FlatBuffe
   p.add_created_job(action==A::ProductionQueue?12:-1);p.add_next_cursor(list && q->cursor()==0?1024:0);p.add_detail(text);
   return p.Finish();
 }
+// reports.lua:11-23,31,57-68: native keys, blank detail and exclusive cursor.
+flatbuffers::Offset<m::ReportState> reportFixture(flatbuffers::FlatBufferBuilder& b,const m::ConstructionRequest& request) {
+  const auto& q=*request.report();
+  std::vector<int32_t> ids;
+  int32_t next=-1;
+  if(request.action()==m::ManagementAction::ReportInspect) {
+    if(q.id()!=999999)ids.push_back(q.id());
+  } else if(!q.query() || q.query()->size()==0) {
+    // e7/findings.md:6: native is oldest-first; pin current bridge newest-first for 08-B.
+    for(int id=1099;id>=1083;--id)if(q.before_id()<0 || id<q.before_id())ids.push_back(id);
+    for(int id:{41,0})if(q.before_id()<0 || id<q.before_id())ids.push_back(id);
+    if(ids.size()>16){ids.resize(16);next=ids.back();}
+  }
+  std::vector<flatbuffers::Offset<m::ReportInfo>> rows;
+  for(auto id:ids) {
+    const int kind=id==1098?1:id==1097?2:0;
+    auto category=b.CreateString(kind==0?"CANCEL_JOB":kind==1?"MOOD_BUILDING_CLAIMED":"Unknown");
+    auto text=b.CreateString(id==1096?std::string(16384,'x'):"Doren Thosbutalath, Dwarven Child cancels Store item in stockpile: Item inaccessible.");
+    m::ReportInfoBuilder row(b);row.add_id(id);row.add_category(category);row.add_text(text);
+    row.add_year(106);row.add_year_tick(139200);row.add_repeat_count(2);row.add_continuation(id==1099);
+    row.add_text_complete(id!=1096);
+    if(kind!=2){row.add_x(2);row.add_y(3);row.add_z(4);row.add_position_visible(true);}
+    if(kind==0){row.add_x2(5);row.add_y2(6);row.add_z2(7);row.add_position2_visible(true);}
+    rows.push_back(row.Finish());
+  }
+  return m::CreateReportState(b,b.CreateVector(rows),next,q.announcements_only(),b.CreateString(""));
+}
+int validateReportFixtures() {
+  try {
+    int checked=0;
+    for(int variant=0;variant<10;++variant) {
+      flatbuffers::FlatBufferBuilder rb;
+      const bool inspect=variant>=6;
+      auto payload=m::CreateReportRequest(rb,inspect?(variant==6?0:variant==7?41:variant==8?999999:INT32_MAX):-1,
+          variant==1?1084:variant==4?0:variant==5?INT32_MAX:-1,
+          rb.CreateString(variant==3?std::string(128,'q'):""),variant!=2);
+      m::ConstructionRequestBuilder r(rb);r.add_schema_version(m::kManagementVersion);r.add_client_id(1);
+      r.add_seq(1);r.add_world_epoch(epoch);r.add_action(inspect?m::ManagementAction::ReportInspect:m::ManagementAction::ReportList);r.add_report(payload);
+      rb.Finish(r.Finish());auto* q=flatbuffers::GetRoot<m::ConstructionRequest>(rb.GetBufferPointer());
+      if(auto error=m::validateConstructionRequest(*q))throw std::runtime_error(*error);
+      flatbuffers::FlatBufferBuilder b;auto report=reportFixture(b,*q);
+      auto message=b.CreateString(variant==8?"Report no longer exists":inspect?"Native report":"Native reports");
+      m::ManagementStateBuilder state(b);state.add_schema_version(m::kManagementVersion);state.add_revision(1);
+      state.add_world_epoch(epoch);state.add_client_id(1);state.add_request_seq(1);state.add_action(q->action());
+      state.add_status(variant==8?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(message);state.add_report(report);
+      b.Finish(state.Finish());
+      flatbuffers::Verifier verifier(b.GetBufferPointer(),b.GetSize());require(verifier.VerifyBuffer<m::ManagementState>(nullptr),"report fixture shape");
+      if(auto error=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))throw std::runtime_error(*error);
+      ++checked;
+    }
+    std::cout<<"REPORT_CONTRACT_FIXTURES_PASS "<<checked<<"\n";return 0;
+  } catch(const std::exception& error){std::cerr<<error.what()<<"\n";return 1;}
+}
+int sessionNotifications(const char* path) {
+#ifdef _WIN32
+  HANDLE mapping=CreateFileMappingA(INVALID_HANDLE_VALUE,nullptr,PAGE_READWRITE,0,
+      DWORD(sh::regionSize(m::kSessionCapacity,m::kSessionCommandCapacity)),m::kSessionRegionName);
+  if(!mapping || GetLastError()==ERROR_ALREADY_EXISTS) {
+    if(mapping)CloseHandle(mapping);
+    std::ofstream(path)<<"incomplete";return 77;
+  }
+  auto* region=static_cast<sh::RegionHeader*>(MapViewOfFile(mapping,FILE_MAP_ALL_ACCESS,0,0,0));
+  if(!region){CloseHandle(mapping);std::ofstream(path)<<"failed";return 1;}
+  int result=0;
+  try {
+    sh::initRegion(region,m::kSessionVersion,m::kSessionCapacity,m::kSessionCommandCapacity);
+    auto* owner=m::sessionOwner(region);
+    sh::atomicStoreRelease(&owner->created,sh::processCreated(GetCurrentProcess()));
+    sh::atomicStoreRelease(&owner->generation,1);sh::atomicStoreRelease(&owner->pid,GetCurrentProcessId());
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<m::ActiveNotificationGroup>> groups;
+    // notification_groups.h:26-40: counts retain source sizes, refs cap at 256.
+    std::vector<flatbuffers::Offset<m::UnitReportReference>> units;
+    groups.push_back(m::CreateActiveNotificationGroup(b,m::NotificationCategory::JobFailed,
+        b.CreateVector(std::vector<int32_t>{0,41}),2,b.CreateVector(units),0,true));
+    units={m::CreateUnitReportReference(b,17,m::UnitReportCategory::Combat),m::CreateUnitReportReference(b,18,m::UnitReportCategory::Sparring)};
+    groups.push_back(m::CreateActiveNotificationGroup(b,m::NotificationCategory::Combat,
+        b.CreateVector(std::vector<int32_t>{}),0,b.CreateVector(units),2,true));
+    std::vector<int32_t> ids;for(int id=0;id<256;++id)ids.push_back(id);
+    units.clear();groups.push_back(m::CreateActiveNotificationGroup(b,m::NotificationCategory::Weather,
+        b.CreateVector(ids),300,b.CreateVector(units),0,false));
+    auto records=b.CreateVector(groups);
+    m::SessionStateBuilder state(b);state.add_schema_version(m::kSessionVersion);state.add_revision(1);
+    state.add_phase(m::SessionPhase::Ready);state.add_fortress_valid(true);state.add_fortress_epoch(epoch);
+    state.add_active_notifications(records);state.add_active_notifications_complete(true);b.Finish(state.Finish());
+    if(auto error=m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())))throw std::runtime_error(*error);
+    require(sh::publishSnapshot(region,b.GetBufferPointer(),b.GetSize(),0),"session publish");
+    {std::ofstream(path)<<"ready";}
+    while(std::filesystem::exists(path))std::this_thread::sleep_for(std::chrono::milliseconds(2));
+  } catch(const std::exception& error){std::ofstream(path)<<"failed";std::cerr<<error.what()<<"\n";result=1;}
+  UnmapViewOfFile(region);CloseHandle(mapping);return result;
+#else
+  std::ofstream(path)<<"incomplete";return 77;
+#endif
+}
 int main(int argc,char** argv) {
+  if(argc>1 && std::string(argv[1])=="--validate-report-fixtures")return validateReportFixtures();
+  if(argc==3 && std::string(argv[1])=="--session-notifications")return sessionNotifications(argv[2]);
   if(argc>1 && std::string(argv[1])=="--validate-production-fixtures") {
     try {
       int checked=0;
@@ -303,6 +401,10 @@ int main(int argc,char** argv) {
       if(request && request->action()>=m::ManagementAction::ProductionList &&
           request->action()<=m::ManagementAction::FarmSetCrop)production=productionFixture(b,*request);
 
+      flatbuffers::Offset<m::ReportState> reports;
+      const bool isReport=request && (request->action()==m::ManagementAction::ReportList || request->action()==m::ManagementAction::ReportInspect);
+      const bool missing=isReport && request->action()==m::ManagementAction::ReportInspect && request->report()->id()==999999;
+      if(isReport){reports=reportFixture(b,*request);text=b.CreateString(missing?"Report no longer exists":request->action()==m::ManagementAction::ReportInspect?"Native report":"Native reports");}
       flatbuffers::Offset<m::ConstructionState> construction;
       if(request && (request->action()==m::ManagementAction::ConstructionMaterials || request->action()==m::ManagementAction::Preview)) {
         const auto key=b.CreateString(request->definition()->str());
@@ -312,10 +414,10 @@ int main(int argc,char** argv) {
         m::ConstructionStateBuilder c(b);c.add_building_key(key);c.add_filter(request->filter());
         c.add_filters(fs);c.add_list_revision(INT64_MAX);c.add_footprint(fp);construction=c.Finish();
       }
-      m::ManagementStateBuilder state(b);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      m::ManagementStateBuilder state(b);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
-      state.add_status(m::ManagementStatus::Ok);state.add_message(text);
+      state.add_status(missing?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
       state.add_building_id(2147483000);state.add_build_stage(-1);state.add_max_stage(-1);state.add_area(areas);
       auto finished=state.Finish();b.Finish(finished);
       const auto* value=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
@@ -338,7 +440,9 @@ int main(int argc,char** argv) {
         A::ConstructionMaterials,A::Preview,A::Preview,
         A::ProductionList,A::ProductionInspect,A::ProductionInspect,A::ProductionQueue,A::ProductionQueue,
         A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,A::ProductionJobEdit,
-        A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::ProductionList};
+        A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::FarmSetCrop,A::ProductionList,
+        A::ReportList,A::ReportList,A::ReportList,A::ReportList,A::ReportList,A::ReportList,
+        A::ReportInspect,A::ReportInspect,A::ReportInspect,A::ReportInspect};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -447,7 +551,15 @@ int main(int argc,char** argv) {
             (received!=37 || r->citizen()->query()->str()=="codec sentinels"),"detail inspect");break;
         case A::WorkDetailMode: require(r->citizen()->detail_index()==1 &&
             r->citizen()->expected_revision()==7 && r->citizen()->mode()==int(received)-33,"mode payload");break;
-        case A::ReportInspect: require(r->report() && r->report()->id()==2147483000 && r->report()->before_id()==-1,"report payload");break;
+        case A::ReportList: case A::ReportInspect:
+          if(received>62){
+            const int variant=int(received)-63;const auto* q=r->report();require(q!=nullptr,"report payload");
+            require(q->id()==(variant<6?-1:variant==6?0:variant==7?41:variant==8?999999:INT32_MAX),"report identity");
+            require(q->before_id()==(variant==1?1084:variant==4?0:variant==5?INT32_MAX:-1),"report cursor");
+            require(q->announcements_only()==(variant!=2),"report source");
+            require((q->query()?q->query()->size():0)==(variant==3?128:0),"report query bytes");break;
+          }
+          require(r->report() && r->report()->id()==2147483000 && r->report()->before_id()==-1,"report payload");break;
         case A::AgreementInspect: require(r->agreement() && r->agreement()->id()==2147483000 && r->agreement()->before_id()==-1 && !r->agreement()->pending_only(),"agreement payload");break;
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;

@@ -49,6 +49,33 @@
       "notes": "Exclusive local fake producer; occupied management channel returns77/incomplete. Never attaches to DF."
     },
     {
+      "id": "session_notifications_contract_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/session_notifications_contract_test.gd",
+      "completion": "^SESSION_NOTIFICATIONS_CONTRACT_TEST_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "root_build",
+        "extension_build"
+      ],
+      "notes": "Exclusive local fake producer; occupied session channel returns77/incomplete. Never attaches to DF."
+    },
+    {
+      "id": "report_contract_fixtures",
+      "lane": "core",
+      "kind": "native",
+      "executable": "build/tools/management_contract_host.exe",
+      "arguments": [
+        "--validate-report-fixtures"
+      ],
+      "completion": "^REPORT_CONTRACT_FIXTURES_PASS 10$",
+      "timeout": 20,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
       "id": "production_contract_fixtures",
       "lane": "core",
       "kind": "native",
@@ -442,7 +469,12 @@
       "script": "tools/smoke/install_connection_smoke.ps1",
       "completion": "INSTALL_CONNECTION_PASS",
       "timeout": 240,
-      "prerequisites": ["extension_build", "df_assets", "protected_live", "bridge_attested"],
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "protected_live",
+        "bridge_attested"
+      ],
       "notes": "Title-screen bridge and headless viewer asset startup with system-only PATH; no fortress load or save."
     },
     {

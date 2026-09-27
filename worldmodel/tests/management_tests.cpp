@@ -661,11 +661,11 @@ TEST_CASE("citizen validator rejects ambiguous membership and misaligned labor l
 TEST_CASE("report requests preserve native ID zero pagination and management ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest inspect;inspect.action=wm::ManagementAction::ReportInspect;inspect.report.id=0;
-  CHECK(c->send(inspect)==0);
+  CHECK(c->send(inspect)==0);CHECK(c->lastError()=="Refresh the management catalog first");
   auto [seq,client]=claim(p,*c);
   seq=c->send(inspect);REQUIRE(seq>0);auto* wire=p.pop();REQUIRE(wire->report());
   CHECK(wire->report()->id()==0);CHECK(wire->report()->before_id()==-1);CHECK(wire->report()->announcements_only());
-  CHECK(wire->citizen()==nullptr);CHECK(wire->work_order()==nullptr);CHECK(c->send(inspect)==0);
+  CHECK(wire->citizen()==nullptr);CHECK(wire->work_order()==nullptr);CHECK(c->send(inspect)==0);CHECK(c->lastError()=="Wait for the current management request");
   p.publish(3,client,seq,7,mm::ManagementAction::ReportInspect);REQUIRE(c->poll());
   wm::ManagementRequest list;list.action=wm::ManagementAction::ReportList;
   list.report.beforeId=91;list.report.query="cancelled";list.report.announcementsOnly=false;
@@ -678,39 +678,69 @@ TEST_CASE("report requests preserve native ID zero pagination and management own
     if(which==1)bad.report.query=std::string(129,'x');
     if(which==2)bad.report.id=0;
     if(which==3){bad.action=wm::ManagementAction::ReportInspect;bad.report.id=-1;}
-    CHECK(c->send(bad)==0);
+    CHECK(c->send(bad)==0);CHECK(c->lastError()==(which<2?"invalid report request":which==2?"unexpected report identity":"invalid report inspection"));
   }
   p.publish(5,0,seq,8,mm::ManagementAction::Catalog,mm::ManagementStatus::Idle);REQUIRE(c->poll());
-  CHECK(c->send(inspect)==0);CHECK(c->send(list)==0);
+  CHECK(c->send(inspect)==0);CHECK(c->lastError()=="Refresh the management catalog first");
+  CHECK(c->send(list)==0);CHECK(c->lastError()=="Refresh the management catalog first");
 }
-TEST_CASE("report response preserves native repeats continuation and only visible focus positions") {
+TEST_CASE("report response preserves every list field and both focus positions") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   auto [seq,client]=claim(p,*c);
-  wm::ManagementRequest request;request.action=wm::ManagementAction::ReportInspect;request.report.id=0;
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ReportList;
   seq=c->send(request);REQUIRE(seq>0);p.pop();
-  flatbuffers::FlatBufferBuilder b;auto category=b.CreateString("Job cancellation"),text=b.CreateString("Needs empty food storage item.");
-  mm::ReportInfoBuilder row(b);row.add_id(0);row.add_category(category);row.add_text(text);
-  row.add_year(117);row.add_year_tick(94234);row.add_repeat_count(3);row.add_continuation(true);row.add_text_complete(false);
-  row.add_x(78);row.add_y(100);row.add_z(128);row.add_position_visible(true);auto record=row.Finish();
-  auto rows=b.CreateVector(std::vector<flatbuffers::Offset<mm::ReportInfo>>{record});
-  mm::ReportStateBuilder domain(b);domain.add_reports(rows);domain.add_announcements_only(false);auto data=domain.Finish();
+  flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<mm::ReportInfo>> records;
+  // reports.lua:11-23,57-63; 16 rows and last scanned ID, not an invented cursor.
+  for(int id=1099;id>=1084;--id) {
+    auto category=b.CreateString("CANCEL_JOB"),text=b.CreateString(id==1099?std::string(16384,'x'):"Native text");
+    mm::ReportInfoBuilder row(b);row.add_id(id);row.add_category(category);row.add_text(text);
+    row.add_year(106);row.add_year_tick(139200);row.add_repeat_count(2);row.add_continuation(true);row.add_text_complete(id!=1099);
+    row.add_x(2);row.add_y(3);row.add_z(4);row.add_position_visible(true);
+    row.add_x2(5);row.add_y2(6);row.add_z2(7);row.add_position2_visible(true);records.push_back(row.Finish());
+  }
+  auto rows=b.CreateVector(records);auto empty=b.CreateString("");
+  mm::ReportStateBuilder domain(b);domain.add_reports(rows);domain.add_next_before_id(1084);domain.add_detail(empty);domain.add_announcements_only(true);auto data=domain.Finish();
   mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
-  state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);state.add_action(mm::ManagementAction::ReportInspect);
+  state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);state.add_action(mm::ManagementAction::ReportList);
   state.add_status(mm::ManagementStatus::Ok);state.add_report(data);b.Finish(state.Finish());
   REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
   REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
-  const auto& r=c->state().report;REQUIRE(r.reports.size()==1);CHECK(r.nextBeforeId==-1);CHECK_FALSE(r.announcementsOnly);
-  const auto& v=r.reports[0];CHECK(v.id==0);CHECK(v.year==117);CHECK(v.yearTick==94234);CHECK(v.repeatCount==3);
-  CHECK(v.continuation);CHECK_FALSE(v.textComplete);CHECK(v.category=="Job cancellation");
-  CHECK(v.positionVisible);CHECK(v.x==78);CHECK(v.y==100);CHECK(v.z==128);CHECK_FALSE(v.position2Visible);CHECK(v.x2==-1);
+  const auto& r=c->state().report;REQUIRE(r.reports.size()==16);CHECK(r.nextBeforeId==1084);CHECK(r.announcementsOnly);CHECK(r.detail.empty());
+  for(size_t i=0;i<r.reports.size();++i) {
+    const auto& v=r.reports[i];CHECK(v.id==1099-int(i));CHECK(v.year==106);CHECK(v.yearTick==139200);CHECK(v.repeatCount==2);
+    CHECK(v.continuation);CHECK(v.textComplete==(i!=0));CHECK(v.category=="CANCEL_JOB");CHECK(v.text==(i==0?std::string(16384,'x'):"Native text"));
+    CHECK(v.positionVisible);CHECK(v.x==2);CHECK(v.y==3);CHECK(v.z==4);
+    CHECK(v.position2Visible);CHECK(v.x2==5);CHECK(v.y2==6);CHECK(v.z2==7);
+  }
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,client,seq);REQUIRE(c->poll());CHECK(c->state().report.reports.empty());
+}
+TEST_CASE("report inspection preserves ID zero false source and hidden second position") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);auto [seq,client]=claim(p,*c);
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ReportInspect;request.report.id=0;request.report.announcementsOnly=false;
+  seq=c->send(request);REQUIRE(seq>0);p.pop();
+  flatbuffers::FlatBufferBuilder b;auto category=b.CreateString("CANCEL_JOB"),text=b.CreateString(std::string(16384,'x'));
+  mm::ReportInfoBuilder row(b);row.add_id(0);row.add_category(category);row.add_text(text);
+  row.add_year(106);row.add_year_tick(139200);row.add_repeat_count(2);row.add_continuation(true);row.add_text_complete(false);
+  row.add_x(2);row.add_y(3);row.add_z(4);row.add_position_visible(true);auto record=row.Finish();
+  auto report=mm::CreateReportState(b,b.CreateVector(std::vector{record}),-1,false,b.CreateString(""));
+  mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
+  state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);state.add_action(mm::ManagementAction::ReportInspect);
+  state.add_status(mm::ManagementStatus::Ok);state.add_report(report);b.Finish(state.Finish());
+  REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+  REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
+  const auto& r=c->state().report;REQUIRE(r.reports.size()==1);CHECK(r.nextBeforeId==-1);CHECK_FALSE(r.announcementsOnly);CHECK(r.detail.empty());
+  const auto& v=r.reports[0];CHECK(v.id==0);CHECK(v.year==106);CHECK(v.yearTick==139200);CHECK(v.repeatCount==2);
+  CHECK(v.continuation);CHECK_FALSE(v.textComplete);CHECK(v.category=="CANCEL_JOB");CHECK(v.text==std::string(16384,'x'));
+  CHECK(v.positionVisible);CHECK(v.x==2);CHECK(v.y==3);CHECK(v.z==4);
+  CHECK_FALSE(v.position2Visible);CHECK(v.x2==-1);CHECK(v.y2==-1);CHECK(v.z2==-1);
 }
 TEST_CASE("report validation bounds total text and rejects hidden or malformed focus coordinates") {
   for(int which=0;which<6;++which){
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::ReportInfo>> rows;
     const int count=which==0?9:which==1?2:1;
     for(int i=0;i<count;++i){
-      auto category=b.CreateString("Report"),text=b.CreateString(which==0?std::string(16384,'x'):"Native text");
+      auto category=b.CreateString("CANCEL_JOB"),text=b.CreateString(which==0?std::string(16384,'x'):"Native text");
       mm::ReportInfoBuilder row(b);row.add_id(which==1?0:i);row.add_category(category);row.add_text(text);
       if(which==2)row.add_x(1);
       if(which==3)row.add_position_visible(true);
@@ -722,7 +752,32 @@ TEST_CASE("report validation bounds total text and rejects hidden or malformed f
     mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
     state.add_world_epoch(7);state.add_action(mm::ManagementAction::ReportList);state.add_status(mm::ManagementStatus::Ok);
     state.add_report(data);b.Finish(state.Finish());
-    CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
+    const auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    REQUIRE(error.has_value());
+    CHECK(*error==(which==0?"report text budget exceeded":which==2 || which==3?"invalid report location":"invalid report row"));
+  }
+}
+TEST_CASE("report wire bounds accept limits and reject over limits with exact reasons") {
+  for(int which=0;which<8;++which)for(bool over:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::ReportInfo>> rows;
+    const int count=which==0?(over?17:16):which==1?(over?9:8):1;
+    for(int i=0;i<count;++i) {
+      auto category=b.CreateString("CANCEL_JOB");
+      auto text=b.CreateString(which==1 || which==2?std::string(16384+(which==2 && over?1:0),'x'):"");
+      mm::ReportInfoBuilder row(b);row.add_id(count-1-i);row.add_category(category);row.add_text(text);
+      row.add_year_tick(which==3?(over?403200:403199):0);
+      row.add_repeat_count(which==4 && over?-1:0);
+      row.add_year(which==5 && over?-1:0);
+      if(which==6 && over)row.add_id(-1);
+      rows.push_back(row.Finish());
+    }
+    auto report=mm::CreateReportState(b,b.CreateVector(rows),which==7 && over?-2:-1,true,b.CreateString(""));
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(1);
+    state.add_world_epoch(7);state.add_action(mm::ManagementAction::ReportList);state.add_status(mm::ManagementStatus::Ok);
+    state.add_report(report);b.Finish(state.Finish());
+    const auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    REQUIRE(error.has_value()==over);
+    if(over)CHECK(*error==(which==0 || which==7?"invalid report state":which==1?"report text budget exceeded":"invalid report row"));
   }
 }
 TEST_CASE("agreement requests retain ID zero pending filter and exclusive cursor ownership") {

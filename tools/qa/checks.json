@@ -111,7 +111,7 @@
       "arguments": [
         "--validate-fixtures"
       ],
-      "completion": "^CITIZEN_CONTRACT_FIXTURES_PASS 18$",
+      "completion": "^CITIZEN_CONTRACT_FIXTURES_PASS 24$",
       "timeout": 20,
       "prerequisites": [
         "root_build"

@@ -9,6 +9,83 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("work detail request boundaries and absent optional edits") {
+  auto check=[](const wm::ManagementRequest& r,const std::string& expected) {
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,1,7);
+    auto error=wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()));
+    CHECK(error.value_or("")==expected);
+  };
+  wm::ManagementRequest r;r.action=wm::ManagementAction::WorkDetailCreate;r.citizen.expectedRevision=INT64_MAX;
+  check(r,"");r.citizen.name="";r.citizen.labors={};check(r,"");
+  r.citizen.unitId=-2;check(r,"invalid citizen request");r.citizen.unitId=-1;
+  r.citizen.detailIndex=-2;check(r,"invalid citizen request");r.citizen.detailIndex=-1;
+  r.citizen.member=0;check(r,"unexpected citizen edit fields");r.citizen.member=-1;
+  r.citizen.mode=0;check(r,"unexpected citizen edit fields");r.citizen.mode=-1;
+  r.citizen.edit=1;check(r,"unexpected work detail edit");r.citizen.edit=0;
+  r.citizen.onlyAssigned=0;check(r,"unexpected citizen work scope");r.citizen.onlyAssigned=-1;
+  r.citizen.expectedRevision=uint64_t(INT64_MAX)+1;check(r,"invalid citizen request");r.citizen.expectedRevision=INT64_MAX;
+  r.citizen.name="x";check(r,"unexpected work detail name");r.citizen.name="";
+  r.citizen.unitId=0;check(r,"unexpected new work detail identity");r.citizen.unitId=-1;
+  r.citizen.expectedRevision=0;check(r,"work detail receipt required");r.citizen.expectedRevision=1;
+  for(auto action:{wm::ManagementAction::WorkDetailDelete,wm::ManagementAction::WorkDetailEdit}) {
+    r.action=action;r.citizen.edit=action==wm::ManagementAction::WorkDetailEdit?1:0;
+    check(r,"work detail index required");r.citizen.detailIndex=0;check(r,"");
+    r.citizen.detailIndex=127;check(r,"");r.citizen.detailIndex=128;check(r,"invalid citizen request");
+    r.citizen.detailIndex=-1;
+  }
+  r.citizen.detailIndex=0;r.citizen.edit=1;
+  r.citizen.name=std::string(160,'x');check(r,"");r.citizen.name+='x';check(r,"work detail name too long");
+  r.citizen.name="";check(r,"");r.citizen.edit=0;check(r,"invalid work detail edit");
+  r.citizen.edit=4;check(r,"invalid work detail edit");r.citizen.edit=2;
+  for(int i=0;i<94;++i)r.citizen.labors.push_back(i);
+  check(r,"");
+  r.citizen.labors.push_back(94);check(r,"too many work detail labors");
+  for(auto values:{std::vector<int16_t>{-1},std::vector<int16_t>{94},std::vector<int16_t>{0,0}}) {
+    r.citizen.labors=values;check(r,"invalid work detail labor");
+  }
+  r.citizen.labors={};check(r,"");r.citizen.edit=3;check(r,"");
+  r.citizen.name="x";check(r,"unexpected work detail name");r.citizen.name="";
+  r.citizen.labors={1};check(r,"unexpected work detail labors");r.citizen.labors={};
+  r.action=wm::ManagementAction::CitizenWorkScope;r.citizen.edit=0;r.citizen.detailIndex=-1;
+  check(r,"invalid citizen work scope");r.citizen.unitId=0;
+  for(int value:{0,1}) {r.citizen.onlyAssigned=value;check(r,"");}
+  for(int value:{-1,2}) {r.citizen.onlyAssigned=value;check(r,"invalid citizen work scope");}
+  r={};r.action=wm::ManagementAction::WorkDetailList;check(r,"");r.citizen.cursor=1;
+  check(r,"work detail list revision required");r.citizen.expectedListRevision=INT64_MAX;check(r,"");
+  r.citizen.expectedListRevision=uint64_t(INT64_MAX)+1;check(r,"invalid work detail list revision");
+  r.citizen.expectedListRevision=1;r.action=wm::ManagementAction::CitizenList;check(r,"unexpected work detail list revision");
+}
+
+TEST_CASE("citizen codec preserves every appended state field and defaults") {
+  for(bool populated:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto skill=b.CreateString(populated?"Legendary Miner":"");
+    auto error=b.CreateString(populated?"Row exceeds name cap":"");
+    wire::TilePos origin(0,0,0);
+    wire::CitizenInfoBuilder person(b);person.add_id(0);person.add_origin(&origin);
+    if(populated) {
+      person.add_revision(INT64_MAX);person.add_detail_member(1);person.add_detail_skill(1);
+      person.add_detail_skill_rating(15);person.add_detail_skill_name(skill);person.add_portrait_state(3);person.add_row_error(error);
+    }
+    auto u=person.Finish();
+    wire::WorkDetailInfoBuilder detail(b);detail.add_index(0);
+    if(populated){detail.add_icon(18);detail.add_row_error(error);}
+    auto d=detail.Finish();auto people=b.CreateVector(std::vector{u});auto details=b.CreateVector(std::vector{d});
+    auto recalc=b.CreateString(populated?"Native recalculation failed; labors may be stale":"");
+    wire::CitizenStateBuilder state(b);state.add_citizens(people);state.add_details(details);
+    if(populated){state.add_recalc_done(1);state.add_recalc_total(5000);state.add_recalc_error(recalc);state.add_detail_list_revision(INT64_MAX);}
+    b.Finish(state.Finish());auto decoded=codec::decodeCitizen(flatbuffers::GetRoot<wire::CitizenState>(b.GetBufferPointer()));
+    REQUIRE(decoded.citizens.size()==1);REQUIRE(decoded.details.size()==1);
+    const auto& row=decoded.citizens[0];CHECK(row.revision==(populated?INT64_MAX:0));
+    CHECK(row.detailMember==(populated?1:-1));CHECK(row.detailSkill==(populated?1:-1));
+    CHECK(row.detailSkillRating==(populated?15:-1));CHECK(row.detailSkillName==(populated?"Legendary Miner":""));
+    CHECK(row.portraitState==(populated?3:0));CHECK(row.rowError==(populated?"Row exceeds name cap":""));
+    CHECK(decoded.details[0].icon==(populated?18:-2));CHECK(decoded.details[0].rowError==row.rowError);
+    CHECK(decoded.recalcDone==(populated?1:0));CHECK(decoded.recalcTotal==(populated?5000:0));
+    CHECK(decoded.detailListRevision==(populated?INT64_MAX:0));CHECK(decoded.recalcError==(populated?"Native recalculation failed; labors may be stale":""));
+  }
+}
+
 TEST_CASE("management encoding isolates domain payloads while preserving envelope identity") {
   wm::ManagementRequest request;
   request.area.id = 0;

@@ -146,6 +146,32 @@ int main(int argc,char** argv) {
     }
     test(A::WorkOrderInspect,"return {ok=true,message='ok',active_kinds=31,steps=2048}",true);
     test(A::WorkOrderInspect,"return {ok=true,message='ok',active_kinds=0,steps=0}",true);
+    // Citizen envelopes use signed-safe revisions and bounded progress on every route.
+    for(auto action:{A::CitizenList,A::CitizenInspect,A::WorkDetailList,A::WorkDetailInspect,
+                     A::WorkDetailMembership,A::WorkDetailMode,A::WorkDetailCreate,
+                     A::WorkDetailDelete,A::WorkDetailEdit,A::CitizenWorkScope}) {
+      for(const auto* field:{"revision","detail_list_revision","recalc_done","recalc_total"}) {
+        const bool progress=std::string(field).starts_with("recalc_");
+        const std::string limit=progress?"UINT32_MAX":"INT64_MAX";
+        const std::string prefix="return {ok=false,message='Citizens inspected',recalc_total=4294967295,"+std::string(field)+"=";
+        for(const auto* value:{"0",progress?"4294967295":"9223372036854775807"})
+          test(action,(prefix+value+"}").c_str(),true);
+        for(const auto* value:{"-1","1.0","1.5","'1'",progress?"4294967296":"9223372036854775808.0"}) {
+          test(action,(prefix+value+"}").c_str(),false);
+          if(df3d_management::managementResultError(L,action)!=std::string(field)+" must be an integer in 0.."+limit)
+            throw std::runtime_error("citizen exact integer refusal");
+        }
+      }
+      test(action,"return {ok=false,message='',recalc_done=1,recalc_total=0}",false);
+      if(df3d_management::managementResultError(L,action)!="recalc_done exceeds recalc_total")
+        throw std::runtime_error("citizen exact progress refusal");
+      for(const auto* rows:{"citizens","details"}) {
+        const auto code=std::string("return {ok=false,message='',")+rows+"={{revision=1.5}}}";
+        test(action,code.c_str(),false);
+        if(df3d_management::managementResultError(L,action)!="revision must be an integer in 0..INT64_MAX")
+          throw std::runtime_error("citizen exact row revision refusal");
+      }
+    }
     // Transport preserves all 64 bits even though published revisions deliberately
     // mask the high bit. Use integer push, the bridge's Lua::Push integral path.
     auto pushInteger=function<decltype(&lua_pushinteger)>("lua_pushinteger");

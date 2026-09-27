@@ -291,22 +291,26 @@ func test_citizens():
 	var requests := [{"action":28,"query":"Citizen","cursor":32}, {"action":29,"unit_id":0},
 		{"action":30,"query":"Custom","cursor":16}, {"action":31,"detail_index":1,"unit_id":0},
 		{"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":1},
-		{"action":33,"detail_index":1,"expected_revision":7,"mode":3}]
+		{"action":33,"detail_index":1,"expected_revision":7,"mode":3},
+		{"action":64,"expected_revision":7}, {"action":65,"detail_index":1,"expected_revision":7},
+		{"action":66,"detail_index":1,"expected_revision":7,"edit":1,"name":"MinersX"},
+		{"action":67,"unit_id":0,"expected_revision":7,"only_assigned":1}]
 	for request in requests:
 		var action: int = request.action
 		var ticket := service.submit("citizens", request, callback)
 		var before := observed.size()
 		service.poll(0.0)
-		check(world.calls.back() == {"domain":"citizens","request":request}, "all six citizen actions dispatch intact")
-		var status: int = Contract.ManagementStatus.Rejected if action == 32 else Contract.ManagementStatus.Ok
+		check(world.calls.back() == {"domain":"citizens","request":request}, "all ten citizen actions dispatch intact")
+		var status: int = Contract.ManagementStatus.Rejected if action in [32,65] else Contract.ManagementStatus.Ok
 		world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),
-			"status":status,"action":action,"message":refusal if action == 32 else "Observed"}
+			"status":status,"action":action,"message":refusal if action in [32,65] else "Citizens inspected",
+			"citizen":{"recalc_done":1,"recalc_total":5000}}
 		service.poll(0.0)
 		check(observed.size() == before+1 and observed.back()[0] == ticket and observed.back()[2] == request, "citizen reply reaches its ticket")
 		check(service.result(ticket).status == status, "citizen status retained")
 		check(service._outcomes.has(ticket) == (action >= 32), "only citizen mutations retain receipts")
 		check(Contract.is_mutation(action) == (action >= 32), "citizen mutation classification")
-		if action == 32:
+		if action in [32,65]:
 			check(service.result(ticket).message == refusal and observed.back()[1].message == refusal, "stale revision refusal reaches observer")
 		var calls := world.calls.size()
 		for index in 3: service.poll(1.0)

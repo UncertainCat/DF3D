@@ -71,6 +71,38 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.citizen();
+  if(action>=A::WorkDetailCreate && action<=A::CitizenWorkScope) {
+    // Boundary observations are assembled from citizens.lua:10-13,54-60,87-90,156-161.
+    // INT64_MAX is a transport boundary, not a claim about a recorded hash.
+    auto empty=b.CreateString("");auto error=b.CreateString("Row exceeds name cap");
+    auto labors=b.CreateVector(std::vector<int16_t>{});auto names=b.CreateVectorOfStrings(std::vector<std::string>{});
+    auto members=b.CreateVector(std::vector<int32_t>{});
+    std::vector<flatbuffers::Offset<m::WorkDetailInfo>> ds;
+    std::vector<flatbuffers::Offset<m::CitizenInfo>> us;
+    if(action!=A::WorkDetailDelete && action!=A::CitizenWorkScope) {
+      auto name=b.CreateString(action==A::WorkDetailCreate?"Custom Detail 0":"");
+      m::WorkDetailInfoBuilder d(b);d.add_index(0);d.add_revision(INT64_MAX);d.add_name(name);d.add_reason(empty);
+      d.add_labors(labors);d.add_labor_names(names);d.add_assigned_units(members);d.add_mode(1);
+      d.add_editable(true);d.add_mode_editable(true);
+      d.add_icon(action==A::WorkDetailCreate?10:q->edit()==1?-2:q->edit()==2?-1:18);
+      if(action==A::WorkDetailEdit)d.add_row_error(error);
+      ds.push_back(d.Finish());
+    }
+    if(action==A::CitizenWorkScope) {
+      m::TilePos origin(0,0,0);m::CitizenInfoBuilder u(b);u.add_id(q->unit_id());u.add_origin(&origin);
+      u.add_name(empty);u.add_profession(empty);u.add_job(empty);u.add_reason(empty);u.add_labors(labors);u.add_labor_names(names);
+      u.add_eligible(true);
+      u.add_revision(INT64_MAX);u.add_only_assigned_jobs(q->only_assigned()==1);u.add_row_error(error);u.add_portrait_state(3);
+      us.push_back(u.Finish());
+    }
+    auto details=b.CreateVector(ds);auto citizens=b.CreateVector(us);
+    auto recalc=b.CreateString(action==A::WorkDetailDelete?"Native recalculation failed; labors may be stale":"");
+    m::CitizenStateBuilder c(b);c.add_details(details);c.add_citizens(citizens);c.add_detail_list_revision(INT64_MAX);
+    if(action==A::WorkDetailCreate || action==A::WorkDetailEdit)c.add_selected_detail(0);
+    if(action==A::CitizenWorkScope)c.add_selected_unit(q->unit_id());
+    c.add_recalc_done(1);c.add_recalc_total(5000);c.add_recalc_error(recalc);
+    return c.Finish();
+  }
   std::vector<flatbuffers::Offset<m::WorkDetailInfo>> details;
   std::vector<flatbuffers::Offset<m::CitizenInfo>> people;
   auto detail=[&](int index) {
@@ -407,6 +439,23 @@ int main(int argc,char** argv) {
               "cannot-be-everybody fixture preserves stored mode");
         ++checked;
       }
+      for(int action=64;action<=67;++action)for(int edit=1;edit<=(action==66?3:1);++edit) {
+        flatbuffers::FlatBufferBuilder rb;
+        auto name=rb.CreateString(action==66 && edit==1?"MinersX":"");
+        auto labors=rb.CreateVector(action==66 && edit==2?std::vector<int16_t>{1}:std::vector<int16_t>{});
+        m::CitizenRequestBuilder c(rb);c.add_expected_revision(INT64_MAX);c.add_name(name);c.add_labors(labors);
+        if(action==65 || action==66)c.add_detail_index(0);
+        if(action==66)c.add_edit(edit);
+        if(action==67){c.add_unit_id(0);c.add_only_assigned(1);}
+        auto payload=c.Finish();m::ConstructionRequestBuilder request(rb);request.add_client_id(1);request.add_seq(1);
+        request.add_world_epoch(epoch);request.add_action(static_cast<m::ManagementAction>(action));request.add_citizen(payload);
+        rb.Finish(request.Finish());auto* q=flatbuffers::GetRoot<m::ConstructionRequest>(rb.GetBufferPointer());
+        if(auto error=m::validateConstructionRequest(*q))throw std::runtime_error(*error);
+        flatbuffers::FlatBufferBuilder b;auto fixture=citizenFixture(b,*q);m::ManagementStateBuilder s(b);
+        s.add_revision(1);s.add_action(q->action());s.add_status(m::ManagementStatus::Ok);s.add_citizen(fixture);b.Finish(s.Finish());
+        if(auto error=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))throw std::runtime_error(*error);
+        ++checked;
+      }
       for(int action=20;action<=27;++action) {
         flatbuffers::FlatBufferBuilder b;auto fixture=workOrderFixture(b,action==27);
         m::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(epoch);
@@ -454,8 +503,9 @@ int main(int argc,char** argv) {
       if(request && request->action()>=m::ManagementAction::WorkOrderList &&
           request->action()<=m::ManagementAction::WorkOrderCatalog)work=workOrderFixture(b,request->action()==m::ManagementAction::WorkOrderCatalog);
       flatbuffers::Offset<m::CitizenState> citizens;
-      if(request && request->action()>=m::ManagementAction::CitizenList &&
-          request->action()<=m::ManagementAction::WorkDetailMode)citizens=citizenFixture(b,*request);
+      if(request && ((request->action()>=m::ManagementAction::CitizenList &&
+          request->action()<=m::ManagementAction::WorkDetailMode) ||
+          (request->action()>=m::ManagementAction::WorkDetailCreate && request->action()<=m::ManagementAction::CitizenWorkScope)))citizens=citizenFixture(b,*request);
       flatbuffers::Offset<m::ProductionState> production;
       if(request && request->action()>=m::ManagementAction::ProductionList &&
           request->action()<=m::ManagementAction::FarmSetCrop)production=productionFixture(b,*request);
@@ -508,7 +558,8 @@ int main(int argc,char** argv) {
         A::ReportInspect,A::ReportInspect,A::ReportInspect,A::ReportInspect,
         A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,
         A::AgreementInspect,A::AgreementInspect,A::AgreementInspect,A::AgreementList,
-        A::AgreementList,A::AgreementList,A::AgreementInspect};
+        A::AgreementList,A::AgreementList,A::AgreementInspect,
+        A::WorkDetailCreate,A::WorkDetailDelete,A::WorkDetailEdit,A::WorkDetailEdit,A::WorkDetailEdit,A::CitizenWorkScope};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -523,6 +574,17 @@ int main(int argc,char** argv) {
         ++received;
         if(received>1)require(r->world_epoch()==epoch,"64-bit world identity");
         switch(r->action()) {
+        case A::WorkDetailCreate: case A::WorkDetailDelete: case A::WorkDetailEdit: case A::CitizenWorkScope: {
+          const auto* c=r->citizen();require(c && c->expected_revision()==INT64_MAX,"work detail revision boundary");
+          if(r->action()==A::WorkDetailEdit) {
+            require(c->edit()>=1 && c->edit()<=3,"work detail edit selector");
+            require(c->name()->str()==(c->edit()==1?"MinersX":""),"rename payload");
+            require(c->labors()->size()==(c->edit()==2?1:0),"labor payload");
+            if(c->edit()==2)require(c->labors()->Get(0)==1,"labor identity");
+          }
+          if(r->action()==A::CitizenWorkScope)require(c->unit_id()==0 && c->only_assigned()==1,"scope payload");
+          break;
+        }
         case A::Catalog:
           require(r->building_id()==-1 && r->width()==1 && r->height()==1 && r->direction()==0 &&
               r->origin() && r->origin()->x()==0 && r->origin()->y()==0 && r->origin()->z()==0 &&
@@ -608,6 +670,8 @@ int main(int argc,char** argv) {
           auto* v=r->citizen();if(received>24){require(v && v->mode()==-1 && v->unit_id()==0 && v->detail_index()==1 && v->expected_revision()==7 && v->member()==(received==32?1:0),"membership payload");break;}require(v && v->unit_id()==2147483000 && v->detail_index()==127 && v->expected_revision()==epoch && v->member()==1 && v->mode()==-1,"citizen payload");break;
         }
         case A::WorkDetailList: case A::CitizenList: {
+          if(r->action()==A::WorkDetailList && r->citizen()->cursor()>0)
+            require(r->citizen()->expected_list_revision()==INT64_MAX,"list revision boundary");
           auto* v=r->citizen();require(v->query()->str()==(r->action()==A::CitizenList?"Citizen":"") &&
               v->cursor()==(received==26?16:received==30?32:0),"citizen paging payload");break;
         }

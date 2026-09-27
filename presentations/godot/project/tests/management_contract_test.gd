@@ -208,7 +208,7 @@ func run() -> void:
 	reject_citizen({"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":2}, "Invalid bounded citizen request")
 	for query in ["x".repeat(129),String.chr(233).repeat(65)]:
 		reject_citizen({"action":30,"query":query}, "Invalid bounded citizen request")
-	var citizen_requests := [{"action":30,"query":"","cursor":0}, {"action":30,"query":"","cursor":16,"expected_list_revision":7},
+	var citizen_requests := [{"action":30,"query":"","cursor":0}, {"action":30,"query":"","cursor":16,"expected_list_revision":9223372036854775807},
 		{"action":31,"detail_index":1}, {"action":31,"detail_index":1,"unit_id":0},
 		{"action":28,"query":"Citizen","cursor":0}, {"action":28,"query":"Citizen","cursor":32},
 		{"action":29,"unit_id":0},
@@ -322,6 +322,7 @@ func run() -> void:
 		assert(report.reports.size() == ids.size())
 		for index in ids.size(): assert_report_row(report.reports[index], ids[index])
 	await test_agreements()
+	await test_work_detail_edits()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -332,6 +333,36 @@ func run() -> void:
 func reject_work_order(request: Dictionary, error: String) -> void:
 	assert(world.management_request("work_orders", request) == 0)
 	assert(world.last_error() == error)
+
+func test_work_detail_edits() -> void:
+	for bad_labors in ["1", 1, [1.0], ["1"]]:
+		var request := {"action":A.WorkDetailEdit,"detail_index":0,"expected_revision":1,"edit":2,"labors":bad_labors}
+		reject_citizen(request, "Citizen labors must be integers" if bad_labors is Array else "Wrong management field type: labors")
+	var requests := [
+		{"action":A.WorkDetailCreate}, {"action":A.WorkDetailDelete,"detail_index":0},
+		{"action":A.WorkDetailEdit,"detail_index":0,"edit":1,"name":"MinersX"},
+		{"action":A.WorkDetailEdit,"detail_index":0,"edit":2,"labors":[1]},
+		{"action":A.WorkDetailEdit,"detail_index":0,"edit":3},
+		{"action":A.CitizenWorkScope,"unit_id":0,"only_assigned":1}]
+	for request in requests:
+		request.expected_revision = 9223372036854775807
+		var sequence: int = world.management_request("citizens", request)
+		assert(sequence > 0)
+		var state: Dictionary = await receipt(sequence)
+		assert(not state.is_empty())
+		var c: Dictionary = state.citizen
+		assert(c.detail_list_revision == 9223372036854775807)
+		assert(c.recalc_done == 1 and c.recalc_total == 5000)
+		assert(c.recalc_error == ("Native recalculation failed; labors may be stale" if request.action == A.WorkDetailDelete else ""))
+		if request.action == A.WorkDetailCreate:
+			assert(c.details[0].name == "Custom Detail 0" and c.details[0].icon == 10)
+		elif request.action == A.WorkDetailEdit:
+			assert(c.details[0].revision == 9223372036854775807)
+			assert(c.details[0].icon == [-2,-1,18][request.edit-1])
+			assert(c.details[0].row_error == "Row exceeds name cap")
+		elif request.action == A.CitizenWorkScope:
+			assert(c.citizens[0].revision == 9223372036854775807 and c.citizens[0].only_assigned_jobs)
+			assert(c.citizens[0].portrait_state == 3 and c.citizens[0].row_error == "Row exceeds name cap")
 
 func assert_work_order(work: Dictionary, progress: bool = false) -> void:
 	if progress:

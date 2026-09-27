@@ -3,10 +3,196 @@
 #include "management_util.h"
 #include "client_mailbox.h"
 #include <memory>
+#include <iostream>
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+
+TEST_CASE("citizen appended state validation boundaries") {
+  namespace m=df3d::mirror;
+  auto validate=[](int member,int skill,int rating,int portrait,uint64_t revision,
+                   int icon,size_t skillBytes,size_t errorBytes,uint32_t done,uint32_t total,
+                   uint32_t version=m::kManagementVersion,const std::string& defect="") {
+    flatbuffers::FlatBufferBuilder b;
+    auto empty=b.CreateString("");auto skillName=b.CreateString(std::string(skillBytes,'x'));
+    auto rowError=b.CreateString(std::string(errorBytes,'x'));
+    std::vector<int16_t> laborIds;
+    if(defect=="labors_over")for(int i=0;i<95;++i)laborIds.push_back(i);
+    if(defect=="labor_name_over")laborIds.push_back(0);
+    auto labors=b.CreateVector(laborIds);
+    auto names=b.CreateVectorOfStrings(std::vector<std::string>(laborIds.size(),std::string(defect=="labor_name_over"?129:0,'x')));
+    m::TilePos origin(0,0,0);
+    std::vector<flatbuffers::Offset<m::CitizenWorkDetail>> assigned;
+    if(defect=="assignments_over")for(int i=0;i<129;++i)assigned.push_back(m::CreateCitizenWorkDetail(b,i,0,empty));
+    else if(defect.starts_with("assigned_"))assigned.push_back(m::CreateCitizenWorkDetail(b,0,
+        defect=="assigned_unknown"?-2:defect=="assigned_over"?19:-1,empty));
+    auto over=b.CreateString(std::string(513,'x'));
+    if(defect=="assignment_name_over")assigned.push_back(m::CreateCitizenWorkDetail(b,0,0,over));
+    auto assignments=b.CreateVector(assigned);
+    std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
+    if(defect=="roles_over")for(int i=0;i<33;++i)roles.push_back(m::CreateCitizenRole(b,empty,0));
+    if(defect=="role_name_over")roles.push_back(m::CreateCitizenRole(b,over,0));
+    auto roleRows=b.CreateVector(roles);std::vector<int32_t> officeIds;
+    if(defect=="offices_over")for(int i=0;i<65;++i)officeIds.push_back(i);
+    auto offices=b.CreateVector(officeIds);
+    flatbuffers::Offset<m::SelectionAppearance> sheetIcon;
+    if(defect.starts_with("portrait_")) {
+      auto pages=b.CreateVectorOfStrings(std::vector<std::string>(defect=="portrait_pages_over"?257:1,std::string(defect=="portrait_page_over"?257:256,'x')));
+      auto palettes=b.CreateVectorOfStrings(std::vector<std::string>(defect=="portrait_palettes_over"?257:1,std::string(defect=="portrait_palette_over"?513:512,'x')));
+      auto layers=b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>(defect=="portrait_layers_over"?257:1,m::AppearanceLayer(0,0,0,1,1,0,0,0,0,0)));
+      sheetIcon=m::CreateSelectionAppearance(b,pages,palettes,layers);
+    }
+    m::CitizenInfoBuilder u(b);u.add_id(0);u.add_name(defect=="name_over"?over:empty);
+    u.add_profession(defect=="profession_over"?over:empty);u.add_job(defect=="job_over"?over:empty);
+    u.add_reason(defect=="reason_over"?over:empty);if(defect!="origin")u.add_origin(&origin);
+    u.add_roles(roleRows);u.add_offices(offices);
+    if(sheetIcon.o)u.add_sheet_icon(sheetIcon);
+    if(defect!="labors")u.add_labors(labors);
+    if(defect!="labor_names")u.add_labor_names(names);
+    u.add_assigned_details(assignments);
+    u.add_detail_member(member);u.add_detail_skill(skill);u.add_detail_skill_rating(rating);
+    u.add_portrait_state(portrait);u.add_revision(revision);u.add_detail_skill_name(skillName);u.add_row_error(rowError);
+    auto person=u.Finish();std::vector<int32_t> memberIds;
+    if(defect=="members_over")for(int i=0;i<1025;++i)memberIds.push_back(i);
+    auto members=b.CreateVector(memberIds);
+    auto detailError=b.CreateString(std::string(defect=="detail_error_over"?257:256,'x'));
+    m::WorkDetailInfoBuilder d(b);d.add_index(0);d.add_revision(defect=="detail_revision"?0:1);
+    d.add_name(defect=="detail_name_over"?over:empty);d.add_reason(defect=="detail_reason_over"?over:empty);
+    d.add_row_error(detailError);
+    d.add_labors(labors);d.add_labor_names(names);d.add_assigned_units(members);d.add_icon(icon);
+    auto detail=d.Finish();auto people=b.CreateVector(std::vector{person});auto details=b.CreateVector(std::vector{detail});
+    auto recalcError=b.CreateString(std::string(defect=="recalc_error_over"?257:256,'x'));
+    auto info=b.CreateString(std::string(defect=="info_over"?2049:0,'x'));
+    m::CitizenStateBuilder c(b);c.add_citizens(people);c.add_details(details);c.add_recalc_done(done);c.add_recalc_total(total);
+    c.add_recalc_error(recalcError);c.add_detail_list_revision(defect=="list_revision"?uint64_t(INT64_MAX)+1:INT64_MAX);
+    c.add_detail(info);
+    auto citizens=c.Finish();auto message=b.CreateString(std::string(defect=="message_over"?8193:0,'x'));
+    m::ManagementStateBuilder s(b);s.add_schema_version(version);s.add_revision(1);s.add_message(message);
+    s.add_action(m::ManagementAction::CitizenInspect);s.add_status(m::ManagementStatus::Ok);s.add_citizen(citizens);
+    b.Finish(s.Finish());return m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())).value_or("");
+  };
+  for(int member:{-1,0,1})for(int icon:{-2,-1,0,18})
+    CHECK(validate(member,INT16_MAX,20,3,INT64_MAX,icon,128,256,UINT32_MAX,UINT32_MAX)=="");
+  CHECK(validate(-1,-1,-1,0,0,-2,0,0,0,0)=="");
+  CHECK(validate(-2,0,0,0,0,0,0,0,0,0)=="invalid citizen detail fields");
+  CHECK(validate(2,0,0,0,0,0,0,0,0,0)=="invalid citizen detail fields");
+  CHECK(validate(0,-2,0,0,0,0,0,0,0,0)=="invalid citizen detail fields");
+  for(int rating:{-2,21})CHECK(validate(0,0,rating,0,0,0,0,0,0,0)=="invalid citizen detail fields");
+  CHECK(validate(0,0,0,4,0,0,0,0,0,0)=="invalid citizen detail fields");
+  CHECK(validate(0,0,0,0,uint64_t(INT64_MAX)+1,0,0,0,0,0)=="invalid citizen detail fields");
+  for(int icon:{-3,19})CHECK(validate(0,0,0,0,0,icon,0,0,0,0)=="invalid work detail fields");
+  CHECK(validate(0,0,0,0,0,0,129,0,0,0)=="invalid citizen detail fields");
+  CHECK(validate(0,0,0,0,0,0,0,257,0,0)=="invalid citizen detail fields");
+  CHECK(validate(0,0,0,0,0,0,0,0,1,0)=="invalid citizen recalculation state");
+  CHECK(validate(0,0,0,0,0,0,0,0,0,0,m::kManagementVersion-1)=="invalid management version/revision");
+  for(const auto& pair:std::vector<std::pair<std::string,std::string>>{
+      {"origin","invalid citizen row"},{"labors","invalid citizen row"},{"labor_names","invalid citizen row"},
+      {"detail_revision","invalid work detail"},{"detail_error_over","invalid work detail fields"},
+      {"recalc_error_over","invalid citizen recalculation state"},{"list_revision","invalid citizen recalculation state"},
+      {"assigned_none",""},{"assigned_unknown","invalid citizen work detail"},{"assigned_over","invalid citizen work detail"},
+      {"labors_over","invalid citizen row"},{"labor_name_over","invalid citizen row"},
+      {"roles_over","invalid citizen row"},{"offices_over","invalid citizen row"},{"members_over","invalid work detail"},
+      {"assignments_over","too many citizen work details"},{"name_over","invalid citizen row"},
+      {"profession_over","invalid citizen row"},{"job_over","invalid citizen row"},{"reason_over","invalid citizen row"},
+      {"role_name_over","invalid citizen role"},{"assignment_name_over","invalid citizen work detail"},
+      {"detail_name_over","invalid work detail"},{"detail_reason_over","invalid work detail"},
+      {"info_over","invalid citizen state"},{"message_over","message too long"},
+      {"portrait_pages_over","invalid citizen sheet icon references"},{"portrait_palettes_over","invalid citizen sheet icon references"},
+      {"portrait_layers_over","invalid citizen sheet icon references"},{"portrait_page_over","invalid citizen sheet icon page"},
+      {"portrait_palette_over","invalid citizen sheet icon palette"}})
+    CHECK(validate(0,0,0,0,0,0,0,0,0,0,m::kManagementVersion,pair.first)==pair.second);
+}
+
+TEST_CASE("maximal citizen R D I pages fit the management channel") {
+  namespace m=df3d::mirror;
+  auto portrait=[](flatbuffers::FlatBufferBuilder& b,int paletteCount,int finalBytes) {
+    auto pages=b.CreateVectorOfStrings(std::vector<std::string>(paletteCount==256?256:1,std::string(256,'p')));
+    std::vector<std::string> paletteNames(paletteCount,std::string(512,'a'));
+    paletteNames.back()=std::string(finalBytes,'a');auto palettes=b.CreateVectorOfStrings(paletteNames);
+    auto layers=b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>(paletteCount==256?256:1,m::AppearanceLayer(0,0,0,1,1,0,0,0,0,0)));
+    return m::CreateSelectionAppearance(b,pages,palettes,layers);
+  };
+  // Match management.cpp's independently encoded portrait accounting, including 8 B slack.
+  int finalBytes=-1;
+  for(int size=0;size<=512;++size) {
+    flatbuffers::FlatBufferBuilder b;b.Finish(portrait(b,15,size));
+    if(b.GetSize()+8==8192){finalBytes=size;break;}
+  }
+  REQUIRE(finalBytes>=0);
+  for(auto action:{m::ManagementAction::CitizenList,m::ManagementAction::WorkDetailList,m::ManagementAction::CitizenInspect}) {
+    for(bool namedRoster:{false,true}) {
+      if(namedRoster && action!=m::ManagementAction::CitizenList)continue;
+      flatbuffers::FlatBufferBuilder b;
+      auto text=[&](size_t n){return b.CreateString(std::string(n,'x'));};
+      auto laborSet=[&](bool populated){std::vector<int16_t> ids;if(populated)for(int i=0;i<94;++i)ids.push_back(i);return b.CreateVector(ids);};
+      auto laborNames=[&](bool populated){return b.CreateVectorOfStrings(std::vector<std::string>(populated?94:0,std::string(128,'x')));};
+      const bool roster=action==m::ManagementAction::CitizenList;
+      const int personCount=roster?32:action==m::ManagementAction::CitizenInspect?1:0;
+      const int detailCount=action==m::ManagementAction::WorkDetailList?16:action==m::ManagementAction::CitizenInspect?1:0;
+      std::vector<flatbuffers::Offset<m::CitizenInfo>> people;
+      for(int id=0;id<personCount;++id) {
+        auto name=text(512),profession=text(512),job=text(512),reason=text(512),skill=text(128),error=text(256);
+        auto labors=laborSet(!roster);auto labels=laborNames(!roster);
+        std::vector<flatbuffers::Offset<m::CitizenWorkDetail>> assignments;
+        for(int i=0;i<128;++i)assignments.push_back(m::CreateCitizenWorkDetail(b,i,18,text(roster?(namedRoster?1:0):512)));
+        auto assigned=b.CreateVector(assignments);
+        std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
+        if(!roster)for(int i=0;i<32;++i)roles.push_back(m::CreateCitizenRole(b,text(512),250));
+        auto roleRows=b.CreateVector(roles);std::vector<int32_t> officeIds;
+        if(!roster)for(int i=0;i<64;++i)officeIds.push_back(i);
+        auto offices=b.CreateVector(officeIds);
+        auto icon=portrait(b,roster?15:256,roster?finalBytes:512);
+        m::TilePos origin(1,2,3);m::CitizenInfoBuilder u(b);u.add_id(id);u.add_origin(&origin);
+        u.add_name(name);u.add_profession(profession);u.add_job(job);u.add_reason(reason);u.add_labors(labors);u.add_labor_names(labels);
+        u.add_roles(roleRows);u.add_offices(offices);u.add_assigned_details(assigned);u.add_sheet_icon(icon);
+        u.add_revision(INT64_MAX);u.add_detail_member(1);u.add_detail_skill(INT16_MAX);u.add_detail_skill_rating(20);
+        u.add_detail_skill_name(skill);u.add_row_error(error);u.add_portrait_state(1);people.push_back(u.Finish());
+      }
+      std::vector<flatbuffers::Offset<m::WorkDetailInfo>> details;
+      for(int index=0;index<detailCount;++index) {
+        auto name=text(512),reason=text(512),error=text(256);auto labors=laborSet(true);auto labels=laborNames(true);
+        std::vector<int32_t> ids;for(int i=0;i<1024;++i)ids.push_back(i);auto members=b.CreateVector(ids);
+        m::WorkDetailInfoBuilder d(b);d.add_index(index);d.add_revision(INT64_MAX);d.add_name(name);d.add_reason(reason);
+        d.add_row_error(error);d.add_icon(18);d.add_mode(3);d.add_labors(labors);d.add_labor_names(labels);d.add_assigned_units(members);
+        details.push_back(d.Finish());
+      }
+      auto us=b.CreateVector(people);auto ds=b.CreateVector(details);auto info=text(2048),error=text(256);
+      m::CitizenStateBuilder c(b);c.add_citizens(us);c.add_details(ds);c.add_detail(info);c.add_recalc_error(error);
+      c.add_recalc_done(UINT32_MAX);c.add_recalc_total(UINT32_MAX);c.add_detail_list_revision(INT64_MAX);
+      auto citizens=c.Finish();auto message=text(8192);m::ManagementStateBuilder s(b);s.add_revision(1);s.add_world_epoch(7);
+      s.add_action(action);s.add_status(m::ManagementStatus::Ok);s.add_message(message);s.add_citizen(citizens);b.Finish(s.Finish());
+      auto result=m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
+      CHECK(result.value_or("")==(namedRoster?"unexpected citizen roster detail names":""));
+      if(!namedRoster) {
+        CHECK(b.GetSize()<m::kManagementCapacity);
+        std::cout<<"CITIZEN_MAX_PAGE "<<(roster?'R':detailCount==16?'D':'I')<<" "<<b.GetSize()<<" bytes\n";
+      }
+    }
+  }
+}
+
+TEST_CASE("citizen page shapes reject surplus and cross-domain rows before decoding") {
+  namespace m=df3d::mirror;
+  auto check=[](m::ManagementAction action,int people,int details,const char* expected) {
+    flatbuffers::FlatBufferBuilder b;
+    auto person=m::CreateCitizenInfo(b);auto detail=m::CreateWorkDetailInfo(b);
+    auto us=b.CreateVector(std::vector<flatbuffers::Offset<m::CitizenInfo>>(people,person));
+    auto ds=b.CreateVector(std::vector<flatbuffers::Offset<m::WorkDetailInfo>>(details,detail));
+    auto c=m::CreateCitizenState(b,us,ds);m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(action);
+    s.add_status(m::ManagementStatus::Ok);s.add_citizen(c);b.Finish(s.Finish());
+    CHECK(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())).value_or("")==expected);
+  };
+  check(m::ManagementAction::CitizenList,0,0,"");
+  check(m::ManagementAction::WorkDetailList,0,0,"");
+  check(m::ManagementAction::CitizenInspect,0,0,"");
+  check(m::ManagementAction::CitizenList,33,0,"invalid citizen state");
+  check(m::ManagementAction::WorkDetailList,0,17,"invalid citizen state");
+  check(m::ManagementAction::CitizenList,0,1,"invalid citizen roster page");
+  check(m::ManagementAction::WorkDetailList,1,0,"invalid work detail list page");
+  check(m::ManagementAction::CitizenInspect,2,0,"invalid citizen inspection page");
+  check(m::ManagementAction::CitizenInspect,0,2,"invalid citizen inspection page");
+}
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 namespace {

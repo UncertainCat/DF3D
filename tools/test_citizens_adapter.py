@@ -160,7 +160,301 @@ def main():
     person=call(29,unit_id=0)['citizens'][1]
     assert list(person['labors'].values())==[0,1]
     assert person['roles'][1]['name']=='Manager' and person['roles'][1]['required_office']==250
+    extended_work_details(lua)
     print('CITIZENS_ADAPTER_PASS')
+
+
+def extended_work_details(lua):
+    """Inline native inputs; progress is counted in steps, never wall time."""
+    lua.globals().encode_cp437 = lambda s: s.encode('cp437', errors='replace').decode('latin1')
+    lua.globals().cp437_chars = lua.table_from({i:bytes([i]).decode('cp437') for i in range(256)})
+    lua.execute(r'''
+    dfhack.utf2df=function(s)
+      local out={};for _,code in utf8.codes(encode_cp437(s))do out[#out+1]=string.char(code)end
+      return table.concat(out)
+    end
+    dfhack.df2utf=function(s)
+      local out={};for i=1,#s do out[#out+1]=cp437_chars[s:byte(i)]end;return table.concat(out)
+    end
+    df.work_detail_icon_type=enum({'MINERS','WOODCUTTERS','HUNTERS','PLANTERS','FISHERMEN','PLANT_GATHERERS','STONECUTTERS','ENGRAVERS','HAULERS','ORDERLIES','CUSTOM_1','CUSTOM_2','CUSTOM_3','CUSTOM_4','CUSTOM_5','CUSTOM_6','CUSTOM_7','CUSTOM_8','SIEGE_OPERATORS'})
+    df.work_detail={new=function()local d=detail('',{},1);d.allowed_labors={};return d end}
+    df.building_civzonest={is_instance=function(_,b)return b.office_zone end}
+    df.job_skill={attrs={[1]={labor=0,caption_noun='Miner'},[2]={labor=0,caption_noun='Miner'}}}
+    df.skill_rating={attrs={[15]={caption='Legendary'}}}
+    -- Enum ordinals other than the three pinned picker exclusions are fixture-local.
+    for i=0,93 do df.unit_labor.attrs[i]={caption='Fixture labor '..i}end
+    df.unit_labor.attrs[0]={caption='Mining'};df.unit_labor.attrs[10]={caption='Wood Cutting'}
+    df.unit_labor.attrs[44]={caption='Hunting'}
+    df.unit_labor.CARPENTER=1;df.unit_labor.attrs[1]={caption='Carpentry'}
+    for i=82,93 do df.unit_labor[i]='UNUSED_'..i;df.unit_labor.attrs[i]={}end
+    for _,kind in ipairs{'Resident','Visitor','Merchant','Diplomat'}do
+      local key=string.lower(kind);dfhack.units['is'..kind]=function(u)return not not u[key]end
+    end
+    local original_unit=unit
+    function unit(id,adult,sane,alive)
+      local u=original_unit(id,adult,sane,alive);u.profession=0;u.owned_buildings=vec{}
+      u.status.labors=setmetatable({},{__newindex=function(t,k,v)
+        labor_writes=labor_writes+1;rawset(t,k,v)
+      end});return u
+    end
+    dfhack.units.getNoblePositions=function()return {}end
+    dfhack.units.setAutomaticProfessions=function(u)
+      calls[#calls+1]={id=u.id,only_assigned=u.flags4.only_do_assigned_jobs}
+      if fail_next then fail_next=false;error('native failure')end
+    end
+    function reset_fixture(n,d)
+      calls={};labor_writes=0;fail_next=false;citizens:resize(0);wd:resize(0)
+      for i=0,n-1 do citizens:insert('#',unit(i))end
+      for i=0,d-1 do wd:insert('#',detail('Custom',{}))end
+      df.global.pause_state=false
+    end
+    ''')
+    source = Path('bridge/plugin/citizens.lua').read_text()
+    def reset(n=2, d=1):
+        lua.globals().reset_fixture(n, d)
+        return lua.execute(source)
+    helper = reset()
+    def call(action, **fields):
+        budget = fields.pop('step_budget', 2048)
+        capacity = fields.pop('retire_capacity', 256)
+        req = lua.globals().request(action, lua.table_from(fields))
+        req['step_budget'], req['retire_capacity'] = budget, capacity
+        return helper(req)
+    def ok(reply):
+        assert reply['ok'], reply['message']
+        return reply
+    def observed(index=0):
+        return ok(call(31, detail_index=index))['details'][1]
+    def edit(action=66, index=0, **fields):
+        return call(action, detail_index=index, expected_revision=observed(index)['revision'], **fields)
+    def refused(reply, message):
+        assert not reply['ok'] and reply['message'] == message, reply['message']
+    def values(table):
+        return list(table.values())
+    # Add uses the native custom count, wraps the icon, and does no recalculation.
+    for count in (0, 1, 8, 127):
+        helper = reset(d=count)
+        before = ok(call(30))['detail_list_revision']
+        r = ok(call(64, expected_revision=before));d = r['details'][1]
+        assert d['name'] == f'Custom Detail {count}' and d['icon'] == 10 + count % 8
+        assert d['mode'] == 1 and not len(d['labors']) and not len(d['assigned_units'])
+        assert r['selected_detail'] == count and not len(lua.globals().calls)
+        assert r['detail_list_revision'] != before and r['active_kinds'] == 0
+        refused(call(64, expected_revision=before), 'Work-detail contents changed; refresh before editing')
+    refused(call(64, expected_revision=r['detail_list_revision']), 'Work-detail vector exceeds 128 entries')
+    helper = reset(5000)
+    refused(edit(65, retire_capacity=0), 'Deleted-detail capacity reached; restart DF')
+    assert lua.eval("#wd") == 1
+    r = ok(edit(65))
+    assert len(r['retired']) == 1 and lua.eval("#wd") == 0 and r['active_kinds'] == 16
+    helper = reset()
+    lua.execute('wd[0].flags.no_modify=true;wd[0].icon=0')
+    refused(edit(65), 'Use Reset to default for built-in work details')
+    ok(edit(edit=1, name='MinersX'))
+    lua.execute('wd[0].allowed_labors[1]=true;wd[0].assigned_units=vec{0};df.unit_labor.MINE=0')
+    r = ok(edit(edit=3))['details'][1]
+    assert r['name'] == 'MinersX' and r['mode'] == 3 and r['icon'] == 0
+    assert values(r['assigned_units']) == [0] and values(r['labors']) == [0]
+    lua.execute('wd[0].icon=18')
+    refused(edit(edit=3), 'No native default recorded for this work detail')
+    lua.execute('wd[0].flags.no_modify=false')
+    refused(edit(edit=3), 'Reset to default applies to built-in work details')
+    for builtin in (False, True):
+        lua.globals().wd[0]['flags']['no_modify'] = builtin
+        for name in ('x' * 40, '\u2500' * 40, '\U0001f642', ''):
+            ok(edit(edit=1, name=name))
+            stored = lua.eval('function()return {string.byte(wd[0].name,1,-1)}end')()
+            assert values(stored) == list(name.encode('cp437', errors='replace'))
+        ok(edit(edit=1));assert lua.globals().wd[0]['name'] == ''
+        refused(edit(edit=1, name='x' * 41), 'Work-detail names are limited to 40 characters')
+        assert lua.globals().wd[0]['name'] == ''
+    lua.execute('wd[0].allowed_labors={[0]=true,[10]=true,[44]=true,[1]=true}')
+    for labor in (0, 10, 44, *range(82,94)):
+        before = [bool(lua.globals().wd[0]['allowed_labors'][i]) for i in range(94)]
+        refused(edit(edit=2, labors=lua.table_from([labor])),
+                f'Labor {labor} is not in the native labor picker' if labor in (0,10,44) else f'Labor {labor} has no native caption')
+        assert lua.globals().wd[0]['allowed_labors'][1]
+        assert [bool(lua.globals().wd[0]['allowed_labors'][i]) for i in range(94)] == before
+    ok(edit(edit=2));assert not lua.globals().wd[0]['allowed_labors'][1]
+    for labor in (0, 10, 44): assert lua.globals().wd[0]['allowed_labors'][labor]
+    ok(edit(edit=2, labors=lua.table_from([1])))
+    assert lua.globals().wd[0]['allowed_labors'][1]
+    helper = reset()
+    for toggle in (1, 0):
+        before = ok(call(29, unit_id=0))['citizens'][1]['revision']
+        n = len(lua.globals().calls)
+        r = ok(call(67, unit_id=0, only_assigned=toggle, expected_revision=before))
+        assert r['steps'] == 4  # one header, two row hashes, one native recalculation
+        assert lua.globals().wd[0]['icon'] == 9
+        assert len(lua.globals().calls) == n+1 and lua.globals().labor_writes == 0
+        assert lua.globals().calls[n+1]['id'] == 0
+        assert lua.globals().calls[n+1]['only_assigned'] == bool(toggle)
+        refused(call(67, unit_id=0, only_assigned=toggle, expected_revision=before), 'Citizen changed; inspect again')
+    lua.execute('citizens[0].adult=false')
+    refused(call(67, unit_id=0, only_assigned=1, expected_revision=1), 'Labor assignment requires an adult citizen')
+    helper = reset()
+    lua.execute('wd[0].assigned_units=vec{0};citizens[0].status.current_soul.skills=vec{{id=2,rating=15},{id=1,rating=15}}')
+    for icon in (-1, 0, 18):
+        lua.globals().wd[0]['icon'] = icon
+        assert observed()['icon'] == icon
+        r = ok(call(28, detail_index=0))['citizens'][1]
+        assert r['assigned_details'][1]['icon'] == icon and r['detail_member'] == 1
+        assert r['detail_skill'] == 1 and r['detail_skill_rating'] == 15 and r['detail_skill_name'] == 'Legendary Miner'
+        assert ok(call(28, detail_index=0))['citizens'][2]['detail_member'] == 0
+        assert r['top_skill'] is None
+        for selector in (1,2):
+            ok(edit(edit=selector))
+            assert lua.globals().wd[0]['icon'] == icon
+    r = ok(call(28))['citizens'][1]
+    assert r['detail_member'] == -1 and r['detail_skill'] == -1 and r['detail_skill_name'] == ''
+    assert values(observed()['labor_names']) == ['Mining']
+    icon = lua.globals().wd[0]['icon']
+    retired = ok(edit(65))['retired'][1]
+    assert retired['icon'] == icon
+    helper = reset()
+    for kind in ('resident', 'visitor', 'merchant', 'diplomat'):
+        lua.execute(f'citizens[1].citizen=false;citizens[1].{kind}=true')
+        assert len(ok(call(28))['citizens']) == 1
+        refused(call(29, unit_id=1), 'Citizen no longer available')
+        refused(edit(32, unit_id=1, member=1), 'Not an active surviving citizen')
+        refused(call(67, unit_id=1, only_assigned=1, expected_revision=1), 'Not an active surviving citizen')
+    helper = reset(d=17)
+    r = ok(call(30, expected_list_revision=0));assert len(r['details']) == 16
+    rev = r['detail_list_revision'];assert ok(call(30))['detail_list_revision'] == rev
+    assert len(ok(call(30, cursor=16, expected_list_revision=rev))['details']) == 1
+    ok(edit(edit=1, name='Changed'))
+    assert observed(1)['name'] == 'Custom' and ok(call(30))['detail_list_revision'] != rev
+    refused(call(30, cursor=16, expected_list_revision=rev), 'List changed; refresh')
+    for index in range(17):
+        assert observed(index)['editable']
+        ok(edit(index=index, edit=1, name=f'Detail {index}'))
+    # Exercise the actual private finalizer, including unsigned-high-bit and zero cases.
+    lua.globals().test_helper = helper
+    lua.execute('''
+    local seen={}
+    local function find(f,name)
+      if seen[f]then return end;seen[f]=true
+      for i=1,100 do local key,value=debug.getupvalue(f,i);if not key then break end
+        if key==name then return value end
+        if type(value)=='function'then local found=find(value,name);if found then return found end end
+      end
+    end
+    local finalize=assert(find(test_helper,'revision'))
+    assert(finalize(0)==1 and finalize(0x8000000000000000)==1)
+    assert(finalize(0xffffffffffffffff)==0x7fffffffffffffff)
+    ''')
+    helper = reset(d=17)
+    rev = ok(call(30))['detail_list_revision']
+    lua.execute("wd[0].name=string.rep('x',513)")
+    r = ok(call(30));assert r['next_cursor'] == 16 and r['detail_list_revision'] != rev
+    assert r['details'][1]['index'] == 0 and r['details'][1]['revision'] > 0
+    assert r['details'][1]['row_error'] == 'Row exceeds name cap' and r['details'][2]['name'] == 'Custom'
+    ok(edit(edit=1, name='Repaired'))
+    lua.execute("wd[0].name=string.rep('x',512)")
+    assert not observed()['row_error']
+    lua.execute('local ids={};for i=1,1025 do ids[i]=i end;wd[0].assigned_units=vec(ids)')
+    r = ok(call(30));assert r['details'][1]['row_error'] == 'Row exceeds assigned_units cap'
+    assert len(r['details'][1]['assigned_units']) == 0 and r['details'][2]['name'] == 'Custom'
+    ok(edit(edit=1, name='Still targetable'))
+    # Lua job strings obey the same cap; social-activity replacement is MSVC-only.
+    helper = reset(2)
+    lua.execute("citizens[0].job.current_job={job_type=0};dfhack.job.getName=function()return string.rep('x',512)end")
+    assert not ok(call(28))['citizens'][1]['row_error']
+    lua.execute("dfhack.job.getName=function()return string.rep('x',513)end")
+    r = ok(call(28))
+    assert r['citizens'][1]['row_error'] == 'Row exceeds job cap' and r['citizens'][2]['name'] == 'Citizen 1'
+    helper = reset(5000, 128)
+    lua.execute('for _,d in ipairs(wd)do local ids={};for i=1,1024 do ids[i]=i end;d.assigned_units=vec(ids)end')
+    r = ok(call(30));assert r['steps'] <= 768 and len(r['details']) == 16
+    lua.execute("collectgarbage('collect')")
+    print('CITIZENS_CAP_MEMORY_KIB', lua.eval("collectgarbage('count')"))
+    assert ok(edit(edit=1, name='Bounded'))['steps'] <= 768
+    for action, fields in ((33, {'mode':2}), (66, {'edit':2,'labors':lua.table_from([1])}),
+                           (32, {'unit_id':0,'member':1}), (65, {})):
+        helper = reset()
+        before = ok(call(30))['detail_list_revision']
+        assert ok(edit(action, **fields))['detail_list_revision'] != before
+    # Filling the last membership slot succeeds; the next insertion is refused intact.
+    helper = reset(2)
+    lua.execute('local ids={};for i=2,1024 do ids[#ids+1]=i end;wd[0].assigned_units=vec(ids)')
+    call_count = len(lua.globals().calls)
+    ok(edit(32, unit_id=0, member=1))
+    assert len(lua.globals().calls) == call_count+1
+    assert len(observed()['assigned_units']) == 1024
+    refused(edit(32, unit_id=1, member=1), 'Work-detail membership is full')
+    # Captured default sets, with fixture-local enum assignments except the picker exclusions.
+    defaults = [ ['MINE'], ['CUTWOOD'], ['HUNT'], ['PLANT'], ['FISH'], ['HERBALIST'],
+                 ['STONECUTTER'], ['ENGRAVER'],
+                 ['HAUL_STONE','HAUL_WOOD','HAUL_BODY','HAUL_FOOD','HAUL_REFUSE','HAUL_ITEM','HAUL_FURNITURE','HAUL_ANIMALS','HANDLE_VEHICLES','HAUL_TRADE','HAUL_WATER'],
+                 ['SUTURING','DRESSING_WOUNDS','FEED_WATER_CIVILIANS','RECOVER_WOUNDED'] ]
+    labor_ids = {'MINE':0, 'CUTWOOD':10, 'HUNT':44}
+    available = iter(i for i in range(94) if i not in (0,10,44))
+    for names in defaults:
+        for name in names:
+            if name not in labor_ids: labor_ids[name] = next(available)
+            lua.globals().df['unit_labor'][name] = labor_ids[name]
+            lua.globals().df['unit_labor']['attrs'][labor_ids[name]] = lua.table_from({'caption':name.title().replace('_',' ')})
+    for icon, names in enumerate(defaults):
+        helper = reset(5000)
+        lua.globals().wd[0]['icon'] = icon
+        lua.execute('wd[0].flags.no_modify=true;wd[0].assigned_units=vec{0}')
+        r = ok(edit(edit=3))
+        assert r['active_kinds'] == 16 and r['details'][1]['icon'] == icon
+        assert values(r['details'][1]['labors']) == sorted(labor_ids[name] for name in names)
+    # Read-only array limits accept the boundary and return an error row above it.
+    helper = reset()
+    for field, cap in (('roles',32), ('offices',64)):
+        for size in (cap, cap+1):
+            if field == 'roles':
+                lua.execute(f"dfhack.units.getNoblePositions=function()local t={{}};for i=1,{size} do t[i]={{entity={{id=1}},position={{name={{[0]='Manager'}},required_office=250}}}}end;return t end")
+            else:
+                lua.execute(f'citizens[0].owned_buildings=vec{{}};for i=1,{size} do citizens[0].owned_buildings:insert("#",{{id=i,type=1,office_zone=true}})end')
+            row = ok(call(29, unit_id=0))['citizens'][1]
+            if size == cap: assert len(row[field]) == cap and not row['row_error']
+            else: assert row['row_error'] == f'Row exceeds {field} cap'
+        lua.execute('dfhack.units.getNoblePositions=function()return {}end;citizens[0].owned_buildings=vec{}')
+    # Recalculation progress is visible in both roster and inspection. Later edits restart it.
+    helper = reset(5000, 8)
+    ok(edit(edit=2))
+    helper(lua.table_from({'step':20, 'kind':4}))
+    for action in (28,29):
+        r = ok(call(action, unit_id=0));assert 0 < r['recalc_done'] < r['recalc_total'] == 5000
+    lua.execute('calls={}')
+    restarted = ok(edit(edit=2, labors=lua.table_from([1]), step_budget=64))
+    assert lua.globals().calls[1]['id'] == 0 and restarted['recalc_done'] < r['recalc_done']
+    lua.execute('calls={}')
+    helper = lua.execute(source)
+    r = helper(lua.table_from({'restart_recalc':True, 'step':2, 'kind':4}))
+    assert lua.globals().calls[1]['id'] == 0 and r['recalc_done'] == 1
+    lua.execute('fail_next=true')
+    r = helper(lua.table_from({'step':2, 'kind':4}))
+    assert r['recalc_error'] == 'Native recalculation failed; labors may be stale' and r['active_kinds'] == 0
+    helper = reset(1)
+    helper(lua.table_from({'restart_recalc':True, 'step':1, 'kind':4}))
+    lua.execute("citizens:insert('#',unit(1))")
+    r = helper(lua.table_from({'step':10, 'kind':4}))
+    assert r['recalc_done'] == r['recalc_total'] == 1
+    # Drive the Lua closure, not the MSVC scheduler. A competitor consumes its slice.
+    scheduling_failures = []
+    competitor = lua.eval('function(r) assert(r.step>0);return {steps=r.step}end')
+    def drive(closure, slice_size):
+        return closure(lua.table_from({'step':slice_size, 'kind':4})) if slice_size else None
+    assert drive(lambda _: (_ for _ in ()).throw(AssertionError('zero slice called')), 0) is None
+    for competing in (False, True):
+        helper = reset(5000, 8)
+        r = ok(edit(33, mode=1));inline = r['steps'] - 16
+        updates = 1
+        while r['active_kinds']:
+            slice_size = 1024 if competing else 2048
+            other_steps = competitor(lua.table_from({'step':1024}))['steps'] if competing else 0
+            r = drive(helper, slice_size)
+            assert r['steps'] + other_steps <= 2048
+            updates += 1
+            assert updates < 20
+        assert len(lua.globals().calls) == 5000 and r['recalc_done'] == r['recalc_total'] == 5000
+        if inline != 2032 or (updates > 9 if competing else updates != 5):
+            scheduling_failures.append((competing, inline, updates))
+    assert not scheduling_failures, ('mode scheduling (competing, inline, updates)', scheduling_failures)
 
 
 if __name__ == '__main__':

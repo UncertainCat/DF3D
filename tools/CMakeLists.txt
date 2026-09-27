@@ -29,6 +29,7 @@ add_executable(bridge_policy_tests
   test_pending_work.cpp
   test_petition_policy.cpp
   test_report_journal.cpp
+  test_session_load_policy.cpp
   smoke/attack_assembler_test.cpp
   smoke/contact_guard_test.cpp
   smoke/dwarf_layer_anatomy_test.cpp

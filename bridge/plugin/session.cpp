@@ -1,6 +1,7 @@
 // Global session lifecycle retains the verified native menu initialization.
 // Load/save are documented global exceptions; ordinary panels never use them.
 #include "session.h"
+#include "session_load_policy.h"
 #include "interruption.h"
 #include "petition.h"
 #include "fortress_population.h"
@@ -548,12 +549,13 @@ void update(bool mapLoaded,uint64_t epoch) {
     message = "Loading fortress"; requestedAt = std::chrono::steady_clock::now(); navigationStage = 0;
   }
   if (!pendingId.empty() && action == m::SessionAction::LoadFortress) {
-    if (std::chrono::steady_clock::now() - requestedAt > std::chrono::minutes(5)) {
-      reject("DF did not finish loading within five minutes; inspect the DF window"); phase = m::SessionPhase::Error;
-    } else if (title) navigate(title);
-    else if (!loading && !mapLoaded && std::chrono::steady_clock::now() - requestedAt > std::chrono::seconds(15)) {
-      auto focus = Gui::getFocusStrings(view);
-      reject("DF load needs attention: " + (focus.empty() ? std::string("unknown state") : focus.front())); phase = m::SessionPhase::Error;
+    const auto step = loadStep(std::chrono::steady_clock::now() - requestedAt,
+        title != nullptr, loading, virtual_cast<df::viewscreen_dwarfmodest>(view) != nullptr,
+        mapLoaded, navigationStage);
+    if (step == LoadStep::Navigate) navigate(title);
+    else if (step == LoadStep::TimedOut || step == LoadStep::NeedsAttention) {
+      reject(step == LoadStep::NeedsAttention ? loadFailureMessage(step, Gui::getFocusStrings(view)) : loadFailureMessage(step));
+      phase = m::SessionPhase::Error;
     }
   }
   if(phase!=m::SessionPhase::Ready){interruption.canAcknowledge=false;interruption.receipt=0;}

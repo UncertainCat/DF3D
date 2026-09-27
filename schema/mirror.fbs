@@ -1065,7 +1065,7 @@ table SessionState {
 table SessionCommand { schema_version:uint32 = 8; seq:uint64; save_id:string; action:SessionAction; checkpoint_name:string; fortress_epoch:uint64; interruption_receipt:uint64; petition_id:int32 = -1; petition_receipt:uint64; client_id:uint64; }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope }
 enum AreaKind : uint8 { Stockpile, Zone }
 table AreaRequest {
   kind:AreaKind;
@@ -1222,6 +1222,11 @@ table CitizenRequest {
   query:string;
   member:int8 = -1;
   mode:int8 = -1;
+  name:string;
+  labors:[int16];
+  edit:uint8; // 0 unknown, 1 rename, 2 labors, 3 reset to default
+  only_assigned:int8 = -1;
+  expected_list_revision:uint64;
 }
 table CitizenRole { name:string; required_office:int32; }
 table CitizenWorkDetail { index:int32; icon:int32; name:string; }
@@ -1234,16 +1239,29 @@ table CitizenInfo {
   sheet_icon:SelectionAppearance;
   only_assigned_jobs:bool; assigned_details:[CitizenWorkDetail];
   social_activity:bool;
+  revision:uint64;
+  detail_member:int8 = -1;
+  detail_skill:int16 = -1;
+  detail_skill_rating:int16 = -1;
+  detail_skill_name:string;
+  portrait_state:uint8; // 0 unknown, 1 ok, 2 unresolved, 3 deferred
+  row_error:string;
 }
 table WorkDetailInfo {
   index:int32; revision:uint64; name:string; mode:uint8;
   no_modify:bool; cannot_be_everybody:bool; editable:bool; mode_editable:bool;
   reason:string; labors:[int16]; assigned_units:[int32]; labor_names:[string];
+  icon:int32 = -2; // Read-only; -2 unknown, -1 NONE.
+  row_error:string;
 }
 table CitizenState {
   citizens:[CitizenInfo]; details:[WorkDetailInfo]; next_cursor:uint32;
   selected_unit:int32 = -1; selected_detail:int32 = -1;
   external_controller:bool; detail:string;
+  recalc_done:uint32;
+  recalc_total:uint32;
+  recalc_error:string;
+  detail_list_revision:uint64;
 }
 enum SelectionOperation : uint8 { OpenTile, Inspect, SelectAlternative, InspectItem, ViewContainer, Back }
 enum SelectionKind : uint8 { None, Unit, Item, Building, Engraving, PlannedEngraving, UnitList, ItemList, Vermin }
@@ -1366,7 +1384,7 @@ table CreatureState {
 // A Materials "list exceeds cap" error stays failed across polls. Retry: request
 // Catalog with cursor=0 and expected_list_revision=0, then request Materials.
 table ConstructionRequest {
-  schema_version:uint32 = 18;
+  schema_version:uint32 = 19;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1399,7 +1417,7 @@ table ConstructionRequest {
   expected_list_revision:uint64;
 }
 table ManagementState {
-  schema_version:uint32 = 18;
+  schema_version:uint32 = 19;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -63,7 +63,11 @@ static_assert(static_cast<int>(wm::ManagementAction::Alert) == static_cast<int>(
 static_assert(static_cast<int>(wm::ManagementAction::Selection) == static_cast<int>(df3d::mirror::ManagementAction::Selection));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureInspect) == static_cast<int>(df3d::mirror::ManagementAction::CreatureInspect));
 static_assert(static_cast<int>(wm::ManagementAction::ConstructionMaterials) == static_cast<int>(df3d::mirror::ManagementAction::ConstructionMaterials));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 64);
+static_assert(static_cast<int>(wm::ManagementAction::WorkDetailCreate) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailCreate));
+static_assert(static_cast<int>(wm::ManagementAction::WorkDetailDelete) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailDelete));
+static_assert(static_cast<int>(wm::ManagementAction::WorkDetailEdit) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailEdit));
+static_assert(static_cast<int>(wm::ManagementAction::CitizenWorkScope) == static_cast<int>(df3d::mirror::ManagementAction::CitizenWorkScope));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 68);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -206,3 +210,7 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::Alert) == df3d::mirror::
 static_assert(wm::isRuntimeAction(wm::ManagementAction::Selection) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::Selection));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureInspect) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureInspect));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ConstructionMaterials) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ConstructionMaterials));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailCreate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailCreate));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailDelete) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailDelete));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailEdit));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::CitizenWorkScope) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CitizenWorkScope));

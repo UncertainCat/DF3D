@@ -67,6 +67,10 @@ enum class ManagementAction : uint8_t {
   Selection = 61,
   CreatureInspect = 62,
   ConstructionMaterials = 63,
+  WorkDetailCreate = 64,
+  WorkDetailDelete = 65,
+  WorkDetailEdit = 66,
+  CitizenWorkScope = 67,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -201,6 +205,10 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::TradeBring: return true;
   case ManagementAction::CreatureInspect: return true;
   case ManagementAction::ConstructionMaterials: return true;
+  case ManagementAction::WorkDetailCreate: return true;
+  case ManagementAction::WorkDetailDelete: return true;
+  case ManagementAction::WorkDetailEdit: return true;
+  case ManagementAction::CitizenWorkScope: return true;
   default: return false;
   }
 }
@@ -241,6 +249,10 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::WorkDetailInspect: return "citizens";
   case ManagementAction::WorkDetailMembership: return "citizens";
   case ManagementAction::WorkDetailMode: return "citizens";
+  case ManagementAction::WorkDetailCreate: return "citizens";
+  case ManagementAction::WorkDetailDelete: return "citizens";
+  case ManagementAction::WorkDetailEdit: return "citizens";
+  case ManagementAction::CitizenWorkScope: return "citizens";
   case ManagementAction::ReportList: return "reports";
   case ManagementAction::ReportInspect: return "reports";
   case ManagementAction::AgreementList: return "agreements";

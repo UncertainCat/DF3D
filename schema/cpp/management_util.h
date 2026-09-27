@@ -2,8 +2,8 @@
 #include <tuple>
 #include "session_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 18;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v18";
+inline constexpr uint32_t kManagementVersion = 19;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v19";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 inline constexpr uint32_t kManagementCommandCapacity = 4096;
 // Catalog discovers the current epoch, so it does not require a matching
@@ -16,7 +16,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::ConstructionMaterials &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::CitizenWorkScope &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -26,7 +26,7 @@ inline constexpr bool runtimeManagementAction(ManagementAction action) {
 inline std::optional<std::string> validateConstructionRequest(const ConstructionRequest& r) {
   if (r.schema_version() != kManagementVersion) return "management version mismatch";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ConstructionMaterials)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CitizenWorkScope)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if(r.action()==ManagementAction::CreatureInspect) {
@@ -122,16 +122,46 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         (w->condition_kind()==1 && (w->target_order()<0 || w->target_order()==w->id() || w->dependency()<0)))) return "invalid work order condition";
     }
   } else if(r.work_order()) return "unexpected work order payload";
-  if(r.action()>=ManagementAction::CitizenList && r.action()<=ManagementAction::WorkDetailMode) {
+  if((r.action()>=ManagementAction::CitizenList && r.action()<=ManagementAction::WorkDetailMode) ||
+     (r.action()>=ManagementAction::WorkDetailCreate && r.action()<=ManagementAction::CitizenWorkScope)) {
     const auto* c=r.citizen();
     if(!c || c->unit_id() < -1 || c->detail_index() < -1 || c->detail_index()>127 || c->expected_revision()>INT64_MAX ||
        c->member() < -1 || c->member()>1 || c->mode() < -1 || c->mode()>3 || (c->query() && c->query()->size()>128)) return "invalid citizen request";
     if((r.action()==ManagementAction::CitizenInspect || r.action()==ManagementAction::WorkDetailMembership) && c->unit_id()<0) return "citizen id required";
-    if(r.action()>=ManagementAction::WorkDetailInspect && c->detail_index()<0) return "work detail index required";
+    if(((r.action()>=ManagementAction::WorkDetailInspect && r.action()<=ManagementAction::WorkDetailMode) ||
+        r.action()==ManagementAction::WorkDetailDelete || r.action()==ManagementAction::WorkDetailEdit) && c->detail_index()<0) return "work detail index required";
     if(r.action()>=ManagementAction::WorkDetailMembership && !c->expected_revision()) return "work detail receipt required";
     if(r.action()==ManagementAction::WorkDetailMembership && (c->member()<0 || c->mode()!=-1)) return "membership edit requires only member field";
     if(r.action()==ManagementAction::WorkDetailMode && (c->mode()<0 || c->member()!=-1)) return "mode edit requires only mode field";
-    if(r.action()<ManagementAction::WorkDetailMembership && (c->member()!=-1 || c->mode()!=-1)) return "unexpected citizen edit fields";
+    if(r.action()!=ManagementAction::WorkDetailMembership && r.action()!=ManagementAction::WorkDetailMode &&
+       (c->member()!=-1 || c->mode()!=-1)) return "unexpected citizen edit fields";
+    const bool hasName=c->name() && c->name()->size();
+    const bool hasLabors=c->labors() && c->labors()->size();
+    if(c->edit() && r.action()!=ManagementAction::WorkDetailEdit) return "unexpected work detail edit";
+    if(r.action()==ManagementAction::WorkDetailCreate && (c->detail_index()!=-1 || c->unit_id()!=-1))
+      return "unexpected new work detail identity";
+    if(r.action()==ManagementAction::WorkDetailEdit && (c->edit()<1 || c->edit()>3))
+      return "invalid work detail edit";
+    if(hasName && (r.action()!=ManagementAction::WorkDetailEdit || c->edit()!=1))
+      return "unexpected work detail name";
+    if(c->name() && c->name()->size()>160) return "work detail name too long";
+    if(hasLabors && (r.action()!=ManagementAction::WorkDetailEdit || c->edit()!=2))
+      return "unexpected work detail labors";
+    if(c->labors()) {
+      if(c->labors()->size()>94) return "too many work detail labors";
+      std::set<int16_t> labors;
+      for(auto labor:*c->labors()) if(labor<0 || labor>93 || !labors.insert(labor).second)
+        return "invalid work detail labor";
+    }
+    if(r.action()==ManagementAction::CitizenWorkScope) {
+      if(c->unit_id()<0 || c->detail_index()!=-1 || c->only_assigned()<0 || c->only_assigned()>1)
+        return "invalid citizen work scope";
+    } else if(c->only_assigned()!=-1) return "unexpected citizen work scope";
+    if(c->expected_list_revision()>INT64_MAX) return "invalid work detail list revision";
+    if(c->expected_list_revision() && r.action()!=ManagementAction::WorkDetailList)
+      return "unexpected work detail list revision";
+    if(r.action()==ManagementAction::WorkDetailList && c->cursor()>0 && !c->expected_list_revision())
+      return "work detail list revision required";
   } else if(r.citizen()) return "unexpected citizen payload";
   if(r.action()>=ManagementAction::ReportList && r.action()<=ManagementAction::ReportInspect) {
     const auto* p=r.report();
@@ -246,7 +276,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ConstructionMaterials ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CitizenWorkScope ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -500,17 +530,37 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(const auto* c=s.citizen()) {
     if((c->citizens() && c->citizens()->size()>32) || (c->details() && c->details()->size()>16) || c->selected_unit() < -1 || c->selected_detail() < -1 || c->selected_detail()>127 || (c->detail() && c->detail()->size()>2048)) return "invalid citizen state";
+    if(c->recalc_done()>c->recalc_total() || c->detail_list_revision()>INT64_MAX ||
+       (c->recalc_error() && c->recalc_error()->size()>256)) return "invalid citizen recalculation state";
+    auto nonempty=[](const auto* values){return values && values->size();};
+    const auto citizenCount=c->citizens()?c->citizens()->size():0;
+    const auto detailCount=c->details()?c->details()->size():0;
+    if(s.action()==ManagementAction::CitizenList) {
+      if(detailCount) return "invalid citizen roster page";
+    } else if(s.action()==ManagementAction::WorkDetailList) {
+      if(citizenCount) return "invalid work detail list page";
+    } else if(s.action()==ManagementAction::CitizenInspect ||
+              (s.action()>=ManagementAction::WorkDetailInspect && s.action()<=ManagementAction::WorkDetailMode) ||
+              (s.action()>=ManagementAction::WorkDetailCreate && s.action()<=ManagementAction::CitizenWorkScope)) {
+      if(citizenCount>1 || detailCount>1) return "invalid citizen inspection page";
+    } else return "unexpected citizen state";
     auto textOk=[](const flatbuffers::String* v,size_t cap){return v && v->size()<=cap;};
     auto namesOk=[](const auto* names,const auto* ids){if(!names||!ids||names->size()!=ids->size())return false;for(const auto* name:*names)if(!name||name->size()>128)return false;return true;};
     auto laborsOk=[](const auto* values){if(!values || values->size()>94)return false;int prior=-1;for(auto v:*values){if(v<0 || v>93 || v<=prior)return false;prior=v;}return true;};
     std::set<int32_t> ids;
     if(c->citizens())for(const auto* v:*c->citizens()) {
       if(!v || v->id()<0 || !ids.insert(v->id()).second || v->age() < -1 || v->age()>1000000 || !v->origin() || v->origin()->x()<0 || v->origin()->y()<0 || v->origin()->z()<0 || !textOk(v->name(),512) || !textOk(v->profession(),512) || !textOk(v->job(),512) || !textOk(v->reason(),512) || !laborsOk(v->labors()) || !namesOk(v->labor_names(),v->labors()) || (v->roles() && v->roles()->size()>32) || (v->offices() && v->offices()->size()>64))return "invalid citizen row";
+      if(v->revision()>INT64_MAX || v->detail_member()< -1 || v->detail_member()>1 ||
+         v->detail_skill()< -1 || v->detail_skill_rating()< -1 || v->detail_skill_rating()>20 ||
+         v->portrait_state()>3 || (v->detail_skill_name() && v->detail_skill_name()->size()>128) ||
+         (v->row_error() && v->row_error()->size()>256)) return "invalid citizen detail fields";
+      if(s.action()==ManagementAction::CitizenList && (nonempty(v->labors()) || nonempty(v->labor_names()) ||
+         nonempty(v->roles()) || nonempty(v->offices()))) return "unexpected citizen roster detail fields";
       if(v->assigned_details()) {
         if(v->assigned_details()->size()>128)return "too many citizen work details";
         int prior=-1;
         for(const auto* d:*v->assigned_details()) {
-          if(!d || d->index()<=prior || d->index()>127 || d->icon()<0 || !textOk(d->name(),512))return "invalid citizen work detail";
+          if(!d || d->index()<=prior || d->index()>127 || d->icon()< -1 || d->icon()>18 || !textOk(d->name(),512))return "invalid citizen work detail";
           prior=d->index();
         }
       }
@@ -523,13 +573,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(v->roles())for(const auto* role:*v->roles())if(!role || !textOk(role->name(),512) || role->required_office()<0)return "invalid citizen role";
       std::set<int32_t> offices;if(v->offices())for(auto id:*v->offices())if(id<0 || !offices.insert(id).second)return "invalid citizen office";
     }
-    ids.clear();size_t members=0;
+    ids.clear();
     if(c->details())for(const auto* d:*c->details()) {
       if(!d || d->index()<0 || d->index()>127 || !ids.insert(d->index()).second || !d->revision() || d->revision()>INT64_MAX || d->mode()>3 || !textOk(d->name(),512) || !textOk(d->reason(),512) || !laborsOk(d->labors()) || !namesOk(d->labor_names(),d->labors()) || !d->assigned_units() || d->assigned_units()->size()>1024)return "invalid work detail";
+      if(d->icon()< -2 || d->icon()>18 || (d->row_error() && d->row_error()->size()>256))
+        return "invalid work detail fields";
       int32_t prior=-1;for(auto id:*d->assigned_units()){if(id<0 || id<=prior)return "invalid work detail membership";prior=id;}
-      members+=d->assigned_units()->size();
     }
-    if(members>8192)return "work detail response too large";
   }
   if(const auto* r=s.report()) {
     if(r->next_before_id() < -1 || (r->detail() && r->detail()->size()>2048) || (r->reports() && r->reports()->size()>16))return "invalid report state";

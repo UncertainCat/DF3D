@@ -51,7 +51,8 @@ def outputs():
     # Semantic mutation policy is centralized here and emitted with named values.
     mutations=("Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmSetCrop","WorkOrderCreate","WorkOrderUpdate",
-        "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","TradeUpdate","TradeBring")
+        "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
+        "WorkDetailEdit","CitizenWorkScope","TradeUpdate","TradeBring")
     if not set(mutations) <= {n for n,v in values["ManagementAction"]}:
         raise SystemExit("Mutation policy contains an unknown ManagementAction")
     actions = dict(values["ManagementAction"])
@@ -60,6 +61,7 @@ def outputs():
                 for domain, (first, last) in ranges.items()}
     domains, retired = members(DOMAINS), members(RETIRED)
     domains["construction"].add("ConstructionMaterials")
+    domains["citizens"].update({"WorkDetailCreate", "WorkDetailDelete", "WorkDetailEdit", "CitizenWorkScope"})
     partitions = [*domains.values(), *retired.values(), UNROUTED]
     if not all(sum(n in group for group in partitions) == 1 for n in actions):
         raise SystemExit("Every ManagementAction must belong to exactly one domain, retired range, or UNROUTED")

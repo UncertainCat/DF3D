@@ -208,7 +208,7 @@ func run() -> void:
 	reject_citizen({"action":32,"detail_index":1,"expected_revision":7,"unit_id":0,"member":2}, "Invalid bounded citizen request")
 	for query in ["x".repeat(129),String.chr(233).repeat(65)]:
 		reject_citizen({"action":30,"query":query}, "Invalid bounded citizen request")
-	var citizen_requests := [{"action":30,"query":"","cursor":0}, {"action":30,"query":"","cursor":16},
+	var citizen_requests := [{"action":30,"query":"","cursor":0}, {"action":30,"query":"","cursor":16,"expected_list_revision":7},
 		{"action":31,"detail_index":1}, {"action":31,"detail_index":1,"unit_id":0},
 		{"action":28,"query":"Citizen","cursor":0}, {"action":28,"query":"Citizen","cursor":32},
 		{"action":29,"unit_id":0},
@@ -228,7 +228,7 @@ func run() -> void:
 		assert(not state.is_empty() and state.action == request.action)
 		var c: Dictionary = state.citizen
 		assert(not c.external_controller)
-		assert(c.detail == "Existing work details only. Roles and office ownership are read-only; appointments are not exposed.")
+		assert(c.detail == "Roles and office ownership are read-only; appointments are not exposed.")
 		if request.action == 30:
 			assert(c.details.size() == (16 if request.cursor == 0 else 2))
 			assert(c.next_cursor == (16 if request.cursor == 0 else 0))
@@ -379,21 +379,25 @@ func reject_citizen(request: Dictionary, error: String) -> void:
 
 func assert_citizen_detail(d: Dictionary, mode: int = 1, member: int = 1, synthetic: bool = false) -> void:
 	var index: int = d.index
-	assert(d == {"index":index,"revision":7,
+	var comparable := d.duplicate()
+	for key in ["icon","row_error"]: comparable.erase(key)
+	assert(comparable == {"index":index,"revision":7,
 		"name":"Miners" if index == 0 else "Custom" if index == 1 else "Detail %d" % index,
 		"mode":mode if index == 1 else 3,"no_modify":index == 0,"cannot_be_everybody":index == 0,
 		"editable":true,"mode_editable":not synthetic,"reason":"Native work-detail mode is protected" if synthetic else "","labors":[0] if index == 0 else [0,1],
-		"labor_names":["mine"] if index == 0 else ["mine","haul stone"],"assigned_units":[0] if index == 1 and member == 1 else []})
+		"labor_names":["Mining"] if index == 0 else ["Mining","Stone Hauling"],"assigned_units":[0] if index == 1 and member == 1 else []})
 
 func assert_citizen_person(u: Dictionary, inspected: bool, member: int = 1, synthetic: bool = false) -> void:
-	assert(u == {"id":u.id,"name":"Citizen %d" % u.id,"profession":"Carpenter" if u.id == 0 else "Miner",
+	var comparable := u.duplicate()
+	for key in ["revision","detail_member","detail_skill","detail_skill_rating","detail_skill_name","portrait_state","row_error"]: comparable.erase(key)
+	assert(comparable == {"id":u.id,"name":"Citizen %d" % u.id,"profession":"Carpenter" if u.id == 0 else "Miner",
 		"job":"Socialize" if synthetic else "Dig" if u.id == 0 else "No current job",
 		"reason":"","age":42,"stress":10,"has_stress":true,"origin":Vector3i(1,2,3),
 		"can_focus":true,"eligible":true,"only_assigned_jobs":synthetic or u.id == 1,
-		"assigned_details":[{"index":1,"icon":9,"name":"Custom"}] if u.id == 0 and member == 1 else [],
+		"assigned_details":[{"index":1,"icon":9,"name":"Custom" if inspected else ""}] if u.id == 0 and member == 1 else [],
 		"profession_color":14 if u.id == 0 else 7,"profession_id":2 if u.id == 0 else 0,
 		"job_type":-1 if synthetic else 5 if u.id == 0 else -1,"social_activity":synthetic,
-		"labors":[0,1] if inspected else [],"labor_names":["mine","haul stone"] if inspected else [],
+		"labors":[0,1] if inspected else [],"labor_names":["Mining","Stone Hauling"] if inspected else [],
 		"roles":[{"name":"Manager","required_office":250}] if inspected else [],"offices":[]})
 
 func reject_production(request: Dictionary, error: String) -> void:

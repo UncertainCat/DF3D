@@ -130,6 +130,11 @@ struct CitizenInfo {
   std::vector<std::string> laborNames;
   std::vector<CitizenRole> roles;
   std::vector<int32_t> offices;
+  int64_t revision=0;
+  int8_t detailMember=-1;
+  int16_t detailSkill=-1,detailSkillRating=-1;
+  uint8_t portraitState=0;
+  std::string detailSkillName,rowError;
 };
 struct WorkDetailInfo {
   int32_t index = -1;
@@ -141,6 +146,8 @@ struct WorkDetailInfo {
   std::vector<int16_t> labors;
   std::vector<std::string> laborNames;
   std::vector<int32_t> assignedUnits;
+  int32_t icon=-2;
+  std::string rowError;
 };
 struct CitizenState {
   std::vector<CitizenInfo> citizens;
@@ -149,6 +156,9 @@ struct CitizenState {
   int32_t selectedUnit = -1, selectedDetail = -1;
   bool externalController = false;
   std::string detail;
+  uint32_t recalcDone=0,recalcTotal=0;
+  int64_t detailListRevision=0;
+  std::string recalcError;
 };
 
 // --- reports ---

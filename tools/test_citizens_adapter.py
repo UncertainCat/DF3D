@@ -20,6 +20,7 @@ def main():
     citizens=vec{unit(0),unit(4),unit(8,false),unit(12,true,false),unit(16,true,true,false)}
     wd=vec{detail('Custom',{4}),detail('Builtin',{},3,true),detail('Protected everybody',{},3,false,true)}
     df={global={world={units={all=citizens,active=citizens},buildings={other={ACTIVITY_ZONE=vec{}}}},plotinfo={group_id=1,labor_info={work_details=wd}},game={external_flag={automatic_professions_disabled=false}},pause_state=true,unitst_set_automatic_professions=true},unit={},unit_labor={[0]='MINE',[1]='HAUL_STONE',_last_item=93},civzone_type={Office=1}}
+    df.unit_labor.attrs=setmetatable({[0]={caption='Mining'},[1]={caption='Stone Hauling'}},{__index=function()return {}end})
     df.unit.find=function(id)for _,u in ipairs(citizens)do if u.id==id then return u end end end
     calls={}
     dfhack={df2utf=function(s)return s end,job={getName=function()return 'Work' end},maps={isValidTilePos=function(p)assert(type(p)=='table');return true end,getTileFlags=function()return {hidden=false}end},units={}}
@@ -59,7 +60,7 @@ def main():
     assert not roster[1]['only_assigned_jobs'] and roster[2]['only_assigned_jobs']
     assert len(roster[1]['assigned_details'])==0
     assignment=roster[2]['assigned_details'][1]
-    assert assignment['index']==0 and assignment['icon']==9 and assignment['name']=='Custom'
+    assert assignment['index']==0 and assignment['icon']==9 and assignment['name']==''
 
     assert len(call(28)['citizens'])==5  # insane, child and surviving nonliving remain visible
     assert call(29,unit_id=0)['citizens'][1]['x']==1
@@ -88,7 +89,7 @@ def main():
     assert observed(1)['no_modify'] and observed(1)['mode']==1
     refused(edit(33,index=2,mode=1), 'This work detail cannot be assigned to everybody')
     lua.execute('df.global.pause_state=false')
-    refused(edit(33,mode=1), 'Pause before changing a work-detail mode')
+    assert edit(33,mode=2)['ok']  # mode edits also work while unpaused
     lua.execute('df.global.pause_state=true; calls={}')
     assert edit(33,mode=1)['ok']
     assert list(lua.globals().calls.values())==[0,4]
@@ -118,19 +119,19 @@ def main():
     lua.execute('local d=wd[0];wd._data[1]=wd[1];wd._data[2]=d')
     refused(call(32,detail_index=0,expected_revision=before,unit_id=0,member=1), 'Work-detail contents changed; refresh before editing')
     lua.execute("wd:insert('#',detail('Custom',{4},1))")
-    assert not observed(1)['editable'] and not observed(1)['mode_editable']
-    assert observed(1)['reason']=='Identical work-detail definitions have ambiguous identity'
-    refused(edit(index=1,unit_id=0,member=1), 'Identical work-detail definitions have ambiguous identity')
+    assert observed(1)['editable'] and observed(1)['mode_editable']
+    assert observed(1)['reason']==''
+    assert edit(index=1,unit_id=0,member=1)['ok']
     lua.execute("wd:erase(3); fail_next=true")
     original_mode=observed(1)['mode']
     refused(edit(33,index=1,mode=2), 'Native recalculation failed; mode restored')
     assert observed(1)['mode']==original_mode
     lua.execute("for i=1,255 do citizens:insert('#',unit(16+i))end")
-    refused(edit(33,index=1,mode=2), 'Mode changes currently support at most 256 eligible living sane adults')  # 257 eligible adults: fail before any native mutation
-    assert observed(1)['mode']==original_mode
+    assert edit(33,index=1,mode=2)['ok']  # no 256-adult limit
+    assert observed(1)['mode']==2
     lua.execute("citizens:resize(5);wd:resize(0);for n=1,8 do local ids={};for i=1,1024 do ids[i]=i*10 end;wd:insert('#',detail('large'..n,ids))end;wd:insert('#',detail('empty',{}))")
-    refused(edit(index=8,unit_id=0,member=1), 'Work-detail assignments exceed bounded inspector')  # aggregate cap checked before addition
-    assert len(observed(8)['assigned_units'])==0
+    assert edit(index=8,unit_id=0,member=1)['ok']  # no aggregate membership cap
+    assert len(observed(8)['assigned_units'])==1
     lua.execute("wd:resize(1);wd[0].assigned_units=vec{};dfhack.units.getNoblePositions=function()local a={};for i=1,33 do a[i]={entity={id=1},position={name={[0]='Role'},required_office=0}}end;return a end")
     refused(edit(index=0,unit_id=0,member=1), 'Citizen has too many roles for this inspector')  # optional inspector cannot fail only after mutation
     assert len(observed(0)['assigned_units'])==0
@@ -144,11 +145,11 @@ def main():
     """)
     first=call(30,query='Page',cursor=0)
     assert first['ok'] and len(first['details'])==16 and first['next_cursor']==16
-    second=call(30,query='Page',cursor=first['next_cursor'])
+    second=call(30,query='Page',cursor=first['next_cursor'],expected_list_revision=first['detail_list_revision'])
     assert len(second['details'])==2 and second['next_cursor']==0
     assert len(call(30,query='Page 17')['details'])==1
     assert list(first['details'][1]['labors'].values())==[0,1]
-    assert list(first['details'][1]['labor_names'].values())==['mine','haul stone']
+    assert list(first['details'][1]['labor_names'].values())==['Mining','Stone Hauling']
     first=call(28,query='Citizen',cursor=0)
     assert len(first['citizens'])==32 and first['next_cursor']==32
     second=call(28,query='Citizen',cursor=first['next_cursor'])

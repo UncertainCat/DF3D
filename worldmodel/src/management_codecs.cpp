@@ -46,7 +46,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     workOrder = encodeWorkOrder(b, r.workOrder);
   }
   flatbuffers::Offset<m::CitizenRequest> citizen;
-  if (r.action >= ManagementAction::CitizenList && r.action <= ManagementAction::WorkDetailMode) {
+  if ((r.action >= ManagementAction::CitizenList && r.action <= ManagementAction::WorkDetailMode) ||
+      (r.action >= ManagementAction::WorkDetailCreate && r.action <= ManagementAction::CitizenWorkScope)) {
     citizen = encodeCitizen(b, r.citizen);
   }
   flatbuffers::Offset<m::SelectionRequest> selection;

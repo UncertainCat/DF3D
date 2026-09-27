@@ -26,6 +26,9 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
   for (const auto& u : c.citizens) {
     Dictionary row;
     row["id"] = u.id;
+    row["revision"]=u.revision;row["detail_member"]=u.detailMember;row["detail_skill"]=u.detailSkill;
+    row["detail_skill_rating"]=u.detailSkillRating;row["detail_skill_name"]=String::utf8(u.detailSkillName.c_str());
+    row["portrait_state"]=u.portraitState;row["row_error"]=String::utf8(u.rowError.c_str());
     row["name"] = String::utf8(u.name.c_str());
     row["profession"] = String::utf8(u.profession.c_str());
     row["job"] = String::utf8(u.job.c_str());
@@ -66,6 +69,7 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
   for (const auto& d : c.details) {
     Dictionary row;
     row["index"] = d.index;
+    row["icon"]=d.icon;row["row_error"]=String::utf8(d.rowError.c_str());
     row["revision"] = int64_t(d.revision);
     row["name"] = String::utf8(d.name.c_str());
     row["reason"] = String::utf8(d.reason.c_str());
@@ -79,6 +83,8 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
     row["assigned_units"] = ids(d.assignedUnits);
     details.push_back(row);
   }
+  citizen["recalc_done"]=int64_t(c.recalcDone);citizen["recalc_total"]=int64_t(c.recalcTotal);
+  citizen["recalc_error"]=String::utf8(c.recalcError.c_str());citizen["detail_list_revision"]=c.detailListRevision;
   citizen["citizens"] = people;
   citizen["details"] = details;
   citizen["selected_unit"] = c.selectedUnit;
@@ -91,7 +97,7 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
 
 
 bool validateCitizenShape(const Dictionary& data, String& error) {
-  return managementDictionaryTypes(data, {"unit_id", "detail_index", "expected_revision", "cursor", "member", "mode"}, error) &&
+  return managementDictionaryTypes(data, {"unit_id", "detail_index", "expected_revision", "cursor", "member", "mode", "edit", "only_assigned", "expected_list_revision"}, error) &&
       managementRequiredFields(data, error);
 }
 
@@ -110,11 +116,19 @@ bool readCitizen(const Dictionary& data, wm::ManagementRequest& r, String& error
     return value;
   };
   r.action = wm::ManagementAction(n("action", 0, static_cast<int>(wm::ManagementAction::CitizenList),
-      static_cast<int>(wm::ManagementAction::WorkDetailMode)));
+      static_cast<int>(wm::ManagementAction::CitizenWorkScope)));
+  if(r.action>wm::ManagementAction::WorkDetailMode && r.action<wm::ManagementAction::WorkDetailCreate)valid=false;
   auto& value = r.citizen;
   value.unitId = int32_t(n("unit_id", -1, -1, INT32_MAX));
   value.detailIndex = int32_t(n("detail_index", -1, -1, 127));
   value.expectedRevision = uint64_t(n("expected_revision", 0, 0, INT64_MAX));
+  value.edit=uint8_t(n("edit",0,0,3));value.onlyAssigned=int8_t(n("only_assigned",-1,-1,1));
+  value.expectedListRevision=n("expected_list_revision",0,0,INT64_MAX);
+  String name=data.get("name",String());value.name=name.utf8().get_data();
+  if(value.name.size()>160)valid=false;
+  Array labors=data.get("labors",Array());
+  if(labors.size()>94)valid=false;
+  else for(int i=0;i<labors.size();++i){const int64_t id=labors[i];if(id<0 || id>93)valid=false;else value.labors.push_back(int16_t(id));}
   value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
   value.member = int8_t(n("member", -1, -1, 1));
   value.mode = int8_t(n("mode", -1, -1, 3));

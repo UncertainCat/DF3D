@@ -21,7 +21,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
     };
     if(!typed("action",Variant::INT,true))return false;
     for(auto key:integers)if(!typed(key,Variant::INT))return false;
-    for(auto key:{"definition","query","recipe"})if(!typed(key,Variant::STRING))return false;
+    for(auto key:{"definition","query","recipe","name"})if(!typed(key,Variant::STRING))return false;
     for(auto key:{"give","unlink","cancel","remove_condition","pending_only","announcements_only","retracting"})
         if(!typed(key,Variant::BOOL))return false;
     if(!typed("origin",Variant::VECTOR3I)||!typed("items",Variant::ARRAY))return false;
@@ -30,6 +30,11 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
         for(int i=0;i<ids.size();++i)if(ids[i].get_type()!=Variant::INT) {
             error="Construction item identities must be integers";return false;
         }
+    }
+    if(!typed("labors",Variant::ARRAY))return false;
+    if(data.has("labors")) {
+        godot::Array values=data["labors"];
+        for(int i=0;i<values.size();++i)if(values[i].get_type()!=Variant::INT){error="Citizen labors must be integers";return false;}
     }
     if(!typed("selections",Variant::ARRAY))return false;
     if(data.has("selections")) {
@@ -46,7 +51,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
 inline bool managementRequiredFields(const godot::Dictionary& data, godot::String& error) {
     using A=wm::ManagementAction;
     const int64_t raw=data["action"];
-    if(raw<0 || raw>static_cast<int64_t>(A::ConstructionMaterials))return true; // domain range guard follows
+    if(raw<0 || raw>static_cast<int64_t>(A::CitizenWorkScope))return true; // domain range guard follows
     const auto action=static_cast<A>(raw);
     auto require=[&](const char* key) {
         if(data.has(key))return true;
@@ -68,6 +73,10 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
     case A::WorkOrderUpdate: case A::WorkOrderDelete: case A::WorkOrderCondition:
         return require("id") && require("expected_revision");
     case A::WorkOrderCreate: return require("recipe") && require("remaining");
+    case A::WorkDetailCreate: return require("expected_revision");
+    case A::WorkDetailDelete: return require("detail_index") && require("expected_revision");
+    case A::WorkDetailEdit: return require("detail_index") && require("expected_revision") && require("edit");
+    case A::CitizenWorkScope: return require("unit_id") && require("expected_revision") && require("only_assigned");
     case A::CitizenInspect: return require("unit_id");
     case A::WorkDetailInspect: return require("detail_index");
     case A::WorkDetailMembership:

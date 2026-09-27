@@ -157,6 +157,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       if(c->unit_id()<0 || c->detail_index()!=-1 || c->only_assigned()<0 || c->only_assigned()>1)
         return "invalid citizen work scope";
     } else if(c->only_assigned()!=-1) return "unexpected citizen work scope";
+    if(r.action()==ManagementAction::WorkDetailList && c->cursor()>0 && !c->expected_list_revision())
+      return "work detail list revision required";
     if(c->expected_list_revision()>INT64_MAX) return "invalid work detail list revision";
     if(c->expected_list_revision() && r.action()!=ManagementAction::WorkDetailList)
       return "unexpected work detail list revision";
@@ -560,6 +562,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         int prior=-1;
         for(const auto* d:*v->assigned_details()) {
           if(!d || d->index()<=prior || d->index()>127 || d->icon()< -1 || d->icon()>18 || !textOk(d->name(),512))return "invalid citizen work detail";
+          if(s.action()==ManagementAction::CitizenList && d->name()->size())return "unexpected citizen roster detail names";
           prior=d->index();
         }
       }

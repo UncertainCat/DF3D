@@ -118,6 +118,11 @@ struct CitizenRequest {
   uint32_t cursor=0;
   std::string query;
   int8_t member=-1,mode=-1;
+  std::string name;
+  std::vector<int16_t> labors;
+  uint8_t edit=0;
+  int8_t onlyAssigned=-1;
+  int64_t expectedListRevision=0;
 };
 struct CitizenRole { std::string name; int32_t requiredOffice=0; };
 struct CitizenWorkDetail { int32_t index=-1,icon=-1; std::string name; };
@@ -133,6 +138,11 @@ struct CitizenInfo {
   std::vector<std::string> laborNames;
   std::vector<CitizenRole> roles;
   std::vector<int32_t> offices;
+  int64_t revision=0;
+  int8_t detailMember=-1;
+  int16_t detailSkill=-1,detailSkillRating=-1;
+  uint8_t portraitState=0;
+  std::string detailSkillName,rowError;
 };
 struct WorkDetailInfo {
   int32_t index=-1;
@@ -143,6 +153,8 @@ struct WorkDetailInfo {
   std::vector<int16_t> labors;
   std::vector<std::string> laborNames;
   std::vector<int32_t> assignedUnits;
+  int32_t icon=-2;
+  std::string rowError;
 };
 struct CitizenState {
   std::vector<CitizenInfo> citizens;
@@ -151,6 +163,9 @@ struct CitizenState {
   int32_t selectedUnit=-1,selectedDetail=-1;
   bool externalController=false;
   std::string detail;
+  uint32_t recalcDone=0,recalcTotal=0;
+  int64_t detailListRevision=0;
+  std::string recalcError;
 };
 struct WorkOrderRequest {
   int32_t id=-1,remaining=-1,workshopId=-2,maxWorkshops=-1,threshold=-1,targetOrder=-1;

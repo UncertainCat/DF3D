@@ -82,7 +82,7 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     auto name=b.CreateString(index==0?"Miners":index==1?"Custom":"Detail "+std::to_string(index));
     auto reason=b.CreateString(codecSentinels?"Native work-detail mode is protected":"");
     auto labors=b.CreateVector(index==0?std::vector<int16_t>{0}:std::vector<int16_t>{0,1});
-    auto labels=b.CreateVectorOfStrings(index==0?std::vector<std::string>{"mine"}:std::vector<std::string>{"mine","haul stone"});
+    auto labels=b.CreateVectorOfStrings(index==0?std::vector<std::string>{"Mining"}:std::vector<std::string>{"Mining","Stone Hauling"});
     std::vector<int32_t> memberIds=index==1?std::vector<int32_t>{0}:std::vector<int32_t>{};
     if(action==A::WorkDetailMembership && index==q->detail_index())
       memberIds=q->member()==1?std::vector<int32_t>{q->unit_id()}:std::vector<int32_t>{};
@@ -97,7 +97,7 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     auto name=b.CreateString("Citizen "+std::to_string(id));auto profession=b.CreateString(id==0?"Carpenter":"Miner");
     auto job=b.CreateString(codecSentinels?"Socialize":id==0?"Dig":"No current job");auto reason=b.CreateString("");
     auto labors=b.CreateVector(inspect?std::vector<int16_t>{0,1}:std::vector<int16_t>{});
-    auto labels=b.CreateVectorOfStrings(inspect?std::vector<std::string>{"mine","haul stone"}:std::vector<std::string>{});
+    auto labels=b.CreateVectorOfStrings(inspect?std::vector<std::string>{"Mining","Stone Hauling"}:std::vector<std::string>{});
     std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
     if(inspect)roles.push_back(m::CreateCitizenRole(b,b.CreateString("Manager"),250));
     auto roleRows=b.CreateVector(roles);
@@ -105,7 +105,7 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     if(action==A::WorkDetailMembership && id==q->unit_id()) {
       if(q->member()==1)assigned.push_back(m::CreateCitizenWorkDetail(b,q->detail_index(),9,
           b.CreateString(q->detail_index()==1?"Custom":"Detail "+std::to_string(q->detail_index()))));
-    } else if(id==0)assigned.push_back(m::CreateCitizenWorkDetail(b,1,9,b.CreateString("Custom")));
+    } else if(id==0)assigned.push_back(m::CreateCitizenWorkDetail(b,1,9,b.CreateString(inspect?"Custom":"")));
     auto assignments=b.CreateVector(assigned);m::TilePos pos(1,2,3);
     m::CitizenInfoBuilder u(b);u.add_id(id);u.add_name(name);u.add_profession(profession);
     u.add_job(job);u.add_reason(reason);u.add_age(42);u.add_has_stress(true);u.add_stress(10);
@@ -127,7 +127,7 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     if(q->unit_id()>=0){person(q->unit_id(),true);selectedUnit=q->unit_id();}
   }
   auto rows=b.CreateVector(details);auto citizens=b.CreateVector(people);
-  auto info=b.CreateString("Existing work details only. Roles and office ownership are read-only; appointments are not exposed.");
+  auto info=b.CreateString("Roles and office ownership are read-only; appointments are not exposed.");
   m::CitizenStateBuilder c(b);c.add_details(rows);c.add_citizens(citizens);
   c.add_selected_unit(selectedUnit);c.add_selected_detail(selectedDetail);c.add_next_cursor(next);
   c.add_external_controller(false);c.add_detail(info);return c.Finish();
@@ -393,7 +393,7 @@ int main(int argc,char** argv) {
         auto payload=m::CreateCitizenRequest(requestBuffer,action==28 || action==30?-1:0,
             action==33 && variant==0?0:action>=31?1:-1,action>=32?7:0,
             action==28?variant*16:action==30?variant*8:0,
-            requestBuffer.CreateString(action==31 && variant==2?"codec sentinels":""),action==32?variant%2:-1,action==33?variant+1:-1);
+            requestBuffer.CreateString(action==31 && variant==2?"codec sentinels":""),action==32?variant%2:-1,action==33?variant+1:-1,0,0,0,-1,action==30 && variant>0?7:0);
         m::ConstructionRequestBuilder request(requestBuffer);request.add_schema_version(m::kManagementVersion);
         request.add_client_id(1);request.add_seq(1);request.add_world_epoch(epoch);
         request.add_action(static_cast<m::ManagementAction>(action));request.add_citizen(payload);

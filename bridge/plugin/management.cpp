@@ -11,6 +11,7 @@
 #include "modules/Units.h"
 #include "df/activity_event.h"
 #include "df/manager_order.h"
+#include "df/work_detail.h"
 #include "df/manager_order_condition_item.h"
 #include "df/manager_order_condition_order.h"
 #include "LuaTools.h"
@@ -65,6 +66,15 @@ std::chrono::steady_clock::time_point requestStarted;
 // Borrowed native pointers are retained for the entire DLL lifetime, including reloads.
 std::array<void*,4096> workOrderHolding{};
 size_t workOrderHoldingCount=0;
+std::array<void*,256> workDetailHolding{};
+size_t workDetailHoldingCount=0;
+bool citizenRecalcPending=false;
+uint64_t citizenHelperGeneration=0;
+uint32_t citizenRecalcDone=0,citizenRecalcTotal=0;
+bool citizenAction(m::ManagementAction a) {
+  return (a>=m::ManagementAction::CitizenList && a<=m::ManagementAction::WorkDetailMode) ||
+      (a>=m::ManagementAction::WorkDetailCreate && a<=m::ManagementAction::CitizenWorkScope);
+}
 constexpr uint32_t kWorkOrderStepBudget=2048;
 // Global job-kind bits. Extend the reserved entries when those Lua builders land.
 struct BuilderEntry { m::ManagementAction action; uint32_t domainMask; bool enabled; };
@@ -73,7 +83,7 @@ constexpr std::array<BuilderEntry,df3d_builder::kBuilderKindCount> builderTable{
   {m::ManagementAction::WorkOrderList,0x7,true}, // 1 task catalog (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 2 item-condition estimates
   {m::ManagementAction::Catalog,0x8,true},     // 3 construction materials
-  {m::ManagementAction::CitizenList,0x10,false}, // 4 citizens recalculation
+  {m::ManagementAction::CitizenList,0x10,true}, // 4 citizens recalculation
   {m::ManagementAction::Catalog,1u<<5,false}, // 5 areas settings labels
   {m::ManagementAction::Catalog,1u<<6,false}, // 6 areas per-pile summary
   {m::ManagementAction::Catalog,1u<<7,false}, // 7 areas candidates/locations
@@ -283,11 +293,11 @@ void publish() {
     m::TilePos pos(u.x,u.y,u.z);
     std::vector<flatbuffers::Offset<m::CitizenWorkDetail>> assignments;
     for(const auto& d:u.assignedDetails)assignments.push_back(m::CreateCitizenWorkDetail(b,d.index,d.icon,b.CreateString(d.name)));
-    citizenRows.push_back(m::CreateCitizenInfo(b,u.id,b.CreateString(u.name),b.CreateString(u.profession),b.CreateString(u.job),u.age,u.stress,u.hasStress,&pos,u.canFocus,u.eligible,b.CreateString(u.reason),b.CreateVector(u.labors),b.CreateVector(roles),b.CreateVector(u.offices),b.CreateVectorOfStrings(u.laborNames),u.professionColor,u.professionId,u.jobType,u.sheetIcon.build(b),u.onlyAssignedJobs,b.CreateVector(assignments),u.socialActivity));
+    citizenRows.push_back(m::CreateCitizenInfo(b,u.id,b.CreateString(u.name),b.CreateString(u.profession),b.CreateString(u.job),u.age,u.stress,u.hasStress,&pos,u.canFocus,u.eligible,b.CreateString(u.reason),b.CreateVector(u.labors),b.CreateVector(roles),b.CreateVector(u.offices),b.CreateVectorOfStrings(u.laborNames),u.professionColor,u.professionId,u.jobType,u.sheetIcon.build(b),u.onlyAssignedJobs,b.CreateVector(assignments),u.socialActivity,u.revision,u.detailMember,u.detailSkill,u.detailSkillRating,b.CreateString(u.detailSkillName),u.portraitState,b.CreateString(u.rowError)));
   }
   std::vector<flatbuffers::Offset<m::WorkDetailInfo>> detailRows;
-  for(const auto& d:citizens.details)detailRows.push_back(m::CreateWorkDetailInfo(b,d.index,d.revision,b.CreateString(d.name),d.mode,d.noModify,d.cannotBeEverybody,d.editable,d.modeEditable,b.CreateString(d.reason),b.CreateVector(d.labors),b.CreateVector(d.assignedUnits),b.CreateVectorOfStrings(d.laborNames)));
-  auto citizenResult=m::CreateCitizenState(b,b.CreateVector(citizenRows),b.CreateVector(detailRows),citizens.nextCursor,citizens.selectedUnit,citizens.selectedDetail,citizens.externalController,b.CreateString(citizens.detail));
+  for(const auto& d:citizens.details)detailRows.push_back(m::CreateWorkDetailInfo(b,d.index,d.revision,b.CreateString(d.name),d.mode,d.noModify,d.cannotBeEverybody,d.editable,d.modeEditable,b.CreateString(d.reason),b.CreateVector(d.labors),b.CreateVector(d.assignedUnits),b.CreateVectorOfStrings(d.laborNames),d.icon,b.CreateString(d.rowError)));
+  auto citizenResult=citizenAction(action) ? m::CreateCitizenState(b,b.CreateVector(citizenRows),b.CreateVector(detailRows),citizens.nextCursor,citizens.selectedUnit,citizens.selectedDetail,citizens.externalController,b.CreateString(citizens.detail),citizens.recalcDone,citizens.recalcTotal,b.CreateString(citizens.recalcError),citizens.detailListRevision) : flatbuffers::Offset<m::CitizenState>{};
   std::vector<flatbuffers::Offset<m::ReportInfo>> reportRows;
   for(const auto& r:reports.reports)reportRows.push_back(m::CreateReportInfo(b,r.id,b.CreateString(r.category),b.CreateString(r.text),r.year,r.yearTick,r.repeatCount,r.continuation,r.textComplete,r.x,r.y,r.z,r.x2,r.y2,r.z2,r.positionVisible,r.position2Visible));
   auto reportResult=m::CreateReportState(b,b.CreateVector(reportRows),reports.nextBeforeId,reports.announcementsOnly,b.CreateString(reports.detail));
@@ -387,7 +397,11 @@ void run(color_ostream& out) {
   field(L, "seq", executionSerial);
   field(L, "epoch", epoch);
   field(L, "step_budget", remainingSteps);
-  field(L, "retire_capacity", workOrderHolding.size()-workOrderHoldingCount);
+  field(L, "retire_capacity", citizenAction(action) ? workDetailHolding.size()-workDetailHoldingCount : workOrderHolding.size()-workOrderHoldingCount);
+  if(citizenAction(action)) {
+    field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());
+    citizenHelperGeneration=helpers.generation();
+  }
   if(r->creature()) field(L,"unit_id",r->creature()->unit_id());
   field(L, "definition", r->definition() ? r->definition()->str() : "");
   if (r->origin()) {
@@ -445,7 +459,10 @@ void run(color_ostream& out) {
     lua_setfield(L,-2,"work_order");
   }
   if(const auto* c=r->citizen()) {
-    lua_newtable(L);field(L,"unit_id",c->unit_id());field(L,"detail_index",c->detail_index());field(L,"expected_revision",c->expected_revision());field(L,"cursor",c->cursor());field(L,"query",c->query()?c->query()->str():"");field(L,"member",c->member());field(L,"mode",c->mode());lua_setfield(L,-2,"citizen");
+    lua_newtable(L);field(L,"unit_id",c->unit_id());field(L,"detail_index",c->detail_index());field(L,"expected_revision",c->expected_revision());field(L,"cursor",c->cursor());field(L,"query",c->query()?c->query()->str():"");field(L,"member",c->member());field(L,"mode",c->mode());
+    field(L,"name",c->name()?c->name()->str():"");field(L,"edit",c->edit());field(L,"only_assigned",c->only_assigned());field(L,"expected_list_revision",c->expected_list_revision());
+    lua_newtable(L);int index=0;if(c->labors())for(auto id:*c->labors()){lua_pushinteger(L,id);lua_rawseti(L,-2,++index);}lua_setfield(L,-2,"labors");
+    lua_setfield(L,-2,"citizen");
   }
 
   if(const auto* t=r->trade()){lua_newtable(L);field(L,"depot_id",t->depot_id());field(L,"item_id",t->item_id());field(L,"expected_revision",t->expected_revision());field(L,"requested",t->requested());field(L,"anyone",t->anyone());field(L,"cursor",t->cursor());field(L,"query",t->query()?t->query()->str():"");lua_setfield(L,-2,"trade");}
@@ -495,6 +512,21 @@ void run(color_ostream& out) {
       lua_pop(L,1);
     }
   }
+  if(citizenAction(action)) {
+    citizenRecalcPending=(builderActive & 0x10)!=0;
+    citizenRecalcDone=uint32_t(number(L,"recalc_done"));citizenRecalcTotal=uint32_t(number(L,"recalc_total"));
+    // Retain even when recalculation failed after the native vector erase.
+    if(action==m::ManagementAction::WorkDetailDelete) {
+      lua_getfield(L,-1,"retired");
+      if(lua_istable(L,-1))for(size_t i=1;i<=lua_rawlen(L,-1);++i) {
+        lua_rawgeti(L,-1,i);void* native=Lua::GetDFObject<df::work_detail>(L,-1);
+        if(native && workDetailHoldingCount<workDetailHolding.size()){workDetailHolding[workDetailHoldingCount++]=native;mutated=true;}
+        else out.printerr("df3d: retired work-detail element {} was not retained: {}\n",i,native ? "holding array full" : "unrecognized native object");
+        lua_pop(L,1);
+      }
+      lua_pop(L,1);
+    }
+  }
   const bool isConstruction=action<=m::ManagementAction::RemoveConstruction || action==m::ManagementAction::ConstructionMaterials;
   if(isConstruction) {
     construction.placed=uint32_t(number(L,"placed",construction.placed));
@@ -507,7 +539,7 @@ void run(color_ostream& out) {
   }
   if(ok && (action==m::ManagementAction::TradeUpdate || action==m::ManagementAction::TradeBring))mutated=true;
   if(ok && action>=m::ManagementAction::WorkOrderCreate && action<=m::ManagementAction::WorkOrderCondition)mutated=true;
-  if(ok && (action==m::ManagementAction::WorkDetailMembership || action==m::ManagementAction::WorkDetailMode))mutated=true;
+  if(ok && (action==m::ManagementAction::WorkDetailMembership || action==m::ManagementAction::WorkDetailMode || (action>=m::ManagementAction::WorkDetailCreate && action<=m::ManagementAction::CitizenWorkScope)))mutated=true;
   message = text(L, "message");
   valid = boolean(L, "placement_valid");
   required = uint16_t(number(L, "required"));
@@ -563,36 +595,82 @@ void run(color_ostream& out) {
     }
     lua_pop(L,1);
   }
-  if(action>=m::ManagementAction::CitizenList && action<=m::ManagementAction::WorkDetailMode) {
+  if(citizenAction(action)) {
     citizens.nextCursor=uint32_t(number(L,"next_cursor"));citizens.selectedUnit=int32_t(number(L,"selected_unit",-1));citizens.selectedDetail=int32_t(number(L,"selected_detail",-1));citizens.externalController=boolean(L,"external_controller");citizens.detail=text(L,"detail");
-    auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1))for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
+    citizens.recalcDone=citizenRecalcDone;citizens.recalcTotal=citizenRecalcTotal;
+    citizens.recalcError=text(L,"recalc_error");citizens.detailListRevision=number(L,"detail_list_revision");
+    bool pageInvalid=false;std::string* rowError=nullptr;size_t portraitBytes=0;
+    auto error=[&](const char* key){if(rowError){if(rowError->empty())*rowError=std::string("Row exceeds ")+key+" cap";}else pageInvalid=true;};
+    auto str=[&](const char* key,size_t cap,bool optional=false)->std::string {
+      lua_getfield(L,-1,key);size_t n=0;const bool type=lua_type(L,-1)==LUA_TSTRING;
+      const char* data=type ? lua_tolstring(L,-1,&n) : nullptr;
+      if((!type && !(optional && lua_isnil(L,-1))) || n>cap)error(key);
+      std::string value=data && n<=cap ? std::string(data,n) : std::string{};lua_pop(L,1);return value;
+    };
+    auto name=[&]()->std::string {
+      size_t n=0;const bool type=lua_type(L,-1)==LUA_TSTRING;
+      const char* data=type ? lua_tolstring(L,-1,&n) : nullptr;
+      if(!type || n>128){error("labor_names");return {};}
+      return std::string(data,n);
+    };
+    auto each=[&](const char* key,size_t cap,auto fn){
+      lua_getfield(L,-1,key);
+      if(!lua_isnil(L,-1) && !lua_istable(L,-1))error(key);
+      if(lua_istable(L,-1)) {
+        const size_t count=lua_rawlen(L,-1);
+        if(count>cap)error(key);
+        else for(size_t i=1;i<=count;++i){
+          lua_rawgeti(L,-1,i);
+          const std::string_view fieldName(key);
+          const bool object=fieldName=="citizens" || fieldName=="details" || fieldName=="roles" || fieldName=="assigned_details";
+          if(object && !lua_istable(L,-1))error(key);else fn();
+          lua_pop(L,1);
+        }
+      }
+      lua_pop(L,1);
+    };
     each("citizens",32,[&](){
-      CitizenInfo u;u.professionColor=int32_t(number(L,"profession_color",-1));u.professionId=int32_t(number(L,"profession_id",-1));u.jobType=int32_t(number(L,"job_type",-1));u.id=int32_t(number(L,"id",-1));u.age=int32_t(number(L,"age",-1));u.stress=int32_t(number(L,"stress"));u.x=int32_t(number(L,"x"));u.y=int32_t(number(L,"y"));u.z=int32_t(number(L,"z"));u.name=text(L,"name");u.profession=text(L,"profession");u.job=text(L,"job");u.reason=text(L,"reason");u.hasStress=boolean(L,"has_stress");u.canFocus=boolean(L,"can_focus");u.eligible=boolean(L,"eligible");
+      CitizenInfo u;rowError=&u.rowError;
+      auto reportedError=str("row_error",256,true);if(u.rowError.empty())u.rowError=std::move(reportedError);u.revision=number(L,"revision");u.detailMember=int8_t(number(L,"detail_member",-1));
+      u.detailSkill=int16_t(number(L,"detail_skill",-1));u.detailSkillRating=int16_t(number(L,"detail_skill_rating",-1));u.detailSkillName=str("detail_skill_name",128,true);u.professionColor=int32_t(number(L,"profession_color",-1));u.professionId=int32_t(number(L,"profession_id",-1));u.jobType=int32_t(number(L,"job_type",-1));u.id=int32_t(number(L,"id",-1));u.age=int32_t(number(L,"age",-1));u.stress=int32_t(number(L,"stress"));u.x=int32_t(number(L,"x"));u.y=int32_t(number(L,"y"));u.z=int32_t(number(L,"z"));u.name=str("name",512);u.profession=str("profession",512);u.job=str("job",512);u.reason=str("reason",512);u.hasStress=boolean(L,"has_stress");u.canFocus=boolean(L,"can_focus");u.eligible=boolean(L,"eligible");
       // A stale Lua-reported id (unit removed between the scan and this
       // readback) must not reach the appearance resolver: skip the row.
       auto* nativeUnit=df::unit::find(u.id);
-      if(!nativeUnit){++staleUnitsSkipped;return;}
+      if(!nativeUnit){++staleUnitsSkipped;rowError=nullptr;return;}
       u.sheetIcon.collect(nativeUnit);
+      u.portraitState=u.sheetIcon.layers.empty() ? 2 : 1;
+      if(u.portraitState==1) {
+        flatbuffers::FlatBufferBuilder portrait;auto encoded=u.sheetIcon.build(portrait);portrait.Finish(encoded);
+        // Include alignment slack so the page's combined encoding cannot exceed the cap.
+        const size_t bytes=portrait.GetSize()+8;
+        if(bytes>256*1024-portraitBytes){u.sheetIcon={};u.portraitState=3;}else portraitBytes+=bytes;
+      }
       // Same semantic lookup as DFHack manipulator: a social event replaces
       // the idle caption only when there is no ordinary job. No UI state read.
       if(!nativeUnit->job.current_job) {
         if(auto* event=Units::getMainSocialEvent(nativeUnit)) {
           std::string description;event->getName(nativeUnit->id,&description);
-          u.job=DF2UTF(description);u.socialActivity=true;
+          u.job=DF2UTF(description);u.socialActivity=true;if(u.job.size()>512)error("job");
         }
       }
       u.onlyAssignedJobs=boolean(L,"only_assigned_jobs");
-      each("assigned_details",128,[&](){u.assignedDetails.push_back({int32_t(number(L,"index",-1)),int32_t(number(L,"icon",-1)),text(L,"name")});});
-      each("labor_names",94,[&](){u.laborNames.push_back(lua_tostring(L,-1));});
+      each("assigned_details",128,[&](){u.assignedDetails.push_back({int32_t(number(L,"index",-1)),int32_t(number(L,"icon",-2)),str("name",512)});});
+      each("labor_names",94,[&](){u.laborNames.push_back(name());});
       each("labors",94,[&](){u.labors.push_back(int16_t(lua_tointeger(L,-1)));});
       each("offices",64,[&](){u.offices.push_back(int32_t(lua_tointeger(L,-1)));});
-      each("roles",32,[&](){u.roles.push_back({text(L,"name"),int32_t(number(L,"required_office"))});});citizens.citizens.push_back(std::move(u));
+      each("roles",32,[&](){u.roles.push_back({str("name",512),int32_t(number(L,"required_office"))});});if(!u.rowError.empty()) {
+        u.name.clear();u.profession.clear();u.job.clear();u.reason.clear();u.detailSkillName.clear();
+        u.labors.clear();u.laborNames.clear();u.roles.clear();u.offices.clear();u.assignedDetails.clear();u.sheetIcon={};u.portraitState=2;
+      }
+      rowError=nullptr;citizens.citizens.push_back(std::move(u));
     });
     each("details",16,[&](){
-      WorkDetailInfo d;d.index=int32_t(number(L,"index",-1));d.revision=uint64_t(number(L,"revision"));d.name=text(L,"name");d.reason=text(L,"reason");d.mode=uint8_t(number(L,"mode"));d.noModify=boolean(L,"no_modify");d.cannotBeEverybody=boolean(L,"cannot_be_everybody");d.editable=boolean(L,"editable");d.modeEditable=boolean(L,"mode_editable");
-      each("labor_names",94,[&](){d.laborNames.push_back(lua_tostring(L,-1));});
-      each("labors",94,[&](){d.labors.push_back(int16_t(lua_tointeger(L,-1)));});each("assigned_units",1024,[&](){d.assignedUnits.push_back(int32_t(lua_tointeger(L,-1)));});citizens.details.push_back(std::move(d));
+      WorkDetailInfo d;rowError=&d.rowError;auto reportedError=str("row_error",256,true);if(d.rowError.empty())d.rowError=std::move(reportedError);d.icon=int32_t(number(L,"icon",-2));d.index=int32_t(number(L,"index",-1));d.revision=uint64_t(number(L,"revision"));d.name=str("name",512);d.reason=str("reason",512);d.mode=uint8_t(number(L,"mode"));d.noModify=boolean(L,"no_modify");d.cannotBeEverybody=boolean(L,"cannot_be_everybody");d.editable=boolean(L,"editable");d.modeEditable=boolean(L,"mode_editable");
+      each("labor_names",94,[&](){d.laborNames.push_back(name());});
+      each("labors",94,[&](){d.labors.push_back(int16_t(lua_tointeger(L,-1)));});each("assigned_units",1024,[&](){d.assignedUnits.push_back(int32_t(lua_tointeger(L,-1)));});if(!d.rowError.empty()){d.name.clear();d.reason.clear();d.labors.clear();d.laborNames.clear();d.assignedUnits.clear();}
+      rowError=nullptr;citizens.details.push_back(std::move(d));
     });
+    if(pageInvalid){ok=false;productionPending=false;message="Invalid native citizen response: page exceeds contract";citizens.citizens.clear();citizens.details.clear();}
   }
   if(action>=m::ManagementAction::TradeList && action<=m::ManagementAction::TradeBring) {
     trade.nextCursor=uint32_t(number(L,"next_cursor"));trade.selectedDepot=int32_t(number(L,"selected_depot",-1));trade.detail=text(L,"detail");
@@ -716,12 +794,17 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     if(helper==LUA_NOREF){builderActive &= ~entry.domainMask;return 0;}
     lua_rawgeti(L,LUA_REGISTRYINDEX,helper);lua_newtable(L);
     field(L,"step",share);field(L,"builder_kind",kind);
+    if(kind==4){field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());citizenHelperGeneration=helpers.generation();}
     uint32_t used=0;
     if(Lua::SafeCall(out,L,1,1) && lua_istable(L,-1)) {
       builderActive=(builderActive & ~entry.domainMask) |
           (uint32_t(number(L,"active_kinds")) & entry.domainMask);
       used=std::min(share,uint32_t(number(L,"steps")));
     } else builderActive &= ~entry.domainMask;
+    if(kind==4 && lua_istable(L,-1)) {
+      citizenRecalcPending=(builderActive & 0x10)!=0;
+      citizenRecalcDone=uint32_t(number(L,"recalc_done"));citizenRecalcTotal=uint32_t(number(L,"recalc_total"));
+    }
     if(kind==3 && lua_istable(L,-1)){constructionCacheEntries=uint32_t(number(L,"cache_entries"));constructionCacheIds=uint32_t(number(L,"cache_ids"));}
     auto& timing=builderTiming[kind];timing.stepsLast=used;timing.stepsMax=std::max(timing.stepsMax,used);
     timing.usLast=uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-slotStarted).count());timing.usMax=std::max(timing.usMax,timing.usLast);
@@ -774,6 +857,7 @@ bool takeTerrainHint(int32_t& x, int32_t& y, int32_t& z) {
 constexpr size_t kFirstTimedAction = size_t(m::ManagementAction::CitizenList);
 void printTiming(color_ostream& out) {
   for(size_t i=0;i<builderTable.size();++i)if(builderTable[i].enabled){const auto& t=builderTiming[i];out.print("  builder kind {}: steps {} / {} last/max; {} / {} us last/max\n",i,t.stepsLast,t.stepsMax,t.usLast,t.usMax);}
+  out.print("  work-detail holding {}/256; citizen recalc {}/{}\n",workDetailHoldingCount,citizenRecalcDone,citizenRecalcTotal);
   out.print("  construction cache: {} entries, {} ids; construction holding: none\n",constructionCacheEntries,constructionCacheIds);
   out.print("  work-order holding: {}/4096; builder steps: {}; {} / {} us last/max\n",workOrderHoldingCount,builderSteps,builderLastUs,builderMaxUs);
   for(size_t i=kFirstTimedAction;i<actionTimings.size();++i) {
@@ -805,6 +889,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     startBackoff.reset();
   }
   if (epoch != worldEpoch) {
+    citizenRecalcPending=false;citizenRecalcDone=citizenRecalcTotal=0;
     helpers.reset();builderActive=0;builderStart=0;builderSteps=builderLastUs=0;
     actionTimings={};builderTiming={};constructionCacheEntries=constructionCacheIds=0;
     warnedMalformedRequest=warnedMailboxUnavailable=false;
@@ -899,6 +984,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
       auto& t=actionTimings[timingAction];++t.count;t.last=elapsed;t.max=std::max(t.max,elapsed);
     }
   }
+  if(citizenRecalcPending)builderActive|=0x10;
   if(!saving && epoch && builderActive && remainingSteps)stepBuilder(out,remainingSteps);
 }
 }  // namespace df3d_management

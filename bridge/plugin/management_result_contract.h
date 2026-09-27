@@ -49,6 +49,35 @@ inline std::string managementResultError(lua_State* L,df3d::mirror::ManagementAc
         if(!optionalInteger("active_kinds",0,8))return "active_kinds must be an integer in 0..8";
         if(!field("active",LUA_TBOOLEAN,false))return "active must be a boolean when present";
     }
+    if((action>=A::CitizenList && action<=A::WorkDetailMode) ||
+       (action>=A::WorkDetailCreate && action<=A::CitizenWorkScope)) {
+        auto optionalInteger=[&](const char* key,lua_Integer low,lua_Integer high) {
+            lua_getfield(L,-1,key);const bool absent=lua_isnil(L,-1);lua_pop(L,1);
+            return absent || integer(key,low,high);
+        };
+        for(const char* key:{"revision","detail_list_revision"})
+            if(!optionalInteger(key,0,INT64_MAX))return std::string(key)+" must be an integer in 0..INT64_MAX";
+        for(const char* key:{"recalc_done","recalc_total"})
+            if(!optionalInteger(key,0,UINT32_MAX))return std::string(key)+" must be an integer in 0..UINT32_MAX";
+        lua_getfield(L,-1,"recalc_done");const auto done=lua_tointeger(L,-1);lua_pop(L,1);
+        lua_getfield(L,-1,"recalc_total");const auto total=lua_tointeger(L,-1);lua_pop(L,1);
+        if(done>total)return "recalc_done exceeds recalc_total";
+        if(!optionalInteger("steps",0,INT64_MAX))return "steps must be a nonnegative integer";
+        if(!optionalInteger("active_kinds",0,UINT32_MAX))return "active_kinds must be an integer in 0..UINT32_MAX";
+        lua_getfield(L,-1,"retired");const bool retired=!lua_isnil(L,-1);lua_pop(L,1);
+        if(retired && action!=A::WorkDetailDelete)return "retired is only valid on WorkDetailDelete";
+        if(retired && !field("retired",LUA_TTABLE,false))return "retired must be a table";
+        for(const char* key:{"citizens","details"}) {
+            lua_getfield(L,-1,key);
+            if(lua_istable(L,-1))for(size_t i=1;i<=lua_rawlen(L,-1);++i) {
+                lua_rawgeti(L,-1,i);
+                if(!lua_istable(L,-1)){lua_pop(L,2);return "citizen row must be a table";}
+                const bool valid=optionalInteger("revision",0,INT64_MAX);lua_pop(L,1);
+                if(!valid){lua_pop(L,1);return "revision must be an integer in 0..INT64_MAX";}
+            }
+            lua_pop(L,1);
+        }
+    }
     if(!ok || pending)return {};
     if(action>=A::WorkOrderList && action<=A::WorkOrderCatalog) {
         const int top=lua_gettop(L);

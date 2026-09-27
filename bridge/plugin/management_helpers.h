@@ -29,6 +29,7 @@ static_assert(int(A::AreaCatalog)==7 && int(A::AreaInspectAtTile)==8 && int(A::A
 static_assert(int(A::ProductionList)==15 && int(A::ProductionInspect)==16 && int(A::ProductionQueue)==17 && int(A::ProductionJobEdit)==18 && int(A::FarmSetCrop)==19, "production.lua action numbers");
 static_assert(int(A::WorkOrderList)==20 && int(A::WorkOrderInspect)==21 && int(A::WorkOrderCreate)==22 && int(A::WorkOrderUpdate)==23 && int(A::WorkOrderDelete)==24 && int(A::WorkOrderCondition)==25 && int(A::WorkOrderCandidates)==26 && int(A::WorkOrderCatalog)==27, "work_orders.lua action numbers");
 static_assert(int(A::CitizenList)==28 && int(A::CitizenInspect)==29 && int(A::WorkDetailList)==30 && int(A::WorkDetailInspect)==31 && int(A::WorkDetailMembership)==32 && int(A::WorkDetailMode)==33, "citizens.lua action numbers");
+static_assert(int(A::WorkDetailCreate)==64 && int(A::WorkDetailDelete)==65 && int(A::WorkDetailEdit)==66 && int(A::CitizenWorkScope)==67, "citizens.lua appended action numbers");
 static_assert(int(A::ReportInspect)==35 && int(A::AgreementInspect)==37, "reports.lua / agreements.lua action numbers");
 static_assert(int(A::TradeList)==38 && int(A::TradeInspect)==39 && int(A::TradeUpdate)==40 && int(A::TradeGoods)==41 && int(A::TradeBring)==42 && int(A::TradeExchangeOpen)==43, "trade.lua action numbers");
 }
@@ -52,12 +53,15 @@ class ManagementHelpers : public ManagementHelperOwners {
         {ranges_[7].first,ranges_[7].last,kTradeScript},
         {ranges_[8].first,ranges_[8].last,kCreatureScript}
     }};
+    uint64_t generation_=0;
 public:
+    uint64_t generation() const { return generation_; }
     ManagementHelpers()=default;
     ManagementHelpers(const ManagementHelpers&)=delete;
     ManagementHelpers& operator=(const ManagementHelpers&)=delete;
     ~ManagementHelpers(){reset();}
     void reset() {
+        ++generation_;
         for(auto& helper:entries_) if(helper.reference!=LUA_NOREF) {
             auto* state=DFHack::Core::getInstance().getLuaState();
             if(helper.first==Action::WorkOrderList || helper.first==Action::Catalog) {
@@ -73,11 +77,14 @@ public:
         }
     }
     bool sameOwner(Action a,Action b) const {
+        if(a>=Action::WorkDetailCreate && a<=Action::CitizenWorkScope)a=Action::CitizenList;
+        if(b>=Action::WorkDetailCreate && b<=Action::CitizenWorkScope)b=Action::CitizenList;
         if(a==Action::ConstructionMaterials)a=Action::Catalog;
         if(b==Action::ConstructionMaterials)b=Action::Catalog;
         return ManagementHelperOwners::sameOwner(a,b);
     }
     int acquire(Action action,DFHack::color_ostream& out,lua_State* state) {
+        if(action>=Action::WorkDetailCreate && action<=Action::CitizenWorkScope)action=Action::CitizenList;
         if(action==Action::ConstructionMaterials)action=Action::Catalog;
         for(auto& helper:entries_) if(action>=helper.first && action<=helper.last) {
             if(helper.reference==LUA_NOREF) {

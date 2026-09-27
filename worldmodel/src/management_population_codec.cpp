@@ -66,10 +66,15 @@ CitizenState decodeCitizen(const m::CitizenState* c) {
   n.selectedUnit = c->selected_unit();
   n.selectedDetail = c->selected_detail();
   n.externalController = c->external_controller();
+  n.recalcDone=c->recalc_done();n.recalcTotal=c->recalc_total();
+  n.recalcError=str(c->recalc_error());n.detailListRevision=int64_t(c->detail_list_revision());
   n.detail = str(c->detail());
   if (c->citizens())
     for (const auto* v : *c->citizens()) {
       CitizenInfo u;
+      u.revision=int64_t(v->revision());u.detailMember=v->detail_member();u.detailSkill=v->detail_skill();
+      u.detailSkillRating=v->detail_skill_rating();u.detailSkillName=str(v->detail_skill_name());
+      u.portraitState=v->portrait_state();u.rowError=str(v->row_error());
       u.professionColor = v->profession_color();
       u.professionId = v->profession_id();
       u.jobType = v->job_type();
@@ -116,6 +121,7 @@ CitizenState decodeCitizen(const m::CitizenState* c) {
   if (c->details())
     for (const auto* v : *c->details()) {
       WorkDetailInfo d;
+      d.icon=v->icon();d.rowError=str(v->row_error());
       d.index = v->index();
       d.revision = v->revision();
       d.name = str(v->name());
@@ -184,7 +190,7 @@ flatbuffers::Offset<m::CitizenRequest> encodeCitizen(flatbuffers::FlatBufferBuil
                                                      const CitizenRequest& value) {
   const auto& c = value;
   return m::CreateCitizenRequest(b, c.unitId, c.detailIndex, c.expectedRevision, c.cursor,
-                                 b.CreateString(c.query), c.member, c.mode);
+                                 b.CreateString(c.query), c.member, c.mode,b.CreateString(c.name),b.CreateVector(c.labors),c.edit,c.onlyAssigned,c.expectedListRevision);
 }
 
 flatbuffers::Offset<m::AppointmentsRequest> encodeAppointments(flatbuffers::FlatBufferBuilder& b,

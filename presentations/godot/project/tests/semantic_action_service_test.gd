@@ -26,6 +26,7 @@ func _initialize(): call_deferred("run")
 func run():
 	test_queued_cancellation()
 	test_domain_routing()
+	test_construction_materials()
 	test_work_orders()
 	test_citizens()
 	test_transport_replacement()
@@ -307,4 +308,33 @@ func test_citizens():
 		var calls := world.calls.size()
 		for index in 3: service.poll(1.0)
 		check(world.calls.size() == calls and observed.size() == before+1, "citizen terminal outcome never replays")
+	service.free()
+
+func test_construction_materials():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	var callback := func(t, r, q): observed.append([t,r,q])
+	var request := {"action":Contract.ManagementAction.ConstructionMaterials,"definition":"Chair","filter":0}
+	var ticket := service.submit("construction", request, callback)
+	service.poll()
+	check(world.calls.size() == 1 and world.calls[0].domain == "construction", "materials action routes to construction")
+	world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":2,"action":63,
+		"construction":{"build_phase":1,"build_done":0,"build_total":1024}}
+	service.poll()
+	check(observed.size() == 1 and service.result(ticket).status == 2, "builder progress is an ordinary Ok reply")
+	check(service.result(ticket).construction.build_phase == 1, "builder progress reaches observer")
+	var place := service.submit("construction", {"action":Contract.ManagementAction.Place}, callback)
+	service.poll()
+	world.state = {"world_epoch":5,"revision":3,"request_seq":2,"status":3,"action":2,
+		"message":"Selected material was taken during placement",
+		"construction":{"placed":256,"skipped":0,"first_building":101}}
+	service.poll()
+	check(service.result(place).status == 3 and service.result(place).construction.placed == 256,
+		"partial rejected placement retains counts")
+	check(service.result(place).message == "Selected material was taken during placement", "exact partial refusal reaches view")
+	check(observed.size() == 2 and observed.back()[1].construction.placed == 256, "partial reply displayed once")
+	for i in 10: service.poll(1.0)
+	check(world.calls.size() == 2 and observed.size() == 2, "partial rejection never replays")
 	service.free()

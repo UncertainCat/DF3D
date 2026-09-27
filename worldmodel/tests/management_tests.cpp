@@ -1005,4 +1005,22 @@ TEST_CASE("management refuses a v16 work-order reply without replacing accepted 
   p.publish(4,owner.id,seq,7,mm::ManagementAction::WorkOrderCatalog);REQUIRE(c->poll());
   CHECK(c->state().revision==4);CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
 }
+
+TEST_CASE("construction v17 replies cannot resolve a v18 materials request") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);const auto owner=claim(p,*c);
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ConstructionMaterials;
+  request.definition="Chair";request.filter=0;request.expectedListRevision=INT64_MAX;
+  auto seq=c->send(request);REQUIRE(seq>0);const auto* sent=p.pop();
+  CHECK(sent->filter()==0);CHECK(sent->expected_list_revision()==INT64_MAX);
+  flatbuffers::FlatBufferBuilder b;const auto construction=mm::CreateConstructionState(b);
+  mm::ManagementStateBuilder state(b);state.add_schema_version(17);state.add_revision(3);
+  state.add_world_epoch(7);state.add_client_id(owner.id);state.add_request_seq(seq);
+  state.add_action(mm::ManagementAction::ConstructionMaterials);state.add_status(mm::ManagementStatus::Ok);
+  state.add_construction(construction);b.Finish(state.Finish());
+  auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+  REQUIRE(error);CHECK(*error=="invalid management version/revision");
+  REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));CHECK_FALSE(c->poll());CHECK(c->state().revision==2);
+  p.publish(4,owner.id,seq,7,mm::ManagementAction::ConstructionMaterials);REQUIRE(c->poll());
+  CHECK(c->state().revision==4);CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+}
 #endif

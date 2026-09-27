@@ -209,7 +209,17 @@ int main(int argc,char** argv) {
       flatbuffers::Offset<m::CitizenState> citizens;
       if(request && request->action()>=m::ManagementAction::CitizenList &&
           request->action()<=m::ManagementAction::WorkDetailMode)citizens=citizenFixture(b,*request);
-      m::ManagementStateBuilder state(b);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+
+      flatbuffers::Offset<m::ConstructionState> construction;
+      if(request && (request->action()==m::ManagementAction::ConstructionMaterials || request->action()==m::ManagementAction::Preview)) {
+        const auto key=b.CreateString(request->definition()->str());
+        const auto f=m::CreateConstructionFilter(b,0,-1,-1,empty,empty,1);
+        const auto fs=b.CreateVector(std::vector{f});
+        const auto fp=m::CreateConstructionFootprint(b,request->retracting()?4:request->direction(),1,1,0,0);
+        m::ConstructionStateBuilder c(b);c.add_building_key(key);c.add_filter(request->filter());
+        c.add_filters(fs);c.add_list_revision(INT64_MAX);c.add_footprint(fp);construction=c.Finish();
+      }
+      m::ManagementStateBuilder state(b);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_status(m::ManagementStatus::Ok);state.add_message(text);
@@ -231,7 +241,8 @@ int main(int argc,char** argv) {
         A::WorkDetailList,A::WorkDetailList,A::WorkDetailInspect,A::WorkDetailInspect,
         A::CitizenList,A::CitizenList,A::CitizenInspect,A::WorkDetailMembership,A::WorkDetailMembership,
         A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailMode,A::WorkDetailInspect,
-        A::WorkOrderUpdate,A::WorkOrderUpdate,A::WorkOrderCondition};
+        A::WorkOrderUpdate,A::WorkOrderUpdate,A::WorkOrderCondition,
+        A::ConstructionMaterials,A::Preview,A::Preview};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -261,6 +272,13 @@ int main(int argc,char** argv) {
           require(r->selections() && r->selections()->size()==1 && r->selections()->Get(0)->filter()==0 && r->selections()->Get(0)->count()==1 && r->selections()->Get(0)->expected_list_revision()==INT64_MAX,"material selection");
           require(r->origin() && r->origin()->x()==11 && r->origin()->y()==12 && r->origin()->z()==13,"placement origin");
           require(r->definition() && r->definition()->str()=="Chair","definition");break;
+
+        case A::ConstructionMaterials:
+          require(r->definition()->str()=="Chair" && r->filter()==0 && r->expected_list_revision()==INT64_MAX,"construction materials request");break;
+        case A::Preview:
+          if(received==42)require(r->definition()->str()=="Construction:Stairs" && r->depth()==3 && !r->retracting(),"stair depth");
+          else require(received==43 && r->definition()->str()=="Bridge" && r->depth()==1 && r->retracting() && r->direction()==0,"retracting bridge");
+          break;
         case A::ProductionJobEdit: {
           auto* v=r->production();require(v && v->building_id()==2147483000 && v->job_id()==2147483001 && v->repeat()==1 && v->suspend()==-1 && !v->cancel(),"production payload");break;
         }

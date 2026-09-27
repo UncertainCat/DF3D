@@ -257,6 +257,28 @@ func run() -> void:
 		state = await receipt(sequence)
 		assert(not state.is_empty() and state.action == request.action)
 		assert_work_order(state.work_order, request.action == A.WorkOrderCatalog)
+	for malformed in [0, "", {}, true]:
+		assert(world.management_request("construction", {"action":A.Place,"definition":"Chair",
+			"origin":Vector3i.ZERO,"selections":malformed}) == 0)
+		assert(world.last_error() == "Wrong management field type: selections")
+	assert(world.management_request("construction", {"action":A.Place,"definition":"Chair",
+		"origin":Vector3i.ZERO,"selections":[0]}) == 0)
+	assert(world.last_error() == "Construction selection must be a dictionary")
+	assert(Contract.domain_of(A.ConstructionMaterials) == "construction")
+	assert(not Contract.is_mutation(A.ConstructionMaterials))
+	for request in [
+		{"action":A.ConstructionMaterials,"definition":"Chair","origin":Vector3i.ZERO,"filter":0,"expected_list_revision":9223372036854775807},
+		{"action":A.Preview,"definition":"Construction:Stairs","origin":Vector3i.ZERO,"depth":3,"selections":[]},
+		{"action":A.Preview,"definition":"Bridge","origin":Vector3i.ZERO,"retracting":true}]:
+		sequence = world.management_request("construction", request)
+		assert(sequence > 0)
+		state = await receipt(sequence)
+		assert(not state.is_empty() and state.action == request.action)
+		assert(state.construction.list_revision is int)
+		assert(state.construction.list_revision == 9223372036854775807)
+		assert(state.construction.building_key == request.definition)
+		assert(state.construction.filter == request.get("filter",-1))
+		assert(state.construction.footprint.direction == (4 if request.get("retracting",false) else 0))
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break

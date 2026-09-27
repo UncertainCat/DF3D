@@ -351,9 +351,123 @@ def main():
     lua.execute("df.building_type._last_item = -1")
     broken = lua.execute(source.read_text(encoding="utf-8"))
     result = broken(lua.table_from({"action": 0}))
-    assert not result["ok"] and "catalog is incomplete" in result["message"]
+    assert not result["ok"] and result["message"] == "Native construction catalog is incomplete: Chair"
     print("CONSTRUCTION_CATALOG PASS")
 
 
+# Fixture producibility | construction.lua function (committed B).
+# Catalog labels/modes/limits/reasons/footprints | definitions:59-122.
+# Missing self-check key | catalog initialization:116-119.
+# Filter identities, quantities and requirement tokens | filter_row:41-51.
+# Stale page message and integer revision | returned request closure:506-510.
+# Inline tables are synthetic DF API inputs, never recorded raws or native text.
+def catalog_runtime():
+    lua = LuaRuntime(unpack_returned_tuples=True)
+    lua.execute((Path(__file__).parent / 'qa/lua_test_prelude.lua').read_text())
+    lua.execute(r"""
+    df={building_type=enum{'Chair','Workshop','Furnace','Construction','Trap','SiegeEngine',
+      'Nest','Wagon','Shop','Bed','Door','Hatch','GrateFloor','BarsFloor','Support','Well',
+      'ScrewPump','WaterWheel','GearAssembly','AxleHorizontal','AxleVertical','Rollers','Bridge',
+      'FarmPlot','RoadDirt','RoadPaved','Windmill','Stockpile','Civzone','Weapon',
+      'AnimalTrap','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox','Hive',
+      'Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels'},
+      workshop_type=enum{'Carpenters','Tool','Custom'},furnace_type=enum{'WoodFurnace','MagmaSmelter','Custom'},
+      trap_type=enum{'Lever','CageTrap','StoneFallTrap','WeaponTrap','PressurePlate','TrackStop'},
+      siegeengine_type=enum{'Ballista','Catapult'},
+      construction_type=enum{'Wall','Floor','Ramp','UpStair','DownStair','UpDownStair','Fortification'},
+      tool_uses=enum{'NONE','SCREW'},job_item_vector_id=enum{'IN_PLAY','BLOCKS'}}
+    df.tool_uses.NONE=-1
+    for i=1,30 do local e=df.construction_type;e._last_item=e._last_item+1
+      local name=i==30 and 'TrackNSEW' or 'Track'..i;e[e._last_item]=name;e[name]=e._last_item end
+    customs={{id=11,code='PRESS',name='Press',class='workshop'},
+      {id=12,code='KILN',name='Kiln',class='furnace'},
+      {id=13,code='LOCKED',name='',class='workshop'},
+      {id=14,code='HOT',name='',class='furnace',needs_magma=true}}
+    permitted_ids={11,12,14}
+    df.global={cur_year=1,cur_year_tick=0,plotinfo={civ_id=1},world={raws={buildings={all=customs}}}}
+    df.building_def_furnacest={is_instance=function(_,v)return v.class=='furnace'end}
+    df.building_def_workshopst={is_instance=function(_,v)return v.class=='workshop'end}
+    df.building_def={find=function(id)for _,v in ipairs(customs)do if v.id==id then return v end end end}
+    df.historical_entity={find=function()return {entity_raw={workshops={permitted_building_id=permitted_ids}}}end}
+    df.job_item={new=function()return {quantity=1,item_type=-1,item_subtype=-1,
+      mat_type=-1,mat_index=-1,vector_id=0,has_tool_use=-1,metal_ore=-1,
+      flags1={whole=0},flags2={whole=0},flags3={whole=0},
+      assign=function(self,v)for k,x in pairs(v)do self[k]=x end end,delete=function()end}end}
+    dfhack={df2utf=function(s)return s end,buildings={}}
+    dfhack.buildings.getCorrectSize=function(w,h,t,st,custom,dir)
+      if t==df.building_type.Workshop or t==df.building_type.SiegeEngine then return false,3,3,1,1 end
+      return false,w,h,0,0
+    end
+    recipes={}
+    dfhack.buildings.getFiltersByType=function(_,t,st)
+      if recipes[t] then return recipes[t] end
+      if t==df.building_type.Workshop and st==df.workshop_type.Tool then return nil end
+      if t==df.building_type.FarmPlot or t==df.building_type.RoadDirt then return {} end
+      return {{item_type=0,quantity=1}}
+    end
+    """)
+    return lua
+
+
+def extended_catalog():
+    lua = catalog_runtime()
+    source = (Path(__file__).resolve().parents[1] / 'bridge/plugin/construction.lua').read_text()
+    def load(): return lua.execute(source)
+    def page(helper, **kw): return helper(lua.table_from(dict(action=0, epoch=7, **kw)))
+    helper = load()
+    first = page(helper)
+    assert first['ok'] and first['message'] == 'Construction catalog ready'
+    rows = {r['key']: r for r in first['catalog'].values()}
+    for parent in ('Workshop','Furnace','Trap','SiegeEngine','Construction','Nest','Wagon','Shop',
+                   'Workshop:Custom','Furnace:Custom'):
+        assert parent not in rows
+    assert not any(k.startswith('Construction:Track') and k != 'Construction:Track' for k in rows)
+    for key in ('Chair','Workshop:Carpenters','Trap:Lever','Construction:Stairs',
+                'Furnace:WoodFurnace','Trap:CageTrap','SiegeEngine:Catapult'):
+        assert rows[key]['supported'], key
+    reasons = {'Workshop:Tool':'Building has no recipe',
+        'Workshop:Custom:LOCKED':'Not permitted for this civilization',
+        'Furnace:Custom:HOT':'Magma placement rule not captured',
+        'Furnace:MagmaSmelter':'Magma placement rule not captured',
+        'Construction:Track':'Track piece selection not captured',
+        'Windmill':'Windmill placement rule not captured',
+        'Trap:PressurePlate':'Pressure plate options not captured',
+        'Trap:TrackStop':'Track stop options not captured',
+        'Stockpile':'Placed from the stockpile and zone menus',
+        'Civzone':'Placed from the stockpile and zone menus'}
+    for key, reason in reasons.items():
+        assert not rows[key]['supported'] and rows[key]['reason'] == reason
+    for key, family, code, name in [('Workshop:Custom:PRESS','Workshop','PRESS','Press'),
+                                   ('Furnace:Custom:KILN','Furnace','KILN','Kiln')]:
+        row=rows[key]
+        assert row['supported'] and (row['family'],row['subtype_key'],row['custom_code'],row['native_name']) == (family,'Custom',code,name)
+    for key, mode, orient, depth in [('Chair',1,1,1),('Bridge',2,31,1),
+                                   ('Construction:Wall',3,1,1),('Construction:Stairs',4,1,256),
+                                   ('SiegeEngine:Ballista',1,255,1),('ScrewPump',1,15,1)]:
+        row=rows[key]
+        assert (row['area_mode'],row['orientations'],row['max_depth']) == (mode,orient,depth)
+        assert row['native_name'] == '' and row['custom_code'] == ''
+        assert row['max_width'] == (row['width'] if mode==1 else 31)
+        assert [f['direction'] for f in row['footprints'].values()] == [i for i in range(8) if orient & (1<<i)]
+    for n in (8,9):
+        lua.execute('recipes[df.building_type.Chair]={};for i=1,... do table.insert(recipes[df.building_type.Chair],{quantity=1})end',n)
+        # Chair is a required self-check key, so use a generic family for overflow.
+        lua.execute('recipes[df.building_type.Chain]=recipes[df.building_type.Chair];recipes[df.building_type.Chair]=nil')
+        row=next(r for r in page(load())['catalog'].values() if r['key']=='Chain')
+        assert row['supported'] == (n==8)
+        assert row['reason'] == ('' if n==8 else 'Recipe has more than 8 inputs')
+    lua.execute('recipes={};for i=1,150 do customs[#customs+1]={id=100+i,code="C"..i,name="",class="workshop"};permitted_ids[#permitted_ids+1]=100+i end')
+    helper=load();first=page(helper);second=page(helper,cursor=128,expected_list_revision=first['list_revision'])
+    assert len(first['catalog'])==128 and first['next_cursor']==128
+    assert second['next_cursor']==0 and len(second['catalog'])+128==first['total']==second['total']
+    assert page(helper,cursor=128,expected_list_revision=first['list_revision']+1)['message']=='List changed; refresh'
+    lua.execute('customs[#customs+1]=customs[1]')
+    try: load()
+    except Exception as error:
+        assert str(error).splitlines()[0].split(': ',1)[1] == 'Duplicate construction catalog key: Workshop:Custom:PRESS'
+    else: raise AssertionError('duplicate key accepted')
+
+
 if __name__ == "__main__":
+    extended_catalog()
     main()

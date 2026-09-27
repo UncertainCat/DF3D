@@ -658,6 +658,19 @@
       ]
     },
     {
+      "id": "test_construction_adapter",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_construction_adapter.py"
+      ],
+      "completion": "^CONSTRUCTION_ADAPTER_PASS$",
+      "timeout": 90,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
       "id": "test_lua_embedding",
       "kind": "python",
       "lane": "core",

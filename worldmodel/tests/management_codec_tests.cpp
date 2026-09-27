@@ -1,6 +1,7 @@
 #include <doctest.h>
 
 #include <algorithm>
+#include <iostream>
 
 #include "management_codecs.h"
 #include "management_util.h"
@@ -516,4 +517,204 @@ TEST_CASE("material lists require a placement origin and eight footprints is the
   wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_catalog(catalog);b.Finish(state.Finish());
   const auto error=wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer()));
   REQUIRE(error);CHECK(*error=="too many construction footprints");
+}
+
+
+// These maximal wire fixtures exercise schema bounds, not recorded native labels.
+// Producer fields: construction.lua definitions/filter_row/materials/placement.
+namespace {
+struct ConstructionWire {
+  flatbuffers::FlatBufferBuilder b;
+  const wire::ManagementState* state=nullptr;
+  ConstructionWire(const std::string& field="", int64_t n=0, int page=0) {
+    auto value=[&](const char* key,int64_t normal){return field==key?n:normal;};
+    auto text=[&](const char* key,size_t normal){return b.CreateString(std::string(size_t(value(key,normal)),'x'));};
+    std::vector<flatbuffers::Offset<wire::ConstructionFilter>> filters;
+    for(int i=0;i<value("filters",8);++i)
+      filters.push_back(wire::CreateConstructionFilter(b,int16_t(value("filter_index",i)),
+        int16_t(value("filter_type",-1)),int16_t(value("filter_subtype",-1)),
+        text("filter_caption",64),text("requirement",64),int32_t(value("quantity",-1))));
+    auto fs=b.CreateVector(filters);
+    std::vector<flatbuffers::Offset<wire::ConstructionFootprint>> footprints;
+    for(int i=0;i<value("footprints",5);++i)
+      footprints.push_back(wire::CreateConstructionFootprint(b,uint8_t(value("direction",i)),
+        uint16_t(value("fp_width",31)),uint16_t(value("fp_height",31)),
+        int16_t(value("center_x",field=="fp_width"?0:30)),int16_t(value("center_y",-1))));
+
+    std::vector<flatbuffers::Offset<wire::BuildingDefinition>> catalog;
+    if(page==0)for(int i=0;i<value("catalog",128);++i) {
+      std::string key=std::to_string(i);key.resize(size_t(value("key",64)),'k');
+      const auto k=b.CreateString(key),name=text("name",128),reason=text("reason",128),native=text("native_name",128),
+        family=text("family",64),subtype=text("subtype_key",64),custom=text("custom_code",64);
+      // No shared child vectors: model the producer's independently encoded rows.
+      std::vector<flatbuffers::Offset<wire::ConstructionFilter>> ownFilters;
+      for(int f=0;f<value("filters",8);++f)
+        ownFilters.push_back(wire::CreateConstructionFilter(b,int16_t(value("filter_index",f)),
+          int16_t(value("filter_type",-1)),int16_t(value("filter_subtype",-1)),
+          text("filter_caption",64),text("requirement",64),int32_t(value("quantity",-1))));
+      const auto ownFs=b.CreateVector(ownFilters);
+      std::vector<flatbuffers::Offset<wire::ConstructionFootprint>> ownFootprints;
+      for(int f=0;f<value("footprints",5);++f)
+        ownFootprints.push_back(wire::CreateConstructionFootprint(b,uint8_t(value("direction",f)),
+          uint16_t(value("fp_width",31)),uint16_t(value("fp_height",31)),
+          int16_t(value("center_x",field=="fp_width"?0:30)),int16_t(value("center_y",-1))));
+      const auto ownFps=b.CreateVector(ownFootprints);
+      wire::BuildingDefinitionBuilder d(b);d.add_key(k);d.add_name(name);d.add_reason(reason);
+      d.add_native_name(native);d.add_family(family);d.add_subtype_key(subtype);d.add_custom_code(custom);
+      d.add_width(uint16_t(value("width",31)));d.add_height(uint16_t(value("height",31)));
+      d.add_area_mode(uint8_t(value("area_mode",4)));d.add_orientations(31);
+      d.add_max_width(uint16_t(value("max_width",31)));d.add_max_height(uint16_t(value("max_height",31)));
+      d.add_max_depth(uint16_t(value("max_depth",256)));d.add_filters(ownFs);d.add_footprints(ownFps);
+      catalog.push_back(d.Finish());
+    }
+    const auto cats=b.CreateVector(catalog);
+    std::vector<flatbuffers::Offset<wire::ConstructionMaterial>> materials;
+    if(page==1)for(int i=0;i<value("materials",field=="mat_index"?1:128);++i)
+      materials.push_back(wire::CreateConstructionMaterial(b,int16_t(value("item_type",-1)),
+        int16_t(value("item_subtype",-1)),int16_t(value("mat_type",-1)),int32_t(value("mat_index",i)),
+        text("material_name",128),text("material_caption",64),uint32_t(value("count",1))));
+    auto mats=b.CreateVector(materials);
+    auto mask=b.CreateVector(std::vector<uint8_t>(size_t(value("mask_size",page==2?1024:0)),uint8_t(value("mask",1))));
+    auto pieces=b.CreateVector(std::vector<uint8_t>(size_t(value("pieces_size",page==2?1024:0)),uint8_t(value("piece",3))));
+    auto key=text("building_key",64);
+    wire::ConstructionStateBuilder c(b);c.add_building_key(key);c.add_filter(int16_t(value("filter",7)));
+    c.add_filters(fs);c.add_materials(mats);c.add_total(128);c.add_list_revision(uint64_t(value("list_revision",INT64_MAX)));
+    c.add_estimated(true);c.add_build_phase(uint8_t(value("build_phase",2)));
+    c.add_build_done(uint32_t(value("build_done",128)));c.add_build_total(128);
+    c.add_placed(uint32_t(value("placed",1024)));c.add_skipped(uint32_t(value("skipped",0)));
+    c.add_first_building(int32_t(value("first_building",-1)));c.add_valid_mask(mask);c.add_pieces(pieces);
+    if(!footprints.empty())c.add_footprint(footprints[0]);
+    const auto construction=c.Finish();
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_schema_version(uint32_t(value("version",18)));
+    s.add_catalog(cats);s.add_construction(construction);b.Finish(s.Finish());
+    state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  }
+  std::optional<std::string> error() const {return wire::validateManagementState(*state);}
+};
+}
+
+TEST_CASE("construction maximal pages and complete owned field decoding") {
+  for(int page=0;page<3;++page) {
+    ConstructionWire fixture("",0,page);
+    REQUIRE_FALSE(fixture.error());CHECK(fixture.b.GetSize()<wire::kManagementCapacity);
+    std::cout<<"CONSTRUCTION_MAX_PAGE "<<page<<" "<<fixture.b.GetSize()<<" bytes\n";
+    wm::ManagementState s;codec::decodeConstruction(fixture.state,s);
+    const auto& c=s.construction;
+    CHECK(c.buildingKey==std::string(64,'x'));CHECK(c.filter==7);CHECK(c.filters.size()==8);
+    CHECK(c.total==128);CHECK(c.listRevision==INT64_MAX);CHECK(c.estimated);CHECK(c.buildPhase==2);
+    CHECK(c.buildDone==128);CHECK(c.buildTotal==128);CHECK(c.placed==1024);CHECK(c.skipped==0);CHECK(c.firstBuilding==-1);
+    REQUIRE(c.footprint);CHECK(c.footprint->direction==0);CHECK(c.footprint->width==31);CHECK(c.footprint->height==31);
+    CHECK(c.footprint->centerX==30);CHECK(c.footprint->centerY==-1);
+    for(int i=0;i<8;++i) {const auto& f=c.filters[i];CHECK(f.index==i);CHECK(f.itemType==-1);CHECK(f.itemSubtype==-1);
+      CHECK(f.caption==std::string(64,'x'));CHECK(f.requirement==std::string(64,'x'));CHECK(f.quantity==-1);}
+    if(page==0) {
+      REQUIRE(s.catalog.size()==128);const auto& d=s.catalog[0];CHECK(d.key.size()==64);CHECK(d.name.size()==128);
+      CHECK(d.reason.size()==128);CHECK(d.nativeName.size()==128);CHECK(d.family.size()==64);
+      CHECK(d.subtypeKey.size()==64);CHECK(d.customCode.size()==64);CHECK(d.areaMode==4);CHECK(d.orientations==31);
+      CHECK(d.maxWidth==31);CHECK(d.maxHeight==31);CHECK(d.maxDepth==256);CHECK(d.filters.size()==8);CHECK(d.footprints.size()==5);
+    } else if(page==1) {
+      REQUIRE(c.materials.size()==128);for(int i=0;i<128;++i) {const auto& m=c.materials[i];
+        CHECK(m.itemType==-1);CHECK(m.itemSubtype==-1);CHECK(m.matType==-1);CHECK(m.matIndex==i);
+        CHECK(m.name.size()==128);CHECK(m.caption.size()==64);CHECK(m.count==1);}
+    } else {CHECK(c.validMask==std::vector<uint8_t>(1024,1));CHECK(c.pieces==std::vector<uint8_t>(1024,3));}
+    std::fill_n(fixture.b.GetBufferPointer(),fixture.b.GetSize(),uint8_t(0));
+    CHECK(c.buildingKey==std::string(64,'x'));CHECK(c.filters[0].requirement==std::string(64,'x'));
+  }
+  flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateManagementState(b));
+  wm::ManagementState defaults;codec::decodeConstruction(flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer()),defaults);
+  CHECK(defaults.construction.filter==-1);CHECK(defaults.construction.firstBuilding==-1);CHECK(defaults.construction.listRevision==0);
+  CHECK(defaults.construction.filters.empty());CHECK(defaults.construction.materials.empty());CHECK_FALSE(defaults.construction.footprint);
+}
+
+TEST_CASE("construction state rejects each over-limit field with exact messages") {
+  struct Case {const char* field;int64_t accept,reject;const char* error;int page=0;};
+  for(const auto& c:std::initializer_list<Case>{
+      {"catalog",128,129,"catalog too large"},{"key",64,65,"invalid definition"},
+      {"name",128,129,"invalid definition"},{"reason",128,129,"invalid definition"},
+      {"native_name",128,129,"invalid definition"},{"family",64,65,"invalid definition"},
+      {"subtype_key",64,65,"invalid definition"},{"custom_code",64,65,"invalid definition"},
+      {"width",31,32,"invalid definition"},{"height",31,32,"invalid definition"},
+      {"max_width",31,32,"invalid definition"},{"max_height",31,32,"invalid definition"},
+      {"max_depth",256,257,"invalid definition"},{"area_mode",4,5,"invalid definition"},
+      {"filter",7,8,"invalid construction result"},{"filter",-1,-2,"invalid construction result"},
+      {"first_building",-1,-2,"invalid construction result"},{"build_phase",2,3,"invalid construction result"},
+      {"build_done",128,129,"invalid construction result"},{"placed",1024,1025,"invalid construction result"},
+      {"skipped",0,1,"invalid construction result"},{"list_revision",INT64_MAX,INT64_MIN,"invalid construction result"},
+      {"building_key",64,65,"invalid construction result"},{"filters",8,9,"invalid construction result"},
+      {"filter_caption",64,65,"invalid construction result"},{"requirement",64,65,"invalid construction result"},
+      {"filter_type",-1,-2,"invalid construction result"},{"filter_subtype",-1,-2,"invalid construction result"},
+      {"quantity",-1,-2,"invalid construction result"},{"fp_width",31,32,"invalid construction result"},
+      {"fp_height",31,32,"invalid construction result"},{"center_x",30,31,"invalid construction result"},
+      {"center_y",-1,-2,"invalid construction result"},{"footprints",8,9,"too many construction footprints"},
+      {"mask_size",1024,1025,"construction mask too large",2},{"mask",1,2,"invalid construction mask",2},
+      {"pieces_size",1024,1025,"construction pieces too large",2},{"piece",3,4,"invalid construction piece",2},
+      {"materials",128,129,"construction materials page too large",1},{"count",1,0,"invalid construction material",1},
+      {"item_type",-1,-2,"invalid construction material",1},{"item_subtype",-1,-2,"invalid construction material",1},
+      {"mat_type",-1,-2,"invalid construction material",1},
+      {"mat_index",-1,-2,"invalid construction material",1},
+      {"width",1,0,"invalid definition"},{"height",1,0,"invalid definition"},
+      {"fp_width",1,0,"invalid construction result"},{"fp_height",1,0,"invalid construction result"},
+      {"center_x",-1,-2,"invalid construction result"},{"center_y",30,31,"invalid construction result"},
+      {"material_name",128,129,"invalid construction material",1},{"material_caption",64,65,"invalid construction material",1},
+      {"version",18,17,"invalid management version/revision"}}) {
+    CAPTURE(c.field);ConstructionWire accepted(c.field,c.accept,c.page);CHECK_FALSE(accepted.error());
+    ConstructionWire rejected(c.field,c.reject,c.page);REQUIRE(rejected.error());CHECK(*rejected.error()==c.error);
+  }
+  for(const char* key:{"name","reason","native_name","family","subtype_key","custom_code","filter_caption","requirement","building_key"})
+    CHECK_FALSE(ConstructionWire(key,0).error());
+  for(const char* key:{"catalog","filters","footprints","mask_size","pieces_size","materials"})
+    CHECK_FALSE(ConstructionWire(key,0).error());
+  for(const char* key:{"filter","first_building","build_phase","build_done","placed","list_revision","quantity","area_mode","max_width","max_height","max_depth"})
+    CHECK_FALSE(ConstructionWire(key,0).error());
+  for(const char* key:{"mask","piece"})CHECK_FALSE(ConstructionWire(key,0,2).error());
+  CHECK_FALSE(ConstructionWire("mat_index",0,1).error());
+  CHECK_FALSE(ConstructionWire("count",UINT32_MAX,1).error());
+  CHECK_FALSE(ConstructionWire("first_building",INT32_MAX).error());
+  ConstructionWire badDirection("direction",8);REQUIRE(badDirection.error());CHECK(*badDirection.error()=="invalid construction result");
+  for(const char* key:{"filter_index","direction"}) {
+    ConstructionWire duplicate(key,0);REQUIRE(duplicate.error());
+    CHECK(*duplicate.error()==(std::string(key)=="direction"?"invalid or duplicate construction footprint":"invalid construction result"));
+  }
+}
+
+TEST_CASE("construction request boundary and absent-field matrix") {
+  auto check=[](const wm::ManagementRequest& r,const std::string& expected="") {
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* q=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(q->depth()==r.depth);CHECK(q->filter()==r.filter);CHECK(q->retracting()==r.retracting);
+    CHECK(q->expected_list_revision()==uint64_t(r.expectedListRevision));
+    CHECK(wire::validateConstructionRequest(*q).value_or("")==expected);
+  };
+  wm::ManagementRequest r;r.action=wm::ManagementAction::Preview;r.definition="Construction:Stairs";
+  r.width=4;r.depth=256;check(r);r.depth=257;check(r,"invalid construction depth or volume");
+  r.depth=256;r.width=5;check(r,"invalid construction depth or volume");
+  r.definition="Chair";r.width=1;r.depth=0;check(r,"invalid construction depth or volume");r.depth=1;check(r);
+  r.retracting=true;check(r);r.direction=1;check(r,"invalid retracting orientation");r.direction=0;r.retracting=false;
+  r.action=wm::ManagementAction::Catalog;r.depth=2;check(r,"unexpected construction placement fields");r.depth=1;
+  r.retracting=true;check(r,"unexpected construction placement fields");r.retracting=false;
+  for(auto rev:{int64_t(0),int64_t(INT64_MAX)}){r.expectedListRevision=rev;check(r);}
+  r.expectedListRevision=INT64_MIN;check(r,"invalid construction list revision");r.expectedListRevision=0;
+  for(auto f:{int16_t(-2),int16_t(-1),int16_t(0),int16_t(7),int16_t(8)}) {
+    r.action=wm::ManagementAction::ConstructionMaterials;r.filter=f;
+    check(r,f < -1 || f>7?"invalid construction filter":f==-1?"definition, filter and origin required":"");
+  }
+  r.filter=0;r.definition="";check(r,"definition, filter and origin required");r.definition="Chair";
+  r.action=wm::ManagementAction::Catalog;check(r,"unexpected construction filter");r.filter=-1;
+  r.action=wm::ManagementAction::Preview;r.expectedListRevision=1;check(r,"unexpected construction list revision");r.expectedListRevision=0;
+  r.action=wm::ManagementAction::Place;
+  for(int i=0;i<16;++i)r.selections.push_back({int16_t(i%8),-1,-1,-1,i,1,INT64_MAX});
+  check(r);
+  r.selections.push_back({0,-1,-1,-1,16,1,INT64_MAX});check(r,"too many construction selections");r.selections.pop_back();
+  r.selections[1]=r.selections[0];check(r,"invalid or duplicate construction selection");r.selections.resize(1);
+  for(auto f:{int16_t(-1),int16_t(0),int16_t(7),int16_t(8)}){r.selections[0].filter=f;check(r,f<0||f>7?"invalid or duplicate construction selection":"");}
+  r.selections[0].filter=0;
+  for(auto member:{&wm::ConstructionSelection::itemType,&wm::ConstructionSelection::itemSubtype,&wm::ConstructionSelection::matType}) {
+    r.selections[0].*member=-1;check(r);r.selections[0].*member=0;check(r);
+    r.selections[0].*member=-2;check(r,"invalid or duplicate construction selection");r.selections[0].*member=-1;
+  }
+  r.selections[0].matIndex=-2;check(r,"invalid or duplicate construction selection");r.selections[0].matIndex=-1;check(r);
+  r.selections[0].count=0;check(r,"invalid or duplicate construction selection");r.selections[0].count=1;
+  r.selections[0].count=UINT32_MAX;check(r);r.selections[0].count=1;
+  r.action=wm::ManagementAction::Preview;check(r,"unexpected construction selections");r.selections.clear();check(r);
+  r.action=wm::ManagementAction::Catalog;r.definition="";check(r);
 }

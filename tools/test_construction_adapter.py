@@ -1,0 +1,456 @@
+"""Deterministic construction contract tests; inline synthetic DF objects only."""
+from pathlib import Path
+import unittest
+from test_construction_catalog import catalog_runtime
+
+# Fixture producibility | construction.lua function and emitting line in commit B.
+# Catalog names/modes/flags/reasons | definitions:65-98; filter_row:50.
+# Site refusals and masks | tile_rule:139-177; placement:392-394.
+# Materials/estimate/phases | item_row:224-226; queue:261,302,322; materials:348.
+# Placement counts/refusals | placement:383-386,411-446,477,491-493.
+# Stale selection spec regression | placement:439 emits the wrong exact message.
+# Removal identities/messages | building_key:356-365; returned closure:515-538.
+# Native decisions | stair_piece:134-135; placement:371,420,482,492;
+# distance sorting incl. bins | screen:196-204; queue:288-307.
+# Retired input refusal | returned closure:504; management_util.h:235.
+# Builder accounting/caps | stats:247-248; queue:281; entry:328.
+# Catalog revision high bit | revision:30; returned closure:506-510.
+SOURCE = (Path(__file__).resolve().parents[1] / 'bridge/plugin/construction.lua').read_text()
+
+
+class Adapter(unittest.TestCase):
+    def setUp(self):
+        self.lua = catalog_runtime()
+        self.lua.execute(r'''
+        df.item_type={TOOL=99,BAR=98};df.general_ref_type={CONTAINS_ITEM=0,CONTAINS_UNIT=1}
+        df.job_item_vector_id.attrs={[0]={other=0},[1]={other=0}}
+        df.tiletype_shape=enum{'FLOOR','WALL','EMPTY','RAMP','RAMP_TOP','STAIR_UP','STAIR_DOWN','STAIR_UPDOWN','FORTIFICATION','BOULDER'}
+        df.tiletype_shape_basic={Floor=0};df.tiletype_shape.attrs={}
+        df.tiletype_material=enum{'STONE','SOIL','CONSTRUCTION'}
+        df.tiletype={attrs={}};for i=0,df.tiletype_shape._last_item do
+          df.tiletype_shape.attrs[i]={basic_shape=i==0 and 0 or 1}
+          df.tiletype.attrs[i]={shape=i,material=0} end
+        df.tile_liquid={Magma=1};df.building_bridgest={T_direction={Up=0,Down=1,Left=2,Right=3}}
+        df.block_square_event_type={material_spatter=0};df.builtin_mats={MUD=0};df.matter_state={Solid=0}
+        shape=0;adjacent_shape=0;flags={flow_size=0};occupied={};valid=true;free=true
+        dfhack.maps={isValidTilePos=function()return valid end,
+          getTileFlags=function(p)return flags,{building=occupied[p.x..':'..p.y..':'..p.z] and 1 or 0}end,
+          getTileType=function(p)return (p.x<0 or p.y<0) and adjacent_shape or shape end,
+          getWalkableGroup=function(p)return p.group or 1 end,
+          getTileBlock=function()return {block_events={}}end}
+        df.construction={find=function()return existing end}
+        dfhack.with_finalize=function(clean,fn)local a,b=fn();clean();return a,b end
+        df.delete=function()end
+        dfhack.buildings.allocInstance=function()return {room={}}end
+        dfhack.buildings.setSize=function()return free end
+        dfhack.buildings.checkFreeTiles=function()return free end
+        created={};dfhack.buildings.constructBuilding=function(v)
+          created[#created+1]=v;for _,item in ipairs(v.items)do item.flags.in_job=true end
+          return {id=100+#created} end
+        dfhack.items={getContainer=function(i)return i.container end,getPosition=function(i)return i.pos end,
+          getGeneralRef=function()end}
+        dfhack.units={isDead=function()return false end,isActive=function()return true end,
+          isCitizen=function()return true end,getPosition=function()return {x=0,y=0,z=0}end}
+        dfhack.job={isSuitableItem=function()return true end,isSuitableMaterial=function()return true end}
+        dfhack.matinfo={decode=function(i)if i.nameless then return end
+          return {toString=function()return i.name or 'stone'end}end}
+        df.global.world.units={active=vec{{}}}
+        stock={};df.item={find=function(id)return stock[id]end}
+        function fill(n,groups)
+          stock={};local all={};for i=1,n do
+            local item={id=i,flags={on_ground=true},pos={x=i%8,y=0,z=0},mat=groups and i-1 or 0,
+              isAssignedToStockpile=function()return false end,getType=function()return 0 end,
+              getSubtype=function()return -1 end,getMaterial=function()return 0 end,
+              getMaterialIndex=function(s)return s.mat end,isBuildMat=function()return true end}
+            stock[i]=item;all[i]=item end
+          df.global.world.items={other={[0]=vec(all)}}
+        end
+        fill(1024)
+        ''')
+        self.seq=0
+        self.reset()
+
+    def reset(self): self.helper=self.lua.execute(SOURCE)
+
+    def call(self, **kw):
+        args=dict(action=63,epoch=7,definition='Chair',filter=0,cursor=0,x=0,y=0,z=0,seq=self.seq)
+        args.update(kw)
+        return self.helper(self.lua.table_from(args,recursive=True))
+
+    def finish(self, **kw):
+        self.seq+=1
+        for _ in range(10000):
+            result=self.call(**kw)
+            if not result['pending']: return result
+        self.fail('operation did not finish within deterministic step bound')
+
+    def page(self, **kw):
+        for _ in range(10000):
+            result=self.call(**kw)
+            self.assertFalse(result['pending'])
+            if not result['ok'] or result['build_phase']==0: return result
+            step=self.call(step=2048)
+            self.assertLessEqual(step['steps'],2048)
+        self.fail('materials builder did not finish')
+
+    def selection(self, count=1, **kw):
+        page=self.page(**kw)
+        self.assertTrue(page['ok'],page['message'])
+        return dict(filter=kw.get('filter',0),item_type=0,item_subtype=-1,mat_type=0,mat_index=0,
+                    count=count,expected_list_revision=page['list_revision'])
+
+    def refusal(self, message, **kw):
+        result=self.finish(**kw)
+        self.assertFalse(result['ok'])
+        self.assertEqual(result['message'],message)
+        return result
+
+    def test_site_rules(self):
+        groups=[(['Chair','AnimalTrap','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox',
+                  'Hive','Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels',
+                  'Furnace:WoodFurnace','Trap:Lever','RoadPaved'], 'FLOOR','EMPTY','Site needs a floor'),
+                (['Hatch','GrateFloor','BarsFloor'],'EMPTY','WALL','Site needs a floor, open space, a ramp top or stairs'),
+                (['Support'],'EMPTY','WALL','Site needs open space'),
+                (['ScrewPump','WaterWheel','GearAssembly','AxleHorizontal','AxleVertical','Rollers','Bridge'],
+                 'FLOOR','WALL','Site needs open space, a ramp or stairs')]
+        for names,good,bad,message in groups:
+            for name in names:
+                with self.subTest(name=name):
+                    self.lua.execute('shape=df.tiletype_shape[...]',good)
+                    self.assertTrue(self.finish(action=1,definition=name)['ok'])
+                    self.lua.execute('shape=df.tiletype_shape[...]',bad)
+                    self.refusal(message,action=1,definition=name)
+        self.lua.execute('shape=0;flags.outside=false')
+        self.assertTrue(self.finish(action=1,definition='Bed')['ok'])
+        self.lua.execute('flags.outside=true')
+        self.refusal('Bed requires an indoor site',action=1,definition='Bed')
+        self.lua.execute('flags.outside=false;adjacent_shape=df.tiletype_shape.WALL')
+        self.assertTrue(self.finish(action=1,definition='Door')['ok'])
+        self.lua.execute('adjacent_shape=0')
+        self.refusal('Door requires an adjacent wall',action=1,definition='Door')
+        self.lua.execute('shape=df.tiletype_shape.EMPTY')
+        self.assertTrue(self.finish(action=1,definition='Well')['ok'])
+        self.lua.execute('adjacent_shape=df.tiletype_shape.WALL')
+        self.refusal('Well needs open space with an adjacent floor',action=1,definition='Well')
+        for name in ('FarmPlot','RoadDirt'):
+            self.lua.execute('shape=0;df.tiletype.attrs[0].material=df.tiletype_material.SOIL')
+            self.assertTrue(self.finish(action=1,definition=name)['ok'])
+            self.lua.execute('df.tiletype.attrs[0].material=0')
+            self.refusal('Site needs soil',action=1,definition=name)
+        for setup,message in [('valid=false','Site is hidden, unloaded or outside the map'),
+            ('flags.hidden=true','Site is hidden, unloaded or outside the map'),
+            ("occupied['0:0:0']=true",'Site is occupied by a building'),
+            ('flags.flow_size=2','Site has magma or deep water'),
+            ('flags.flow_size=1;flags.liquid_type=1','Site has magma or deep water'),
+            ('free=false','Native placement check rejected this site')]:
+            self.lua.execute('valid=true;flags={flow_size=0};occupied={};free=true;'+setup)
+            self.refusal(message,action=1)
+
+    def test_piece_rule_exact_messages_and_requirement_tokens(self):
+        # As in the work-order exemplar's receipt test, expose a private pure
+        # rule in this isolated closure to assert reasons that Preview reduces
+        # to mask bytes. No product source or runtime exports are changed.
+        self.lua.execute(SOURCE.replace('local function native_site(', 'test_tile_rule=tile_rule\nlocal function native_site('))
+        rule=self.lua.globals().test_tile_rule
+        request=self.lua.table_from(dict(x=0,y=0,z=0,width=1,height=1,depth=1,direction=0))
+        definition=self.lua.table_from(dict(family='Construction',subtype_key='Wall'))
+        pos=self.lua.table_from(dict(x=0,y=0,z=0))
+        self.assertTrue(rule(request,definition,pos))
+        self.lua.execute('shape=df.tiletype_shape.WALL')
+        self.assertEqual(rule(request,definition,pos),(False,'Site needs open space or a ramp'))
+        self.lua.execute('df.tiletype.attrs[shape].material=df.tiletype_material.CONSTRUCTION')
+        self.assertEqual(rule(request,definition,pos),(False,'Construction already present'))
+        self.lua.execute('shape=0;free=false')
+        self.assertEqual(rule(request,definition,pos),(False,'Native placement check rejected this site'))
+        self.lua.execute('free=true')
+        for raw,expected in [("{quantity=1,has_tool_use=1}",'SCREW'),
+                             ("{quantity=1,flags2={whole=0,building_material=true}}",'building_material')]:
+            self.lua.execute('recipes[df.building_type.Chair]={'+raw+'}')
+            self.reset()
+            self.assertEqual(self.finish(action=1)['filters'][1]['requirement'],expected)
+        # Mud-on-stone is a separate FarmPlot acceptance path.
+        self.lua.execute("""dfhack.maps.getTileBlock=function()return {block_events={{
+          getType=function()return 0 end,mat_type=0,mat_state=0}}}end""")
+        self.assertTrue(self.finish(action=1,definition='FarmPlot')['ok'])
+        self.refusal('Site needs soil',action=1,definition='RoadDirt')
+
+    def test_preview_and_custom_resolution(self):
+        self.refusal('Depth applies to stairs only',action=1,depth=2)
+        self.refusal("Size exceeds this building's limits",action=1,width=32)
+        self.refusal('This building has a fixed size',action=1,definition='Workshop:Carpenters')
+        self.refusal('Orientation not available for this building',action=1,direction=1)
+        self.refusal('Must span multiple elevations',action=1,definition='Construction:Stairs')
+        self.lua.execute('recipes[df.building_type.Bridge]={{quantity=-1,vector_id=1}}')
+        self.reset()
+        preview=self.finish(action=1,definition='Bridge',width=4,height=3)
+        self.assertEqual(preview['required'],4)
+        self.assertEqual(preview['filters'][1]['requirement'],'BLOCKS')
+        self.assertEqual(list(preview['valid_mask'].values()),[1]*12)
+        self.assertEqual((preview['footprint']['width'],preview['footprint']['height']),(4,3))
+        for name,w,h,d in [('Chair',1,1,1),('Bridge',2,2,1),('Construction:Wall',2,2,1),('Construction:Stairs',2,2,3)]:
+            p=self.finish(action=1,definition=name,width=w,height=h,depth=d)
+            self.assertEqual(list(p['valid_mask'].values()),[1]*(w*h*d))
+            if d==3:self.assertEqual(list(p['pieces'].values()),[1]*4+[3]*4+[2]*4)
+        for key,index,size in [('Workshop:Custom:PRESS',1,3),('Furnace:Custom:KILN',2,1)]:
+            row=self.selection(definition=key)
+            self.lua.execute('customs[...].id=77',index)
+            result=self.finish(action=2,definition=key,width=size,height=size,selections=[row])
+            self.assertTrue(result['ok'],result['message'])
+            self.assertEqual(self.lua.globals().created[len(self.lua.globals().created)]['custom'],77)
+
+    def test_chunked_place_and_dirty_cache(self):
+        row=self.selection(1024,definition='Construction:Stairs')
+        self.seq+=1
+        args=dict(action=2,definition='Construction:Stairs',width=16,height=16,depth=4,selections=[row])
+        chunks=[]
+        for _ in range(20):
+            result=self.call(**args)
+            self.assertLessEqual(result['chunk_placed'],128)
+            if result['chunk_placed']:chunks.append(result['chunk_placed'])
+            if not result['pending']:break
+        self.assertTrue(result['ok'],result['message'])
+        self.assertEqual(chunks,[128]*8)
+        self.assertEqual((result['placed'],result['skipped'],result['first_building']),(1024,0,101))
+        dirty=self.call()
+        self.assertEqual(dirty['build_phase'],1)
+        self.assertEqual(dirty['list_revision'],row['expected_list_revision'])
+        self.assertEqual(dirty['cache_entries'],2)  # retained snapshot plus replacement
+
+    def test_short_group_release_and_retired_items(self):
+        row=self.selection(2,definition='Construction:Wall')
+        self.lua.execute('for i=2,1024 do stock[i].flags.forbid=true end')
+        self.refusal('Selected material no longer available; refresh materials',action=2,
+                     definition='Construction:Wall',width=2,selections=[row])
+        self.assertEqual(len(self.lua.globals().created),0)
+        self.lua.execute('stock[2].flags.forbid=false')
+        result=self.finish(action=2,definition='Construction:Wall',width=2,selections=[row])
+        self.assertTrue(result['ok'],result['message'])
+        self.refusal('selected inputs are retired; use selections',action=2,items=[1])
+        self.refusal('Selections do not cover the recipe',action=2,selections=[])
+
+    def test_spec_stale_material_refusal(self):
+        row=self.selection();row['expected_list_revision']+=1
+        self.refusal('List changed; refresh materials',action=2,selections=[row])
+
+    def test_mid_place_taken_skip_and_reset(self):
+        for mode in ('taken','occupied','reset'):
+            with self.subTest(mode=mode):
+                self.lua.execute('fill(1024);created={};occupied={}')
+                self.reset();row=self.selection(600,definition='Construction:Wall')
+                self.seq+=1
+                args=dict(action=2,definition='Construction:Wall',width=30,height=20,selections=[row],step_budget=1200)
+                result=self.call(**args)
+                while result['placed']<256: result=self.call(**args)
+                self.assertEqual(result['placed'],256)
+                if mode=='taken':
+                    self.lua.execute('stock[257].flags.in_job=true')
+                    result=self.call(**args)
+                    self.assertFalse(result['ok'])
+                    self.assertEqual(result['message'],'Selected material was taken during placement')
+                    self.assertEqual((result['placed'],result['chunk_placed']),(256,0))
+                elif mode=='occupied':
+                    self.lua.execute("occupied['16:8:0']=true")
+                    while result['pending']:result=self.call(**args)
+                    self.assertEqual((result['placed'],result['skipped']),(599,1))
+                    self.assertEqual(self.lua.globals().created[257]['items'][1]['id'],257)
+                else:
+                    self.reset()
+                    result=self.call(**args)
+                    while result['pending']:result=self.call(**args)
+                    self.assertEqual(result['message'],'List changed; refresh')
+                    self.assertEqual(result['placed'],0)
+                    self.assertEqual(len(self.lua.globals().created),256)
+
+    def test_builder_phases_ticks_caps_lru(self):
+        self.lua.execute('fill(129,true)');self.reset()
+        first=self.call()
+        self.assertEqual((first['build_phase'],first['build_done'],first['build_total']),(1,0,130))
+        counts={1:0,2:0}
+        while True:
+            p=self.call()
+            if p['build_phase']==0:break
+            phase=p['build_phase'];step=self.call(step=1)
+            self.assertLessEqual(step['steps'],1);counts[phase]+=step['steps']
+        self.assertEqual(counts[1],131)  # resume after the last read enters the first merge move
+        signature='|'.join(['0','-1','-1','-1','0','-1','-1']+['nil']*5+['0']*3)+'|0:0:0'
+        expected=130+129*8+len('7|'+signature)+129*2
+        self.assertEqual(sum(counts.values()),expected)  # reads, merge moves, signature bytes, rows and ids
+        self.assertEqual(len(p['materials']),128);self.assertEqual(p['next_cursor'],128)
+        tail=self.call(cursor=128,expected_list_revision=p['list_revision'])
+        self.assertEqual(len(tail['materials']),1)
+        self.assertEqual(tail['next_cursor'],0)
+        self.reset();self.call();calls=0
+        while self.call()['build_phase']:
+            self.call(step=2048);calls+=1
+        self.assertEqual(calls,(sum(counts.values())//2048)+1)
+        self.lua.execute('df.global.cur_year_tick=1200')
+        self.assertEqual(self.call()['build_phase'],0)
+        self.lua.execute('df.global.cur_year_tick=1201')
+        self.assertEqual(self.call()['build_phase'],1)
+        self.page()
+        self.lua.execute('df.global.cur_year=2;df.global.cur_year_tick=0')
+        self.assertEqual(self.call()['build_phase'],1)
+        self.reset();self.assertEqual(self.call()['build_done'],0)
+        self.page()
+        for x in range(1,4):self.page(x=x)
+        self.page(x=0)  # refresh LRU use
+        self.assertEqual(self.page(x=4)['cache_entries'],4)
+        self.assertEqual(self.call(x=0)['build_phase'],0)
+        self.assertEqual(self.call(x=1)['build_phase'],1)
+        for n in (65536,65537):
+            self.lua.execute('fill(...)',n);self.reset()
+            if n==65536:
+                result=self.page();self.assertTrue(result['ok'],result['message'])
+                self.assertEqual(result['materials'][1]['count'],65536)
+                for x in range(1,4):self.page(x=x)
+                stats=self.call(x=3)
+                self.assertEqual((stats['cache_entries'],stats['cache_ids']),(4,4*65536))
+                self.assertLess(self.lua.eval("(function()collectgarbage('collect');return collectgarbage('count')end)()"),100*1024)
+            else:
+                self.call()
+                while True:
+                    step=self.call(step=2048)
+                    if not step['active']:break
+                # Inspect builder error before a new request automatically retries it.
+                self.assertEqual(step['cache_ids'],0)
+                # Error text is emitted on the request that observes a yielded cap insertion.
+                self.reset();self.call()
+                for _ in range(65538):self.call(step=1)
+                result=self.call()
+                self.assertFalse(result['ok']);self.assertEqual(result['message'],'list exceeds cap')
+
+    def test_material_rows(self):
+        self.lua.execute('''fill(6);stock[1].mat=2;stock[1].pos.x=7;stock[2].mat=1;stock[2].pos.x=1
+          stock[3].mat=1;stock[3].flags.on_ground=false;stock[3].container={flags={on_ground=true},getType=function()return 97 end}
+          stock[4].nameless=true;stock[5].flags.forbid=true;stock[6].pos.group=2
+          stock[1].name=string.rep('n',129)''')
+        self.reset();p=self.page()
+        self.assertEqual([(r['mat_index'],r['count']) for r in p['materials'].values()],[(1,2),(2,1)])
+        self.assertTrue(p['estimated']);self.assertEqual(p['message'],'DF3D estimate: 3 accessible')
+        self.assertEqual(len(p['materials'][2]['name'].encode()),128)
+        self.lua.execute('stock[3].container.flags.in_job=true;df.global.cur_year_tick=1201')
+        self.assertEqual(self.page()['materials'][1]['count'],1)
+        self.assertGreater(p['list_revision'],0);self.assertLessEqual(p['list_revision'],2**63-1)
+
+    def test_stairs_rebuild_and_orientation_arguments(self):
+        for existing in ('STAIR_UP','STAIR_DOWN','STAIR_UPDOWN'):
+            self.lua.execute('shape=df.tiletype_shape[...]',existing)
+            p=self.finish(action=1,definition='Construction:Stairs',depth=3)
+            self.assertEqual(list(p['pieces'].values()),[1,3,2])
+            self.assertEqual(list(p['valid_mask'].values()),[1,1,1])
+        self.lua.execute('shape=0;df.tiletype.attrs[0].material=df.tiletype_material.CONSTRUCTION;existing={}')
+        p=self.finish(action=1,definition='Construction:Wall')
+        self.assertEqual(list(p['valid_mask'].values()),[1])
+        p=self.finish(action=1,definition='Construction:Wall',width=2)
+        self.assertEqual(list(p['valid_mask'].values()),[0,0])
+        p=self.finish(action=1,definition='Construction:Floor')
+        self.assertEqual(list(p['valid_mask'].values()),[0])
+        self.lua.execute('df.tiletype.attrs[0].material=0;existing=nil')
+        for name,directions in [('ScrewPump',range(4)),('Rollers',range(4)),
+                                ('WaterWheel',range(2)),('AxleHorizontal',range(2)),('Bridge',range(5))]:
+            for direction in directions:
+                row=self.selection(definition=name)
+                r=self.finish(action=2,definition=name,direction=direction if direction<4 else 0,
+                              retracting=direction==4,selections=[row])
+                self.assertTrue(r['ok'],r['message'])
+                build=self.lua.globals().created[len(self.lua.globals().created)]
+                self.assertEqual(build['direction'],direction if direction<4 else -1)
+                self.assertEqual(build['type'],self.lua.globals().df.building_type[name])
+        # DFHack applies these direction parameters to native fields; that write
+        # belongs to the MSVC/live check, not this synthetic constructBuilding.
+
+    def test_screen_flags_containers_and_clipping_boundaries(self):
+        flags=['dump','forbid','garbage_collect','hostile','on_fire','rotten','trader',
+               'in_building','construction','in_job','owned','removed','encased','spider_web']
+        for flag in flags:
+            with self.subTest(flag=flag):
+                self.lua.execute('fill(1);stock[1].flags[...]=true',flag);self.reset()
+                self.assertEqual(len(self.page()['materials']),0)
+                self.lua.execute('stock[1].flags[...]=false',flag);self.reset()
+                self.assertEqual(self.page()['materials'][1]['count'],1)
+        for size in (128,129):
+            self.lua.execute("fill(1);stock[1].name=string.rep('n',...)",size);self.reset()
+            self.assertEqual(len(self.page()['materials'][1]['name']),128)
+        for depth in (16,17):
+            self.lua.execute("""fill(1);local item=stock[1];item.flags.on_ground=false
+              for i=1,... do item.container={flags={on_ground=true},getType=function()return 97 end};item=item.container end""",depth)
+            self.reset();p=self.page()
+            self.assertEqual(len(p['materials']),1 if depth==16 else 0)
+        self.lua.execute("fill(1);stock[1].name=''");self.reset()
+        self.assertEqual(len(self.page()['materials']),0)
+
+    def test_shared_budget_two_real_closures(self):
+        # Both real domain closures progress, with the request's inline work
+        # deducted first. The production C++ scheduler is reviewed separately.
+        self.lua.execute("""df.global.world.manager_orders={all=vec{}}
+          local names={};for i=1,900 do names[i]='TYPE'..i end
+          df.item_type=enum(names);df.item_type.TOOL=9999;df.item_type.BAR=9998
+          dfhack.items.getSubtypeCount=function()return 0 end""")
+        work=self.lua.execute((Path(__file__).resolve().parents[1] / 'bridge/plugin/work_orders.lua').read_text())
+        request=self.lua.table_from(dict(action=26,epoch=7,seq=1,
+            work_order=dict(candidate_kind=3,query='',cursor=0)),recursive=True)
+        self.call()
+        self.assertTrue(work(request)['ok'])
+        self.seq+=1
+        before=0
+        for _ in range(2):
+            self.assertTrue(work(request)['ok'])
+            inline=self.call(action=1,definition='Construction:Wall',width=31,height=31,step_budget=64)
+            self.assertEqual(inline['steps'],64)
+            left=2048-inline['steps']
+            construction=self.call(step=left//2)
+            orders=work(self.lua.table_from(dict(step=left-left//2,builder_kind=0)))
+            self.assertGreater(construction['steps'],0)
+            self.assertGreater(orders['steps'],0)
+            self.assertLessEqual(inline['steps']+construction['steps']+orders['steps'],2048)
+            progress=self.call()
+            self.assertGreater(progress['build_done'],before)
+            before=progress['build_done']
+
+    def test_masked_fnv_high_bit(self):
+        for epoch in range(64):
+            page=self.call(action=0,epoch=epoch)
+            h=0xcbf29ce484222325
+            for byte in f"{epoch}|1|{page['total']}".encode():
+                h=((h^byte)*0x100000001b3)&((1<<64)-1)
+            self.assertEqual(page['list_revision'],(h&((1<<63)-1)) or 1)
+            if h >= 1<<63:break
+        else:self.fail('fixture failed to exercise the unmasked high bit')
+
+    def test_removal(self):
+        self.lua.execute('''building={id=1,centerx=0,centery=0,z=0,jobs={},getType=function()return df.building_type.Chair end,
+          getSubtype=function()return -1 end,getBuildStage=function()return 0 end,getMaxBuildStage=function()return 1 end}
+          df.building={find=function()return building end};marked=false;cancel=true
+          dfhack.buildings.markedForRemoval=function()return marked end
+          dfhack.buildings.deconstruct=function()return cancel end
+          dfhack.buildings.getName=function()return ''end
+          dfhack.constructions={findAtTile=function()return terrain end,designateRemove=function()return true end}''')
+        self.refusal('Building changed; inspect again',action=4,definition='',building_id=1)
+        self.lua.execute('marked=true')
+        self.refusal('Already marked for removal',action=4,building_id=1)
+        self.lua.execute('marked=false')
+        self.assertEqual(self.finish(action=4,building_id=1)['message'],'Unbuilt construction cancelled')
+        catalog=self.call(action=0)['catalog']
+        for row in catalog.values():
+            if row['family'] in ('Stockpile','Civzone') or row['key'] in ('Construction:Track','Construction:Stairs'):
+                continue
+            if row['custom_code']:
+                continue
+            self.lua.execute("""local ty,st=...;building.getType=function()return ty end
+              building.getSubtype=function()return st end""",row['type'],row['subtype'])
+            self.assertEqual(self.finish(action=4,definition=row['key'],building_id=1)['message'],
+                             'Unbuilt construction cancelled')
+        self.lua.execute('building.getType=function()return df.building_type.Chair end')
+        self.lua.execute('cancel=false')
+        self.assertEqual(self.finish(action=4,building_id=1)['message'],'Native deconstruction queued')
+        self.refusal('No removable completed construction at this tile',action=6)
+        self.lua.execute('terrain={flags={}}')
+        self.assertEqual(self.finish(action=6)['message'],'Native construction removal designated')
+        self.lua.execute('valid=false')
+        self.refusal('Construction tile is hidden or outside the map',action=6)
+
+
+if __name__ == '__main__':
+    result = unittest.main(exit=False)
+    if result.result.wasSuccessful(): print("CONSTRUCTION_ADAPTER_PASS")
+    raise SystemExit(not result.result.wasSuccessful())

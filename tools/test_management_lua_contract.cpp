@@ -95,6 +95,34 @@ int main(int argc,char** argv) {
           "return {ok=true,message='bad',build_phase=1.5}"}) test(action,code,false);
       test(action,"return {ok=true,message='building',build_phase=1,active=true}",true);
     }
+
+    // Construction envelopes are checked even for Rejected and pending results.
+    for(auto action:{A::Catalog,A::Preview,A::Place,A::Inspect,A::Remove,
+                     A::InspectAtTile,A::RemoveConstruction,A::ConstructionMaterials}) {
+      for(const auto& field:std::initializer_list<std::pair<const char*,int64_t>>{
+          {"list_revision",INT64_MAX},{"build_phase",2},{"placed",1024},
+          {"skipped",1024},{"chunk_placed",1024},{"first_building",INT32_MAX},
+          {"steps",2048},{"active_kinds",8}}) {
+        const std::string prefix="return {ok=false,message='',"+std::string(field.first)+"=";
+        const auto low=std::string(field.first)=="first_building" ? -1 : 0;
+        for(auto value:{int64_t(low),field.second})
+          test(action,(prefix+std::to_string(value)+"}").c_str(),true);
+        const auto expected=std::string(field.first)+" must be an integer in "+
+          (std::string(field.first)=="list_revision" ? "0..INT64_MAX" :
+           std::string(field.first)=="first_building" ? "-1..INT32_MAX" : "0.."+std::to_string(field.second));
+        for(const auto& value:{std::to_string(low-1),field.second==INT64_MAX ?
+            std::string("9223372036854775808.0") : std::to_string(field.second+1),
+            std::string("1.0"),std::string("1.5"),std::string("'1'")}) {
+          test(action,(prefix+value+"}").c_str(),false);
+          if(df3d_management::managementResultError(L,action)!=expected)
+            throw std::runtime_error("construction exact refusal: "+expected);
+        }
+      }
+      test(action,"return {ok=false,message='',active=false}",true);
+      test(action,"return {ok=false,message='',active=0}",false);
+      if(df3d_management::managementResultError(L,action)!="active must be a boolean when present")
+        throw std::runtime_error("construction active refusal");
+    }
     test(A::WorkOrderInspect,"return {ok=true,message='ok',orders={{conditions={{traits={'rc:CLASS',''}}}}}}",true);
     test(A::WorkOrderInspect,"return {ok=true,message='ok',orders={{conditions={{traits={}}}}}}",true);
     for(const auto* value:{"false","{}","1","42"}) {

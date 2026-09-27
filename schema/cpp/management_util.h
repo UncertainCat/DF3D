@@ -15,7 +15,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 }
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
-inline bool runtimeManagementAction(ManagementAction action) {
+inline constexpr bool runtimeManagementAction(ManagementAction action) {
   return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureInspect &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&

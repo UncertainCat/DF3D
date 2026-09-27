@@ -26,4 +26,12 @@ bool validateWorkOrderShape(const godot::Dictionary& data, godot::String& error)
 bool readWorkOrder(const godot::Dictionary& data, wm::ManagementRequest& r, godot::String& error);
 bool validateReportShape(const godot::Dictionary& data, godot::String& error);
 bool readReport(const godot::Dictionary& data, wm::ManagementRequest& r, godot::String& error);
+bool validateProductionShape(const godot::Dictionary& data, godot::String& error);
+bool readProduction(const godot::Dictionary& data, wm::ManagementRequest& r, godot::String& error);
+bool validateCitizenShape(const godot::Dictionary& data, godot::String& error);
+bool readCitizen(const godot::Dictionary& data, wm::ManagementRequest& r, godot::String& error);
+bool validateAgreementShape(const godot::Dictionary& data, godot::String& error);
+bool readAgreement(const godot::Dictionary& data, wm::ManagementRequest& r, godot::String& error);
+bool validateTradeShape(const godot::Dictionary& data, godot::String& error);
+bool readTrade(const godot::Dictionary& data, wm::ManagementRequest& r, godot::String& error);
 }  // namespace df3d_godot::management

@@ -153,4 +153,101 @@ enum class CreatureSectionKind : uint8_t {
   Locations = 23,
   WorkAnimals = 24,
 };
+constexpr bool isRuntimeAction(ManagementAction action) {
+  switch (action) {
+  case ManagementAction::Catalog: return true;
+  case ManagementAction::Preview: return true;
+  case ManagementAction::Place: return true;
+  case ManagementAction::Inspect: return true;
+  case ManagementAction::Remove: return true;
+  case ManagementAction::InspectAtTile: return true;
+  case ManagementAction::RemoveConstruction: return true;
+  case ManagementAction::AreaCatalog: return true;
+  case ManagementAction::AreaInspectAtTile: return true;
+  case ManagementAction::AreaInspect: return true;
+  case ManagementAction::AreaCreate: return true;
+  case ManagementAction::AreaUpdate: return true;
+  case ManagementAction::AreaDelete: return true;
+  case ManagementAction::AreaLink: return true;
+  case ManagementAction::AreaCandidates: return true;
+  case ManagementAction::ProductionList: return true;
+  case ManagementAction::ProductionInspect: return true;
+  case ManagementAction::ProductionQueue: return true;
+  case ManagementAction::ProductionJobEdit: return true;
+  case ManagementAction::FarmSetCrop: return true;
+  case ManagementAction::WorkOrderList: return true;
+  case ManagementAction::WorkOrderInspect: return true;
+  case ManagementAction::WorkOrderCreate: return true;
+  case ManagementAction::WorkOrderUpdate: return true;
+  case ManagementAction::WorkOrderDelete: return true;
+  case ManagementAction::WorkOrderCondition: return true;
+  case ManagementAction::WorkOrderCandidates: return true;
+  case ManagementAction::WorkOrderCatalog: return true;
+  case ManagementAction::CitizenList: return true;
+  case ManagementAction::CitizenInspect: return true;
+  case ManagementAction::WorkDetailList: return true;
+  case ManagementAction::WorkDetailInspect: return true;
+  case ManagementAction::WorkDetailMembership: return true;
+  case ManagementAction::WorkDetailMode: return true;
+  case ManagementAction::ReportList: return true;
+  case ManagementAction::ReportInspect: return true;
+  case ManagementAction::AgreementList: return true;
+  case ManagementAction::AgreementInspect: return true;
+  case ManagementAction::TradeList: return true;
+  case ManagementAction::TradeInspect: return true;
+  case ManagementAction::TradeUpdate: return true;
+  case ManagementAction::TradeGoods: return true;
+  case ManagementAction::TradeBring: return true;
+  case ManagementAction::CreatureInspect: return true;
+  default: return false;
+  }
+}
+constexpr const char* managementDomain(ManagementAction action) {
+  switch (action) {
+  case ManagementAction::Catalog: return "construction";
+  case ManagementAction::Preview: return "construction";
+  case ManagementAction::Place: return "construction";
+  case ManagementAction::Inspect: return "construction";
+  case ManagementAction::Remove: return "construction";
+  case ManagementAction::InspectAtTile: return "construction";
+  case ManagementAction::RemoveConstruction: return "construction";
+  case ManagementAction::AreaCatalog: return "areas";
+  case ManagementAction::AreaInspectAtTile: return "areas";
+  case ManagementAction::AreaInspect: return "areas";
+  case ManagementAction::AreaCreate: return "areas";
+  case ManagementAction::AreaUpdate: return "areas";
+  case ManagementAction::AreaDelete: return "areas";
+  case ManagementAction::AreaLink: return "areas";
+  case ManagementAction::AreaCandidates: return "areas";
+  case ManagementAction::ProductionList: return "production";
+  case ManagementAction::ProductionInspect: return "production";
+  case ManagementAction::ProductionQueue: return "production";
+  case ManagementAction::ProductionJobEdit: return "production";
+  case ManagementAction::FarmSetCrop: return "production";
+  case ManagementAction::WorkOrderList: return "work_orders";
+  case ManagementAction::WorkOrderInspect: return "work_orders";
+  case ManagementAction::WorkOrderCreate: return "work_orders";
+  case ManagementAction::WorkOrderUpdate: return "work_orders";
+  case ManagementAction::WorkOrderDelete: return "work_orders";
+  case ManagementAction::WorkOrderCondition: return "work_orders";
+  case ManagementAction::WorkOrderCandidates: return "work_orders";
+  case ManagementAction::WorkOrderCatalog: return "work_orders";
+  case ManagementAction::CitizenList: return "citizens";
+  case ManagementAction::CitizenInspect: return "citizens";
+  case ManagementAction::WorkDetailList: return "citizens";
+  case ManagementAction::WorkDetailInspect: return "citizens";
+  case ManagementAction::WorkDetailMembership: return "citizens";
+  case ManagementAction::WorkDetailMode: return "citizens";
+  case ManagementAction::ReportList: return "reports";
+  case ManagementAction::ReportInspect: return "reports";
+  case ManagementAction::AgreementList: return "agreements";
+  case ManagementAction::AgreementInspect: return "agreements";
+  case ManagementAction::TradeList: return "trade";
+  case ManagementAction::TradeInspect: return "trade";
+  case ManagementAction::TradeUpdate: return "trade";
+  case ManagementAction::TradeGoods: return "trade";
+  case ManagementAction::TradeBring: return "trade";
+  default: return "";
+  }
+}
 } // namespace wm

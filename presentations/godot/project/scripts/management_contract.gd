@@ -152,5 +152,20 @@ enum CreatureSectionKind {
 	WorkAnimals = 24,
 }
 
+static func domain_of(action: int) -> String:
+	match action:
+		ManagementAction.Catalog, ManagementAction.Preview, ManagementAction.Place, ManagementAction.Inspect, ManagementAction.Remove, ManagementAction.InspectAtTile, ManagementAction.RemoveConstruction: return "construction"
+		ManagementAction.AreaCatalog, ManagementAction.AreaInspectAtTile, ManagementAction.AreaInspect, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.AreaCandidates: return "areas"
+		ManagementAction.ProductionList, ManagementAction.ProductionInspect, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmSetCrop: return "production"
+		ManagementAction.WorkOrderList, ManagementAction.WorkOrderInspect, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkOrderCandidates, ManagementAction.WorkOrderCatalog: return "work_orders"
+		ManagementAction.CitizenList, ManagementAction.CitizenInspect, ManagementAction.WorkDetailList, ManagementAction.WorkDetailInspect, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode: return "citizens"
+		ManagementAction.ReportList, ManagementAction.ReportInspect: return "reports"
+		ManagementAction.AgreementList, ManagementAction.AgreementInspect: return "agreements"
+		ManagementAction.TradeList, ManagementAction.TradeInspect, ManagementAction.TradeUpdate, ManagementAction.TradeGoods, ManagementAction.TradeBring: return "trade"
+	return ""
+
+static func is_runtime(action: int) -> bool:
+	return action in [ManagementAction.Catalog, ManagementAction.Preview, ManagementAction.Place, ManagementAction.Inspect, ManagementAction.Remove, ManagementAction.InspectAtTile, ManagementAction.RemoveConstruction, ManagementAction.AreaCatalog, ManagementAction.AreaInspectAtTile, ManagementAction.AreaInspect, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.AreaCandidates, ManagementAction.ProductionList, ManagementAction.ProductionInspect, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmSetCrop, ManagementAction.WorkOrderList, ManagementAction.WorkOrderInspect, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkOrderCandidates, ManagementAction.WorkOrderCatalog, ManagementAction.CitizenList, ManagementAction.CitizenInspect, ManagementAction.WorkDetailList, ManagementAction.WorkDetailInspect, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.ReportList, ManagementAction.ReportInspect, ManagementAction.AgreementList, ManagementAction.AgreementInspect, ManagementAction.TradeList, ManagementAction.TradeInspect, ManagementAction.TradeUpdate, ManagementAction.TradeGoods, ManagementAction.TradeBring, ManagementAction.CreatureInspect]
+
 static func is_mutation(action: int) -> bool:
 	return action in [ManagementAction.Place, ManagementAction.Remove, ManagementAction.RemoveConstruction, ManagementAction.AreaCreate, ManagementAction.AreaUpdate, ManagementAction.AreaDelete, ManagementAction.AreaLink, ManagementAction.ProductionQueue, ManagementAction.ProductionJobEdit, ManagementAction.FarmSetCrop, ManagementAction.WorkOrderCreate, ManagementAction.WorkOrderUpdate, ManagementAction.WorkOrderDelete, ManagementAction.WorkOrderCondition, ManagementAction.WorkDetailMembership, ManagementAction.WorkDetailMode, ManagementAction.TradeUpdate, ManagementAction.TradeBring]

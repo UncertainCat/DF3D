@@ -73,5 +73,59 @@ func run() -> void:
 	assert(sequence>0)
 	state = await receipt(sequence)
 	assert(not state.is_empty() and state.action==A.Place)
+	# Domain and action admission errors precede connection and typed conversion.
+	assert(world.management_request("unknown", {}) == 0)
+	assert(world.last_error() == "Unknown management domain")
+	assert(world.management_request("trade", {}) == 0)
+	assert(world.last_error() == "Missing management field: action")
+	assert(world.management_request("trade", {"action":float(A.Catalog)}) == 0)
+	assert(world.last_error() == "Wrong management field type: action")
+	for pair in [["areas", {"action":A.Place}], ["citizens", {"action":A.CreatureInspect}]]:
+		assert(world.management_request(pair[0], pair[1]) == 0)
+		assert(world.last_error() == "Management action does not match domain")
+	for pair in [["trade", {"action":-1}], ["trade", {"action":256}],
+		["production", {"action":A.ProductionJobEdit,"building_id":1,"job_id":1.5}],
+		["citizens", {"action":A.WorkDetailMode,"detail_index":1,"mode":"1"}],
+		["agreements", {"action":A.AgreementInspect,"id":"1"}],
+		["trade", {"action":A.TradeUpdate,"depot_id":1,"requested":true}],
+		["work_orders", {"action":A.WorkOrderUpdate,"id":1,"expected_revision":1.5}],
+		["reports", {"action":A.ReportInspect,"id":1.5}]]:
+		assert(world.management_request(pair[0], pair[1]) == 0)
+		assert(not str(world.last_error()).is_empty())
+	for action in A.values():
+		if Contract.is_runtime(action): continue
+		assert(Contract.domain_of(action).is_empty())
+		assert(world.management_request("trade", {"action":action}) == 0)
+		assert(world.last_error() == "Management action does not match domain")
+	for domain in ["work_orders", "trade"]:
+		assert(world.management_request(domain, {"action":A.Catalog,"width":0}) == 0)
+		assert(world.last_error() == "Invalid management request")
+	assert(Contract.is_runtime(A.CreatureInspect) and Contract.domain_of(A.CreatureInspect).is_empty())
+	assert(not Contract.is_runtime(-1) and not Contract.is_runtime(256))
+	assert(Contract.domain_of(-1).is_empty() and Contract.domain_of(256).is_empty())
+	# Bounds and semantic identities must also fail without consuming a sequence.
+	for pair in [["production", {"action":A.ProductionJobEdit,"building_id":1,"job_id":-1,"repeat":1}],
+		["production", {"action":A.FarmSetCrop,"building_id":1,"crop_id":32768,"season":0}],
+		["citizens", {"action":A.WorkDetailMode,"detail_index":128,"expected_revision":1,"mode":1}],
+		["citizens", {"action":A.WorkDetailMembership,"detail_index":1,"unit_id":1,"expected_revision":0,"member":1}],
+		["agreements", {"action":A.AgreementInspect,"id":1,"pending_only":true}],
+		["trade", {"action":A.TradeUpdate,"depot_id":1,"expected_revision":0,"requested":1}],
+		["trade", {"action":A.TradeList,"receipt":1}]]:
+		assert(world.management_request(pair[0],pair[1]) == 0)
+	for pair in [["work_orders", {"action":A.Catalog}], ["trade", {"action":A.Catalog}],
+		["production", {"action":A.ProductionJobEdit,"building_id":2147483000,"job_id":2147483001,"repeat":1}],
+		["work_orders", {"action":A.WorkOrderUpdate,"id":2147483000,"expected_revision":9007199254740993,"remaining":12}],
+		["citizens", {"action":A.WorkDetailMembership,"unit_id":2147483000,"detail_index":127,"expected_revision":9007199254740993,"member":1}],
+		["reports", {"action":A.ReportInspect,"id":2147483000}],
+		["agreements", {"action":A.AgreementInspect,"id":2147483000}],
+		["trade", {"action":A.TradeUpdate,"depot_id":2147483000,"expected_revision":9007199254740993,"requested":1}]]:
+		sequence = world.management_request(pair[0], pair[1])
+		assert(sequence > 0)
+		state = await receipt(sequence)
+		assert(not state.is_empty() and state.action == pair[1].action)
+	# Host signals only after validating every expected payload.
+	for i in 300:
+		if FileAccess.get_file_as_string(status_path) == "passed": break
+		await create_timer(0.01).timeout
 	assert(FileAccess.get_file_as_string(status_path)=="passed")
 	finish(0,"MANAGEMENT_CONTRACT_TEST_PASS")

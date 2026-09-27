@@ -67,6 +67,7 @@ void Df3dWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("creature_portrait", "id"), &Df3dWorld::creature_portrait);
     ClassDB::bind_method(D_METHOD("resident_icon", "id"), &Df3dWorld::resident_icon);
     ClassDB::bind_method(D_METHOD("selection_icon", "kind", "id"), &Df3dWorld::selection_icon);
+    ClassDB::bind_method(D_METHOD("management_request", "domain", "request"), &Df3dWorld::management_request);
     ClassDB::bind_method(D_METHOD("report_request", "data"), &Df3dWorld::report_request);
     ClassDB::bind_method(D_METHOD("work_order_request", "data"), &Df3dWorld::work_order_request);
     ClassDB::bind_method(D_METHOD("area_request", "data"), &Df3dWorld::area_request);

@@ -65,7 +65,8 @@ func _publish(ticket: int, state: Dictionary) -> void:
 	var item: Dictionary = _requests[ticket]
 	# An unknown outcome consumes the one-shot observer; late resolution is detached.
 	if state.get("outcome", "") == "unknown": item.detached = true
-	if Contract.is_mutation(int(item.request.get("action", -1))):
+	var raw_action = item.request.get("action", -1)
+	if typeof(raw_action) == TYPE_INT and Contract.is_mutation(int(raw_action)):
 		_outcomes[ticket] = {"ticket":ticket,"domain":item.domain,"detached":item.detached,"request":item.request.duplicate(true),"result":state.duplicate(true)}
 	while _results.size() > retention_limit:
 		var expired: int = _results.keys()[0]
@@ -133,15 +134,18 @@ func poll(delta: float = 0.0) -> void:
 	if _active != 0 or _queue.is_empty(): return
 	var ticket: int = _queue.pop_front()
 	var item: Dictionary = _requests[ticket]
-	if item.domain not in ["construction", "areas"]:
-		_publish(ticket, {"status":Status.Rejected,"outcome":"not_sent","message":"This action is not supported yet"})
+	var raw_action = item.request.get("action", -1)
+	var action := int(raw_action) if typeof(raw_action) == TYPE_INT else -1
+	var action_domain := Contract.domain_of(action)
+	if not Contract.is_runtime(action) or (action != Action.Catalog and (action_domain.is_empty() or action_domain != item.domain)):
+		_publish(ticket, {"status":Status.Rejected,"outcome":"not_sent","message":"Management action does not match a runtime domain"})
 		_requests.erase(ticket)
 		return
 	if not world.is_live():
 		_publish(ticket, {"status": Status.Rejected, "outcome": "not_sent", "message": "Requires a live fortress"})
 		_requests.erase(ticket)
 		return
-	var sequence := int(world.construction_request(item.request) if item.domain == "construction" else world.area_request(item.request))
+	var sequence := int(world.management_request(item.domain, item.request))
 	if sequence == 0:
 		_publish(ticket, {"status": Status.Rejected, "outcome": "not_sent", "message": world.last_error()})
 		_requests.erase(ticket)

@@ -68,12 +68,32 @@ Claim claim(ManagementPublisher& p,wm::ManagementClient& c) {
   const auto seq=c.send({});REQUIRE(seq>0);const auto id=p.pop()->client_id();p.publish(2,id,seq);REQUIRE(c.poll());return {seq,id};
 }
 }
+TEST_CASE("every retired management action is refused before and after catalog claim") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);
+  auto checkRetired=[&] {
+    for (auto action : mm::EnumValuesManagementAction()) {
+      if (mm::runtimeManagementAction(action)) continue;
+      wm::ManagementRequest r;r.action=static_cast<wm::ManagementAction>(action);
+      CHECK(c->send(r)==0);
+      CHECK(c->lastError()=="Retired management action");
+      CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+    }
+  };
+  checkRetired();
+  claim(p,*c);
+  checkRetired();
+  // The retired gate also precedes pending-request admission.
+  REQUIRE(c->send({})>0);p.pop();
+  checkRetired();
+}
 TEST_CASE("management claims catalog before mutations and preserves pending ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest place;place.action=wm::ManagementAction::Place;place.definition="Chair";place.items={42};
   CHECK(c->send(place)==0);
+  CHECK(c->lastError()=="Refresh the management catalog first");
   auto seq=c->send({}); REQUIRE(seq>0);auto* r=p.pop();const auto id=r->client_id();CHECK(r->seq()==seq);
   CHECK(c->send({})==0);
+  CHECK(c->lastError()=="Wait for the current management request");
   p.publish(2,id,seq-1);REQUIRE(c->poll());CHECK(c->state().status==wm::ManagementStatus::Pending);
   CHECK(c->send(place)==0);
   p.publish(3,id,seq);REQUIRE(c->poll());CHECK(c->state().catalog.size()==1);
@@ -752,18 +772,7 @@ TEST_CASE("trade states validate identities and arrive through the world model")
     if(bad<0){REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());REQUIRE(c->state().trade.depots.size()==1);CHECK(c->state().trade.depots[0].id==17);CHECK(c->state().trade.depots[0].requested);CHECK(c->state().trade.depots[0].hauling==2);CHECK(c->state().trade.goods[0].id==55);CHECK(c->state().trade.nextCursor==512);}
   }
 }
-TEST_CASE("trade exchange wire guards native receipts and whole-good selections") {
-  ManagementPublisher p;p.publish(1);auto c=openClient(p);
-  auto [seq,owner]=claim(p,*c);
-  wm::ManagementRequest r;r.action=wm::ManagementAction::TradeExchangeSelect;r.trade.depotId=17;r.trade.itemId=55;r.trade.side=1;r.trade.selected=1;
-  CHECK(c->send(r)==0);
-  r.trade.receipt=123;seq=c->send(r);REQUIRE(seq>0);auto* q=p.pop();REQUIRE(q->trade());CHECK(q->trade()->receipt()==123);CHECK(q->trade()->item_id()==55);CHECK(q->trade()->side()==1);CHECK(q->trade()->selected()==1);
-  p.publish(3,owner,seq,7,mm::ManagementAction::TradeExchangeSelect);REQUIRE(c->poll());
-  r.action=wm::ManagementAction::TradeExchangeSubmit;CHECK(c->send(r)==0);
-  r.trade.itemId=-1;r.trade.selected=-1;seq=c->send(r);REQUIRE(seq>0);q=p.pop();CHECK(q->trade()->receipt()==123);
-  p.publish(4,owner,seq,7,mm::ManagementAction::TradeExchangeSubmit);REQUIRE(c->poll());
-  r.action=wm::ManagementAction::TradeExchangeClose;r.trade.receipt=0;seq=c->send(r);REQUIRE(seq>0);q=p.pop();CHECK(q->trade()->receipt()==0);
-}
+
 TEST_CASE("trade exchange state validates native readiness bounds") {
   for(int bad=-1;bad<5;++bad) {
     flatbuffers::FlatBufferBuilder b;
@@ -774,24 +783,10 @@ TEST_CASE("trade exchange state validates native readiness bounds") {
     CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(bad>=0));
   }
 }
-TEST_CASE("Stocks requests keep membership receipts separate from trade") {
-  ManagementPublisher p;p.publish(1);auto c=openClient(p);
-  auto [seq,owner]=claim(p,*c);
-  wm::ManagementRequest r; r.action=wm::ManagementAction::StocksList; r.stocks.category=39;
-  CHECK(c->send(r)==0);
-  r.stocks.receipt=12; r.stocks.cursor=512; r.stocks.query="iron";
-  seq=c->send(r); REQUIRE(seq>0); auto* q=p.pop();
-  REQUIRE(q->stocks()); CHECK(q->trade()==nullptr); CHECK(q->stocks()->receipt()==12);
-  CHECK(q->stocks()->category()==39); CHECK(q->stocks()->cursor()==512); CHECK(q->stocks()->query()->str()=="iron");
-  p.publish(3,owner,seq,7,mm::ManagementAction::StocksList); REQUIRE(c->poll());
-  r.action=wm::ManagementAction::StocksInspect; CHECK(c->send(r)==0);
-  r.stocks.itemId=0; REQUIRE(c->send(r)>0); CHECK(p.pop()->stocks()->item_id()==0);
-}
+
 TEST_CASE("Stocks knowledge, bounded pages, and locations validate through world model") {
   ManagementPublisher p;p.publish(1);auto client=openClient(p);
   auto [seq,owner]=claim(p,*client);
-  wm::ManagementRequest request; request.action=wm::ManagementAction::StocksOpen;
-  seq=client->send(request); REQUIRE(seq>0); p.pop();
   for(int bad=-1;bad<6;++bad) {
     flatbuffers::FlatBufferBuilder b;
     auto available=mm::CreateStockCount(b,60,bad==0?mm::StockAccuracy::Unavailable:mm::StockAccuracy::Approximate);
@@ -812,20 +807,9 @@ TEST_CASE("Stocks knowledge, bounded pages, and locations validate through world
   }
 }
 
-TEST_CASE("Appointments require role identity and consumed-context receipts") {
-  ManagementPublisher p;p.publish(1);auto client=openClient(p);
-  auto [seq,owner]=claim(p,*client);
-  wm::ManagementRequest r;r.action=wm::ManagementAction::AppointmentsAssign;r.appointments.unitId=5173;
-  CHECK(client->send(r)==0);
-  r.appointments.entityId=483;r.appointments.positionId=10;r.appointments.assignmentId=6;r.appointments.receipt=25;
-  seq=client->send(r); REQUIRE(seq>0); auto* q=p.pop(); REQUIRE(q->appointments()); CHECK(q->stocks()==nullptr);CHECK(q->appointments()->receipt()==25);CHECK(q->appointments()->unit_id()==5173);CHECK(q->appointments()->assignment_id()==6);
-  p.publish(3,owner,seq,7,mm::ManagementAction::AppointmentsAssign);REQUIRE(client->poll());
-  r.appointments.unitId=-1; REQUIRE(client->send(r)>0);CHECK(p.pop()->appointments()->unit_id()==-1);
-}
 TEST_CASE("Native administrator role requirements and candidate eligibility survive transport") {
   ManagementPublisher p;p.publish(1);auto client=openClient(p);
   auto [seq,owner]=claim(p,*client);
-  wm::ManagementRequest r;r.action=wm::ManagementAction::AppointmentsOpen;seq=client->send(r);REQUIRE(seq>0);p.pop();
   for(int bad=-1;bad<5;++bad) {
     flatbuffers::FlatBufferBuilder b;
     auto role=mm::CreateAppointmentRole(b,483,10,6,4805,b.CreateString("manager"),b.CreateString("Melbil"),bad==0?-1:1,0,0,0,0,0,0,0,true,b.CreateString(""));
@@ -838,27 +822,9 @@ TEST_CASE("Native administrator role requirements and candidate eligibility surv
   }
 }
 
-
-TEST_CASE("Kitchen requests carry exact ingredient tuples and reject malformed edits") {
-  ManagementPublisher p;p.publish(1);auto c=openClient(p);
-  auto [seq,owner]=claim(p,*c);
-  wm::ManagementRequest r;r.action=wm::ManagementAction::KitchenSetPermission;
-  r.kitchen.itemType=1;r.kitchen.matType=419;r.kitchen.matIndex=20;r.kitchen.permission=2;r.kitchen.allowed=0;
-  CHECK(c->send(r)==0);r.kitchen.receipt=7;r.kitchen.query="berries";
-  seq=c->send(r);REQUIRE(seq>0);auto* q=p.pop();REQUIRE(q->kitchen());CHECK(q->appointments()==nullptr);
-  CHECK(q->kitchen()->item_type()==1);CHECK(q->kitchen()->item_subtype()==-1);CHECK(q->kitchen()->mat_type()==419);CHECK(q->kitchen()->mat_index()==20);CHECK(q->kitchen()->permission()==2);CHECK(q->kitchen()->allowed()==0);CHECK(q->kitchen()->receipt()==7);CHECK(q->kitchen()->query()->str()=="berries");
-  p.publish(3,owner,seq,7,mm::ManagementAction::KitchenSetPermission);REQUIRE(c->poll());
-  for(auto flag:{0,3}){r.kitchen.permission=uint8_t(flag);CHECK(c->send(r)==0);}
-  r.kitchen.permission=1;r.kitchen.allowed=-1;CHECK(c->send(r)==0);
-  r.kitchen.allowed=1;r.kitchen.matIndex=-2;CHECK(c->send(r)==0);
-  r.kitchen.matIndex=20;r.action=wm::ManagementAction::KitchenList;CHECK(c->send(r)==0);
-  r.kitchen={};r.kitchen.receipt=7;r.kitchen.cursor=4097;CHECK(c->send(r)==0);
-  r.kitchen.cursor=0;r.kitchen.query=std::string(129,'x');CHECK(c->send(r)==0);
-}
 TEST_CASE("Kitchen transport preserves material identity and capability distinctions") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   auto [seq,owner]=claim(p,*c);
-  wm::ManagementRequest r;r.action=wm::ManagementAction::KitchenOpen;seq=c->send(r);REQUIRE(seq>0);p.pop();
   for(int bad=-1;bad<8;++bad){
     flatbuffers::FlatBufferBuilder b;
     auto one=mm::CreateKitchenIngredient(b,1,-1,419,20,b.CreateString("berries"),4,true,true,false,true);
@@ -892,12 +858,6 @@ TEST_CASE("native alerts require bounded identities and preserve semantic pages"
 TEST_CASE("selection transport preserves native identity order and clears closed pages") {
   ManagementPublisher p;p.publish(1);auto client=openClient(p);
   auto [seq,owner]=claim(p,*client);
-  wm::ManagementRequest request;request.action=wm::ManagementAction::Selection;
-  request.selection.x=88;request.selection.y=71;request.selection.z=143;
-  seq=client->send(request);REQUIRE(seq>0);
-  const auto* command=p.pop();REQUIRE(command->selection());
-  CHECK(command->selection()->tile()->x()==88);CHECK(command->selection()->tile()->z()==143);
-  CHECK(command->selection()->receipt()==0);
   flatbuffers::FlatBufferBuilder b;
   auto unit=mm::CreateSelectionIdentity(b,mm::SelectionKind::Unit,4085,b.CreateString("Cerol"));
   auto door=mm::CreateSelectionIdentity(b,mm::SelectionKind::Building,1037,b.CreateString("Gabbro Door"));
@@ -925,8 +885,6 @@ TEST_CASE("selection transport preserves native identity order and clears closed
   CHECK(selected.kind==wm::SelectionKind::Unit);CHECK(selected.receipt==77);
   REQUIRE(selected.overview.size()==1);CHECK(selected.overview[0].text=="5 Years Old");
   REQUIRE(selected.portrait.layers.size()==1);CHECK(selected.portrait.layers[0].tileX==2);CHECK(selected.portrait.tilePages[0]=="PORTRAIT_TEST");
-  request.selection.receipt=77;seq=client->send(request);REQUIRE(seq>0);
-  CHECK(p.pop()->selection()->receipt()==77); // replacement click carries ownership
   p.publish(4,owner,seq);REQUIRE(client->poll());
   CHECK_FALSE(client->state().selection.open);CHECK(client->state().selection.alternatives.empty());
   CHECK(client->state().selection.portrait.layers.empty());

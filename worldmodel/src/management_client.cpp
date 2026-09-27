@@ -129,12 +129,16 @@ uint64_t ManagementClient::send(const ManagementRequest& r) {
     error_ = "DF process ended";
     return 0;
   }
+  if (!wm::isRuntimeAction(r.action)) {
+    error_ = "Retired management action";
+    return 0;
+  }
   if (pending_) {
-    error_ = "Wait for the current construction request";
+    error_ = "Wait for the current management request";
     return 0;
   }
   if (r.action != ManagementAction::Catalog && (!state_.worldEpoch || !catalogReady_)) {
-    error_ = "Refresh construction catalog first";
+    error_ = "Refresh the management catalog first";
     return 0;
   }
   flatbuffers::FlatBufferBuilder b;
@@ -145,7 +149,7 @@ uint64_t ManagementClient::send(const ManagementRequest& r) {
     return 0;
   }
   if (!impl_->channel->push(b.GetBufferPointer(), b.GetSize())) {
-    error_ = "Construction queue full";
+    error_ = "Management queue full";
     return 0;
   }
   pending_ = ++seq_;

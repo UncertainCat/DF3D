@@ -13,11 +13,10 @@ class FakeWorld:
 	func session_generation(): return generation
 	func is_live(): return true
 	func last_error(): return "Target disappeared"
-	func construction_request(request):
+	func management_request(domain, request):
 		if reject: return 0
-		calls.append(request.duplicate(true))
+		calls.append({"domain": domain, "request": request.duplicate(true)})
 		return calls.size()
-	func area_request(request): return construction_request(request)
 func check(ok: bool, message: String):
 	if not ok:
 		failures += 1
@@ -25,7 +24,9 @@ func check(ok: bool, message: String):
 func _initialize(): call_deferred("run")
 func run():
 	test_queued_cancellation()
+	test_domain_routing()
 	test_transport_replacement()
+	test_new_domain_detach()
 	var world := FakeWorld.new()
 	var service := Service.new()
 	service.configure(world)
@@ -41,7 +42,8 @@ func run():
 	world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":2,"action":2,"building_id":42}
 	service.poll()
 	check(observed.is_empty() and service.result(mutation).building_id == 42, "closed mutation result retained outside view")
-	check(world.calls.size() == 2 and world.calls.back().action == 7, "next view query starts only after old receipt drained")
+	check(service.last_detached_mutation("construction").detached, "late detached receipt retains detached ownership")
+	check(world.calls.size() == 2 and world.calls.back().request.action == 7, "next view query starts only after old receipt drained")
 	service.poll(1.1)
 	check(service.result(query).outcome == "unknown" and observed.size() == 1, "timeout reports unknown exactly once")
 	var later := service.submit("construction", {"action": 0}, callback)
@@ -119,11 +121,11 @@ func test_transport_replacement():
 	var world := FakeWorld.new()
 	var service := Service.new()
 	service.configure(world)
-	var sent := service.submit("construction", {"action": 2}, Callable())
+	var sent := service.submit("production", {"action": Service.Action.ProductionQueue}, Callable())
 	service.poll()
 	service.poll(16.0)
 	check(service.result(sent).outcome == "unknown", "timeout alone keeps ownership until a definite transport loss")
-	var queued := service.submit("areas", {"action": 10}, Callable())
+	var queued := service.submit("trade", {"action": Service.Action.TradeBring}, Callable())
 	world.state = {"transport_alive": false}
 	service.poll()
 	check(service.result(sent).outcome == "unknown" and service.result(queued).outcome == "not_sent", "owner loss distinguishes uncertain sent mutation from unsent drafts")
@@ -134,12 +136,12 @@ func test_transport_replacement():
 	world.calls.clear()
 	world.state = {"transport_alive":true,"world_epoch":5,"revision":1,"status":0}
 	service.poll()
-	check(world.calls.size() == 1 and world.calls[0].action == 0, "replacement owner starts with a fresh read-only catalog")
+	check(world.calls.size() == 1 and world.calls[0].request.action == 0 and world.calls[0].domain == "construction", "replacement owner starts with a fresh read-only catalog")
 	world.state = {"transport_alive":true,"world_epoch":5,"revision":2,"request_seq":1,"status":2}
 	service.poll()
 	service.submit("areas", {"action":10}, Callable())
 	service.poll()
-	check(world.calls.size() == 2 and world.calls[1].action == 10, "fresh user intent proceeds after owner recovery")
+	check(world.calls.size() == 2 and world.calls[1].request.action == 10, "fresh user intent proceeds after owner recovery")
 	check(service.result(sent).outcome == "unknown", "new owner's matching sequence cannot resolve old mutation")
 	world.state = {"transport_alive":false}
 	service.poll()
@@ -148,5 +150,64 @@ func test_transport_replacement():
 	service.poll()
 	var before: int = world.calls.size()
 	service.poll()
-	check(world.calls.size() == before + 1 and world.calls.back().action == 0, "world replacement during outage cannot discard recovery catalog")
+	check(world.calls.size() == before + 1 and world.calls.back().request.action == 0 and world.calls.back().domain == "construction", "world replacement during outage cannot discard recovery catalog")
 	service.free()
+
+func test_domain_routing():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	var callback := func(t, r, q): observed.append([t, r, q])
+	var routes := {"construction":Service.Action.Place,"areas":Service.Action.AreaUpdate,
+		"production":Service.Action.ProductionQueue,"work_orders":Service.Action.WorkOrderCreate,
+		"citizens":Service.Action.WorkDetailMembership,"reports":Service.Action.ReportInspect,
+		"agreements":Service.Action.AgreementInspect,"trade":Service.Action.TradeBring}
+	for domain in routes:
+		var request := {"action":routes[domain],"id":123}
+		var ticket := service.submit(domain, request, callback)
+		var before := observed.size()
+		check(ticket > 0 and service.result(ticket).is_empty(), "submit returns ticket before observer")
+		service.poll()
+		check(world.calls.back() == {"domain":domain,"request":request}, "each domain dispatches original typed intent")
+		world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),"status":2,"action":routes[domain]}
+		service.poll()
+		check(observed.size() == before+1 and observed.back()[0] == ticket and observed.back()[2] == request, "each receipt reaches its own ticket once")
+		check(service.result(ticket).action == routes[domain], "retained result belongs to request")
+	for domain in ["work_orders", "trade"]:
+		var ticket := service.submit(domain, {"action":Service.Action.Catalog}, callback)
+		service.poll()
+		check(world.calls.back().domain == domain and world.calls.back().request.action == Service.Action.Catalog, "catalog routes under any runtime domain")
+		world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),"status":2,"action":Service.Action.Catalog}
+		service.poll()
+		check(service.result(ticket).status == 2 and not service._outcomes.has(ticket), "catalog remains read-only")
+	var invalid := [["areas",Service.Action.Place],["trade",Service.Action.TradeExchangeOpen],["citizens",Service.Action.CreatureInspect],["",Service.Action.CreatureInspect],
+		["trade",[]],["trade",{}],["trade","0"],["trade",0.0],["trade",null]]
+	for pair in invalid:
+		var before := observed.size()
+		var calls := world.calls.size()
+		var ticket := service.submit(pair[0], {"action":pair[1]}, callback)
+		check(ticket > 0 and observed.size() == before, "invalid intent observer waits until poll")
+		service.poll()
+		service.poll()
+		check(observed.size() == before+1 and observed.back()[0] == ticket, "invalid ticket rejected exactly once")
+		check(service.result(ticket).outcome == "not_sent" and world.calls.size() == calls, "invalid intent never reaches world")
+		check(not service._requests.has(ticket) and not service._queue.has(ticket), "invalid ticket is removed after publication")
+	service.free()
+
+func test_new_domain_detach():
+	for domain in ["production", "trade"]:
+		var action: int = Service.Action.ProductionQueue if domain == "production" else Service.Action.TradeBring
+		var world := FakeWorld.new()
+		var service := Service.new()
+		service.configure(world)
+		var observed: Array = []
+		var ticket := service.submit(domain, {"action":action}, func(t, r, q): observed.append(t))
+		service.poll()
+		service.detach(ticket)
+		world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":2,"action":action}
+		service.poll()
+		check(observed.is_empty() and service.result(ticket).status == 2, "new domain late receipt stays detached from observer")
+		check(service.last_detached_mutation(domain).detached, "new domain late receipt retains detached ownership")
+		check(world.calls.size() == 1 and world.calls[0].domain == domain, "detached new domain mutation is never replayed")
+		service.free()

@@ -19,7 +19,7 @@ class FakeWorld:
 		state["revision"] = 1
 		return state
 
-	func construction_request(r):
+	func management_request(_domain, r):
 		calls.append(r.duplicate(true))
 		return calls.size()
 

@@ -49,6 +49,14 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         return require("origin");
     case A::Inspect: case A::Remove: return require("building_id");
     case A::AreaInspect: case A::AreaUpdate: case A::AreaDelete: case A::AreaLink: return require("id");
+    case A::ProductionInspect: case A::ProductionQueue:
+    case A::ProductionJobEdit: case A::FarmSetCrop: return require("building_id");
+    case A::CitizenInspect: return require("unit_id");
+    case A::WorkDetailInspect: case A::WorkDetailMembership: case A::WorkDetailMode:
+        return require("detail_index");
+    case A::AgreementInspect: return require("id");
+    case A::TradeInspect: case A::TradeUpdate: case A::TradeGoods: case A::TradeBring:
+        return require("depot_id");
     default: return true; // other domain identities retain their typed model/schema validation
     }
 }

@@ -9,6 +9,26 @@ ROOT = Path(__file__).resolve().parents[1]
 ENUMS = ("ManagementAction", "ManagementStatus", "AreaKind", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind")
 
+DOMAINS = {
+    "construction": ("Catalog", "RemoveConstruction"),
+    "areas": ("AreaCatalog", "AreaCandidates"),
+    "production": ("ProductionList", "FarmSetCrop"),
+    "work_orders": ("WorkOrderList", "WorkOrderCatalog"),
+    "citizens": ("CitizenList", "WorkDetailMode"),
+    "reports": ("ReportList", "ReportInspect"),
+    "agreements": ("AgreementList", "AgreementInspect"),
+    "trade": ("TradeList", "TradeBring"),
+}
+RETIRED = {
+    "trade_exchange": ("TradeExchangeOpen", "TradeExchangeClose"),
+    "stocks": ("StocksOpen", "StocksClose"),
+    "appointments": ("AppointmentsOpen", "AppointmentsBack"),
+    "kitchen": ("KitchenOpen", "KitchenClose"),
+    "alert": ("Alert", "Alert"),
+    "selection": ("Selection", "Selection"),
+}
+UNROUTED = {"CreatureInspect"}
+
 def outputs():
     source = (ROOT / "schema/mirror.fbs").read_text()
     values = {}
@@ -28,12 +48,38 @@ def outputs():
         gd += "enum " + name + " {\n" + "".join(f"\t{n} = {v},\n" for n,v in rows) + "}\n"
         checks += "".join(f"static_assert(static_cast<int>(wm::{name}::{n}) == static_cast<int>(df3d::mirror::{name}::{n}));\n" for n,v in rows)
         checks += f"static_assert(sizeof(df3d::mirror::EnumValues{name}()) / sizeof(df3d::mirror::{name}) == {len(rows)});\n"
-    cpp += "} // namespace wm\n"
     # Semantic mutation policy is centralized here and emitted with named values.
     mutations=("Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmSetCrop","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","TradeUpdate","TradeBring")
-    assert set(mutations) <= {n for n,v in values["ManagementAction"]}
+    if not set(mutations) <= {n for n,v in values["ManagementAction"]}:
+        raise SystemExit("Mutation policy contains an unknown ManagementAction")
+    actions = dict(values["ManagementAction"])
+    def members(ranges):
+        return {domain: {n for n, v in actions.items() if actions[first] <= v <= actions[last]}
+                for domain, (first, last) in ranges.items()}
+    domains, retired = members(DOMAINS), members(RETIRED)
+    partitions = [*domains.values(), *retired.values(), UNROUTED]
+    if not all(sum(n in group for group in partitions) == 1 for n in actions):
+        raise SystemExit("Every ManagementAction must belong to exactly one domain, retired range, or UNROUTED")
+    if "Catalog" in mutations:
+        raise SystemExit("Catalog must not be a mutation")
+    if not all(sum(n in group for group in domains.values()) == 1 for n in mutations):
+        raise SystemExit("Every mutation must belong to exactly one runtime domain")
+    runtime = set(actions) - set().union(*retired.values())
+    cpp += "constexpr bool isRuntimeAction(ManagementAction action) {\n  switch (action) {\n"
+    cpp += "".join(f"  case ManagementAction::{n}: return true;\n" for n in actions if n in runtime)
+    cpp += "  default: return false;\n  }\n}\n"
+    cpp += "constexpr const char* managementDomain(ManagementAction action) {\n  switch (action) {\n"
+    for domain, names in domains.items():
+        cpp += "".join(f'  case ManagementAction::{n}: return "{domain}";\n' for n in actions if n in names)
+    cpp += '  default: return "";\n  }\n}\n} // namespace wm\n'
+    checks += "".join(f"static_assert(wm::isRuntimeAction(wm::ManagementAction::{n}) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::{n}));\n" for n in actions)
+    gd += "\nstatic func domain_of(action: int) -> String:\n\tmatch action:\n"
+    for domain, names in domains.items():
+        gd += "\t\t" + ", ".join("ManagementAction." + n for n in actions if n in names) + f': return "{domain}"\n'
+    gd += '\treturn ""\n'
+    gd += "\nstatic func is_runtime(action: int) -> bool:\n\treturn action in [" + ", ".join("ManagementAction." + n for n in actions if n in runtime) + "]\n"
     gd += "\nstatic func is_mutation(action: int) -> bool:\n\treturn action in [" + ", ".join("ManagementAction."+n for n in mutations) + "]\n"
 
     return {"worldmodel/include/wm/management_enums.h":cpp,
@@ -46,6 +92,6 @@ def main():
         path=ROOT/name
         if args.check:
             if not path.exists() or path.read_text()!=content: raise SystemExit(f"Stale management contract: {name}; run tools/generate_management_contract.py")
-        else: path.write_text(content)
+        else: path.write_text(content, newline="\n")
     print("MANAGEMENT_CONTRACT_GENERATION_PASS")
 if __name__=="__main__": main()

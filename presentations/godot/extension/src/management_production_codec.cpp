@@ -209,4 +209,37 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
   }
   return true;
 }
+
+bool validateProductionShape(const Dictionary& data, String& error) {
+  return managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season"}, error) &&
+      managementRequiredFields(data, error);
+}
+
+bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& error) {
+  bool valid = true;
+  auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
+    int64_t value = data.get(key, def);
+    if (value < low || value > high) valid = false;
+    return value;
+  };
+  r.action = wm::ManagementAction(n("action", 0, static_cast<int>(wm::ManagementAction::ProductionList),
+      static_cast<int>(wm::ManagementAction::FarmSetCrop)));
+  auto& value = r.production;
+  value.buildingId = int32_t(n("building_id", -1, -1, INT32_MAX));
+  value.jobId = int32_t(n("job_id", -1, -1, INT32_MAX));
+  value.cropId = int32_t(n("crop_id", -1, -1, 32767));
+  value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
+  value.repeat = int8_t(n("repeat", -1, -1, 1));
+  value.suspend = int8_t(n("suspend", -1, -1, 1));
+  value.season = int8_t(n("season", -1, -1, 3));
+  String recipe = data.get("recipe", String());
+  value.recipe = recipe.utf8().get_data();
+  if (value.recipe.size() > 128) valid = false;
+  String query = data.get("query", String());
+  value.query = query.utf8().get_data();
+  if (value.query.size() > 128) valid = false;
+  value.cancel = data.get("cancel", false);
+  if (!valid) { error = "Invalid bounded production request"; return false; }
+  return true;
+}
 }  // namespace df3d_godot::management

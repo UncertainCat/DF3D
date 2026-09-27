@@ -160,6 +160,7 @@ public:
     godot::Ref<godot::Texture2D> composite_portrait(const wm::SelectionAppearance& source);
     godot::Ref<godot::Texture2D> composite_appearance_texture(const wm::SelectionAppearance& source, bool framed);
     godot::Ref<godot::Texture2D> selection_icon(int kind,int64_t id);
+    int64_t management_request(const godot::String& domain, const godot::Dictionary& request);
     int64_t report_request(const godot::Dictionary& data);
     int64_t work_order_request(const godot::Dictionary& data);
     int64_t area_request(const godot::Dictionary& data);

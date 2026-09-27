@@ -106,7 +106,7 @@ bool readConstruction(const Dictionary& data, wm::ManagementRequest& r, String& 
   if (a < actionValue(Action::Catalog) || a > actionValue(Action::RemoveConstruction) || w < 1 ||
       w > 31 || h < 1 || h > 31 || d < 0 || d > 3 || cursor < 0 || cursor > UINT32_MAX ||
       building < -1 || building > INT32_MAX) {
-    error = "Invalid construction request";
+    error = "Invalid management request";
     return false;
   }
   r.action = wm::ManagementAction(a);

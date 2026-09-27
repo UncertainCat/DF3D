@@ -3,6 +3,7 @@
 #include <godot_cpp/variant/vector3i.hpp>
 
 #include "management_codecs.h"
+#include "management_dictionary.h"
 
 namespace df3d_godot::management {
 using namespace godot;
@@ -74,4 +75,32 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
   result["citizen"] = citizen;
 }
 
+
+bool validateCitizenShape(const Dictionary& data, String& error) {
+  return managementDictionaryTypes(data, {"unit_id", "detail_index", "expected_revision", "cursor", "member", "mode"}, error) &&
+      managementRequiredFields(data, error);
+}
+
+bool readCitizen(const Dictionary& data, wm::ManagementRequest& r, String& error) {
+  bool valid = true;
+  auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
+    int64_t value = data.get(key, def);
+    if (value < low || value > high) valid = false;
+    return value;
+  };
+  r.action = wm::ManagementAction(n("action", 0, static_cast<int>(wm::ManagementAction::CitizenList),
+      static_cast<int>(wm::ManagementAction::WorkDetailMode)));
+  auto& value = r.citizen;
+  value.unitId = int32_t(n("unit_id", -1, -1, INT32_MAX));
+  value.detailIndex = int32_t(n("detail_index", -1, -1, 127));
+  value.expectedRevision = uint64_t(n("expected_revision", 0, 0, INT64_MAX));
+  value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
+  value.member = int8_t(n("member", -1, -1, 1));
+  value.mode = int8_t(n("mode", -1, -1, 3));
+  String query = data.get("query", String());
+  value.query = query.utf8().get_data();
+  if (value.query.size() > 128) valid = false;
+  if (!valid) { error = "Invalid bounded citizen request"; return false; }
+  return true;
+}
 }  // namespace df3d_godot::management

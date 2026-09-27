@@ -32,7 +32,7 @@ class FakeWorld:
 	func last_error():
 		return "test unavailable"
 
-	func construction_request(data):
+	func management_request(_domain, data):
 		return area_request(data)
 
 	func area_request(data):

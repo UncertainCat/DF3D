@@ -107,35 +107,55 @@ Dictionary Df3dWorld::poll_management() {
     return result;
 }
 
-int64_t Df3dWorld::report_request(const Dictionary& data) {
-    if (!management::validateReportShape(data, lastError_)) return 0;
-    if(!managementClient_){lastError_="Management bridge unavailable";return 0;}
-    wm::ManagementRequest r;
-    if (!management::readReport(data, r, lastError_)) return 0;
-    auto seq=managementClient_->send(r);if(!seq)lastError_=String::utf8(managementClient_->lastError().c_str());return int64_t(seq);
+namespace {
+struct ManagementCodec {
+    const char* domain;
+    bool (*validate)(const Dictionary&, String&);
+    bool (*read)(const Dictionary&, wm::ManagementRequest&, String&);
+};
+const ManagementCodec managementCodecs[] = {
+    {"construction", management::validateConstructionShape, management::readConstruction},
+    {"areas", management::validateAreaShape, management::readArea},
+    {"production", management::validateProductionShape, management::readProduction},
+    {"work_orders", management::validateWorkOrderShape, management::readWorkOrder},
+    {"citizens", management::validateCitizenShape, management::readCitizen},
+    {"reports", management::validateReportShape, management::readReport},
+    {"agreements", management::validateAgreementShape, management::readAgreement},
+    {"trade", management::validateTradeShape, management::readTrade},
+};
 }
 
-int64_t Df3dWorld::work_order_request(const Dictionary& data) {
-    if (!management::validateWorkOrderShape(data, lastError_)) return 0;
-    if(!managementClient_){lastError_="Management bridge unavailable";return 0;}
-    wm::ManagementRequest r;
-    if (!management::readWorkOrder(data, r, lastError_)) return 0;
-    auto seq=managementClient_->send(r);if(!seq)lastError_=String::utf8(managementClient_->lastError().c_str());return int64_t(seq);
+int64_t Df3dWorld::management_request(const String& domain, const Dictionary& data) {
+    const ManagementCodec* codec = nullptr;
+    for (const auto& entry : managementCodecs) if (domain == entry.domain) { codec = &entry; break; }
+    if (!codec) { lastError_ = "Unknown management domain"; return 0; }
+    if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
+    if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
+    const int64_t raw = data["action"];
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureInspect)) {
+        lastError_ = "Invalid management action"; return 0;
+    }
+    const auto action = static_cast<wm::ManagementAction>(raw);
+    if (action != wm::ManagementAction::Catalog && domain != wm::managementDomain(action)) {
+        lastError_ = "Management action does not match domain"; return 0;
+    }
+    // Defence in depth: retired actions currently fail the domain check above.
+    if (!wm::isRuntimeAction(action)) { lastError_ = "Retired management action"; return 0; }
+    if (action == wm::ManagementAction::Catalog) codec = &managementCodecs[0];
+    if (!codec->validate(data, lastError_)) return 0;
+    if (!managementClient_) { lastError_ = "Management bridge unavailable"; return 0; }
+    wm::ManagementRequest request;
+    if (!codec->read(data, request, lastError_)) return 0;
+    const auto sequence = managementClient_->send(request);
+    if (!sequence) lastError_ = String::utf8(managementClient_->lastError().c_str());
+    else lastError_ = String();
+    return int64_t(sequence);
 }
-int64_t Df3dWorld::area_request(const Dictionary& data) {
-    if (!management::validateAreaShape(data, lastError_)) return 0;
-    if(!managementClient_){lastError_="Management bridge unavailable";return 0;}
-    wm::ManagementRequest r;
-    if (!management::readArea(data, r, lastError_)) return 0;
-    auto seq=managementClient_->send(r);if(!seq)lastError_=String::utf8(managementClient_->lastError().c_str());return int64_t(seq);
-}
-int64_t Df3dWorld::construction_request(const Dictionary& data) {
-    if (!management::validateConstructionShape(data, lastError_)) return 0;
-    if(!managementClient_){lastError_="Construction bridge unavailable";return 0;}
-    wm::ManagementRequest r;
-    if (!management::readConstruction(data, r, lastError_)) return 0;
-    auto seq=managementClient_->send(r);if(!seq)lastError_=String::utf8(managementClient_->lastError().c_str());return int64_t(seq);
-}
+
+int64_t Df3dWorld::construction_request(const Dictionary& data) { return management_request("construction", data); }
+int64_t Df3dWorld::area_request(const Dictionary& data) { return management_request("areas", data); }
+int64_t Df3dWorld::report_request(const Dictionary& data) { return management_request("reports", data); }
+int64_t Df3dWorld::work_order_request(const Dictionary& data) { return management_request("work_orders", data); }
 int64_t Df3dWorld::save_fortress(bool return_to_menu, const String& checkpoint_name) {
     if (!sessionClient_) { lastError_ = "DF session is unavailable"; return 0; }
     const auto seq = sessionClient_->sendSave(return_to_menu, checkpoint_name.utf8().get_data());

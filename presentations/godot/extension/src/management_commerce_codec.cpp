@@ -3,6 +3,7 @@
 #include <godot_cpp/variant/vector3i.hpp>
 
 #include "management_codecs.h"
+#include "management_dictionary.h"
 
 namespace df3d_godot::management {
 using namespace godot;
@@ -106,4 +107,60 @@ void writeTrade(Dictionary& result, const wm::TradeState& s) {
   result["trade"] = trade;
 }
 
+
+bool validateAgreementShape(const Dictionary& data, String& error) {
+  return managementDictionaryTypes(data, {"id", "before_id"}, error) &&
+      managementRequiredFields(data, error);
+}
+
+bool readAgreement(const Dictionary& data, wm::ManagementRequest& r, String& error) {
+  bool valid = true;
+  auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
+    int64_t value = data.get(key, def);
+    if (value < low || value > high) valid = false;
+    return value;
+  };
+  r.action = wm::ManagementAction(n("action", 0, static_cast<int>(wm::ManagementAction::AgreementList),
+      static_cast<int>(wm::ManagementAction::AgreementInspect)));
+  auto& value = r.agreement;
+  value.id = int32_t(n("id", -1, -1, INT32_MAX));
+  value.beforeId = int32_t(n("before_id", -1, -1, INT32_MAX));
+  String query = data.get("query", String());
+  value.query = query.utf8().get_data();
+  if (value.query.size() > 128) valid = false;
+  value.pendingOnly = data.get("pending_only", false);
+  if (!valid) { error = "Invalid bounded agreement request"; return false; }
+  return true;
+}
+
+bool validateTradeShape(const Dictionary& data, String& error) {
+  return managementDictionaryTypes(data, {"depot_id", "item_id", "expected_revision", "requested", "anyone", "cursor", "receipt", "side", "selected"}, error) &&
+      managementRequiredFields(data, error);
+}
+
+bool readTrade(const Dictionary& data, wm::ManagementRequest& r, String& error) {
+  bool valid = true;
+  auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
+    int64_t value = data.get(key, def);
+    if (value < low || value > high) valid = false;
+    return value;
+  };
+  r.action = wm::ManagementAction(n("action", 0, static_cast<int>(wm::ManagementAction::TradeList),
+      static_cast<int>(wm::ManagementAction::TradeBring)));
+  auto& value = r.trade;
+  value.depotId = int32_t(n("depot_id", -1, -1, INT32_MAX));
+  value.itemId = int32_t(n("item_id", -1, -1, INT32_MAX));
+  value.expectedRevision = uint64_t(n("expected_revision", 0, 0, INT64_MAX));
+  value.requested = int8_t(n("requested", -1, -1, 1));
+  value.anyone = int8_t(n("anyone", -1, -1, 1));
+  value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
+  value.receipt = uint64_t(n("receipt", 0, 0, INT64_MAX));
+  value.side = uint8_t(n("side", 0, 0, 1));
+  value.selected = int8_t(n("selected", -1, -1, 1));
+  String query = data.get("query", String());
+  value.query = query.utf8().get_data();
+  if (value.query.size() > 128) valid = false;
+  if (!valid) { error = "Invalid bounded trade request"; return false; }
+  return true;
+}
 }  // namespace df3d_godot::management

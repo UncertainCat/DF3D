@@ -88,7 +88,7 @@ TEST_CASE("every retired management action is refused before and after catalog c
 }
 TEST_CASE("management claims catalog before mutations and preserves pending ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
-  wm::ManagementRequest place;place.action=wm::ManagementAction::Place;place.definition="Chair";place.selections={{0,-1,-1,-1,-1,1}};place.expectedListRevision=42;
+  wm::ManagementRequest place;place.action=wm::ManagementAction::Place;place.definition="Chair";place.selections={{0,-1,-1,-1,-1,1,42}};
   CHECK(c->send(place)==0);
   CHECK(c->lastError()=="Refresh the management catalog first");
   auto seq=c->send({}); REQUIRE(seq>0);auto* r=p.pop();const auto id=r->client_id();CHECK(r->seq()==seq);
@@ -97,7 +97,7 @@ TEST_CASE("management claims catalog before mutations and preserves pending owne
   p.publish(2,id,seq-1);REQUIRE(c->poll());CHECK(c->state().status==wm::ManagementStatus::Pending);
   CHECK(c->send(place)==0);
   p.publish(3,id,seq);REQUIRE(c->poll());CHECK(c->state().catalog.size()==1);
-  auto next=c->send(place);REQUIRE(next>seq);r=p.pop();CHECK(r->world_epoch()==7);CHECK(r->selections()->Get(0)->count()==1);CHECK(r->expected_list_revision()==42);
+  auto next=c->send(place);REQUIRE(next>seq);r=p.pop();CHECK(r->world_epoch()==7);CHECK(r->selections()->Get(0)->count()==1);CHECK(r->selections()->Get(0)->expected_list_revision()==42);
   p.publish(4,id,next,7,mm::ManagementAction::Place,mm::ManagementStatus::Rejected);
   REQUIRE(c->poll());CHECK(c->state().status==wm::ManagementStatus::Rejected);
   CHECK(c->send(place)>next);

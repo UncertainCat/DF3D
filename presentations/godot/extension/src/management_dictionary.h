@@ -37,7 +37,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
         for(int i=0;i<rows.size();++i) {
             if(rows[i].get_type()!=Variant::DICTIONARY){error="Construction selection must be a dictionary";return false;}
             godot::Dictionary row=rows[i];
-            for(const char* key:{"filter","item_type","item_subtype","mat_type","mat_index","count"})
+            for(const char* key:{"filter","item_type","item_subtype","mat_type","mat_index","count","expected_list_revision"})
                 if(row.has(key) && row[key].get_type()!=Variant::INT){error=godot::String("Wrong construction selection field type: ")+key;return false;}
         }
     }

@@ -212,6 +212,7 @@ struct WorkOrderState {
 };
 struct ConstructionSelection {
   int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=0;
+  int64_t expectedListRevision=-1;
 };
 struct ConstructionFilter {
   int16_t index=-1,itemType=-1,itemSubtype=-1; std::string caption,requirement; int32_t quantity=-1;

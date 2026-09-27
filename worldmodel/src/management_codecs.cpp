@@ -84,7 +84,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     report = encodeReport(b, r.report);
   }
   std::vector<flatbuffers::Offset<m::ConstructionSelection>> selections;
-  for(const auto& v:r.selections)selections.push_back(m::CreateConstructionSelection(b,v.filter,v.itemType,v.itemSubtype,v.matType,v.matIndex,v.count));
+  for(const auto& v:r.selections)selections.push_back(m::CreateConstructionSelection(b,v.filter,v.itemType,v.itemSubtype,v.matType,v.matIndex,v.count,v.expectedListRevision));
   auto request = m::CreateConstructionRequest(
       b, m::kManagementVersion, clientId, sequence, worldEpoch, m::ManagementAction(r.action),
       b.CreateString(r.definition), &p, r.width, r.height, r.direction, b.CreateVector(r.items),

@@ -1440,6 +1440,7 @@ table WorkOrderTask { key:string; name:string; job_type:int16 = -1; reaction:str
 table ConstructionSelection {
   filter:int16 = -1; item_type:int16 = -1; item_subtype:int16 = -1;
   mat_type:int16 = -1; mat_index:int32 = -1; count:uint32;
+  expected_list_revision:int64 = -1;
 }
 table ConstructionFilter {
   index:int16 = -1; item_type:int16 = -1; item_subtype:int16 = -1;

@@ -55,6 +55,14 @@ func run() -> void:
 	for request in [{"action":A.AreaUpdate},{"action":A.AreaUpdate,"id":1,"owner_id":"-2"},
 		{"action":A.AreaCreate},{"action":A.AreaLink,"id":1,"give":1}]:
 		assert(world.area_request(request)==0)
+	for bad_revision in ["1", 1.0, true]:
+		assert(world.construction_request({"action":A.Place,"definition":"Chair",
+			"origin":Vector3i(1,2,3),"selections":[{"filter":0,"count":1,
+			"expected_list_revision":bad_revision}]})==0)
+		assert(str(world.last_error())=="Wrong construction selection field type: expected_list_revision")
+	assert(world.construction_request({"action":A.Place,"definition":"Chair",
+		"origin":Vector3i(1,2,3),"selections":[{"filter":0,"count":1,"expected_list_revision":-2}]})==0)
+	assert(str(world.last_error())=="Invalid construction selection")
 	var sequence: int = world.construction_request({"action":A.Catalog})
 	assert(sequence>0)
 	state = await receipt(sequence)
@@ -69,7 +77,7 @@ func run() -> void:
 	assert(state.areas[0].id==2147483000 and state.areas[0].owner_id==-1)
 	assert(state.areas[0].origin==Vector3i(11,12,13))
 	sequence = world.construction_request({"action":A.Place,"definition":"Chair",
-		"origin":Vector3i(11,12,13),"selections":[{"filter":0,"count":1}],"expected_list_revision":2147483001})
+		"origin":Vector3i(11,12,13),"selections":[{"filter":0,"count":1,"expected_list_revision":9223372036854775807}]})
 	assert(sequence>0)
 	state = await receipt(sequence)
 	assert(not state.is_empty() and state.action==A.Place)

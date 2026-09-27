@@ -133,7 +133,7 @@ bool readConstruction(const Dictionary& data, wm::ManagementRequest& r, String& 
   for(int i=0;i<selections.size();++i) {
     Dictionary row=selections[i];bool valid=true;
     auto n=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=row.get(key,def);if(v<low || v>high)valid=false;return v;};
-    wm::ConstructionSelection v;v.filter=int16_t(n("filter",-1,0,7));v.itemType=int16_t(n("item_type",-1,-1,INT16_MAX));v.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));v.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));v.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));v.count=uint32_t(n("count",0,1,UINT32_MAX));
+    wm::ConstructionSelection v;v.filter=int16_t(n("filter",-1,0,7));v.itemType=int16_t(n("item_type",-1,-1,INT16_MAX));v.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));v.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));v.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));v.count=uint32_t(n("count",0,1,UINT32_MAX));v.expectedListRevision=n("expected_list_revision",-1,-1,INT64_MAX);
     if(!valid){error="Invalid construction selection";return false;}r.selections.push_back(v);
   }
   r.action = wm::ManagementAction(a);

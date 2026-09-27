@@ -389,7 +389,7 @@ void run(color_ostream& out) {
   lua_newtable(L);
   if(r->selections()) { int index=0;for(const auto* v:*r->selections()) {
     lua_newtable(L);field(L,"filter",v->filter());field(L,"item_type",v->item_type());field(L,"item_subtype",v->item_subtype());
-    field(L,"mat_type",v->mat_type());field(L,"mat_index",v->mat_index());field(L,"count",v->count());lua_rawseti(L,-2,++index);
+    field(L,"mat_type",v->mat_type());field(L,"mat_index",v->mat_index());field(L,"count",v->count());field(L,"expected_list_revision",v->expected_list_revision());lua_rawseti(L,-2,++index);
   }}
   lua_setfield(L,-2,"selections");
   field(L, "cursor", cursor);

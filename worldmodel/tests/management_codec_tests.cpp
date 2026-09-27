@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "management_codecs.h"
+#include "management_util.h"
 
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
@@ -420,4 +421,29 @@ TEST_CASE("work-order default catalog identities and per-condition trait boundar
     CHECK(decoded.groups[0].type==-1);CHECK(decoded.groups[0].subtype==-1);CHECK(decoded.groups[0].custom==-1);CHECK(decoded.groups[0].count==0);
     const auto& t=decoded.tasks[0];CHECK(t.jobType==-1);CHECK(t.itemType==-1);CHECK(t.itemSubtype==-1);CHECK(t.matType==-1);CHECK(t.matIndex==-1);
   }
+}
+
+TEST_CASE("construction selection revisions are optional signed int64 values per entry") {
+  wm::ManagementRequest request;
+  request.action=wm::ManagementAction::Place;request.definition="Chair";
+  request.selections={{0,-1,-1,-1,-1,1},{1,-1,-1,-1,-1,1,42}};
+  for (int64_t revision : {int64_t(-2),int64_t(-1),int64_t(0),int64_t(1),int64_t(INT64_MAX)}) {
+    request.selections[0].expectedListRevision=revision;
+    flatbuffers::FlatBufferBuilder builder;
+    codec::encodeRequest(builder,request,1,2,3);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(builder.GetBufferPointer());
+    CHECK(encoded->expected_list_revision()==0);
+    CHECK(encoded->selections()->Get(0)->expected_list_revision()==revision);
+    CHECK(encoded->selections()->Get(1)->expected_list_revision()==42);
+    auto error=wire::validateConstructionRequest(*encoded);
+    if(revision < -1) { REQUIRE(error);CHECK(*error=="invalid construction selection list revision"); }
+    else CHECK_FALSE(error);
+  }
+  // The appended field is absent in an older selection buffer.
+  flatbuffers::FlatBufferBuilder builder;
+  builder.Finish(wire::CreateConstructionSelection(builder,0,-1,-1,-1,-1,1));
+  CHECK(flatbuffers::GetRoot<wire::ConstructionSelection>(builder.GetBufferPointer())->expected_list_revision()==-1);
+  request.selections.clear();
+  builder.Clear();codec::encodeRequest(builder,request,1,2,3);
+  CHECK_FALSE(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(builder.GetBufferPointer())));
 }

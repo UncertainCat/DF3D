@@ -210,9 +210,9 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if (r.selections() && r.selections()->size()) {
     if (r.selections()->size() > 16) return "too many construction selections";
     if (r.action() != ManagementAction::Place) return "unexpected construction selections";
-    if (!r.expected_list_revision()) return "construction list revision required";
     std::set<std::tuple<int16_t,int16_t,int16_t,int16_t,int32_t>> keys;
     for (const auto* v : *r.selections()) {
+      if (v && v->expected_list_revision() < -1) return "invalid construction selection list revision";
       if (!v || v->filter() < 0 || v->filter() > 7 || !v->count() ||
           v->item_type() < -1 || v->item_subtype() < -1 || v->mat_type() < -1 || v->mat_index() < -1 ||
           !keys.emplace(v->filter(),v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()).second)

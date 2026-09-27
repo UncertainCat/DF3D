@@ -388,18 +388,27 @@ local function placement(r,d)
         local sums={};for _,s in ipairs(r.selections or {}) do sums[s.filter]=(sums[s.filter] or 0)+s.count end
         for _,f in ipairs(o.filters) do if (sums[f.index] or 0)~=f.quantity then return reply('Selections do not cover the recipe',false,false) end;sums[f.index]=nil end
         if next(sums) then return reply('Selections do not cover the recipe',false,false) end
+        -- Validate every selection before reserving any ids or dirtying any entry.
+        -- Pin each filter's snapshot for the entire pending Place operation.
+        for _,s in ipairs(r.selections or {}) do
+            local e=o.entries[s.filter+1]
+            if not e then
+                local sig=signature(o.raw[s.filter+1])
+                for _,v in ipairs(cache) do if v.epoch==r.epoch and v.signature==sig then e=v;break end end
+                if e and e.rows then
+                    e={rows=e.rows,by_key=e.by_key,groups=e.groups,revision=e.revision,owner=e}
+                    o.entries[s.filter+1]=e
+                end
+            end
+            if not e or not e.rows or e.revision~=s.expected_list_revision then
+                local out=reply('List changed; refresh',false,false);out.filter=s.filter;return out
+            end
+        end
         o.phase='reserve'
     end
     local selections=r.selections or {}
     while o.phase=='reserve' and o.selection<=#selections and steps<budget do
         local s=selections[o.selection];local e=o.entries[s.filter+1]
-        if not e then
-            local sig=signature(o.raw[s.filter+1])
-            for _,v in ipairs(cache) do if v.epoch==r.epoch and v.signature==sig then e=v;break end end
-            if not e or not e.rows or e.revision~=r.expected_list_revision then return reply('List changed; refresh materials',false,false) end
-            e={rows=e.rows,by_key=e.by_key,groups=e.groups,revision=e.revision,owner=e}
-            o.entries[s.filter+1]=e
-        end
         if not o.group then o.group=e.by_key[key(s)];o.taken=0;o.scan=1 end
         if not o.group or o.scan>#o.group.ids then return reply('Selected material no longer available; refresh materials',false,false) end
         local id=o.group.ids[o.scan];o.scan=o.scan+1;steps=steps+1

@@ -160,8 +160,6 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(c->expected_list_revision()>INT64_MAX) return "invalid work detail list revision";
     if(c->expected_list_revision() && r.action()!=ManagementAction::WorkDetailList)
       return "unexpected work detail list revision";
-    if(r.action()==ManagementAction::WorkDetailList && c->cursor()>0 && !c->expected_list_revision())
-      return "work detail list revision required";
   } else if(r.citizen()) return "unexpected citizen payload";
   if(r.action()>=ManagementAction::ReportList && r.action()<=ManagementAction::ReportInspect) {
     const auto* p=r.report();
@@ -550,6 +548,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     std::set<int32_t> ids;
     if(c->citizens())for(const auto* v:*c->citizens()) {
       if(!v || v->id()<0 || !ids.insert(v->id()).second || v->age() < -1 || v->age()>1000000 || !v->origin() || v->origin()->x()<0 || v->origin()->y()<0 || v->origin()->z()<0 || !textOk(v->name(),512) || !textOk(v->profession(),512) || !textOk(v->job(),512) || !textOk(v->reason(),512) || !laborsOk(v->labors()) || !namesOk(v->labor_names(),v->labors()) || (v->roles() && v->roles()->size()>32) || (v->offices() && v->offices()->size()>64))return "invalid citizen row";
+      // detail_skill is int16 on the wire, so its upper bound is already INT16_MAX.
       if(v->revision()>INT64_MAX || v->detail_member()< -1 || v->detail_member()>1 ||
          v->detail_skill()< -1 || v->detail_skill_rating()< -1 || v->detail_skill_rating()>20 ||
          v->portrait_state()>3 || (v->detail_skill_name() && v->detail_skill_name()->size()>128) ||

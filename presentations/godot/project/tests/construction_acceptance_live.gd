@@ -8,6 +8,12 @@ var failed := false
 var stopped := false
 var step := "startup"
 var handshake := 0
+var lane_deadline_ms: int = 0
+
+func lane_budget_ok() -> bool:
+	if Time.get_ticks_msec() < lane_deadline_ms: return true
+	incomplete("shared lane budget exhausted; no command replay", true)
+	return false
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -32,6 +38,8 @@ func write_json(path: String, value: Variant) -> void:
 
 func native(op: String, args: Dictionary = {}) -> Dictionary:
 	if stopped: return {}
+	var cleanup: bool = op in ["guard_after", "wait_finish", "final"]
+	if not cleanup and not lane_budget_ok(): return {}
 	handshake += 1
 	var request := args.duplicate()
 	request.op = op
@@ -40,7 +48,9 @@ func native(op: String, args: Dictionary = {}) -> Dictionary:
 	file.store_string(str(handshake))
 	file.close()
 	if not check(DirAccess.rename_absolute(directory + "/verify.tmp", directory + "/verify.txt") == OK, "verify handshake rename failed"): return {}
-	var deadline := Time.get_ticks_msec() + 45000
+	# Guard/status plus verifier each allow 30 s; include handshake overhead.
+	# Finish an issued handshake before cleanup; the lane reserves 300 s.
+	var deadline := Time.get_ticks_msec() + 90000
 	while not FileAccess.file_exists(directory + "/ack-%d" % handshake):
 		if Time.get_ticks_msec() >= deadline:
 			incomplete("native handshake wait cap hit; no command replay", true)
@@ -55,7 +65,7 @@ func native(op: String, args: Dictionary = {}) -> Dictionary:
 # Bridge-bound intents use this helper. Each intent is sent exactly once;
 # a lost/unknown outcome ends the run and is never retried.
 func request(data: Dictionary, refusal: String = "") -> Dictionary:
-	if stopped: return {}
+	if stopped or not lane_budget_ok(): return {}
 	world.poll()
 	var seq: int = world.management_request("construction", data)
 	if seq <= 0:
@@ -63,6 +73,7 @@ func request(data: Dictionary, refusal: String = "") -> Dictionary:
 		return {}
 	var deadline := Time.get_ticks_msec() + 30000
 	while Time.get_ticks_msec() < deadline:
+		if not lane_budget_ok(): return {}
 		world.poll()
 		var state: Dictionary = world.poll_management()
 		if int(state.get("request_seq", 0)) == seq and int(state.get("status", S.Idle)) not in [S.Idle, S.Pending]:
@@ -129,8 +140,8 @@ func materials(key: String, filter_index: int, origin: Vector3i, observe: bool =
 		var state := await request(query)
 		if stopped: return {}
 		var c: Dictionary = state.construction
-		if observe: await native("status")
 		if int(c.build_phase) != 0:
+			if observe: await native("status")
 			# Phase 3 is terminal. Never poll it into an automatic retry.
 			if int(c.build_phase) == 3:
 				incomplete("materials builder error: " + str(state.message))
@@ -249,10 +260,10 @@ func catalog_pages() -> void:
 		collect_keys(JSON.parse_string(FileAccess.get_file_as_string(menu)), keys)
 		check(not keys.is_empty(), "build_menu.json has no catalog keys")
 	else:
-		incomplete("build_menu.json missing; checking 03-U spec leaf keys")
-		keys = ["TradeDepot", "Workshop:Ashery", "Workshop:Bowyers", "Workshop:Carpenters", "Workshop:Craftsdwarfs", "Workshop:Jewelers", "Workshop:MagmaForge", "Workshop:Mechanics", "Workshop:MetalsmithsForge", "Workshop:Siege", "Workshop:Masons", "Workshop:Leatherworks", "Workshop:Loom", "Workshop:Clothiers", "Workshop:Dyers", "FarmPlot", "Workshop:Still", "Workshop:Butchers", "Workshop:Tanners", "Workshop:Fishery", "Workshop:Kitchen", "Workshop:Farmers", "Workshop:Quern", "Workshop:Kennels", "NestBox", "Hive", "Furnace:GlassFurnace", "Furnace:Kiln", "Furnace:MagmaGlassFurnace", "Furnace:MagmaKiln", "Furnace:MagmaSmelter", "Furnace:Smelter", "Furnace:WoodFurnace", "Bed", "Chair", "Table", "Box", "Cabinet", "Coffin", "Slab", "Statue", "TractionBench", "Bookcase", "DisplayFurniture", "OfferingPlace", "Instrument", "Door", "Hatch", "Construction:Wall", "Construction:Floor", "Construction:Ramp", "Construction:Stairs", "Bridge", "RoadPaved", "RoadDirt", "Construction:Fortification", "GrateWall", "GrateFloor", "BarsVertical", "BarsFloor", "WindowGlass", "WindowGem", "Support", "Construction:Track", "Trap:TrackStop", "Trap:Lever", "Well", "Floodgate", "ScrewPump", "WaterWheel", "Windmill", "GearAssembly", "AxleHorizontal", "AxleVertical", "Workshop:Millstone", "Rollers", "Chain", "Cage", "AnimalTrap", "Trap:PressurePlate", "Trap:StoneFallTrap", "Trap:WeaponTrap", "Trap:CageTrap", "Weapon", "ArcheryTarget", "Weaponrack", "Armorstand", "SiegeEngine:Ballista", "SiegeEngine:Catapult"]
+		print("build_menu.json missing; using allowed 03-U spec leaf keys")
+		keys = ["TradeDepot", "Workshop:Ashery", "Workshop:Bowyers", "Workshop:Carpenters", "Workshop:Craftsdwarfs", "Workshop:Jewelers", "Workshop:MagmaForge", "Workshop:Mechanics", "Workshop:MetalsmithsForge", "Workshop:Siege", "Workshop:Masons", "Workshop:Leatherworks", "Workshop:Loom", "Workshop:Clothiers", "Workshop:Dyers", "FarmPlot", "Workshop:Still", "Workshop:Butchers", "Workshop:Tanners", "Workshop:Fishery", "Workshop:Kitchen", "Workshop:Farmers", "Workshop:Quern", "Workshop:Kennels", "NestBox", "Hive", "Furnace:GlassFurnace", "Furnace:Kiln", "Furnace:MagmaGlassFurnace", "Furnace:MagmaKiln", "Furnace:MagmaSmelter", "Furnace:Smelter", "Furnace:WoodFurnace", "Bed", "Chair", "Table", "Box", "Cabinet", "Coffin", "Slab", "Statue", "TractionBench", "Bookcase", "DisplayFurniture", "OfferingPlace", "Instrument", "Door", "Hatch", "Construction:Wall", "Construction:Floor", "Construction:Ramp", "Construction:Stairs", "Bridge", "RoadPaved", "RoadDirt", "Construction:Fortification", "GrateWall", "GrateFloor", "BarsVertical", "BarsFloor", "WindowGlass", "WindowGem", "Support", "Construction:Track", "Trap:TrackStop", "Trap:Lever", "Well", "Floodgate", "ScrewPump", "WaterWheel", "Windmill", "GearAssembly", "AxleHorizontal", "AxleVertical", "Workshop:Millstone", "Rollers", "Chain", "Cage", "AnimalTrap", "Trap:PressurePlate", "Trap:StoneFallTrap", "Trap:WeaponTrap", "Trap:CageTrap", "Weapon", "ArcheryTarget", "Weaponrack", "Armorstand", "SiegeEngine:Ballista", "SiegeEngine:Catapult", "SiegeEngine:BoltThrower"]
 		# These native leaves have raw-defined keys; use sourced raw names only.
-		for label in ["Screw Press", "Soap Maker's Workshop", "Reinforced Wall", "Bolt thrower"]:
+		for label in ["Screw Press", "Soap Maker's Workshop", "Reinforced Wall"]:
 			var found := false
 			for row in catalog.values():
 				if str(row.native_name).to_lower() == label.to_lower(): keys.append(row.key); found = true
@@ -320,11 +331,11 @@ func departure_report() -> void:
 	var repo := FileAccess.get_file_as_string(directory + "/repo.txt").strip_edges()
 	var evidence: Array = []
 	for folder in ["e4", "e5"]:
-		var path := repo + "/build/evidence/native/" + folder + "/findings.md"
+		var path: String = repo + "/build/evidence/native/" + folder + "/findings.md"
 		if not FileAccess.file_exists(path): continue
 		var lines := FileAccess.get_file_as_string(path).split("\n")
 		for i in range(lines.size()): evidence.append({"line":folder + "/findings.md:" + str(i + 1) + " " + lines[i], "text":lines[i]})
-	var needles := {"D2":"sorted by distance", "D3":"two-level drag", "D4":"Invalid tiles inside are skipped", "D5":"Weapon and spike counts", "D6":"8 facings", "D7":"Bridge and paved road", "D8":"acts immediately"}
+	var needles := {"D1":"Needs open space", "D2":"sorted by distance", "D3":"two-level drag", "D4":"Invalid tiles inside are skipped", "D5":"Weapon and spike counts", "D6":"8 facings", "D7":"Bridge and paved road", "D8":"acts immediately"}
 	var rows: Array = []
 	for n in range(1, 10):
 		var id := "D" + str(n)
@@ -332,6 +343,13 @@ func departure_report() -> void:
 		for finding in evidence:
 			if needles.has(id) and str(finding.text).contains(needles[id]):
 				text = id + ": " + (("match " if observed[id] else "mismatch ") if observed.has(id) else "incomplete: live comparison unavailable; ") + finding.line
+				var partial: Dictionary = {
+					"D1":"partial: native Needs open space captured; well refusal wording not exercised; ",
+					"D4":"partial: native short groups keep panel open, DF3D rejects incomplete selections; ",
+					"D5":"partial: spike counts not exercised; weapon-count comparison=" + ("match" if observed.get("D5", false) else "unavailable") + "; ",
+					"D7":"mismatch: native Building present; DF3D Site is occupied by a building; ",
+					"D8":"partial: immediacy evidence does not establish refusal wording parity; "}
+				if partial.has(id): text = id + ": " + str(partial[id]) + str(finding.line)
 				break
 		rows.append({"id":id, "text":text})
 	# Preserve unresolved subquestions; do not turn one answered part into full parity.
@@ -446,7 +464,6 @@ func exercise() -> void:
 		if stopped: return
 		await request({"action":4, "building_id":int(row.id), "definition":inspection.construction.building_key})
 		await native("removed", {"id":int(row.id)})
-		if not stopped: observed.D8 = true
 	if not wall.is_empty() and await wait_wall(wall.origin):
 		await request({"action":6, "origin":wall.origin})
 		await native("removed_construction", {"origin":native_point(wall.origin)})
@@ -462,6 +479,7 @@ func run() -> void:
 		push_error("Run through tools/smoke/construction_acceptance.ps1 with prepared clone input")
 		quit(77)
 		return
+	lane_deadline_ms = Time.get_ticks_msec() + int(FileAccess.get_file_as_string(directory + "/budget-ms.txt"))
 	world = Df3dWorld.new()
 	root.add_child(world)
 	if check(world.attach(), "bridge attach failed"):

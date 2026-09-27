@@ -36,9 +36,9 @@ for _,kind in ipairs(kinds) do
   for _=1,(kind=='BIN' and 1 or 24) do
    local ok,created=pcall(dfhack.items.createItem,unit,seed:getType(),seed:getSubtype(),seed:getMaterial(),seed:getMaterialIndex())
    if not ok or type(created)~='table' then missing(kind,'item creation unavailable');break end
-   for _,id in ipairs(created) do
-    local item=df.item.find(id)
-    if item and dfhack.items.moveToGround(item,unit.pos) then item.flags.forbid=false;ids[#ids+1]=id end
+   -- DFHack Lua API.rst:2250; LuaApi.cpp:2617-2619 returns df::item* objects.
+   for _,item in ipairs(created) do
+    if item and dfhack.items.moveToGround(item,unit.pos) then item.flags.forbid=false;ids[#ids+1]=item.id end
    end
   end
  else missing(kind,'no material/subtype seed for item creation') end
@@ -126,7 +126,9 @@ end
 for _,b in ipairs(df.global.world.buildings.all) do
  if b:getType()~=df.building_type.Stockpile and b:getType()~=df.building_type.Civzone and b.z==unit.pos.z then
   local p={x=b.x1-1,y=b.y1,z=b.z}
-  if floor(p) and floor{x=b.x2+1,y=b.y1,z=b.z} and b.x2-b.x1<29 then
+  if not used[p.x..':'..p.y] and not used[(b.x2+1)..':'..p.y]
+   and floor(p) and floor{x=b.x2+1,y=b.y1,z=b.z} and b.x2-b.x1<29 then
+   for x=p.x,b.x2+1 do used[x..':'..p.y]=true end
    state.obstacle={x=p.x,y=p.y,z=p.z,width=b.x2-b.x1+3,id=b.id};break
   end
  end

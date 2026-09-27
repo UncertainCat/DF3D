@@ -79,6 +79,8 @@ try {
  }
  $env:DF3D_CONSTRUCTION_ACCEPTANCE=$out
  $project="$repo/presentations/godot/project"
+ # Leave five minutes for re-pause, final readback, and result publication.
+ Write-Lf "$out/budget-ms.txt" ([string][Math]::Max(0,[Math]::Floor(($deadline-(Get-Date)).TotalMilliseconds)-300000))
  $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "--headless --path `"$project`" --script res://tests/construction_acceptance_live.gd --log-file `"$out/godot.log`"" -WorkingDir $project
  while(-not $g.HasExited -and (Get-Date) -lt $deadline) {
   if(Test-Path "$out/verify.txt") {
@@ -128,13 +130,14 @@ try {
    # verifies pause before module-owned teardown, including failure paths.
    $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],'pause'"
    $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],'final'"
-   if(($r.Output -join "`n") -notmatch 'SEMANTIC_PASS'){$summary='failed final paused verification'}
+   if(($r.Output -join "`n") -notmatch 'SEMANTIC_PASS'){$summary='failed final paused verification; prior result: '+$summary}
   }
  } catch {
   $message=$_.Exception.Message
   if($message.StartsWith('INCOMPLETE ')) {
-   if($summary -notlike 'failed*'){$summary='incomplete '+$message.Substring(11)+'; final pause could not be verified'}
-  } else {$summary='failed teardown verification: '+$message}
+   if($summary -like 'failed*'){$summary+='; '+$message+'; final pause could not be verified'}
+   else {$summary='incomplete '+$message.Substring(11)+'; final pause could not be verified; prior result: '+$summary}
+  } else {$summary='failed teardown verification: '+$message+'; prior result: '+$summary}
  }
  finally {
   try {
@@ -147,7 +150,7 @@ try {
     } finally {try {Stop-Df3d} finally {Exit-Df3dLane}}
    }
   }
-  catch {$summary='failed teardown: '+$_.Exception.Message}
+  catch {$summary='failed teardown: '+$_.Exception.Message+'; prior result: '+$summary}
   $env:DF3D_CONSTRUCTION_ACCEPTANCE=$oldInput
   # Evidence is read at run time. Informational comparisons never change status.
   $departures=@()

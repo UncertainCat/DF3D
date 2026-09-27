@@ -1,14 +1,16 @@
 -- Native readback only, except explicit fixture cleanup/pause; no DF3D commands.
 local out,index=...
 local json=require('json')
-local state=assert(df3d_construction_acceptance,'fixture state absent')
+local state=df3d_construction_acceptance
 if index=='pause' then df.global.pause_state=true;print('SEMANTIC_PASS paused');return end
-if index=='final' then assert(df.global.pause_state,'DF not paused');assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE);print('SEMANTIC_PASS final paused');return end
+if index=='final' then assert(df.global.pause_state,'DF not paused');if state then assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE) end;print('SEMANTIC_PASS final paused');return end
 if index=='restore_prefs' then
+ if not state then print('SEMANTIC_PASS restored fixture preferences (fixture not started)');return end
  df.global.d_init.feature.autosave=state.prefs.autosave
  for id,value in pairs(state.prefs.announcements) do df.global.d_init.announcements.flags[id].whole=value end
  print('SEMANTIC_PASS restored fixture preferences');return
 end
+assert(state,'fixture state absent')
 local function read(path) local f=assert(io.open(path));local s=f:read('*a');f:close();return s end
 local request=json.decode(read(out..'/request-'..index..'.json'))
 local result={status='passed'}
@@ -49,7 +51,9 @@ local function materials()
  end
  local ok,err=pcall(function()
  for _,item in ipairs(df.global.world.items.all) do
-  local p=dfhack.items.getPosition(item);local flags=p and dfhack.maps.getTileFlags(p)
+  -- Lua API.rst:2179 / LuaApi.cpp:2583-2584 returns x,y,z, not a coord.
+  local x,y,z=dfhack.items.getPosition(item);local p=x and {x=x,y=y,z=z}
+  local flags=p and dfhack.maps.getTileFlags(p)
   local container=dfhack.items.getContainer(item);local ground=container or item;local depth=0
   local cart=container and container:getType()==df.item_type.TOOL and container:hasToolUse(df.tool_uses.HEAVY_OBJECT_HAULING)
   while container and depth<16 do ground=container;container=dfhack.items.getContainer(container);depth=depth+1 end
@@ -113,7 +117,8 @@ local function verify()
      if request.definition=='Construction:Stairs' then expected=({df.construction_type.UpStair,df.construction_type.UpDownStair,df.construction_type.DownStair})[dz+1] end
      assert(b:getSubtype()==expected,'placed subtype/stair level mismatch')
      if custom>=0 then assert(b:getCustomType()==custom,'custom building mismatch') end
-     if family=='ScrewPump' or family=='Rollers' then assert(b.screw_pump_direction==request.direction,'pump direction') end
+     -- df-structures df.building.xml:1319,1369: direction (enum screw_pump_direction).
+     if family=='ScrewPump' or family=='Rollers' then assert(b.direction==request.direction,'pump/roller direction') end
      if family=='WaterWheel' or family=='AxleHorizontal' then assert(b.is_vertical==(request.direction==1),'wheel direction') end
      if family=='Bridge' then assert(b.direction==(request.retracting and -1 or request.direction),'bridge direction') end
      if family=='SiegeEngine' then assert(b.facing==request.direction and b.resting_orientation==request.direction,'eight-facing siege orientation') end

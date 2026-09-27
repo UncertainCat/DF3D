@@ -258,7 +258,7 @@ int main(int argc,char** argv) {
           auto* a=r->area();require(a && a->id()==2147483000 && a->owner_id()==-2 && a->barrels()==-1 && a->active()==-1,"area identity/sentinels");break;
         }
         case A::Place:
-          require(r->items() && r->items()->size()==1 && r->items()->Get(0)==2147483001,"item identity");
+          require(r->selections() && r->selections()->size()==1 && r->selections()->Get(0)->filter()==0 && r->selections()->Get(0)->count()==1 && r->expected_list_revision()==2147483001,"material selection");
           require(r->origin() && r->origin()->x()==11 && r->origin()->y()==12 && r->origin()->z()==13,"placement origin");
           require(r->definition() && r->definition()->str()=="Chair","definition");break;
         case A::ProductionJobEdit: {

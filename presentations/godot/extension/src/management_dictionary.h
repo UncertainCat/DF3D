@@ -22,7 +22,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
     if(!typed("action",Variant::INT,true))return false;
     for(auto key:integers)if(!typed(key,Variant::INT))return false;
     for(auto key:{"definition","query","recipe"})if(!typed(key,Variant::STRING))return false;
-    for(auto key:{"give","unlink","cancel","remove_condition","pending_only","announcements_only"})
+    for(auto key:{"give","unlink","cancel","remove_condition","pending_only","announcements_only","retracting"})
         if(!typed(key,Variant::BOOL))return false;
     if(!typed("origin",Variant::VECTOR3I)||!typed("items",Variant::ARRAY))return false;
     if(data.has("items")) {
@@ -31,18 +31,29 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
             error="Construction item identities must be integers";return false;
         }
     }
+    if(!typed("selections",Variant::ARRAY))return false;
+    if(data.has("selections")) {
+        godot::Array rows=data["selections"];
+        for(int i=0;i<rows.size();++i) {
+            if(rows[i].get_type()!=Variant::DICTIONARY){error="Construction selection must be a dictionary";return false;}
+            godot::Dictionary row=rows[i];
+            for(const char* key:{"filter","item_type","item_subtype","mat_type","mat_index","count"})
+                if(row.has(key) && row[key].get_type()!=Variant::INT){error=godot::String("Wrong construction selection field type: ")+key;return false;}
+        }
+    }
     return true;
 }
 inline bool managementRequiredFields(const godot::Dictionary& data, godot::String& error) {
     using A=wm::ManagementAction;
     const int64_t raw=data["action"];
-    if(raw<0 || raw>static_cast<int64_t>(A::CreatureInspect))return true; // domain range guard follows
+    if(raw<0 || raw>static_cast<int64_t>(A::ConstructionMaterials))return true; // domain range guard follows
     const auto action=static_cast<A>(raw);
     auto require=[&](const char* key) {
         if(data.has(key))return true;
         error=godot::String("Missing management field: ")+key;return false;
     };
     switch(action) {
+    case A::ConstructionMaterials: return require("definition") && require("filter");
     case A::Preview: case A::Place:
         return require("definition") && require("origin");
     case A::InspectAtTile: case A::RemoveConstruction: case A::AreaInspectAtTile: case A::AreaCreate:

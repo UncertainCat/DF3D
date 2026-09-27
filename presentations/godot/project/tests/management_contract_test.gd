@@ -69,7 +69,7 @@ func run() -> void:
 	assert(state.areas[0].id==2147483000 and state.areas[0].owner_id==-1)
 	assert(state.areas[0].origin==Vector3i(11,12,13))
 	sequence = world.construction_request({"action":A.Place,"definition":"Chair",
-		"origin":Vector3i(11,12,13),"items":[2147483001]})
+		"origin":Vector3i(11,12,13),"selections":[{"filter":0,"count":1}],"expected_list_revision":2147483001})
 	assert(sequence>0)
 	state = await receipt(sequence)
 	assert(not state.is_empty() and state.action==A.Place)

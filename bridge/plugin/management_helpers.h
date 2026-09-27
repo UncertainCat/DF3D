@@ -23,6 +23,7 @@ namespace df3d_management {
 // this build instead of silently misrouting the scripts.
 namespace lua_action_numbers {
 using A=df3d::mirror::ManagementAction;
+static_assert(int(A::ConstructionMaterials)==63, "construction materials action number");
 static_assert(int(A::Catalog)==0 && int(A::Place)==2 && int(A::Inspect)==3 && int(A::Remove)==4 && int(A::InspectAtTile)==5 && int(A::RemoveConstruction)==6, "construction.lua action numbers");
 static_assert(int(A::AreaCatalog)==7 && int(A::AreaInspectAtTile)==8 && int(A::AreaInspect)==9 && int(A::AreaCreate)==10 && int(A::AreaUpdate)==11 && int(A::AreaDelete)==12 && int(A::AreaLink)==13 && int(A::AreaCandidates)==14, "areas.lua action numbers");
 static_assert(int(A::ProductionList)==15 && int(A::ProductionInspect)==16 && int(A::ProductionQueue)==17 && int(A::ProductionJobEdit)==18 && int(A::FarmSetCrop)==19, "production.lua action numbers");
@@ -59,7 +60,7 @@ public:
     void reset() {
         for(auto& helper:entries_) if(helper.reference!=LUA_NOREF) {
             auto* state=DFHack::Core::getInstance().getLuaState();
-            if(helper.first==Action::WorkOrderList) {
+            if(helper.first==Action::WorkOrderList || helper.first==Action::Catalog) {
                 // Release synthesized estimate filters before discarding the closure.
                 const int top=lua_gettop(state);
                 lua_rawgeti(state,LUA_REGISTRYINDEX,helper.reference);lua_newtable(state);
@@ -71,7 +72,13 @@ public:
             helper.reference=LUA_NOREF;
         }
     }
+    bool sameOwner(Action a,Action b) const {
+        if(a==Action::ConstructionMaterials)a=Action::Catalog;
+        if(b==Action::ConstructionMaterials)b=Action::Catalog;
+        return ManagementHelperOwners::sameOwner(a,b);
+    }
     int acquire(Action action,DFHack::color_ostream& out,lua_State* state) {
+        if(action==Action::ConstructionMaterials)action=Action::Catalog;
         for(auto& helper:entries_) if(action>=helper.first && action<=helper.last) {
             if(helper.reference==LUA_NOREF) {
                 const int top=lua_gettop(state);

@@ -35,6 +35,19 @@ inline std::string managementResultError(lua_State* L,df3d::mirror::ManagementAc
         if(!optionalInteger("steps",0,2048))return "steps must be an integer in 0..2048";
         if(!field("active",LUA_TBOOLEAN,false))return "active must be a boolean when present";
     }
+    if(action<=A::RemoveConstruction || action==A::ConstructionMaterials) {
+        auto optionalInteger=[&](const char* key,lua_Integer low,lua_Integer high) {
+            lua_getfield(L,-1,key);const bool absent=lua_isnil(L,-1);lua_pop(L,1);
+            return absent || integer(key,low,high);
+        };
+        if(!optionalInteger("list_revision",0,INT64_MAX))return "list_revision must be an integer in 0..INT64_MAX";
+        if(!optionalInteger("build_phase",0,2))return "build_phase must be an integer in 0..2";
+        for(const char* key:{"placed","skipped","chunk_placed"})if(!optionalInteger(key,0,1024))return std::string(key)+" must be an integer in 0..1024";
+        if(!optionalInteger("first_building",-1,INT32_MAX))return "first_building must be an integer in -1..INT32_MAX";
+        if(!optionalInteger("steps",0,2048))return "steps must be an integer in 0..2048";
+        if(!optionalInteger("active_kinds",0,8))return "active_kinds must be an integer in 0..8";
+        if(!field("active",LUA_TBOOLEAN,false))return "active must be a boolean when present";
+    }
     if(!ok || pending)return {};
     if(action>=A::WorkOrderList && action<=A::WorkOrderCatalog) {
         const int top=lua_gettop(L);

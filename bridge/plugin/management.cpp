@@ -71,7 +71,7 @@ constexpr std::array<BuilderEntry,5> builderTable{{
   {m::ManagementAction::WorkOrderList,0x7,true}, // 0 candidates (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 1 task catalog (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 2 item-condition estimates
-  {m::ManagementAction::Catalog,0x8,false},     // 3 construction materials
+  {m::ManagementAction::Catalog,0x8,true},     // 3 construction materials
   {m::ManagementAction::CitizenList,0x10,false}, // 4 citizens recalculation
 }};
 uint32_t builderActive=0, builderStart=0, remainingSteps=kWorkOrderStepBudget;
@@ -118,11 +118,36 @@ m::ManagementStatus status = m::ManagementStatus::Idle;
 m::ManagementAction action = m::ManagementAction::Catalog;
 std::string message;
 std::vector<uint8_t> request;
-struct Def {
-  std::string key, name, reason;
-  uint16_t w, h;
-  bool supported;
+struct ConstructionFilter {
+  int16_t index=-1,item_type=-1,item_subtype=-1;
+  std::string caption,requirement; int32_t quantity=-1;
 };
+struct ConstructionMaterial {
+  int16_t item_type=-1,item_subtype=-1,mat_type=-1; int32_t mat_index=-1;
+  std::string name,caption; uint32_t count=0;
+};
+struct ConstructionFootprint {
+  uint8_t direction=0; uint16_t width=0,height=0; int16_t center_x=-1,center_y=-1;
+};
+struct ConstructionState {
+  std::string building_key; int16_t filter=-1;
+  std::vector<ConstructionFilter> filters; std::vector<ConstructionMaterial> materials;
+  uint32_t total=0,build_done=0,build_total=0,placed=0,skipped=0;
+  int64_t list_revision=0; uint8_t build_phase=0; bool estimated=false;
+  int32_t first_building=-1; std::vector<uint8_t> valid_mask,pieces;
+  ConstructionFootprint footprint; bool hasFootprint=false;
+} construction;
+struct Def {
+  std::string key,name,reason,family,subtype_key,custom_code,native_name;
+  uint16_t w=1,h=1,max_width=0,max_height=0,max_depth=0;
+  uint8_t area_mode=0,orientations=0; bool supported=false;
+  std::vector<ConstructionFilter> filters;
+  std::vector<ConstructionFootprint> footprints;
+};
+struct BuilderTiming { uint32_t stepsLast=0,stepsMax=0; uint64_t usLast=0,usMax=0; };
+std::array<BuilderTiming,5> builderTiming{};
+uint32_t constructionCacheEntries=0,constructionCacheIds=0;
+
 struct Input {
   int32_t id;
   std::string description;
@@ -149,6 +174,7 @@ int32_t building = -1;
 int16_t stage = -1, maxStage = -1;
 bool valid = false, removing = false;
 void clearResult() {
+  construction = {};
   production = {};
   workOrders = {};
   citizens = {};
@@ -166,9 +192,27 @@ void clearResult() {
 void publish() {
   flatbuffers::FlatBufferBuilder b;
   std::vector<flatbuffers::Offset<m::BuildingDefinition>> ds;
-  for (auto& d : catalog)
-    ds.push_back(m::CreateBuildingDefinition(b, b.CreateString(d.key), b.CreateString(d.name), d.w,
-                                             d.h, d.supported, b.CreateString(d.reason)));
+  auto filters=[&](const std::vector<ConstructionFilter>& values) {
+    std::vector<flatbuffers::Offset<m::ConstructionFilter>> rows;
+    for(const auto& v:values)rows.push_back(m::CreateConstructionFilter(b,v.index,v.item_type,v.item_subtype,b.CreateString(v.caption),b.CreateString(v.requirement),v.quantity));
+    return b.CreateVector(rows);
+  };
+  auto footprint=[&](const ConstructionFootprint& v) {
+    return m::CreateConstructionFootprint(b,v.direction,v.width,v.height,v.center_x,v.center_y);
+  };
+  for(const auto& d:catalog) {
+    std::vector<flatbuffers::Offset<m::ConstructionFootprint>> fps;
+    for(const auto& f:d.footprints)fps.push_back(footprint(f));
+    ds.push_back(m::CreateBuildingDefinition(b,b.CreateString(d.key),b.CreateString(d.name),d.w,d.h,d.supported,b.CreateString(d.reason),
+      b.CreateString(d.family),b.CreateString(d.subtype_key),b.CreateString(d.custom_code),b.CreateString(d.native_name),
+      d.area_mode,d.orientations,d.max_width,d.max_height,d.max_depth,filters(d.filters),b.CreateVector(fps)));
+  }
+  std::vector<flatbuffers::Offset<m::ConstructionMaterial>> materials;
+  for(const auto& v:construction.materials)materials.push_back(m::CreateConstructionMaterial(b,v.item_type,v.item_subtype,v.mat_type,v.mat_index,b.CreateString(v.name),b.CreateString(v.caption),v.count));
+  auto constructionResult=m::CreateConstructionState(b,b.CreateString(construction.building_key),construction.filter,filters(construction.filters),b.CreateVector(materials),
+    construction.total,construction.list_revision,construction.estimated,construction.build_phase,construction.build_done,construction.build_total,
+    construction.placed,construction.skipped,construction.first_building,b.CreateVector(construction.valid_mask),b.CreateVector(construction.pieces),
+    construction.hasFootprint ? footprint(construction.footprint) : flatbuffers::Offset<m::ConstructionFootprint>{});
   std::vector<flatbuffers::Offset<m::ConstructionInput>> is;
   for (auto& i : inputs)
     is.push_back(m::CreateConstructionInput(b, i.id, b.CreateString(i.description), i.quantity));
@@ -253,7 +297,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -263,7 +307,10 @@ void publish() {
       return;
     }
     publishingFallback = true;
+    const auto placed=construction.placed,skipped=construction.skipped;
+    const auto first=construction.first_building;
     clearResult();
+    construction.placed=placed;construction.skipped=skipped;construction.first_building=first;
     status = m::ManagementStatus::Rejected;
     message = "Invalid native management response: " + *e;
     publish();
@@ -337,6 +384,14 @@ void run(color_ostream& out) {
   field(L, "width", r->width());
   field(L, "height", r->height());
   field(L, "direction", r->direction());
+  field(L,"depth",r->depth());field(L,"retracting",r->retracting());field(L,"filter",r->filter());
+  field(L,"expected_list_revision",r->expected_list_revision());
+  lua_newtable(L);
+  if(r->selections()) { int index=0;for(const auto* v:*r->selections()) {
+    lua_newtable(L);field(L,"filter",v->filter());field(L,"item_type",v->item_type());field(L,"item_subtype",v->item_subtype());
+    field(L,"mat_type",v->mat_type());field(L,"mat_index",v->mat_index());field(L,"count",v->count());lua_rawseti(L,-2,++index);
+  }}
+  lua_setfield(L,-2,"selections");
   field(L, "cursor", cursor);
   field(L, "limit", 128 - int(inputs.size()));
   field(L, "building_id", r->building_id());
@@ -421,6 +476,19 @@ void run(color_ostream& out) {
         lua_pop(L,1);
       }
       lua_pop(L,1);
+    }
+  }
+  const bool isConstruction=action<=m::ManagementAction::RemoveConstruction || action==m::ManagementAction::ConstructionMaterials;
+  if(isConstruction) {
+    construction.placed=uint32_t(number(L,"placed",construction.placed));
+    construction.skipped=uint32_t(number(L,"skipped",construction.skipped));
+    construction.first_building=int32_t(number(L,"first_building",construction.first_building));
+    constructionCacheEntries=uint32_t(number(L,"cache_entries"));constructionCacheIds=uint32_t(number(L,"cache_ids"));
+    if(number(L,"chunk_placed")>0) {
+      mutated=true;
+      if(r->origin())for(int z=r->origin()->z();z<r->origin()->z()+r->depth();++z)
+        for(int by=r->origin()->y()>>4;by<=(r->origin()->y()+r->height()-1)>>4;++by)
+          for(int bx=r->origin()->x()>>4;bx<=(r->origin()->x()+r->width()-1)>>4;++bx)areaHints.push_back({bx<<4,by<<4,z});
     }
   }
   if(ok && (action==m::ManagementAction::TradeUpdate || action==m::ManagementAction::TradeBring))mutated=true;
@@ -569,28 +637,56 @@ void run(color_ostream& out) {
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});
   }
-  lua_getfield(L, -1, "catalog");
-  if (lua_istable(L, -1))
-    for (size_t i = 1; i <= lua_rawlen(L, -1) && i <= 256; ++i) {
-      lua_rawgeti(L, -1, i);
-      catalog.push_back({text(L, "key"), text(L, "name"), text(L, "reason"),
-                         uint16_t(number(L, "width", 1)), uint16_t(number(L, "height", 1)),
-                         boolean(L, "supported")});
-      lua_pop(L, 1);
-    }
-  lua_pop(L, 1);
-  lua_getfield(L, -1, "inputs");
-  if (lua_istable(L, -1))
-    for (size_t i = 1; i <= lua_rawlen(L, -1) && inputs.size() < 128; ++i) {
-      lua_rawgeti(L, -1, i);
-      inputs.push_back(
-          {int32_t(number(L, "id", -1)), text(L, "description"), uint32_t(number(L, "quantity"))});
-      lua_pop(L, 1);
-    }
-  lua_pop(L, 1);
+  if(isConstruction) {
+    bool invalid=false;
+    auto each=[&](const char* key,size_t cap,auto fn) {
+      lua_getfield(L,-1,key);
+      if(!lua_isnil(L,-1) && !lua_istable(L,-1))invalid=true;
+      if(lua_istable(L,-1)) {
+        const auto size=lua_rawlen(L,-1);
+        if(size>cap)invalid=true;
+        else for(size_t i=1;i<=size;++i){
+          lua_rawgeti(L,-1,i);
+          if(std::string_view(key)!="valid_mask" && std::string_view(key)!="pieces" && !lua_istable(L,-1))invalid=true;
+          else fn();lua_pop(L,1);
+        }
+      }
+      lua_pop(L,1);
+    };
+    auto n=[&](const char* key,int64_t low,int64_t high,int64_t fallback=0) {
+      lua_getfield(L,-1,key);
+      int64_t value=fallback;
+      if(!lua_isnil(L,-1)){if(!lua_isinteger(L,-1))invalid=true;else value=lua_tointeger(L,-1);}
+      lua_pop(L,1);if(value<low || value>high){invalid=true;return fallback;}return value;
+    };
+    auto str=[&](const char* key,size_t cap) {
+      lua_getfield(L,-1,key);
+      if(!lua_isnil(L,-1) && lua_type(L,-1)!=LUA_TSTRING)invalid=true;
+      size_t len=0;const char* data=lua_tolstring(L,-1,&len);
+      if(len>cap)invalid=true;
+      std::string value=data && len<=cap ? std::string(data,len) : std::string{};lua_pop(L,1);return value;
+    };
+    auto readFilters=[&]() {
+      std::vector<ConstructionFilter> rows;
+      each("filters",8,[&](){ConstructionFilter v;v.index=int16_t(n("index",0,7,-1));v.item_type=int16_t(n("item_type",-1,INT16_MAX,-1));v.item_subtype=int16_t(n("item_subtype",-1,INT16_MAX,-1));v.caption=str("caption",64);v.requirement=str("requirement",64);v.quantity=int32_t(n("quantity",-1,INT32_MAX,-1));rows.push_back(std::move(v));});
+      return rows;
+    };
+    auto readFootprint=[&]() {ConstructionFootprint v;v.direction=uint8_t(n("direction",0,4));v.width=uint16_t(n("width",1,31));v.height=uint16_t(n("height",1,31));v.center_x=int16_t(n("center_x",-1,30,-1));v.center_y=int16_t(n("center_y",-1,30,-1));return v;};
+    catalog.clear();
+    each("catalog",128,[&](){Def d;d.key=str("key",64);d.name=str("name",128);d.reason=str("reason",128);d.w=uint16_t(n("width",1,31,1));d.h=uint16_t(n("height",1,31,1));d.supported=boolean(L,"supported");d.family=str("family",64);d.subtype_key=str("subtype_key",64);d.custom_code=str("custom_code",64);d.native_name=str("native_name",128);d.area_mode=uint8_t(n("area_mode",0,4));d.orientations=uint8_t(n("orientations",0,31));d.max_width=uint16_t(n("max_width",0,31));d.max_height=uint16_t(n("max_height",0,31));d.max_depth=uint16_t(n("max_depth",0,256));d.filters=readFilters();each("footprints",5,[&](){d.footprints.push_back(readFootprint());});catalog.push_back(std::move(d));});
+    construction.building_key=str("building_key",64);construction.filter=int16_t(n("filter",-1,7,-1));construction.filters=readFilters();
+    construction.materials.clear();each("materials",128,[&](){ConstructionMaterial v;v.item_type=int16_t(n("item_type",-1,INT16_MAX,-1));v.item_subtype=int16_t(n("item_subtype",-1,INT16_MAX,-1));v.mat_type=int16_t(n("mat_type",-1,INT16_MAX,-1));v.mat_index=int32_t(n("mat_index",-1,INT32_MAX,-1));v.name=str("name",128);v.caption=str("caption",64);v.count=uint32_t(n("count",1,UINT32_MAX));construction.materials.push_back(std::move(v));});
+    construction.total=uint32_t(n("total",0,UINT32_MAX));construction.list_revision=n("list_revision",0,INT64_MAX);construction.estimated=boolean(L,"estimated");
+    construction.build_phase=uint8_t(n("build_phase",0,2));construction.build_done=uint32_t(n("build_done",0,UINT32_MAX));construction.build_total=uint32_t(n("build_total",0,UINT32_MAX));
+    construction.valid_mask.clear();construction.pieces.clear();
+    auto bytes=[&](const char* key,uint8_t max,std::vector<uint8_t>& values){each(key,1024,[&](){if(!lua_isinteger(L,-1) || lua_tointeger(L,-1)<0 || lua_tointeger(L,-1)>max)invalid=true;else values.push_back(uint8_t(lua_tointeger(L,-1)));});};
+    bytes("valid_mask",1,construction.valid_mask);bytes("pieces",3,construction.pieces);
+    lua_getfield(L,-1,"footprint");construction.hasFootprint=lua_istable(L,-1);if(construction.hasFootprint)construction.footprint=readFootprint();lua_pop(L,1);
+    if(invalid){ok=false;productionPending=false;message="Invalid native construction response: field or page exceeds contract";catalog.clear();construction.filters.clear();construction.materials.clear();}
+  }
   lua_settop(L, top);
   status = !ok ? m::ManagementStatus::Rejected
-               : (productionPending || (action == m::ManagementAction::Preview && cursor && inputs.size() < 128)
+               : (productionPending
                       ? m::ManagementStatus::Pending
                       : m::ManagementStatus::Ok);
   publish();
@@ -600,6 +696,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   auto* L=Core::getInstance().getLuaState();const int top=lua_gettop(L);
   builderSteps+=df3d_builder::advance(builderTable,builderActive,builderStart,budget,
       [&](size_t kind,uint32_t share)->uint32_t {
+    const auto slotStarted=std::chrono::steady_clock::now();
     const auto& entry=builderTable[kind];
     const int helper=helpers.acquire(entry.action,out,L);
     if(helper==LUA_NOREF){builderActive &= ~entry.domainMask;return 0;}
@@ -611,6 +708,9 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
           (uint32_t(number(L,"active_kinds")) & entry.domainMask);
       used=std::min(share,uint32_t(number(L,"steps")));
     } else builderActive &= ~entry.domainMask;
+    if(kind==3 && lua_istable(L,-1)){constructionCacheEntries=uint32_t(number(L,"cache_entries"));constructionCacheIds=uint32_t(number(L,"cache_ids"));}
+    auto& timing=builderTiming[kind];timing.stepsLast=used;timing.stepsMax=std::max(timing.stepsMax,used);
+    timing.usLast=uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-slotStarted).count());timing.usMax=std::max(timing.usMax,timing.usLast);
     lua_settop(L,top);return used;
   });
   builderLastUs=uint64_t(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-started).count());
@@ -659,6 +759,8 @@ bool takeTerrainHint(int32_t& x, int32_t& y, int32_t& z) {
 // were never profiled through it.
 constexpr size_t kFirstTimedAction = size_t(m::ManagementAction::CitizenList);
 void printTiming(color_ostream& out) {
+  for(size_t i=0;i<builderTable.size();++i)if(builderTable[i].enabled){const auto& t=builderTiming[i];out.print("  builder kind {}: steps {} / {} last/max; {} / {} us last/max\n",i,t.stepsLast,t.stepsMax,t.usLast,t.usMax);}
+  out.print("  construction cache: {} entries, {} ids; construction holding: none\n",constructionCacheEntries,constructionCacheIds);
   out.print("  work-order holding: {}/4096; builder steps: {}; {} / {} us last/max\n",workOrderHoldingCount,builderSteps,builderLastUs,builderMaxUs);
   for(size_t i=kFirstTimedAction;i<actionTimings.size();++i) {
     const auto& t=actionTimings[i];
@@ -682,6 +784,7 @@ void rejectRequest(color_ostream& out, bool& warned, const std::string& reason) 
 }
 void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
   builderSteps=builderLastUs=0;remainingSteps=kWorkOrderStepBudget;
+  for(auto& t:builderTiming){t.stepsLast=0;t.usLast=0;}
   if (!region) {
     if (!startBackoff.due()) return;
     if (!start(out)) { startBackoff.failed(kStartRetryUpdates); return; }
@@ -689,7 +792,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
   }
   if (epoch != worldEpoch) {
     helpers.reset();builderActive=0;builderStart=0;builderSteps=builderLastUs=0;
-    actionTimings={};
+    actionTimings={};builderTiming={};constructionCacheEntries=constructionCacheIds=0;
     warnedMalformedRequest=warnedMailboxUnavailable=false;
     areaHints.clear();terrainHint=false;mutated=false;
     if(reply && status==m::ManagementStatus::Pending){status=m::ManagementStatus::Rejected;message="World changed before operation completed";publish();}
@@ -704,7 +807,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     publish();
   }
   uint8_t bytes[m::kManagementCommandCapacity];
-  // One drained request and at most 512 candidate items per update, paused included.
+  // One request and one shared builder budget per update, paused included.
   // Preserve the exact native operation through its following-update readback.
   // Reconnect/Catalog requests stay queued until the outcome has been published.
   auto n=status==m::ManagementStatus::Pending ? 0u : sh::popCommand(region,bytes,sizeof(bytes));
@@ -761,6 +864,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     // an unconfirmed outcome, never evidence to replay a possible mutation.
     if (std::chrono::steady_clock::now() - requestStarted >= std::chrono::seconds(10)) {
       status = m::ManagementStatus::Rejected;
+      if(construction.placed)mutated=true;
       message = "Operation did not confirm in time; refresh game state before another change";
       publish();
       request.clear();
@@ -768,6 +872,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     }
     if (saving || !epoch) {
       status = m::ManagementStatus::Rejected;
+      if(construction.placed)mutated=true;
       message = "Fortress unavailable";
       publish();
       return;

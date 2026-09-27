@@ -24,6 +24,19 @@ void writeConstruction(Dictionary& result, const wm::ManagementState& s) {
   result["removing"] = s.removing;
   result["jobs"] = s.jobs;
   result["terrain_construction"] = s.terrainConstruction;
+  auto filters=[](const std::vector<wm::ConstructionFilter>& values){
+    Array rows;for(const auto& v:values){Dictionary row;row["index"]=v.index;row["item_type"]=v.itemType;row["item_subtype"]=v.itemSubtype;row["caption"]=String::utf8(v.caption.c_str());row["requirement"]=String::utf8(v.requirement.c_str());row["quantity"]=v.quantity;rows.push_back(row);}return rows;
+  };
+  auto footprint=[](const wm::ConstructionFootprint& v){Dictionary row;row["direction"]=v.direction;row["width"]=v.width;row["height"]=v.height;row["center_x"]=v.centerX;row["center_y"]=v.centerY;return row;};
+  const auto& c=s.construction;Dictionary construction;
+  construction["building_key"]=String::utf8(c.buildingKey.c_str());construction["filter"]=c.filter;construction["filters"]=filters(c.filters);
+  construction["total"]=int64_t(c.total);construction["list_revision"]=c.listRevision;construction["estimated"]=c.estimated;
+  construction["build_phase"]=c.buildPhase;construction["build_done"]=int64_t(c.buildDone);construction["build_total"]=int64_t(c.buildTotal);
+  construction["placed"]=int64_t(c.placed);construction["skipped"]=int64_t(c.skipped);construction["first_building"]=c.firstBuilding;
+  PackedByteArray mask,pieces;for(auto v:c.validMask)mask.push_back(v);for(auto v:c.pieces)pieces.push_back(v);
+  construction["valid_mask"]=mask;construction["pieces"]=pieces;construction["footprint"]=c.footprint ? footprint(*c.footprint) : Dictionary{};
+  Array materials;for(const auto& v:c.materials){Dictionary row;row["item_type"]=v.itemType;row["item_subtype"]=v.itemSubtype;row["mat_type"]=v.matType;row["mat_index"]=v.matIndex;row["name"]=String::utf8(v.name.c_str());row["caption"]=String::utf8(v.caption.c_str());row["count"]=int64_t(v.count);materials.push_back(row);}
+  construction["materials"]=materials;result["construction"]=construction;
   Array catalog, inputs;
   for (auto& d : s.catalog) {
     Dictionary row;
@@ -33,6 +46,9 @@ void writeConstruction(Dictionary& result, const wm::ManagementState& s) {
     row["height"] = d.height;
     row["supported"] = d.supported;
     row["reason"] = String::utf8(d.reason.c_str());
+    row["family"]=String::utf8(d.family.c_str());row["subtype_key"]=String::utf8(d.subtypeKey.c_str());row["custom_code"]=String::utf8(d.customCode.c_str());row["native_name"]=String::utf8(d.nativeName.c_str());
+    row["area_mode"]=d.areaMode;row["orientations"]=d.orientations;row["max_width"]=d.maxWidth;row["max_height"]=d.maxHeight;row["max_depth"]=d.maxDepth;row["filters"]=filters(d.filters);
+    Array footprints;for(const auto& f:d.footprints)footprints.push_back(footprint(f));row["footprints"]=footprints;
     catalog.push_back(row);
   }
   for (auto& i : s.inputs) {
@@ -92,7 +108,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
 }
 
 bool validateConstructionShape(const Dictionary& data, String& error) {
-  if (!managementDictionaryTypes(data, {"width", "height", "direction", "cursor", "building_id"},
+  if (!managementDictionaryTypes(data, {"width", "height", "depth", "direction", "cursor", "building_id", "filter", "expected_list_revision"},
                                  error) ||
       !managementRequiredFields(data, error))
     return false;
@@ -103,11 +119,22 @@ bool readConstruction(const Dictionary& data, wm::ManagementRequest& r, String& 
   int64_t a = data.get("action", actionValue(Action::Catalog)), w = data.get("width", 1),
           h = data.get("height", 1), d = data.get("direction", 0);
   int64_t cursor = data.get("cursor", 0), building = data.get("building_id", -1);
-  if (a < actionValue(Action::Catalog) || a > actionValue(Action::RemoveConstruction) || w < 1 ||
+  if (a < actionValue(Action::Catalog) || (a > actionValue(Action::RemoveConstruction) && a != actionValue(Action::ConstructionMaterials)) || w < 1 ||
       w > 31 || h < 1 || h > 31 || d < 0 || d > 3 || cursor < 0 || cursor > UINT32_MAX ||
       building < -1 || building > INT32_MAX) {
     error = "Invalid management request";
     return false;
+  }
+  const int64_t depth=data.get("depth",1), filter=data.get("filter",-1), rev=data.get("expected_list_revision",0);
+  if(depth<1 || depth>256 || w*h*depth>1024 || filter < -1 || filter>7 || rev<0) {error="Invalid bounded construction request";return false;}
+  r.depth=uint16_t(depth);r.filter=int16_t(filter);r.expectedListRevision=rev;r.retracting=data.get("retracting",false);
+  Array selections=data.get("selections",Array());
+  if(selections.size()>16){error="Too many construction selections";return false;}
+  for(int i=0;i<selections.size();++i) {
+    Dictionary row=selections[i];bool valid=true;
+    auto n=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=row.get(key,def);if(v<low || v>high)valid=false;return v;};
+    wm::ConstructionSelection v;v.filter=int16_t(n("filter",-1,0,7));v.itemType=int16_t(n("item_type",-1,-1,INT16_MAX));v.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));v.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));v.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));v.count=uint32_t(n("count",0,1,UINT32_MAX));
+    if(!valid){error="Invalid construction selection";return false;}r.selections.push_back(v);
   }
   r.action = wm::ManagementAction(a);
   String key = data.get("definition", String());

@@ -210,11 +210,34 @@ struct WorkOrderState {
   std::vector<WorkOrderTask> tasks;
   uint32_t total=0; int64_t listRevision=0; uint8_t buildPhase=0; uint32_t buildDone=0,buildTotal=0;
 };
+struct ConstructionSelection {
+  int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=0;
+};
+struct ConstructionFilter {
+  int16_t index=-1,itemType=-1,itemSubtype=-1; std::string caption,requirement; int32_t quantity=-1;
+};
+struct ConstructionMaterial {
+  int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; std::string name,caption; uint32_t count=0;
+};
+struct ConstructionFootprint {
+  uint8_t direction=0; uint16_t width=0,height=0; int16_t centerX=-1,centerY=-1;
+};
+struct ConstructionState {
+  std::string buildingKey; int16_t filter=-1;
+  std::vector<ConstructionFilter> filters; std::vector<ConstructionMaterial> materials;
+  uint32_t total=0,buildDone=0,buildTotal=0,placed=0,skipped=0;
+  int64_t listRevision=0; uint8_t buildPhase=0; bool estimated=false;
+  int32_t firstBuilding=-1; std::vector<uint8_t> validMask,pieces;
+  std::optional<ConstructionFootprint> footprint;
+};
 struct BuildingDefinition {
   std::string key, name;
   uint16_t width = 1, height = 1;
   bool supported = false;
   std::string reason;
+  std::string family,subtypeKey,customCode,nativeName;
+  uint8_t areaMode=0,orientations=0; uint16_t maxWidth=0,maxHeight=0,maxDepth=0;
+  std::vector<ConstructionFilter> filters; std::vector<ConstructionFootprint> footprints;
 };
 
 struct AlertRequest { AlertOperation operation=AlertOperation::OpenCategory; int16_t category=-1; uint64_t receipt=0; int32_t entry=-1; int16_t tab=-1,delta=0; };
@@ -283,6 +306,8 @@ struct ManagementRequest {
   AlertRequest alert;
   SelectionRequest selection;
   int32_t creatureUnitId=-1;
+  uint16_t depth=1; bool retracting=false; int16_t filter=-1;
+  std::vector<ConstructionSelection> selections; int64_t expectedListRevision=0;
 };
 struct ManagementState {
   uint64_t revision = 0, worldEpoch = 0, requestSeq = 0;
@@ -311,6 +336,7 @@ struct ManagementState {
   AlertState alert;
   SelectionState selection;
   CreatureInfo creature;
+  ConstructionState construction;
 };
 // Independent per-connection replies; reconnect first refreshes a read-only catalog.
 // No request is replayed after process/world change. One pending request per client.

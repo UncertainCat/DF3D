@@ -198,7 +198,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if (r.retracting() && r.direction() != 0) return "invalid retracting orientation";
   if (r.action() != ManagementAction::Preview && r.action() != ManagementAction::Place &&
       (r.depth() != 1 || r.retracting())) return "unexpected construction placement fields";
-  if (r.filter() < -1) return "invalid construction filter";
+  if (r.filter() < -1 || r.filter() > 7) return "invalid construction filter";
   if (r.filter() >= 0 && r.action() != ManagementAction::ConstructionMaterials)
     return "unexpected construction filter";
   if (r.action() == ManagementAction::ConstructionMaterials &&
@@ -221,6 +221,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   }
   if (r.origin() && (r.origin()->x() < 0 || r.origin()->y() < 0 || r.origin()->z() < 0))
     return "negative origin";
+  if (r.action() == ManagementAction::Place && r.items() && r.items()->size())
+    return "selected inputs are retired; use selections";
   if (r.items()) {
     if (r.items()->size() > 64) return "too many inputs";
     std::set<int32_t> ids;
@@ -283,10 +285,11 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     return true;
   };
   auto constructionFootprintOk = [](const ConstructionFootprint* v) {
-    return !v || (v->direction() <= 4 && v->center_x() >= -1 && v->center_y() >= -1);
+    return !v || (v->direction() <= 4 && v->width() >= 1 && v->width() <= 31 && v->height() >= 1 && v->height() <= 31 &&
+        v->center_x() >= -1 && v->center_x() < v->width() && v->center_y() >= -1 && v->center_y() < v->height());
   };
   if (const auto* c = s.construction()) {
-    if (c->filter() < -1 || c->first_building() < -1 || c->build_phase() > 2 ||
+    if (c->filter() < -1 || c->filter() > 7 || c->first_building() < -1 || c->build_phase() > 2 ||
         c->build_done() > c->build_total() || c->list_revision() > INT64_MAX ||
         uint64_t(c->placed()) + c->skipped() > 1024 ||
         !constructionTextOk(c->building_key(),64) || !constructionFiltersOk(c->filters()) ||
@@ -301,10 +304,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if (c->materials()) {
       if (c->materials()->size() > 128) return "construction materials page too large";
+      std::set<std::tuple<int16_t,int16_t,int16_t,int32_t>> materialKeys;
       for (const auto* v : *c->materials())
         if (!v || v->item_type() < -1 || v->item_subtype() < -1 || v->mat_type() < -1 ||
             v->mat_index() < -1 || !v->count() || !constructionTextOk(v->name(),128) ||
-            !constructionTextOk(v->caption(),64)) return "invalid construction material";
+            !constructionTextOk(v->caption(),64) ||
+            !materialKeys.emplace(v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()).second) return "invalid construction material";
     }
   }
   if (s.catalog()) {
@@ -317,6 +322,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           !constructionTextOk(d->reason(),128) || !constructionTextOk(d->native_name(),128) ||
           !constructionTextOk(d->family(),64) || !constructionTextOk(d->subtype_key(),64) ||
           !constructionTextOk(d->custom_code(),64) || d->area_mode() > 4 || d->orientations() > 0x1F ||
+          d->max_width() > 31 || d->max_height() > 31 || d->max_depth() > 256 ||
           !constructionFiltersOk(d->filters())) return "invalid definition";
       if (d->footprints()) {
         if (d->footprints()->size() > 5) return "too many construction footprints";

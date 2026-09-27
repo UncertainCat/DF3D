@@ -20,9 +20,10 @@ def main():
             return setmetatable({_last_item=#names-1}, {__index=lookup})
         end
         df = {
-            building_type=enum{'Chair','Workshop','Construction'},
+            building_type=enum{'Chair','Workshop','Construction','Trap'},
             workshop_type=enum{'Carpenters'},
             construction_type=enum{'Wall','Floor'},
+            trap_type=enum{'Lever'},
         }
         df.job_item = {
             new=function()
@@ -42,7 +43,7 @@ def main():
         end
         dfhack.buildings.getFiltersByType=function(_,t,st)
             -- Missing quantity must preserve job_item's native default of one.
-            -- An explicit multi-input recipe must remain unavailable.
+            -- Explicit quantities are retained by the multi-input catalog.
             if t==df.building_type.Construction and st==df.construction_type.Floor then
                 return {{quantity=2}}
             end
@@ -55,11 +56,12 @@ def main():
     result = adapter(lua.table_from({"action": 0}))
     assert result["ok"], result["message"]
     catalog = {entry["key"]: entry for entry in result["catalog"].values()}
-    assert set(catalog) == {"Chair", "Workshop:Carpenters", "Construction:Wall", "Construction:Floor"}
+    assert set(catalog) == {"Chair", "Workshop:Carpenters", "Construction:Wall", "Construction:Floor",
+                            "Trap:Lever", "Construction:Stairs", "Construction:Track"}
     for key in ("Chair", "Workshop:Carpenters", "Construction:Wall"):
         assert catalog[key]["supported"], key
     assert catalog["Workshop:Carpenters"]["width"] == 3
-    assert not catalog["Construction:Floor"]["supported"]
+    assert catalog["Construction:Floor"]["supported"]
     lua.execute("df.building_type._last_item = -1")
     broken = lua.execute(source.read_text(encoding="utf-8"))
     result = broken(lua.table_from({"action": 0}))

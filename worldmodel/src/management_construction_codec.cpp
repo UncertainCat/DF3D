@@ -4,10 +4,31 @@ namespace wm::detail::management {
 namespace m = df3d::mirror;
 
 void decodeConstruction(const m::ManagementState* s, ManagementState& next) {
-  if (s->catalog())
-    for (auto* d : *s->catalog())
-      next.catalog.push_back({d->key()->str(), d->name() ? d->name()->str() : "", d->width(),
-                              d->height(), d->supported(), d->reason() ? d->reason()->str() : ""});
+  auto text=[](const flatbuffers::String* v){return v ? v->str() : std::string{};};
+  auto filters=[&](const auto* values){
+    std::vector<ConstructionFilter> rows;
+    if(values)for(const auto* v:*values)rows.push_back({v->index(),v->item_type(),v->item_subtype(),text(v->caption()),text(v->requirement()),v->quantity()});
+    return rows;
+  };
+  auto footprint=[](const m::ConstructionFootprint* v){return ConstructionFootprint{v->direction(),v->width(),v->height(),v->center_x(),v->center_y()};};
+  if(s->catalog())for(const auto* d:*s->catalog()) {
+    BuildingDefinition v;
+    v.key=text(d->key());v.name=text(d->name());v.width=d->width();v.height=d->height();v.supported=d->supported();v.reason=text(d->reason());
+    v.family=text(d->family());v.subtypeKey=text(d->subtype_key());v.customCode=text(d->custom_code());v.nativeName=text(d->native_name());
+    v.areaMode=d->area_mode();v.orientations=d->orientations();v.maxWidth=d->max_width();v.maxHeight=d->max_height();v.maxDepth=d->max_depth();
+    v.filters=filters(d->filters());if(d->footprints())for(const auto* f:*d->footprints())v.footprints.push_back(footprint(f));
+    next.catalog.push_back(std::move(v));
+  }
+  if(const auto* c=s->construction()) {
+    auto& v=next.construction;
+    v.buildingKey=text(c->building_key());v.filter=c->filter();v.filters=filters(c->filters());
+    if(c->materials())for(const auto* f:*c->materials())v.materials.push_back({f->item_type(),f->item_subtype(),f->mat_type(),f->mat_index(),text(f->name()),text(f->caption()),f->count()});
+    v.total=c->total();v.listRevision=int64_t(c->list_revision());v.estimated=c->estimated();v.buildPhase=c->build_phase();v.buildDone=c->build_done();v.buildTotal=c->build_total();
+    v.placed=c->placed();v.skipped=c->skipped();v.firstBuilding=c->first_building();
+    if(c->valid_mask())v.validMask.assign(c->valid_mask()->begin(),c->valid_mask()->end());
+    if(c->pieces())v.pieces.assign(c->pieces()->begin(),c->pieces()->end());
+    if(c->footprint())v.footprint=footprint(c->footprint());
+  }
   if (s->inputs())
     for (auto* a : *s->inputs())
       next.inputs.push_back(

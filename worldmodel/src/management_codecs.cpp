@@ -83,13 +83,16 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   if (r.action >= ManagementAction::ReportList && r.action <= ManagementAction::ReportInspect) {
     report = encodeReport(b, r.report);
   }
+  std::vector<flatbuffers::Offset<m::ConstructionSelection>> selections;
+  for(const auto& v:r.selections)selections.push_back(m::CreateConstructionSelection(b,v.filter,v.itemType,v.itemSubtype,v.matType,v.matIndex,v.count));
   auto request = m::CreateConstructionRequest(
       b, m::kManagementVersion, clientId, sequence, worldEpoch, m::ManagementAction(r.action),
       b.CreateString(r.definition), &p, r.width, r.height, r.direction, b.CreateVector(r.items),
       r.cursor, r.buildingId, area, production, workOrder, citizen, report, agreement, trade,
       stocks, appointments, kitchen, alert, selection,
       r.action == ManagementAction::CreatureInspect ? m::CreateCreatureRequest(b, r.creatureUnitId)
-                                                    : flatbuffers::Offset<m::CreatureRequest>{});
+                                                    : flatbuffers::Offset<m::CreatureRequest>{},
+      r.depth,r.retracting,r.filter,b.CreateVector(selections),uint64_t(r.expectedListRevision));
   b.Finish(request);
 }
 }  // namespace wm::detail::management

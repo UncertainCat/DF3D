@@ -124,13 +124,17 @@ v = inspect()
 assert v['details'][1]['description'] == 'TEMPLE tier 1 / Unknown religious practice'
 assert v['complete'] and v['reason'] == ''
 for kind, name in [(2, 'Residency'), (3, 'Citizenship'), (4, 'Parley')]:
+    # agreements.lua:42-43 reads asker/target only for Parley.
+    party_fields = 'asker=21,target=22' if kind == 4 else 'applicant=8,government=12'
+    expected_parties = (21, 22) if kind == 4 else (8, 12)
     for pending in [False, True]:
         fresh(f'''local d=rows[1].details[0];d.type={kind};d.data={{['{name}']={{site=7,
-        applicant=8,government=12,asker=8,target=12,end_year=120,end_season_tick=300,reason=42}}}}''')
+        {party_fields},end_year=120,end_season_tick=300,reason=42}}}}''')
         if pending:
             lua.execute('df.global.plotinfo.petitions=vec({0})')
         v = inspect(); d = v['details'][1]
-        assert d['kind'] == kind and d['site_id'] == 7 and d['applicant_party'] == 8 and d['government_party'] == 12
+        assert d['kind'] == kind and d['site_id'] == 7
+        assert (d['applicant_party'], d['government_party']) == expected_parties
         assert d['description'] == v['summary'] == name and not v['complete']
         assert all(d[key] == -1 for key in ['location_type','tier','profession','deity_type','deity_id'])
         assert v['reason'] == PARTIAL + ('; ' + PENDING if pending else '')

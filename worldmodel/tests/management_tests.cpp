@@ -818,6 +818,7 @@ TEST_CASE("agreement response preserves party identities native approval flags a
   auto applicant=mm::CreateAgreementParty(b,3,b.CreateVector(std::vector<int32_t>{0}),b.CreateVector(std::vector<int32_t>{42}),b.CreateString("Blacksmiths, Urist Lorbamoth"));
   auto government=mm::CreateAgreementParty(b,7,b.CreateVector(std::vector<int32_t>{1930}),b.CreateVector(std::vector<int32_t>{}),b.CreateString("Fortress government"));
   auto parties=b.CreateVector(std::vector<flatbuffers::Offset<mm::AgreementParty>>{applicant,government});
+  // e8/findings.md Native wording and e12/findings.md items 2,4: pin enum descriptions pending 07-B native captions.
   auto description=b.CreateString("GUILDHALL tier 2 for MASON");
   mm::AgreementDetailBuilder term(b);term.add_id(0);term.add_kind(12);term.add_site_id(55);
   term.add_year(117);term.add_year_tick(94234);term.add_applicant_party(3);term.add_government_party(7);
@@ -860,6 +861,7 @@ TEST_CASE("agreement list preserves every field with producible pending and unap
       auto applicant=mm::CreateAgreementParty(b,0,b.CreateVector(std::vector<int32_t>{2210}),b.CreateVector(std::vector<int32_t>{5120}),b.CreateString("The Bejeweled Creed, Urist Lorbamoth"));
       auto government=mm::CreateAgreementParty(b,1,b.CreateVector(std::vector<int32_t>{483}),b.CreateVector(std::vector<int32_t>{}),b.CreateString("The Iron Realm"));
       auto parties=b.CreateVector(std::vector{applicant,government});
+      // e8/findings.md Native wording and e12/findings.md items 2,4: pin enum descriptions pending 07-B native captions.
       auto description=b.CreateString("TEMPLE tier 1 / The Bejeweled Creed");
       mm::AgreementDetailBuilder d(b);d.add_id(0);d.add_kind(12);d.add_site_id(378);d.add_year(106);d.add_year_tick(168260);
       d.add_applicant_party(0);d.add_government_party(1);d.add_location_type(2);d.add_tier(1);d.add_profession(-1);d.add_deity_type(1);d.add_deity_id(2210);d.add_description(description);
@@ -973,6 +975,7 @@ TEST_CASE("agreement wire bounds and integrity reject exact malformed variants")
 
 TEST_CASE("agreement aggregate wire text accepts its limit and rejects one extra byte") {
   // Defensive wire boundary, deliberately beyond the Lua page search budget.
+  // Both accepted and rejected cases are synthetic wire, not producible Lua replies.
   for(bool over:{false,true}) {
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::AgreementInfo>> rows;
     for(int i=0;i<8;++i) {

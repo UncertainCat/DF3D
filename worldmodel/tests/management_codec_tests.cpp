@@ -199,7 +199,7 @@ TEST_CASE("maximal producer order page fits the management channel") {
   CHECK_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
 }
 
-TEST_CASE("work-order v17 request fields and exclusive intents survive encoding") {
+TEST_CASE("work-order request fields and exclusive intents survive encoding") {
   EncodedRequest encoded;
   wm::ManagementRequest r;r.action=wm::ManagementAction::WorkOrderCondition;
   auto& w=r.workOrder;w.id=0;w.expectedRevision=1;w.compare=0;w.threshold=0;
@@ -283,7 +283,7 @@ TEST_CASE("work-order v17 request fields and exclusive intents survive encoding"
   }
 }
 
-TEST_CASE("work-order v17 response fields decode with owned strings and absent defaults") {
+TEST_CASE("work-order response fields decode with owned strings and absent defaults") {
   for(bool present:{false,true}) {
     flatbuffers::FlatBufferBuilder b;
     auto ts=b.CreateVectorOfStrings(std::vector<std::string>{"f5:31","rp:X"});
@@ -377,7 +377,7 @@ void workOrderPage(flatbuffers::FlatBufferBuilder& b,const WorkOrderPageBounds& 
   mm::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(mm::ManagementAction::WorkOrderList);state.add_status(mm::ManagementStatus::Ok);state.add_work_order(ws);b.Finish(state.Finish());
 }
 }
-TEST_CASE("maximal v17 page and individual state validator boundaries") {
+TEST_CASE("maximal management page and individual state validator boundaries") {
   auto valid=[](const WorkOrderPageBounds& n) {
     flatbuffers::FlatBufferBuilder b;workOrderPage(b,n);
     flatbuffers::Verifier v(b.GetBufferPointer(),b.GetSize());REQUIRE(v.VerifyBuffer<mm::ManagementState>(nullptr));
@@ -585,7 +585,7 @@ struct ConstructionWire {
     c.add_first_building(int32_t(value("first_building",-1)));c.add_valid_mask(mask);c.add_pieces(pieces);
     if(!footprints.empty())c.add_footprint(footprints[0]);
     const auto construction=c.Finish();
-    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_schema_version(uint32_t(value("version",18)));
+    wire::ManagementStateBuilder s(b);s.add_revision(1);s.add_schema_version(uint32_t(value("version",wire::kManagementVersion)));
     s.add_catalog(cats);s.add_construction(construction);b.Finish(s.Finish());
     state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
   }
@@ -656,7 +656,7 @@ TEST_CASE("construction state rejects each over-limit field with exact messages"
       {"fp_width",1,0,"invalid construction result"},{"fp_height",1,0,"invalid construction result"},
       {"center_x",-1,-2,"invalid construction result"},{"center_y",30,31,"invalid construction result"},
       {"material_name",128,129,"invalid construction material",1},{"material_caption",64,65,"invalid construction material",1},
-      {"version",18,17,"invalid management version/revision"}}) {
+      {"version",wire::kManagementVersion,wire::kManagementVersion-1,"invalid management version/revision"}}) {
     CAPTURE(c.field);ConstructionWire accepted(c.field,c.accept,c.page);CHECK_FALSE(accepted.error());
     ConstructionWire rejected(c.field,c.reject,c.page);REQUIRE(rejected.error());CHECK(*rejected.error()==c.error);
   }

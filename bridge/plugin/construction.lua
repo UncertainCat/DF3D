@@ -8,7 +8,9 @@ end
 -- D1: quickfort/buildingplan site rules and uncaptured refusals remain; magma and
 -- Windmill are disabled pending placement evidence. D2: whole-stack consumption
 -- and walkability-group reach remain estimates. Grouping, bins, unreachable-item
--- exclusion and distance ordering are resolved. D3: existing-stair adaptation and
+-- exclusion are resolved. D2 capture question: does native distance use squared
+-- Euclidean distance from the rectangle minimum corner / bottom stair level,
+-- as inferred here, or another reference tile/metric? D3: existing-stair adaptation and
 -- construction rebuild restrictions remain uncaptured; depth 1 is refused and
 -- multi-level endpoints are up/down. D4: filled drags skip invalid tiles; material
 -- run-out rejects without replay (non-atomic Place). D5: PressurePlate, TrackStop
@@ -17,7 +19,7 @@ end
 -- exposes five speeds). D7: full valid footprints match bridge/road evidence;
 -- farm footprints remain uncaptured. D8: removal/stale-key refusals are semantic
 -- safeguards. D9: non-permitted custom visibility remains uncaptured.
--- Commit C owns duplicate-key, exhaustive site-rule and general limit tests.
+-- Offline tests cover duplicate keys, the site-rule table and contract limits.
 local B=dfhack.buildings
 local function fail(message) return {ok=false,message=message} end
 local function filter_call(raw,fn)
@@ -224,6 +226,10 @@ local function item_row(item)
     local name=mi:toString();if not name or name=='' then return end
     return {item_type=item:getType(),item_subtype=item:getSubtype(),mat_type=item:getMaterial(),mat_index=item:getMaterialIndex(),name=clipped_utf8(dfhack.df2utf(name),128),caption='',count=0,ids={}}
 end
+-- Cache identity includes the exact Materials origin (rectangle minimum corner,
+-- bottom level). Place must reuse that origin and its revision. Moving the origin
+-- scans anew; the four-slot LRU retains other sites but never serves their ordering
+-- for the new site. Same-site replacement keeps its previous snapshot for Place.
 local function signature(raw,site)
     return filter_call(raw,function(j)
         local out={}
@@ -258,7 +264,7 @@ local function queue(e)
         for i,v in ipairs(cache) do if v~=e and (not oldest or v.used<cache[oldest].used) then oldest=i end end
         slots=slots-generations(cache[oldest]);table.remove(cache,oldest)
     end
-    e.phase=1;e.done=0;e.total=0;e.build_ids=0;e.error=nil
+    e.phase=1;e.done=0;e.total=0;e.build_ids=0;e.error=nil;e.error_reported=false
     local vids=vectors(e.raw)
     for _,vid in ipairs(vids) do e.total=e.total+#df.global.world.items.other[df.job_item_vector_id.attrs[vid].other] end
     e.total=e.total+#df.global.world.units.active;e.started=tick()
@@ -280,11 +286,12 @@ local function queue(e)
                 if item and not seen[item.id] and filter_call(e.raw,function(j) return screen(item,j,groups) end) then
                     local row=item_row(item)
                     if row then
-                        if e.build_ids>=65536 then e.error='list exceeds cap';item=nil;step();return end
+                        if e.build_ids>=65536 then e.error='list exceeds cap';e.phase=3;item=nil;step();return end
                         local k=key(row);local g=grouped[k]
                         if not g then g=row;grouped[k]=g;rows[#rows+1]=g end
                         local p=dfhack.items.getPosition(item)
-                        -- Nearest eligible member's squared 3D tile distance to origin.
+                        -- Inferred pending D2 capture: nearest eligible member's squared
+                        -- Euclidean 3D distance to minimum corner / bottom level.
                         local distance=(p.x-e.site.x)^2+(p.y-e.site.y)^2+(p.z-e.site.z)^2
                         g.distance=math.min(g.distance or math.huge,distance)
                         g.ids[#g.ids+1]=item.id;g.count=g.count+1;seen[item.id]=true;e.build_ids=e.build_ids+1
@@ -332,7 +339,7 @@ local function build(budget)
     while steps<budget do
         local e;for _,v in ipairs(cache) do if v.job then e=v;break end end;if not e then break end
         local ok,err=coroutine.resume(e.job)
-        if not ok then e.error=tostring(err);e.job=nil;e.build_ids=0
+        if not ok then e.error=tostring(err);e.phase=3;e.job=nil;e.build_ids=0
         elseif coroutine.status(e.job)=='dead' then e.job=nil;e.build_ids=0
         else steps=steps+1 end
     end
@@ -342,8 +349,15 @@ local function materials(r,d)
     local inputs=recipe(d);local raw=inputs and inputs[(r.filter or -1)+1]
     if not raw then return fail('Building has no recipe') end
     local e=entry(r.epoch,raw,{x=r.x,y=r.y,z=r.z})
-    if not e.job and (e.error or (e.rows and (e.dirty or tick()-e.scan_tick>1200 or tick()<e.scan_tick))) then queue(e) end
-    if e.error then return fail(e.error) end
+    if e.error then
+        if not e.error_reported then
+            e.error_reported=true
+            return {ok=false,message='Materials list unavailable: '..e.error,build_phase=3,
+                build_done=e.done,build_total=e.total}
+        end
+        -- Only a subsequent explicit Materials request retries, never stepBuilder.
+        queue(e)
+    elseif not e.job and e.rows and (e.dirty or tick()-e.scan_tick>1200 or tick()<e.scan_tick) then queue(e) end
     local result={ok=true,building_key=d.key,filter=r.filter,filters=d.filters,estimated=true,materials={},total=e.ids or 0,
         build_phase=e.phase,build_done=e.done,build_total=e.total,list_revision=e.revision or 0,message='DF3D estimate: '..tostring(e.ids or 0)..' accessible'}
     if e.job then return result end
@@ -383,6 +397,7 @@ local function placement(r,d)
     end
     local o=operation;local steps,chunk,attempts=0,0,0;local budget=math.min(r.step_budget or 1536,1536);local volume=r.width*r.height*r.depth
     local function reply(message,ok,pending)
+        if not ok and o.placed>0 and d.area_mode>=3 then message='Painted '..o.placed..' of '..volume..'; '..message end
         local out={ok=ok,pending=pending,message=message,steps=steps,placed=o.placed,skipped=o.skipped,first_building=o.first,chunk_placed=chunk,
             building_key=d.key,filters=o.filters,valid_mask=o.mask,pieces=o.pieces,footprint=fp,placement_valid=o.phase~='tiles',required=o.required or 0,inputs={}}
         if not pending then operation=nil end;return out

@@ -4,6 +4,8 @@
 #include <cstdint>
 
 namespace df3d_builder {
+// Registry at task 03-B dispatch: highest kind 17 plus one.
+constexpr size_t kBuilderKindCount=18;
 // Select only enabled domains owned by the request's helper.
 template<class Table,class Owns>
 uint32_t requestMask(const Table& table,Owns owns) {

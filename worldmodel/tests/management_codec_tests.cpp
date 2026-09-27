@@ -637,7 +637,7 @@ TEST_CASE("construction state rejects each over-limit field with exact messages"
       {"max_width",31,32,"invalid definition"},{"max_height",31,32,"invalid definition"},
       {"max_depth",256,257,"invalid definition"},{"area_mode",4,5,"invalid definition"},
       {"filter",7,8,"invalid construction result"},{"filter",-1,-2,"invalid construction result"},
-      {"first_building",-1,-2,"invalid construction result"},{"build_phase",2,3,"invalid construction result"},
+      {"first_building",-1,-2,"invalid construction result"},{"build_phase",3,4,"invalid construction result"},
       {"build_done",128,129,"invalid construction result"},{"placed",1024,1025,"invalid construction result"},
       {"skipped",0,1,"invalid construction result"},{"list_revision",INT64_MAX,INT64_MIN,"invalid construction result"},
       {"building_key",64,65,"invalid construction result"},{"filters",8,9,"invalid construction result"},
@@ -717,4 +717,22 @@ TEST_CASE("construction request boundary and absent-field matrix") {
   r.selections[0].count=UINT32_MAX;check(r);r.selections[0].count=1;
   r.action=wm::ManagementAction::Preview;check(r,"unexpected construction selections");r.selections.clear();check(r);
   r.action=wm::ManagementAction::Catalog;r.definition="";check(r);
+}
+
+#include "../../bridge/plugin/construction_effects.h"
+TEST_CASE("construction committed chunks mark mutations and every intersecting block") {
+  wire::TilePos origin(15,31,7);bool mutated=false;
+  std::vector<std::tuple<int,int,int>> hints;
+  auto hint=[&](int x,int y,int z){hints.emplace_back(x,y,z);};
+  df3d_management::constructionEffects(0,&origin,2,2,2,mutated,hint);
+  CHECK_FALSE(mutated);CHECK(hints.empty());
+  // The helper receives committed count even when the Lua reply is Rejected.
+  df3d_management::constructionEffects(1,&origin,2,2,2,mutated,hint);
+  CHECK(mutated);
+  const std::vector<std::tuple<int,int,int>> expected{
+    {0,16,7},{16,16,7},{0,32,7},{16,32,7},
+    {0,16,8},{16,16,8},{0,32,8},{16,32,8}};
+  CHECK(hints==expected);
+  df3d_management::constructionEffects(0,&origin,2,2,2,mutated,hint);
+  CHECK(mutated);CHECK(hints==expected);
 }

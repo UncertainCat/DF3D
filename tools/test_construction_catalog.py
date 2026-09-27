@@ -325,12 +325,17 @@ def main():
     assert moved['list_revision'] != material_page['list_revision']
     result = finish(action=2, x=10, selections=[selection(material_page['list_revision'], mat=1)])
     assert not result['ok'] and result['message'] == 'List changed; refresh'
-    # A first-build coroutine failure retries on the next materials request.
+    # A failed coroutine remains stopped until reported, then explicitly retried.
     call(cancel_builders=True)
-    lua.execute('saved_decode=dfhack.matinfo.decode;dfhack.matinfo.decode=function() error("injected") end')
+    lua.execute('saved_decode=dfhack.matinfo.decode;dfhack.matinfo.decode=function() error("injected",0) end')
     call()
     call(step=2048)
     lua.execute('dfhack.matinfo.decode=saved_decode')
+    assert not call(step=2048)['active']
+    failed = call()
+    assert not failed['ok'] and failed['build_phase'] == 3
+    assert failed['message'] == 'Materials list unavailable: injected'
+    assert not call(step=2048)['active']
     retry = call()
     assert retry['ok'] and retry['build_phase'] == 1
     assert page()['build_phase'] == 0
@@ -370,7 +375,7 @@ def catalog_runtime():
       'ScrewPump','WaterWheel','GearAssembly','AxleHorizontal','AxleVertical','Rollers','Bridge',
       'FarmPlot','RoadDirt','RoadPaved','Windmill','Stockpile','Civzone','Weapon',
       'AnimalTrap','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox','Hive',
-      'Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels'},
+      'Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels','TradeDepot','GrateWall','BarsVertical','Floodgate'},
       workshop_type=enum{'Carpenters','Tool','Custom'},furnace_type=enum{'WoodFurnace','MagmaSmelter','Custom'},
       trap_type=enum{'Lever','CageTrap','StoneFallTrap','WeaponTrap','PressurePlate','TrackStop'},
       siegeengine_type=enum{'Ballista','Catapult'},
@@ -447,7 +452,8 @@ def extended_catalog():
         row=rows[key]
         assert (row['area_mode'],row['orientations'],row['max_depth']) == (mode,orient,depth)
         assert row['native_name'] == '' and row['custom_code'] == ''
-        assert row['max_width'] == (row['width'] if mode==1 else 31)
+        assert (row['max_width'],row['max_height']) == ((row['width'],row['height']) if mode==1 else (31,31))
+        assert (row['family'],row['subtype_key']) == tuple((key.split(':')+[''])[:2])
         assert [f['direction'] for f in row['footprints'].values()] == [i for i in range(8) if orient & (1<<i)]
     for n in (8,9):
         lua.execute('recipes[df.building_type.Chair]={};for i=1,... do table.insert(recipes[df.building_type.Chair],{quantity=1})end',n)

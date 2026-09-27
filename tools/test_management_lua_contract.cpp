@@ -100,7 +100,7 @@ int main(int argc,char** argv) {
     for(auto action:{A::Catalog,A::Preview,A::Place,A::Inspect,A::Remove,
                      A::InspectAtTile,A::RemoveConstruction,A::ConstructionMaterials}) {
       for(const auto& field:std::initializer_list<std::pair<const char*,int64_t>>{
-          {"list_revision",INT64_MAX},{"build_phase",2},{"placed",1024},
+          {"list_revision",INT64_MAX},{"build_phase",3},{"required",65535},{"placed",1024},
           {"skipped",1024},{"chunk_placed",1024},{"first_building",INT32_MAX},
           {"steps",2048},{"active_kinds",8}}) {
         const std::string prefix="return {ok=false,message='',"+std::string(field.first)+"=";

@@ -278,7 +278,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
     }
   }
-  if ((s.required() > 64 && !s.construction()) || s.jobs() > 1024 || s.build_stage() < -1 || s.max_stage() < -1)
+  // At most 1024 tiles, eight inputs, each with an int32 quantity. The
+  // legacy uint16 wire total is an additional, tighter representability cap.
+  constexpr uint64_t constructionRequiredCap = uint64_t(1024) * 8 * INT32_MAX;
+  if ((s.required() > (s.construction() ? constructionRequiredCap : 64)) || s.jobs() > 1024 || s.build_stage() < -1 || s.max_stage() < -1)
     return "invalid construction state";
   if (s.max_stage() >= 0 && s.build_stage() > s.max_stage()) return "invalid build stage";
   auto constructionTextOk = [](const flatbuffers::String* v, size_t cap) {
@@ -299,7 +302,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         v->center_x() >= -1 && v->center_x() < v->width() && v->center_y() >= -1 && v->center_y() < v->height());
   };
   if (const auto* c = s.construction()) {
-    if (c->filter() < -1 || c->filter() > 7 || c->first_building() < -1 || c->build_phase() > 2 ||
+    if (c->filter() < -1 || c->filter() > 7 || c->first_building() < -1 || c->build_phase() > 3 ||
         c->build_done() > c->build_total() || c->list_revision() > INT64_MAX ||
         uint64_t(c->placed()) + c->skipped() > 1024 ||
         !constructionTextOk(c->building_key(),64) || !constructionFiltersOk(c->filters()) ||

@@ -1344,7 +1344,7 @@ table BuildingDefinition { key:string (required); name:string; width:uint16 = 1;
   family:string; subtype_key:string; custom_code:string; native_name:string;
   // 0 unknown, 1 fixed, 2 sized, 3 per-tile, 4 stairs.
   area_mode:uint8;
-  // Direction bits 0-3, retracting bit 4; 0 unknown.
+  // Per-family facing bits: Bridge 0-3 directions, bit 4 retracting; SiegeEngine 0-7 facings (bit 4 Southeast); 0 unknown.
   orientations:uint8;
   max_width:uint16; max_height:uint16; max_depth:uint16;
   filters:[ConstructionFilter]; footprints:[ConstructionFootprint];
@@ -1458,7 +1458,8 @@ table ConstructionState {
   building_key:string; filter:int16 = -1;
   filters:[ConstructionFilter]; materials:[ConstructionMaterial];
   total:uint32; list_revision:uint64; estimated:bool;
-  build_phase:uint8; build_done:uint32; build_total:uint32;
+  build_phase:uint8; // Construction: 0 done, 1 read, 2 sort, 3 error (reported before explicit retry).
+  build_done:uint32; build_total:uint32;
   placed:uint32; skipped:uint32; first_building:int32 = -1;
   // One byte per tile: x fastest, then y, then z upward from origin.z.
   valid_mask:[ubyte];

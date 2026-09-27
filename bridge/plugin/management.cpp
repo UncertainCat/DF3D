@@ -21,6 +21,7 @@
 #include "management_result_contract.h"
 #include "retry_backoff.h"
 #include "builder_schedule.h"
+#include "construction_effects.h"
 // Same Windows prelude as df3d.cpp. The shared-memory transport (named
 // kernel objects) has no POSIX path yet; say so instead of failing on HANDLE.
 #ifndef WIN32_LEAN_AND_MEAN
@@ -67,23 +68,25 @@ size_t workOrderHoldingCount=0;
 constexpr uint32_t kWorkOrderStepBudget=2048;
 // Global job-kind bits. Extend the reserved entries when those Lua builders land.
 struct BuilderEntry { m::ManagementAction action; uint32_t domainMask; bool enabled; };
-constexpr std::array<BuilderEntry,16> builderTable{{
+constexpr std::array<BuilderEntry,df3d_builder::kBuilderKindCount> builderTable{{
   {m::ManagementAction::WorkOrderList,0x7,true}, // 0 candidates (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 1 task catalog (and filters)
   {m::ManagementAction::WorkOrderList,0x7,true}, // 2 item-condition estimates
   {m::ManagementAction::Catalog,0x8,true},     // 3 construction materials
   {m::ManagementAction::CitizenList,0x10,false}, // 4 citizens recalculation
-  {m::ManagementAction::Catalog,0,false}, // 5 areas settings labels
-  {m::ManagementAction::Catalog,0,false}, // 6 areas per-pile summary
-  {m::ManagementAction::Catalog,0,false}, // 7 areas candidates/locations
-  {m::ManagementAction::Catalog,0,false}, // 8 production add-task tree
-  {m::ManagementAction::Catalog,0,false}, // 9 production materials
-  {m::ManagementAction::Catalog,0,false}, // 10 production workers
-  {m::ManagementAction::Catalog,0,false}, // 11 production crops/seeds
-  {m::ManagementAction::Catalog,0,false}, // 12 reports tab lists
-  {m::ManagementAction::Catalog,0,false}, // 13 reports unit list
-  {m::ManagementAction::Catalog,0,false}, // 14 reports unit log
-  {m::ManagementAction::Catalog,0,false}, // 15 agreements history
+  {m::ManagementAction::Catalog,1u<<5,false}, // 5 areas settings labels
+  {m::ManagementAction::Catalog,1u<<6,false}, // 6 areas per-pile summary
+  {m::ManagementAction::Catalog,1u<<7,false}, // 7 areas candidates/locations
+  {m::ManagementAction::Catalog,1u<<8,false}, // 8 production add-task tree
+  {m::ManagementAction::Catalog,1u<<9,false}, // 9 production materials
+  {m::ManagementAction::Catalog,1u<<10,false}, // 10 production workers
+  {m::ManagementAction::Catalog,1u<<11,false}, // 11 production crops/seeds
+  {m::ManagementAction::Catalog,1u<<12,false}, // 12 reports tab lists
+  {m::ManagementAction::Catalog,1u<<13,false}, // 13 reports unit list
+  {m::ManagementAction::Catalog,1u<<14,false}, // 14 reports unit log
+  {m::ManagementAction::Catalog,1u<<15,false}, // 15 agreements history
+  {m::ManagementAction::Catalog,1u<<16,false}, // 16 stocks index
+  {m::ManagementAction::Catalog,1u<<17,false}, // 17 nobles candidate roster
 }};
 uint32_t builderActive=0, builderStart=0, remainingSteps=kWorkOrderStepBudget;
 uint64_t builderSteps=0,builderLastUs=0,builderMaxUs=0;
@@ -498,12 +501,9 @@ void run(color_ostream& out) {
     construction.skipped=uint32_t(number(L,"skipped",construction.skipped));
     construction.first_building=int32_t(number(L,"first_building",construction.first_building));
     constructionCacheEntries=uint32_t(number(L,"cache_entries"));constructionCacheIds=uint32_t(number(L,"cache_ids"));
-    if(number(L,"chunk_placed")>0) {
-      mutated=true;
-      if(r->origin())for(int z=r->origin()->z();z<r->origin()->z()+r->depth();++z)
-        for(int by=r->origin()->y()>>4;by<=(r->origin()->y()+r->height()-1)>>4;++by)
-          for(int bx=r->origin()->x()>>4;bx<=(r->origin()->x()+r->width()-1)>>4;++bx)areaHints.push_back({bx<<4,by<<4,z});
-    }
+    df3d_management::constructionEffects(number(L,"chunk_placed"),r->origin(),
+        r->width(),r->height(),r->depth(),mutated,
+        [&](int x,int y,int z){areaHints.push_back({x,y,z});});
   }
   if(ok && (action==m::ManagementAction::TradeUpdate || action==m::ManagementAction::TradeBring))mutated=true;
   if(ok && action>=m::ManagementAction::WorkOrderCreate && action<=m::ManagementAction::WorkOrderCondition)mutated=true;
@@ -691,7 +691,7 @@ void run(color_ostream& out) {
     construction.building_key=str("building_key",64);construction.filter=int16_t(n("filter",-1,7,-1));construction.filters=readFilters();
     construction.materials.clear();each("materials",128,[&](){ConstructionMaterial v;v.item_type=int16_t(n("item_type",-1,INT16_MAX,-1));v.item_subtype=int16_t(n("item_subtype",-1,INT16_MAX,-1));v.mat_type=int16_t(n("mat_type",-1,INT16_MAX,-1));v.mat_index=int32_t(n("mat_index",-1,INT32_MAX,-1));v.name=str("name",128);v.caption=str("caption",64);v.count=uint32_t(n("count",1,UINT32_MAX));construction.materials.push_back(std::move(v));});
     construction.total=uint32_t(n("total",0,UINT32_MAX));construction.list_revision=n("list_revision",0,INT64_MAX);construction.estimated=boolean(L,"estimated");
-    construction.build_phase=uint8_t(n("build_phase",0,2));construction.build_done=uint32_t(n("build_done",0,UINT32_MAX));construction.build_total=uint32_t(n("build_total",0,UINT32_MAX));
+    construction.build_phase=uint8_t(n("build_phase",0,3));construction.build_done=uint32_t(n("build_done",0,UINT32_MAX));construction.build_total=uint32_t(n("build_total",0,UINT32_MAX));
     construction.valid_mask.clear();construction.pieces.clear();
     auto bytes=[&](const char* key,uint8_t max,std::vector<uint8_t>& values){each(key,1024,[&](){if(!lua_isinteger(L,-1) || lua_tointeger(L,-1)<0 || lua_tointeger(L,-1)>max)invalid=true;else values.push_back(uint8_t(lua_tointeger(L,-1)));});};
     bytes("valid_mask",1,construction.valid_mask);bytes("pieces",3,construction.pieces);
@@ -845,7 +845,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
       auto rejectedReply=sh::ClientMailbox::open(m::kManagementRegionName,
           sh::atomicLoadAcquire(&m::sessionOwner(region)->generation),r->client_id(),m::kManagementVersion,m::kManagementCapacity);
       if(rejectedReply && rejectedReply->accept(r->seq())) reply=std::move(rejectedReply);
-      rejectRequest(out,warnedMalformedRequest,"Invalid management request: "+*invalid);
+      rejectRequest(out,warnedMalformedRequest,*invalid=="Must span multiple elevations" ? *invalid : "Invalid management request: "+*invalid);
       return;
     }
     auto nextReply=sh::ClientMailbox::open(m::kManagementRegionName,

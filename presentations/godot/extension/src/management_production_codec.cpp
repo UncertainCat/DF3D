@@ -172,6 +172,28 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
   return true;
 }
 
+// Work-order payloads (action is a required INT, 20..27):
+// List(20): query, cursor. Inspect(21): required id.
+// Create(22): required recipe, remaining; optional frequency, workshop_id, max_workshops.
+// Update(23): required id, expected_revision; remaining, frequency, workshop_id, max_workshops.
+// Delete(24): required id, expected_revision (bridge currently refuses retirement).
+// Condition(25): required id, expected_revision; condition_kind, condition_index,
+//   remove_condition, compare, threshold, item_type, target_order, dependency.
+// Candidates(26): candidate_kind, query, cursor. Catalog(27): no additional keys.
+// All numeric keys are INT: id -1..INT32_MAX (-1 none); expected_revision >0
+// for edits, from Inspect/List revision (otherwise 0). The reader accepts 0;
+// the model enforces >0 for actions 23..25 ("work order revision required").
+// cursor 0..UINT32_MAX.
+// recipe (Catalog key) and query are STRING, at most 128 UTF-8 bytes each.
+// remaining -1..32767 (-1 unchanged, Create requires >=0; 0 indefinite);
+// frequency -1..4 (-1 unchanged/OneTime; 0 OneTime, 1 Daily, 2 Monthly,
+// 3 Seasonally, 4 Yearly); workshop_id -2..INT32_MAX (-2 unchanged, -1 any shop);
+// max_workshops -1..32767 (-1 unchanged, 0 unlimited); condition_kind 0 item/1 order;
+// condition_index -1..63 (-1 new); remove_condition BOOL (default false);
+// compare -1..5 (-1 unset; AtLeast, AtMost, GreaterThan, LessThan, Exactly, Not);
+// threshold -1..INT32_MAX (-1 unset); item_type int16 -1..32767 (-1 unset);
+// target_order -1..INT32_MAX (-1 none); dependency -1..1 (-1 unset, 0 Activated,
+// 1 Completed); candidate_kind 0 orders/1 workshops/2 item types (default 0).
 bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
@@ -203,6 +225,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
   String recipe = data.get("recipe", String()), query = data.get("query", String());
   w.recipe = recipe.utf8().get_data();
   w.query = query.utf8().get_data();
+  if (w.recipe.size() > 128 || w.query.size() > 128) valid = false;
   if (!valid) {
     error = "Invalid bounded work order request";
     return false;

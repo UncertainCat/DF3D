@@ -1,5 +1,6 @@
 extends SceneTree
 const Service = preload("res://scripts/semantic_action_service.gd")
+const Contract = preload("res://scripts/management_contract.gd")
 var failures := 0
 class FakeWorld:
 	extends RefCounted
@@ -25,6 +26,7 @@ func _initialize(): call_deferred("run")
 func run():
 	test_queued_cancellation()
 	test_domain_routing()
+	test_work_orders()
 	test_transport_replacement()
 	test_new_domain_detach()
 	var world := FakeWorld.new()
@@ -211,3 +213,43 @@ func test_new_domain_detach():
 		check(service.last_detached_mutation(domain).detached, "new domain late receipt retains detached ownership")
 		check(world.calls.size() == 1 and world.calls[0].domain == domain, "detached new domain mutation is never replayed")
 		service.free()
+
+func test_work_orders():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	var callback := func(t, r, q): observed.append([t, r, q])
+	var refusal := "Removal is unavailable until safe work-order retirement is supported"
+	for action in range(20,28):
+		var request := {"action":action,"id":0,"expected_revision":9}
+		var ticket := service.submit("work_orders", request, callback)
+		var before := observed.size()
+		service.poll()
+		check(world.calls.back() == {"domain":"work_orders","request":request}, "all eight work-order actions route")
+		var status: int = Contract.ManagementStatus.Rejected if action == 24 else Contract.ManagementStatus.Ok
+		world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),
+			"status":status,"action":action,"message":refusal if action == 24 else "Observed"}
+		service.poll()
+		check(observed.size() == before+1 and observed.back()[0] == ticket and observed.back()[2] == request, "work-order reply reaches matching ticket")
+		check(service.result(ticket).status == status, "work-order status retained")
+		check(service._outcomes.has(ticket) == (action >= 22 and action <= 25), "only work-order mutations retain receipts")
+		check(Contract.is_mutation(action) == (action >= 22 and action <= 25), "work-order mutation classification")
+		if action == 24:
+			check(service.result(ticket).message == refusal and observed.back()[1].message == refusal, "bridge Delete refusal reaches observer")
+		var calls := world.calls.size()
+		for index in 3: service.poll(1.0)
+		check(world.calls.size() == calls and observed.size() == before+1, "terminal work-order reply never replays")
+	var removal := {"action":25,"id":0,"expected_revision":9,"condition_index":0,"remove_condition":true}
+	var ticket := service.submit("work_orders", removal, callback)
+	service.poll()
+	check(world.calls.back().request == removal, "remove condition reaches transport intact")
+	world.state = {"world_epoch":5,"revision":world.calls.size()+1,"request_seq":world.calls.size(),
+		"status":Contract.ManagementStatus.Rejected,"action":25,"message":refusal}
+	service.poll()
+	check(service.result(ticket).message == refusal and service.result(ticket).status == Contract.ManagementStatus.Rejected, "condition removal refusal reaches ticket")
+	check(service._outcomes.has(ticket), "rejected removal retains mutation receipt")
+	var count := world.calls.size()
+	for index in 3: service.poll(1.0)
+	check(world.calls.size() == count, "refused removal never replays")
+	service.free()

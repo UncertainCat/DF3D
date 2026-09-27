@@ -44,31 +44,52 @@ def main():
     def observed(order_id):
         result = call(21, id=order_id)
         assert result["ok"], result["message"]
+        assert len(result["orders"]) == 1
         return result["orders"][1]
     def edit(action, order_id, **fields):
         return call(action, id=order_id, expected_revision=observed(order_id)["revision"], **fields)
-    assert len(call(27)["recipes"]) == 3
+    catalog = call(27)
+    assert catalog["ok"] and len(catalog["recipes"]) == 3
+    assert len(catalog["managers"]) == 0
+    assert catalog["recipes"][1]["key"] == "Carpenters:10:-1"
+    assert catalog["recipes"][1]["name"] == "make bed"
     first = call(22, recipe="Carpenters:10:-1", remaining=5)["orders"][1]
     assert first["id"] == 0 and first["total"] == 5 and not first["validated"] and not first["active"]
     stale = first["revision"]
     lua.execute("o=df.global.world.manager_orders.all[0];o.amount_left=3;o.status.validated=true;o.status.active=true")
-    assert not call(23, id=0, expected_revision=stale, remaining=7)["ok"]
+    native = observed(0)
+    assert native["validated"] and native["active"]
+    rejected = call(23, id=0, expected_revision=stale, remaining=7)
+    assert not rejected["ok"] and rejected["message"] == "Work order changed; inspect again before editing"
     assert not edit(23, 0, remaining=6)["ok"]  # native reapproval of partial batches is unverified
     assert not edit(23, 0, frequency=1)["ok"]
     assert not observed(0)["editable"] and observed(0)["remaining"] == 3
+    assert "batch has started" in observed(0)["reason"]
+    assert edit(23, 0, remaining=6)["message"] == observed(0)["reason"]
     lua.execute("df.global.world.manager_orders.all[0].amount_left=5")
     assert edit(23, 0, remaining=6)["orders"][1]["total"] == 6
-    assert not observed(0)["validated"]
+    assert not observed(0)["validated"] and not observed(0)["active"]
     lua.execute("df.global.world.manager_orders.all[0].amount_left=3")
     assert not edit(23, 0, remaining=0)["ok"]  # cannot erase completed history
     lua.execute("df.global.world.manager_orders.all[0].amount_left=6")
     second = call(22, recipe="Carpenters:10:-1", remaining=0)["orders"][1]["id"]
     assert observed(second)["total"] == 0
+    lua.execute("df.global.world.manager_orders.all[1].status.validated=true;df.global.world.manager_orders.all[1].status.active=true")
     assert edit(25, second, compare=3, threshold=100, item_type=0)["ok"]
+    assert not observed(second)["validated"] and not observed(second)["active"]
     condition = observed(second)["conditions"][1]
     assert condition["index"] == 0 and condition["editable"]
+    assert condition["kind"] == 0 and condition["compare"] == 3 and condition["threshold"] == 100
+    assert condition["item_type"] == 0 and condition["description"] == "BED LessThan 100"
     assert edit(25, second, condition_kind=1, target_order=0, dependency=1)["ok"]
-    assert not edit(25, 0, condition_kind=1, target_order=second, dependency=0)["ok"]
+    cycle = edit(25, 0, condition_kind=1, target_order=second, dependency=0)
+    assert not cycle["ok"] and cycle["message"] == "Dependency target missing or would form a cycle"
+    duplicate = edit(25, second, condition_kind=1, target_order=0, dependency=1)
+    assert not duplicate["ok"] and duplicate["message"] == "Duplicate order dependency"
+    self_target = edit(25, second, condition_kind=1, target_order=second, dependency=0)
+    assert not self_target["ok"] and self_target["message"] == "Dependency target missing or would form a cycle"
+    dep = observed(second)["conditions"][2]
+    assert dep["kind"] == 1 and dep["target_order"] == 0 and dep["dependency"] == 1 and not dep["satisfied"]
     assert not edit(24, 0)["ok"]  # dependent order exists
     assert not edit(25, second, condition_kind=1, condition_index=0, remove_condition=True)["ok"]
     assert len(observed(second)["conditions"]) == 2  # never frees borrowed storage
@@ -76,11 +97,13 @@ def main():
     before = observed(0)["revision"]
     lua.execute("df.global.world.manager_orders.all[0].items.elements[0].contains:insert('#',3)")
     assert not call(23, id=0, expected_revision=before, max_workshops=2)["ok"]
-    assert edit(23, 0, max_workshops=2)["ok"]
+    assert edit(23, 0, max_workshops=2)["orders"][1]["max_workshops"] == 2
     assert lua.eval("df.global.world.manager_orders.all[0].items.elements[0].contains[0]") == 3
     lua.execute("df.global.world.jobs.list.next={item={id=7,order_id=0}}")
     assert not observed(0)["editable"]
     assert "outstanding jobs" in observed(0)["reason"]
+    assert observed(0)["generated_jobs"][1] == 7
+    assert edit(23, 0, remaining=4)["message"] == observed(0)["reason"]
     assert not edit(23, 0, frequency=2)["ok"]
     assert not edit(25, 0, condition_kind=0, item_type=0, compare=0, threshold=0)["ok"]
     assert not edit(24, 0)["ok"] and not edit(23, 0, remaining=4)["ok"]
@@ -92,14 +115,73 @@ def main():
     assert lua.eval("#df.global.world.manager_orders.all") == 2
     assert not lua.eval("df.global.world.manager_orders.all[0].deleted")
     assert len(observed(second)["conditions"]) == 2
+    refusal = "Removal is unavailable until safe work-order retirement is supported"
+    for result in [edit(24, 0), edit(25, second, condition_index=0, remove_condition=True)]:
+        assert not result["ok"] and result["message"] == refusal
+    for frequency in range(5):
+        lua.execute("df.global.world.manager_orders.all[0].status.validated=true;df.global.world.manager_orders.all[0].status.active=true")
+        row = edit(23, 0, frequency=frequency)["orders"][1]
+        assert row["frequency"] == frequency and not row["validated"] and not row["active"]
+    row = observed(second)["conditions"][1]
+    assert row["threshold"] == 90 and row["compare"] == 3 and row["item_type"] == 0
+    lua.execute("df.global.world.manager_orders.all[1].item_conditions[0].mat_type=2")
+    custom = observed(second)["conditions"][1]
+    assert not custom["editable"] and "custom filters preserved; read only" in custom["description"]
+    result = edit(25, second, condition_index=0, item_type=0, compare=0, threshold=1)
+    assert not result["ok"] and result["message"] == "Unsupported custom condition is read only"
+    assert lua.eval("df.global.world.manager_orders.all[1].item_conditions[0].mat_type") == 2
+    lua.execute(r'''
+    df.workshop_type[0]='Carpenters';df.workshop_type[1]='Kitchen'
+    local function shop(id,kind)
+     return {id=id,type=kind,centerx=id,centery=0,z=0,workshop=true,
+      getBuildStage=function()return 3 end,getMaxBuildStage=function()return 3 end}
+    end
+    df.global.world.buildings.all=vec{shop(4,0),shop(5,1),shop(6,0)}
+    df.building.find=function(id)for _,b in ipairs(df.global.world.buildings.all)do if b.id==id then return b end end end
+    df.building_workshopst={is_instance=function(_,b)return b.workshop end}
+    df.building_furnacest={is_instance=function()return false end}
+    dfhack.maps.getTileFlags=function()return {hidden=false}end
+    dfhack.buildings.getName=function(b)return b.type==0 and "Carpenter's Workshop" or "Kitchen" end
+    ''')
+    assert observed(0)["workshop_id"] == -1
+    assert not call(22, recipe="Carpenters:10:-1", remaining=1, workshop_id=5)["ok"]
+    bound = call(22, recipe="Carpenters:10:-1", remaining=7, frequency=3, workshop_id=4, max_workshops=2)["orders"][1]
+    assert bound["workshop_id"] == 4 and bound["frequency"] == 3 and bound["max_workshops"] == 2
+    assert bound["total"] == 7 and bound["remaining"] == 7 and not bound["validated"] and not bound["active"]
+    assert not edit(23, bound["id"], workshop_id=5)["ok"]
+    assert edit(23, bound["id"], workshop_id=6)["orders"][1]["workshop_id"] == 6
+    assert edit(23, bound["id"], workshop_id=-1, max_workshops=0)["orders"][1]["workshop_id"] == -1
+    assert observed(bound["id"])["max_workshops"] == 0
+    shops = call(26, candidate_kind=1, query="carpenter", cursor=5)
+    assert shops["ok"] and len(shops["choices"]) == 1 and shops["next_cursor"] == 0
+    assert shops["choices"][1]["id"] == 6 and shops["choices"][1]["name"] == "Carpenter's Workshop #6"
+    items = call(26, candidate_kind=2, query="bar", cursor=1)
+    assert items["ok"] and len(items["choices"]) == 1 and items["next_cursor"] == 0
+    assert items["choices"][1]["id"] == 2 and items["choices"][1]["name"] == "BAR #2"
+    # Replace with distinct identities for deterministic paging across incremental scans.
+    lua.execute("df.global.world.manager_orders.all=vec{}")
     lua.execute("for id=1100,1,-1 do local o=df.manager_order:new();o.id=id;o.amount_total=2;o.amount_left=2;df.global.world.manager_orders.all:insert('#',o)end")
+    page = call(20)
+    assert len(page["orders"]) == 16 and page["orders"][1]["id"] == 1 and page["orders"][16]["id"] == 16
+    assert page["next_cursor"] == 17
+    next_page = call(20, cursor=page["next_cursor"])
+    assert len(next_page["orders"]) == 16 and next_page["orders"][1]["id"] == 17 and next_page["next_cursor"] == 33
     page = call(20, query="1100")
     assert page["orders"][1]["id"] == 1100
+    assert len(page["orders"]) == 1 and page["next_cursor"] == 0
+    choices = call(26, candidate_kind=0)
+    assert len(choices["choices"]) == 128 and choices["next_cursor"] == 129
+    filtered = call(26, candidate_kind=0, query="1100", cursor=1000)
+    assert len(filtered["choices"]) == 1 and filtered["choices"][1]["name"] == "Bed order 1100 #1100"
+    assert filtered["next_cursor"] == 0
     page = call(26, cursor=1000)
     assert page["choices"][1]["id"] == 1000 and len(page["choices"]) == 101
     lua.execute("df.global.world.units.active=vec{{id=7,job={}}};dfhack.units.isCitizen=function()return true end;dfhack.units.isActive=function()return true end;dfhack.units.isDead=function()return false end;dfhack.units.getReadableName=function()return 'Manager' end;dfhack.units.getNoblePositions=function()return {{entity={id=0},position={name={[0]='Manager'},responsibilities={[4]=true}}}}end;df.global.world.buildings.other.ACTIVITY_ZONE=vec{{id=3,type=4,assigned_unit_id=7}}")
     manager = call(27)["managers"][1]
     assert manager["unit_id"] == 7 and manager["offices"][1] == 3
+    assert manager["name"] == "Manager" and manager["position"] == "Manager" and manager["job"] == "No current job"
+    lua.execute("df.global.world.units.active[0].job.current_job={};dfhack.job.getName=function()return 'Validate work orders' end")
+    assert call(27)["managers"][1]["job"] == "Validate work orders"
     print("WORK_ORDERS_ADAPTER PASS")
 
 

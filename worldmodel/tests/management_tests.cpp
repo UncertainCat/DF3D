@@ -409,7 +409,7 @@ TEST_CASE("work orders share ownership and retain revision and unchanged-field s
 TEST_CASE("work order inputs reject narrowing overflow and ambiguous condition edits") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   auto [seq,client]=claim(p,*c);
-  for(int which=0;which<10;++which){
+  for(int which=0;which<11;++which){
     wm::ManagementRequest r;r.action=wm::ManagementAction::WorkOrderCreate;
     r.workOrder.recipe="builtin:69:-1";r.workOrder.remaining=1;r.workOrder.frequency=0;
     if(which==0)r.workOrder.remaining=32768;
@@ -422,7 +422,9 @@ TEST_CASE("work order inputs reject narrowing overflow and ambiguous condition e
     if(which==7){r.action=wm::ManagementAction::WorkOrderDelete;r.workOrder.id=0;r.workOrder.expectedRevision=0;}
     if(which>=8){r.action=wm::ManagementAction::WorkOrderCondition;r.workOrder.id=0;r.workOrder.expectedRevision=9;
       r.workOrder.conditionKind=which==8?2:0;r.workOrder.conditionIndex=which==9?-2:-1;
-      r.workOrder.compare=3;r.workOrder.threshold=1;r.workOrder.itemType=2;}
+      r.workOrder.compare=3;r.workOrder.threshold=1;r.workOrder.itemType=2;
+      if(which==10){r.workOrder.conditionKind=1;r.workOrder.targetOrder=0;r.workOrder.dependency=1;}}
+
     CHECK(c->send(r)==0);CHECK_FALSE(c->lastError().empty());
   }
   wm::ManagementRequest forever;forever.action=wm::ManagementAction::WorkOrderCreate;
@@ -435,20 +437,20 @@ TEST_CASE("work order response keeps native authorization conditions and manager
   wm::ManagementRequest inspect;inspect.action=wm::ManagementAction::WorkOrderInspect;inspect.workOrder.id=0;
   seq=c->send(inspect);REQUIRE(seq>0);p.pop();
   flatbuffers::FlatBufferBuilder b;
-  auto countDescription=b.CreateString("Beds less than 10");
+  auto countDescription=b.CreateString("BLOCKS LessThan 10");
   mm::WorkOrderConditionBuilder count(b);count.add_kind(0);count.add_index(0);count.add_description(countDescription);
   count.add_editable(true);count.add_compare(3);count.add_threshold(10);count.add_item_type(2);auto countRecord=count.Finish();
-  auto depDescription=b.CreateString("After order 9 completes");
+  auto depDescription=b.CreateString("Order #9 Completed");
   mm::WorkOrderConditionBuilder dependency(b);dependency.add_kind(1);dependency.add_index(0);
   dependency.add_description(depDescription);dependency.add_target_order(9);dependency.add_dependency(1);
   dependency.add_satisfied(true);dependency.add_editable(true);auto dependencyRecord=dependency.Finish();
   auto conditions=b.CreateVector(std::vector<flatbuffers::Offset<mm::WorkOrderCondition>>{countRecord,dependencyRecord});
   auto generated=b.CreateVector(std::vector<int32_t>{555});auto name=b.CreateString("Make wooden bed");
-  auto reason=b.CreateString("Native approval observed");
+  auto reason=b.CreateString("Finish outstanding jobs before editing");
   mm::WorkOrderInfoBuilder order(b);order.add_id(0);order.add_revision((uint64_t(1)<<40)+7);order.add_name(name);
   order.add_total(12);order.add_remaining(3);order.add_frequency(1);order.add_validated(true);order.add_active(false);
   order.add_finished_year(106);order.add_finished_tick(400000);order.add_workshop_id(4);order.add_max_workshops(2);
-  order.add_generated_jobs(generated);order.add_conditions(conditions);order.add_editable(true);order.add_reason(reason);
+  order.add_generated_jobs(generated);order.add_conditions(conditions);order.add_editable(false);order.add_reason(reason);
   auto orderRecord=order.Finish();
   auto offices=b.CreateVector(std::vector<int32_t>{1492,1493});auto managerName=b.CreateString("Urist");
   auto position=b.CreateString("Manager");auto job=b.CreateString("Validate work orders");
@@ -456,7 +458,13 @@ TEST_CASE("work order response keeps native authorization conditions and manager
   manager.add_position(position);manager.add_offices(offices);manager.add_job(job);auto managerRecord=manager.Finish();
   auto orders=b.CreateVector(std::vector<flatbuffers::Offset<mm::WorkOrderInfo>>{orderRecord});
   auto managers=b.CreateVector(std::vector<flatbuffers::Offset<mm::ManagerRole>>{managerRecord});
+  auto recipe=mm::CreateProductionRecipe(b,b.CreateString("Carpenters:10:-1"),b.CreateString("make bed"));
+  auto recipes=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionRecipe>>{recipe});
+  auto choice=mm::CreateAreaChoice(b,4,b.CreateString("Carpenter's Workshop #4"));
+  auto choices=b.CreateVector(std::vector<flatbuffers::Offset<mm::AreaChoice>>{choice});
+  auto detail=b.CreateString("Manager observations");
   mm::WorkOrderStateBuilder domain(b);domain.add_orders(orders);domain.add_managers(managers);
+  domain.add_recipes(recipes);domain.add_choices(choices);domain.add_detail(detail);
   domain.add_next_cursor(71);auto workOrder=domain.Finish();
   mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);state.add_revision(3);
   state.add_world_epoch(7);state.add_client_id(client);state.add_request_seq(seq);
@@ -470,11 +478,25 @@ TEST_CASE("work order response keeps native authorization conditions and manager
   CHECK(observed.validated);CHECK_FALSE(observed.active);CHECK(observed.finishedYear==106);CHECK(observed.finishedTick==400000);
   CHECK(observed.workshopId==4);REQUIRE(observed.generatedJobs.size()==1);CHECK(observed.generatedJobs[0]==555);
   REQUIRE(observed.conditions.size()==2);CHECK(observed.conditions[0].threshold==10);
-  CHECK(observed.conditions[1].targetOrder==9);CHECK(observed.conditions[1].satisfied);
+  CHECK(observed.name=="Make wooden bed");CHECK(observed.reason=="Finish outstanding jobs before editing");
+  CHECK(observed.frequency==1);CHECK(observed.maxWorkshops==2);CHECK_FALSE(observed.editable);
+  const auto& item=observed.conditions[0];CHECK(item.kind==0);CHECK(item.index==0);
+  CHECK(item.description=="BLOCKS LessThan 10");CHECK(item.editable);CHECK(item.compare==3);
+  CHECK(item.itemType==2);CHECK(item.targetOrder==-1);CHECK(item.dependency==-1);CHECK_FALSE(item.satisfied);
+  const auto& dep=observed.conditions[1];CHECK(dep.kind==1);CHECK(dep.index==0);
+  CHECK(dep.description=="Order #9 Completed");CHECK(dep.editable);CHECK(dep.compare==-1);
+  CHECK(dep.threshold==-1);CHECK(dep.itemType==-1);CHECK(dep.targetOrder==9);CHECK(dep.dependency==1);CHECK(dep.satisfied);
+  REQUIRE(value.recipes.size()==1);CHECK(value.recipes[0].key=="Carpenters:10:-1");
+  CHECK(value.recipes[0].name=="make bed");CHECK(value.recipes[0].requirements.empty());
+  REQUIRE(value.choices.size()==1);CHECK(value.choices[0].id==4);CHECK(value.choices[0].name=="Carpenter's Workshop #4");
+  CHECK(value.detail=="Manager observations");
   CHECK(value.managers[0].unitId==42);CHECK(value.managers[0].name=="Urist");
-  REQUIRE(value.managers[0].offices.size()==2);CHECK(value.managers[0].offices[1]==1493);
+  CHECK(value.managers[0].position=="Manager");CHECK(value.managers[0].job=="Validate work orders");
+  REQUIRE(value.managers[0].offices.size()==2);CHECK(value.managers[0].offices[0]==1492);CHECK(value.managers[0].offices[1]==1493);
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,client,seq);REQUIRE(c->poll());
   CHECK(c->state().workOrder.orders.empty());CHECK(c->state().workOrder.managers.empty());
+  CHECK(c->state().workOrder.recipes.empty());CHECK(c->state().workOrder.choices.empty());
+  CHECK(c->state().workOrder.detail.empty());CHECK(c->state().workOrder.nextCursor==0);
 }
 TEST_CASE("citizen commands retain stable unit identity and guarded detail index zero") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);

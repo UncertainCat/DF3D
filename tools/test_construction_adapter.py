@@ -3,6 +3,8 @@ from pathlib import Path
 import unittest
 from test_construction_catalog import catalog_runtime
 
+# DFHack signatures/return shapes: see test_construction_catalog.API_MOCKS audit.
+# designateRemove: Lua API.rst:2821 returns true,was_only_planned (or false).
 # Fixture producibility | construction.lua emitting functions (line numbers are historical).
 # Catalog names/modes/flags/reasons | definitions:65-98; filter_row:50.
 # Site refusals and masks | tile_rule:139-177; placement:392-394.
@@ -36,25 +38,25 @@ class Adapter(unittest.TestCase):
         dfhack.maps={isValidTilePos=function()return valid end,
           getTileFlags=function(p)return flags,{building=occupied[p.x..':'..p.y..':'..p.z] and 1 or 0}end,
           getTileType=function(p)return (p.x<0 or p.y<0) and adjacent_shape or shape end,
-          getWalkableGroup=function(p)return p.group or 1 end,
+          getWalkableGroup=walkable_group,
           getTileBlock=function()return {block_events={}}end}
         df.construction={find=function()return existing end}
-        dfhack.with_finalize=function(clean,fn)local a,b=fn();clean();return a,b end
+        dfhack.with_finalize=finalize
         df.delete=function()end
         dfhack.buildings.allocInstance=function()return {room={}}end
-        dfhack.buildings.setSize=function()return free end
+        dfhack.buildings.setSize=function(b,w,h,d)if not free then return false end;return true,w,h,w*h,w*h end
         dfhack.buildings.checkFreeTiles=function()return free end
         created={};dfhack.buildings.constructBuilding=function(v)
           created[#created+1]=v;for _,item in ipairs(v.items)do item.flags.in_job=true end
           return {id=100+#created} end
-        dfhack.items={getContainer=function(i)return i.container end,getPosition=function(i)return i.pos end,
+        dfhack.items={getContainer=function(i)return i.container end,getPosition=position,
           getGeneralRef=function()end}
         dfhack.units={isDead=function()return false end,isActive=function()return true end,
-          isCitizen=function()return true end,getPosition=function()return {x=0,y=0,z=0}end}
+          isCitizen=function()return true end,getPosition=position}
         dfhack.job={isSuitableItem=function()return true end,isSuitableMaterial=function()return true end}
         dfhack.matinfo={decode=function(i)if i.nameless then return end
           return {toString=function()return i.name or 'stone'end}end}
-        df.global.world.units={active=vec{{}}}
+        df.global.world.units={active=vec{{pos={x=0,y=0,z=0}}}}
         stock={};df.item={find=function(id)return stock[id]end}
         function fill(n,groups)
           stock={};local all={};for i=1,n do
@@ -373,7 +375,7 @@ class Adapter(unittest.TestCase):
     def test_material_rows(self):
         self.lua.execute('''fill(6);stock[1].mat=2;stock[1].pos.x=7;stock[2].mat=1;stock[2].pos.x=1
           stock[3].mat=1;stock[3].flags.on_ground=false;stock[3].container={flags={on_ground=true},getType=function()return 97 end}
-          stock[4].nameless=true;stock[5].flags.forbid=true;stock[6].pos.group=2
+          stock[4].nameless=true;stock[5].flags.forbid=true;stock[6].pos.z=1;walk_groups[stock[6].pos.x..':0:1']=2
           stock[1].name=string.rep('n',129)''')
         self.reset();p=self.page()
         self.assertEqual([(r['mat_index'],r['count']) for r in p['materials'].values()],[(1,2),(2,1)])
@@ -476,7 +478,7 @@ class Adapter(unittest.TestCase):
           dfhack.buildings.markedForRemoval=function()return marked end
           dfhack.buildings.deconstruct=function()return cancel end
           dfhack.buildings.getName=function()return ''end
-          dfhack.constructions={findAtTile=function()return terrain end,designateRemove=function()return true end}''')
+          dfhack.constructions={findAtTile=function()return terrain end,designateRemove=function(p)return true,false end}''')
         self.refusal('Building changed; inspect again',action=4,definition='Bed',building_id=1)
         self.lua.execute('marked=true')
         self.refusal('Already marked for removal',action=4,building_id=1)
@@ -504,6 +506,78 @@ class Adapter(unittest.TestCase):
         self.assertEqual(self.finish(action=6)['message'],'Native construction removal designated')
         self.lua.execute('valid=false')
         self.refusal('Construction tile is hidden or outside the map',action=6)
+
+
+class Lane(unittest.TestCase):
+    def test_api_position_contract(self):
+        lua = catalog_runtime()
+        # These mocks must fail on the exact tuple-to-coord bug from review D-2.
+        self.assertEqual(lua.eval("position({pos={x=1,y=2,z=3}})"), (1, 2, 3))
+        self.assertIsNone(lua.eval("position({})"))
+        self.assertFalse(lua.eval("pcall(walkable_group,1,2,3)")[0])
+        self.assertEqual(lua.eval("walkable_group(xyz2pos(position({pos={x=1,y=2,z=3}})))"), 1)
+        self.assertEqual(lua.eval("select('#',finalize(function()end,function()return 1,nil,3 end))"), 3)
+        lua.execute("cleaned=false;pcall(finalize,function()cleaned=true end,function()error('injected')end)")
+        self.assertTrue(lua.globals().cleaned)
+
+    def test_wait_preconditions_and_restore(self):
+        lua = catalog_runtime()
+        lua.execute(r"""
+        package.preload.json=function()return {decode=function()return request end,
+          encode=function(v)response=v;return '' end}end
+        io.open=function()return {read=function()return '' end,write=function()end,close=function()end}end
+        print=function()end
+        focus={'dwarfmode/Default'};top={};wall=1000
+        df.d_init_autosave={NONE=0};df.viewscreen_dwarfmodest={is_instance=function(_,s)return s==top end}
+        df.global.pause_state=true;df.global.cur_year=0;df.global.cur_year_tick=10
+        df.global.d_init={feature={autosave=0},announcements={flags=vec{{whole=0}}}}
+        df.global.world.status={popups=vec{}}
+        dfhack.getTickCount=function()return wall end
+        dfhack.gui={getCurViewscreen=function(skip)return top end,getFocusStrings=function(s)assert(s==top);return focus end}
+        dfhack.constructions={findAtTile=function(p)return completed end}
+        df3d_construction_acceptance={prefs={autosave=3,announcements={[0]=7}}}
+        """)
+        source = (Path(__file__).parent / 'smoke/construction-acceptance-verify.lua').read_text()
+        def verify(op):
+            lua.globals().request = lua.table_from(dict(op=op, origin=dict(x=0,y=0,z=0)), recursive=True)
+            lua.execute(source, 'memory', '1')
+            return lua.globals().response
+        # Independently exercise the lane's citizen tuple conversion (review #1).
+        lua.execute(r"""
+        df.global.world.units={active=vec{{pos={x=0,y=0,z=0}}}}
+        df.global.world.items={all=vec{}}
+        dfhack.units={getPosition=position,isActive=function(u)return true end,
+          isDead=function(u)return false end,isCitizen=function(u)return true end}
+        dfhack.maps={getWalkableGroup=walkable_group}
+        df3d_construction_acceptance.incomplete={};df3d_construction_acceptance.binned={}
+        request={op='materials',definition='Chair',filter=0,origin={x=0,y=0,z=0},rows={}}
+        """)
+        lua.execute(source, 'memory', '1')
+        self.assertEqual(lua.globals().response['status'], 'incomplete')
+        self.assertEqual(lua.globals().response['reason'], 'binned items unavailable')
+        lua.execute("df.global.world.status.popups=vec{{text='First popup'},{text='Second popup'}}")
+        result = verify('wait_start')
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['reason'], 'wait requires no announcement popups (count=2, first=First popup)')
+        self.assertIsNone(lua.globals().df3d_construction_acceptance.wait)
+        lua.execute("df.global.world.status.popups=vec{};focus={'dwarfmode/Info'}")
+        self.assertEqual(verify('wait_start')['reason'], 'wait requires default fortress screen; screen=dwarfmode/Info')
+        lua.execute("focus={'dwarfmode/Default'}")
+        self.assertTrue(verify('wait_start')['waiting'])
+        lua.execute('df.global.pause_state=false;wall=1100;df.global.cur_year_tick=11')
+        self.assertTrue(verify('wait_poll')['waiting'])
+        lua.execute("df.global.pause_state=true;df.global.world.status.popups=vec{{text='New popup'}}")
+        self.assertEqual(verify('wait_poll')['reason'], 'game paused mid-wait; screen=dwarfmode/Default; popup count=1')
+        lua.execute('df.global.pause_state=false')
+        with self.assertRaisesRegex(Exception, 'DF must be paused before restoring fixture preferences'):
+            lua.execute(source, 'memory', 'restore_prefs')
+        self.assertEqual(lua.eval('df.global.d_init.feature.autosave'), 0)
+        self.assertEqual(lua.eval('df.global.d_init.announcements.flags[0].whole'), 0)
+        lua.execute(source, 'memory', 'pause')
+        lua.execute(source, 'memory', 'final')
+        lua.execute(source, 'memory', 'restore_prefs')
+        self.assertEqual(lua.eval('df.global.d_init.feature.autosave'), 3)
+        self.assertEqual(lua.eval('df.global.d_init.announcements.flags[0].whole'), 7)
 
 
 if __name__ == '__main__':

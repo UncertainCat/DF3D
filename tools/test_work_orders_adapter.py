@@ -2,6 +2,19 @@
 from pathlib import Path
 from lupa import LuaRuntime
 
+# DFHack mock audit against external/dfhack/docs/dev/Lua API.rst:
+# getTileFlags:2410 (LuaApi.cpp:2706-2712): designation,occupancy.
+# getNoblePositions:1916: rows include entity,assignment,position.
+# buildings.setOwner:2589: (civzone,unit or nil)->bool.
+# canWalkBetween:2461 (LuaApi.cpp:2657): two coords -> bool.
+# isSuitableItem/Material:1430/1435: filter,type,subtype / filter,mat,index,item_type -> bool.
+# Remaining mocks audited: df2utf(string)->string; getTickCount():957 -> number;
+# gui getCurViewscreen([bool])/getFocusStrings(screen):1071/1076 -> screen/string sequence;
+# unit predicates:1497-1575,1979 -> bool; getReadableName(unit):1854 -> string;
+# job getName/getManagerOrderName:1439/1443 -> string, removeJob:1345 -> bool,
+# getWorker:1372 -> unit/nil; item subtype count/def:2129/2134 -> int/pointer;
+# moveToGround(item,pos):2205 -> bool; matinfo.decode(mat,index):811->info/nil,
+# info:toString():827->string. Error/false injection retains each API's return shape.
 # Fixture producibility (bridge/plugin/work_orders.lua functions):
 # step_builder: removed/garbage_collect exclusions; inspect: estimate count/text,
 # native dependency satisfaction, details/inputs, positions, editability and jobs.
@@ -184,7 +197,7 @@ def main():
     df.building.find=function(id)for _,b in ipairs(df.global.world.buildings.all)do if b.id==id then return b end end end
     df.building_workshopst={is_instance=function(_,b)return b.workshop end}
     df.building_furnacest={is_instance=function()return false end}
-    dfhack.maps.getTileFlags=function()return {hidden=false}end
+    dfhack.maps.getTileFlags=function(p)return {hidden=false},{building=0}end
     dfhack.buildings.getName=function(b)return b.type==0 and "Carpenter's Workshop" or "Kitchen" end
     ''')
     assert observed(0)["workshop_id"] == -1
@@ -220,7 +233,7 @@ def main():
     assert filtered["next_cursor"] == 0
     page = call(26, cursor=1000)
     assert page["choices"][1]["id"] == 1000 and len(page["choices"]) == 101
-    lua.execute("df.global.world.units.active=vec{{id=7,job={}}};dfhack.units.isCitizen=function()return true end;dfhack.units.isActive=function()return true end;dfhack.units.isDead=function()return false end;dfhack.units.getReadableName=function()return 'Manager' end;dfhack.units.getNoblePositions=function()return {{entity={id=0},position={name={[0]='Manager'},responsibilities={[4]=true}}}}end;df.global.world.buildings.other.ACTIVITY_ZONE=vec{{id=3,type=4,assigned_unit_id=7}}")
+    lua.execute("df.global.world.units.active=vec{{id=7,job={}}};dfhack.units.isCitizen=function()return true end;dfhack.units.isActive=function()return true end;dfhack.units.isDead=function()return false end;dfhack.units.getReadableName=function()return 'Manager' end;dfhack.units.getNoblePositions=function()return {{entity={id=0},assignment={id=0},position={name={[0]='Manager'},responsibilities={[4]=true}}}}end;df.global.world.buildings.other.ACTIVITY_ZONE=vec{{id=3,type=4,assigned_unit_id=7}}")
     manager = call(27)["managers"][1]
     assert manager["unit_id"] == 7 and manager["offices"][1] == 3
     assert manager["name"] == "Manager" and manager["position"] == "Manager" and manager["job"] == "No current job"
@@ -361,7 +374,7 @@ def main():
       getMaterialIndex=function()return 0 end,getStackSize=function()return stack or 1 end}
     end
     dfhack.job.isSuitableItem=function(f,t,sub)return t==3 and f.item_subtype==sub end
-    dfhack.job.isSuitableMaterial=function(f,t,i)return t==f.mat_type and i==f.mat_index end
+    dfhack.job.isSuitableMaterial=function(f,t,i,item_type)return t==f.mat_type and i==f.mat_index end
     local o=df.manager_order:new();o.id=0;df.global.world.manager_orders.all=vec{o}
     df.global.world.raws.descriptors.colors=vec{{}}
     """)
@@ -1134,8 +1147,8 @@ def test_dispatch_fixture():
       gui={getCurViewscreen=function()return {} end,getFocusStrings=function()return {'dwarfmode/Default'} end},
       units={isCitizen=function()return true end,isActive=function()return true end,isDead=function()return false end,
         isAdult=function()return true end,isSane=function()return true end,isJobAvailable=function(u)return u.job.current_job==nil end,
-        getNoblePositions=function()return {{entity=entity,position=position}} end},
-      buildings={setOwner=function(b,u)b.assigned_unit_id=u.id end},maps={canWalkBetween=function()return reachable end},
+        getNoblePositions=function()return {{entity=entity,assignment=assignment,position=position}} end},
+      buildings={setOwner=function(b,u)b.assigned_unit_id=u and u.id or -1;return true end},maps={canWalkBetween=function(a,b)assert(type(a)=='table' and type(b)=='table' and a.x and a.y and a.z and b.x and b.y and b.z);return reachable end},
       items={moveToGround=function(i,p)i.pos=p;return true end},
       job={removeJob=function(j)assert(j.id==90);shop.jobs:erase(0);return true end,getWorker=function()return nil end}}
     """

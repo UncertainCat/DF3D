@@ -7,8 +7,47 @@ from pathlib import Path
 from lupa import LuaRuntime
 
 
+# Pinned API audit: external/dfhack/docs/dev/Lua API.rst (line numbers below).
+# Position tuples: 1736,2179 / LuaApi.cpp:2264-2265,2583-2584.
+# Walkability takes coord, not XYZ: 2448 / LuaApi.cpp:2656.
+# Map coordinate overloads: 2390-2415; getTileFlags returns designation,occupancy.
+# Building sizes return five values: 2613,2665 / LuaApi.cpp:2976-3017.
+# Recipes/construct: 2720-2808; getFiltersByType(argtable,type,subtype,custom).
+# Item container/ref and suitability: 2156,2139,1430-1437; pointer/nil and bool.
+# matinfo.decode/toString: 811,827; df2utf:973 string -> string.
+# allocInstance/checkFreeTiles/deconstruct/markedForRemoval:2660,2619,2700,2710;
+# (coord,type,subtype,custom)->building/nil, (coord,size,...)->bool, (building)->bool.
+# unit predicates:1497-1540 (unit[,include_insane])->bool; item subtype count:2129.
+# xyz2pos mirrors library/lua/dfhack.lua:448-454, including invalid-position sentinel.
+# with_finalize: 710-713 preserves all returns and cleans up on errors too.
+API_MOCKS = r"""
+function xyz2pos(x,y,z)
+ if x then return {x=x,y=y,z=z} end
+ return {x=-30000,y=-30000,z=-30000}
+end
+function position(object)
+ assert(type(object)=='table')
+ local p=object.pos
+ if not p or p.x==-30000 then return nil end
+ return p.x,p.y,p.z
+end
+walk_groups={}
+function walkable_group(p)
+ assert(type(p)=='table' and type(p.x)=='number' and type(p.y)=='number' and type(p.z)=='number', 'expected coord table')
+ if p.x==-30000 or p.y==-30000 or p.z==-30000 then return 0 end
+ return walk_groups[p.x..':'..p.y..':'..p.z] or 1
+end
+function finalize(clean,fn,...)
+ local result=table.pack(pcall(fn,...));clean()
+ if not result[1] then error(result[2],0) end
+ return table.unpack(result,2,result.n)
+end
+"""
+
+
 def main():
     lua = LuaRuntime(unpack_returned_tuples=True)
+    lua.execute(API_MOCKS)
     lua.execute(
         """
         local function enum(names)
@@ -41,7 +80,9 @@ def main():
         dfhack = {buildings={}}
         dfhack.buildings.getCorrectSize=function(w,h,t)
             return false, t==df.building_type.Workshop and 3 or 1,
-                          t==df.building_type.Workshop and 3 or 1
+                          t==df.building_type.Workshop and 3 or 1,
+                          t==df.building_type.Workshop and 1 or 0,
+                          t==df.building_type.Workshop and 1 or 0
         end
         dfhack.buildings.getFiltersByType=function(_,t,st)
             -- Missing quantity must preserve job_item's native default of one.
@@ -79,29 +120,29 @@ def main():
         df.tiletype_shape={[0]='FLOOR'};df.tiletype={attrs={[0]={shape=0}}}
         dfhack.maps={isValidTilePos=function() return true end,
             getTileFlags=function() return {flow_size=0},{building=0} end,
-            getTileType=function() return 0 end,getWalkableGroup=function() return 1 end}
+            getTileType=function() return 0 end,getWalkableGroup=walkable_group}
         local function vector(v) v[0]=table.remove(v,1);return setmetatable(v,{__len=function() return 1 end}) end
         stock={}
         for i=1,3 do
-            stock[i]={id=i,flags={on_ground=true},isAssignedToStockpile=function() return false end,
+            stock[i]={id=i,pos={x=0,y=0,z=0},flags={on_ground=true},isAssignedToStockpile=function() return false end,
                 getType=function() return i==3 and 1 or 0 end,getSubtype=function() return -1 end,
                 getMaterial=function() return 0 end,getMaterialIndex=function() return i==2 and 1 or 0 end}
         end
         local all={[0]=stock[1],stock[2],stock[3]}
         setmetatable(all,{__len=function() return 3 end})
-        df.global={cur_year=1,cur_year_tick=0,world={raws={buildings={all={}}},items={other={[0]=all}},units={active=vector{{}}}}}
+        df.global={cur_year=1,cur_year_tick=0,world={raws={buildings={all={}}},items={other={[0]=all}},units={active=vector{{pos={x=0,y=0,z=0}}}}}}
         df.item={find=function(id) reads=reads+1;return stock[id] end}
-        dfhack.items={getContainer=function() end,getPosition=function() return {x=0,y=0,z=0} end,
+        dfhack.items={getContainer=function() end,getPosition=position,
             getGeneralRef=function() end}
         dfhack.units={isDead=function() return false end,isActive=function() return true end,
-            isCitizen=function() return true end,getPosition=function() return {} end}
+            isCitizen=function() return true end,getPosition=position}
         dfhack.job={isSuitableItem=function() return true end,isSuitableMaterial=function() return true end}
         dfhack.matinfo={decode=function() return {toString=function() return 'stone' end} end}
         dfhack.df2utf=function(v) return v end
-        dfhack.with_finalize=function(clean,fn) local v=fn();clean();return v end
+        dfhack.with_finalize=finalize
         df.delete=function() end
         dfhack.buildings.allocInstance=function() return {room={}} end
-        dfhack.buildings.setSize=function() return true end
+        dfhack.buildings.setSize=function(b,w,h,d) return true,w,h,w*h,w*h end
         dfhack.buildings.getFiltersByType=function() return {{item_type=0,quantity=2},{item_type=1,quantity=1}} end
         dfhack.buildings.constructBuilding=function(v) created=created+1;assert(#v.items==3);return {id=created} end
         created=0;reads=0
@@ -164,8 +205,8 @@ def main():
         df.construction={find=function() end}
         dfhack.buildings.checkFreeTiles=function() return true end
         dfhack.buildings.getCorrectSize=function(w,h,t)
-            if t==df.building_type.Bridge then return false,w,h end
-            return false,1,1
+            if t==df.building_type.Bridge then return false,w,h,0,0 end
+            return false,1,1,0,0
         end
         dfhack.buildings.getFiltersByType=function(_,t,st)
             if t==df.building_type.Trap and st==df.trap_type.WeaponTrap then
@@ -184,9 +225,9 @@ def main():
         end
         setmetatable(all,{__len=function() return 14 end})
         df.global.world.items.other[0]=all
-        dfhack.items.getPosition=function(item) return item.pos end
+        dfhack.items.getPosition=position
         dfhack.items.getContainer=function(item) return item.container end
-        dfhack.maps.getWalkableGroup=function(p) return p.group or 1 end
+        dfhack.maps.getWalkableGroup=walkable_group
         dfhack.buildings.constructBuilding=function(v)
             created=created+1;last_build=v;return {id=created}
         end
@@ -281,7 +322,7 @@ def main():
         assert not result['ok'] and result['message'] == 'Native construction rejected'
         assert result['placed'] == 0 and result['skipped'] == 1
         lua.execute('dfhack.maps.getTileFlags=function() return {flow_size=0},{building=0} end')
-        lua.execute('dfhack.buildings.constructBuilding=function() return nil end')
+        lua.execute('dfhack.buildings.constructBuilding=function(info) return nil,"cannot place at this position" end')
         rev = page()['list_revision']
         result = finish(action=2, definition=definition, selections=[selection(rev)])
         assert not result['ok'] and result['message'] == 'Native construction rejected'
@@ -298,7 +339,7 @@ def main():
                     selections=[selection(rev, 6)])
     assert result['ok'] and result['message'] == 'Painted 6 of 8'
     assert result['placed'] == 6 and result['skipped'] == 2
-    lua.execute('dfhack.buildings.constructBuilding=function() return nil end')
+    lua.execute('dfhack.buildings.constructBuilding=function(info) return nil,"cannot place at this position" end')
     rev = page()['list_revision']
     result = finish(action=2, definition='Construction:Wall', selections=[selection(rev)])
     assert not result['ok'] and result['message'] == 'Native construction rejected'
@@ -314,7 +355,7 @@ def main():
         stock[3].pos={x=0,y=1,z=0};stock[3].getMaterialIndex=function() return 1 end
         stock[3].flags.on_ground=false
         stock[3].container={flags={on_ground=true},getType=function() return 97 end}
-        stock[4].pos={x=0,y=0,z=0,group=2};stock[4].getMaterialIndex=function() return 99 end
+        stock[4].pos={x=0,y=0,z=1};walk_groups['0:0:1']=2;stock[4].getMaterialIndex=function() return 99 end
         df.global.cur_year_tick=2000
     """)
     material_page = page()
@@ -342,7 +383,7 @@ def main():
     # Distinct footprint failure, and UTF-8 custom names clipped at 128 bytes.
     lua.execute("""
         dfhack.buildings.getCorrectSize=function(w,h,t)
-            return false,t==df.building_type.SiegeEngine and 0 or 1,1
+            return false,t==df.building_type.SiegeEngine and 0 or 1,1,0,0
         end
         df.building_def_furnacest={is_instance=function() return false end}
         df.global.plotinfo={civ_id=1}
@@ -368,6 +409,7 @@ def main():
 # Inline tables are synthetic DF API inputs, never recorded raws or native text.
 def catalog_runtime():
     lua = LuaRuntime(unpack_returned_tuples=True)
+    lua.execute(API_MOCKS)
     lua.execute((Path(__file__).parent / 'qa/lua_test_prelude.lua').read_text())
     lua.execute(r"""
     df={building_type=enum{'Chair','Workshop','Furnace','Construction','Trap','SiegeEngine',

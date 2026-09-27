@@ -37,8 +37,8 @@ func write_json(path: String, value: Variant) -> void:
 	file.close()
 
 func native(op: String, args: Dictionary = {}) -> Dictionary:
-	if stopped: return {}
 	var cleanup: bool = op in ["guard_after", "wait_finish", "final"]
+	if stopped and not cleanup: return {}
 	if not cleanup and not lane_budget_ok(): return {}
 	handshake += 1
 	var request := args.duplicate()
@@ -140,8 +140,8 @@ func materials(key: String, filter_index: int, origin: Vector3i, observe: bool =
 		var state := await request(query)
 		if stopped: return {}
 		var c: Dictionary = state.construction
+		if observe: await native("status")
 		if int(c.build_phase) != 0:
-			if observe: await native("status")
 			# Phase 3 is terminal. Never poll it into an automatic retry.
 			if int(c.build_phase) == 3:
 				incomplete("materials builder error: " + str(state.message))
@@ -271,7 +271,8 @@ func catalog_pages() -> void:
 	for key in keys: check(catalog.has(key), "catalog missing menu key " + str(key))
 
 func wait_wall(origin: Vector3i) -> bool:
-	await native("wait_start", {"origin":native_point(origin)})
+	var start := await native("wait_start", {"origin":native_point(origin)})
+	if not start.get("waiting", false): return false
 	if stopped or not await request_pause(false): return false
 	var complete := false
 	while not stopped:
@@ -345,10 +346,11 @@ func departure_report() -> void:
 				text = id + ": " + (("match " if observed[id] else "mismatch ") if observed.has(id) else "incomplete: live comparison unavailable; ") + finding.line
 				var partial: Dictionary = {
 					"D1":"partial: native Needs open space captured; well refusal wording not exercised; ",
+					"D3":"partial: two-level drag not exercised; three-level placement=" + ("verified" if observed.get("D3", false) else "unavailable") + "; ",
 					"D4":"partial: native short groups keep panel open, DF3D rejects incomplete selections; ",
 					"D5":"partial: spike counts not exercised; weapon-count comparison=" + ("match" if observed.get("D5", false) else "unavailable") + "; ",
 					"D7":"mismatch: native Building present; DF3D Site is occupied by a building; ",
-					"D8":"partial: immediacy evidence does not establish refusal wording parity; "}
+					"D8":"partial: immediacy comparison=" + ("match" if observed.get("D8", false) else "unavailable") + "; refusal wording parity not established; "}
 				if partial.has(id): text = id + ": " + str(partial[id]) + str(finding.line)
 				break
 		rows.append({"id":id, "text":text})
@@ -405,9 +407,10 @@ func exercise() -> void:
 	await place("Bridge", "bridge", 2, false, Vector3i(3, 3, 1))
 	await place("Bridge", "retracting", 0, true, Vector3i(3, 3, 1))
 	var facings := 0
-	for direction in range(8):
-		if not (await place("SiegeEngine:Ballista", "ballista" + str(direction), direction)).is_empty(): facings += 1
-	if facings == 8: observed.D6 = true
+	for family in ["Ballista", "Catapult"]:
+		for direction in range(8):
+			if not (await place("SiegeEngine:" + family, family.to_lower() + str(direction), direction)).is_empty(): facings += 1
+	if facings == 16: observed.D6 = true
 	var press := ""
 	for row in catalog.values():
 		if str(row.native_name).to_lower() == "screw press": press = row.key

@@ -5,6 +5,7 @@ local state=df3d_construction_acceptance
 if index=='pause' then df.global.pause_state=true;print('SEMANTIC_PASS paused');return end
 if index=='final' then assert(df.global.pause_state,'DF not paused');if state then assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE) end;print('SEMANTIC_PASS final paused');return end
 if index=='restore_prefs' then
+ assert(df.global.pause_state,'DF must be paused before restoring fixture preferences')
  if not state then print('SEMANTIC_PASS restored fixture preferences (fixture not started)');return end
  df.global.d_init.feature.autosave=state.prefs.autosave
  for id,value in pairs(state.prefs.announcements) do df.global.d_init.announcements.flags[id].whole=value end
@@ -38,7 +39,7 @@ local function row_key(r) return table.concat({r.item_type,r.item_subtype,r.mat_
 local function materials()
  local groups={}
  for _,u in ipairs(df.global.world.units.active) do
-  if dfhack.units.isActive(u) and not dfhack.units.isDead(u) and (dfhack.units.isCitizen(u) or dfhack.units.isResident(u)) then groups[dfhack.maps.getWalkableGroup(dfhack.units.getPosition(u))]=true end
+  if dfhack.units.isActive(u) and not dfhack.units.isDead(u) and (dfhack.units.isCitizen(u) or dfhack.units.isResident(u)) then groups[dfhack.maps.getWalkableGroup(xyz2pos(dfhack.units.getPosition(u)))]=true end
  end
  groups[0]=nil
  local typ,sub,custom=definition(request.definition)
@@ -153,12 +154,24 @@ local function verify()
   assert(f.dig~=df.tile_dig_designation.No,'RemoveConstruction did not designate removal')
  elseif op=='wait_start' then
   assert(df.global.pause_state and df.global.d_init.feature.autosave==df.d_init_autosave.NONE)
+  local top=dfhack.gui.getCurViewscreen(true)
+  local focus=dfhack.gui.getFocusStrings(top)
+  local popups=df.global.world.status.popups
+  if #popups>0 then
+   incomplete('wait requires no announcement popups (count='..#popups..', first='..dfhack.df2utf(popups[0].text)..')');return
+  end
+  if not (df.viewscreen_dwarfmodest:is_instance(top) and #focus==1 and focus[1]=='dwarfmode/Default') then
+   incomplete('wait requires default fortress screen; screen='..table.concat(focus,','));return
+  end
   state.wait={origin=request.origin,tick=tick(),wall=dfhack.getTickCount()};result.waiting=true
  elseif op=='wait_poll' then
   local w=assert(state.wait);local c=dfhack.constructions.findAtTile(w.origin)
   result.ticks=tick()-w.tick;result.wall_ms=dfhack.getTickCount()-w.wall
   result.waiting=not c
-  if not c and (df.global.pause_state or result.ticks<0 or result.ticks>=12000 or result.wall_ms>=900000) then result.waiting=false;incomplete('construction completion wait cap/interruption') end
+  if not c and df.global.pause_state then
+   local focus=dfhack.gui.getFocusStrings(dfhack.gui.getCurViewscreen(true))
+   result.waiting=false;incomplete('game paused mid-wait; screen='..table.concat(focus,',')..'; popup count='..#df.global.world.status.popups)
+  elseif not c and (result.ticks<0 or result.ticks>=12000 or result.wall_ms>=900000) then result.waiting=false;incomplete('construction completion wait cap/interruption') end
  elseif op=='wait_finish' then assert(df.global.pause_state,'wait must re-pause')
  elseif op=='final' then assert(df.global.pause_state,'final pause missing')
  else error('unknown verification operation '..tostring(op)) end

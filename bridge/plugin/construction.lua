@@ -196,7 +196,7 @@ local function screen(item,j,groups)
     if item:isAssignedToStockpile() then return false end
     local container=dfhack.items.getContainer(item)
     if container and container:getType()==df.item_type.TOOL and container:hasToolUse(df.tool_uses.HEAVY_OBJECT_HAULING) then return false end
-    local p=dfhack.items.getPosition(item)
+    local p=xyz2pos(dfhack.items.getPosition(item))
     if not visible(p) or not groups[dfhack.maps.getWalkableGroup(p)] then return false end
     local ground=container or item
     -- Containers are traversed with a fixed cap; malformed containment is ineligible.
@@ -274,7 +274,7 @@ local function queue(e)
         local groups={}
         for i=0,#df.global.world.units.active-1 do
             local u=i<#df.global.world.units.active and df.global.world.units.active[i] or nil
-            if u and not dfhack.units.isDead(u) and dfhack.units.isActive(u) and (dfhack.units.isCitizen(u) or dfhack.units.isResident(u)) then local g=dfhack.maps.getWalkableGroup(dfhack.units.getPosition(u));if g~=0 then groups[g]=true end end
+            if u and not dfhack.units.isDead(u) and dfhack.units.isActive(u) and (dfhack.units.isCitizen(u) or dfhack.units.isResident(u)) then local g=dfhack.maps.getWalkableGroup(xyz2pos(dfhack.units.getPosition(u)));if g~=0 then groups[g]=true end end
             u=nil;step()
         end
         local rows,grouped,seen={},{},{}
@@ -289,7 +289,7 @@ local function queue(e)
                         if e.build_ids>=65536 then e.error='list exceeds cap';e.phase=3;item=nil;step();return end
                         local k=key(row);local g=grouped[k]
                         if not g then g=row;grouped[k]=g;rows[#rows+1]=g end
-                        local p=dfhack.items.getPosition(item)
+                        local p=xyz2pos(dfhack.items.getPosition(item))
                         -- Inferred pending D2 capture: nearest eligible member's squared
                         -- Euclidean 3D distance to minimum corner / bottom level.
                         local distance=(p.x-e.site.x)^2+(p.y-e.site.y)^2+(p.z-e.site.z)^2

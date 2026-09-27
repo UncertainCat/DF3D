@@ -90,7 +90,9 @@ local function allocate()
 end
 local names={'depot','well','wheel','farm','bridge','retracting','press','wall','stairs','trap1','trap10','trap0','trap11','partial_bridge','partial_road'}
 for i=0,3 do names[#names+1]='pump'..i end
-for i=0,7 do names[#names+1]='ballista'..i end
+for _,family in ipairs{'ballista','catapult'} do
+ for i=0,7 do names[#names+1]=family..i end
+end
 for _,name in ipairs(names) do
  local p=allocate();if p then state.sites[name]=p else missing(name,'no free visible 5x5 floor near citizen') end
 end

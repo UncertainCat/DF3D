@@ -7,6 +7,7 @@ Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
 $out="$repo/build/construction-acceptance-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
 $summary='failed startup'; $entered=$false; $loaded=$false; $g=$null
+$finalPaused=$false
 $oldInput=$env:DF3D_CONSTRUCTION_ACCEPTANCE
 $deadline=(Get-Date).AddSeconds(2400)
 function Write-Lf([string]$Path,[string]$Text) {
@@ -130,7 +131,8 @@ try {
    # verifies pause before module-owned teardown, including failure paths.
    $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],'pause'"
    $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],'final'"
-   if(($r.Output -join "`n") -notmatch 'SEMANTIC_PASS'){$summary='failed final paused verification; prior result: '+$summary}
+   $finalPaused=($r.Output -join "`n") -match 'SEMANTIC_PASS final paused'
+   if(-not $finalPaused){$summary='failed final paused verification; prior result: '+$summary}
   }
  } catch {
   $message=$_.Exception.Message
@@ -143,7 +145,9 @@ try {
   try {
    if($entered) {
     try {
-     if($loaded) {
+     # Leave autosave disabled on failed final checks until Stop-Df3d;
+     # Exit-Df3dLane restores disk preferences after the process stops.
+     if($loaded -and $finalPaused) {
       $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],'restore_prefs'"
       if(($r.Output -join "`n") -notmatch 'SEMANTIC_PASS restored fixture preferences'){throw 'Fixture preference restoration failed'}
      }

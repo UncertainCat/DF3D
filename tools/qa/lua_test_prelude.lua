@@ -6,6 +6,11 @@
       if k=='insert' then return function(t,i,x)table.insert(t._data,i=='#' and #t._data+1 or i+1,x)end end
       if k=='erase' then return function(t,i)table.remove(t._data,i+1)end end
       if k=='resize' then return function(t,n)while #t._data>n do table.remove(t._data)end end end
+     end,__newindex=function(s,k,x)
+      if type(k)=='number' then
+       if k<0 or k>=#s._data then error('index out of bounds',0) end
+       s._data[k+1]=x
+      else rawset(s,k,x) end
      end})
     end
     function ipairs(v)

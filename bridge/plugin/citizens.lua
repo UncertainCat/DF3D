@@ -97,13 +97,15 @@ local function citizen_info(u,inspect,selected)
  if d then
   row.detail_member=0
   for _,v in ipairs(row.assigned_details) do if v.index==selected then row.detail_member=1 end end
+  local best_rating=-1
   for _,skill in ipairs(soul and soul.skills or {}) do
    local attr=df.job_skill.attrs[skill.id]
-   local rating=df.skill_rating.attrs[skill.rating]
+   local display_rating=math.min(skill.rating,20)
+   local rating=df.skill_rating.attrs[display_rating]
    if attr and attr.labor and attr.labor>=0 and attr.caption_noun and attr.caption_noun~='' and rating and rating.caption and rating.caption~=''
-      and d.allowed_labors[attr.labor] and (skill.rating>row.detail_skill_rating or
-      (skill.rating==row.detail_skill_rating and skill.id<row.detail_skill)) then
-    row.detail_skill=skill.id;row.detail_skill_rating=skill.rating
+      and d.allowed_labors[attr.labor] and (skill.rating>best_rating or
+      (skill.rating==best_rating and skill.id<row.detail_skill)) then
+    row.detail_skill=skill.id;row.detail_skill_rating=display_rating;best_rating=skill.rating
     row.detail_skill_name=rating.caption..' '..attr.caption_noun
    end
   end

@@ -72,7 +72,7 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.citizen();
   if(action>=A::WorkDetailCreate && action<=A::CitizenWorkScope) {
-    // Boundary observations are assembled from citizens.lua:10-13,54-60,87-90,156-161.
+    // Boundary observations are assembled from citizens.lua:55-62 (overflow), 63-75 (check_row).
     // INT64_MAX is a transport boundary, not a claim about a recorded hash.
     auto empty=b.CreateString("");auto error=b.CreateString("Row exceeds name cap");
     auto labors=b.CreateVector(std::vector<int16_t>{});auto names=b.CreateVectorOfStrings(std::vector<std::string>{});

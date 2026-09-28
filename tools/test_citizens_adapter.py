@@ -180,7 +180,8 @@ def extended_work_details(lua):
     df.work_detail={new=function()local d=detail('',{},1);d.allowed_labors={};return d end}
     df.building_civzonest={is_instance=function(_,b)return b.office_zone end}
     df.job_skill={attrs={[1]={labor=0,caption_noun='Miner'},[2]={labor=0,caption_noun='Miner'}}}
-    df.skill_rating={attrs={[15]={caption='Legendary'}}}
+    df.skill_rating={_last_item=20,attrs=setmetatable({[15]={caption='Legendary'},[20]={caption='Legendary+5'}},
+      {__index=function(_,r)assert(r<=20,'rating lookup exceeds enum');return nil end})}
     -- Enum ordinals other than the three pinned picker exclusions are fixture-local.
     for i=0,93 do df.unit_labor.attrs[i]={caption='Fixture labor '..i}end
     df.unit_labor.attrs[0]={caption='Mining'};df.unit_labor.attrs[10]={caption='Wood Cutting'}
@@ -237,9 +238,11 @@ def extended_work_details(lua):
       for _,index in ipairs{-1,#v,#v+1}do
         local success,message=pcall(function()return v[index]end)
         assert(not success and message=='index out of bounds')
+        success,message=pcall(function()v[index]=99 end)
+        assert(not success and message=='index out of bounds')
       end
     end
-    assert(vec{42}[0]==42)
+    local v=vec{42};assert(v[0]==42);v[0]=43;assert(v[0]==43 and #v==1)
     """)
     for index in (-1, 1, 127):
         row = ok(call(28, detail_index=index))['citizens'][1]
@@ -298,6 +301,12 @@ def extended_work_details(lua):
         assert r['detail_list_revision'] != before and r['active_kinds'] == 0
         refused(call(64, expected_revision=before), 'Work-detail contents changed; refresh before editing')
     refused(call(64, expected_revision=r['detail_list_revision']), 'Work-detail vector exceeds 128 entries')
+    helper = reset(d=3)
+    lua.execute('wd[0].flags.no_modify=true;wd[1].flags.no_modify=true')
+    r = ok(call(64, expected_revision=ok(call(30))['detail_list_revision']))
+    assert r['selected_detail'] == 3
+    assert r['details'][1]['name'] == 'Custom Detail 1' and r['details'][1]['icon'] == 11
+    assert not len(lua.globals().calls)
     helper = reset(5000)
     refused(edit(65, retire_capacity=0), 'Deleted-detail capacity reached; restart DF')
     assert lua.eval("#wd") == 1
@@ -361,6 +370,14 @@ def extended_work_details(lua):
         for selector in (1,2):
             ok(edit(edit=selector))
             assert lua.globals().wd[0]['icon'] == icon
+    # Compare raw ratings even when both display at the enum ceiling.
+    for raw_rating in (20, 21, 25):
+        for skills in ([(2, raw_rating), (1, raw_rating-1)], [(1, raw_rating-1), (2, raw_rating)]):
+            lua.globals().citizens[0]['status']['current_soul']['skills'] = lua.globals().vec(
+                lua.table_from([lua.table_from({'id':sid, 'rating':rating}) for sid, rating in skills]))
+            row = ok(call(28, detail_index=0))['citizens'][1]
+            assert row['detail_skill'] == 2 and row['detail_skill_rating'] == 20
+            assert row['detail_skill_name'] == 'Legendary+5 Miner'
     r = ok(call(28))['citizens'][1]
     assert r['detail_member'] == -1 and r['detail_skill'] == -1 and r['detail_skill_name'] == ''
     assert values(observed()['labor_names']) == ['Mining']
@@ -493,23 +510,28 @@ def extended_work_details(lua):
     # Drive the Lua closure, not the MSVC scheduler. A competitor consumes its slice.
     scheduling_failures = []
     competitor = lua.eval('function(r) assert(r.step>0);return {steps=r.step}end')
-    def drive(closure, slice_size):
-        return closure(lua.table_from({'step':slice_size, 'kind':4})) if slice_size else None
-    assert drive(lambda _: (_ for _ in ()).throw(AssertionError('zero slice called')), 0) is None
     for competing in (False, True):
         helper = reset(5000, 8)
-        r = ok(edit(33, mode=1));inline = r['steps'] - 16
+        r = ok(edit(33, mode=1))
+        assert len(lua.globals().calls) == r['recalc_done'] == 1016
+        assert r['recalc_total'] == 5000
+        inline = len(lua.globals().calls) * 2
+        zero = helper(lua.table_from({'step':0, 'kind':4}))
+        assert zero['steps'] == 0 and len(lua.globals().calls) == 1016
+        assert zero['recalc_done'] == 1016 and zero['active_kinds'] == 16
         updates = 1
         while r['active_kinds']:
             slice_size = 1024 if competing else 2048
             other_steps = competitor(lua.table_from({'step':1024}))['steps'] if competing else 0
-            r = drive(helper, slice_size)
+            before_calls = len(lua.globals().calls)
+            r = helper(lua.table_from({'step':slice_size, 'kind':4}))
+            assert len(lua.globals().calls) - before_calls == min(slice_size // 2, 5000 - before_calls)
             assert r['steps'] + other_steps <= 2048
             updates += 1
             assert updates < 20
         assert len(lua.globals().calls) == 5000 and r['recalc_done'] == r['recalc_total'] == 5000
         print('CITIZENS_SCHEDULING', 'competing' if competing else 'alone', inline, updates)
-        if inline != 2032 or (updates > 9 if competing else updates != 5):
+        if inline != 2032 or (updates != 9 if competing else updates != 5):
             scheduling_failures.append((competing, inline, updates))
     assert not scheduling_failures, ('mode scheduling (competing, inline, updates)', scheduling_failures)
 

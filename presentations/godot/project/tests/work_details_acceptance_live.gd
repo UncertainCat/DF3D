@@ -278,8 +278,8 @@ func step_six() -> void:
 	var row := await inspect(index)
 	if stopped: return
 	if not check(int(row.mode) == 1, "mode must start at Everybody"): return
-	await native("wait_start")
-	if stopped: return
+	var start := await native("wait_start")
+	if stopped or start.get("status", "") != "passed": return
 	if not await request_pause(false):
 		await request_pause(true)
 		return
@@ -321,7 +321,7 @@ func step_eight() -> void:
 func exercise() -> void:
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
 	for missing in fixture.missing:
-		reasons.append("step %s: %s" % [missing.step, missing.reason])
+		reasons.append("step %s: %s" % [int(missing.step), missing.reason])
 	await seed_catalog()
 	for number in range(1, 9):
 		if stopped: break

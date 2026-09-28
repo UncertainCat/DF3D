@@ -12,8 +12,18 @@ if op=='rename' then
  print('FIXTURE_RENAMED');return
 end
 print('FIXTURE_WRITE pause_state=true');df.global.pause_state=true
+-- Preserve original memory preferences even if setup fails or is retried.
+if not _G.df3d_work_details_acceptance_prefs then
+ local saved={autosave=df.global.d_init.feature.autosave,announcements={}}
+ for id,flags in ipairs(df.global.d_init.announcements.flags) do saved.announcements[id]=flags.whole end
+ _G.df3d_work_details_acceptance_prefs=saved
+end
 print('FIXTURE_WRITE d_init.feature.autosave=NONE')
 df.global.d_init.feature.autosave=df.d_init_autosave.NONE
+for id,flags in ipairs(df.global.d_init.announcements.flags) do
+ print('FIXTURE_WRITE d_init.announcements.flags['..id..'] PAUSE=false DO_MEGA=false')
+ flags.PAUSE=false;flags.DO_MEGA=false
+end
 local f={member=-1,scope=-1,miners=-1,mode_detail=-1,custom_count=0,carpentry=df.unit_labor.CARPENTER,residents={},visitors={},missing={}}
 local function missing(step,reason)
  f.missing[#f.missing+1]={step=step,reason=reason}

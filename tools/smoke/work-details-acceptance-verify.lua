@@ -1,4 +1,4 @@
--- Native readback and guard; only pause is written here. Never writes labors.
+-- Native readback and guard; writes pause and restores fixture preferences. Never writes labors.
 local out,index=...
 local json=require('json')
 local function read(path)
@@ -12,7 +12,18 @@ if index=='pause' then
  print('SEMANTIC_PASS pause');return
 elseif index=='final' then
  assert(df.global.pause_state,'DF must be paused before Stop-Df3d')
+ assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE,'autosave must remain disabled')
  print('SEMANTIC_PASS final paused');return
+elseif index=='restore_prefs' then
+ local saved=_G.df3d_work_details_acceptance_prefs
+ if saved then
+  assert(df.global.pause_state,'DF must be paused before restoring fixture preferences')
+  print('FIXTURE_WRITE restore d_init.feature.autosave and announcement flags')
+  df.global.d_init.feature.autosave=saved.autosave
+  for id,whole in pairs(saved.announcements) do df.global.d_init.announcements.flags[id].whole=whole end
+  _G.df3d_work_details_acceptance_prefs=nil
+ end
+ print('SEMANTIC_PASS restored fixture preferences');return
 end
 local q=read(out..'/request-'..index..'.json')
 local state=assert(df3d_work_details_acceptance)
@@ -54,11 +65,12 @@ local ok,err=pcall(function()
  elseif q.op=='guard_after' then paused();assert(state.guard==fingerprint(),'refusal changed work details, scope or labors');state.guard=nil
  elseif q.op=='focus' then
   paused()
-  local focus=dfhack.gui.getCurFocus()
-  assert(type(focus)=='string' and focus~='','native focus unavailable')
-  result.focus=focus
+  local focus=dfhack.gui.getFocusStrings(dfhack.gui.getCurViewscreen(true))
+  assert(type(focus)=='table' and #focus>0,'native focus unavailable')
+  result.focus=table.concat(focus,',')
+  focus=result.focus:lower()
   -- Reject the whole Labor route, a conservative superset of Work Details.
-  if focus:lower():find('labor',1,true) or focus:lower():find('workdetail',1,true) or focus:lower():find('work_detail',1,true) then
+  if focus:find('labor',1,true) or focus:find('workdetail',1,true) or focus:find('work_detail',1,true) then
    result.status='incomplete';result.reason='native Labor/Work Details tab is open; deletion not issued'
   end
  elseif q.op=='builtins' then
@@ -98,12 +110,25 @@ local ok,err=pcall(function()
   for _,id in ipairs(state.residents) do assert(not seen[id],'resident listed') end
   for _,id in ipairs(state.visitors) do assert(not seen[id],'visitor listed') end
  elseif q.op=='wait_start' then
-  paused();state.start_tick=df.global.world.frame_counter;state.start_ms=dfhack.getTickCount()
+  paused()
+  assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE,'autosave must be disabled before ticks advance')
+  local top=dfhack.gui.getCurViewscreen(true)
+  local focus=dfhack.gui.getFocusStrings(top)
+  local popups=df.global.world.status.popups
+  if #popups>0 then
+   result.status='incomplete';result.reason='wait requires no announcement popups (count='..#popups..')';return
+  end
+  if not (df.viewscreen_dwarfmodest:is_instance(top) and #focus==1 and focus[1]=='dwarfmode/Default') then
+   result.status='incomplete';result.reason='wait requires default fortress screen; screen='..table.concat(focus,',');return
+  end
+  state.start_tick=df.global.world.frame_counter;state.start_ms=dfhack.getTickCount()
   result.tick=state.start_tick
  elseif q.op=='wait_poll' then
   result.ticks=df.global.world.frame_counter-state.start_tick
   result.elapsed_ms=dfhack.getTickCount()-state.start_ms
-  if result.ticks>=1200 or result.elapsed_ms>=120000 then
+  if df.global.pause_state then
+   result.status='incomplete';result.reason='game paused mid-wait; popup count='..#df.global.world.status.popups
+  elseif result.ticks>=1200 or result.elapsed_ms>=120000 then
    result.status='incomplete';result.reason='recalculation tick/wall wait cap hit'
   end
  elseif q.op=='wait_finish' then
@@ -111,8 +136,12 @@ local ok,err=pcall(function()
  elseif q.op=='status' then result.counters=read(out..'/status-'..index..'.json')
  elseif q.op=='deleted' then
   paused();assert(#all==q.count,'delete did not erase one detail')
+  if state.renamed then
+   for _,d in ipairs(all) do assert(dfhack.df2utf(d.name)~='DF3D stale probe','deleted custom detail still present') end
+  end
  elseif q.op=='rename_out_of_band' then paused();assert(state.renamed,'fixture rename absent')
- elseif q.op=='final' then paused()
+ elseif q.op=='final' then
+  paused();assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE,'autosave must remain disabled')
  else error('unknown verification operation '..tostring(q.op)) end
 end)
 if not ok then result.status='failed';result.reason='step '..tostring(q.step)..': '..tostring(err) end

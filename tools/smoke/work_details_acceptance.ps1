@@ -18,7 +18,7 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  $r.Output | Add-Content "$out/native.log"
  "exit=$($r.ExitCode) script=$Name" | Add-Content "$out/native.log"
  if($r.ExitCode -eq 124){throw 'INCOMPLETE DFHack wait cap hit; outcome unknown, no replay'}
- if($r.ExitCode -ne 0){throw "DFHack script failed: $Name"}
+ # dfhack-run can AV at exit after success; callers judge server markers.
  return $r
 }
 try {
@@ -80,7 +80,7 @@ try {
  $departures=@()
  $evidence="$repo/build/evidence/native/e6/findings.md"
  $findings=if(Test-Path -LiteralPath $evidence){Get-Content -LiteralPath $evidence}else{@()}
- # Only D1, D5 and D6 cite a findings item. The other departures have no captured item.
+ # D1, D5 and D6 cite findings; D7 derives from the initial detail dump.
  $items=@(1,0,0,0,4,5,0)
  for($i=0;$i -lt 7;$i++) {
   $n=$items[$i];$lines=@();$capture=$false
@@ -90,6 +90,15 @@ try {
    if($capture){$lines+=$line.Trim()}
   }
   $record=if($lines.Count){"F${n}: $($lines -join ' ')"}else{'incomplete: evidence missing'}
+  if($i -eq 6) {
+   $initial="$repo/build/evidence/native/e6/wd_00_initial.txt"
+   if(Test-Path -LiteralPath $initial) {
+    $dump=Get-Content -Raw -LiteralPath $initial
+    if($dump -match '(?m)^\[\d+\].*icon=' -and $dump -notmatch 'icon=SIEGE_OPERATORS(?:\s|$)') {
+     $record='wd_00_initial.txt: no SIEGE_OPERATORS entry'
+    }
+   }
+  }
   $departures+="D$($i+1): $record"
  }
  Write-Lf "$out/departures.txt" ($departures -join "`n")
@@ -119,7 +128,7 @@ try {
     $line=$status.Output -join "`n"
     $line | Add-Content "$out/status.log"
     if($status.ExitCode -eq 124){throw 'INCOMPLETE status wait cap hit'}
-    if($status.ExitCode -ne 0){throw 'df3d status failed'}
+    # Parsed status counters determine success even after a client exit AV.
     if($line -notmatch 'work-detail holding (\d+)/256'){throw 'Missing work-detail holding counter'}
     $holding=[int]$Matches[1]
     if($line -notmatch 'builder kind 4: steps (\d+) / (\d+) last/max'){throw 'Missing kind 4 counters'}
@@ -153,6 +162,7 @@ try {
    # On an interrupted wait, re-pause first; the separate final assertion still
    # verifies pause before module-owned teardown, including failure paths.
    $r=Invoke-LuaFile 'work-details-acceptance-verify.lua' "[==[$out]==],'pause'"
+   if(($r.Output -join "`n") -notmatch 'SEMANTIC_PASS pause'){throw 'Final pause command failed'}
    $r=Invoke-LuaFile 'work-details-acceptance-verify.lua' "[==[$out]==],'final'"
    $finalPaused=($r.Output -join "`n") -match 'SEMANTIC_PASS final paused'
    if(-not $finalPaused){$summary='failed final paused verification'}
@@ -166,8 +176,14 @@ try {
  finally {
   try {
    if($entered) {
-    # In-memory autosave stays disabled until Stop-Df3d; only then restore disk prefs.
-    try {Stop-Df3d} finally {Exit-Df3dLane}
+    try {
+     # Restore memory only after final pause/autosave verification. On failure,
+     # leave autosave disabled until the owned process exits; then restore disk prefs.
+     if($loaded -and $finalPaused) {
+      $r=Invoke-LuaFile 'work-details-acceptance-verify.lua' "[==[$out]==],'restore_prefs'"
+      if(($r.Output -join "`n") -notmatch 'SEMANTIC_PASS restored fixture preferences'){throw 'Fixture preference restoration failed'}
+     }
+    } finally {try {Stop-Df3d} finally {Exit-Df3dLane}}
    }
   }
   catch {$summary='failed teardown: '+$_.Exception.Message}

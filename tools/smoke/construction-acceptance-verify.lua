@@ -149,6 +149,15 @@ local function verify()
  elseif op=='removed' then
   local b=df.building.find(request.id)
   assert(not b or dfhack.buildings.markedForRemoval(b),'deconstruct did not act immediately')
+ elseif op=='site_clear' then
+  assert(df.global.pause_state,'site reuse must remain paused')
+  result.clear=true
+  for dx=0,request.width-1 do for dy=0,request.height-1 do
+   local p={x=request.origin.x+dx,y=request.origin.y+dy,z=request.origin.z}
+   local _,occ=dfhack.maps.getTileFlags(p)
+   if not occ or occ.building~=0 or dfhack.buildings.findAtTile(p) then result.clear=false end
+  end end
+  if not result.clear then incomplete('sequential site still occupied after removal') end
  elseif op=='removed_construction' then
   local f=dfhack.maps.getTileFlags(request.origin)
   assert(f.dig~=df.tile_dig_designation.No,'RemoveConstruction did not designate removal')

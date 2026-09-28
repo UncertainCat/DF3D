@@ -222,7 +222,27 @@ func place(key: String, site_name: String, direction: int = 0, retracting: bool 
 	var verified := await native("placed", args)
 	if stopped: return {}
 	for id in verified.get("ids", []): placed.append({"id":int(id), "key":key, "origin":origin})
-	return {"receipt":receipt, "origin":origin, "ids":verified.get("ids", [])}
+	return {"receipt":receipt, "origin":origin, "ids":verified.get("ids", []), "width":size.x, "height":size.y}
+
+# Release a sequential fixture site through semantic commands. A marked-for-
+# removal building is insufficient: every tile must actually be free before
+# the next placement, and an unknown outcome stops rather than being replayed.
+func release_site(placement: Dictionary) -> void:
+	if stopped or placement.is_empty(): return
+	for id in placement.ids:
+		var inspection := await request({"action":3, "building_id":int(id)})
+		if stopped: return
+		await request({"action":4, "building_id":int(id), "definition":inspection.construction.building_key})
+		if stopped: return
+		await native("removed", {"id":int(id)})
+	var released := await native("site_clear", {"origin":native_point(placement.origin), "width":int(placement.width), "height":int(placement.height)})
+	if stopped: return
+	if not released.get("clear", false):
+		incomplete("sequential site still occupied after removal", true)
+		return
+	for i in range(placed.size() - 1, -1, -1):
+		if placement.ids.has(placed[i].id): placed.remove_at(i)
+
 
 func collect_keys(value: Variant, keys: Array) -> void:
 	if value is Array:
@@ -262,8 +282,14 @@ func catalog_pages() -> void:
 	else:
 		print("build_menu.json missing; using allowed 03-U spec leaf keys")
 		keys = ["TradeDepot", "Workshop:Ashery", "Workshop:Bowyers", "Workshop:Carpenters", "Workshop:Craftsdwarfs", "Workshop:Jewelers", "Workshop:MagmaForge", "Workshop:Mechanics", "Workshop:MetalsmithsForge", "Workshop:Siege", "Workshop:Masons", "Workshop:Leatherworks", "Workshop:Loom", "Workshop:Clothiers", "Workshop:Dyers", "FarmPlot", "Workshop:Still", "Workshop:Butchers", "Workshop:Tanners", "Workshop:Fishery", "Workshop:Kitchen", "Workshop:Farmers", "Workshop:Quern", "Workshop:Kennels", "NestBox", "Hive", "Furnace:GlassFurnace", "Furnace:Kiln", "Furnace:MagmaGlassFurnace", "Furnace:MagmaKiln", "Furnace:MagmaSmelter", "Furnace:Smelter", "Furnace:WoodFurnace", "Bed", "Chair", "Table", "Box", "Cabinet", "Coffin", "Slab", "Statue", "TractionBench", "Bookcase", "DisplayFurniture", "OfferingPlace", "Instrument", "Door", "Hatch", "Construction:Wall", "Construction:Floor", "Construction:Ramp", "Construction:Stairs", "Bridge", "RoadPaved", "RoadDirt", "Construction:Fortification", "GrateWall", "GrateFloor", "BarsVertical", "BarsFloor", "WindowGlass", "WindowGem", "Support", "Construction:Track", "Trap:TrackStop", "Trap:Lever", "Well", "Floodgate", "ScrewPump", "WaterWheel", "Windmill", "GearAssembly", "AxleHorizontal", "AxleVertical", "Workshop:Millstone", "Rollers", "Chain", "Cage", "AnimalTrap", "Trap:PressurePlate", "Trap:StoneFallTrap", "Trap:WeaponTrap", "Trap:CageTrap", "Weapon", "ArcheryTarget", "Weaponrack", "Armorstand", "SiegeEngine:Ballista", "SiegeEngine:Catapult", "SiegeEngine:BoltThrower"]
-		# These native leaves have raw-defined keys; use sourced raw names only.
-		for label in ["Screw Press", "Soap Maker's Workshop", "Reinforced Wall"]:
+		# ReinforcedWall is enum-backed (family/subtype_key), not a raw name.
+		var reinforced_key := ""
+		for row in catalog.values():
+			if row.family == "Construction" and row.subtype_key == "ReinforcedWall": reinforced_key = str(row.key)
+		if not check(not reinforced_key.is_empty(), "catalog missing Construction/ReinforcedWall leaf"): return
+		keys.append(reinforced_key)
+		# Only custom workshop leaves use catalog native_name.
+		for label in ["Screw Press", "Soap Maker's Workshop"]:
 			var found := false
 			for row in catalog.values():
 				if str(row.native_name).to_lower() == label.to_lower(): keys.append(row.key); found = true
@@ -401,7 +427,9 @@ func exercise() -> void:
 	if stopped: return
 	step = "3"
 	await place("Well", "well")
-	for direction in range(4): await place("ScrewPump", "pump" + str(direction), direction)
+	for direction in range(4):
+		var pump := await place("ScrewPump", "pump" + str(direction), direction)
+		await release_site(pump)
 	await place("WaterWheel", "wheel")
 	await place("FarmPlot", "farm", 0, false, Vector3i(3, 3, 1))
 	await place("Bridge", "bridge", 2, false, Vector3i(3, 3, 1))
@@ -409,7 +437,9 @@ func exercise() -> void:
 	var facings := 0
 	for family in ["Ballista", "Catapult"]:
 		for direction in range(8):
-			if not (await place("SiegeEngine:" + family, family.to_lower() + str(direction), direction)).is_empty(): facings += 1
+			var siege := await place("SiegeEngine:" + family, family.to_lower() + str(direction), direction)
+			if not siege.is_empty(): facings += 1
+			await release_site(siege)
 	if facings == 16: observed.D6 = true
 	var press := ""
 	for row in catalog.values():
@@ -419,7 +449,9 @@ func exercise() -> void:
 	step = "3 traps"
 	var traps := 0
 	for count in [1, 10]:
-		if not (await place("Trap:WeaponTrap", "trap" + str(count), 0, false, Vector3i.ZERO, count)).is_empty(): traps += 1
+		var trap := await place("Trap:WeaponTrap", "trap" + str(count), 0, false, Vector3i.ZERO, count)
+		if not trap.is_empty(): traps += 1
+		await release_site(trap)
 	if traps == 2: observed.D5 = true
 	for count in [0, 11]:
 		var site := "trap" + str(count)

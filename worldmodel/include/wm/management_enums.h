@@ -81,6 +81,25 @@ enum class ManagementStatus : uint8_t {
 enum class AreaKind : uint8_t {
   Stockpile = 0,
   Zone = 1,
+  Workshop = 2,
+};
+enum class AreaOperation : uint8_t {
+  None = 0,
+  SettingsPage = 1,
+  SettingsSet = 2,
+  Preset = 3,
+  Rename = 4,
+  Paint = 5,
+  LocationList = 6,
+  LocationSet = 7,
+  LocationCreate = 8,
+  ZoneSettings = 9,
+  Links = 10,
+  AssignUnits = 11,
+  SquadUse = 12,
+  Toggles = 13,
+  CandidateList = 14,
+  WorkshopLink = 15,
 };
 enum class AlertOperation : uint8_t {
   OpenCategory = 0,

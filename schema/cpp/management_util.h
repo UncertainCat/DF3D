@@ -2,10 +2,132 @@
 #include <tuple>
 #include "session_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 19;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v19";
+inline constexpr uint32_t kManagementVersion = 20;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v20";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 inline constexpr uint32_t kManagementCommandCapacity = 4096;
+inline bool areaZoneSettingsPresent(const AreaZoneSettings* z) {
+  return z && (z->pond_mode() || z->facing() || z->tomb_citizens()!=-1 ||
+      z->tomb_pets()!=-1 || z->gather_trees()!=-1 || z->gather_shrubs()!=-1);
+}
+inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
+  if(!z) return true;
+  return z->pond_mode()<=2 && z->facing()<=4 &&
+      z->tomb_citizens()>=-1 && z->tomb_citizens()<=1 &&
+      z->tomb_pets()>=-1 && z->tomb_pets()<=1 &&
+      z->gather_trees()>=-1 && z->gather_trees()<=1 &&
+      z->gather_shrubs()>=-1 && z->gather_shrubs()<=1;
+}
+// Keep this order in the Lua dispatcher too: selector, matrix, kind, legacy
+// ownership, new-field ownership/requirements, identities, then bounded sizes.
+inline std::optional<std::string> validateAreaOperation(ManagementAction action, const AreaRequest& a) {
+  const auto op=static_cast<uint8_t>(a.operation());
+  if(op>15) return "Unsupported area operation";
+  const bool inspect=action==ManagementAction::AreaInspect;
+  const bool create=action==ManagementAction::AreaCreate;
+  const bool update=action==ManagementAction::AreaUpdate;
+  bool allowed=op==0;
+  switch(a.operation()) {
+    case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links:
+      allowed=inspect; break;
+    case AreaOperation::SettingsSet: case AreaOperation::Preset: case AreaOperation::Rename:
+    case AreaOperation::LocationSet: case AreaOperation::LocationCreate: case AreaOperation::ZoneSettings:
+    case AreaOperation::AssignUnits: case AreaOperation::SquadUse: case AreaOperation::Toggles:
+      allowed=update; break;
+    case AreaOperation::Paint: allowed=create || update; break;
+    case AreaOperation::CandidateList: allowed=action==ManagementAction::AreaCandidates; break;
+    case AreaOperation::WorkshopLink: allowed=action==ManagementAction::AreaLink; break;
+    default: break;
+  }
+  if(!allowed) return "Area operation is not valid for this action";
+  if(a.kind()>AreaKind::Workshop || (a.kind()==AreaKind::Workshop)!=(op==15))
+    return "Workshop kind is only valid for workshop links";
+  const bool stock=op==1 || op==2 || op==3 || op==10 || op==13;
+  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14;
+  if((stock && a.kind()!=AreaKind::Stockpile) || (zone && a.kind()!=AreaKind::Zone))
+    return "Area kind is not valid for this operation";
+  if(op && (a.origin() || a.width()!=1 || a.height()!=1 ||
+      (a.zone_type()!=-1 && !(op==5 && create)) || a.categories() || a.changed_categories() ||
+      a.barrels()!=-1 || a.bins()!=-1 || a.wheelbarrows()!=-1 || a.links_only()!=-1 ||
+      a.active()!=-1 || a.owner_id()!=-2 ||
+      (op!=15 && (a.link_id()!=-1 || !a.give() || a.unlink()))))
+    return "Legacy area fields cannot be combined with an operation";
+  if(!op) {
+    if(!a.origin()) return "invalid area request";
+    if(a.origin()->x()<0 || a.origin()->y()<0 || a.origin()->z()<0 ||
+        a.width()<1 || a.height()<1 || a.width()>31 || a.height()>31) return "invalid area rectangle";
+    if((a.categories() | a.changed_categories()) & ~0x1ffffu) return "invalid stockpile categories";
+    if(a.barrels()<-1 || a.bins()<-1 || a.wheelbarrows()<-1 ||
+        a.links_only()<-1 || a.links_only()>1 || a.active()<-1 || a.active()>1 ||
+        a.owner_id()<-2 || a.zone_type()<-1 || a.zone_type()>255 ||
+        a.id()<-1 || a.link_id()<-1 || (a.query() && a.query()->size()>128)) return "invalid area edit";
+    if((inspect || update || action==ManagementAction::AreaDelete || action==ManagementAction::AreaLink) && a.id()<0)
+      return "area id required";
+    if(action==ManagementAction::AreaLink && (a.link_id()<0 || a.id()==a.link_id())) return "invalid area link";
+  }
+  const auto present=[](const auto* p){return p && p->size()!=0;};
+  // Ordered like the appended schema fields, so malformed requests have stable errors.
+  const std::pair<bool,const char*> foreign[]{
+    {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14), "expected_list_revision"},
+    {present(a.list_key()) && op!=1 && op!=2, "list_key"},
+    {present(a.row_key()) && op!=2, "row_key"},
+    {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2, "value"},
+    {a.preset()!=0 && op!=3, "preset"}, {present(a.name()) && op!=4, "name"},
+    {present(a.spans()) && op!=5, "spans"}, {a.paint_mode()!=0 && op!=5, "paint_mode"},
+    {a.paint_z()!=-1 && op!=5, "paint_z"}, {a.location_id()!=-2 && op!=7, "location_id"},
+    {a.location_kind()!=0 && op!=8, "location_kind"}, {a.profession()!=-1 && op!=8, "profession"},
+    {a.deity_kind()!=-1 && op!=8, "deity_kind"}, {a.deity_id()!=-1 && op!=8, "deity_id"},
+    {areaZoneSettingsPresent(a.zone_settings()) && op!=9, "zone_settings"},
+    {a.unit_id()!=-1 && op!=11, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
+    {a.squad_id()!=-1 && op!=12, "squad_id"}, {a.squad_use()!=-1 && op!=12, "squad_use"},
+    {a.organic()!=-1 && op!=13, "organic"}, {a.inorganic()!=-1 && op!=13, "inorganic"},
+    {a.candidate_kind()!=0 && op!=14, "candidate_kind"}, {a.sort()!=0 && op!=14, "sort"},
+    {a.sort_descending() && op!=14, "sort_descending"},
+  };
+  for(const auto& field:foreign) if(field.first)
+    return std::string("Field ")+field.second+" does not belong to this operation";
+  if(op==2 && (a.scope()<1 || a.scope()>4 || a.value()<1 || a.value()>2 ||
+      present(a.row_key())!=(a.scope()==1))) return "invalid area settings edit";
+  if(op==3 && (a.preset()<1 || a.preset()>19)) return "invalid area preset";
+  if(op==5 && (a.paint_mode()<1 || a.paint_mode()>2 || (create && a.paint_mode()!=1) ||
+      !present(a.spans()))) return "invalid area paint";
+  if(op==7 && a.location_id()<-1) return "area location required";
+  if(op==8 && (a.location_kind()<1 || a.location_kind()>5 ||
+      (a.location_kind()==4 ? a.profession()<0 : a.profession()!=-1) ||
+      (a.location_kind()==2 ? (a.deity_kind()<1 || a.deity_kind()>3) : a.deity_kind()!=-1) ||
+      (a.deity_kind()==2 || a.deity_kind()==3 ? a.deity_id()<0 : a.deity_id()!=-1)))
+    return "invalid area location creation";
+  if(op==9 && (!areaZoneSettingsPresent(a.zone_settings()) || !validAreaZoneSettings(a.zone_settings())))
+    return "invalid area zone settings";
+  if(op==11 && (a.unit_id()<0 || a.assign()<0 || a.assign()>1)) return "invalid area unit assignment";
+  if(op==12 && (a.squad_id()<0 || a.squad_use()<0 || a.squad_use()>15)) return "invalid area squad use";
+  if(op==13 && ((a.organic()==-1 && a.inorganic()==-1) || a.organic()<-1 || a.organic()>1 ||
+      a.inorganic()<-1 || a.inorganic()>1)) return "invalid area toggles";
+  if(op==14 && (a.candidate_kind()<1 || a.candidate_kind()>3 || a.sort()>3))
+    return "invalid area candidate selector";
+  if(a.id()<-1 || a.unit_id()<-1 || a.squad_id()<-1 || a.deity_id()<-1 ||
+      a.location_id()<-2 || a.paint_z()<-1) return "invalid area identity";
+  if(op && !(op==5 && create) && a.id()<0) return "area id required";
+  if(op==5 && create && a.paint_z()<0) return "area paint z required";
+  if(op==15 && (a.link_id()<0 || a.link_id()==a.id())) return "invalid area link";
+  if(op==5 && create && (a.zone_type()<-1 || a.zone_type()>255)) return "invalid area edit";
+  if((a.list_key() && a.list_key()->size()>64) || (a.row_key() && a.row_key()->size()>64))
+    return "area key too long";
+  if(a.name() && a.name()->size()>512) return "area name too long";
+  if(a.query() && a.query()->size()>128) return "invalid area edit";
+  if(a.expected_revision()>INT64_MAX || a.expected_list_revision()>INT64_MAX) return "invalid area revision";
+  if(present(a.spans())) {
+    if(a.spans()->size()>128) return "too many area spans";
+    uint32_t total=0;
+    for(const auto* span:*a.spans()) {
+      if(span->x()<0 || span->y()<0 || !span->length() ||
+          uint32_t(span->x())+span->length()-1>32767) return "invalid area span";
+      total+=span->length();
+    }
+    if(total>384) return "too many painted area tiles";
+  }
+  return std::nullopt;
+}
 // Catalog discovers the current epoch, so it does not require a matching
 // request epoch. It still requires a loaded world outside a save operation.
 inline bool managementRequestAdmitted(ManagementAction action, uint64_t requested,
@@ -52,18 +174,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 
   if (r.action() >= ManagementAction::AreaCatalog && r.action() <= ManagementAction::AreaCandidates) {
     const auto* a = r.area();
-    if (!a || a->kind() > AreaKind::Zone || !a->origin()) return "invalid area request";
-    if (a->origin()->x()<0 || a->origin()->y()<0 || a->origin()->z()<0 ||
-        a->width()<1 || a->height()<1 || a->width()>31 || a->height()>31) return "invalid area rectangle";
-    if ((a->categories() | a->changed_categories()) & ~0x1ffffu) return "invalid stockpile categories";
-    if (a->barrels() < -1 || a->bins() < -1 || a->wheelbarrows() < -1 ||
-        a->links_only() < -1 || a->links_only()>1 || a->active() < -1 || a->active()>1 ||
-        a->owner_id() < -2 || a->zone_type() < -1 || a->zone_type()>255 ||
-        a->id() < -1 || a->link_id() < -1 || (a->query() && a->query()->size()>128)) return "invalid area edit";
-    if ((r.action()==ManagementAction::AreaInspect || r.action()==ManagementAction::AreaUpdate ||
-         r.action()==ManagementAction::AreaDelete || r.action()==ManagementAction::AreaLink) && a->id()<0)
-      return "area id required";
-    if (r.action()==ManagementAction::AreaLink && (a->link_id()<0 || a->id()==a->link_id())) return "invalid area link";
+    if (!a) return "invalid area request";
+    if(auto error=validateAreaOperation(r.action(),*a)) return error;
   } else if (r.area()) return "unexpected area payload";
   if (r.action() >= ManagementAction::ProductionList && r.action() <= ManagementAction::FarmSetCrop) {
     const auto* p=r.production();
@@ -387,6 +499,24 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if (const auto* a=s.area()) {
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
+    const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
+    const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
+    if(a->operation()>AreaOperation::WorkshopLink || a->area_id()<-1 ||
+        textSize(a->list_key())>64 || textSize(a->query())>128 ||
+        a->candidate_kind()>3 || a->sort()>3 || a->list_revision()>INT64_MAX ||
+        a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
+      return "invalid area response header";
+    if(count(a->settings())>128 || count(a->locations())>128 ||
+        count(a->candidates())>128 || count(a->links())>128) return "area response too large";
+    const unsigned families=(count(a->settings())!=0)+(count(a->locations())!=0)+
+        (count(a->candidates())!=0)+(count(a->links())!=0);
+    // Legacy areas + choices remains accepted for schema-only migration.
+    // Its tightening accompanies area consumers in 04-B implementation B.
+    if(families>1 || (count(a->choices()) && families) ||
+        (families && count(a->areas())>1)) return "area response mixes list families";
+    // Sum variable payloads across the entire reply, not just each page's
+    // per-row bounds. Scalar/table overhead still fits the 512 KiB channel.
+    size_t payload=textSize(a->list_key())+textSize(a->query());
     size_t extentTotal=0,linkTotal=0;
     std::set<int32_t> areaIds,choiceIds;
     if (a->areas()) for (const auto* v:*a->areas()) {
@@ -397,7 +527,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           !v->extents() || v->extents()->size()!=uint32_t(v->width())*v->height() ||
           v->extents()->size()>65536 || (v->categories() & ~0x1ffffu) ||
           (v->name() && v->name()->size()>512) || (v->owner_name() && v->owner_name()->size()>512) ||
-          (v->gives() && v->gives()->size()>1024) || (v->takes() && v->takes()->size()>1024)) return "invalid area state";
+          (v->gives() && v->gives()->size()>1024) || (v->takes() && v->takes()->size()>1024) ||
+          v->revision()>INT64_MAX || textSize(v->zone_label())>512 ||
+          textSize(v->location_name())>512 || textSize(v->religion())>512 ||
+          v->location_id()<-1 || v->organic()<-1 || v->organic()>1 ||
+          v->inorganic()<-1 || v->inorganic()>1 || !validAreaZoneSettings(v->zone_settings()) ||
+          v->tile_count()<-1 || v->assigned_count()<-1) return "invalid area state";
+      payload+=textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
+          textSize(v->location_name())+textSize(v->religion());
       for (auto extent:*v->extents()) if(extent>1) return "invalid area extent";
       extentTotal+=v->extents()->size();
       for(auto* links:{v->gives(),v->takes()}) if(links){
@@ -407,8 +544,37 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
     }
     if(extentTotal>32768 || linkTotal>8192) return "area response exceeds bounded payload";
-    if (a->choices()) for(const auto* c:*a->choices())
-      if(!c || c->id()<0 || !choiceIds.insert(c->id()).second || !c->name() || c->name()->size()>512) return "invalid area choice";
+    payload+=extentTotal+linkTotal*sizeof(int32_t);
+    if (a->choices()) for(const auto* c:*a->choices()) {
+      if(!c || c->id()<0 || !choiceIds.insert(c->id()).second || !c->name() ||
+          c->name()->size()>512 || textSize(c->label())>512) return "invalid area choice";
+      payload+=sizeof(int32_t)+textSize(c->name())+textSize(c->label());
+    }
+    std::set<std::pair<std::string,int32_t>> settingKeys;
+    if(a->settings()) for(const auto* row:*a->settings()) {
+      if(!row || textSize(row->key())>64 || textSize(row->label())>512 ||
+          row->index()<-1 || row->kind()>4 || row->state()>3 ||
+          !settingKeys.emplace(row->key() ? row->key()->str() : "",row->index()).second)
+        return "invalid area setting row";
+      payload+=7+textSize(row->key())+textSize(row->label());
+    }
+    if(a->locations()) for(const auto* row:*a->locations()) {
+      if(!row || row->id()<-1 || row->location_kind()>5 ||
+          textSize(row->name())>512 || textSize(row->religion())>512) return "invalid area location row";
+      payload+=5+textSize(row->name())+textSize(row->religion());
+    }
+    if(a->candidates()) for(const auto* row:*a->candidates()) {
+      if(!row || row->id()<-1 || textSize(row->name())>512 || textSize(row->profession())>512 ||
+          row->sex()<-1 || row->sex()>1 || row->mood()>7 || row->squad_use()<-1 || row->squad_use()>15)
+        return "invalid area candidate row";
+      payload+=9+textSize(row->name())+textSize(row->profession());
+    }
+    if(a->links()) for(const auto* row:*a->links()) {
+      if(!row || row->id()<0 || (row->kind()!=AreaKind::Stockpile && row->kind()!=AreaKind::Workshop) ||
+          row->direction()<1 || row->direction()>2 || textSize(row->name())>512) return "invalid area link row";
+      payload+=6+textSize(row->name());
+    }
+    if(payload>224*1024) return "area response exceeds bounded payload";
   }
   if (const auto* p=s.production()) {
     if ((p->buildings() && p->buildings()->size()>64) || (p->recipes() && p->recipes()->size()>128) ||

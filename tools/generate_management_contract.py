@@ -6,7 +6,7 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("ManagementAction", "ManagementStatus", "AreaKind", "AlertOperation", "AlertView",
+ENUMS = ("ManagementAction", "ManagementStatus", "AreaKind", "AreaOperation", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind")
 
 DOMAINS = {

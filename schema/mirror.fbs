@@ -1066,7 +1066,21 @@ table SessionCommand { schema_version:uint32 = 8; seq:uint64; save_id:string; ac
 
 // Bounded fortress management channel; independently versioned from map snapshots.
 enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope }
-enum AreaKind : uint8 { Stockpile, Zone }
+enum AreaKind : uint8 { Stockpile, Zone, Workshop }
+enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink }
+struct AreaSpan { y:int16; x:int16; length:uint16; }
+table AreaZoneSettings {
+  pond_mode:uint8;
+  facing:uint8;
+  tomb_citizens:int8 = -1;
+  tomb_pets:int8 = -1;
+  gather_trees:int8 = -1;
+  gather_shrubs:int8 = -1;
+}
+table AreaSettingRow { key:string; index:int32 = -1; label:string; kind:uint8; state:uint8; estimated:bool; }
+table AreaLocationRow { id:int32 = -1; name:string; location_kind:uint8; religion:string; }
+table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; }
+table AreaLinkRow { id:int32 = -1; kind:AreaKind; direction:uint8; name:string; }
 table AreaRequest {
   kind:AreaKind;
   id:int32 = -1;
@@ -1087,6 +1101,33 @@ table AreaRequest {
   unlink:bool;
   query:string;
   cursor:uint32;
+  operation:AreaOperation;
+  expected_revision:uint64;
+  expected_list_revision:uint64;
+  list_key:string;
+  row_key:string;
+  scope:uint8;
+  value:uint8;
+  preset:uint8;
+  name:string;
+  spans:[AreaSpan];
+  paint_mode:uint8;
+  paint_z:int16 = -1;
+  location_id:int32 = -2;
+  location_kind:uint8;
+  profession:int16 = -1;
+  deity_kind:int8 = -1;
+  deity_id:int32 = -1;
+  zone_settings:AreaZoneSettings;
+  unit_id:int32 = -1;
+  assign:int8 = -1;
+  squad_id:int32 = -1;
+  squad_use:int8 = -1;
+  organic:int8 = -1;
+  inorganic:int8 = -1;
+  candidate_kind:uint8;
+  sort:uint8;
+  sort_descending:bool;
 }
 table AreaInfo {
   id:int32;
@@ -1108,9 +1149,38 @@ table AreaInfo {
   owner_allowed:bool;
   gives:[int32];
   takes:[int32];
+  revision:uint64;
+  zone_label:string;
+  location_id:int32 = -1;
+  location_name:string;
+  religion:string;
+  organic:int8 = -1;
+  inorganic:int8 = -1;
+  zone_settings:AreaZoneSettings;
+  tile_count:int32 = -1;
+  assigned_count:int32 = -1;
 }
-table AreaChoice { id:int32; name:string; }
-table AreaState { areas:[AreaInfo]; choices:[AreaChoice]; next_cursor:uint32; truncated:bool; }
+table AreaChoice { id:int32; name:string; label:string; }
+table AreaState {
+  areas:[AreaInfo]; choices:[AreaChoice]; next_cursor:uint32; truncated:bool;
+  operation:AreaOperation;
+  area_id:int32 = -1;
+  list_key:string;
+  candidate_kind:uint8;
+  sort:uint8;
+  sort_descending:bool;
+  query:string;
+  settings:[AreaSettingRow];
+  locations:[AreaLocationRow];
+  candidates:[AreaCandidateRow];
+  links:[AreaLinkRow];
+  list_revision:uint64;
+  build_phase:uint8;
+  build_done:uint32;
+  build_total:uint32;
+  omitted:uint32;
+  captured_tick:int64 = -1;
+}
 // Production recipes are opaque semantic keys revalidated against the selected building.
 table ProductionRequest {
   building_id:int32 = -1;
@@ -1384,7 +1454,7 @@ table CreatureState {
 // A Materials "list exceeds cap" error stays failed across polls. Retry: request
 // Catalog with cursor=0 and expected_list_revision=0, then request Materials.
 table ConstructionRequest {
-  schema_version:uint32 = 19;
+  schema_version:uint32 = 20;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1417,7 +1487,7 @@ table ConstructionRequest {
   expected_list_revision:uint64;
 }
 table ManagementState {
-  schema_version:uint32 = 19;
+  schema_version:uint32 = 20;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

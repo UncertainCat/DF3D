@@ -1765,6 +1765,11 @@
       "reason": "Protected live workflow; launched by tools/smoke/construction_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_CONSTRUCTION_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/work_details_acceptance_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/work_details_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_WORK_DETAILS_ACCEPTANCE."
+    },
+    {
       "path": "presentations/godot/project/tests/work_orders_acceptance_live.gd",
       "status": "manual",
       "reason": "Protected live workflow; launched by tools/smoke/work_orders_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_WORK_ORDERS_ACCEPTANCE."

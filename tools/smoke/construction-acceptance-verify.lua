@@ -146,6 +146,23 @@ local function verify()
   end end end
   assert(count==request.placed and skipped==request.skipped,'Place counts disagree with native buildings')
   result.ids=ids
+ elseif op=='exists' then
+  -- Independent world-vector and tile probes distinguish deletion from an ID
+  -- lookup failure. Record coordinates even when the bridge cannot inspect.
+  local by_id=df.building.find(request.id);local in_world
+  for _,b in ipairs(df.global.world.buildings.all) do if b.id==request.id then in_world=b;break end end
+  local at_tile=dfhack.buildings.findAtTile(request.origin)
+  result.id=request.id;result.phase=request.phase
+  result.found_by_id=by_id~=nil;result.found_in_world=in_world~=nil
+  result.tile_id=at_tile and at_tile.id or -1
+  local b=in_world or by_id
+  if b then
+   result.custom_type=b:getCustomType()
+   result.bounds={x1=b.x1,y1=b.y1,x2=b.x2,y2=b.y2,z=b.z}
+   result.center={x=b.centerx,y=b.centery,z=b.z}
+   local flags=dfhack.maps.getTileFlags(result.center)
+   result.center_loaded=flags~=nil;result.center_hidden=flags and flags.hidden or false
+  end
  elseif op=='removed' then
   local b=df.building.find(request.id)
   assert(not b or dfhack.buildings.markedForRemoval(b),'deconstruct did not act immediately')

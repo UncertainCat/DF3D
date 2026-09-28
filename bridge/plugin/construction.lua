@@ -140,7 +140,7 @@ local piece_names={'UpStair','DownStair','UpDownStair'}
 local function tile_rule(r,d,p,piece)
     if not visible(p) then return false,'Site is hidden, unloaded or outside the map' end
     local f,occ=dfhack.maps.getTileFlags(p)
-    if occ.building~=0 then return false,'Site is occupied by a building' end
+    if occ.building~=0 then return false,'Building present' end
     if f.flow_size>1 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==df.tile_liquid.Magma)) then return false,'Site has magma or deep water' end
     local a=attrs(p);local s=df.tiletype_shape[a.shape];local family=d.family
     if family=='Construction' then

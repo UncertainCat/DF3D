@@ -144,7 +144,7 @@ class Adapter(unittest.TestCase):
             self.refusal('Site needs soil',action=1,definition=name)
         for setup,message in [('valid=false','Site is hidden, unloaded or outside the map'),
             ('flags.hidden=true','Site is hidden, unloaded or outside the map'),
-            ("occupied['0:0:0']=true",'Site is occupied by a building'),
+            ("occupied['0:0:0']=true",'Building present'),
             ('flags.flow_size=2','Site has magma or deep water'),
             ('flags.flow_size=1;flags.liquid_type=1','Site has magma or deep water'),
             ('free=false','Native placement check rejected this site')]:
@@ -233,6 +233,52 @@ class Adapter(unittest.TestCase):
             result=self.finish(action=2,definition=key,width=size,height=size,selections=[row])
             self.assertTrue(result['ok'],result['message'])
             self.assertEqual(self.lua.globals().created[len(self.lua.globals().created)]['custom'],77)
+
+    def test_placed_custom_workshop_find_by_id(self):
+        # constructBuilding(info) returns the linked building, with an ID assigned
+        # by Buildings.cpp:1040. df.building.find(id) takes one numeric ID and
+        # returns that building or nil, never an index or a coordinate.
+        self.lua.execute(r"""
+        linked={}
+        local construct=dfhack.buildings.constructBuilding
+        dfhack.buildings.constructBuilding=function(info)
+          local b=construct(info)
+          b.x1=info.pos.x;b.y1=info.pos.y;b.z=info.pos.z
+          b.x2=b.x1+2;b.y2=b.y1+2
+          b.centerx=b.x1+2;b.centery=b.y1+1 -- raw work location, not midpoint
+          b.custom_type=info.custom;b.jobs={}
+          b.getType=function()return info.type end
+          b.getSubtype=function()return info.subtype end
+          b.getCustomType=function()return b.custom_type end
+          b.getBuildStage=function()return 0 end;b.getMaxBuildStage=function()return 3 end
+          linked[b.id]=b;return b
+        end
+        df.building={find=function(id,...)
+          assert(type(id)=='number' and select('#',...)==0)
+          return linked[id]
+        end}
+        dfhack.buildings.markedForRemoval=function()return false end
+        dfhack.buildings.getName=function()return 'screw press' end
+        dfhack.maps.isValidTilePos=function(p)
+          return p and p.x>=0 and p.y>=0 and p.z==0
+        end
+        """)
+        key='Workshop:Custom:PRESS'
+        row=self.selection(definition=key)
+        placed=self.finish(action=2,definition=key,width=3,height=3,selections=[row])
+        self.assertTrue(placed['ok'],placed['message'])
+        bid=placed['first_building']
+        self.assertGreater(bid,0)
+        found=self.finish(action=3,building_id=bid)
+        self.assertTrue(found['ok'],found['message'])
+        self.assertEqual(found['building_id'],bid)
+        self.assertEqual(found['building_key'],key)
+        self.assertEqual(found['message'],'screw press')
+        self.refusal('Building is no longer available',action=3,building_id=bid+1)
+        self.lua.execute('flags.hidden=true')
+        self.refusal('Building is no longer available',action=3,building_id=bid)
+        self.lua.execute('flags.hidden=false;linked[...] = nil',bid)
+        self.refusal('Building is no longer available',action=3,building_id=bid)
 
     def test_chunked_place_and_dirty_cache(self):
         row=self.selection(1024,definition='Construction:Stairs')
@@ -509,6 +555,60 @@ class Adapter(unittest.TestCase):
 
 
 class Lane(unittest.TestCase):
+    def test_fixture_machine_parts(self):
+        lua=catalog_runtime()
+        lua.execute(r"""
+        df.item_type={WOOD=5,BALLISTAPARTS=62,CATAPULTPARTS=63,TRAPCOMP=68,[5]="WOOD"}
+        state={stock={},incomplete={},unavailable_types={}};unit={pos={x=1,y=2,z=3}}
+        function missing(k,reason)state.incomplete[k]=reason end
+        local wood={getType=function()return 5 end,getSubtype=function()return -1 end,
+          getMaterial=function()return 419 end,getMaterialIndex=function()return 7 end}
+        df.global.world.items={all=vec{wood}}
+        df.global.world.raws.itemdefs={trapcomps=vec{{flags={}},{flags={IS_SCREW=true}}}}
+        created={};dfhack.items={createItem=function(u,t,st,mt,mi,...)
+          assert(u==unit and mt==419 and mi==7 and select('#',...)==0)
+          if t==63 and unavailable then return {} end
+          if t==68 then assert(st==1) elseif t==62 or t==63 then assert(st==-1) end
+          created[t]=(created[t] or 0)+1;return {{id=created[t],flags={}}}
+        end,moveToGround=function(item,pos)assert(pos==unit.pos);return true end}
+        """)
+        source=(Path(__file__).parent/'smoke/construction-acceptance-fixture.lua').read_text()
+        seeds=source[source.index('local kinds='):source.index('local bin=')]
+        lua.execute(seeds)
+        self.assertEqual(lua.eval('#state.stock.TRAPCOMP'),24)
+        self.assertEqual(lua.eval('#state.stock.CATAPULTPARTS'),24)
+        self.assertIsNone(lua.eval("state.unavailable_types['68']"))
+        lua.execute('unavailable=true;df.global.world.raws.itemdefs.trapcomps=vec{}')
+        lua.execute(seeds)
+        self.assertEqual(lua.eval("state.unavailable_types['63']"),'no items created')
+        self.assertEqual(lua.eval("state.unavailable_types['68']"),'no material/subtype seed for item creation')
+
+    def test_native_exists_evidence(self):
+        lua=catalog_runtime()
+        lua.execute(r"""
+        package.preload.json=function()return {decode=function()return request end,
+          encode=function(v)response=v;return '' end}end
+        io.open=function()return {read=function()return '' end,write=function()end,close=function()end}end
+        print=function()end;df3d_construction_acceptance={}
+        building={id=1503,x1=121,y1=54,x2=123,y2=56,z=165,centerx=123,centery=55,
+          getCustomType=function()return 7 end}
+        df.global.world.buildings={all=vec{building}}
+        df.building={find=function(id,...)assert(id==1503 and select('#',...)==0);return lookup and building or nil end}
+        dfhack.buildings.findAtTile=function(p)return tile and building or nil end
+        dfhack.maps={getTileFlags=function(p)assert(p.x==123 and p.y==55);return {hidden=hidden} end}
+        request={op='exists',id=1503,origin={x=121,y=54,z=165},phase='before step 6'}
+        """)
+        source=(Path(__file__).parent/'smoke/construction-acceptance-verify.lua').read_text()
+        for setup,found,world,tile,hidden in [
+            ('lookup=true;tile=true;hidden=false',True,True,1503,False),
+            ('lookup=false',False,True,1503,False),
+            ('lookup=true;hidden=true',True,True,1503,True),
+            ('lookup=false;tile=false;df.global.world.buildings.all=vec{}',False,False,-1,None)]:
+            lua.execute(setup);lua.execute(source,'memory','1');r=lua.globals().response
+            self.assertEqual(r['status'],'passed')
+            self.assertEqual((r['found_by_id'],r['found_in_world'],r['tile_id'],r['center_hidden']),
+                             (found,world,tile,hidden))
+
     def test_api_position_contract(self):
         lua = catalog_runtime()
         # These mocks must fail on the exact tuple-to-coord bug from review D-2.

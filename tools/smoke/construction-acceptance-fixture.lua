@@ -24,7 +24,7 @@ state.origin={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z}
 _G.df3d_designation_acceptance={{tile=state.origin}}
 -- Reuse real material/subtype identities. Failure to create a kind affects only
 -- recipes needing that kind; no fabricated material or item definition is used.
-local kinds={'BOULDER','WOOD','BLOCKS','TRAPPARTS','BALLISTAPARTS','BIN','BUCKET','CHAIN','PIPE_SECTION','TOOL','WEAPON'}
+local kinds={'BOULDER','WOOD','BLOCKS','TRAPPARTS','BALLISTAPARTS','CATAPULTPARTS','TRAPCOMP','BIN','BUCKET','CHAIN','PIPE_SECTION','TOOL','WEAPON'}
 local seeds={}
 for _,item in ipairs(df.global.world.items.all) do
  local kind=df.item_type[item:getType()]
@@ -32,12 +32,20 @@ for _,item in ipairs(df.global.world.items.all) do
 end
 for _,kind in ipairs(kinds) do
  local seed=seeds[kind];local ids={}
- -- Ballista parts have no subtype; borrow a real log's wood identity when
- -- the save has never produced this item kind. Keep the five-argument API.
+ -- Siege parts have no subtype; corkscrews use the raw IS_SCREW subtype.
+ -- Borrow real wood material when the save has no matching item.
  local seed_type=seed and seed:getType()
  local seed_subtype=seed and seed:getSubtype()
- if not seed and kind=='BALLISTAPARTS' and seeds.WOOD then
-  seed=seeds.WOOD;seed_type=df.item_type.BALLISTAPARTS;seed_subtype=-1
+ if kind=='TRAPCOMP' then
+  local existing=seed;seed=nil
+  for subtype,raw in ipairs(df.global.world.raws.itemdefs.trapcomps) do
+   if raw.flags.IS_SCREW then
+    seed=existing and existing:getSubtype()==subtype and existing or seeds.WOOD
+    seed_type=df.item_type.TRAPCOMP;seed_subtype=subtype;break
+   end
+  end
+ elseif not seed and (kind=='BALLISTAPARTS' or kind=='CATAPULTPARTS') and seeds.WOOD then
+  seed=seeds.WOOD;seed_type=df.item_type[kind];seed_subtype=-1
  end
  if seed then
   for _=1,(kind=='BIN' and 1 or 24) do

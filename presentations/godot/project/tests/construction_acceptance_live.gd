@@ -375,7 +375,6 @@ func departure_report() -> void:
 					"D3":"partial: two-level drag not exercised; three-level placement=" + ("verified" if observed.get("D3", false) else "unavailable") + "; ",
 					"D4":"partial: native short groups keep panel open, DF3D rejects incomplete selections; ",
 					"D5":"partial: spike counts not exercised; weapon-count comparison=" + ("match" if observed.get("D5", false) else "unavailable") + "; ",
-					"D7":"mismatch: native Building present; DF3D Site is occupied by a building; ",
 					"D8":"partial: immediacy comparison=" + ("match" if observed.get("D8", false) else "unavailable") + "; refusal wording parity not established; "}
 				if partial.has(id): text = id + ": " + str(partial[id]) + str(finding.line)
 				break
@@ -445,7 +444,15 @@ func exercise() -> void:
 	for row in catalog.values():
 		if str(row.native_name).to_lower() == "screw press": press = row.key
 	if press.is_empty(): incomplete("Screw Press custom raw absent")
-	else: await place(press, "press")
+	else:
+		var press_placement := await place(press, "press")
+		if not press_placement.is_empty():
+			if not check(press_placement.ids.size() == 1 and int(press_placement.receipt.construction.first_building) == int(press_placement.ids[0]), "custom workshop receipt/native ID mismatch"): return
+			for id in press_placement.ids:
+				await native("exists", {"id":int(id), "origin":native_point(press_placement.origin), "phase":"step 3 after placement"})
+				var inspection := await request({"action":3, "building_id":int(id)})
+				if stopped: return
+				if not check(int(inspection.building_id) == int(id) and inspection.construction.building_key == press, "placed custom workshop identity mismatch"): return
 	step = "3 traps"
 	var traps := 0
 	for count in [1, 10]:
@@ -471,7 +478,7 @@ func exercise() -> void:
 		var o: Dictionary = fixture.obstacle
 		step = "4 partial footprint"
 		for key in ["Bridge", "RoadPaved"]:
-			await guarded({"action":1, "definition":key, "origin":point(o), "width":2, "height":1}, "Site is occupied by a building")
+			await guarded({"action":1, "definition":key, "origin":point(o), "width":2, "height":1}, "Building present")
 		if not stopped: observed.D7 = true
 		step = "4 wall drag"
 		var drag := await place("Construction:Wall", "wall", 0, false, Vector3i(int(o.width), 1, 1), -1, o)
@@ -490,6 +497,10 @@ func exercise() -> void:
 		var inspection := await request({"action":3, "building_id":int(row.id)})
 		if stopped: return
 		await guarded({"action":4, "building_id":int(row.id), "definition":"Chair" if inspection.construction.building_key != "Chair" else "Table"}, "Building changed; inspect again")
+	for row in placed:
+		if str(row.key).begins_with("Workshop:Custom:"):
+			await native("exists", {"id":int(row.id), "origin":native_point(row.origin), "phase":"before step 6"})
+	if stopped: return
 	step = "6"
 	var wall := await place("Construction:Wall", "wall")
 	# Cancel every queued object, then finish one separate wall for action 6.

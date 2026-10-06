@@ -76,6 +76,7 @@ public:
     // --- assets --- load_assets(override_path) must succeed first (else assets_error(); there is no placeholder mode).
     bool load_assets(const godot::String& override_path);
     godot::String assets_root() const;
+    godot::Color ui_palette_color(int index) const;
     bool assets_loaded() const { return static_cast<bool>(assets_); }
     godot::String assets_error() const { return assetsError_; }
     godot::String assets_summary() const;
@@ -103,6 +104,7 @@ public:
     godot::Dictionary pick_building(const godot::Vector3& origin, const godot::Vector3& direction, int z) const;
     // Original interface art, resolved only through the verified parsed index.
     godot::Ref<godot::Texture2D> ui_texture(const godot::String& name, int variant = -1);
+    godot::Ref<godot::Texture2D> construction_item_icon(int item_type, const godot::Dictionary& appearance);
     godot::Dictionary elevation_overview(int x, int y) const;
     godot::String ui_font_path() const;
     godot::Vector3i item_tile(int64_t id) const;
@@ -148,6 +150,8 @@ public:
     bool live_synchronized() const { if(!source_.live())return false; const auto s=source_.liveStats();return s.terrainSynced && s.buildingsSynced && s.itemsSynced; }
     godot::Dictionary poll_session();
     godot::Dictionary poll_management();
+    godot::Dictionary poll_management_header();
+    godot::Dictionary management_payload(int64_t epoch, int64_t revision, int64_t sequence) const;
     void update_resident_info();
     void demand_resident_info(int64_t demand);
     void refresh_resident_info();
@@ -159,7 +163,7 @@ public:
     godot::Ref<godot::Texture2D> resident_icon(int64_t id);
     godot::Ref<godot::Texture2D> composite_portrait(const wm::SelectionAppearance& source);
     godot::Ref<godot::Texture2D> composite_appearance_texture(const wm::SelectionAppearance& source, bool framed);
-    godot::Ref<godot::Texture2D> selection_icon(int kind,int64_t id);
+    godot::Ref<godot::Texture2D> selection_icon(int kind,int64_t id,bool body_cell=false);
     int64_t management_request(const godot::String& domain, const godot::Dictionary& request);
     int64_t report_request(const godot::Dictionary& data);
     int64_t work_order_request(const godot::Dictionary& data);
@@ -168,6 +172,11 @@ public:
     void reconnect_management() { managementClient_.reset(); }
     int64_t load_fortress(const godot::String& id);
     int64_t save_fortress(bool return_to_menu, const godot::String& checkpoint_name);
+    int64_t save_fortress_bytes(const godot::PackedByteArray& checkpoint_name);
+    int64_t read_save_destinations(int64_t epoch);
+    int64_t quit_without_saving(int64_t epoch);
+    int64_t save_return_explicit(int64_t epoch, int64_t catalog_receipt, int mode,
+                                const godot::String& destination_id, const godot::PackedByteArray& timeline_name);
     // Replays a fixture offline at set_replay_speed; false + last_error() on parse/validation failure.
     bool load_fixture(const godot::String& path);
     void set_replay_speed(double speed) { source_.setReplaySpeed(speed); }
@@ -290,7 +299,10 @@ public:
     // z with the most present units at the last poll (map top if none).
     int suggest_top_z() const;
     void set_window_depth(int levels);
-    int get_window_depth() const { return windowDepth_; }
+    // Zero configured depth follows the current map, including after session replacement.
+    int get_window_depth() const { return windowDepth_ > 0 ? windowDepth_ : std::max(1, source_.model().mapSize().z); }
+    void set_sprite_depth(int levels);
+    int get_sprite_depth() const { return spriteDepth_; }
     void set_reveal_hidden(bool reveal);
     bool get_reveal_hidden() const { return revealHidden_; }
     // Hide units above top_z (default on) so they do not float over the cut.
@@ -372,6 +384,8 @@ private:
     std::unordered_map<int32_t,ResidentIconMemo> residentIcons_;
     std::shared_ptr<const wm::ResidentInfoSnapshot> residentIconPublication_;
     uint64_t residentIconUse_=0;
+    godot::Dictionary pollManagement(bool includePayload);
+    godot::Dictionary managementState(bool includePayload) const;
     std::unique_ptr<wm::ManagementClient> managementClient_;
     std::unique_ptr<wm::SessionClient> sessionClient_;
 
@@ -596,7 +610,9 @@ private:
     SharedStackAtlas stackAtlas_;
     df3d::mesher::TerrainSupportDependencies terrainSupportDependencies_;
     uint64_t supportBlocksChecked_=0,supportBlocksSkipped_=0,supportTilesEvaluated_=0,supportTilesChanged_=0;
-    bool zInWindow(int32_t z) const { return z <= topZ_ && z > topZ_ - windowDepth_; }
+    bool zInWindow(int32_t z) const { return z <= topZ_ && z > topZ_ - get_window_depth(); }
+    int spriteWindowDepth() const { return spriteDepth_ > 0 ? std::min(spriteDepth_, get_window_depth()) : get_window_depth(); }
+    bool zInSpriteWindow(int32_t z) const { return z <= topZ_ && z > topZ_ - spriteWindowDepth(); }
 
     godot::Node3D* buildingRoot_ = nullptr;
     bool zoneOverlaysVisible_ = false;
@@ -707,10 +723,10 @@ private:
     godot::Ref<godot::Image> paletteImage_;
     bool paletteTried_ = false;
     godot::Ref<godot::ImageTexture> minimapTexture_;
-    df3d::mesher::LevelBlockRevision minimapLevel_;
+    df3d::mesher::MinimapRevision minimapLevel_;
     mutable df3d::mesher::LevelBlockRevision designationLevel_;
     mutable godot::Array designationTiles_;
-    std::vector<int8_t> minimapPixels_;
+    std::vector<int32_t> minimapPixels_;
     int minimapZ_ = -1, minimapResolution_ = 0;
     uint64_t minimapBuilds_ = 0;
     uint64_t minimapCacheHits_ = 0, minimapSamples_ = 0, minimapEvaluations_ = 0;
@@ -774,7 +790,8 @@ private:
     godot::MeshInstance3D* backdrop_ = nullptr;
     int32_t backdropTopZ_ = -1, backdropDepth_ = 0;
     int32_t topZ_ = -1;
-    int32_t windowDepth_ = 24;
+    int32_t windowDepth_ = 0; // Full map depth; positive overrides are for diagnostics/tests.
+    int32_t spriteDepth_ = 12; // Selected level plus eleven below; items and units only.
     bool revealHidden_ = false;
     bool sliceUnits_ = true;
     int buildBudget_ = 256;

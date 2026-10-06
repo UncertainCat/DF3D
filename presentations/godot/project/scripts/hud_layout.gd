@@ -6,7 +6,7 @@ const BOTTOM := 56.0
 const ELEVATION_WIDTH := 16.0
 
 static func minimap_width(view: Vector2) -> float:
-	return 240.0 if view.x >= 1400 else 192.0
+	return 192.0 # Native map content is24 UI cells at supported reference widths.
 
 static func has_minimap(view: Vector2) -> bool:
 	return view.x >= 900 and view.y >= 600

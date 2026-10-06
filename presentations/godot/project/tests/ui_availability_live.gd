@@ -14,13 +14,13 @@ func run():
 	for id in ["citizens","work_orders","trade","agreements","notifications","stocks","appointments","kitchen","rough_panels"]:
 		assert(scene._ui.controller(id)==null, "Retired controller has no product factory")
 	assert(not scene._interaction.construction_active, "Rejected routes leave input free")
-	for title in ["Stocks","Reports","Petitions","Trade","Tasks","Places","Objects","Justice"]:
+	for title in ["Stocks","Petitions","Trade","Tasks","Places","Objects","Justice"]:
 		assert(not hud.navigation[title].visible, "Hidden entry: "+title)
 	for title in ["Citizens","Labor","Work orders"]:
 		assert(hud.navigation[title].visible, "Accepted entry: "+title)
-	for title in ["Build / construction","Stockpiles / zones"]:
-		assert(not hud.navigation.has(title), "Accepted controller remains intentionally absent from HUD")
-	assert(not hud.notification_rail.visible)
+	for title in ["Stockpiles / zones"]:
+		assert(not hud.navigation.has(title) or not hud.navigation[title].visible, "Unpromoted controller remains hidden from HUD")
+	assert(hud.navigation.Reports.visible and hud.navigation["Build / construction"].visible )
 	# A session refresh must not allow a retired placeholder to steal ownership.
 	scene._ui.controller("construction").open_panel()
 	await process_frame

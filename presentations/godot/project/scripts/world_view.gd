@@ -19,6 +19,7 @@ const ItemPreparation = preload("res://scripts/item_preparation.gd")
 const ActorDeaths = preload("res://scripts/actor_death_visuals.gd")
 
 var _attach_timer := 0.0
+var _play_camera_mask := -1
 var _focused := false
 var _session_generation_seen := 0
 var _ui: Node
@@ -190,6 +191,7 @@ func _ready() -> void:
 	var entity_budget_env := OS.get_environment("DF3D_ENTITY_BUDGET")
 	if entity_budget_env != "":
 		world.set_entity_budget_ms(float(entity_budget_env))
+	# Diagnostic terrain-depth override for smoke tools and fixture captures.
 	var window_env := OS.get_environment("DF3D_WINDOW")
 	if window_env != "":
 		world.set_window_depth(int(window_env))
@@ -503,7 +505,16 @@ func _fort_ready() -> bool:
 
 func _set_play_enabled(value: bool, keep_map := false) -> void:
 	if not value: camera_rig.exit_walk()
-	visible = value or keep_map
+	# Keep render instances active while the loading screen conceals the map.
+	# Rebuilding beneath a hidden Node3D produces uninitialized RID errors in
+	# the supported renderer; camera filtering preserves resource initialization.
+	if value or keep_map:
+		if _play_camera_mask >= 0:
+			_camera.cull_mask = _play_camera_mask
+			_play_camera_mask = -1
+	elif _play_camera_mask < 0:
+		_play_camera_mask = _camera.cull_mask
+		_camera.cull_mask = 0
 	camera_rig.process_mode = Node.PROCESS_MODE_INHERIT if value else Node.PROCESS_MODE_DISABLED
 	if _ui != null: _ui.host.set_play_enabled(value)
 	else: _interaction.set_play_enabled(value)
@@ -738,10 +749,20 @@ func _update_units() -> void:
 			var bounds_started := Time.get_ticks_usec() if _unit_probe.enabled else 0
 			if _unit_clip.has(id):
 				var box: AABB = _unit_clip[id].bounds
+				# Keep dependency/demand bounds intact; only the renderer's box
+				# excludes the volume discarded by the billboard ceiling shader.
+				if _sprite_presentation.billboard and key != "":
+					# Apply the culling margin before clipping;
+					# expanding it afterwards reintroduces volume above the roof.
+					box = box.grow(1.0)
+					var top := minf(box.end.y, float(_unit_clip[id].ceiling))
+					box.position.y = minf(box.position.y, top)
+					box.size.y = maxf(.001, top - box.position.y)
 				bounds = box if bounds == AABB() else bounds.merge(box)
 			if _unit_probe.enabled: _unit_probe.add("bounds_us", bounds_started)
 		var bounds_submit_started := Time.get_ticks_usec() if _unit_probe.enabled else 0
 		if mm.custom_aabb != bounds: mm.custom_aabb = bounds
+		if key != "": layer.extra_cull_margin = 0.0 if _sprite_presentation.billboard else 1.0
 		_unit_demand.prepared(key, layer)
 		if _unit_probe.enabled: _unit_probe.add("bounds_us", bounds_submit_started)
 	var flush_started := Time.get_ticks_usec() if _unit_probe.enabled else 0
@@ -979,6 +1000,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_interaction._pause(false)
 
 func _step_top_z(dz: int) -> void:
+	if _fortress_hud != null and not _fortress_hud.elevation_available(): return
 	if camera_rig.is_walk_mode(): return
 	if not world.terrain_loaded():
 		return

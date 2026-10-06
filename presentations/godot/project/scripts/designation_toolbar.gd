@@ -31,6 +31,10 @@ func refresh() -> void:
 		var button := _icon_button(operations, interaction.TOOLS[id], ART[id], func(): hud.choose_tool(id)) as Button
 		if id == Interaction.Tool.CARVE_TRACK: button.tooltip_text = "Carve track: drag between endpoints; change elevation with PgUp/PgDn to follow ramps"
 		if id == Interaction.Tool.STAIRS: button.tooltip_text = "Stairs: drag and change elevation with PgUp/PgDn before releasing"
+		# Verbatim DF53.16 main_hover_instruction captions; removal.json captures
+		# the native tool and distinguishes it from designation cancellation.
+		if id == Interaction.Tool.REMOVE_STAIRS_RAMPS: button.tooltip_text = "Designate constructed walls, floors, and other constructed tiles to be removed by miners. This also designates all stairwells and ramps."
+		if id == Interaction.Tool.REMOVE: button.tooltip_text = "Remove mining, woodcutting, plant gathering, and smoothing orders."
 		button.set_meta("tool_index", id)
 		buttons[id] = button
 		hud.set_icon_active(button, selected == id)

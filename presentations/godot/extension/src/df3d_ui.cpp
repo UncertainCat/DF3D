@@ -34,6 +34,7 @@ Ref<Texture2D> Df3dWorld::ui_texture(const String& name, int variant) {
     const auto* layout = variant < 0 ? index.layout(nameKey) : nullptr;
     const auto* single = index.tile(nameKey, variant < 0 ? 0 : size_t(variant));
     if (!layout && !single) return {};
+    PerfScope uiProfile("ui.texture_build", nullptr, df3d::profiling::detailed());
     const auto* first = layout ? layout->tile(-1, 0, 0) : single;
     if (!first) return {};
     const auto* page = index.page(first->page);
@@ -47,7 +48,12 @@ Ref<Texture2D> Df3dWorld::ui_texture(const String& name, int variant) {
         const TextureSlot* found = slot >= 0 ? spriteResources_.slots.find(slot) : nullptr;
         if (!found || found->texture.is_null()) return;
         const auto rect = index.pixels(sprite);
-        composite->blit_rect(found->texture->get_image(), Rect2i(rect.px, rect.py, rect.pw, rect.ph), Vector2i(x * page->tileW, y * page->tileH));
+        // slotFor retains the CPU image for the same asset lifetime. Reading
+        // pixels back from the GPU here synchronizes rendering just to crop art
+        // that is already resident on the CPU.
+        const auto image = spriteResources_.images.find(slot);
+        if (image == spriteResources_.images.end() || image->second.is_null()) return;
+        composite->blit_rect(image->second, Rect2i(rect.px, rect.py, rect.pw, rect.ph), Vector2i(x * page->tileW, y * page->tileH));
     };
     if (layout) {
         for (int y=0; y<height; ++y) for (int x=0; x<width; ++x)
@@ -77,14 +83,15 @@ Array Df3dWorld::buildings_at_tile(const Vector3i& tile) const {
     return out;
 }
 Vector3i Df3dWorld::unit_tile(int64_t id) const {
-    // Display/depth arrays retain WorldModel::unitIds() sorted order.
-    const auto entry=std::lower_bound(depthUnitContents_.begin(),depthUnitContents_.end(),id,
-        [](const auto& value,int64_t key){return std::get<0>(value)<key;});
-    if(entry!=depthUnitContents_.end() && std::get<0>(*entry)==id) {
-        const wm::TilePos p{std::get<1>(*entry),std::get<2>(*entry),std::get<3>(*entry)};
-        const auto tile=source_.model().tileAt(p);
-        if(tile && !(tile->flags & wm::kTileHidden)) return Vector3i(p.x,p.y,p.z);
-    }
+    // Roster/selection availability follows the current semantic position,
+    // independently of the rendered z window. Still require known visible
+    // terrain: a resident actor record alone does not establish visibility.
+    if(id<0 || !source_.model().hasData())return Vector3i(-1,-1,-1);
+    const auto state=source_.model().evaluate(wm::UnitId(id),double(source_.model().latestTick()));
+    if(state.presence!=wm::Presence::Present)return Vector3i(-1,-1,-1);
+    const wm::TilePos p{int(state.pos.x),int(state.pos.y),int(state.pos.z)};
+    const auto tile=source_.model().tileAt(p);
+    if(tile && !(tile->flags & wm::kTileHidden))return Vector3i(p.x,p.y,p.z);
     return Vector3i(-1,-1,-1);
 }
 Dictionary Df3dWorld::pick_building(const Vector3& origin, const Vector3& direction, int z) const {

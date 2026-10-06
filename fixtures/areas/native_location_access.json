@@ -1,0 +1,4515 @@
+{
+  "provenance": {
+    "capture": "build\\location-access-capture-20260929-160005",
+    "sha256": "491b9f982101126f3c0afd6f364135e080cc77b0a9ba99e80c7e752f1051d9ce",
+    "method": "Protected owned paused clone, native hover located access buttons, all eight starting flag combinations then native click; all controlled flags restored and both saves unchanged."
+  },
+  "screens": [
+    {
+      "id": 0,
+      "kind": "TEMPLE",
+      "access_points": {
+        "LOCATION_DETAILS_CITIZENS_ONLY": {
+          "x": 448,
+          "y": 112
+        },
+        "LOCATION_DETAILS_MEMBERS_ONLY": {
+          "x": 480,
+          "y": 112
+        },
+        "LOCATION_DETAILS_RESIDENTS_ALLOWED": {
+          "x": 416,
+          "y": 112
+        },
+        "LOCATION_DETAILS_VISITORS_ALLOWED": {
+          "x": 384,
+          "y": 112
+        }
+      }
+    },
+    {
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "access_points": {
+        "LOCATION_DETAILS_CITIZENS_ONLY": {
+          "x": 448,
+          "y": 112
+        },
+        "LOCATION_DETAILS_RESIDENTS_ALLOWED": {
+          "x": 416,
+          "y": 112
+        },
+        "LOCATION_DETAILS_VISITORS_ALLOWED": {
+          "x": 384,
+          "y": 112
+        }
+      }
+    },
+    {
+      "id": 2,
+      "kind": "HOSPITAL",
+      "access_points": {
+        "LOCATION_DETAILS_CITIZENS_ONLY": {
+          "x": 448,
+          "y": 112
+        },
+        "LOCATION_DETAILS_RESIDENTS_ALLOWED": {
+          "x": 416,
+          "y": 112
+        },
+        "LOCATION_DETAILS_VISITORS_ALLOWED": {
+          "x": 384,
+          "y": 112
+        }
+      }
+    },
+    {
+      "id": 3,
+      "kind": "TEMPLE",
+      "access_points": {
+        "LOCATION_DETAILS_CITIZENS_ONLY": {
+          "x": 448,
+          "y": 112
+        },
+        "LOCATION_DETAILS_MEMBERS_ONLY": {
+          "x": 480,
+          "y": 112
+        },
+        "LOCATION_DETAILS_RESIDENTS_ALLOWED": {
+          "x": 416,
+          "y": 112
+        },
+        "LOCATION_DETAILS_VISITORS_ALLOWED": {
+          "x": 384,
+          "y": 112
+        }
+      }
+    },
+    {
+      "id": 4,
+      "kind": "LIBRARY",
+      "access_points": {
+        "LOCATION_DETAILS_CITIZENS_ONLY": {
+          "x": 448,
+          "y": 112
+        },
+        "LOCATION_DETAILS_RESIDENTS_ALLOWED": {
+          "x": 416,
+          "y": 112
+        },
+        "LOCATION_DETAILS_VISITORS_ALLOWED": {
+          "x": 384,
+          "y": 112
+        }
+      }
+    },
+    {
+      "id": 5,
+      "kind": "GUILDHALL",
+      "access_points": {
+        "LOCATION_DETAILS_CITIZENS_ONLY": {
+          "x": 448,
+          "y": 112
+        },
+        "LOCATION_DETAILS_MEMBERS_ONLY": {
+          "x": 480,
+          "y": 112
+        },
+        "LOCATION_DETAILS_RESIDENTS_ALLOWED": {
+          "x": 416,
+          "y": 112
+        },
+        "LOCATION_DETAILS_VISITORS_ALLOWED": {
+          "x": 384,
+          "y": 112
+        }
+      }
+    }
+  ],
+  "cases": [
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 0,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 0,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 1,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 2,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 3,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 4,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 5,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 6,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 7,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 0,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 1,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 2,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 3,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 4,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 5,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 6,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 7,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 0,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 1,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 2,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 3,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 4,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 5,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 6,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 1,
+      "kind": "INN_TAVERN",
+      "mask": 7,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 0,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 1,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 2,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 3,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 4,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 5,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 6,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 7,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 0,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 1,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 2,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 3,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 4,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 5,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 6,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 7,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 0,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 1,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 2,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 3,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 4,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 5,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 6,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 2,
+      "kind": "HOSPITAL",
+      "mask": 7,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 0,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 1,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 2,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 3,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 4,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 5,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 6,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 3,
+      "kind": "TEMPLE",
+      "mask": 7,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 0,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 1,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 2,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 3,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 4,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 5,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 6,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 7,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 0,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 1,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 2,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 3,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 4,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 5,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 6,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 7,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 0,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 1,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 2,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 3,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 4,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 5,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 6,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit"
+      },
+      "id": 4,
+      "kind": "LIBRARY",
+      "mask": 7,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 0,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 1,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 2,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 3,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 4,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 5,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 6,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 7,
+      "point": {
+        "x": 480,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 0,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 1,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 2,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 3,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 4,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 5,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 6,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 7,
+      "point": {
+        "x": 448,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 0,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 1,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 2,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 3,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 4,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 5,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 6,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 7,
+      "point": {
+        "x": 416,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 0,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 1,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Citizens and long-term residents only"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 2,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 3,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 4,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": false,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 5,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": false
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 6,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    },
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "after": {
+        "flags": {
+          "MEMBERS_ONLY": false,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "All visitors welcome"
+      },
+      "before": {
+        "flags": {
+          "MEMBERS_ONLY": true,
+          "NON_CITIZENS_ALLOWED": true,
+          "VISITORS_ALLOWED": true
+        },
+        "label": "Only members can visit (if guild established)"
+      },
+      "id": 5,
+      "kind": "GUILDHALL",
+      "mask": 7,
+      "point": {
+        "x": 384,
+        "y": 112
+      }
+    }
+  ],
+  "compiled_acceptance": {
+    "capture": "build\\location-access-mutation-20260929-195808",
+    "sha256": "9f3d479334b44be3a2f0f1ed534ecf1d48d710dfacc47c9c1c2b759dfcc85213",
+    "native_transitions": 168,
+    "no_write_refusals": 69,
+    "plugin_sha256": "9857810781EAB227C6B1C9BB4834AF37941993BB7BAE395C7D8314AAE2AC6E78",
+    "scope": "Compiled safe-point access helper and diagnostic only; management transport, controller, rendering and route exposure remain unfinished. All controlled flags/scalars restored, final paused and both save manifests unchanged."
+  },
+  "protocol_acceptance": {
+    "capture": "build\\areas-acceptance-20260929-201007",
+    "native_log_sha256": "b703fa281fe7cc41333fcd94dde900e7cb977bbdc91940344a9cbb20b7b74010",
+    "plugin_sha256": "D229FBD69361606D633BB4B10FD2D614938A618580FB6BC3FDCF25B05BCDCD8A",
+    "confirmed_modes": 21,
+    "stale_refusals": 6,
+    "scope": "Actual Details state/service op23 with independent native readback; offline unknown-outcome and ownership tests. No permission-bar input or visual acceptance. Known Godot thread notice only, all controlled flags restored, source and clone saves unchanged."
+  }
+}

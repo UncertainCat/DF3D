@@ -93,6 +93,21 @@ local function verify()
  if op=='guard_before' then assert(df.global.pause_state);state.guard=fingerprint()
  elseif op=='guard_after' then assert(df.global.pause_state and state.guard==fingerprint(),'refusal changed sorted building ids/types')
  elseif op=='status' then assert(df.global.pause_state)
+ elseif op=='pressure_examples' then
+  assert(#request.rows==200,'pressure example transport row count')
+  for i,row in ipairs(request.rows)do
+   assert(row.size==i*1000,'pressure example threshold/order')
+   if row.race_id==-1 then assert(row.name=='','unnamed pressure example carried invented copy')
+   else
+    local raw=df.global.world.raws.creatures.all[row.race_id]
+    assert(raw and dfhack.df2utf(raw.name[0])==row.name,'pressure example native name/identity differs')
+    assert(raw.adultsize>=row.size and raw.adultsize<=(i==200 and 200000999 or row.size+999),'pressure example native size differs')
+    assert(not(raw.flags.EQUIPMENT or raw.flags.GENERATED or raw.flags.DOES_NOT_EXIST),'ineligible pressure example')
+   end
+  end
+  -- This checks transport against current raw facts. Selection priority is
+  -- independently verified by the 142-state native UI reader oracle.
+  result.rows=#request.rows
  elseif op=='materials' then materials()
  elseif op=='mask' then
   local p=request.origin;local mask={};local skipped=0
@@ -120,6 +135,21 @@ local function verify()
      if custom>=0 then assert(b:getCustomType()==custom,'custom building mismatch') end
      -- df-structures df.building.xml:1319,1369: direction (enum screw_pump_direction).
      if family=='ScrewPump' or family=='Rollers' then assert(b.direction==request.direction,'pump/roller direction') end
+     if family=='Rollers' then assert(b.speed==assert(request.roller_speed),'native Roller speed differs from semantic selection') end
+     if family=='Trap' and sub==df.trap_type.TrackStop then
+      local intent=assert(request.track_stop);local t=b.track_stop_info
+      local v=({{0,0},{0,-1},{1,0},{0,1},{-1,0}})[intent.dump_direction+1]
+      assert(t.friction==intent.friction and t.track_flags.use_dump==(intent.dump_direction~=0) and t.dump_x_shift==v[1] and t.dump_y_shift==v[2],'native TrackStop profile differs from semantic selection')
+     end
+     if family=='Trap' and sub==df.trap_type.PressurePlate then
+      local intent=assert(request.pressure_plate);local t=b.plate_info
+      for _,key in ipairs{'units','water','magma','citizens','resets','track'}do
+       assert(t.flags[key]==intent[key],'native PressurePlate flag differs: '..key)
+      end
+      for _,key in ipairs{'unit_min','unit_max','water_min','water_max','magma_min','magma_max','track_min','track_max'}do
+       assert(t[key]==intent[key],'native PressurePlate range differs: '..key)
+      end
+     end
      if family=='WaterWheel' or family=='AxleHorizontal' then assert(b.is_vertical==(request.direction==1),'wheel direction') end
      if family=='Bridge' then assert(b.direction==(request.retracting and -1 or request.direction),'bridge direction') end
      if family=='SiegeEngine' then assert(b.facing==request.direction and b.resting_orientation==request.direction,'eight-facing siege orientation') end
@@ -150,7 +180,12 @@ local function verify()
   -- Independent world-vector and tile probes distinguish deletion from an ID
   -- lookup failure. Record coordinates even when the bridge cannot inspect.
   local by_id=df.building.find(request.id);local in_world
-  for _,b in ipairs(df.global.world.buildings.all) do if b.id==request.id then in_world=b;break end end
+  local previous=-1;result.world_sorted=true
+  for _,b in ipairs(df.global.world.buildings.all) do
+   if b.id<=previous then result.world_sorted=false end
+   previous=b.id
+   if b.id==request.id then in_world=b end
+  end
   local at_tile=dfhack.buildings.findAtTile(request.origin)
   result.id=request.id;result.phase=request.phase
   result.found_by_id=by_id~=nil;result.found_in_world=in_world~=nil

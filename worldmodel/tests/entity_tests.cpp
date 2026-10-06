@@ -621,3 +621,22 @@ TEST_CASE("corpse identity remains semantic and participates in item revisions")
   CHECK(model.item(11)->corpseUnitId == 88); CHECK(model.item(11)->version > before);
   CHECK(ItemObservation{}.corpseUnitId == -1);
 }
+
+TEST_CASE("pending construction entity retains subtype and retires on removal or full refresh") {
+  WorldModel model;
+  auto full=snap(1,ChangeScope::Full,ChangeScope::Full);
+  auto track=bld(90,BuildingKind::Construction,10,11,10,11,2,kNoMaterial,BuildingStage::Planned);
+  track.subtype=12;full.buildings.push_back(track);
+  model.ingest(full,0.0);
+  REQUIRE(model.building(90));CHECK(model.building(90)->subtype==12);
+  CHECK(model.buildingAt({10,11,2})->id==90);
+  auto delta=snap(2,ChangeScope::Delta,ChangeScope::Delta);
+  track.subtype=21;delta.buildings.push_back(track);model.ingest(delta,0.0);
+  REQUIRE(model.building(90));CHECK(model.building(90)->subtype==21);
+  auto removed=snap(3,ChangeScope::Delta,ChangeScope::Delta);
+  removed.removedBuildings={90};model.ingest(removed,0.0);
+  CHECK(model.building(90)==nullptr);CHECK(model.buildingAt({10,11,2})==nullptr);
+  full.tick=4;model.ingest(full,0.0);REQUIRE(model.building(90));
+  model.ingest(snap(5,ChangeScope::Full,ChangeScope::Full),0.0);
+  CHECK(model.building(90)==nullptr);
+}

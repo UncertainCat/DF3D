@@ -32,9 +32,8 @@ func update_groups(state: Dictionary, enabled: bool):
 			if world != null and world.has_method("ui_texture"): button.icon = world.ui_texture("ANNOUNCEMENT_ALERT", category)
 			button.custom_minimum_size = Vector2(32,36)
 			button.focus_mode = Control.FOCUS_NONE
-			button.tooltip_text = str(group.category_name).to_snake_case().replace("_", " ").capitalize()
-			button.tooltip_text += " · %d announcements, %d unit reports" % [int(group.get("report_count", 0)), int(group.get("unit_report_count", 0))]
-			if button.icon == null: button.text = button.tooltip_text
+			# Native category icons have no hover text (e7 findings item 4).
+			# The distinct red ALERT button's instructions do not belong here.
 			for style in ["normal", "hover", "pressed", "disabled", "focus"]: button.add_theme_stylebox_override(style, StyleBoxEmpty.new())
 			var selected: Dictionary = group.duplicate(true)
 			selected["fortress_epoch"] = epoch
@@ -43,7 +42,6 @@ func update_groups(state: Dictionary, enabled: bool):
 				if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT and not button.disabled:
 					group_dismissed.emit(selected)
 					button.accept_event())
-			button.tooltip_text += "\nLeft click for recenter and expand options.  Right click to dismiss."
 			column.add_child(button)
 			buttons.append(button)
 	for button in buttons: button.disabled = not enabled

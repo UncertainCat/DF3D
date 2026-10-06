@@ -2,12 +2,13 @@
 param([ValidateSet('safe','separate')][string]$RenderThread='separate')
 $ErrorActionPreference='Stop'
 $repo=Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$view = (Get-Content "$repo/fixtures/recorded/mature_fort_pause_53.16.manifest.json" -Raw | ConvertFrom-Json).view
 $cfg=Join-Path $env:APPDATA 'Godot/app_userdata/DF3D/presentation.cfg'
 $prior=if(Test-Path -LiteralPath $cfg){[IO.File]::ReadAllBytes($cfg)}else{$null}
 $vars=@{
  DF3D_FIXTURE="$repo/fixtures/recorded/mature_fort_pause_53.16.df3dfix"
- DF3D_FIXTURE_TICK='1000'; DF3D_TOP_Z='127'; DF3D_WINDOW='24'; DF3D_AUDIO_SILENT='1'
- DF3D_CAM_FOCUS='96,94,127'; DF3D_CAM_DIST='60'
+ DF3D_FIXTURE_TICK=[string]$view.tick; DF3D_TOP_Z=[string]$view.top_z; DF3D_WINDOW='24'; DF3D_AUDIO_SILENT='1'
+ DF3D_CAM_FOCUS="$($view.x),$($view.y),$($view.top_z)"; DF3D_CAM_DIST=[string]$view.distance
  DF3D_THREAD_TEST_OUT="$repo/build/render-thread-$RenderThread"
 }
 $previous=@{}

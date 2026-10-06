@@ -1,0 +1,326 @@
+{
+  "source": "build/location-staff-selector-keys-20260930-063207/native-selector-keys.json",
+  "source_sha256": "f8e2dd3515260ad0ebaf526a26baecef8e4418bdf896721540b053a88d7977d4",
+  "scope": "Capture-only native selector dispatch and owned-window Enter/Escape events. Windows key down/up separation 70ms; simulation remains paused. Simulated SELECT bypasses the outer textbox handler.",
+  "exclusions": [
+    "Escape parent-screen routing and Options behavior are not implemented or fully explained by these observations.",
+    "No held-repeat, non-ASCII, nonempty-filter Enter, or complete fortress-route acceptance."
+  ],
+  "cases": [
+    {
+      "trial": 1,
+      "action": "SELECT",
+      "occupation": 88,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": false,
+        "unit_id": -1,
+        "selected_unit_id": 5813,
+        "count": 116
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": 9375,
+        "listening": false,
+        "unit_id": 5813,
+        "selected_unit_id": 5813,
+        "count": 116
+      }
+    },
+    {
+      "trial": 2,
+      "action": "SELECT",
+      "occupation": 90,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6134,
+        "count": 115
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": 9648,
+        "listening": true,
+        "unit_id": 6134,
+        "selected_unit_id": 6134,
+        "count": 115
+      }
+    },
+    {
+      "trial": 3,
+      "action": "LEAVESCREEN",
+      "occupation": 125,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      }
+    },
+    {
+      "trial": 4,
+      "action": "LEAVESCREEN",
+      "occupation": 125,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      }
+    },
+    {
+      "trial": 5,
+      "action": "_MOUSE_R",
+      "occupation": 125,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      }
+    },
+    {
+      "trial": 6,
+      "action": "_MOUSE_R",
+      "occupation": 125,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      }
+    },
+    {
+      "trial": 7,
+      "action": "OS_ENTER",
+      "occupation": 125,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6661,
+        "count": 114
+      },
+      "after": {
+        "active": false,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": 10095,
+        "listening": true,
+        "unit_id": 6661,
+        "selected_unit_id": 6661,
+        "count": 114
+      }
+    },
+    {
+      "trial": 8,
+      "action": "OS_ENTER",
+      "occupation": 126,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6392,
+        "count": 113
+      },
+      "after": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": false,
+        "unit_id": -1,
+        "selected_unit_id": 6392,
+        "count": 113
+      }
+    },
+    {
+      "trial": 9,
+      "action": "OS_ESCAPE",
+      "occupation": 126,
+      "before": {
+        "active": true,
+        "chooser_open": true,
+        "cursor": 0,
+        "details_open": true,
+        "filter": "",
+        "focused": true,
+        "histfig_id": -1,
+        "listening": true,
+        "unit_id": -1,
+        "selected_unit_id": 6392,
+        "count": 113
+      },
+      "after": {
+        "active": false,
+        "chooser_open": false,
+        "cursor": 0,
+        "details_open": false,
+        "filter": "",
+        "focused": false,
+        "histfig_id": -1,
+        "listening": false,
+        "unit_id": -1,
+        "selected_unit_id": 6392,
+        "count": 113
+      }
+    }
+  ],
+  "validation": {
+    "gpu": "build/qa/staff-keys-corrected-20260930",
+    "live": "build/areas-acceptance-20260930-063323",
+    "status": "passed_with_known_issues",
+    "checks": [
+      "ten ordinary role lists: viewport keyboard assignment and pointer removal with native holder/link/refill/labor readback",
+      "ten viewport right-click cancellations: selector retired and native facts unchanged; five with focused filter",
+      "five focused Enter events end text entry without submitting a mutation",
+      "offline native replay, REPEAT_NOT echo suppression, empty/unready refusal",
+      "semantic and partial-effect Unknown controls repeated",
+      "final pause, fixture cleanup, preferences, both unchanged save manifests"
+    ],
+    "diagnostics": "GPU: known thread/device/shutdown signatures; live: known thread notice only. No unclassified diagnostics.",
+    "files": {
+      "staff-edit-0-1-assigned-viewport.json": "8b769882ac4dd84fd206a6eba15e07294f7def31d0b3b337548df4a4a5bda2d4",
+      "staff-edit-0-1-removed-viewport.json": "e286faceeda3cfb44796b892875026f412abfeb23c11fe499b73a403bfe5f96d",
+      "staff-edit-1-0-assigned-viewport.json": "ce18f88dad0d74b7df1651bf35f20049573951c093f60808837dfc3e49d21ae8",
+      "staff-edit-1-0-removed-viewport.json": "e54789c6f29384d4ed0c9c1eedb21035766e735c481c3310f9e33411b652a411",
+      "staff-edit-1-1-assigned-viewport.json": "a3df61b8f2bc45da5cad07cf8e84b6a64fab1f5ed55b4e4ff1c2695bf8f180a7",
+      "staff-edit-1-1-removed-viewport.json": "9bc22e00113c8228501908369fad6dd72ae04788126d5f64ed43e4d211532574",
+      "staff-edit-2-10-assigned-viewport.json": "356f86022389ae64dd2090546b869f2112268e4d5f8dd0981ea48bc171cc8fc1",
+      "staff-edit-2-10-removed-viewport.json": "b4623232408b0ae976f8ee3a6d9b82c2cb26d2c909d10e8f01ef31853d97cd28",
+      "staff-edit-2-7-assigned-viewport.json": "7b708ef88ebf45e13d69d7b59766149c3de832e32489ed33851f9998868427ee",
+      "staff-edit-2-7-removed-viewport.json": "90bbf1112b4857a9dd55e370f63bcd7255878d04d6fe248d55863f5a6c63b6f2",
+      "staff-edit-2-8-assigned-viewport.json": "4632e86ddd2f89bf45b157f534f00859dc02978cf201b838a96c3a824bf87bd4",
+      "staff-edit-2-8-removed-viewport.json": "39f7baf9619bfdc93fc3517e6b3303490ceeedcf92ba667f55864c4f934f6951",
+      "staff-edit-2-9-assigned-viewport.json": "4c3fc98dfe2f335ee1340a41c52c225a1472259ab8101bf54bd92be774df646c",
+      "staff-edit-2-9-removed-viewport.json": "231005d155466b5b1ce33509b55b185c3a66903328178bdf43e88bfbaa9e60e8",
+      "staff-edit-3-1-assigned-viewport.json": "a70a8f35aa056fa380a2049efd99e3ff60e8e4804da7b91b50bc08badeb461e0",
+      "staff-edit-3-1-removed-viewport.json": "2ebc696c1c68e045dadc5db6c78e709144b82d8e1e9aea99ed16482eaea0cbc8",
+      "staff-edit-4-2-assigned-viewport.json": "4c6adc53c2f71ac729e4131412b51e05b51f8b9d69476d8ab834d79d7887d818",
+      "staff-edit-4-2-removed-viewport.json": "88c0b29408c05f21c84be065512c510ae736cba96bd8f0c847fbcc7fa6f325bf",
+      "staff-edit-4-5-assigned-viewport.json": "b61f4b209b311c4cef18c8045a0d3628c1e49e6e29704ec32c680a222530aa1a",
+      "staff-edit-4-5-removed-viewport.json": "88c0b29408c05f21c84be065512c510ae736cba96bd8f0c847fbcc7fa6f325bf"
+    }
+  }
+}

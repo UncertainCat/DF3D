@@ -3,7 +3,7 @@
 // state the corpse item carries), the ordered stack of creature-graphics
 // layers DF draws it with, from DF's own parsed graphics raws
 // (creature_raw_graphics / creature_graphics_layer_setst /
-// creature_graphics_layerst, loaded by DF at startup) and the unit's state
+// creature_graphics_layerst, including deferred template initialization) and the unit's state
 // (caste, profession, worn items, syndromes, tissue colours, ...). Every
 // layer resolves a texpos back through df::global::texture's tile pages
 // to (page token, tile x, tile y) and a palette page + row, which is what

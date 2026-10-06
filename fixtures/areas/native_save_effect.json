@@ -1,0 +1,1405 @@
+{
+  "source": "build/native-save-effects-20260930-081415",
+  "sha256": {
+    "before-save.json": "9807e4ad44fd5612039114855af5d5c195eef824a11e730a2e5ae35d0e4a967f",
+    "after-save.json": "8f97c9698c86a10f538570874b7e80835a6921e3f7b15fe3869a19ee3a508dbb",
+    "save-progress.json": "528ad3e1b1f61ad445f55621e9e70b69c39ded2a298092fb3771a900e747976c",
+    "filter-result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+    "destination-world.json": "4e17114f54458933ac75f7d1789764ccebe32d79b6b64615fcc1aa39ea55ef58",
+    "destination-manifest.txt": "33e7655a6dff4d37e837e9150b6568061c9e534e875b0a1e836cccb0b8af840b",
+    "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+    "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+    "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+    "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+    "capture-inputs.log": "d626d6c65a1ac81908ff62cfe37f6dad02ced766440523d56298b2860fcd786a",
+    "summary.txt": "2700165975f68815c97d605c56eca8e90d497ade1264b6282401d13fee99ac27"
+  },
+  "input": {
+    "open": "Windows Escape down/up",
+    "choose": "native Save and continue playing pointer target",
+    "text": "df3d.manual-0930081415",
+    "submit": "Windows Enter down/up",
+    "overwrite_confirmed": false
+  },
+  "before": {
+    "entering": false,
+    "frame": 0,
+    "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d-areas-effect-0930081415",
+    "name": "",
+    "open": false,
+    "overwrite": false,
+    "paused": true,
+    "save_dir": "df3d-areas-effect-0930081415",
+    "saving": false,
+    "stage": 0,
+    "substage": 0,
+    "timer": 0,
+    "world_id1": 2004778519,
+    "world_id2": 1401278833
+  },
+  "after": {
+    "entering": true,
+    "frame": 0,
+    "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.manual-0930081415",
+    "name": "df3d.manual-0930081415",
+    "open": false,
+    "overwrite": false,
+    "paused": true,
+    "save_dir": "df3d.manual-0930081415",
+    "saving": true,
+    "stage": 51,
+    "substage": 51,
+    "timer": 0,
+    "world_id1": 2004778519,
+    "world_id2": 1401278833
+  },
+  "world_file_bytes": 23758259,
+  "verified": {
+    "process_exit": 0,
+    "world_identity_unchanged": true,
+    "paused_frame_unchanged": true,
+    "source_and_clone_hashes_unchanged": true,
+    "all_non_test_save_hashes_unchanged": true,
+    "fixture_preferences_restored": true,
+    "owned_process_stopped": true
+  },
+  "omissions": [
+    "No overwrite or save-return action was confirmed.",
+    "Only the recorded ASCII destination with an internal period was committed; other character/path edge cases remain unverified.",
+    "Godot Options owner and session controller save/reload are accepted in a standalone test scene; main-scene integration and other Options routes remain unfinished."
+  ],
+  "reload": {
+    "source": "build/native-save-effects-20260930-081415/reload-20260930-093223",
+    "state": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.manual-0930081415",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "df3d.manual-0930081415",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "process_exit": 0,
+    "non_test_and_destination_preservation": true,
+    "sha256": {
+      "reloaded.json": "6d595501c750c454043452cbbc80706a9ff84a77ab0861f0b804339f87a3c10a",
+      "verify.log": "7cd762dd0cd2dd1fd8d0844910aae2ea436b82c2a09c0aa464795ef2ceac72f5",
+      "prepare-result.json": "71d19f505538de693f241667ae06ea4f2c903df81b18d673a3e700e07a1f7544",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "destination-preservation.txt": "7761a73ec4e9e3ffd1cb4a2a20ae6cef15586c750b233fe84c9594b9741f6386",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    }
+  },
+  "semantic_save": {
+    "source": "build/native-save-effects-20260930-081415/semantic-20260930095617",
+    "process_exit": 0,
+    "name": "df3d.semantic-20260930095617xxxxxxxxxxxx",
+    "name_bytes": 40,
+    "rejected_41_bytes_without_native_effect": true,
+    "after_save": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.semantic-20260930095617xxxxxxxxxxxx",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "df3d.semantic-20260930095617xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.semantic-20260930095617xxxxxxxxxxxx",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "df3d.semantic-20260930095617xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "non_test_and_test_save_preservation": true,
+    "sha256": {
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "binaries.log": "c20def7d9c793bfc992cc83bbc45e1ef0ca4cc4e00757502d29a8a75886bede5",
+      "save-name.txt": "7b793400393470b805a2fa02bb98ab8f3daad72a4a524308865401ed932aef51",
+      "save.log": "9cf070c3c3522a737c211fdf02819c5537b5b3ea8cc242393607d88747ca8997",
+      "rejected-41.log": "21ded76694d8dd02af8d0b977f4bee658b7efcc81bb8db0bf246c052fabd2c28",
+      "rejected-41-native.json": "a1197ce448a21904d0947f9c144e95f9515f73377fe75159c1b61019d3223f9a",
+      "saver-state.json": "e81a7ddc5fb2d7c0a60530e7a6e9f3dc0abd765ec53c60bcff6cab0eb4bb5714",
+      "save-identity.json": "13f2819558659b1882f469fc4010a94f57e6c79a35f43fe9b45ae78d0733f52d",
+      "after-save/reloaded.json": "13e0c7409695a586d246faaff2599dd9314788c740b32142c5173cc385d09b30",
+      "reload-identity.json": "13f2819558659b1882f469fc4010a94f57e6c79a35f43fe9b45ae78d0733f52d",
+      "reloaded.json": "13e0c7409695a586d246faaff2599dd9314788c740b32142c5173cc385d09b30",
+      "destination-manifest.txt": "d120ef797a1ac403b5791ac0aecd173b049c9da58b60ffa9da8cf13e31e17e55",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637"
+    }
+  },
+  "godot_save": {
+    "source": "build/native-save-effects-20260930-081415/godot-20260930100731",
+    "status": "passed_with_known_issues",
+    "process_exit": 0,
+    "input": "Viewport pointer SaveContinue, Unicode input for 40 ASCII bytes, physical-key-shaped Enter events twice",
+    "receipt": {
+      "phase": 3,
+      "request_seq": 1,
+      "request_status": 2,
+      "request_action": 1,
+      "request_fortress_epoch": 176024939659265,
+      "fortress_epoch": 176024939659265,
+      "paused": true,
+      "active_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.godot-20260930100731xxxxxxxxxxxxxxx",
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.godot-20260930100731xxxxxxxxxxxxxxx"
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.godot-20260930100731xxxxxxxxxxxxxxx",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "df3d.godot-20260930100731xxxxxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "non_test_and_test_save_preservation": true,
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "sha256": {
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d",
+      "binaries.log": "42c66e1bda2e858aade178fd88f74928716755ffcea88bdb02c54aa7969628ca",
+      "godot-config.json": "4cf0cc3de2ef6a8109c897e2cb0f6146b4cfd5fed32f33c18612aca4c6c6c20b",
+      "godot-save-receipt.json": "bbfc0e08d5fd7b1da3975a8c688ba444e6ffdafa1b2336cc54101a0d3f2ea861",
+      "godot.log": "684fa60aff90a101f498cc764a7999a51271edd1e3c5353fd6da8589825e5226",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "godot-before-save.png": "98e5c9fa29d75e9472c263a2820462f380918256dc9ce3d4d57fac6684b29dfe",
+      "saver-state.json": "e81a7ddc5fb2d7c0a60530e7a6e9f3dc0abd765ec53c60bcff6cab0eb4bb5714",
+      "save-identity.json": "13f2819558659b1882f469fc4010a94f57e6c79a35f43fe9b45ae78d0733f52d",
+      "reload-identity.json": "13f2819558659b1882f469fc4010a94f57e6c79a35f43fe9b45ae78d0733f52d",
+      "reloaded.json": "e0a21a5647bd6fed79c95e021628c119af205de0c41d2711bf3d654d25947afe",
+      "destination-manifest.txt": "d22dbd0c93c9a0105fdf1652b5db1fc940a051806bf9e478c03489b01a826c21",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637"
+    }
+  },
+  "native_new_timeline": {
+    "source": "build/native-save-effects-20260930-081415/timeline-20260930103712",
+    "input": {
+      "text": "df3d.timeline-20260930103712xxxxxxxxxxxx",
+      "submit": "Windows text messages and Enter on native new-timeline prompt",
+      "fixture": "Temporarily unique in-memory timeline name exposes zero existing destinations; original timeline name was empty."
+    },
+    "before": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d-areas-effect-0930081415",
+      "paused": true,
+      "timeline": "",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "after": {
+      "folder": "region16",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region16",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.timeline-20260930103712xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "world_file_bytes": 23757877,
+    "initial_attempt": {
+      "exit_code": 1,
+      "summary": "failed Selected fortress is unavailable in this world",
+      "save_creation_succeeded": true,
+      "all_root_preservation_passed": true,
+      "prior_test_save_preservation_passed": true
+    },
+    "sha256": {
+      "before.json": "76d463ebff6fd4f253bb0bdab23535633fca341aab01e262d432ca40206af662",
+      "after.json": "6a644c243e2e667332c5847a7b58181ab77ac10f04dc306ec36403fd9cfc1cc6",
+      "input-sent.txt": "e4e5fcfbcadd4661e322f899395126b064cc9b5c3a355a3356df2b6d8e28c19f",
+      "destination-manifest.txt": "fbab3798bb466cd30c09ca766f54f9ac34c28f6f8caeb7c0e7e0c02093da7621",
+      "world-file.json": "68b7421a2b0175eedd9634fa977621985ba57a684528829a363f09b62c44f15c",
+      "binaries.log": "4fba41f0549dd7dfab23319f2c4f1db350d46ef805647bae0fcd491d7727f13c",
+      "summary.txt": "cffe0fbfdf3255bc58de5e1b2c7995efcb0449693a1f7a8c5c62e0cfce3a7748",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637"
+    },
+    "corrected_reload": {
+      "source": "build/native-timeline-reload-20260930-104747",
+      "exit_code": 0,
+      "state": {
+        "frame": 0,
+        "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region16",
+        "map_x": 192,
+        "map_y": 192,
+        "map_z": 193,
+        "paused": true,
+        "save_dir": "region16",
+        "world_id1": 2004778519,
+        "world_id2": 1401278833
+      },
+      "timeline_name_verified": true,
+      "destination_manifest_unchanged": true,
+      "no_save_destination_selected": true,
+      "fix": "Match exact timeline_name as well as both world IDs when selecting a native title group.",
+      "sha256": {
+        "reloaded.json": "c0c4bea724bd9587b203810737df59544da03453b806701d5b7dd2936b20cd36",
+        "after.json": "0ce51bcef542e46fb1bdfbe18f8af66a5bea9b0a848d14369e4c59aef5ca3512",
+        "choices.json": "fdfd64ac19b8fd3f4e806d42ce12da99b70475a5f8fbd91c27d097a3b07e875a",
+        "native.log": "cb5feec2f7d0b8ead3347ad248084853a30cde4ce50e4efb230e20efbed64db5",
+        "capture-inputs.log": "9ea759609cc1108096614a85e51f8d710a81adfe04c929e6ba4fe769ea2fc106",
+        "save-preservation.txt": "011b39a29bf6512048f9bb6d47cbec5c710c0016078bc177e60f77b071ab67c3",
+        "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+      }
+    },
+    "omissions": [
+      "Godot new-timeline submission and explicit SaveReturn command are not implemented.",
+      "Existing-destination overwrite and same-timeline new-folder effects are not accepted.",
+      "Timeline metadata Unicode submission boundaries are not established by this ASCII effect."
+    ]
+  },
+  "explicit_new_timeline": {
+    "source": "build/native-save-effects-20260930-081415/explicit-timeline-20260930111642",
+    "protocol_version": 9,
+    "input": {
+      "command": "session_client save-return new-timeline",
+      "timeline_name": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "source_folder": "region16",
+      "catalog_destination_selected": false
+    },
+    "after": {
+      "folder": "region17",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region17",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region17",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region17",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "world_file_bytes": 23757593,
+    "sha256": {
+      "explicit-save.log": "576312188b9ce5fd9aae02556e2e694ccc00e40a9c703a526a399e644ef6d838",
+      "after.json": "8e166d1b26774ae6ed38a9ffc0b9f71cf7440576b2534d70ae8711dd3ece3da5",
+      "reloaded.json": "11e97bbea7651fb6067c696ec99eb1439db8bb8dca9559ab8f317c280619a31c",
+      "native-effect.json": "d1afed96515a6ac56a978dc23fff7228665a12d9c5e713e71cddcbadab940f03",
+      "timeline-reloaded.json": "24d18db80b6c197333c5c1148ef3551cc0ab0db9aa461b11cb223ceea9c7aaa6",
+      "binaries.log": "0dce8addb212cdeb81dcdf89d5d6cf99a1c368d18440f056e77b9b3e0ab3f696",
+      "destination-manifest.txt": "d7b684270d3c7124012ad28db99e99a148d8d37686750a89d9645b512eb689f6",
+      "world-file.json": "2dde2fbdc52ff4e892e7f13cfa2de7bdc4b2ba4c0b4caa328d3637f821e282a6",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    },
+    "verified": {
+      "exit_code": 0,
+      "native_timeline_identity_reloaded": true,
+      "source_and_prior_test_saves_unchanged": true,
+      "all_non_test_saves_unchanged": true,
+      "owned_processes_stopped": true
+    },
+    "omissions": [
+      "Godot SaveReturn effect dispatch is not established by CLI acceptance.",
+      "Existing-destination and same-timeline new-folder effects remain unaccepted.",
+      "Unicode metadata submission boundaries, write failures, stale catalogs and epoch changes need protected acceptance."
+    ]
+  },
+  "godot_same_timeline_folder": {
+    "source": "build/native-save-effects-20260930-081415/godot-return-20260930112842",
+    "protocol_version": 9,
+    "status": "passed_with_known_issues",
+    "input": {
+      "source_folder": "region17",
+      "intent": "NewFolder",
+      "driver": "tests/native_options_return_live.gd",
+      "events": "Godot viewport pointer events, timeline draft slash/Escape/Cancel, same-timeline new-folder click repeated while pending"
+    },
+    "catalog": {
+      "destinations": [
+        {
+          "folder": "region17",
+          "id": "1:0"
+        }
+      ],
+      "fortress_epoch": 283862978527233,
+      "receipt": 1
+    },
+    "sequence": 2,
+    "outcomes": [
+      "succeeded",
+      "succeeded"
+    ],
+    "receipt": {
+      "phase": 1,
+      "request_seq": 2,
+      "request_status": 2,
+      "request_action": 2,
+      "request_fortress_epoch": 283862978527233,
+      "fortress_epoch": 0,
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18"
+    },
+    "after": {
+      "folder": "region18",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region18",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "sha256": {
+      "godot-save-receipt.json": "08f66aef9e433077985476b5bf05283d0e71f03faca2e1c9089da6ab7634dd25",
+      "godot-return-chooser.png": "e4584db67111dd9d789dc4fa02d6439701083bc08589d8c3091508bd62e936bf",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "godot-config.json": "b165c325990f1b6f05bb8eb239bd6a26084e7465c9e8cca2048522ac965b280d",
+      "after.json": "f07d48f716d71f2d1ebac445b33aae6a3ee672f5764a9de134fc2ba327dd9ab1",
+      "reloaded.json": "e8f40980599037c225b14316da474c83e6bfa9d347e864420d4864631e3ea70f",
+      "native-effect.json": "3bc4e950fe35ff71dc8d26190fa8f47b3fb84721ae3945dd7d3cd36b0857e2f3",
+      "timeline-reloaded.json": "24d18db80b6c197333c5c1148ef3551cc0ab0db9aa461b11cb223ceea9c7aaa6",
+      "binaries.log": "7ba692732aca2db973210319b267391e4e0faa42b4bbc1859a414c575e817581",
+      "destination-manifest.txt": "150360371d7b8e9876bd6957cd4623118cda4f08a48587a3eee431e3d4dee48f",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d"
+    },
+    "verified": {
+      "exit_code": 0,
+      "timeline_identity_unchanged": true,
+      "source_and_prior_test_saves_unchanged": true,
+      "all_non_test_saves_unchanged": true,
+      "owned_processes_stopped": true
+    },
+    "omissions": [
+      "Existing-destination overwrite and Godot new-timeline submission remain unaccepted.",
+      "Physical OS input and main-scene integration are not covered by this standalone viewport driver."
+    ]
+  },
+  "godot_existing_destination": {
+    "source": "build/native-save-effects-20260930-081415/godot-existing-20260930114520",
+    "protocol_version": 9,
+    "status": "passed_with_known_issues",
+    "input": {
+      "source_folder": "region17",
+      "intent": "ExistingDestination",
+      "chosen_folder": "region18",
+      "driver": "tests/native_options_return_live.gd",
+      "fixture": {
+        "frame": 0,
+        "marker": "df3d-overwrite-20260930114520",
+        "original_name": "",
+        "source": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region17"
+      }
+    },
+    "catalog": {
+      "destinations": [
+        {
+          "folder": "region17",
+          "id": "1:0"
+        },
+        {
+          "folder": "region18",
+          "id": "1:1"
+        }
+      ],
+      "fortress_epoch": 275616641318913,
+      "receipt": 1
+    },
+    "chosen_row": 1,
+    "sequence": 2,
+    "receipt": {
+      "phase": 1,
+      "request_seq": 2,
+      "request_status": 2,
+      "request_action": 2,
+      "request_fortress_epoch": 275616641318913,
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18"
+    },
+    "after": {
+      "folder": "region18",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region18",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "world_hashes": {
+      "before": "C308F31DF434F784BEF2A2FF5282025F22BA2928B3439557C60F6D33972F408E",
+      "after": "2580AE9B8572DE25D39746A32794023932FAF44BBF20750032C909A4CA4C6806"
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "sha256": {
+      "godot-save-receipt.json": "7e4824f04bd0f2ed880d00f76632f23c066dd46701d3670849db487db541af34",
+      "godot-return-chooser.png": "5d215b246bd9cfa3b22a63a5229544aa14bbd50d1fc4d0ba6582d4644be73bde",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "fixture-before.json": "deb475fd070a036fbb21f501bb78578f2a0df5db24f29219ce20fd6e2114e764",
+      "after.json": "f07d48f716d71f2d1ebac445b33aae6a3ee672f5764a9de134fc2ba327dd9ab1",
+      "reloaded.json": "e8f40980599037c225b14316da474c83e6bfa9d347e864420d4864631e3ea70f",
+      "marker-reloaded.json": "43b30e336cf9007854c0a4410831b49b8cb0b576573bcaf391abd00f266ec63c",
+      "timeline-reloaded.json": "24d18db80b6c197333c5c1148ef3551cc0ab0db9aa461b11cb223ceea9c7aaa6",
+      "binaries.log": "df9e9a1032d4518b5fa36472be5f199120dd21d564fd239558c7454bfe310c78",
+      "target-backup/manifest.json": "00cc9453af260b50373a222c616bf69602cf30a26522a809b29a9bb2a2a57965",
+      "overwrite-hashes.json": "f269d36be747a1c30198788a0dfc46d3027a50f487190c515e87541bf908d58e",
+      "destination-manifest.txt": "6fc24133358ef931980fa4d779d63b7a1be008a3569f3a7ca28b369c773dd252",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d"
+    },
+    "verified": {
+      "exit_code": 0,
+      "selected_existing_destination_only": true,
+      "no_new_save_directory": true,
+      "test_fortress_name_persisted_in_selected_file": true,
+      "original_selected_file_backed_up": true,
+      "source_and_other_prior_saves_unchanged": true,
+      "all_non_test_saves_unchanged": true
+    },
+    "omissions": [
+      "Protected UnknownOutcome/failure and concurrent-client invalidation paths remain unaccepted.",
+      "Two-destination pixel oracle and main-scene/physical OS input require separate acceptance."
+    ]
+  },
+  "destination_guards": {
+    "source": "build/native-save-effects-20260930-081415/destination-guards-20260930120029",
+    "protocol_version": 9,
+    "status": "passed_with_known_issues",
+    "driver": "tests/session_destination_guards_live.gd",
+    "first_catalog": {
+      "destinations": [
+        {
+          "folder": "region17",
+          "id": "1:0"
+        },
+        {
+          "folder": "region18",
+          "id": "1:1"
+        }
+      ],
+      "fortress_epoch": 214026810294273,
+      "receipt": 1
+    },
+    "second_catalog": {
+      "destinations": [
+        {
+          "folder": "region17",
+          "id": "2:0"
+        },
+        {
+          "folder": "region18",
+          "id": "2:1"
+        }
+      ],
+      "fortress_epoch": 214026810294273,
+      "receipt": 2
+    },
+    "competing_client_receipt": {
+      "request_seq": 2,
+      "request_action": 2,
+      "request_status": 3,
+      "request_fortress_epoch": 214026810294273,
+      "saved_save_id": "",
+      "message": "Save destination catalog is no longer owned by this request"
+    },
+    "native_eligibility_change_receipt": {
+      "request_seq": 2,
+      "request_action": 2,
+      "request_status": 3,
+      "request_fortress_epoch": 214026810294273,
+      "saved_save_id": "",
+      "message": "Save destinations changed before selection"
+    },
+    "fixture": {
+      "changed": "df3d-guard-20260930120029",
+      "frame": 0,
+      "original": "df3d.explicit-20260930111642xxxxxxxxxxxx"
+    },
+    "verified": {
+      "exit_code": 0,
+      "both_rejected_without_save_identity": true,
+      "no_native_writer": true,
+      "paused_frame_zero": true,
+      "native_menus_closed": true,
+      "fixture_restored": true,
+      "all_non_test_saves_unchanged": true,
+      "all_owned_test_saves_unchanged": true
+    },
+    "sha256": {
+      "competing-client.json": "bfeabaf1a87153b7d08f217dc8dc96337640b2fcdbf88ab84a57f5af9753a165",
+      "changed-catalog.json": "26fabce1e3ee799874fb0c3bbd8f9b9c5bde2e23b253da3ae75f2e8de2743f7b",
+      "fixture-ready.json": "8b484035818c3e1cb474561457386bb05fb7cecd5541fdab6993f9a8aedefb5e",
+      "native-no-write.json": "a47fad61c30d6f3aa61a093d4c93e02adf2cf7f2141434e04eb0da52c08ebebb",
+      "native-restored.json": "d7e688be80abf09217e947e8905dfd0ef05874b0729ea701cf4bceb9254c5592",
+      "binaries.log": "b9def46e4e9305d061f776bbc885b326fe91106adc112615c883a71ffe8f7f21",
+      "godot.log": "915dc4708682a141fb75adff0f69c6e4c4c96b8e2ba8a3165bbe60aaee115c91",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "target-backup/manifest.json": "403ef6256797eaf6028c1dc71b90b931a5cf9598e776763c2f01fa30e049c27d",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "4538af3717630e4db767b1b6779eb7cbefdd67c22b6f9f94adb3af30ae691d89",
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d"
+    },
+    "omissions": [
+      "Does not establish interrupted writer/UnknownOutcome, changed fortress epoch or deleted destination behavior."
+    ]
+  },
+  "godot_new_timeline": {
+    "source": "build/native-save-effects-20260930-081415/godot-timeline-20260930121052",
+    "protocol_version": 9,
+    "status": "passed_with_known_issues",
+    "input": {
+      "source_folder": "region17",
+      "intent": "NewTimeline",
+      "timeline_name": "df3d.godot-timeline-20260930121052xxxxxx",
+      "driver": "tests/native_options_return_live.gd"
+    },
+    "catalog": {
+      "destinations": [
+        {
+          "folder": "region17",
+          "id": "1:0"
+        },
+        {
+          "folder": "region18",
+          "id": "1:1"
+        }
+      ],
+      "fortress_epoch": 200059576647681,
+      "receipt": 1
+    },
+    "sequence": 2,
+    "receipt": {
+      "phase": 1,
+      "request_seq": 2,
+      "request_status": 2,
+      "request_action": 2,
+      "request_fortress_epoch": 200059576647681,
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19"
+    },
+    "after": {
+      "folder": "region19",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.godot-timeline-20260930121052xxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region19",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "sha256": {
+      "godot-save-receipt.json": "efa74842f41c09bfd1749b322704368890511aa4b936bbe5391e15ee78aa737b",
+      "godot-config.json": "0e8a4deb17598854a7f5b298b21a058a0447182088b8c95fa89209ff0fda400d",
+      "godot-return-chooser.png": "5d215b246bd9cfa3b22a63a5229544aa14bbd50d1fc4d0ba6582d4644be73bde",
+      "godot-timeline-name.png": "11fd8672a75efb006f6ad44ec82fcc0d045c3cc728d66005b43d639d8f9ac0b3",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "after.json": "500f8771cea8605fbcad689399df5345f680d55590ff4bf2cfd5e69f6f224937",
+      "reloaded.json": "4f3552ca2c7680a7f8131c67c4f0d2d8ce15edc59eb788e33725a9220c107f75",
+      "timeline-reloaded.json": "24d18db80b6c197333c5c1148ef3551cc0ab0db9aa461b11cb223ceea9c7aaa6",
+      "binaries.log": "70c20d5514e72c746412e501d12863f584d1389edeeaa894e71d2b6374188070",
+      "destination-manifest.txt": "0c7ae7427e72dcd5cb1f10a519e1397716d589b00385733f29ec23d06e55c20a",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d"
+    },
+    "verified": {
+      "exit_code": 0,
+      "exact_requested_timeline_reloaded": true,
+      "one_new_native_destination": true,
+      "original_request_epoch_retained": true,
+      "cancelled_draft_did_not_save": true,
+      "repeated_enter_did_not_duplicate_request": true,
+      "all_prior_test_saves_unchanged": true,
+      "all_non_test_saves_unchanged": true
+    },
+    "omissions": [
+      "Protected UnknownOutcome, full native filename/overwrite parity and main-scene/global input remain open."
+    ]
+  },
+  "producer_loss_before_consumption": {
+    "source": "build/native-save-effects-20260930-081415/producer-loss-20260930122416",
+    "protocol_version": 9,
+    "status": "passed_with_known_issues",
+    "driver": "tests/session_producer_loss_live.gd",
+    "fixture": {
+      "frame": 0,
+      "native_writer": false,
+      "queued": {
+        "epoch": 279121334632449,
+        "sequence": 2
+      },
+      "source": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region17"
+    },
+    "lost": {
+      "phase": 4,
+      "request_seq": 2,
+      "request_action": 2,
+      "request_status": 4,
+      "request_fortress_epoch": 279121334632449,
+      "saved_save_id": ""
+    },
+    "reconnected": {
+      "phase": 1,
+      "request_seq": 0,
+      "request_action": 0,
+      "request_status": 0,
+      "request_fortress_epoch": 0,
+      "saved_save_id": ""
+    },
+    "last_outcome": {
+      "fortress_epoch": 279121334632449,
+      "outcome": "unknown",
+      "sequence": 2
+    },
+    "verified": {
+      "exit_code": 0,
+      "derived_unknown_retains_submitted_identity": true,
+      "replacement_process_at_title": true,
+      "no_automatic_replay": true,
+      "draft_not_closed_as_success": true,
+      "no_native_writer": true,
+      "all_non_test_saves_unchanged": true,
+      "all_owned_test_saves_unchanged": true
+    },
+    "sha256": {
+      "lost.json": "d245354d6a0383d6100ccaf27c70b897f63c3712729502e5209e8beaa082e3d4",
+      "reconnected.json": "618368ce6d5da82d51402c75fb81b3bd855b2a50eceb65ea94d25434a987e508",
+      "queued.json": "e7a350e79e51a33a95a2474a6207d77d41615f0cce3f49c5537f1a124a281b1a",
+      "producer-stopped.json": "20e514353e88a2e52f2e145339c7d97609c997aa82c56b9e5e5afc13f1b7844e",
+      "native-stop.json": "744b079d226601250369758a8b2f4b3f325cdf950bffd3fac8b413ae9d3454a6",
+      "native-title.json": "c4e48ae5ccb661d67ec1fe2a662527fbf9d89cdd7bdf837c03d61d623fa1452f",
+      "binaries.log": "4afa6b1de360b9a80578f8305cbc2766ecbf7811e9d656ee155d656ed6eeb9a8",
+      "godot.log": "389de0e764cf47780743a5c94d47ce8bd83c1a9b6f7b91c2082925213818b4a8",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "target-backup/manifest.json": "af6badcb72292b0e616ef5358f8cb994c0d42e69f37975539918370bb7c19be6",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "9652fbd23d6860f1a40ab40427535822657672a0c336bc55e8d343d38d314457",
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d"
+    },
+    "omissions": [
+      "Producer stops before native consumption. Does not establish interruption or unverifiable completion after the native writer starts."
+    ]
+  },
+  "native_quit_without_saving": {
+    "source": "build/native-quit-effect-20260930-124331",
+    "status": "passed",
+    "before": {
+      "frame": 0,
+      "marker": "df3d-quit-memory-20260930124350",
+      "original_name": "",
+      "paused": true,
+      "source": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19"
+    },
+    "confirmation": {
+      "confirm": true,
+      "context": "MAIN_DWARF",
+      "frame": 0,
+      "open": true
+    },
+    "after": {
+      "map_loaded": false,
+      "title": true
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region19",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "confirmation_oracle": "fixtures/areas/native_options_confirmations.json:QUIT_WITHOUT_SAVING",
+    "verified": {
+      "exit_code": 0,
+      "owned_process_survived_at_title": true,
+      "bridge_menu_epoch_zero": true,
+      "unsaved_name_change_discarded": true,
+      "exact_source_reloaded_paused": true,
+      "source_files_unchanged": true
+    },
+    "sha256": {
+      "before.json": "1379057c8ead592d7c86e98a7c79a3275102ac07939548212e4e3a17869616e7",
+      "confirmation.json": "ffc34f4543e24c1ef96e52d5fc5422e28e6eea7cd1916c6dd055885f4303dbdf",
+      "after.json": "7230454cfb8001c795359f73c3e0d481ee0fdbffad79a00a6c963738fff460b2",
+      "reloaded.json": "4f3552ca2c7680a7f8131c67c4f0d2d8ce15edc59eb788e33725a9220c107f75",
+      "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "native.log": "f44df60cb61f15b5330b74b674684efb77cac66d6d0448d00f41199db5dc428e",
+      "capture-inputs.log": "a32cdd23d8c6e79b17f047fcd74280af34f1d2a43b65b1de4d152283b55dcc7c",
+      "source-manifest.txt": "0c7ae7427e72dcd5cb1f10a519e1397716d589b00385733f29ec23d06e55c20a",
+      "title-status.log": "b7948c311ea1c3a5bcd05234f7ee6efe30e99934411da7ea751ac76d64ca34f1",
+      "save-preservation.txt": "30aba213de7a750851d8e7483b3a0353489b7185453edfbf34a0727f8abd0763",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    },
+    "omissions": [
+      "Native action only: semantic quit command, Godot confirmed effect, lifecycle failure handling and main-scene integration remain unimplemented or unaccepted."
+    ]
+  },
+  "godot_quit_without_saving": {
+    "source": "build/godot-quit-effect-20260930-130615",
+    "protocol_version": 9,
+    "status": "passed_with_known_issues",
+    "before": {
+      "frame": 0,
+      "marker": "df3d-quit-memory-20260930130635",
+      "original_name": "",
+      "paused": true,
+      "source": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19"
+    },
+    "after": {
+      "map_loaded": false,
+      "title": true
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region19",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "driver": "tests/native_options_quit_live.gd",
+    "receipt": {
+      "phase": 1,
+      "fortress_epoch": 0,
+      "request_seq": 1,
+      "request_status": 2,
+      "request_action": 9,
+      "request_fortress_epoch": 179993489440769,
+      "saved_save_id": ""
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "verified": {
+      "exit_code": 0,
+      "owned_process_survived_at_title": true,
+      "cancel_did_not_dispatch": true,
+      "escape_retained_confirmation": true,
+      "repeated_confirm_sent_once": true,
+      "options_closed_on_matching_success": true,
+      "original_request_epoch_retained": true,
+      "unsaved_name_change_discarded": true,
+      "exact_source_reloaded_paused": true,
+      "source_files_unchanged": true
+    },
+    "sha256": {
+      "before.json": "7aef0356a715e38acf678d7c1178ea2e4dc705b3b3643f8af36489966871a041",
+      "after.json": "7230454cfb8001c795359f73c3e0d481ee0fdbffad79a00a6c963738fff460b2",
+      "reloaded.json": "4f3552ca2c7680a7f8131c67c4f0d2d8ce15edc59eb788e33725a9220c107f75",
+      "godot-quit-receipt.json": "86f5f98f06ebba09bd89fb25d37cb0d8797664b748c4a99ce08941e63c34a796",
+      "godot-quit-confirmation.png": "8a26b342ff49ccff23a0ba4b1c1d4ef6e097f34dcda99bf850a9a044050b5c7c",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "native.log": "1769a615403f22d659fa3a73fb4753a94273d9437a024223104f02346bfa95fd",
+      "capture-inputs.log": "fc309d35371ef39b74cb6351998a38139f39ba4dc928851c93ac1f05df0c2f56",
+      "source-manifest.txt": "0c7ae7427e72dcd5cb1f10a519e1397716d589b00385733f29ec23d06e55c20a",
+      "title-status.log": "b7948c311ea1c3a5bcd05234f7ee6efe30e99934411da7ea751ac76d64ca34f1",
+      "save-preservation.txt": "38a0d9dffc66d6cf1e0ce0142c9a57f2d986474dd93528a1dca8e712215b9580",
+      "summary.txt": "39db56394b242479d783e98f9f98715c3350ab16fb006e5739f3d38a63ae693d"
+    },
+    "omissions": [
+      "Standalone Options viewport input; main-scene/global physical input and protected Quit producer-loss remain unaccepted."
+    ]
+  },
+  "same_process_reload": {
+    "source": "build/reload-lane-20260930-131207",
+    "status": "passed_with_known_issues",
+    "rounds": [
+      {
+        "Route": "inprocess",
+        "PreviousPid": 43924,
+        "Epoch": 188652143509506,
+        "Reason": "",
+        "PreviousEpoch": 188652143509505,
+        "Pid": 43924,
+        "Status": "ready",
+        "SaveId": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19",
+        "ElapsedSec": 17.3757818
+      },
+      {
+        "Route": "inprocess",
+        "PreviousPid": 43924,
+        "Epoch": 188652143509507,
+        "Reason": "",
+        "PreviousEpoch": 188652143509506,
+        "Pid": 43924,
+        "Status": "ready",
+        "SaveId": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region19",
+        "ElapsedSec": 17.3081902
+      }
+    ],
+    "marker_unit_id": 988,
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "verified": {
+      "same_owned_process": true,
+      "new_epoch_each_round": true,
+      "old_ticket_unknown_without_replay": true,
+      "unsaved_marker_discarded_each_round": true,
+      "source_files_unchanged": true,
+      "source_file_count": 686
+    },
+    "sha256": {
+      "summary.txt": "eeb05179de61dcfeef3d56603189b53a11777c3ea16469926e938a907176a309",
+      "manifest.json": "cfb51f5461ef95e4a0e3fe5ee24d4c37b13da6d5827840b1815b262030abc0d0",
+      "binaries.log": "40357688513acbb370e8af251d756b6ce7aab1e332a890b26788fbff30e458eb",
+      "native.log": "8a7f995f264e26ca7f242d757c7e444ccbe2d22d5c8d5f426ab67a1da262b65d",
+      "godot.log": "b586d91edf237275496f557e76475c3953a94c611df4d1c7645111a2f0413edc",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "restart-1/restart.json": "30c7a79eb12378a21de15ea3628659e28e7c684c3f52b059f4d3a077594b2aac",
+      "restart-2/restart.json": "bc8a1e327e6954476459471ed0e923ff421a476216a351e2856313b51bd3c760",
+      "restart-1/quit.json": "5613c2be952831076837df817593bd0512839c0c22fae040d61a1cdfb94525ea",
+      "restart-2/quit.json": "18f80b22f163ca2711e8c55f55d68a59b590cb5178b6053a06123b10c55661ae",
+      "restart-1/title.json": "7d65bc14f5edd60deef258ff0aa0b915287ca5380d5ff271a3a178e2e5f61d37",
+      "restart-2/title.json": "b9d821403fd0b805c180f39c3620aad72f287e781d3b5800da8007f8cdc085e1"
+    },
+    "omissions": [
+      "Work orders, construction and reports domain-specific retained-DLL reset assertions require separate consumer acceptance.",
+      "Source-only no-save protection; no native writer exercised."
+    ]
+  },
+  "work_orders_same_process_reload": {
+    "source": "build/work-orders-acceptance-20260930-131817",
+    "status": "passed_with_known_issues",
+    "reload": {
+      "Route": "inprocess",
+      "PreviousPid": 36116,
+      "Epoch": 155117038862338,
+      "Reason": "",
+      "PreviousEpoch": 155117038862337,
+      "Pid": 36116,
+      "Status": "ready",
+      "SaveId": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d-areas-effect-0930081415",
+      "ElapsedSec": 19.692672599999998
+    },
+    "holding_before_and_after": 4,
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "verified": {
+      "materials_restart_at_zero": true,
+      "same_process_and_new_epoch": true,
+      "source_files_unchanged": true,
+      "exact_region5_catalog_provenance": true,
+      "full_existing_driver_passed": true
+    },
+    "sha256": {
+      "summary.txt": "2700165975f68815c97d605c56eca8e90d497ade1264b6282401d13fee99ac27",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "source-provenance.txt": "e53f1e686f8d99c252e0e99da6da05fb484b3586a780cc92e428d89008a2e556",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "save-preservation.txt": "bc6bedf0566f142d04c8700376a92441c7518515ca98b6385f03f7a31264435a",
+      "capture-inputs.json": "deed6569290520c1e76c531ddd0379a35fc3f895266654f768b406e54ea6a5e4",
+      "binaries.log": "4f7e341a9854cd4998b8c9e8719f46eb195ca3be1f10bdc1a1f5fe82ae36206f",
+      "godot.log": "87c41d39cf684c72a4ab2947f37b0f82dadb280d0c07987ff464ef6c648fc804",
+      "native.log": "1fa1815466b3c230166dd27aab29f7daf65f74d947c67e9bcf0c28b358cfbfd1",
+      "restart-165/restart.json": "1deb14fa8663bcdce13529465ff743053cd12d9f1ab6db4c42d9b88530299259"
+    },
+    "omissions": [
+      "Exact World changed receipt and first-pending-build trigger remain unaccepted live.",
+      "Driver success does not establish native parity for inherited work-order behavior departures or editable screen exposure."
+    ]
+  },
+  "construction_same_process_reload": {
+    "source": "build/construction-acceptance-20260930-132220",
+    "status": "passed_with_known_issues",
+    "reload": {
+      "Route": "inprocess",
+      "PreviousPid": 43012,
+      "Epoch": 184735133335554,
+      "Reason": "",
+      "PreviousEpoch": 184735133335553,
+      "Pid": 43012,
+      "Status": "ready",
+      "SaveId": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d-areas-effect-0930081415",
+      "ElapsedSec": 17.5660023
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "verified": {
+      "materials_restart_at_zero": true,
+      "same_process_and_new_epoch": true,
+      "source_files_unchanged": true,
+      "full_existing_driver_passed": true
+    },
+    "sha256": {
+      "summary.txt": "aa1cbc2a250a2db5ee4de51b7cb117376cfef9e7aeec3a57ee03ded3b654cfe1",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "source-provenance.txt": "e53f1e686f8d99c252e0e99da6da05fb484b3586a780cc92e428d89008a2e556",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "save-preservation.txt": "bc6bedf0566f142d04c8700376a92441c7518515ca98b6385f03f7a31264435a",
+      "capture-inputs.json": "1cc80ff7cd58a52cabf6f2900ee75eda3bd942f3ec3fc8c465377560e04d2b73",
+      "binaries.log": "4f7e341a9854cd4998b8c9e8719f46eb195ca3be1f10bdc1a1f5fe82ae36206f",
+      "godot.log": "f30416fa37f08bef91af7541de30e6eebcba1c8e32c118f509ce840453234349",
+      "native.log": "9ce884a01dcf87c68af40f7293c1c2eb88f107cdc21d89a871663a0f3fef924e",
+      "restart-180/restart.json": "b7440fa250b98706f554c906584df18240c76f14fd15c948deb9fe63ad2c35a8"
+    },
+    "omissions": [
+      "Exact reset receipt, first-pending-build trigger and mid-Place reload remain live gaps.",
+      "Native parity incomplete: summary records unsupported TrackStop/PressurePlate options and missing Roller speed selection, plus other unresolved comparisons. Driver pass does not authorize exposure."
+    ]
+  },
+  "main_scene_save_continue": {
+    "source": "build/native-save-effects-20260930-081415/main-save-20261001160814",
+    "status": "passed_with_known_issues",
+    "request_sequence": 1,
+    "outcomes": [
+      "succeeded"
+    ],
+    "destination": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.godot-20261001160814xxxxxxxxxxxxxxx",
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.godot-20261001160814xxxxxxxxxxxxxxx",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "df3d.godot-20261001160814xxxxxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "behavior": [
+      "actual main scene Options owner and normal session polling",
+      "pointer SaveContinue, native40-byte name input, repeated Enter suppressed",
+      "exactly one success and Options closed",
+      "native saver completion, exact destination identity and separate-process reload"
+    ],
+    "preservation": "363905-file verified all-root backup; final non-test/source/prior-test/new-destination hashes unchanged; owned DF5040 and49140 closed",
+    "diagnostics": [
+      "godot-separate-thread-notice x1"
+    ],
+    "artifacts": {
+      "godot-save-receipt.json": "9aa1868fd37e565850c7caa88a3944c4d3c218653df9951f2d40bb5b1f8b0a27",
+      "reloaded.json": "d664fa9d0f41036c236b62dfc4501345751cc2cc6aa7313a4d64a5a7701243a0",
+      "godot-before-save.png": "e0180583099834583bc5763fee356d848baaeccb4d881a3280bc8c72583ef25c",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "destination-manifest.txt": "d06241dbde1283006ac3394e30cab3757406c8c4d01d6a4186d93d43d99fd6f6"
+    },
+    "limits": "Launcher still gated; other filenames, overwrite, Settings/retire/abandon and remaining session workflows not accepted by this run."
+  },
+  "main_scene_quit_without_saving": {
+    "source": "build/main-quit-effect-20261001-171435",
+    "status": "passed_with_known_issues",
+    "sequence": 1,
+    "outcomes": [
+      "succeeded"
+    ],
+    "receipt": {
+      "phase": 1,
+      "request_action": 9,
+      "request_status": 2,
+      "fortress_epoch": 0,
+      "request_fortress_epoch": 124639950929921,
+      "saved_save_id": ""
+    },
+    "behavior": [
+      "actual main scene Options owner and normal session polling",
+      "Escape retains confirmation; Cancel submits nothing",
+      "repeated confirm suppressed; exactly one success",
+      "same owned DF process reaches native title",
+      "unsaved in-memory name discarded; original world/timeline reloads at paused frame0"
+    ],
+    "preservation": "Owned source manifest unchanged; DF29020 closed",
+    "diagnostics": [
+      "godot-separate-thread-notice x1"
+    ],
+    "sha256": {
+      "godot-quit-receipt.json": "68b9d0cefb575d80a6e719bd7c800eb17f8427ef094a507a876e65d11333792f",
+      "native.log": "1769a615403f22d659fa3a73fb4753a94273d9437a024223104f02346bfa95fd",
+      "save-preservation.txt": "38a0d9dffc66d6cf1e0ce0142c9a57f2d986474dd93528a1dca8e712215b9580",
+      "godot-quit-confirmation.png": "4ffd9dd0cb2c07cf1e8223e520cf366ccf4b48fa8edf16348d526cfac7df6110",
+      "reloaded.json": "4f3552ca2c7680a7f8131c67c4f0d2d8ce15edc59eb788e33725a9220c107f75"
+    },
+    "limits": "Does not accept legacy loader copy/layout or expose unfinished native Options launcher/actions."
+  },
+  "main_scene_save_return_new_folder": {
+    "source": "build/native-save-effects-20260930-081415/main-return-20261001171634",
+    "status": "passed_with_known_issues",
+    "sequence": 2,
+    "outcomes": [
+      "succeeded",
+      "succeeded"
+    ],
+    "catalog_folders": [
+      "region17",
+      "region18"
+    ],
+    "receipt": {
+      "phase": 1,
+      "request_action": 2,
+      "request_status": 2,
+      "fortress_epoch": 0,
+      "request_fortress_epoch": 225812200554497,
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region20"
+    },
+    "native_effect": {
+      "folder": "region20",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region20",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region20",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region20",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "behavior": [
+      "actual main scene and normal session polling",
+      "exact ordered folders matched same-run native catalog",
+      "timeline draft cancellation preserves catalog; repeated destination click suppressed",
+      "new ACTIVE folder in existing timeline; exact destination/identity reload paused frame0"
+    ],
+    "preservation": "All-root/source/prior-test/new-destination hashes unchanged except newly owned region20; both owned DF52576/10104 closed",
+    "diagnostics": [
+      "godot-separate-thread-notice x1"
+    ],
+    "sha256": {
+      "godot-save-receipt.json": "2711afb226fdb11c3fa4addc5ad87ef8e0ab198eea735408f297116182281507",
+      "native-catalog/choices.json": "0102209c8f7cecfa5b2d8d0c7a979ecdc055c43c4f622eaae1054a30fda8d214",
+      "after.json": "2e196aa62e7bc9bc26ef31bc1ed5a98e9f9e1abfcaed5c9b23b6f4030f8adaeb",
+      "reloaded.json": "2c4fb1860ec7616c19a688933402de5b26b5127e817759b72c97a56b96db7b7f",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "godot-return-chooser.png": "25b0586b5b368501eebd6517205752ef5212de660952fdb639bbae7a7b5950ee"
+    },
+    "limits": "Main existing-folder and new-timeline effects not covered; Options launcher remains gated."
+  },
+  "main_scene_save_return_new_timeline": {
+    "source": "build/native-save-effects-20260930-081415/main-timeline-20261001172811",
+    "status": "passed_with_known_issues",
+    "sequence": 2,
+    "outcomes": [
+      "succeeded",
+      "succeeded"
+    ],
+    "catalog_folders": [
+      "region17",
+      "region18",
+      "region20"
+    ],
+    "receipt": {
+      "phase": 1,
+      "request_action": 2,
+      "request_status": 2,
+      "fortress_epoch": 0,
+      "request_fortress_epoch": 256083130056705,
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region21"
+    },
+    "native_effect": {
+      "folder": "region21",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region21",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.godot-timeline-20261001172811xxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region21",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region21",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "behavior": [
+      "actual main scene and normal session polling",
+      "exact ordered folders matched same-run native catalog",
+      "timeline draft Cancel retains catalog; repeated Enter suppressed",
+      "exact new 40-byte timeline metadata persisted in new ACTIVE folder and independent reload"
+    ],
+    "preservation": "Verified backup reused; final all-root/source/prior-test/new-destination checks passed; owned DF59624 and32868 closed",
+    "diagnostics": [
+      "godot-separate-thread-notice x1"
+    ],
+    "sha256": {
+      "godot-save-receipt.json": "6b68d3a156eb0a6f5e209a855f201766bfcc2f2a6fa51485bec1cdc1810d6763",
+      "native-catalog/choices.json": "e380fd9025fc9ea1ef1a6be3a36b59f2314edd2aa76540b8ae8076e9c45c78d4",
+      "after.json": "728f3603125fe6a72916fc43ecfd4d966ca5fdeae452639933fcd8c110272b9b",
+      "reloaded.json": "51eaf0d9202f2ab4e71a8921cb0467f6f6cc1ed1acb7c78d0d17daa8528da10b",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "godot-timeline-name.png": "a5d1711ee4f0256c6228b54d8ebaab7e20206e703bf652f74124b364718391f6",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "destination-manifest.txt": "166ee9f0bc54476073c8d09c6ecdcd8d96feb088c07a7eeb2e06ab37f27b1309"
+    },
+    "limits": "Main existing-destination effect and empty/non-ASCII timeline metadata not covered; manual overwrite and Options launcher remain unfinished."
+  },
+  "main_scene_save_return_existing_folder": {
+    "source": "build/native-save-effects-20260930-081415/main-existing-20261001174007",
+    "status": "passed_with_known_issues",
+    "sequence": 2,
+    "outcomes": [
+      "succeeded",
+      "succeeded"
+    ],
+    "catalog_folders": [
+      "region17",
+      "region18",
+      "region20"
+    ],
+    "chosen_row": 1,
+    "receipt": {
+      "phase": 1,
+      "request_action": 2,
+      "request_status": 2,
+      "fortress_epoch": 0,
+      "request_fortress_epoch": 240329190014977,
+      "saved_save_id": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18"
+    },
+    "native_effect": {
+      "folder": "region18",
+      "full_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18",
+      "map_loaded": false,
+      "save_type": "ACTIVE",
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/region18",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "region18",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "behavior": [
+      "actual main scene and normal session polling",
+      "exact ordered folders matched fresh native catalog",
+      "repeated destination click suppressed",
+      "exact owned region18 overwritten; no new save directories",
+      "independent reload retained unique in-memory fortress name, original timeline and world identity at paused frame0"
+    ],
+    "preservation": "Verified backup reused; full target manifest matched before overwrite, world.sav matched backup; final all-root/source/prior-test/reloaded-destination checks passed; owned DF55956/31896 closed",
+    "diagnostics": [
+      "godot-separate-thread-notice x1"
+    ],
+    "sha256": {
+      "godot-save-receipt.json": "9625a577a9e4078d22e405d4de22fadde6107736353a47c97fea8c001403434b",
+      "native-catalog/choices.json": "1090e3cc6e497db721fd6ea5dd3a37f64346faceed93310190fd6aa5bb4881d6",
+      "after.json": "f07d48f716d71f2d1ebac445b33aae6a3ee672f5764a9de134fc2ba327dd9ab1",
+      "reloaded.json": "e8f40980599037c225b14316da474c83e6bfa9d347e864420d4864631e3ea70f",
+      "all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "test-save-preservation.txt": "5fa802b98f10bb1a427c23add2d4c48722eee81c2435e55b9ad150724d04b637",
+      "godot-return-chooser.png": "ea589fcf8de3d0f9f82e3f8efa2c555a8c22aadcd1e2ddf6f5d4609c3d1b374d",
+      "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "destination-manifest.txt": "db8a7e970c808a4faeb0fd94216f28f2e8c1638f3c1b1b9bc4ae1899ee0b7f54",
+      "overwrite-hashes.json": "12af379307f3e7db6cdf1ff2273f6b2791bdef4168b210b16df0f446fff1139e",
+      "marker-reloaded.json": "43b30e336cf9007854c0a4410831b49b8cb0b576573bcaf391abd00f266ec63c",
+      "fixture-before.json": "c3c823a0315124c543abb51df552e3abe02105a56729d58b76cd888ba6d22015"
+    },
+    "limits": "This is SaveReturn existing-folder selection, not manual filename overwrite confirmation. Long synthetic marker does not establish header-overflow parity. Other Options actions and exposure remain unfinished."
+  },
+  "native_manual_overwrite_recovered_effect": {
+    "source": "build/native-save-effects-20260930-081415/native-manual-overwrite-20261001175938",
+    "status": "effect_reloaded_with_incomplete_completion_state",
+    "original_run_status": "failed ...notes/pm/native-save-effects/manual-overwrite-native.lua:40: assertion failed!",
+    "conflict": {
+      "entering": true,
+      "frame": 0,
+      "name": "df3d.overwrite-20261001175938xxxxxxxxxxx",
+      "open": true,
+      "overwrite": true,
+      "paused": true,
+      "save_dir": "region17",
+      "saving": false,
+      "stage": 0,
+      "substage": 0,
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "timer": 0,
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "confirmed": {
+      "entering": true,
+      "frame": 0,
+      "name": "df3d.overwrite-20261001175938xxxxxxxxxxx",
+      "open": true,
+      "overwrite": true,
+      "paused": true,
+      "save_dir": "region17",
+      "saving": true,
+      "stage": 0,
+      "substage": 0,
+      "timeline": "df3d.explicit-20260930111642xxxxxxxxxxxx",
+      "timer": 4,
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "reload_source": "build/native-manual-overwrite-reload-20261001-181011",
+    "reload_status": "passed",
+    "reloaded": {
+      "frame": 0,
+      "loaded_path": "C:/Users/Josh/AppData/Roaming/Bay 12 Games/Dwarf Fortress/save/df3d.overwrite-20261001175938xxxxxxxxxxx",
+      "map_x": 192,
+      "map_y": 192,
+      "map_z": 193,
+      "paused": true,
+      "save_dir": "df3d.overwrite-20261001175938xxxxxxxxxxx",
+      "world_id1": 2004778519,
+      "world_id2": 1401278833
+    },
+    "verified": [
+      "new disposable target copied from owned manual save and fully matched to verified backup",
+      "native filename conflict had no writer before confirmation",
+      "native Save confirmation started writer",
+      "target world file changed; independent reload retained marker and original world/timeline at paused frame0",
+      "original all-root/non-target preservation passed; read-only reload preserved target and original source; owned DF14140/46900 closed"
+    ],
+    "limits": [
+      "Original completion assertion failed before recording final state; final pause/frame/overwrite flags cannot be reconstructed from that run.",
+      "Reload proves durable overwrite effect, not the missing finishing-state fields.",
+      "Semantic manual-overwrite confirmation remains unimplemented."
+    ],
+    "sha256": {
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\summary.txt": "4f40b4f74bc8fbff75b92ea9d813bdf79b6910c01ec285daf5d4f96b880b798c",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\result.json": "0d0879a38b7c3b37bbe85e4dc55cd66edb343ac529ba5d6125d6838f256ab692",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\conflict.json": "62e2286a66406a2ed97a530847d017333504812e0c4f86e2574306eca9de8c3e",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\confirmed.json": "c3dbd015d96028437db078157b588008740fb62c13ee846bf849bb4a1d408e5d",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\before.json": "b7b24bff75a258237a95ef9ac87cf6a82a11f7ab33e924399fa606ace42627da",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\target-before-manifest.txt": "d22dbd0c93c9a0105fdf1652b5db1fc940a051806bf9e478c03489b01a826c21",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\all-root-save-preservation.txt": "65110a8b05ac9f6730a12717256d8712615e45fdb4b720c429e8e488d731b4f1",
+      "native-save-effects-20260930-081415\\native-manual-overwrite-20261001175938\\capture-inputs.json": "e336b056619a43f37289ed57ef6d52f27dc6d133be6eb3d2a88dd618813a0d2d",
+      "native-manual-overwrite-reload-20261001-181011\\summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "native-manual-overwrite-reload-20261001-181011\\reloaded.json": "5935d1c9a8c09473224e6b288f1ca1a51fcaf86c79ada9f716574f73aefaf3be",
+      "native-manual-overwrite-reload-20261001-181011\\marker.json": "2a868896c0005111e5721c8a7a0e0346a3804d6d875427b311a0ff365443e4c5",
+      "native-manual-overwrite-reload-20261001-181011\\world-change.json": "6c28a05a69e9762ff4b2f905a0b54f685f45061b4af1fea67d6b1a9119862c88",
+      "native-manual-overwrite-reload-20261001-181011\\destination-manifest.txt": "dc23662900412b30d1a76ba86d3a8aa0433747b5250116adf7abd4f4efe5ffa4",
+      "native-manual-overwrite-reload-20261001-181011\\save-preservation.txt": "c21236603089cc7403a001b35cf7419004dfd2d207964744e5b7d329ce3d6c98",
+      "native-manual-overwrite-reload-20261001-181011\\capture-inputs.json": "960c3a602d8838b4600d374e5c3661ed4659992a0966f654844b447262a26433"
+    }
+  }
+}

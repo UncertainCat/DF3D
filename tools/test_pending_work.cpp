@@ -21,9 +21,9 @@ TEST_CASE("pending work classifies native jobs into designation kinds") {
     CHECK_MESSAGE(pw::operation<Operation>(JobType::FellTree)==Operation::Chop,"chopping remains distinct from digging");
     CHECK_MESSAGE(pw::operation<Operation>(JobType::GatherPlants)==Operation::Gather,"gathering remains distinct from digging");
     for(auto type:{JobType::Dig,JobType::CarveUpwardStaircase,JobType::CarveDownwardStaircase,
-                  JobType::CarveUpDownStaircase,JobType::CarveRamp,JobType::DigChannel})
+                  JobType::CarveUpDownStaircase,JobType::CarveRamp,JobType::DigChannel,JobType::RemoveConstruction})
         CHECK_MESSAGE(pw::classify(type)==pw::Kind::Dig,"excavation job family");
-    for(auto type:{JobType::RemoveConstruction,JobType::HaulStone,JobType::Eat})
+    for(auto type:{JobType::HaulStone,JobType::Eat})
         CHECK_MESSAGE(pw::classify(type)==pw::Kind::None,"unrelated jobs are not designations");
     CHECK_MESSAGE(pw::classify(JobType::FellTree)==pw::Kind::Chop,"tree order remains after bit becomes job");
     CHECK_MESSAGE(pw::classify(JobType::GatherPlants)==pw::Kind::Gather,"plant order remains after bit becomes job");

@@ -11,6 +11,121 @@ namespace m=df3d::mirror;
 namespace sh=df3d::shm;
 constexpr uint64_t epoch=9007199254740993ULL;
 void require(bool ok,const char* what){if(!ok)throw std::runtime_error(what);}
+// Synthetic schema-boundary observations for the appended area codec. These
+// prove transport fidelity, not native effects or area-builder acceptance.
+void verifyAreaOperation(const m::AreaRequest& q) {
+  const auto op=int(q.operation());
+  if(op==25) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 &&
+        q.location_id()==0 && q.occupation_id()==87,"staff edit target");
+    require(q.cursor()==0 && q.expected_revision()==9007199254740993ULL &&
+        q.expected_list_revision()==INT64_MAX && (q.unit_id()==-1 || q.unit_id()==INT32_MAX),"staff edit receipts and worker");
+    return;
+  }
+  if(op==24) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.location_site_id()==651 &&
+        q.location_id()==0 && q.occupation_id()==87,"staff candidate target");
+    require(q.cursor()==128 && q.expected_list_revision()==INT64_MAX,"staff candidate receipt");
+    return;
+  }
+  if(op==19) {
+    require(q.kind()==m::AreaKind::Zone && q.id()==-1 && q.zone_type()==92 && q.paint_z()==32767,
+        "paint count target");
+    require(!q.origin() && !q.interaction_id() && !q.undo_token(),"count read has no mutation identity");
+    const auto variant=uint64_t(INT64_MAX)-q.count_generation();require(variant<=2,"count generation precision");
+    if(!variant)require(!q.paint_preview() && (!q.spans() || !q.spans()->size()),"empty local draft");
+    else require(q.spans() && q.spans()->size()==2 && q.spans()->Get(0)->y()==12 && q.spans()->Get(0)->x()==11 &&
+        q.spans()->Get(0)->length()==2 && q.spans()->Get(1)->y()==13 && q.spans()->Get(1)->x()==11 &&
+        q.spans()->Get(1)->length()==2 && q.paint_preview() && q.paint_preview()->x()==11 && q.paint_preview()->y()==12 &&
+        q.paint_preview()->width()==4 && q.paint_preview()->height()==3,"count geometry");
+    return;
+  }
+  if(op>=16 && op<=18) {
+    require(op<=18 && q.kind()==m::AreaKind::Zone && q.id()==-1 && !q.expected_revision(),"Multi operation identity");
+    require(q.interaction_id()==uint64_t(INT64_MAX),"Multi interaction precision");
+    require(q.undo_token()==uint64_t(op==17?INT64_MAX:0),"Multi Undo token precision");
+    if(op==16)require(q.origin() && q.origin()->x()==0 && q.origin()->y()==0 && q.origin()->z()==32767 &&
+        q.width()==32768 && q.height()==32768 && q.room_furniture()==1,"Multi complete selection");
+    else require(!q.origin() && !q.room_furniture(),"Multi non-selection fields");
+    return;
+  }
+  require(!q.origin() && q.expected_revision()==INT64_MAX,"area origin/revision");
+  require(q.query() && q.query()->str()=="native" && q.cursor()==17,"area query/cursor");
+  require(q.id()==7 && q.owner_id()==-2 && q.barrels()==-1 && q.active()==-1,"area operation sentinels");
+  require(q.expected_list_revision()==uint64_t(op==1 || op==6 || op==10 || op==14?INT64_MAX:0),"area list revision");
+  switch(op) {
+    case 1: require(q.list_key()->str()=="food/meat","area settings page");break;
+    case 2: require(q.list_key()->str()=="food/meat" && q.row_key()->str()=="material:4" && q.scope()==1 && q.value()==2,"area settings set");break;
+    case 3: require(q.preset()==19,"area preset");break;
+    case 4: require(q.name()->str()=="Native name","area rename");break;
+    case 5: require(q.paint_mode()==1 && q.paint_z()==17 && q.zone_type()==1 && q.spans()->size()==2 &&
+        q.spans()->Get(0)->x()==15 && q.spans()->Get(0)->y()==14 && q.spans()->Get(0)->length()==128 &&
+        q.spans()->Get(1)->x()==15 && q.spans()->Get(1)->y()==15 && q.spans()->Get(1)->length()==256,"area paint spans");break;
+    case 6: break;
+    case 7: require(q.location_id()==-1,"area location removal");break;
+    case 8: require(q.location_kind()==2 && q.profession()==-1 && q.deity_kind()==3 && q.deity_id()==900,"area location creation");break;
+    case 9: {const auto* z=q.zone_settings();require(z && z->pond_mode()==2 && z->facing()==4 && z->tomb_citizens()==0 && z->tomb_pets()==1 && z->gather_trees()==1 && z->gather_shrubs()==0,"area zone settings");break;}
+    case 10: break;
+    case 11: require(q.unit_id()==0 && q.assign()==0,"area unassign");break;
+    case 12: require(q.squad_id()==0 && q.squad_use()==0,"area squad removal");break;
+    case 13: require(q.organic()==0 && q.inorganic()==1,"area toggles");break;
+    case 14: require(q.candidate_kind()==3 && q.sort()==3 && q.sort_descending(),"area candidate sort");break;
+    case 15: require(q.kind()==m::AreaKind::Workshop && q.link_id()==8 && !q.give() && q.unlink(),"area workshop unlink");break;
+    default: throw std::runtime_error("unexpected area operation");
+  }
+}
+flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBuilder& b,const m::AreaRequest& q) {
+  if(q.operation()==m::AreaOperation::LocationStaffEdit) {
+    std::vector<flatbuffers::Offset<m::LocationSupplyQuantity>> supplies;
+    for(uint8_t i=0;i<10;++i)supplies.push_back(m::CreateLocationSupplyQuantity(b,i,0,0));
+    const auto details=m::CreateLocationDetails(b,651,0,2,b.CreateString("Synthetic temple"),INT64_MAX,2,false,false,false,-1,0,0,0,false,b.CreateVector(supplies));
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());
+    area.add_location_edit_outcome(m::LocationEditOutcome::Completed);area.add_location_details(details);return area.Finish();
+  }
+  if(q.operation()==m::AreaOperation::LocationStaffCandidates) {
+    const auto skill=m::CreateLocationStaffSkill(b,58,3,2000000,1);
+    const auto row=m::CreateLocationStaffCandidate(b,100,900,b.CreateString("Synthetic candidate"),3,b.CreateVector(std::vector{skill}),b.CreateString("Synthetic"),b.CreateString("candidate"),13,true,128,809,100000,b.CreateVector(std::vector<uint8_t>{97,255}),b.CreateVector(std::vector<uint8_t>{128,0}));
+    const auto page=m::CreateLocationStaffCandidates(b,651,0,87,8,INT64_MAX,128,0,129,b.CreateVector(std::vector{row}));
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());area.add_location_staff_candidates(page);return area.Finish();
+  }
+  if(q.operation()==m::AreaOperation::PaintCounts) {
+    const auto variant=uint64_t(INT64_MAX)-q.count_generation();
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());area.add_count_generation(q.count_generation());
+    area.add_painted_count(variant==0?0:variant==1?4:-1);area.add_preview_count(variant==0?0:variant==1?8:2);
+    area.add_captured_tick(9876543210);return area.Finish();
+  }
+  if(q.operation()>=m::AreaOperation::MultiCreate && q.operation()<=m::AreaOperation::MultiFinish) {
+    m::AreaStateBuilder area(b);area.add_operation(q.operation());area.add_interaction_id(q.interaction_id());
+    area.add_room_outcome(m::AreaRoomOutcome::Completed);
+    if(q.operation()==m::AreaOperation::MultiCreate) {
+      area.add_undo_token(INT64_MAX);area.add_rooms_created(129);area.add_rooms_in_use(1000);area.add_rooms_unenclosed(2000);
+      area.add_rooms_dormitories(7);
+    }
+    if(q.operation()==m::AreaOperation::MultiUndo)area.add_rooms_removed(129);
+    return area.Finish();
+  }
+  const auto name=b.CreateString("observed"),key=b.CreateString("food/meat");
+  const auto zone=m::CreateAreaZoneSettings(b,2,4,0,1,1,0);
+  const auto extent=b.CreateVector(std::vector<uint8_t>{1});m::TilePos pos(11,12,13);
+  m::AreaInfoBuilder info(b);info.add_id(7);info.add_name(name);info.add_origin(&pos);info.add_width(1);info.add_height(1);
+  info.add_extents(extent);info.add_revision(INT64_MAX);info.add_zone_label(name);info.add_location_id(99);
+  info.add_location_name(name);info.add_religion(name);info.add_organic(0);info.add_inorganic(1);
+  info.add_zone_settings(zone);info.add_tile_count(1);info.add_assigned_count(4);
+  const auto record=info.Finish();const auto areas=b.CreateVector(std::vector{record});
+  const auto setting=m::CreateAreaSettingRow(b,key,5,name,4,3,true);const auto settings=b.CreateVector(std::vector{setting});
+  const auto location=m::CreateAreaLocationRow(b,99,name,2,name);const auto locations=b.CreateVector(std::vector{location});
+  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15);const auto candidates=b.CreateVector(std::vector{candidate});
+  const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
+  const auto query=b.CreateString(q.query()->str());
+  m::AreaStateBuilder area(b);area.add_areas(areas);area.add_operation(q.operation());area.add_area_id(7);
+  area.add_list_key(key);area.add_candidate_kind(q.candidate_kind());area.add_sort(q.sort());area.add_sort_descending(q.sort_descending());
+  area.add_query(query);area.add_list_revision(INT64_MAX);area.add_captured_tick(9876543210);area.add_omitted(2);area.add_next_cursor(128);
+  if(q.operation()==m::AreaOperation::SettingsPage)area.add_settings(settings);
+  if(q.operation()==m::AreaOperation::LocationList)area.add_locations(locations);
+  if(q.operation()==m::AreaOperation::CandidateList)area.add_candidates(candidates);
+  if(q.operation()==m::AreaOperation::Links)area.add_links(links);
+  return area.Finish();
+}
 flatbuffers::Offset<m::WorkOrderState> workOrderFixture(flatbuffers::FlatBufferBuilder& b,bool progress=false) {
   if(progress) {
     // work_orders.lua:651-653,676: filtering progress never includes rows.
@@ -506,6 +621,8 @@ int main(int argc,char** argv) {
       area.add_name(name);area.add_owner_name(empty);area.add_extents(extent);area.add_owner_id(-1);
       auto row=area.Finish();auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::AreaInfo>>{row});
       auto areas=m::CreateAreaState(b,rows,0,UINT32_MAX,false);
+      if(request && request->area() && request->area()->operation()!=m::AreaOperation::None)
+        areas=areaOperationFixture(b,*request->area());
       flatbuffers::Offset<m::WorkOrderState> work;
       if(request && request->action()>=m::ManagementAction::WorkOrderList &&
           request->action()<=m::ManagementAction::WorkOrderCatalog)work=workOrderFixture(b,request->action()==m::ManagementAction::WorkOrderCatalog);
@@ -522,6 +639,10 @@ int main(int argc,char** argv) {
         agreements=agreementFixture(b,*request);text=b.CreateString("Native agreements");
       }
       flatbuffers::Offset<m::ReportState> reports;
+      if(request && (request->action()==m::ManagementAction::PrepareAlertDismissal || request->action()==m::ManagementAction::DismissAlert)) {
+        m::ReportStateBuilder report(b);report.add_list_revision(request->action()==m::ManagementAction::PrepareAlertDismissal ? 9007199254740993ull : request->report()->expected_list_revision());
+        report.add_total(4);reports=report.Finish();
+      }
       const bool isReport=request && (request->action()==m::ManagementAction::ReportList || request->action()==m::ManagementAction::ReportInspect);
       const bool missing=isReport && request->action()==m::ManagementAction::ReportInspect && request->report()->id()==999999;
       if(isReport){reports=reportFixture(b,*request);text=b.CreateString(missing?"Report no longer exists":request->action()==m::ManagementAction::ReportInspect?"Native report":"Native reports");}
@@ -566,7 +687,11 @@ int main(int argc,char** argv) {
         A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,
         A::AgreementInspect,A::AgreementInspect,A::AgreementInspect,A::AgreementList,
         A::AgreementList,A::AgreementList,A::AgreementInspect,
-        A::WorkDetailCreate,A::WorkDetailDelete,A::WorkDetailEdit,A::WorkDetailEdit,A::WorkDetailEdit,A::CitizenWorkScope};
+        A::WorkDetailCreate,A::WorkDetailDelete,A::WorkDetailEdit,A::WorkDetailEdit,A::WorkDetailEdit,A::CitizenWorkScope,
+        A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
+        A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
+        A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::PrepareAlertDismissal,A::DismissAlert};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -580,7 +705,12 @@ int main(int argc,char** argv) {
         require(r->action()==expectations[received],"ordered request action");
         ++received;
         if(received>1)require(r->world_epoch()==epoch,"64-bit world identity");
-        switch(r->action()) {
+        if(r->area() && r->area()->operation()!=m::AreaOperation::None)verifyAreaOperation(*r->area());
+        else switch(r->action()) {
+        case A::PrepareAlertDismissal:
+          require(r->report() && r->report()->expected_list_revision()==0,"prepare alert dismissal defaults");break;
+        case A::DismissAlert:
+          require(r->report() && r->report()->expected_list_revision()==9007199254740993ull,"dismissal receipt precision");break;
         case A::WorkDetailCreate: case A::WorkDetailDelete: case A::WorkDetailEdit: case A::CitizenWorkScope: {
           const auto* c=r->citizen();require(c && c->expected_revision()==INT64_MAX,"work detail revision boundary");
           if(r->action()==A::WorkDetailEdit) {
@@ -601,7 +731,7 @@ int main(int argc,char** argv) {
               !r->report() && !r->agreement() && !r->trade(),"construction catalog defaults");
           break;
         case A::AreaUpdate: {
-          auto* a=r->area();require(a && a->id()==2147483000 && a->owner_id()==-2 && a->barrels()==-1 && a->active()==-1,"area identity/sentinels");break;
+          auto* a=r->area();require(a && a->id()==2147483000 && a->expected_revision()==9007199254740993ULL && a->owner_id()==-2 && a->barrels()==-1 && a->active()==-1,"area identity/sentinels");break;
         }
         case A::Place:
           require(r->selections() && r->selections()->size()==1 && r->selections()->Get(0)->filter()==0 && r->selections()->Get(0)->count()==1 && r->selections()->Get(0)->expected_list_revision()==INT64_MAX,"material selection");

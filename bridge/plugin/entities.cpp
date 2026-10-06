@@ -54,7 +54,7 @@ double usSince(Clock::time_point t0) {
 // ---- enum mapping (verified against df-structures 53.16-r1 at compile time) ----
 
 // BuildingKind = building_type + 1 below Construction, = building_type
-// above it (Construction is skipped). Anchors pin the schema to the enum.
+// above it; pending Construction is appended. Anchors pin the schema to the enum.
 static_assert(static_cast<int>(df::enums::building_type::Chair) == 0 &&
                   static_cast<int>(mir::BuildingKind::Chair) == 1,
               "BuildingKind anchor: Chair");
@@ -70,7 +70,8 @@ static_assert(static_cast<int>(df::enums::building_type::OfferingPlace) ==
 
 mir::BuildingKind mapBuildingKind(df::building_type t) {
     const int v = static_cast<int>(t);
-    if (v < 0 || t == df::enums::building_type::Construction) return mir::BuildingKind::Unknown;
+    if (v < 0) return mir::BuildingKind::Unknown;
+    if (t == df::enums::building_type::Construction) return mir::BuildingKind::Construction;
     if (v < static_cast<int>(df::enums::building_type::Construction)) return static_cast<mir::BuildingKind>(v + 1);
     if (v <= static_cast<int>(df::enums::building_type::OfferingPlace)) return static_cast<mir::BuildingKind>(v);
     return mir::BuildingKind::Unknown;  // a value newer than the schema (append it, never renumber)
@@ -198,6 +199,9 @@ void eraseRemoved(std::vector<Removed>& v, int32_t id) {
 // ---- buildings ----
 
 bool extractBuilding(df::building* b, df::building_type type, BuildingRec& rec, GridMaterialFn gm) {
+    // Completed construction retires its pending entity on every scan path.
+    if (type == df::enums::building_type::Construction &&
+        b->getBuildStage() >= b->getMaxBuildStage()) return false;
     const auto bounds = mir::clipBuildingFootprint(
         {b->x1, b->y1, b->x2, b->y2, b->centerx, b->centery}, b->z,
         world->map.x_count, world->map.y_count, world->map.z_count);
@@ -209,6 +213,7 @@ bool extractBuilding(df::building* b, df::building_type type, BuildingRec& rec, 
     case df::enums::building_type::Trap:
     case df::enums::building_type::SiegeEngine:
     case df::enums::building_type::Shop:
+    case df::enums::building_type::Construction:
     case df::enums::building_type::Civzone: {
         const int16_t st = b->getSubtype();
         rec.subtype = st < 0 ? mir::kNoSubtype : static_cast<uint16_t>(st);
@@ -329,12 +334,10 @@ void scanBuildings(int32_t frame, bool fullPass, GridMaterialFn gm) {
     std::vector<df::building*>& all = world->buildings.all;
     for (int32_t id : s.hintedBuildings) {
         df::building* b = df::building::find(id);
-        if (b && b->getType() != df::enums::building_type::Construction) visitBuilding(b, b->getType(), frame, gm);
+        if (b) visitBuilding(b, b->getType(), frame, gm);
     }
     s.hintedBuildings.clear();
-    const bool sequenceChanged =
-        all.size() != s.lastAll.size() ||
-        (!all.empty() && std::memcmp(all.data(), s.lastAll.data(), all.size() * sizeof(df::building*)) != 0);
+    const bool sequenceChanged = buildingSequenceChanged();
     if (fullPass || sequenceChanged) {
         ++s.st.buildingResyncs;
         ++s.buildingStamp;
@@ -342,8 +345,8 @@ void scanBuildings(int32_t frame, bool fullPass, GridMaterialFn gm) {
         for (df::building* b : all) {
             if (!b) continue;
             const df::building_type type = b->getType();
-            if (type == df::enums::building_type::Construction) continue;  // terrain
-            if (fullPass || s.buildingIndex.find(b->id) == s.buildingIndex.end()) {
+            if (fullPass || type == df::enums::building_type::Construction ||
+                s.buildingIndex.find(b->id) == s.buildingIndex.end()) {
                 visitBuilding(b, type, frame, gm);
             } else {
                 s.buildings[s.buildingIndex[b->id]].stamp = s.buildingStamp;
@@ -366,7 +369,6 @@ void scanBuildings(int32_t frame, bool fullPass, GridMaterialFn gm) {
         df::building* b = all[s.buildingCursor++];
         if (!b) continue;
         const df::building_type type = b->getType();
-        if (type == df::enums::building_type::Construction) continue;
         visitBuilding(b, type, frame, gm);
     }
 }
@@ -703,6 +705,33 @@ void reset() {
     const Config cfg = s.cfg;
     s = State();
     s.cfg = cfg;
+}
+
+bool buildingSequenceChanged() {
+    if (!world) return false;
+    const auto& all = world->buildings.all;
+    return all.size() != s.lastAll.size() ||
+        (!all.empty() && std::memcmp(all.data(), s.lastAll.data(), all.size() * sizeof(df::building*)) != 0);
+}
+
+bool pendingConstructionChanged(void (*hintTerrain)(int32_t,int32_t,int32_t)) {
+    if (!world) return false;
+    bool changed = false;
+    for (const auto& shadow : s.buildings) {
+        if (shadow.rec.kind != static_cast<uint8_t>(mir::BuildingKind::Construction)) continue;
+        auto* b = df::building::find(shadow.id);
+        bool differs = !b || b->getType() != df::enums::building_type::Construction;
+        if (!differs) {
+            const int stage = b->getBuildStage();
+            differs = stage >= b->getMaxBuildStage() || b->getSubtype() != shadow.rec.subtype ||
+                (stage > 0) != (shadow.rec.stage == static_cast<uint8_t>(mir::BuildingStage::InProgress));
+        }
+        if (!differs) continue;
+        changed = true;
+        // Refresh the authoritative terrain before retiring its pending marker.
+        if (hintTerrain) hintTerrain(shadow.rec.x1,shadow.rec.y1,shadow.rec.z);
+    }
+    return changed;
 }
 
 void scan(int32_t frame, bool fullPass, GridMaterialFn gridMaterial) {

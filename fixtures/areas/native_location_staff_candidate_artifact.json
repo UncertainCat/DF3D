@@ -1,0 +1,77 @@
+{
+  "unit_id": 5575,
+  "weapon_id": 33758,
+  "scope": "Artifact flag controls isolate native glove suppression. Quality ceilings5..8 on forbidden weapon clauses do not change native output. Native71f8ef..71f90e applies layer material conditions to forbidden items. Hashes only; no artwork.",
+  "observations": [
+    {
+      "artifact": true,
+      "case": "refreshed",
+      "mode": 1,
+      "source": "location-staff-selector-weapon-20260930-031957",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": false,
+      "case": "nonartifact",
+      "mode": 1,
+      "source": "location-staff-selector-weapon-20260930-031957",
+      "visible_rgba_sha256": "85de89968fc3703fb2d191e3a53c81d4a75c0c98ac3368bb1e1bc2a5cde06066"
+    },
+    {
+      "artifact": true,
+      "case": "hauled",
+      "mode": 0,
+      "source": "location-staff-selector-weapon-20260930-031957",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "restored",
+      "mode": 1,
+      "source": "location-staff-selector-weapon-20260930-031957",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "refreshed",
+      "mode": 1,
+      "source": "location-staff-selector-artifact-quality-20260930-032158",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "max_5",
+      "mode": 1,
+      "source": "location-staff-selector-artifact-quality-20260930-032158",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "max_6",
+      "mode": 1,
+      "source": "location-staff-selector-artifact-quality-20260930-032158",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "max_7",
+      "mode": 1,
+      "source": "location-staff-selector-artifact-quality-20260930-032158",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "max_8",
+      "mode": 1,
+      "source": "location-staff-selector-artifact-quality-20260930-032158",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    },
+    {
+      "artifact": true,
+      "case": "restored",
+      "mode": 1,
+      "source": "location-staff-selector-artifact-quality-20260930-032158",
+      "visible_rgba_sha256": "9b11c7e6af6a8a385e31f9c9dc22687cc6ca4ae65416c210c3f7e54ae8d8abb8"
+    }
+  ]
+}

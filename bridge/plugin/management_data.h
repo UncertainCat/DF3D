@@ -166,8 +166,15 @@ struct ReportInfo {
  int32_t id=0,year=0,yearTick=0,repeatCount=0,x=-1,y=-1,z=-1,x2=-1,y2=-1,z2=-1;
  std::string category,text;
  bool continuation=false,textComplete=true,positionVisible=false,position2Visible=false;
+ uint8_t tab=0,zoomType=0,zoomType2=0; int16_t color=-1; bool bright=false;
+ bool positionHidden=false,position2Hidden=false; int32_t speakerId=-1;
 };
-struct ReportState {std::vector<ReportInfo> reports;int32_t nextBeforeId=-1;bool announcementsOnly=true;std::string detail;};
+struct ReportUnitInfo { int32_t unitId=-1; int8_t category=-1; std::string profession,name; bool dead=false; uint32_t logCount=0; std::string error; };
+struct ReportState {std::vector<ReportInfo> reports;int32_t nextBeforeId=-1;bool announcementsOnly=true;std::string detail;
+ uint8_t view=0,tab=0;int32_t afterId=-1;bool fromEnd=false;
+ std::vector<uint32_t> tabCounts;uint32_t total=0;int32_t nextAfterId=-1,trimmedThrough=-1;bool gap=false;
+ int32_t unitId=-1; int8_t unitCategory=-1; uint32_t cursor=0,nextCursor=0; uint64_t listRevision=0; std::vector<ReportUnitInfo> units; std::vector<int32_t> missingIds;int16_t notificationCategory=-1;bool alertButton=false;
+};
 
 // --- agreements ---
 struct AgreementDetail {

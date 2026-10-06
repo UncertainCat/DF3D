@@ -1,6 +1,7 @@
 extends CanvasLayer
-# Read-only terrain description. Original native naming has richer plant detail
-# than the current semantic terrain record; never infer missing species/coverage.
+# Staged prototype, excluded by ui_availability.TILE_HOVER_AVAILABLE.
+# describe() synthesizes copy from enum/token identifiers and is NOT native parity.
+# Replace it with evidenced native mappings/semantic descriptions before exposure.
 var world
 var hud
 var camera

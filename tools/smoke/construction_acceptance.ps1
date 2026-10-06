@@ -1,6 +1,7 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$GuardProbe,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$GuardProbe,[switch]$Controller,[switch]$ControllerScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}),
+ [ValidateSet('restart','inprocess')][string]$Route='restart', [string]$OwnedSaveManifest='')
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -10,8 +11,18 @@ $summary='failed startup'; $entered=$false; $loaded=$false; $g=$null
 $finalPaused=$false
 $oldInput=$env:DF3D_CONSTRUCTION_ACCEPTANCE
 $deadline=(Get-Date).AddSeconds(2400)
+$sourceProof=$null
+function Source-Manifest([string]$Root) {
+ return (@(Get-ChildItem -LiteralPath $Root -Recurse -File | ForEach-Object {
+  $_.FullName.Substring($Root.Length).TrimStart('\','/')+' '+(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+ } | Sort-Object) -join "`n")
+}
 function Write-Lf([string]$Path,[string]$Text) {
  [IO.File]::WriteAllText($Path,($Text -replace "`r`n","`n"),[Text.UTF8Encoding]::new($false))
+}
+function Write-Ack([string]$Path,[string]$Text) {
+ Write-Lf "$Path.tmp" $Text
+ Move-Item -LiteralPath "$Path.tmp" -Destination $Path
 }
 function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  # Lua long strings prevent paths/SaveId from becoming executable Lua text.
@@ -28,12 +39,23 @@ try {
  }
  Get-FileHash -Algorithm SHA256 "$DfPath/hack/plugins/df3d.plug.dll","$repo/presentations/godot/project/bin/df3d_godot.dll" | Format-List | Out-File "$out/binaries.log"
  Write-Lf "$out/save-id.txt" $SaveId
+ Write-Lf "$out/df-path.txt" $DfPath
  Enter-Df3dLane -DfPath $DfPath -Port 5010
  $entered=$true
  # Compare exact directory names across both DF save roots BEFORE creating a copy.
  # A prefix check would confuse region5 with region50 and does not prove ownership.
- if($SaveId -notmatch '^df3d-construction-[A-Za-z0-9_-]+$'){throw 'Expected a new df3d-construction-* disposable save name'}
+ if($SaveId -notmatch '^[A-Za-z0-9_-]+$'){throw 'Expected an exact save directory name'}
  $saveRoots=@((Join-Path $DfPath 'save'),(Join-Path $env:APPDATA 'Bay 12 Games/Dwarf Fortress/save'))
+ if($OwnedSaveManifest) {
+  $clone=[IO.Path]::GetFullPath((Join-Path $saveRoots[1] $SaveId)).Replace('\','/')
+  $sourceProof=(Get-Content -LiteralPath $OwnedSaveManifest -Raw).TrimEnd("`r","`n")
+  if((Source-Manifest $clone) -cne $sourceProof){throw 'Owned save differs from its verified SHA256 manifest'}
+  $original=Join-Path $saveRoots[0] 'region5'
+  $matchesOriginal=(Test-Path -LiteralPath $original -PathType Container) -and ((Source-Manifest $original) -ceq $sourceProof)
+  Write-Lf "$out/source-save-id.txt" $(if($matchesOriginal){'region5'}else{$SaveId})
+  Write-Lf "$out/source-provenance.txt" $(if($matchesOriginal){'Owned clone matches every region5 file by SHA256.'}else{'Owned save verified; exact region5 provenance not established.'})
+ } else {
+ if($SaveId -notmatch '^df3d-construction-[A-Za-z0-9_-]+$'){throw 'Expected a new df3d-construction-* disposable save name'}
  foreach($saveRoot in $saveRoots) {
   if(Test-Path -LiteralPath $saveRoot) {
    foreach($save in Get-ChildItem -LiteralPath $saveRoot -Directory) {
@@ -52,13 +74,16 @@ try {
   if((Get-FileHash -LiteralPath $file.FullName).Hash -ne (Get-FileHash -LiteralPath (Join-Path $clone $relative)).Hash){throw 'Disposable copy verification failed'}
  }
  Write-Lf "$out/source-save-id.txt" 'region5'
+ $sourceProof=Source-Manifest $clone
+ }
+ Write-Lf "$out/source-manifest.txt" $sourceProof
  Write-Lf "$out/clone-path.txt" $clone
  # All polling and native job waits share the 2,400 second lane deadline.
 
  if((Get-Date) -ge $deadline){throw 'INCOMPLETE lane deadline 2400 seconds hit during setup'}
  Set-DfPrefs
  Install-DfMenuStartup -DfPath $DfPath
- Start-Df3d -DfPath $DfPath | Out-Null
+ $fixtureProcess=Start-Df3d -DfPath $DfPath
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'INCOMPLETE disposable clone could not be loaded'}
  $loaded=$true
@@ -68,8 +93,6 @@ try {
  $r.Output | Set-Content "$out/fixture.log"
  $text=$r.Output -join "`n"
  if($text -notmatch 'FIXTURE_READY'){throw 'Fixture failed'}
- # Df3dLane currently exports no reload helper. Never substitute SaveReturn.
- Write-Lf "$out/reload.txt" 'incomplete step 8: Df3dLane exports no save-free reload helper'
  Write-Lf "$out/repo.txt" $repo
  if($GuardProbe -and (Get-Content -Raw "$out/fixture.json" | ConvertFrom-Json).origin) {
   foreach($mode in @('before','after')) {
@@ -82,12 +105,41 @@ try {
  $project="$repo/presentations/godot/project"
  # Leave five minutes for re-pause, final readback, and result publication.
  Write-Lf "$out/budget-ms.txt" ([string][Math]::Max(0,[Math]::Floor(($deadline-(Get-Date)).TotalMilliseconds)-300000))
- $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "--headless --path `"$project`" --script res://tests/construction_acceptance_live.gd --log-file `"$out/godot.log`"" -WorkingDir $project
+ $script=if($ControllerScene){'construction_controller_scene_live.gd'}elseif($Controller){'construction_controller_live.gd'}else{'construction_acceptance_live.gd'}
+ $renderer=if($ControllerScene){''}else{'--headless'}
+ Write-Lf "$out/controller-mode.txt" $script
+ $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "$renderer --path `"$project`" --script res://tests/$script --log-file `"$out/godot.log`"" -WorkingDir $project
  while(-not $g.HasExited -and (Get-Date) -lt $deadline) {
   if(Test-Path "$out/verify.txt") {
    $index=[int](Get-Content -Raw "$out/verify.txt")
    Remove-Item -LiteralPath "$out/verify.txt"
    $request=Get-Content -Raw "$out/request-$index.json" | ConvertFrom-Json
+   if($request.op -eq 'reload') {
+    # Once restart begins, the old fixture belongs to the old process only.
+    $loaded=$false
+    $oldFixtureProcess=$fixtureProcess
+    try {
+     $restart=Restart-Df3dFortress -Route $Route -SaveId $clone -SaveRoots @($clone) -EvidenceDir "$out/restart-$index"
+     if($restart.Status -eq 'ready') {
+      $fixtureProcess=Get-Process -Id $restart.Pid
+      $r=Invoke-LuaFile 'construction-acceptance-fixture.lua' "[==[$out]==]"
+      $fixtureText=$r.Output -join "`n"
+      if($fixtureText -match 'FIXTURE_INCOMPLETE (.+)') {
+       Write-Ack "$out/incomplete-$index" (@{reason=$Matches[1]} | ConvertTo-Json -Compress)
+      } elseif($fixtureText -notmatch 'FIXTURE_READY') {
+       Write-Ack "$out/failed-$index" (@{reason='Fixture failed after reload'} | ConvertTo-Json -Compress)
+      } else {
+       $loaded=$true
+       Write-Ack "$out/ack-$index" (@{pid=$restart.Pid;epoch=[string]$restart.Epoch;route=$restart.Route} | ConvertTo-Json -Compress)
+      }
+     } else {
+      Write-Ack "$out/$($restart.Status)-$index" (@{reason=$restart.Reason} | ConvertTo-Json -Compress)
+     }
+    } catch { Write-Ack "$out/failed-$index" (@{reason=$_.Exception.Message} | ConvertTo-Json -Compress) }
+    $oldFixtureProcess.Refresh()
+    if(-not $oldFixtureProcess.HasExited){$loaded=$true}
+    continue
+   }
    # Refusal guards are mandatory; only Godot sends construction commands.
    if($request.op -eq 'guard_before' -or $request.op -eq 'guard_after') {
     $mode=if($request.op -eq 'guard_before'){'before'}else{'after'}
@@ -109,7 +161,7 @@ try {
    }
    $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],$index"
    if(($r.Output -join "`n") -notmatch 'SEMANTIC_(PASS|INCOMPLETE)'){throw "Native verification $index failed: $($r.Output)"}
-   Write-Lf "$out/ack-$index" 'ok'
+   Write-Ack "$out/ack-$index" 'ok'
   }
   Start-Sleep -Milliseconds 100
   $g.Refresh()
@@ -120,13 +172,31 @@ try {
  $summary=[string]$result.status
  if($result.reasons){$summary+=' '+($result.reasons -join '; ')}
  if($g.ExitCode -ne 0 -and $summary -notmatch '^(failed|incomplete)'){throw 'Godot exit disagrees with result'}
+ # Assertions alone do not establish GPU acceptance. Preserve the semantic
+ # result and record engine diagnostics separately using the QA classifier.
+ if($ControllerScene) {
+  $diagnosticCode=@'
+import json, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(sys.argv[1]) / 'tools' / 'qa'))
+from diagnostics import error_summary
+out = Path(sys.argv[2])
+result = error_summary((out / 'godot.log').read_text(encoding='utf-8', errors='replace'))
+(out / 'diagnostics.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+'@
+  & python -c $diagnosticCode $repo $out
+  if($LASTEXITCODE -ne 0){throw 'INCOMPLETE engine log classification failed'}
+  $diagnostics=Get-Content -Raw "$out/diagnostics.json" | ConvertFrom-Json
+  if(@($diagnostics.unclassified).Count -gt 0){$summary='failed unclassified engine diagnostics; semantic result: '+$summary}
+  elseif(@($diagnostics.known_engine).Count -gt 0 -and $summary -eq 'passed'){$summary='passed_with_known_issues documented engine diagnostics'}
+ }
 } catch {
  $message=$_.Exception.Message
  $summary=if($message.StartsWith('INCOMPLETE ')){'incomplete '+$message.Substring(11)}else{'failed '+$message}
 } finally {
  try {
   if($g -and -not $g.HasExited){$g.Kill();$g.WaitForExit()}
-  if($loaded) {
+  if($loaded -and $fixtureProcess -and -not $fixtureProcess.HasExited) {
    # On an interrupted wait, re-pause first; the separate final assertion still
    # verifies pause before module-owned teardown, including failure paths.
    $r=Invoke-LuaFile 'construction-acceptance-verify.lua' "[==[$out]==],'pause'"
@@ -155,6 +225,12 @@ try {
    }
   }
   catch {$summary='failed teardown: '+$_.Exception.Message+'; prior result: '+$summary}
+  try {
+   if($null -ne $sourceProof) {
+    if((Source-Manifest $clone) -cne $sourceProof){throw 'Owned source files changed'}
+    Write-Lf "$out/save-preservation.txt" 'Owned source files unchanged.'
+   }
+  } catch {$summary='failed preservation: '+$_.Exception.Message}
   $env:DF3D_CONSTRUCTION_ACCEPTANCE=$oldInput
   # Evidence is read at run time. Informational comparisons never change status.
   $departures=@()

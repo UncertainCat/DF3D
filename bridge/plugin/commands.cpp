@@ -4,6 +4,7 @@
 #include "TileTypes.h"
 
 #include "modules/Designations.h"
+#include "modules/Constructions.h"
 #include "modules/Items.h"
 #include "modules/Maps.h"
 #include "modules/MapCache.h"
@@ -207,7 +208,7 @@ void restoreAndHoldJobs(const mir::TileRect& r, const std::set<df3d_pending_work
                 const auto originalOcc=occ;
                 bool supported=true;
                 switch(job->job_type) {
-                case df::job_type::Dig: case df::job_type::FellTree: case df::job_type::GatherPlants: des.bits.dig=df::tile_dig_designation::Default; break;
+                case df::job_type::Dig: case df::job_type::RemoveConstruction: case df::job_type::FellTree: case df::job_type::GatherPlants: des.bits.dig=df::tile_dig_designation::Default; break;
                 case df::job_type::DigChannel: des.bits.dig=df::tile_dig_designation::Channel; break;
                 case df::job_type::CarveRamp: des.bits.dig=df::tile_dig_designation::Ramp; break;
                 case df::job_type::CarveUpwardStaircase: des.bits.dig=df::tile_dig_designation::UpStair; break;
@@ -310,6 +311,19 @@ bool stepDig(const mir::Command& cmd, Clock::time_point deadline) {
             }
         }
         auto &occ=blk->occupancy[lx][ly];
+        // Native DIG_REMOVE_STAIRS_RAMPS also removes constructed tiles. Use
+        // DF's construction helper so pseudo wall tops and pending structures
+        // retain the native ownership rules rather than treating them as rock.
+        if (kind == mir::DigKind::RemoveStairsRamps && !des.bits.hidden &&
+            tileMaterial(blk->tiletype[lx][ly]) == df::tiletype_material::CONSTRUCTION) {
+            if (!Constructions::designateRemove(df::coord(x,y,z))) { ++p.notDiggable; continue; }
+            occ.bits.dig_marked = d->marker();
+            if (auto* ev = priorityEvent(blk, true)) ev->priority[lx][ly] = prio;
+            ++p.applied;
+            if(d->marker()) p.held.insert({x,y,z});
+            hintBlock(x,y,z);
+            continue;
+        }
         if(d->kind()==mir::DigKind::Activate || d->kind()==mir::DigKind::Mark) {
             if(des.bits.dig==df::tile_dig_designation::No && !des.bits.smooth && !occ.bits.carve_track_north && !occ.bits.carve_track_south && !occ.bits.carve_track_east && !occ.bits.carve_track_west) continue;
             occ.bits.dig_marked=d->kind()==mir::DigKind::Mark;

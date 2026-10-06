@@ -1,0 +1,4376 @@
+{
+  "provenance": {
+    "source": "build/location-staff-actions-20260929-232551/native-location-staff-actions.json",
+    "sha256": "0186ecdec61f50e929216d7d7c070f21a315eb3e1e374b5e2a29e281bba75214",
+    "scope": "Native empty ordinary assignment button and occupied-row remove-worker artwork/hit regions; selector open/cancel observations. No GUI mutation acceptance; all pixel data stays ignored.",
+    "holder_identity_source": {
+      "path": "fixtures/areas/native_location_staff_names.json",
+      "sha256": "a1cab128a48ebbdbdacb83994e970e0f7aea320b6f57464a8769549c28fa1c21",
+      "note": "Baseline religious holder HF identities complete the prior cropped-art fixture sentinels; same paused source save and ordered position row."
+    }
+  },
+  "cases": [
+    {
+      "details": {
+        "id": 0,
+        "site_id": 651,
+        "kind": 2,
+        "staff": {
+          "rows": [
+            {
+              "source": 1,
+              "role": -1,
+              "unit_id": -1,
+              "histfig_id": 9375,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 1,
+              "unit_id": 6536,
+              "histfig_id": 9998,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 1,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 0,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 116,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 117,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 118,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 119,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 116,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 117,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 118,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 119,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 116,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 117,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 118,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 119,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 116,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 117,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 118,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 119,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 116,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 117,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 118,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 119,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 116,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 117,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 118,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 119,
+          "y": 33
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 1,
+        "site_id": 651,
+        "kind": 1,
+        "staff": {
+          "rows": [
+            {
+              "source": 0,
+              "role": 0,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 1,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 0,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 25
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 25
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 25
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 25
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 26
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 26
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 26
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 26
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 27
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 27
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 27
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 27
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 30
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 2,
+        "site_id": 651,
+        "kind": 5,
+        "staff": {
+          "rows": [
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": 6815,
+              "histfig_id": 10198,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6542,
+              "histfig_id": 10003,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6555,
+              "histfig_id": 10014,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": 6817,
+              "histfig_id": 10199,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 10,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 0,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 51
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 2,
+        "site_id": 651,
+        "kind": 5,
+        "staff": {
+          "rows": [
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": 6815,
+              "histfig_id": 10198,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6542,
+              "histfig_id": 10003,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6555,
+              "histfig_id": 10014,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": 6817,
+              "histfig_id": 10199,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 10,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 1,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 54
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 2,
+        "site_id": 651,
+        "kind": 5,
+        "staff": {
+          "rows": [
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": 6815,
+              "histfig_id": 10198,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6542,
+              "histfig_id": 10003,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6555,
+              "histfig_id": 10014,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": 6817,
+              "histfig_id": 10199,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 10,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 2,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 51
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 2,
+        "site_id": 651,
+        "kind": 5,
+        "staff": {
+          "rows": [
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": 6815,
+              "histfig_id": 10198,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 7,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6542,
+              "histfig_id": 10003,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": 6555,
+              "histfig_id": 10014,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 8,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": 6817,
+              "histfig_id": 10199,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 9,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 10,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 3,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 43
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 44
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 45
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 49
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 50
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 51
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 52
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 53
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 54
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 40
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 41
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 42
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 114,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 115,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 116,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 117,
+          "y": 46
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 114,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 115,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 116,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 117,
+          "y": 47
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 114,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 115,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 116,
+          "y": 48
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 117,
+          "y": 48
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 3,
+        "site_id": 651,
+        "kind": 2,
+        "staff": {
+          "rows": [
+            {
+              "source": 1,
+              "role": -1,
+              "unit_id": -1,
+              "histfig_id": 9648,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 1,
+              "unit_id": 6136,
+              "histfig_id": 9650,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 1,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 0,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 116,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 117,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 118,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 119,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 116,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 117,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 118,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 119,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 116,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 117,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 118,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 119,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 116,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 117,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 118,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 119,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 116,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 117,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 118,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 119,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 116,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 117,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 118,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 119,
+          "y": 33
+        }
+      ]
+    },
+    {
+      "details": {
+        "id": 4,
+        "site_id": 651,
+        "kind": 3,
+        "staff": {
+          "rows": [
+            {
+              "source": 0,
+              "role": 2,
+              "unit_id": 6549,
+              "histfig_id": 10010,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 2,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 5,
+              "unit_id": 6546,
+              "histfig_id": 10007,
+              "names": {
+                "holder_kind": 1,
+                "holder_name": ""
+              }
+            },
+            {
+              "source": 0,
+              "role": 5,
+              "unit_id": -1,
+              "histfig_id": -1,
+              "names": {
+                "holder_kind": 0,
+                "holder_name": ""
+              }
+            }
+          ]
+        }
+      },
+      "scroll": 0,
+      "cells": [
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 31
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 32
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 33
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127179,
+          "x": 72,
+          "y": 37
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127180,
+          "x": 73,
+          "y": 37
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127181,
+          "x": 74,
+          "y": 37
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127182,
+          "x": 75,
+          "y": 37
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127195,
+          "x": 72,
+          "y": 38
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127196,
+          "x": 73,
+          "y": 38
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127197,
+          "x": 74,
+          "y": 38
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127198,
+          "x": 75,
+          "y": 38
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127211,
+          "x": 72,
+          "y": 39
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127212,
+          "x": 73,
+          "y": 39
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127213,
+          "x": 74,
+          "y": 39
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127214,
+          "x": 75,
+          "y": 39
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 116,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 117,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 118,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 119,
+          "y": 28
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 116,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 117,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 118,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 119,
+          "y": 29
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 116,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 117,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 118,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 119,
+          "y": 30
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127235,
+          "x": 116,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127236,
+          "x": 117,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127237,
+          "x": 118,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127238,
+          "x": 119,
+          "y": 34
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127251,
+          "x": 116,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127252,
+          "x": 117,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127253,
+          "x": 118,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127254,
+          "x": 119,
+          "y": 35
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127267,
+          "x": 116,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127268,
+          "x": 117,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127269,
+          "x": 118,
+          "y": 36
+        },
+        {
+          "bg": 0,
+          "bold": true,
+          "ch": 0,
+          "fg": 7,
+          "tile": 127270,
+          "x": 119,
+          "y": 36
+        }
+      ]
+    }
+  ],
+  "selector_cases": [
+    {
+      "location_id": 0,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 99,
+        "location_id": 0,
+        "site_id": 651,
+        "type": 1,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 1,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 88,
+        "location_id": 1,
+        "site_id": 651,
+        "type": 0,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 1,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 89,
+        "location_id": 1,
+        "site_id": 651,
+        "type": 1,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 2,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 114,
+        "location_id": 2,
+        "site_id": 651,
+        "type": 7,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 2,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 117,
+        "location_id": 2,
+        "site_id": 651,
+        "type": 8,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 2,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 116,
+        "location_id": 2,
+        "site_id": 651,
+        "type": 9,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 2,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 113,
+        "location_id": 2,
+        "site_id": 651,
+        "type": 10,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 3,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 100,
+        "location_id": 3,
+        "site_id": 651,
+        "type": 1,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 4,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 107,
+        "location_id": 4,
+        "site_id": 651,
+        "type": 2,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    },
+    {
+      "location_id": 4,
+      "occupation": {
+        "group_id": -1,
+        "histfig_id": -1,
+        "id": 108,
+        "location_id": 4,
+        "site_id": 651,
+        "type": 5,
+        "unit_id": -1
+      },
+      "context": "OCCUPATION_ASSIGNMENT",
+      "after_cancel": {
+        "context": "OCCUPATION_ASSIGNMENT",
+        "details_open": true,
+        "selector_flags": 6
+      }
+    }
+  ],
+  "remove_regions": [
+    {
+      "location_id": 0,
+      "scroll": 0,
+      "row": 0,
+      "x": 116,
+      "y": 28,
+      "width": 4,
+      "height": 3,
+      "occupation_id": -1
+    },
+    {
+      "location_id": 0,
+      "scroll": 0,
+      "row": 1,
+      "x": 116,
+      "y": 31,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 87
+    },
+    {
+      "location_id": 2,
+      "scroll": 0,
+      "row": 0,
+      "x": 114,
+      "y": 40,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 110
+    },
+    {
+      "location_id": 2,
+      "scroll": 0,
+      "row": 2,
+      "x": 114,
+      "y": 46,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 111
+    },
+    {
+      "location_id": 2,
+      "scroll": 0,
+      "row": 3,
+      "x": 114,
+      "y": 49,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 115
+    },
+    {
+      "location_id": 2,
+      "scroll": 1,
+      "row": 2,
+      "x": 114,
+      "y": 43,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 111
+    },
+    {
+      "location_id": 2,
+      "scroll": 1,
+      "row": 3,
+      "x": 114,
+      "y": 46,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 115
+    },
+    {
+      "location_id": 2,
+      "scroll": 1,
+      "row": 5,
+      "x": 114,
+      "y": 52,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 112
+    },
+    {
+      "location_id": 2,
+      "scroll": 2,
+      "row": 2,
+      "x": 114,
+      "y": 40,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 111
+    },
+    {
+      "location_id": 2,
+      "scroll": 2,
+      "row": 3,
+      "x": 114,
+      "y": 43,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 115
+    },
+    {
+      "location_id": 2,
+      "scroll": 2,
+      "row": 5,
+      "x": 114,
+      "y": 49,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 112
+    },
+    {
+      "location_id": 2,
+      "scroll": 3,
+      "row": 3,
+      "x": 114,
+      "y": 40,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 115
+    },
+    {
+      "location_id": 2,
+      "scroll": 3,
+      "row": 5,
+      "x": 114,
+      "y": 46,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 112
+    },
+    {
+      "location_id": 3,
+      "scroll": 0,
+      "row": 0,
+      "x": 116,
+      "y": 28,
+      "width": 4,
+      "height": 3,
+      "occupation_id": -1
+    },
+    {
+      "location_id": 3,
+      "scroll": 0,
+      "row": 1,
+      "x": 116,
+      "y": 31,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 93
+    },
+    {
+      "location_id": 4,
+      "scroll": 0,
+      "row": 0,
+      "x": 116,
+      "y": 28,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 105
+    },
+    {
+      "location_id": 4,
+      "scroll": 0,
+      "row": 2,
+      "x": 116,
+      "y": 34,
+      "width": 4,
+      "height": 3,
+      "occupation_id": 106
+    }
+  ]
+}

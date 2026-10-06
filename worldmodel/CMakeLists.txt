@@ -23,12 +23,21 @@ add_library(worldmodel STATIC
   src/management_information_codec.cpp
   src/resident_info.cpp
   src/creature_info.cpp
+  src/track_path.cpp
   src/terrain_grid_sync.cpp)
 target_include_directories(worldmodel PUBLIC include)
 target_link_libraries(worldmodel PRIVATE mirror_support)
 df3d_apply_warnings(worldmodel)
 
 if(TARGET doctest)
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+add_executable(track_path_fixture tests/track_path_fixture.cpp)
+target_link_libraries(track_path_fixture PRIVATE worldmodel)
+df3d_apply_warnings(track_path_fixture)
+add_test(NAME track_path_native_fixture COMMAND ${Python3_EXECUTABLE}
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/track_path_fixture_test.py
+  $<TARGET_FILE:track_path_fixture>
+  ${CMAKE_SOURCE_DIR}/fixtures/construction/connected_track.json)
 add_executable(worldmodel_tests
   tests/test_main.cpp
   tests/world_source_tests.cpp

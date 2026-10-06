@@ -1,0 +1,332 @@
+{
+  "description": "Controlled native Reports recenter rows; test-only copy, never product copy. Evidence distinguishes source position presence from zoom type.",
+  "native_version": "DF 53.16 Steam / DFHack 53.16-r1",
+  "source": "build/reports-recenter-native-20261001-042155",
+  "fixture_setup": "Paused clone, display and global report vectors cleared without deleting pointed-to objects, seven makeAnnouncement rows created with explicit native positions and zoom types. No simulation advancement.",
+  "rows": [
+    {
+      "id": 78822,
+      "pos": [
+        125,
+        50,
+        165
+      ],
+      "text": "Report probe 1 MIGRANT_ARRIVAL zoom -1",
+      "type": "MIGRANT_ARRIVAL",
+      "zoom": -1,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          113,
+          42,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Default"
+        ],
+        "screen_tile": [
+          115,
+          13
+        ]
+      },
+      "native_recenter_available": true
+    },
+    {
+      "id": 78823,
+      "pos": [
+        125,
+        50,
+        165
+      ],
+      "text": "Report probe 2 NEW_GUILD zoom -1",
+      "type": "NEW_GUILD",
+      "zoom": -1,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          113,
+          42,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Default"
+        ],
+        "screen_tile": [
+          115,
+          16
+        ]
+      },
+      "native_recenter_available": true
+    },
+    {
+      "id": 78824,
+      "pos": [
+        125,
+        50,
+        165
+      ],
+      "text": "Report probe 3 MIGRANT_ARRIVAL zoom 0",
+      "type": "MIGRANT_ARRIVAL",
+      "zoom": 0,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          113,
+          42,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Default"
+        ],
+        "screen_tile": [
+          115,
+          19
+        ]
+      },
+      "native_recenter_available": true
+    },
+    {
+      "id": 78825,
+      "pos": [
+        125,
+        50,
+        165
+      ],
+      "text": "Report probe 4 NEW_GUILD zoom 0",
+      "type": "NEW_GUILD",
+      "zoom": 0,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          113,
+          42,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Default"
+        ],
+        "screen_tile": [
+          115,
+          22
+        ]
+      },
+      "native_recenter_available": true
+    },
+    {
+      "id": 78826,
+      "pos": [
+        -1,
+        50,
+        165
+      ],
+      "text": "Report probe 5 MIGRANT_ARRIVAL zoom -1",
+      "type": "MIGRANT_ARRIVAL",
+      "zoom": -1,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          -12,
+          42,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Default"
+        ],
+        "screen_tile": [
+          115,
+          25
+        ]
+      },
+      "native_recenter_available": true
+    },
+    {
+      "id": 78827,
+      "pos": [
+        -1,
+        50,
+        165
+      ],
+      "text": "Report probe 6 NEW_GUILD zoom 0",
+      "type": "NEW_GUILD",
+      "zoom": 0,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          -12,
+          42,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Default"
+        ],
+        "screen_tile": [
+          115,
+          28
+        ]
+      },
+      "native_recenter_available": true
+    },
+    {
+      "id": 78828,
+      "pos": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "text": "Report probe 7 MIGRANT_ARRIVAL zoom 0",
+      "type": "MIGRANT_ARRIVAL",
+      "zoom": 0,
+      "native_click": {
+        "before_window": [
+          98,
+          60,
+          165
+        ],
+        "after_window": [
+          98,
+          60,
+          165
+        ],
+        "after_focus": [
+          "dwarfmode/Announcements"
+        ],
+        "screen_tile": [
+          115,
+          31
+        ]
+      },
+      "native_recenter_available": false
+    }
+  ],
+  "findings": [
+    "Both MIGRANT_ARRIVAL and NEW_GUILD recenter for NONE and Generic when coordinates are stored.",
+    "Native accepts x=-1 as a stored off-map coordinate and recenters at the map edge; it is not the native absent sentinel.",
+    "All -30000 coordinates produce no button and clicking the button column does not close the report screen."
+  ],
+  "limitations": [
+    "The earlier e11 guild row without a button is not explained by these controlled fresh rows; do not generalize it as a type exclusion.",
+    "Secondary coordinates, partially sentinel coordinates, Item/Unit variants, hidden targets and existing-row refresh need broader acceptance.",
+    "The first 041944 run targeted old rows and is inconclusive; 042050 repeated positive NONE cases; 042155 validates row identity and resets the camera before each click."
+  ],
+  "save_preservation": "Owned PID 1544 ended at frame 0; clone SHA256 manifest unchanged.",
+  "diagnostics": "No known or unclassified errors in captured logs.",
+  "production_capture": {
+    "source": "build/reports-recenter-live-20261001-043107",
+    "management_version": 40,
+    "result": "passed_with_known_issues",
+    "verification": [
+      "Native fixture repeats camera-reset and target-row-identity checks.",
+      "Godot extension attaches to rebuilt bridge and performs normal construction Catalog handshake.",
+      "Each of seven ReportInspect replies preserves native presence and exact stored coordinates; ReportList rows equal inspected rows.",
+      "Both NONE zoom types and negative x=-1 retain targets; absent -30000 sentinel becomes false presence with wire -1 defaults."
+    ],
+    "diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "preservation": "Owned DF39052 ended paused/frame0; clone SHA256 manifest unchanged.",
+    "scope": "Production read-only Reports coordinate transport. No Reports panel or camera-action UI acceptance. Hidden and Item/Unit behavior have earlier native references and adapter tests, but are not covered by these seven live rows.",
+    "failed_attempt": "042956 stopped before Reports dispatch because the scratch harness omitted the existing catalog handshake. Recorded as failed, not accepted."
+  },
+  "panel_camera_capture": {
+    "source": "build/reports-recenter-panel-live-20261001-071801",
+    "method": "Hidden fortress_ui factory route, real model/service/installation art, actual viewport pointer click and orbit_camera. Injected host interaction adapter; no ordinary main-scene launch acceptance.",
+    "owned_df_pid": 5896,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "diagnostics": "passed_with_known_issues",
+    "offline_verification": "build/qa/reports-camera-modes",
+    "limits": [
+      "No native target-highlight rendering acceptance",
+      "Secondary/off-map clamp and walk exits have offline/GPU panel-camera coverage, not live terrain/pointer cases",
+      "Complete main-scene launcher promotion remains open"
+    ],
+    "observations": [
+      {
+        "camera": [
+          131.5,
+          166.0,
+          71.5
+        ],
+        "distance": 80.0,
+        "factory": "fortress_ui",
+        "launcher_visible": false,
+        "mode": "free",
+        "report_id": 78288,
+        "tile": [
+          131,
+          71,
+          165
+        ],
+        "top_z": 165,
+        "view": "Recenter"
+      },
+      {
+        "camera": [
+          131.5,
+          166.0,
+          71.5
+        ],
+        "distance": 80.0,
+        "factory": "fortress_ui",
+        "launcher_visible": false,
+        "mode": "df",
+        "report_id": 78288,
+        "tile": [
+          131,
+          71,
+          165
+        ],
+        "top_z": 165,
+        "view": "Recenter"
+      },
+      {
+        "camera": [
+          131.5,
+          166.0,
+          71.5
+        ],
+        "distance": 80.0,
+        "factory": "fortress_ui",
+        "launcher_visible": false,
+        "mode": "isometric",
+        "report_id": 78288,
+        "tile": [
+          131,
+          71,
+          165
+        ],
+        "top_z": 165,
+        "view": "Recenter"
+      }
+    ],
+    "gpu_mode_verification": "build/reports-camera-modes-gpu",
+    "coordinate_contract": "Report positions are DF x,y,z; Df3dWorld.map_size returns render x,elevation,y. Clamp tile y to bounds.z and tile z to bounds.y."
+  }
+}

@@ -19,6 +19,19 @@ target_link_libraries(management_contract_host PRIVATE mirror_support)
 # Header-only bridge / extension policies, one doctest binary.
 add_executable(bridge_policy_tests
   bridge_policy_tests_main.cpp
+  test_appearance_random.cpp
+  test_appearance_color.cpp
+  test_area_geometry.cpp
+  test_paint_water.cpp
+  test_paint_material.cpp
+  test_paint_counts.cpp
+  test_location_catalog.cpp
+  test_location_details.cpp
+  test_location_staff_page.cpp
+    test_location_catalog_page.cpp
+  test_room_discovery.cpp
+  test_room_publication.cpp
+  test_room_undo.cpp
   test_bridge_scheduling.cpp
   test_client_mailbox.cpp
   test_fortress_population.cpp

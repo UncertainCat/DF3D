@@ -629,7 +629,7 @@ TEST_CASE("sparse designation details ingest independently of fixed tile operati
   std::vector<m::TileState> tiles(256,m::emptyTile());
   tiles[50]=m::TileState(m::TileShape::Wall,m::MaterialKind::Stone,m::kNoMaterial,0,m::LiquidKind::None,m::TileFlags::DigDesignated,m::DesignationKind::Channel);
   const auto details=fbb.CreateVectorOfStructs(std::vector<m::DesignationDetail>{{50,3,true}});
-  const auto indicators=fbb.CreateVectorOfStructs(std::vector<m::MapIndicator>{{50,9,2,1}});
+  const auto indicators=fbb.CreateVectorOfStructs(std::vector<m::MapIndicator>{{50,9,2,1,10}});
   const auto block=m::CreateMapBlock(fbb,0,0,0,fbb.CreateVectorOfStructs(tiles),details,indicators,fbb.CreateVector(std::vector<uint16_t>{50}),fbb.CreateVector(std::vector<uint16_t>{50}),fbb.CreateVector(std::vector<uint16_t>{50}),fbb.CreateVector(std::vector<uint16_t>{50}));
   const auto blocks=fbb.CreateVector(std::vector<flatbuffers::Offset<m::MapBlock>>{block});
   const auto units=fbb.CreateVector(std::vector<flatbuffers::Offset<m::UnitState>>{});
@@ -642,7 +642,7 @@ TEST_CASE("sparse designation details ingest independently of fixed tile operati
   CHECK(tile->designation==DesignationKind::Channel);
   CHECK(tile->designationPriority==3);
   CHECK(tile->designationMarker);
-  CHECK(tile->track==9); CHECK(tile->traffic==2); CHECK(tile->warnings==1);
+  CHECK(tile->completedTrack==10); CHECK(tile->track==9); CHECK(tile->traffic==2); CHECK(tile->warnings==1);
   CHECK(tile->trackClearanceBlocked); CHECK(tile->trackHorizontalBlocked);
   CHECK(tile->trackSupport); CHECK(tile->trackOpen);
   CHECK_FALSE(model.tileAt({0,0,0})->trackClearanceBlocked);
@@ -760,4 +760,31 @@ TEST_CASE("an appearance layer with an unknown page index maps to kNoPage, never
   CHECK(a->layers[1].page != a->layers[0].page);
   CHECK(model.tilePageName(a->layers[1].page).empty());
   CHECK(model.tilePageCount() == 1);
+}
+
+TEST_CASE("tile environment survives snapshot transport and rejects malformed sparse facts") {
+  auto fixture=[](std::vector<m::TileEnvironment> env) {
+    flatbuffers::FlatBufferBuilder fbb;
+    const auto facts=fbb.CreateVectorOfStructs(env);
+    const auto block=m::CreateMapBlock(fbb,0,0,0,
+      fbb.CreateVectorOfStructs(std::vector<m::TileState>(256,m::emptyTile())),0,0,0,0,0,0,facts);
+    const auto blocks=fbb.CreateVector(std::vector<flatbuffers::Offset<m::MapBlock>>{block});
+    const m::TilePos dims(16,16,1);
+    const auto snap=m::CreateSnapshot(fbb,uint32_t(m::SchemaVersion::Current),1,1,&dims,0,m::TerrainScope::Full,blocks);
+    fbb.FinishSizePrefixed(snap,m::SnapshotIdentifier());
+    return m::assembleFixture({std::vector<uint8_t>(fbb.GetBufferPointer(),fbb.GetBufferPointer()+fbb.GetSize())});
+  };
+  WorldModel model;std::string error;
+  REQUIRE_MESSAGE(loadFixtureBytes(model,fixture({{50,7,7}}),error),error);
+  const auto tile=model.tileAt({2,3,0});REQUIRE(tile);
+  CHECK(tile->subterranean); CHECK(tile->brookTop); CHECK(tile->root); CHECK(tile->buildingOccupancy==7);
+  CHECK_FALSE(model.tileAt({0,0,0})->subterranean);
+  CHECK_FALSE(model.tileAt({0,0,0})->brookTop);
+  CHECK_FALSE(model.tileAt({0,0,0})->root);
+  CHECK(model.tileAt({0,0,0})->buildingOccupancy==0);
+  for(auto invalid:std::vector<std::vector<m::TileEnvironment>>{{{256,1,0}},{{50,8,0}},{{50,0,8}},{{50,1,0},{50,2,0}}}) {
+    WorldModel rejected;
+    CHECK_FALSE(loadFixtureBytes(rejected,fixture(invalid),error));
+    CHECK(error.find("environment")!=std::string::npos);
+  }
 }

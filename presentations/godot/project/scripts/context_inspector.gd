@@ -5,6 +5,9 @@ const OriginalUI = preload("res://scripts/original_ui.gd")
 const PAGE_SIZE = 12
 var definition = preload("res://scripts/panel_definition.gd").new()
 var world
+var action_service
+var building_removal = preload("res://scripts/building_removal.gd").new()
+var building_remove_button: BaseButton
 var interaction
 var ui_host
 var modal_input := false
@@ -27,6 +30,9 @@ var creature_status := {}
 var creature_texture: Texture2D
 
 func _ready():
+	building_removal.service = action_service
+	building_removal.changed.connect(func():
+		if is_open(): redraw())
 	if not definition.load_file("res://panels/native_selection.json"):
 		push_error("Inspector layout: "+"; ".join(definition.errors))
 		return
@@ -74,6 +80,7 @@ func open_target(tile: Vector3i, kind: int, id: int):
 
 func choose(row: Dictionary):
 	selected = row
+	building_removal.select(int(row.id) if int(row.kind) == 3 else -1)
 	world.demand_resident_info(0)
 	world.demand_creature_info(int(row.id) if int(row.kind) == 1 else -1)
 	if int(row.kind) == 1: creature_sheet.reset(int(row.id))
@@ -86,6 +93,7 @@ func choose(row: Dictionary):
 	redraw()
 
 func close_panel():
+	building_removal.select(-1)
 	if ui_host != null: ui_host.release(self)
 	if panel != null and panel.visible:
 		panel.hide()
@@ -94,6 +102,9 @@ func close_panel():
 	selected = {}
 	choices = []
 	right_down = false
+
+func _exit_tree() -> void:
+	building_removal.select(-1)
 
 func set_play_enabled(value: bool):
 	play_enabled = value
@@ -211,6 +222,7 @@ func redraw():
 	body.size = panel.size-Vector2(16,24)
 	alternatives.position = Vector2(panel.size.x,0)
 	clear_children(body)
+	building_remove_button = null
 	clear_children(alternatives)
 	var name_text := str(selected.get("name",""))
 	var material := str(selected.get("material",""))
@@ -252,6 +264,33 @@ func redraw():
 			icon_at("building.icon")
 			label_at("building.title",name_text)
 			label_at("building.door_status","" if selected.get("complete",false) else "Under construction")
+			if action_service != null:
+				# DF53.16 building sheet: top-row remove icon; queued removal
+				# replaces it with the native Cancel removal action (removal.json).
+				if building_removal.removing():
+					var slated := Label.new()
+					slated.text = "Slated for removal"
+					slated.position = Vector2(8,76)
+					body.add_child(slated)
+					var cancel := Button.new()
+					cancel.text = "Cancel removal"
+					cancel.position = Vector2(8,128)
+					cancel.size = Vector2(152,24)
+					building_remove_button = cancel
+				else:
+					var remove := TextureButton.new()
+					remove.texture_normal = world.ui_texture("BUILDING_SHEET_REMOVE")
+					remove.position = Vector2(body.size.x-80,4)
+					remove.size = Vector2(32,36)
+					remove.tooltip_text = "Remove this building."
+					building_remove_button = remove
+				building_remove_button.disabled = not building_removal.available()
+				var target := int(selected.id)
+				var cancellation := building_removal.removing()
+				building_remove_button.pressed.connect(func():
+					if building_removal.building_id == target and building_removal.removing() == cancellation:
+						building_removal.act())
+				body.add_child(building_remove_button)
 	var flags: PackedStringArray = []
 	for key in ["forbidden","dump","melt","on_fire","rotten","artifact"]:
 		if selected.get(key,false): flags.append(str(key).capitalize())
@@ -261,12 +300,15 @@ func redraw():
 		status.position = Vector2(8,body.size.y-28)
 		status.add_theme_font_size_override("font_size",12)
 		body.add_child(status)
-	var close := Button.new()
-	close.text = "Close"
-	close.size = Vector2(60,24)
-	close.position = Vector2(body.size.x-close.size.x,0)
-	close.pressed.connect(close_panel)
-	body.add_child(close)
+	# Native building sheets close through the existing right-click/Escape path;
+	# a local Close button here overlaps the native removal action.
+	if int(selected.kind) != 3:
+		var close := Button.new()
+		close.text = "Close"
+		close.size = Vector2(60,24)
+		close.position = Vector2(body.size.x-close.size.x,0)
+		close.pressed.connect(close_panel)
+		body.add_child(close)
 	# Bounded pages avoid creating thousands of Controls for a stockpile stack.
 	for i in range(page*PAGE_SIZE,mini(choices.size(),(page+1)*PAGE_SIZE)):
 		var row: Dictionary = choices[i]

@@ -287,7 +287,7 @@ TEST_CASE("ingestTerrain=false keeps the model units-only") {
 TEST_CASE("block ordering helpers") {
   CHECK(blockOf(TilePos{17, 33, 4}) == BlockPos{1, 2, 4});
   CHECK(tileIndexInBlock(3, 2) == 35);
-  static_assert(sizeof(std::array<TileState, kTilesPerBlock>) == 3584);
+  static_assert(sizeof(std::array<TileState, kTilesPerBlock>) == 4096);
 }
 
 TEST_CASE("value snapshots share terrain payloads and detach only changed blocks") {

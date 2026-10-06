@@ -43,6 +43,9 @@ func run() -> void:
 	s.paused = false
 	controls.update_session(s, true)
 	check(controls.status.text.contains("Running"), "native resume updates authoritative state")
+	s.merge({"phase":7,"request_seq":0,"request_status":0,"can_save":false,"can_save_return":false},true)
+	controls.update_session(s,true)
+	check(controls.blocks_commands() and controls.save.disabled and controls.save_return.disabled, "Another client's native unload blocks management and save input")
 	controls.update_session({"phase":4}, false)
 	check(not controls.visible and controls.save.disabled, "disconnect clears ability to save")
 	loader.free()

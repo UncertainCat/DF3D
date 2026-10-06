@@ -4,11 +4,38 @@
 #include "LuaTools.h"
 #include "mirror_generated.h"
 #include "construction_script.h"
+#include "construction_track_script.h"
+#include "construction_material_facts_script.h"
+#include "construction_material_terrain_script.h"
+#include "construction_material_opening_script.h"
+#include "construction_material_shapes_script.h"
+#include "construction_track_material_candidates_script.h"
+#include "construction_material_candidate_gate_script.h"
+#include "construction_track_material_recipe_script.h"
+#include "construction_material_candidate_enabled_script.h"
+#include "construction_track_material_groups_script.h"
+#include "construction_material_partition_script.h"
+#include "construction_material_group_name_script.h"
+#include "construction_material_order_script.h"
+#include "construction_track_placement_plan_script.h"
+#include "construction_track_commit_script.h"
 #include "areas_script.h"
 #include "production_script.h"
 #include "work_orders_script.h"
 #include "citizens_script.h"
 #include "reports_script.h"
+#include "report_tabs_script.h"
+#include "report_tab_page_script.h"
+#include "report_tab_snapshot_script.h"
+#include "report_text_snapshot_script.h"
+#include "report_unit_profession_script.h"
+#include "report_unit_page_script.h"
+#include "report_unit_log_script.h"
+#include "report_unit_snapshot_script.h"
+#include "report_group_snapshot_script.h"
+#include "report_entries_script.h"
+#include "report_alert_dismiss_script.h"
+#include "report_dismissal_script.h"
 #include "agreements_script.h"
 #include "trade_script.h"
 #include "creature_script.h"
@@ -30,7 +57,9 @@ static_assert(int(A::ProductionList)==15 && int(A::ProductionInspect)==16 && int
 static_assert(int(A::WorkOrderList)==20 && int(A::WorkOrderInspect)==21 && int(A::WorkOrderCreate)==22 && int(A::WorkOrderUpdate)==23 && int(A::WorkOrderDelete)==24 && int(A::WorkOrderCondition)==25 && int(A::WorkOrderCandidates)==26 && int(A::WorkOrderCatalog)==27, "work_orders.lua action numbers");
 static_assert(int(A::CitizenList)==28 && int(A::CitizenInspect)==29 && int(A::WorkDetailList)==30 && int(A::WorkDetailInspect)==31 && int(A::WorkDetailMembership)==32 && int(A::WorkDetailMode)==33, "citizens.lua action numbers");
 static_assert(int(A::WorkDetailCreate)==64 && int(A::WorkDetailDelete)==65 && int(A::WorkDetailEdit)==66 && int(A::CitizenWorkScope)==67, "citizens.lua appended action numbers");
-static_assert(int(A::ReportInspect)==35 && int(A::AgreementInspect)==37, "reports.lua / agreements.lua action numbers");
+static_assert(int(df3d::mirror::ReportTab::General)==2 && int(df3d::mirror::ReportTab::Curses)==22, "native report classifier numbering");
+static_assert(int(A::PrepareAlertDismissal)==68 && int(A::DismissAlert)==69, "red alert dismissal action numbers");
+static_assert(int(A::ReportList)==34 && int(A::ReportInspect)==35 && int(A::AgreementInspect)==37, "reports.lua / agreements.lua action numbers");
 static_assert(int(A::TradeList)==38 && int(A::TradeInspect)==39 && int(A::TradeUpdate)==40 && int(A::TradeGoods)==41 && int(A::TradeBring)==42 && int(A::TradeExchangeOpen)==43, "trade.lua action numbers");
 }
 // Each live domain owns one cached Lua closure. Retirement is structural: no
@@ -42,7 +71,7 @@ class ManagementHelpers : public ManagementHelperOwners {
         int reference=LUA_NOREF;
     };
     using Action=df3d::mirror::ManagementAction;
-    std::array<Helper,9> entries_{{
+    std::array<Helper,10> entries_{{
         {ranges_[0].first,ranges_[0].last,kConstructionScript},
         {ranges_[1].first,ranges_[1].last,kAreasScript},
         {ranges_[2].first,ranges_[2].last,kProductionScript},
@@ -51,7 +80,8 @@ class ManagementHelpers : public ManagementHelperOwners {
         {ranges_[5].first,ranges_[5].last,kReportsScript},
         {ranges_[6].first,ranges_[6].last,kAgreementsScript},
         {ranges_[7].first,ranges_[7].last,kTradeScript},
-        {ranges_[8].first,ranges_[8].last,kCreatureScript}
+        {ranges_[8].first,ranges_[8].last,kCreatureScript},
+        {ranges_[9].first,ranges_[9].last,kReportDismissalScript}
     }};
     uint64_t generation_=0;
 public:
@@ -89,7 +119,64 @@ public:
         for(auto& helper:entries_) if(action>=helper.first && action<=helper.last) {
             if(helper.reference==LUA_NOREF) {
                 const int top=lua_gettop(state);
-                if(!DFHack::Lua::SafeCallString(out,state,std::string(helper.source),0,1)) {
+                const bool construction=helper.first==Action::Catalog;
+                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionTrackScript,0,1) ||
+                                    !lua_isfunction(state,-1))) {
+                    lua_settop(state,top); return LUA_NOREF;
+                }
+                if(construction) {
+                    // The second injected closure owns its semantic helper functions.
+                    for(const auto* source : {&kConstructionMaterialTerrainScript,&kConstructionMaterialOpeningScript,&kConstructionMaterialShapesScript}) {
+                        if(!DFHack::Lua::SafeCallString(out,state,*source,0,1) || !lua_isfunction(state,-1)) {
+                            lua_settop(state,top);return LUA_NOREF;
+                        }
+                    }
+                    if(!DFHack::Lua::SafeCallString(out,state,kConstructionMaterialFactsScript,0,1) || !lua_isfunction(state,-1)) {
+                        lua_settop(state,top);return LUA_NOREF;
+                    }
+                    lua_insert(state,-4); // factory, destination, opening, shapes
+                    if(!DFHack::Lua::SafeCall(out,state,3,1) || !lua_isfunction(state,-1)) {
+                        lua_settop(state,top);return LUA_NOREF;
+                    }
+                }
+                if(construction) {
+                    for(const auto* source : {&kConstructionMaterialCandidateGateScript,&kConstructionTrackMaterialRecipeScript,
+                                             &kConstructionMaterialCandidateEnabledScript,&kConstructionTrackMaterialGroupsScript,&kConstructionMaterialPartitionScript,&kConstructionMaterialGroupNameScript}) {
+                        if(!DFHack::Lua::SafeCallString(out,state,*source,0,1) || !lua_isfunction(state,-1)) {
+                            lua_settop(state,top);return LUA_NOREF;
+                        }
+                    }
+                    if(!DFHack::Lua::SafeCallString(out,state,kConstructionTrackMaterialCandidatesScript,0,1) || !lua_isfunction(state,-1)) {
+                        lua_settop(state,top);return LUA_NOREF;
+                    }
+                    lua_insert(state,-7); // factory, gate, recipe, enabled, groups, partition, name
+                    if(!DFHack::Lua::SafeCall(out,state,6,1) || !lua_isfunction(state,-1)) {
+                        lua_settop(state,top);return LUA_NOREF;
+                    }
+                }
+                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionMaterialOrderScript,0,1) || !lua_isfunction(state,-1))) {
+                    lua_settop(state,top);return LUA_NOREF;
+                }
+                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionTrackPlacementPlanScript,0,1) || !lua_isfunction(state,-1))) {
+                    lua_settop(state,top);return LUA_NOREF;
+                }
+                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionTrackCommitScript,0,1) || !lua_isfunction(state,-1))) {
+                    lua_settop(state,top);return LUA_NOREF;
+                }
+                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionMaterialGroupNameScript,0,1) || !lua_isfunction(state,-1))) {
+                    lua_settop(state,top);return LUA_NOREF;
+                }
+                const bool dismissal=helper.first==Action::PrepareAlertDismissal;
+                if(dismissal && !DFHack::Lua::SafeCallString(out,state,kReportAlertDismissScript,0,3)) {
+                    lua_settop(state,top);return LUA_NOREF;
+                }
+                const bool reports=helper.first==Action::ReportList;
+                if(reports)for(const auto* source:{&kReportTabsScript,&kReportTabPageScript,&kReportUnitProfessionScript,&kReportUnitPageScript,&kReportUnitSnapshotScript,&kReportEntriesScript,&kReportTabSnapshotScript,&kReportTextSnapshotScript,&kReportGroupSnapshotScript}) {
+                    if(!DFHack::Lua::SafeCallString(out,state,*source,0,1) || !lua_isfunction(state,-1)) {
+                        lua_settop(state,top);return LUA_NOREF;
+                    }
+                }
+                if(!DFHack::Lua::SafeCallString(out,state,std::string(helper.source),construction?7:reports?9:dismissal?3:0,1)) {
                     lua_settop(state,top); return LUA_NOREF;
                 }
                 helper.reference=luaL_ref(state,LUA_REGISTRYINDEX);

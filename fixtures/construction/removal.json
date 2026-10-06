@@ -1,0 +1,274 @@
+{
+  "df_version": "53.16",
+  "area_capture": "build/removal-native-20261004-132847",
+  "native_area": {
+    "focus": [
+      "dwarfmode/Designate/DIG_REMOVE_STAIRS_RAMPS"
+    ],
+    "lines": [
+      "                  Roder nul           Pop                                  Food  Drink           21st Malachite                                       ",
+      "                  Baldmirror                                      Stocks                         Mid-Summer                                           ",
+      "                  Metropolis          144 23 20 46 27 13  8  7            ~2000   ~300           Year 106                                             ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "          Removing stairs/ramp/constructions                                                                                                          ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                    Elevation 36      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      "
+    ],
+    "status": "passed",
+    "tiles": [
+      {
+        "dig": "Default",
+        "x": 128,
+        "y": 62,
+        "z": 165
+      },
+      {
+        "dig": "Default",
+        "x": 128,
+        "y": 63,
+        "z": 165
+      },
+      {
+        "dig": "Default",
+        "x": 129,
+        "y": 62,
+        "z": 165
+      },
+      {
+        "dig": "Default",
+        "x": 129,
+        "y": 63,
+        "z": 165
+      }
+    ],
+    "tooltip": "Designate constructed walls, floors, and other constructed tiles to be removed by miners. This also designates all stairwells and ramps."
+  },
+  "building_capture": "build/building-removal-native-20261004-133208",
+  "building_remove_tooltip": "Remove this building.",
+  "building_cancel_label": "Cancel removal",
+  "building_remove_rect": [
+    816,
+    64,
+    32,
+    36
+  ],
+  "building_cancel_rect": [
+    432,
+    188,
+    152,
+    24
+  ],
+  "viewport": [
+    1200,
+    800
+  ],
+  "notes": [
+    "Eraser cancels designations; mining remove-stairs/ramps tool removes constructed tiles.",
+    "Building removal uses the individual native building sheet; no area building-removal mode.",
+    "Initial area probe omitted mouse release and failed; corrected press/release probe passed."
+  ],
+  "active_eraser_capture": "build/removal-native-active-20261004-134848",
+  "native_active_eraser": {
+    "erase_tiles": [
+      {
+        "dig": "No",
+        "exists": true
+      },
+      {
+        "dig": "No",
+        "exists": true
+      },
+      {
+        "dig": "No",
+        "exists": true
+      },
+      {
+        "dig": "No",
+        "exists": true
+      }
+    ],
+    "focus": [
+      "dwarfmode/Designate/DIG_REMOVE_STAIRS_RAMPS"
+    ],
+    "jobs_after": [],
+    "jobs_before": [
+      382866,
+      382867,
+      382868,
+      382869
+    ],
+    "lines": [
+      "                  Roder nul           Pop                                  Food  Drink           20th Malachite                                       ",
+      "                  Baldmirror                                      Stocks                         Mid-Summer                                           ",
+      "                  Metropolis          144 23 20 45 28 13  8  7            ~2000   ~400           Year 106                                             ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "          Removing stairs/ramp/constructions                                                                                                          ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                    Elevation 36      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      ",
+      "                                                                                                                                                      "
+    ],
+    "status": "passed",
+    "tiles": [
+      {
+        "dig": "Default",
+        "x": 128,
+        "y": 62,
+        "z": 165
+      },
+      {
+        "dig": "Default",
+        "x": 128,
+        "y": 63,
+        "z": 165
+      },
+      {
+        "dig": "Default",
+        "x": 129,
+        "y": 62,
+        "z": 165
+      },
+      {
+        "dig": "Default",
+        "x": 129,
+        "y": 63,
+        "z": 165
+      }
+    ],
+    "tooltip": "Designate constructed walls, floors, and other constructed tiles to be removed by miners. This also designates all stairwells and ramps."
+  },
+  "building_remove_art": "BUILDING_SHEET_REMOVE",
+  "acceptance": {
+    "capture": "build/removal-live-20261004-135654",
+    "status": "passed_with_known_issues",
+    "checks": [
+      "four completed walls designated through real area drag",
+      "four active RemoveConstruction jobs cancelled by eraser",
+      "map-click bed inspection",
+      "building removal, explicit cancellation, requeue",
+      "natural removal of four walls and bed",
+      "native removal icon and unobstructed hit area visually checked"
+    ],
+    "omissions": [
+      "not exhaustive across building kinds or multi-level shapes",
+      "existing general building sheet is not fully native-parity accepted"
+    ],
+    "source_preserved": true
+  }
+}

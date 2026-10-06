@@ -23,7 +23,10 @@ function New-DfSaveBackup {
         }
     }
     New-Item -ItemType Directory -Path $destination | Out-Null
-    $records = @()
+    # Live acceptance can accumulate many disposable saves. Appending to a
+    # PowerShell array copies every earlier record for each file; retain the
+    # same manifest entries in a growable collection instead.
+    $records = [System.Collections.Generic.List[object]]::new()
     for ($i = 0; $i -lt $roots.Count; $i++) {
         $copy = Join-Path $destination "root-$i"
         Copy-Item -LiteralPath $roots[$i] -Destination $copy -Recurse
@@ -33,10 +36,10 @@ function New-DfSaveBackup {
             if ($hash -ne (Get-FileHash -LiteralPath (Join-Path $copy $relative) -Algorithm SHA256).Hash) {
                 throw "Save backup verification failed: $relative"
             }
-            $records += [pscustomobject]@{ Root = $i; Path = $relative; Hash = $hash }
+            $records.Add([pscustomobject]@{ Root = $i; Path = $relative; Hash = $hash })
         }
     }
-    $manifest = [pscustomobject]@{ Roots = $roots; Backup = $destination; AllowedDirectories = $AllowedDirectories; Files = $records }
+    $manifest = [pscustomobject]@{ Roots = $roots; Backup = $destination; AllowedDirectories = $AllowedDirectories; Files = $records.ToArray() }
     $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $destination 'manifest.json') -Encoding UTF8
     return $manifest
 }

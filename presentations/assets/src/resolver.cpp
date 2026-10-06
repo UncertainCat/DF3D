@@ -326,6 +326,46 @@ TerrainSprite resolveTerrain(const AssetIndex& idx, const TerrainQuery& q) {
     return r;
   }
 
+  // Completed tracks use a separate transparent rail/groove layer.
+  // Native steel SW capture: original STONE_FLOOR_5 backing, palette-swapped
+  // TRACK_CONSTRUCTED_STONE_SW above it (no palette/fill on the backing).
+  // Protected ramp sweeps use the same rail artwork, over native ramp backing.
+  if ((q.shape == TileShape::Floor || q.shape == TileShape::Ramp) && q.completedTrack && q.completedTrack <= 15) {
+    if (q.part == FaceKind::Feature && (q.side == FaceSide::Top || q.side == FaceSide::Slope)) {
+      std::string name;
+      if (q.kind == MaterialKind::Constructed) {
+        const bool wood = isWoodToken(q.material) || (idx.materialFlags(q.material) & kMatWood);
+        // Pinned native DF uses the WOOD four-way crossing even for steel.
+        // Protected direction sweep and isolated repeat agree pixel-for-pixel.
+        name = (wood || q.completedTrack == 15) ? "TRACK_CONSTRUCTED_WOOD_" : "TRACK_CONSTRUCTED_STONE_";
+      } else {
+        name = "TRACK_CARVED_";
+      }
+      // Native token order is N,S,W,E, independent of the semantic bit order.
+      if (q.completedTrack & 1) name += 'N';
+      if (q.completedTrack & 2) name += 'S';
+      if (q.completedTrack & 8) name += 'W';
+      if (q.completedTrack & 4) name += 'E';
+      // Native carved grooves retain their painted colors; constructed rails
+      // use the construction material palette (protected dolomite/steel captures).
+      auto track = finish(idx, Pick{name, "floor.track.rails"},
+                          q.kind == MaterialKind::Constructed ? q.material : std::string_view{});
+      track.fill = false;
+      track.cutout = true;
+      return track;
+    }
+    if (q.part == FaceKind::Terrain && q.shape == TileShape::Floor) {
+      if (const auto* sprite = idx.tile("STONE_FLOOR_5")) {
+        r.found = true;
+        r.sprite = *sprite;
+        r.rule = "floor.track.backing";
+      } else {
+        r.rule = "missing-tile";
+      }
+      return r;
+    }
+  }
+
   const PlantGraphics* plant = plantOf(idx, q.material);
 
   if (q.part == FaceKind::Feature) {

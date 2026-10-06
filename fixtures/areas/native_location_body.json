@@ -1,0 +1,4921 @@
+{
+  "provenance": {
+    "screen_source": "build/location-details-capture-20260929-155506/native-location-details.json",
+    "screen_sha256": "f53873fd113c575ecf7f5a45c1cde17130f9d43672d3c8658f9aefbb598e328d",
+    "semantic_source": "build/areas-acceptance-20260929-193352/location-details-baseline.json",
+    "semantic_sha256": "2e8151e66b13e687383bd2644bdff4657536f9ee8b322d28b5cf1db68f5cb204",
+    "scope": "Shared body text, native cell positions and per-glyph colors. GPU acceptance checks opaque glyph pixels at1200x800 with4px vertical letterbox. Heading, staffing, background/control art, interactions and full-screen parity remain unfinished.",
+    "glyph_acceptance": "build/qa/location-body-native-glyphs-final; passed_with_known_issues; known Godot thread/device/shutdown notices only."
+  },
+  "cases": [
+    {
+      "details": {
+        "access": 0,
+        "appraisal": -1,
+        "dance_floor_x": 5,
+        "dance_floor_y": 3,
+        "desired_copies": 2,
+        "facilities": {
+          "beds": 0,
+          "bookcases": 0,
+          "chairs": 0,
+          "chests": 1,
+          "rented_rooms": 0,
+          "rooms": 0,
+          "tables": 0,
+          "traction_benches": 0
+        },
+        "id": 0,
+        "kind": 2,
+        "members": false,
+        "name": "The Golden Shrine",
+        "profession": -1,
+        "recognized": false,
+        "residents": true,
+        "site_id": 651,
+        "staff": {
+          "missing_roles": [],
+          "rows": [
+            {
+              "assignment_id": 2,
+              "entity_id": 383,
+              "group_id": -1,
+              "histfig_id": 9375,
+              "location_id": 0,
+              "names": {
+                "holder_id": 5813,
+                "holder_kind": 1,
+                "holder_name": "K\u00c3\u00bbbuk \u00c3\u00afngizkor, mayor",
+                "position_name": "Sacred Vault"
+              },
+              "occupation_id": -1,
+              "position_id": 0,
+              "role": -1,
+              "site_id": 651,
+              "source": 1,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 9998,
+              "location_id": 0,
+              "names": {
+                "holder_id": 6536,
+                "holder_kind": 1,
+                "holder_name": "Stukos Vudthark\u00c3\u00bbbuk, Performer",
+                "position_name": ""
+              },
+              "occupation_id": 87,
+              "position_id": -1,
+              "role": 1,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6536
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 0,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 99,
+              "position_id": -1,
+              "role": 1,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            }
+          ]
+        },
+        "supplies": [
+          {
+            "desired": 0,
+            "kind": 0,
+            "stored": 0
+          },
+          {
+            "desired": 5,
+            "kind": 1,
+            "stored": 4
+          },
+          {
+            "desired": 0,
+            "kind": 2,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 3,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 4,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 5,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 6,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 7,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 8,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 9,
+            "stored": 0
+          }
+        ],
+        "tier": 1,
+        "value": 5675,
+        "visitors": true,
+        "written_objects": 0,
+        "zone_ids": [
+          259
+        ]
+      },
+      "expected": [
+        {
+          "x": 48,
+          "y": 20,
+          "text": "Chests in common area: 1",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 23,
+          "text": "Stored Instruments (Desired): 4 (5)",
+          "cells": [
+            {
+              "ch": 83,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 73,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 117,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 52,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 26,
+          "text": "Dance floor in common area: 5x3",
+          "cells": [
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 102,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 53,
+              "fg": 6,
+              "bold": true
+            },
+            {
+              "ch": 120,
+              "fg": 6,
+              "bold": true
+            },
+            {
+              "ch": 51,
+              "fg": 6,
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "details": {
+        "access": 0,
+        "appraisal": -1,
+        "dance_floor_x": 7,
+        "dance_floor_y": 8,
+        "desired_copies": 2,
+        "facilities": {
+          "beds": 2,
+          "bookcases": 0,
+          "chairs": 10,
+          "chests": 3,
+          "rented_rooms": 0,
+          "rooms": 0,
+          "tables": 10,
+          "traction_benches": 0
+        },
+        "id": 1,
+        "kind": 1,
+        "members": false,
+        "name": "The Oily Meal",
+        "profession": -1,
+        "recognized": false,
+        "residents": true,
+        "site_id": 651,
+        "staff": {
+          "missing_roles": [],
+          "rows": [
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 1,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 88,
+              "position_id": -1,
+              "role": 0,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 1,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 89,
+              "position_id": -1,
+              "role": 1,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            }
+          ]
+        },
+        "supplies": [
+          {
+            "desired": 10,
+            "kind": 0,
+            "stored": 10
+          },
+          {
+            "desired": 5,
+            "kind": 1,
+            "stored": 2
+          },
+          {
+            "desired": 0,
+            "kind": 2,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 3,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 4,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 5,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 6,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 7,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 8,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 9,
+            "stored": 0
+          }
+        ],
+        "tier": 0,
+        "value": 2471,
+        "visitors": true,
+        "written_objects": 1,
+        "zone_ids": [
+          408
+        ]
+      },
+      "expected": [
+        {
+          "x": 48,
+          "y": 14,
+          "text": "Chests in common area: 3",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 51,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 17,
+          "text": "Goblets (Desired): 10 (10)",
+          "cells": [
+            {
+              "ch": 71,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 20,
+          "text": "Stored Instruments (Desired): 2 (5)",
+          "cells": [
+            {
+              "ch": 83,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 73,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 117,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 50,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "text": "Dance floor in common area: 7x8",
+          "cells": [
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 102,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 55,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 120,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 56,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 88,
+          "y": 23,
+          "text": "Rented rooms (Total): 0 (0)",
+          "cells": [
+            {
+              "ch": 82,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 84,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "details": {
+        "access": 0,
+        "appraisal": -1,
+        "dance_floor_x": 1,
+        "dance_floor_y": 4,
+        "desired_copies": 2,
+        "facilities": {
+          "beds": 7,
+          "bookcases": 0,
+          "chairs": 0,
+          "chests": 2,
+          "rented_rooms": 0,
+          "rooms": 0,
+          "tables": 1,
+          "traction_benches": 1
+        },
+        "id": 2,
+        "kind": 5,
+        "members": false,
+        "name": "The Blockaded Sanctuary",
+        "profession": -1,
+        "recognized": false,
+        "residents": true,
+        "site_id": 651,
+        "staff": {
+          "missing_roles": [],
+          "rows": [
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 10198,
+              "location_id": 2,
+              "names": {
+                "holder_id": 6815,
+                "holder_kind": 1,
+                "holder_name": "Rith Suluslogem, chief medical dwarf",
+                "position_name": ""
+              },
+              "occupation_id": 110,
+              "position_id": -1,
+              "role": 7,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6815
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 2,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 114,
+              "position_id": -1,
+              "role": 7,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 10003,
+              "location_id": 2,
+              "names": {
+                "holder_id": 6542,
+                "holder_kind": 1,
+                "holder_name": "Urvad Kad\u00c3\u00b4lbisek, Diagnoser",
+                "position_name": ""
+              },
+              "occupation_id": 111,
+              "position_id": -1,
+              "role": 8,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6542
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 10014,
+              "location_id": 2,
+              "names": {
+                "holder_id": 6555,
+                "holder_kind": 1,
+                "holder_name": "Vucar Domasdoren, Diagnoser",
+                "position_name": ""
+              },
+              "occupation_id": 115,
+              "position_id": -1,
+              "role": 8,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6555
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 2,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 117,
+              "position_id": -1,
+              "role": 8,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 10199,
+              "location_id": 2,
+              "names": {
+                "holder_id": 6817,
+                "holder_kind": 1,
+                "holder_name": "\u00c3\u00a8rith Mamotavuz, Surgeon",
+                "position_name": ""
+              },
+              "occupation_id": 112,
+              "position_id": -1,
+              "role": 9,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6817
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 2,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 116,
+              "position_id": -1,
+              "role": 9,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 2,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 113,
+              "position_id": -1,
+              "role": 10,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            }
+          ]
+        },
+        "supplies": [
+          {
+            "desired": 0,
+            "kind": 0,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 1,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 2,
+            "stored": 0
+          },
+          {
+            "desired": 5,
+            "kind": 3,
+            "stored": 5
+          },
+          {
+            "desired": 75000,
+            "kind": 4,
+            "stored": 89850
+          },
+          {
+            "desired": 50000,
+            "kind": 5,
+            "stored": 52000
+          },
+          {
+            "desired": 5,
+            "kind": 6,
+            "stored": 5
+          },
+          {
+            "desired": 750,
+            "kind": 7,
+            "stored": 0
+          },
+          {
+            "desired": 2,
+            "kind": 8,
+            "stored": 2
+          },
+          {
+            "desired": 750,
+            "kind": 9,
+            "stored": 0
+          }
+        ],
+        "tier": 0,
+        "value": 272,
+        "visitors": true,
+        "written_objects": 0,
+        "zone_ids": [
+          489
+        ]
+      },
+      "expected": [
+        {
+          "x": 48,
+          "y": 13,
+          "text": "Beds in common area: 7",
+          "cells": [
+            {
+              "ch": 66,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 55,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 14,
+          "text": "Tables in common area: 1",
+          "cells": [
+            {
+              "ch": 84,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 15,
+          "text": "Traction benches in common area: 1",
+          "cells": [
+            {
+              "ch": 84,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 17,
+          "text": "Chests in common area: 2",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 50,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 20,
+          "text": "Thread (Desired): 6 (5)",
+          "cells": [
+            {
+              "ch": 84,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 54,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 23,
+          "text": "Cloth (Desired): 6 (5)",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 54,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 26,
+          "text": "Splints (Desired): 5 (5)",
+          "cells": [
+            {
+              "ch": 83,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 112,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 29,
+          "text": "Crutches (Desired): 5 (5)",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 117,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 32,
+          "text": "Powder for casts (Desired): 0 (5)",
+          "cells": [
+            {
+              "ch": 80,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 119,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 102,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 35,
+          "text": "Buckets (Desired): 2 (2)",
+          "cells": [
+            {
+              "ch": 66,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 117,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 107,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 50,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 50,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 38,
+          "text": "Soap (Desired): 0 (5)",
+          "cells": [
+            {
+              "ch": 83,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 112,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "details": {
+        "access": 0,
+        "appraisal": -1,
+        "dance_floor_x": 5,
+        "dance_floor_y": 6,
+        "desired_copies": 2,
+        "facilities": {
+          "beds": 0,
+          "bookcases": 0,
+          "chairs": 0,
+          "chests": 2,
+          "rented_rooms": 0,
+          "rooms": 0,
+          "tables": 0,
+          "traction_benches": 0
+        },
+        "id": 3,
+        "kind": 2,
+        "members": false,
+        "name": "The White Temple",
+        "profession": -1,
+        "recognized": false,
+        "residents": true,
+        "site_id": 651,
+        "staff": {
+          "missing_roles": [],
+          "rows": [
+            {
+              "assignment_id": 1,
+              "entity_id": 434,
+              "group_id": -1,
+              "histfig_id": 9648,
+              "location_id": 3,
+              "names": {
+                "holder_id": 6134,
+                "holder_kind": 1,
+                "holder_name": "Rig\u00c3\u00b2th Shinat\u00c3\u00adr, sacred call",
+                "position_name": "Sacred Call"
+              },
+              "occupation_id": -1,
+              "position_id": 0,
+              "role": -1,
+              "site_id": 651,
+              "source": 1,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 9650,
+              "location_id": 3,
+              "names": {
+                "holder_id": 6136,
+                "holder_kind": 1,
+                "holder_name": "Uzol Zulbanromlam, Performer",
+                "position_name": ""
+              },
+              "occupation_id": 93,
+              "position_id": -1,
+              "role": 1,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6136
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 3,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 100,
+              "position_id": -1,
+              "role": 1,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            }
+          ]
+        },
+        "supplies": [
+          {
+            "desired": 0,
+            "kind": 0,
+            "stored": 0
+          },
+          {
+            "desired": 5,
+            "kind": 1,
+            "stored": 1
+          },
+          {
+            "desired": 0,
+            "kind": 2,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 3,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 4,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 5,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 6,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 7,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 8,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 9,
+            "stored": 0
+          }
+        ],
+        "tier": 1,
+        "value": 9229,
+        "visitors": true,
+        "written_objects": 0,
+        "zone_ids": [
+          496
+        ]
+      },
+      "expected": [
+        {
+          "x": 48,
+          "y": 20,
+          "text": "Chests in common area: 2",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 50,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 23,
+          "text": "Stored Instruments (Desired): 1 (5)",
+          "cells": [
+            {
+              "ch": 83,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 73,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 117,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 26,
+          "text": "Dance floor in common area: 5x6",
+          "cells": [
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 102,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 53,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 120,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 54,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "details": {
+        "access": 0,
+        "appraisal": -1,
+        "dance_floor_x": 3,
+        "dance_floor_y": 7,
+        "desired_copies": 2,
+        "facilities": {
+          "beds": 0,
+          "bookcases": 17,
+          "chairs": 1,
+          "chests": 1,
+          "rented_rooms": 0,
+          "rooms": 0,
+          "tables": 1,
+          "traction_benches": 0
+        },
+        "id": 4,
+        "kind": 3,
+        "members": false,
+        "name": "The Constructive Bastion",
+        "profession": -1,
+        "recognized": false,
+        "residents": true,
+        "site_id": 651,
+        "staff": {
+          "missing_roles": [],
+          "rows": [
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 10010,
+              "location_id": 4,
+              "names": {
+                "holder_id": 6549,
+                "holder_kind": 1,
+                "holder_name": "Ineth Zuglariseth, Scholar",
+                "position_name": ""
+              },
+              "occupation_id": 105,
+              "position_id": -1,
+              "role": 2,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6549
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 4,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 107,
+              "position_id": -1,
+              "role": 2,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": 10007,
+              "location_id": 4,
+              "names": {
+                "holder_id": 6546,
+                "holder_kind": 1,
+                "holder_name": "L\u00c3\u00b2r Esht\u00c3\u00a2nm\u00c3\u00acshos, Scribe",
+                "position_name": ""
+              },
+              "occupation_id": 106,
+              "position_id": -1,
+              "role": 5,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": 6546
+            },
+            {
+              "assignment_id": -1,
+              "entity_id": -1,
+              "group_id": -1,
+              "histfig_id": -1,
+              "location_id": 4,
+              "names": {
+                "holder_id": -1,
+                "holder_kind": 0,
+                "holder_name": "",
+                "position_name": ""
+              },
+              "occupation_id": 108,
+              "position_id": -1,
+              "role": 5,
+              "site_id": 651,
+              "source": 0,
+              "unit_id": -1
+            }
+          ]
+        },
+        "supplies": [
+          {
+            "desired": 0,
+            "kind": 0,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 1,
+            "stored": 0
+          },
+          {
+            "desired": 10,
+            "kind": 2,
+            "stored": 7
+          },
+          {
+            "desired": 0,
+            "kind": 3,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 4,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 5,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 6,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 7,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 8,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 9,
+            "stored": 0
+          }
+        ],
+        "tier": 0,
+        "value": 863,
+        "visitors": true,
+        "written_objects": 6,
+        "zone_ids": [
+          914
+        ]
+      },
+      "expected": [
+        {
+          "x": 48,
+          "y": 14,
+          "text": "Bookcases: 17",
+          "cells": [
+            {
+              "ch": 66,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 107,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 55,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 68,
+          "y": 14,
+          "text": "Tables: 1",
+          "cells": [
+            {
+              "ch": 84,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 88,
+          "y": 14,
+          "text": "Chairs: 1",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 17,
+          "text": "Written objects (incl. copies): 6",
+          "cells": [
+            {
+              "ch": 87,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 106,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 46,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 112,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 54,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 20,
+          "text": "Total number of each to scribe: 2",
+          "cells": [
+            {
+              "ch": 84,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 117,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 102,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 98,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 50,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 48,
+          "y": 23,
+          "text": "Chests in common area: 1",
+          "cells": [
+            {
+              "ch": 67,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 104,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 99,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 109,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 111,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        },
+        {
+          "x": 49,
+          "y": 26,
+          "text": "Writing Material (Desired): 7 (10)",
+          "cells": [
+            {
+              "ch": 87,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 110,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 103,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 77,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 116,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 97,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 108,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 68,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 115,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 105,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 114,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 101,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 100,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 58,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": false
+            },
+            {
+              "ch": 55,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 32,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 40,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 49,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 48,
+              "fg": 7,
+              "bold": true
+            },
+            {
+              "ch": 41,
+              "fg": 7,
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "details": {
+        "access": 3,
+        "appraisal": -1,
+        "dance_floor_x": 2,
+        "dance_floor_y": 4,
+        "desired_copies": 2,
+        "facilities": {
+          "beds": 0,
+          "bookcases": 0,
+          "chairs": 2,
+          "chests": 2,
+          "rented_rooms": 0,
+          "rooms": 0,
+          "tables": 2,
+          "traction_benches": 0
+        },
+        "id": 5,
+        "kind": 4,
+        "members": true,
+        "name": "The Pears of Hide",
+        "profession": 41,
+        "recognized": false,
+        "residents": false,
+        "site_id": 651,
+        "staff": {
+          "missing_roles": [],
+          "rows": []
+        },
+        "supplies": [
+          {
+            "desired": 0,
+            "kind": 0,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 1,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 2,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 3,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 4,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 5,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 6,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 7,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 8,
+            "stored": 0
+          },
+          {
+            "desired": 0,
+            "kind": 9,
+            "stored": 0
+          }
+        ],
+        "tier": 0,
+        "value": 825,
+        "visitors": false,
+        "written_objects": 0,
+        "zone_ids": [
+          956
+        ]
+      },
+      "expected": []
+    }
+  ]
+}

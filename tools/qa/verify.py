@@ -60,6 +60,14 @@ def check_environment(spec, env, output=None):
     # No interactive profiling, live-connect or capture flags leak into a check.
     result = {key: value for key, value in env.items()
               if not key.startswith("DF3D_") or key in {"DF3D_DF_PATH", "DF3D_GODOT"}}
+    if spec["kind"] == "powershell":
+        executable = powershell_executable(result.get("PATH"))
+        if executable and Path(executable).name.lower() in {"powershell", "powershell.exe"}:
+            # Python does not perform pwsh's native-child PSModulePath cleanup.
+            # Windows PowerShell can otherwise load a PS7 Utility manifest and
+            # lose Get-FileHash. Let 5.1 construct its own default module roots.
+            result = {key: value for key, value in result.items()
+                      if key.lower() != "psmodulepath"}
     for key, value in spec.get("environment", {}).items():
         result[key] = value.replace("{root}", str(ROOT)).replace("{output}", str(output or ROOT / "build/qa"))
     if spec["kind"] == "ctest":
@@ -75,10 +83,20 @@ def recorded_mature_fixture_ready():
     try:
         import expand_fixtures
         expand_fixtures.expand_all(ROOT, log=lambda *_: None)
+        expand_fixtures.validate_schema(
+            ROOT / "fixtures/recorded/mature_fort_pause_53.16.df3dfix",
+            expand_fixtures.current_schema(ROOT))
     except Exception as error:  # noqa: BLE001 - any failure means "not ready", with the reason
         print("recorded_mature_fixture unavailable:", error, file=sys.stderr, flush=True)
         return False
     return (ROOT / "fixtures/recorded/mature_fort_pause_53.16.df3dfix").is_file()
+
+def recorded_location_catalog_ready():
+    directory = ROOT / "build/notes/pm/location-render-source"
+    return all((directory / name).is_file() for name in (
+        "location-transport-comparison.json", "native-location-metadata.json",
+        "native-location-scroll.json", "native-location-scroll-art.json", "native-location-scroll-states.json", "native-list-scroll.json", "provenance.txt"))
+
 
 def optional_readiness(df_path, godot, env, allow_live=False, identity=None):
     # Import in a child of the actual runner interpreter: another Python's lupa
@@ -98,6 +116,7 @@ def optional_readiness(df_path, godot, env, allow_live=False, identity=None):
                 bridge_attested=bridge_ready(identity, df_path) if identity else False,
                 bridge_configured=(ROOT / "external/dfhack/build/VC2022/CMakeCache.txt").is_file(),
                 recorded_mature_fixture=recorded_mature_fixture_ready(),
+                recorded_location_catalog=recorded_location_catalog_ready(),
                 synthetic_demo_fixture=(ROOT / "fixtures/synthetic/demo_fort.df3dfix").is_file())
 
 def products(name, binary, env=None):

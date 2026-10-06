@@ -42,6 +42,7 @@ template<class JobType> Kind classify(JobType type) {
     case JobType::CarveDownwardStaircase:
     case JobType::CarveUpDownStaircase:
     case JobType::CarveRamp:
+    case JobType::RemoveConstruction:
     case JobType::DigChannel: return Kind::Dig;
     case JobType::SmoothWall:
     case JobType::SmoothFloor:

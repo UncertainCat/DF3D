@@ -98,15 +98,20 @@ func request_pause(want_paused: bool) -> bool:
 	if not check(seq > 0, "pause command not sent: " + world.last_error()): return false
 	var deadline := Time.get_ticks_msec() + 30000
 	var accepted := false
+	var session: Dictionary = {}
 	while Time.get_ticks_msec() < deadline:
 		world.poll()
 		for receipt in world.drain_command_results():
+			print("WORK_DETAILS_PAUSE_RECEIPT wanted=", want_paused, " seq=", seq, " receipt=", receipt)
 			if int(receipt.seq) == seq:
 				if not check(int(receipt.status) == 0 and receipt.message == ("paused" if want_paused else "unpaused"), "pause command refused: " + str(receipt.message)): return false
 				accepted = true
-		var session: Dictionary = world.poll_session()
+		session = world.poll_session()
 		if accepted and session.get("fortress_valid", false) and session.get("paused", not want_paused) == want_paused: return true
 		await create_timer(0.02).timeout
+	print("WORK_DETAILS_PAUSE_TIMEOUT accepted=", accepted, " wanted=", want_paused,
+		" phase=", session.get("phase"), " fortress_valid=", session.get("fortress_valid"),
+		" paused=", session.get("paused"), " error=", world.last_error())
 	incomplete("pause receipt/readback wait cap hit; no replay", true)
 	return false
 
@@ -318,6 +323,61 @@ func step_eight() -> void:
 	if not check(int(status.counters.holding) == holding + 1, "holding must increase by one"): return
 	await native("deleted", {"count":count_before})
 
+func reload_fortress() -> void:
+	if stopped: return
+	var previous: Dictionary = world.poll_session()
+	var previous_epoch := int(previous.get("fortress_epoch", 0))
+	# Send one read-only work-detail intent. Its outcome may be terminal or unknown;
+	# the handshake never sends it again, including after producer replacement.
+	var seq: int = world.management_request("citizens", {"action":30})
+	if not check(seq > 0, "pre-reload work-detail request not sent"): return
+	handshake += 1
+	write_json("request-%d.json" % handshake, {"op":"reload"})
+	var file := FileAccess.open(directory + "/verify.tmp", FileAccess.WRITE)
+	file.store_string(str(handshake)); file.close()
+	if not check(DirAccess.rename_absolute(directory + "/verify.tmp", directory + "/verify.txt") == OK, "reload handshake rename failed"): return
+	var deadline := Time.get_ticks_msec() + 690000
+	var ack: Dictionary = {}
+	var outcome := "unknown"
+	while ack.is_empty():
+		world.poll(); world.poll_session()
+		var observed: Dictionary = world.poll_management()
+		if int(observed.get("world_epoch", 0)) == previous_epoch and int(observed.get("request_seq", 0)) == seq and int(observed.get("status", S.Idle)) in [S.Ok, S.Rejected]: outcome = "terminal"
+		for state in ["failed", "incomplete", "ack"]:
+			var path := directory + "/%s-%d" % [state, handshake]
+			if not FileAccess.file_exists(path): continue
+			var reply: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+			if state == "failed": check(false, "reload: " + str(reply.reason)); return
+			if state == "incomplete": incomplete("reload: " + str(reply.reason), true); return
+			ack = reply
+		if Time.get_ticks_msec() >= deadline: incomplete("reload handshake timeout; no replay", true); return
+		await create_timer(0.02).timeout
+	var epoch := int(str(ack.epoch))
+	if not check(epoch != previous_epoch and (epoch >> 32) == int(ack.pid), "reload epoch/process identity"): return
+	deadline = Time.get_ticks_msec() + 60000
+	var ready := false
+	while Time.get_ticks_msec() < deadline:
+		world.poll()
+		var session: Dictionary = world.poll_session()
+		var state: Dictionary = world.poll_management()
+		if int(state.get("world_epoch", 0)) == epoch:
+			if not check(int(state.get("request_seq", 0)) != seq, "old sequence survived restart"): return
+			if int(session.get("fortress_epoch", 0)) == epoch and session.get("paused", false): ready = true; break
+		await create_timer(0.02).timeout
+	if not ready: incomplete("reload: presentation did not reattach", true); return
+	print("RELOAD_TICKET_OUTCOME ", outcome)
+	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
+	custom = -1
+	await seed_catalog()
+	if stopped: return
+	var fresh := await pages(30, "details")
+	if stopped: return
+	check(not fresh.details.is_empty(), "fresh work-detail page absent after reload")
+	var status := await native("status")
+	if stopped: return
+	check(int(status.counters.holding) == 0, "work-detail holding array survived restart")
+	print("RELOAD_DISCLOSURE in-process World changed refusals remain offline-only; live reload replaces the producer")
+
 func exercise() -> void:
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
 	for missing in fixture.missing:
@@ -336,7 +396,8 @@ func exercise() -> void:
 			7: await step_seven()
 			8: await step_eight()
 	step = "9"
-	incomplete(FileAccess.get_file_as_string(directory + "/reload.txt").strip_edges())
+	await reload_fortress()
+	if stopped: return
 	step = "final"
 	await native("final")
 

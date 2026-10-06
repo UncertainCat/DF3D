@@ -10,6 +10,18 @@
 #include "../bridge/plugin/scan_schedule.h"
 #include <unordered_map>
 #include "../bridge/plugin/builder_schedule.h"
+
+TEST_CASE("synchronous write counts preserve read budgets without narrowing or underflow") {
+    for(uint32_t remaining:{0u,1u,512u,1536u,2048u}) {
+        for(uint64_t measured:{uint64_t(0),uint64_t(1),uint64_t(1537),uint64_t(9000),uint64_t(INT64_MAX)}) {
+            const auto writeCharge=df3d_builder::readCharge(remaining,measured,true);
+            CHECK(writeCharge==0);CHECK(remaining-writeCharge==remaining);
+            const auto readCharge=df3d_builder::readCharge(remaining,measured,false);
+            CHECK(readCharge<=remaining);
+            CHECK(remaining-readCharge==(measured>=remaining?0:remaining-measured));
+        }
+    }
+}
 #include "../bridge/plugin/management_helper_owners.h"
 #include <array>
 #include <vector>

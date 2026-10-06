@@ -1,0 +1,5533 @@
+{
+  "source": "build/native-return-catalog-20260930-101838",
+  "process_exit": 0,
+  "context": "MAIN_DWARF_SAVE_AND_EXIT_CHOICES",
+  "options": [
+    {
+      "native_index": 0,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-20260928-123812"
+    },
+    {
+      "native_index": 1,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-20260928-123943"
+    },
+    {
+      "native_index": 2,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-20260928-124045"
+    },
+    {
+      "native_index": 3,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-20260928-124213"
+    },
+    {
+      "native_index": 4,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-20260929-155834"
+    },
+    {
+      "native_index": 5,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-20260929-195610"
+    },
+    {
+      "native_index": 6,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-20260929-195653"
+    },
+    {
+      "native_index": 7,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-20260929-195808"
+    },
+    {
+      "native_index": 8,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-buttons-20260929-160004"
+    },
+    {
+      "native_index": 9,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-protocol-20260929-201006"
+    },
+    {
+      "native_index": 10,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-render-20260929-202559"
+    },
+    {
+      "native_index": 11,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-view-20260929-202208"
+    },
+    {
+      "native_index": 12,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-access-visual-20260929-201708"
+    },
+    {
+      "native_index": 13,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-affiliation-20260929-211704"
+    },
+    {
+      "native_index": 14,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-affiliation-20260929-211829"
+    },
+    {
+      "native_index": 15,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-affiliation-20260929-212149"
+    },
+    {
+      "native_index": 16,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-affiliation-view-20260929-214728"
+    },
+    {
+      "native_index": 17,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-affiliation-visual-20260929-214044"
+    },
+    {
+      "native_index": 18,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-affiliation-wire-20260929-213358"
+    },
+    {
+      "native_index": 19,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-all-location-kinds-20260929-113104"
+    },
+    {
+      "native_index": 20,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-allheaders-20260930-042055"
+    },
+    {
+      "native_index": 21,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-ammo-column-20260928-2006"
+    },
+    {
+      "native_index": 22,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-animals-list-20260928-1908"
+    },
+    {
+      "native_index": 23,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-appraisal-20260929-164453"
+    },
+    {
+      "native_index": 24,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-appraisal-read-20260929-170001"
+    },
+    {
+      "native_index": 25,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-appraisal-transport-20260929-170154"
+    },
+    {
+      "native_index": 26,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-artquality-20260930-032157"
+    },
+    {
+      "native_index": 27,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-bodycell-20260930-025246"
+    },
+    {
+      "native_index": 28,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-boundary-20260929-0013"
+    },
+    {
+      "native_index": 29,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-broker-20260929-164900"
+    },
+    {
+      "native_index": 30,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-broker-20260929-165005"
+    },
+    {
+      "native_index": 31,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-broker-read-20260929-170053"
+    },
+    {
+      "native_index": 32,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-brush-live-20260929-082722"
+    },
+    {
+      "native_index": 33,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-brush-multi-20260929-083029"
+    },
+    {
+      "native_index": 34,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-brush-multi-20260929-083654"
+    },
+    {
+      "native_index": 35,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-brush-reference-20260929-082229"
+    },
+    {
+      "native_index": 36,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-captions-20260928-1913"
+    },
+    {
+      "native_index": 37,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-captions-20260928-1917"
+    },
+    {
+      "native_index": 38,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-captions-20260928-202440"
+    },
+    {
+      "native_index": 39,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-captions-20260928-202614"
+    },
+    {
+      "native_index": 40,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-category-click-20260928-214233"
+    },
+    {
+      "native_index": 41,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-category-click-20260928-214340"
+    },
+    {
+      "native_index": 42,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-category-click-20260928-214447"
+    },
+    {
+      "native_index": 43,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-20260928-163010"
+    },
+    {
+      "native_index": 44,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-assignments-20260928-165545"
+    },
+    {
+      "native_index": 45,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-links-20260928-165309"
+    },
+    {
+      "native_index": 46,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-pile-links-20260928-170109"
+    },
+    {
+      "native_index": 47,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-refresh-20260929-083825"
+    },
+    {
+      "native_index": 48,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-restart-20260928-172821"
+    },
+    {
+      "native_index": 49,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-search-20260928-171319"
+    },
+    {
+      "native_index": 50,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-selectors-20260928-163433"
+    },
+    {
+      "native_index": 51,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-selectors-20260928-163610"
+    },
+    {
+      "native_index": 52,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-selectors-20260928-164644"
+    },
+    {
+      "native_index": 53,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-stale-20260928-171702"
+    },
+    {
+      "native_index": 54,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controller-zone-settings-20260928-165811"
+    },
+    {
+      "native_index": 55,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controls-20260929-071540"
+    },
+    {
+      "native_index": 56,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controls-20260929-071634"
+    },
+    {
+      "native_index": 57,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controls-20260929-071826"
+    },
+    {
+      "native_index": 58,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-controls-20260929-072012"
+    },
+    {
+      "native_index": 59,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-corner-elevation-20260929-084416"
+    },
+    {
+      "native_index": 60,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-counts-20260929-070839"
+    },
+    {
+      "native_index": 61,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-counts-20260929-071115"
+    },
+    {
+      "native_index": 62,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dance-20260929-175330"
+    },
+    {
+      "native_index": 63,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dance-color-20260929-210138"
+    },
+    {
+      "native_index": 64,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dance-color-20260929-210250"
+    },
+    {
+      "native_index": 65,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dance-rank-20260929-175456"
+    },
+    {
+      "native_index": 66,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dance-reader-20260929-175724"
+    },
+    {
+      "native_index": 67,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dance-scene-20260929-180450"
+    },
+    {
+      "native_index": 68,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-detail-supplies-20260929-155506"
+    },
+    {
+      "native_index": 69,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-20260929-155256"
+    },
+    {
+      "native_index": 70,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-frame-20260929-220112"
+    },
+    {
+      "native_index": 71,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-modal-20260930-065537"
+    },
+    {
+      "native_index": 72,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-parent-20260930-065057"
+    },
+    {
+      "native_index": 73,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-parent-20260930-065150"
+    },
+    {
+      "native_index": 74,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-parent-20260930-065309"
+    },
+    {
+      "native_index": 75,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-reader-20260929-160428"
+    },
+    {
+      "native_index": 76,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-routes-20260930-063719"
+    },
+    {
+      "native_index": 77,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-routes-20260930-064117"
+    },
+    {
+      "native_index": 78,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-routes-20260930-064429"
+    },
+    {
+      "native_index": 79,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-state-20260929-193352"
+    },
+    {
+      "native_index": 80,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-details-transport-20260929-161939"
+    },
+    {
+      "native_index": 81,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dyes-20260930-025924"
+    },
+    {
+      "native_index": 82,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-dyesfix-20260930-030132"
+    },
+    {
+      "native_index": 83,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-effect-0930081415"
+    },
+    {
+      "native_index": 84,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-elevation-20260928-230811"
+    },
+    {
+      "native_index": 85,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-elevation-layout-20260928-232106"
+    },
+    {
+      "native_index": 86,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-elevation-native-20260929-084201"
+    },
+    {
+      "native_index": 87,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-elevation-retry-20260928-231438"
+    },
+    {
+      "native_index": 88,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-elevation-verified-20260928-232706"
+    },
+    {
+      "native_index": 89,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-empty-bridge-20260929-074237"
+    },
+    {
+      "native_index": 90,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-empty-bridge-20260929-074427"
+    },
+    {
+      "native_index": 91,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-empty-bridge-20260929-074700"
+    },
+    {
+      "native_index": 92,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-empty-exits-20260929-073851"
+    },
+    {
+      "native_index": 93,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-entry-20260929-190312"
+    },
+    {
+      "native_index": 94,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-escape-20260930-070132"
+    },
+    {
+      "native_index": 95,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-escape-30ms-20260930-070525"
+    },
+    {
+      "native_index": 96,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-escape-focus-20260930-070401"
+    },
+    {
+      "native_index": 97,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-facilities-read-20260929-172002"
+    },
+    {
+      "native_index": 98,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-facilities-transport-20260929-172132"
+    },
+    {
+      "native_index": 99,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-editing-20260930-044553"
+    },
+    {
+      "native_index": 100,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-editing-20260930-044739"
+    },
+    {
+      "native_index": 101,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-events-20260930-043340"
+    },
+    {
+      "native_index": 102,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-focus-20260930-045037"
+    },
+    {
+      "native_index": 103,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-input-20260930-045512"
+    },
+    {
+      "native_index": 104,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-keys-20260930-044045"
+    },
+    {
+      "native_index": 105,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-navigation-20260930-050022"
+    },
+    {
+      "native_index": 106,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-navigation-20260930-050311"
+    },
+    {
+      "native_index": 107,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filter-queries-20260930-043601"
+    },
+    {
+      "native_index": 108,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filtered-20260928-203527"
+    },
+    {
+      "native_index": 109,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filtered-20260928-203739"
+    },
+    {
+      "native_index": 110,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-filtered-20260928-203944"
+    },
+    {
+      "native_index": 111,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-footwearfixed-20260929-231145"
+    },
+    {
+      "native_index": 112,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-footweartrace-20260929-230913"
+    },
+    {
+      "native_index": 113,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-forbiddenmat-20260930-032457"
+    },
+    {
+      "native_index": 114,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-fresh-20260928-205239"
+    },
+    {
+      "native_index": 115,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-fresh-summary-20260928-1959"
+    },
+    {
+      "native_index": 116,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-furniture-20260929-170705"
+    },
+    {
+      "native_index": 117,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-furniture-rules-20260929-170942"
+    },
+    {
+      "native_index": 118,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-gem-audit-20260928-1915"
+    },
+    {
+      "native_index": 119,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-gestures-20260929-072449"
+    },
+    {
+      "native_index": 120,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-global-all-20260928-221925"
+    },
+    {
+      "native_index": 121,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-global-none-20260928-213456"
+    },
+    {
+      "native_index": 122,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-guild-metadata-20260929-095759"
+    },
+    {
+      "native_index": 123,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-guild-order-reader-20260929-101457"
+    },
+    {
+      "native_index": 124,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-guild-reader-20260929-093835"
+    },
+    {
+      "native_index": 125,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-guild-reader-20260929-100302"
+    },
+    {
+      "native_index": 126,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-guild-site-controls-20260929-100000"
+    },
+    {
+      "native_index": 127,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-guild-workers-20260929-093439"
+    },
+    {
+      "native_index": 128,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hair-20260930-030913"
+    },
+    {
+      "native_index": 129,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hair-20260930-031006"
+    },
+    {
+      "native_index": 130,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hairfix-20260930-031149"
+    },
+    {
+      "native_index": 131,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-heading-20260929-210851"
+    },
+    {
+      "native_index": 132,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hides-20260928-204702"
+    },
+    {
+      "native_index": 133,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hover-20260929-203324"
+    },
+    {
+      "native_index": 134,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hover-20260929-203504"
+    },
+    {
+      "native_index": 135,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hover-20260929-203713"
+    },
+    {
+      "native_index": 136,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hover-click-20260929-204217"
+    },
+    {
+      "native_index": 137,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hover-return-20260929-204011"
+    },
+    {
+      "native_index": 138,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hover-view-20260929-205441"
+    },
+    {
+      "native_index": 139,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hudbounds-20260929-145456"
+    },
+    {
+      "native_index": 140,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hudcounts-20260929-145257"
+    },
+    {
+      "native_index": 141,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-hudlive-20260929-150253"
+    },
+    {
+      "native_index": 142,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-iconmodel-20260930-025642"
+    },
+    {
+      "native_index": 143,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-indicator-reader-20260929-095441"
+    },
+    {
+      "native_index": 144,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-item-captions-20260928-1924"
+    },
+    {
+      "native_index": 145,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-list-scroll-20260929-153917"
+    },
+    {
+      "native_index": 146,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-listscroll-20260929-153009"
+    },
+    {
+      "native_index": 147,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-access-20260929-111234"
+    },
+    {
+      "native_index": 148,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-catalog-20260929-085857"
+    },
+    {
+      "native_index": 149,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-choices-20260929-085619"
+    },
+    {
+      "native_index": 150,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-compare-20260929-110951"
+    },
+    {
+      "native_index": 151,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-control-20260929-091416"
+    },
+    {
+      "native_index": 152,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-counts-20260929-092956"
+    },
+    {
+      "native_index": 153,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-creation-20260929-110244"
+    },
+    {
+      "native_index": 154,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-creation-20260929-110428"
+    },
+    {
+      "native_index": 155,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-creation-20260929-110629"
+    },
+    {
+      "native_index": 156,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-eligibility-20260929-091200"
+    },
+    {
+      "native_index": 157,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-facts-20260929-090349"
+    },
+    {
+      "native_index": 158,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-guard-20260929-115642"
+    },
+    {
+      "native_index": 159,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-indicators-20260929-095120"
+    },
+    {
+      "native_index": 160,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-membership-20260929-090655"
+    },
+    {
+      "native_index": 161,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-metadata-20260929-092518"
+    },
+    {
+      "native_index": 162,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-metadata-20260929-094604"
+    },
+    {
+      "native_index": 163,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-names-20260929-100906"
+    },
+    {
+      "native_index": 164,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-overlap-20260929-120856"
+    },
+    {
+      "native_index": 165,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-reader-20260929-092101"
+    },
+    {
+      "native_index": 166,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-reassign-20260929-114508"
+    },
+    {
+      "native_index": 167,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-remove-20260929-113445"
+    },
+    {
+      "native_index": 168,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-remove-20260929-113626"
+    },
+    {
+      "native_index": 169,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-remove-20260929-113814"
+    },
+    {
+      "native_index": 170,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-remove-fix-20260929-114125"
+    },
+    {
+      "native_index": 171,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-replace-20260929-114833"
+    },
+    {
+      "native_index": 172,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-replace-fix-20260929-115127"
+    },
+    {
+      "native_index": 173,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-scene-20260929-143346"
+    },
+    {
+      "native_index": 174,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-scene-guard-20260929-143538"
+    },
+    {
+      "native_index": 175,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-scene-layout-20260929-143838"
+    },
+    {
+      "native_index": 176,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-scene-scroll-20260929-144123"
+    },
+    {
+      "native_index": 177,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-transfer-20260929-120012"
+    },
+    {
+      "native_index": 178,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-transport-20260929-103703"
+    },
+    {
+      "native_index": 179,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-transport-fixed-20260929-103910"
+    },
+    {
+      "native_index": 180,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-two-zones-20260929-120428"
+    },
+    {
+      "native_index": 181,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-value-20260929-111609"
+    },
+    {
+      "native_index": 182,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-value-20260929-111820"
+    },
+    {
+      "native_index": 183,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-location-value-query-20260929-112035"
+    },
+    {
+      "native_index": 184,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-locationlist-20260929-150757"
+    },
+    {
+      "native_index": 185,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-locationlist-20260929-150935"
+    },
+    {
+      "native_index": 186,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-locationlist-layout-20260929-152523"
+    },
+    {
+      "native_index": 187,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-locationlist-scene-20260929-152354"
+    },
+    {
+      "native_index": 188,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-metadata-v22-20260928-161901"
+    },
+    {
+      "native_index": 189,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929031709"
+    },
+    {
+      "native_index": 190,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929031852"
+    },
+    {
+      "native_index": 191,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929032308"
+    },
+    {
+      "native_index": 192,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929032507"
+    },
+    {
+      "native_index": 193,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929032859"
+    },
+    {
+      "native_index": 194,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929033052"
+    },
+    {
+      "native_index": 195,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929033411"
+    },
+    {
+      "native_index": 196,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929033734"
+    },
+    {
+      "native_index": 197,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929033928"
+    },
+    {
+      "native_index": 198,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929034216"
+    },
+    {
+      "native_index": 199,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929034432"
+    },
+    {
+      "native_index": 200,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929034630"
+    },
+    {
+      "native_index": 201,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929035826"
+    },
+    {
+      "native_index": 202,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929040148"
+    },
+    {
+      "native_index": 203,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929040351"
+    },
+    {
+      "native_index": 204,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929040759"
+    },
+    {
+      "native_index": 205,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929040930"
+    },
+    {
+      "native_index": 206,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929041228"
+    },
+    {
+      "native_index": 207,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929042000"
+    },
+    {
+      "native_index": 208,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929043953"
+    },
+    {
+      "native_index": 209,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929044256"
+    },
+    {
+      "native_index": 210,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929044407"
+    },
+    {
+      "native_index": 211,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multi-20260929051244"
+    },
+    {
+      "native_index": 212,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-multiple-guilds-20260929-101222"
+    },
+    {
+      "native_index": 213,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-native-captions-20260928-1943"
+    },
+    {
+      "native_index": 214,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-native-location-value-20260929-112716"
+    },
+    {
+      "native_index": 215,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-native-none-20260928-220254"
+    },
+    {
+      "native_index": 216,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-art-20260930-074005"
+    },
+    {
+      "native_index": 217,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-cancel-20260930-073435"
+    },
+    {
+      "native_index": 218,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-confirmations-20260930-073530"
+    },
+    {
+      "native_index": 219,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-grids-20260930-074113"
+    },
+    {
+      "native_index": 220,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-input-20260930-073207"
+    },
+    {
+      "native_index": 221,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-physical-20260930-074713"
+    },
+    {
+      "native_index": 222,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-prompts-20260930-073323"
+    },
+    {
+      "native_index": 223,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-right-20260930-074822"
+    },
+    {
+      "native_index": 224,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-options-textures-20260930-074236"
+    },
+    {
+      "native_index": 225,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-ow-0930080757"
+    },
+    {
+      "native_index": 226,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-ow-0930080919"
+    },
+    {
+      "native_index": 227,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-owner-labels-20260928-1846"
+    },
+    {
+      "native_index": 228,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-owner-pointer-20260928-183508"
+    },
+    {
+      "native_index": 229,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-owner-portraits-20260928-183132"
+    },
+    {
+      "native_index": 230,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-exits-20260929-072937"
+    },
+    {
+      "native_index": 231,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-exits-20260929-073046"
+    },
+    {
+      "native_index": 232,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-exits-check-20260929-073250"
+    },
+    {
+      "native_index": 233,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-lifecycle-20260929-080022"
+    },
+    {
+      "native_index": 234,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-order-20260929-081816"
+    },
+    {
+      "native_index": 235,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-session-20260929-075719"
+    },
+    {
+      "native_index": 236,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-switch-20260929-080423"
+    },
+    {
+      "native_index": 237,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-switch-20260929-080649"
+    },
+    {
+      "native_index": 238,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-switch-live-20260929-080927"
+    },
+    {
+      "native_index": 239,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-v21-20260928-141122"
+    },
+    {
+      "native_index": 240,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-v21-20260928-141256"
+    },
+    {
+      "native_index": 241,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-paint-v21-20260928-141626"
+    },
+    {
+      "native_index": 242,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-pointer-20260928-170402"
+    },
+    {
+      "native_index": 243,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-pointer-cancel-20260928-172329"
+    },
+    {
+      "native_index": 244,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-pointer-caption-20260928-170838"
+    },
+    {
+      "native_index": 245,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-pointer-layout-20260928-170642"
+    },
+    {
+      "native_index": 246,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-pointer-reflow-20260928-171019"
+    },
+    {
+      "native_index": 247,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-pointer-repaint-20260928-172109"
+    },
+    {
+      "native_index": 248,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-read-recovery-20260928-210859"
+    },
+    {
+      "native_index": 249,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-refresh-20260929-181041"
+    },
+    {
+      "native_index": 250,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-refresh-reader-20260929-181413"
+    },
+    {
+      "native_index": 251,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-repaint-brush-20260929-085138"
+    },
+    {
+      "native_index": 252,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-repaint-corner-20260929-084936"
+    },
+    {
+      "native_index": 253,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-repaint-elevation-20260929-084657"
+    },
+    {
+      "native_index": 254,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-repaint-native-20260929-073503"
+    },
+    {
+      "native_index": 255,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-repaint-native-20260929-073601"
+    },
+    {
+      "native_index": 256,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-repaint-native-20260929-073704"
+    },
+    {
+      "native_index": 257,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-restart-catalog-20260928-173457"
+    },
+    {
+      "native_index": 258,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-revision-20260928-210233"
+    },
+    {
+      "native_index": 259,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-same-choice-20260929-154752"
+    },
+    {
+      "native_index": 260,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-same-selection-20260929-154422"
+    },
+    {
+      "native_index": 261,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-same-selection-20260929-154512"
+    },
+    {
+      "native_index": 262,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-same-selection-20260929-154554"
+    },
+    {
+      "native_index": 263,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-save-boundary-20260930-080354"
+    },
+    {
+      "native_index": 264,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-save-characters-20260930-075631"
+    },
+    {
+      "native_index": 265,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-save-name-20260930-075151"
+    },
+    {
+      "native_index": 266,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-save-unicode-20260930-075736"
+    },
+    {
+      "native_index": 267,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scene-mask-20260928-181823"
+    },
+    {
+      "native_index": 268,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scene-poll-20260928-175727"
+    },
+    {
+      "native_index": 269,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scene-restart-20260928-174254"
+    },
+    {
+      "native_index": 270,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-20260928-211523"
+    },
+    {
+      "native_index": 271,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-20260928-211908"
+    },
+    {
+      "native_index": 272,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-20260929-140211"
+    },
+    {
+      "native_index": 273,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-drag-20260929-140912"
+    },
+    {
+      "native_index": 274,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-grid-20260929-140512"
+    },
+    {
+      "native_index": 275,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-states-20260929-142359"
+    },
+    {
+      "native_index": 276,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-scroll-states-safe-20260929-142533"
+    },
+    {
+      "native_index": 277,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-search-20260928-222838"
+    },
+    {
+      "native_index": 278,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-search-20260928-223357"
+    },
+    {
+      "native_index": 279,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selectinput-20260930-033235"
+    },
+    {
+      "native_index": 280,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-abbrev-edges-20260930-013931"
+    },
+    {
+      "native_index": 281,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-abbreviation-20260930-013629"
+    },
+    {
+      "native_index": 282,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-aging-20260930-021858"
+    },
+    {
+      "native_index": 283,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-aging-boundaries-20260930-022304"
+    },
+    {
+      "native_index": 284,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-aging-controls-20260930-022106"
+    },
+    {
+      "native_index": 285,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-aging-fixed-20260930-023026"
+    },
+    {
+      "native_index": 286,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-aging-weights-20260930-022657"
+    },
+    {
+      "native_index": 287,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-color-clock-20260930-012510"
+    },
+    {
+      "native_index": 288,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-color-phase-20260930-012814"
+    },
+    {
+      "native_index": 289,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-color-phase-20260930-012915"
+    },
+    {
+      "native_index": 290,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-colors-20260930-012203"
+    },
+    {
+      "native_index": 291,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-complete-audit-20260930-024005"
+    },
+    {
+      "native_index": 292,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-copy-20260930-011503"
+    },
+    {
+      "native_index": 293,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-eligibility-20260930-011906"
+    },
+    {
+      "native_index": 294,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-equipment-20260930-024435"
+    },
+    {
+      "native_index": 295,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-inventory-20260930-023329"
+    },
+    {
+      "native_index": 296,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-layers-20260930-023218"
+    },
+    {
+      "native_index": 297,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-names-20260930-010113"
+    },
+    {
+      "native_index": 298,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-names-20260930-010516"
+    },
+    {
+      "native_index": 299,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-portrait-audit-20260930-023716"
+    },
+    {
+      "native_index": 300,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-portrait-diagnostic-20260930-021651"
+    },
+    {
+      "native_index": 301,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-portrait-parity-20260930-023542"
+    },
+    {
+      "native_index": 302,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-portraits-20260930-020926"
+    },
+    {
+      "native_index": 303,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-portraits-fixed-20260930-021551"
+    },
+    {
+      "native_index": 304,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-portraits-live-20260930-021230"
+    },
+    {
+      "native_index": 305,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-professions-20260930-011032"
+    },
+    {
+      "native_index": 306,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-render-20260930-005156"
+    },
+    {
+      "native_index": 307,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-render-20260930-005253"
+    },
+    {
+      "native_index": 308,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-views-20260929-105402"
+    },
+    {
+      "native_index": 309,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selector-views-20260929-105812"
+    },
+    {
+      "native_index": 310,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selectrelease-20260930-033401"
+    },
+    {
+      "native_index": 311,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selectscroll-20260930-033121"
+    },
+    {
+      "native_index": 312,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-selectscroll-20260930-033735"
+    },
+    {
+      "native_index": 313,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-settings-20260928-1858"
+    },
+    {
+      "native_index": 314,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-settings-20260928-1900"
+    },
+    {
+      "native_index": 315,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-shared-corner-20260929-081225"
+    },
+    {
+      "native_index": 316,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-site-identity-20260929-163528"
+    },
+    {
+      "native_index": 317,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-skillssort-20260930-035507"
+    },
+    {
+      "native_index": 318,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-sphere-captions-20260929-101824"
+    },
+    {
+      "native_index": 319,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-20260929-181659"
+    },
+    {
+      "native_index": 320,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-assignment-20260930-050858"
+    },
+    {
+      "native_index": 321,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-assignment-20260930-051101"
+    },
+    {
+      "native_index": 322,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-assignment-20260930-051233"
+    },
+    {
+      "native_index": 323,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-edit-20260930-055622"
+    },
+    {
+      "native_index": 324,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-edit-20260930-055730"
+    },
+    {
+      "native_index": 325,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-edit-20260930-055821"
+    },
+    {
+      "native_index": 326,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-edit-20260930-055905"
+    },
+    {
+      "native_index": 327,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-eligibility-20260929-182138"
+    },
+    {
+      "native_index": 328,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-filter-20260930-003745"
+    },
+    {
+      "native_index": 329,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-filter-feed-20260930-004527"
+    },
+    {
+      "native_index": 330,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-filter-r2-20260930-003834"
+    },
+    {
+      "native_index": 331,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-fortress-20260930-071000"
+    },
+    {
+      "native_index": 332,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-fortress-20260930-071147"
+    },
+    {
+      "native_index": 333,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keyboard-20260930-063322"
+    },
+    {
+      "native_index": 334,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keys-20260930-062534"
+    },
+    {
+      "native_index": 335,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keys-20260930-062620"
+    },
+    {
+      "native_index": 336,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keys-20260930-062712"
+    },
+    {
+      "native_index": 337,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keys-20260930-062801"
+    },
+    {
+      "native_index": 338,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keys-20260930-062900"
+    },
+    {
+      "native_index": 339,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-keys-20260930-063207"
+    },
+    {
+      "native_index": 340,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-labels-20260929-190932"
+    },
+    {
+      "native_index": 341,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-matrix-20260930-051531"
+    },
+    {
+      "native_index": 342,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-matrix-20260930-051647"
+    },
+    {
+      "native_index": 343,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-metadata-v28-20260930-015136"
+    },
+    {
+      "native_index": 344,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-metadata-v28-20260930-015419"
+    },
+    {
+      "native_index": 345,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-names-20260929-191420"
+    },
+    {
+      "native_index": 346,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-names-reader-20260929-192252"
+    },
+    {
+      "native_index": 347,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-names-transport-20260929-192406"
+    },
+    {
+      "native_index": 348,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-parent-refresh-20260930-071701"
+    },
+    {
+      "native_index": 349,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-reader-20260929-182954"
+    },
+    {
+      "native_index": 350,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-receipts-20260930-052845"
+    },
+    {
+      "native_index": 351,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-refusal-20260929-183200"
+    },
+    {
+      "native_index": 352,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-religion-20260929-182358"
+    },
+    {
+      "native_index": 353,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-semantic-20260930-053519"
+    },
+    {
+      "native_index": 354,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-semantic-transfer-20260930-053743"
+    },
+    {
+      "native_index": 355,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-slots-20260930-052111"
+    },
+    {
+      "native_index": 356,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-slots-20260930-052157"
+    },
+    {
+      "native_index": 357,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-state-20260930-003400"
+    },
+    {
+      "native_index": 358,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-transfer-20260930-052342"
+    },
+    {
+      "native_index": 359,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-transport-20260929-184851"
+    },
+    {
+      "native_index": 360,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-ui-20260930-002416"
+    },
+    {
+      "native_index": 361,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-ui-r2-20260930-002742"
+    },
+    {
+      "native_index": 362,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-unknown-20260930-060332"
+    },
+    {
+      "native_index": 363,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-viewport-20260930-061722"
+    },
+    {
+      "native_index": 364,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-wire-20260930-001447"
+    },
+    {
+      "native_index": 365,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staff-wire-r2-20260930-001611"
+    },
+    {
+      "native_index": 366,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffactions-20260929-232328"
+    },
+    {
+      "native_index": 367,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffactionscancel-20260929-232551"
+    },
+    {
+      "native_index": 368,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffactionsfull-20260929-232436"
+    },
+    {
+      "native_index": 369,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffbasepixels-20260929-231752"
+    },
+    {
+      "native_index": 370,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcandidatecompiled-20260929-234335"
+    },
+    {
+      "native_index": 371,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcandidatefinal-20260929-234534"
+    },
+    {
+      "native_index": 372,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcandidatemembership-20260929-234933"
+    },
+    {
+      "native_index": 373,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcandidatepages-20260929-235658"
+    },
+    {
+      "native_index": 374,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcandidatetame-20260929-234731"
+    },
+    {
+      "native_index": 375,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcomparators-20260930-040038"
+    },
+    {
+      "native_index": 376,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffcomparators-20260930-040156"
+    },
+    {
+      "native_index": 377,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffeligibility-20260929-233449"
+    },
+    {
+      "native_index": 378,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffeligibilityflags-20260929-233646"
+    },
+    {
+      "native_index": 379,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffexactpixels-20260929-231634"
+    },
+    {
+      "native_index": 380,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-stafffilter-20260930-042437"
+    },
+    {
+      "native_index": 381,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-stafficons-20260929-224748"
+    },
+    {
+      "native_index": 382,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-stafflayout-20260929-221753"
+    },
+    {
+      "native_index": 383,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-stafforder-20260930-040939"
+    },
+    {
+      "native_index": 384,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffportraits-20260929-224055"
+    },
+    {
+      "native_index": 385,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffportraits-20260929-224159"
+    },
+    {
+      "native_index": 386,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffpredicate-20260929-234005"
+    },
+    {
+      "native_index": 387,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffscroll-20260929-223022"
+    },
+    {
+      "native_index": 388,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffscrollui-20260929-223440"
+    },
+    {
+      "native_index": 389,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffselector-20260929-233105"
+    },
+    {
+      "native_index": 390,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffselectororder-20260929-233249"
+    },
+    {
+      "native_index": 391,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffsort-20260930-034606"
+    },
+    {
+      "native_index": 392,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffsort-20260930-034735"
+    },
+    {
+      "native_index": 393,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffsort-20260930-034908"
+    },
+    {
+      "native_index": 394,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffsort-20260930-035211"
+    },
+    {
+      "native_index": 395,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffspritefixed-20260929-231235"
+    },
+    {
+      "native_index": 396,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffvariants-20260929-225410"
+    },
+    {
+      "native_index": 397,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffvariantsbaseline-20260929-230437"
+    },
+    {
+      "native_index": 398,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffvariantsfixed-20260929-230257"
+    },
+    {
+      "native_index": 399,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffview-20260929-222418"
+    },
+    {
+      "native_index": 400,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-staffvisual-20260929-221146"
+    },
+    {
+      "native_index": 401,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-startup-20260930-030702"
+    },
+    {
+      "native_index": 402,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-templatefix-20260930-031823"
+    },
+    {
+      "native_index": 403,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-value-20260929-164033"
+    },
+    {
+      "native_index": 404,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-value-visual-20260929-215411"
+    },
+    {
+      "native_index": 405,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-visibilityfix-20260930-030441"
+    },
+    {
+      "native_index": 406,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-weapon-20260930-031957"
+    },
+    {
+      "native_index": 407,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-20260929-172715"
+    },
+    {
+      "native_index": 408,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-derive-20260929-173707"
+    },
+    {
+      "native_index": 409,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-derive-20260929-173749"
+    },
+    {
+      "native_index": 410,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-flags-20260929-174509"
+    },
+    {
+      "native_index": 411,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-reader-20260929-174421"
+    },
+    {
+      "native_index": 412,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-rules-20260929-173016"
+    },
+    {
+      "native_index": 413,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-rules-20260929-173550"
+    },
+    {
+      "native_index": 414,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-written-scene-20260929-174613"
+    },
+    {
+      "native_index": 415,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-zone-names-20260928-1854"
+    },
+    {
+      "native_index": 416,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-areas-zone-wall-20260929-000316"
+    },
+    {
+      "native_index": 417,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-03b-20260927162834"
+    },
+    {
+      "native_index": 418,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-03b2-20260927165517"
+    },
+    {
+      "native_index": 419,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-173807"
+    },
+    {
+      "native_index": 420,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-190345"
+    },
+    {
+      "native_index": 421,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-192727"
+    },
+    {
+      "native_index": 422,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-20260927-214250"
+    },
+    {
+      "native_index": 423,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-idfix-20260927-202754"
+    },
+    {
+      "native_index": 424,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-review-20260927-202325"
+    },
+    {
+      "native_index": 425,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-ui-20260927-2245"
+    },
+    {
+      "native_index": 426,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-ui-20260927-2250"
+    },
+    {
+      "native_index": 427,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-ui-expanded-20260927-2256"
+    },
+    {
+      "native_index": 428,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-ui-pointer-20260927-2304"
+    },
+    {
+      "native_index": 429,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-construction-ui-scene-20260927-2300"
+    },
+    {
+      "native_index": 430,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-gameplay-test-6dc916a094d6"
+    },
+    {
+      "native_index": 431,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-gameplay-test-852fbc59dad0"
+    },
+    {
+      "native_index": 432,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-gameplay-test-9799c11ec287"
+    },
+    {
+      "native_index": 433,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-gameplay-test-e7445ad2edee"
+    },
+    {
+      "native_index": 434,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-gameplay-test-f7dbe48712df"
+    },
+    {
+      "native_index": 435,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-overlap-evidence-73aab8f21d68"
+    },
+    {
+      "native_index": 436,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-reload-040f9f51be174f56866691318e8261e7"
+    },
+    {
+      "native_index": 437,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-reload-68b9656114be4875b5c686dd97803cd9"
+    },
+    {
+      "native_index": 438,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-reload-bbe1d1acc7f7402d893b1f516b5b25fb"
+    },
+    {
+      "native_index": 439,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-save-probe-20260906"
+    },
+    {
+      "native_index": 440,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-0e3cea3f9289"
+    },
+    {
+      "native_index": 441,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-24883b0bb56b"
+    },
+    {
+      "native_index": 442,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-3786ef882a9d"
+    },
+    {
+      "native_index": 443,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-5f93c4464098"
+    },
+    {
+      "native_index": 444,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-abd1d07f7190"
+    },
+    {
+      "native_index": 445,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-d7d675fbe653"
+    },
+    {
+      "native_index": 446,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-f337b3c3cb3e"
+    },
+    {
+      "native_index": 447,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-session-test-fd8d82b659e6"
+    },
+    {
+      "native_index": 448,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-04b1e32fdfb4"
+    },
+    {
+      "native_index": 449,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-04ff3120df0b"
+    },
+    {
+      "native_index": 450,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-1abf13e17fd6"
+    },
+    {
+      "native_index": 451,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-1c60a4878e81"
+    },
+    {
+      "native_index": 452,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-1fe71bdd526d"
+    },
+    {
+      "native_index": 453,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-250d25f6546c"
+    },
+    {
+      "native_index": 454,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-298a200238c2"
+    },
+    {
+      "native_index": 455,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-2f18706c7483"
+    },
+    {
+      "native_index": 456,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-301b9c15afba"
+    },
+    {
+      "native_index": 457,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-310c589f0fbc"
+    },
+    {
+      "native_index": 458,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-364fd745daa6"
+    },
+    {
+      "native_index": 459,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-3b99a88a3985"
+    },
+    {
+      "native_index": 460,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-43d1d3d5383d"
+    },
+    {
+      "native_index": 461,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-46d638ae969a"
+    },
+    {
+      "native_index": 462,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-4fff369bef8b"
+    },
+    {
+      "native_index": 463,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-6c5357b24558"
+    },
+    {
+      "native_index": 464,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-73f5185534f3"
+    },
+    {
+      "native_index": 465,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-748499b1478c"
+    },
+    {
+      "native_index": 466,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-7940cf77e20c"
+    },
+    {
+      "native_index": 467,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-7a3f4d03b7fa"
+    },
+    {
+      "native_index": 468,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-7c221e93050b"
+    },
+    {
+      "native_index": 469,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-878c52df9987"
+    },
+    {
+      "native_index": 470,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-87c50da03acf"
+    },
+    {
+      "native_index": 471,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-94d34ab81042"
+    },
+    {
+      "native_index": 472,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-98ce8be46130"
+    },
+    {
+      "native_index": 473,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-e035dd18a08a"
+    },
+    {
+      "native_index": 474,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-e2b6dbca9c1e"
+    },
+    {
+      "native_index": 475,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-e5f49f49d658"
+    },
+    {
+      "native_index": 476,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-eafc9e7088d8"
+    },
+    {
+      "native_index": 477,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-settings-evidence-faec558fe852"
+    },
+    {
+      "native_index": 478,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-details-20260927-213659"
+    },
+    {
+      "native_index": 479,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-details-review-20260927-203232"
+    },
+    {
+      "native_index": 480,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-01b-20260927142118"
+    },
+    {
+      "native_index": 481,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-170311"
+    },
+    {
+      "native_index": 482,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-173544"
+    },
+    {
+      "native_index": 483,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-20260927-134902"
+    },
+    {
+      "native_index": 484,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-20260927-135055"
+    },
+    {
+      "native_index": 485,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-20260927-135413"
+    },
+    {
+      "native_index": 486,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-20260927-142344"
+    },
+    {
+      "native_index": 487,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-20260927-214911"
+    },
+    {
+      "native_index": 488,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-accept3-20260927150453"
+    },
+    {
+      "native_index": 489,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-accept4-20260927152840"
+    },
+    {
+      "native_index": 490,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-ctrl-20260927163117"
+    },
+    {
+      "native_index": 491,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-ctrl2-20260927165322"
+    },
+    {
+      "native_index": 492,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-diag-20260927163430"
+    },
+    {
+      "native_index": 493,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-diag-20260927163540"
+    },
+    {
+      "native_index": 494,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "df3d-work-orders-seed-20260927135614"
+    },
+    {
+      "native_index": 495,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region10"
+    },
+    {
+      "native_index": 496,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region11"
+    },
+    {
+      "native_index": 497,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region12"
+    },
+    {
+      "native_index": 498,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region13"
+    },
+    {
+      "native_index": 499,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region14"
+    },
+    {
+      "native_index": 500,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region15"
+    },
+    {
+      "native_index": 501,
+      "action": "SAVE_TO_EXISTING_FOLDER",
+      "folder": "region5"
+    },
+    {
+      "native_index": 502,
+      "action": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+    },
+    {
+      "native_index": 503,
+      "action": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+    },
+    {
+      "native_index": 504,
+      "action": "RETURN"
+    }
+  ],
+  "after": {
+    "frame": 0,
+    "open": false,
+    "paused": true,
+    "saving": false
+  },
+  "owned_clone_unchanged": true,
+  "sha256": {
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+    "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+    "choices.json": "e633c00241edf2e39a144a55e505ece03de6563c482aa02a187988ae1cdf2e3b",
+    "menu.json": "3e2533257f09bd2586b54fd8566bd96ead95fb07675bb91fb19951c340462051",
+    "after.json": "0ce51bcef542e46fb1bdfbe18f8af66a5bea9b0a848d14369e4c59aef5ca3512",
+    "reloaded.json": "b5e5eb89ca35d39055cbe2737b81fda6e15fc59eab9e523eca299d5b4a92fa29",
+    "capture-inputs.log": "a8608a674573f8d0def335a33a174cf7acb7b7a22bf77028a5a203728fdf7da8",
+    "save-preservation.txt": "011b39a29bf6512048f9bb6d47cbec5c710c0016078bc177e60f77b071ab67c3"
+  },
+  "omissions": [
+    "No save destination was selected; no new-timeline prompt or save effect is established.",
+    "Options exceed the viewport in this accumulated-test-save environment. Native indices are fixture provenance, not application command identities.",
+    "This captures the loaded clone and its timeline copies only; other world/timeline configurations and physical Back behavior remain unverified."
+  ],
+  "eligibility": {
+    "source": "build/native-return-eligibility-20260930-110022",
+    "sha256": {
+      "eligibility.json": "62699f8ca8a2328adb4e007b3f9b586a9d8ee52d17cb13007615f81f2e277f37",
+      "reloaded.json": "c0c4bea724bd9587b203810737df59544da03453b806701d5b7dd2936b20cd36",
+      "native.log": "8cd93e3558a83d5983b0e7f50ab007450e3e42a30612d80b674a6e5ad76d6721",
+      "capture-inputs.log": "eff116adfdfef2ce320da39c25575812d2cbfe06dbd80ff563ba863dcf3baab8",
+      "save-preservation.txt": "011b39a29bf6512048f9bb6d47cbec5c710c0016078bc177e60f77b071ab67c3",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    },
+    "original": {
+      "id1": 2004778519,
+      "id2": 1401278833,
+      "manual_name": "",
+      "save_type": 0,
+      "timeline_name": "df3d.timeline-20260930103712xxxxxxxxxxxx"
+    },
+    "cases": [
+      {
+        "fields": [],
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "baseline",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "id1": 2004778520
+        },
+        "folders": [],
+        "lines": [
+          "Save to new timeline",
+          "Save to new folder (same timeline)"
+        ],
+        "name": "different_id1",
+        "options": [
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "id2": 1401278834
+        },
+        "folders": [],
+        "lines": [
+          "Save to new timeline",
+          "Save to new folder (same timeline)"
+        ],
+        "name": "different_id2",
+        "options": [
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "timeline_name": "df3d.timeline-20260930103712xxxxxxxxxxxx-fixture"
+        },
+        "folders": [],
+        "lines": [
+          "Save to new timeline",
+          "Save to new folder (same timeline)"
+        ],
+        "name": "different_timeline",
+        "options": [
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "timeline_name": "DF3D.TIMELINE-20260930103712XXXXXXXXXXXX"
+        },
+        "folders": [],
+        "lines": [
+          "Save to new timeline",
+          "Save to new folder (same timeline)"
+        ],
+        "name": "case_changed_timeline",
+        "options": [
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "manual_name": "fixture metadata"
+        },
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "different_manual_name",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "save_type": 1
+        },
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "inactive_loaded_type",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "save_type": 2
+        },
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "manual_loaded_type",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "save_type": 3
+        },
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "auto_loaded_type",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "save_type": -1
+        },
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "none_loaded_type",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": {
+          "timeline_name": ""
+        },
+        "folders": [
+          "df3d-areas-20260928-123812",
+          "df3d-areas-20260928-123943",
+          "df3d-areas-20260928-124045",
+          "df3d-areas-20260928-124213",
+          "df3d-areas-access-20260929-155834",
+          "df3d-areas-access-20260929-195610",
+          "df3d-areas-access-20260929-195653",
+          "df3d-areas-access-20260929-195808",
+          "df3d-areas-access-buttons-20260929-160004",
+          "df3d-areas-access-protocol-20260929-201006",
+          "df3d-areas-access-render-20260929-202559",
+          "df3d-areas-access-view-20260929-202208",
+          "df3d-areas-access-visual-20260929-201708",
+          "df3d-areas-affiliation-20260929-211704",
+          "df3d-areas-affiliation-20260929-211829",
+          "df3d-areas-affiliation-20260929-212149",
+          "df3d-areas-affiliation-view-20260929-214728",
+          "df3d-areas-affiliation-visual-20260929-214044",
+          "df3d-areas-affiliation-wire-20260929-213358",
+          "df3d-areas-all-location-kinds-20260929-113104",
+          "df3d-areas-allheaders-20260930-042055",
+          "df3d-areas-ammo-column-20260928-2006",
+          "df3d-areas-animals-list-20260928-1908",
+          "df3d-areas-appraisal-20260929-164453",
+          "df3d-areas-appraisal-read-20260929-170001",
+          "df3d-areas-appraisal-transport-20260929-170154",
+          "df3d-areas-artquality-20260930-032157",
+          "df3d-areas-bodycell-20260930-025246",
+          "df3d-areas-boundary-20260929-0013",
+          "df3d-areas-broker-20260929-164900",
+          "df3d-areas-broker-20260929-165005",
+          "df3d-areas-broker-read-20260929-170053",
+          "df3d-areas-brush-live-20260929-082722",
+          "df3d-areas-brush-multi-20260929-083029",
+          "df3d-areas-brush-multi-20260929-083654",
+          "df3d-areas-brush-reference-20260929-082229",
+          "df3d-areas-captions-20260928-1913",
+          "df3d-areas-captions-20260928-1917",
+          "df3d-areas-captions-20260928-202440",
+          "df3d-areas-captions-20260928-202614",
+          "df3d-areas-category-click-20260928-214233",
+          "df3d-areas-category-click-20260928-214340",
+          "df3d-areas-category-click-20260928-214447",
+          "df3d-areas-controller-20260928-163010",
+          "df3d-areas-controller-assignments-20260928-165545",
+          "df3d-areas-controller-links-20260928-165309",
+          "df3d-areas-controller-pile-links-20260928-170109",
+          "df3d-areas-controller-refresh-20260929-083825",
+          "df3d-areas-controller-restart-20260928-172821",
+          "df3d-areas-controller-search-20260928-171319",
+          "df3d-areas-controller-selectors-20260928-163433",
+          "df3d-areas-controller-selectors-20260928-163610",
+          "df3d-areas-controller-selectors-20260928-164644",
+          "df3d-areas-controller-stale-20260928-171702",
+          "df3d-areas-controller-zone-settings-20260928-165811",
+          "df3d-areas-controls-20260929-071540",
+          "df3d-areas-controls-20260929-071634",
+          "df3d-areas-controls-20260929-071826",
+          "df3d-areas-controls-20260929-072012",
+          "df3d-areas-corner-elevation-20260929-084416",
+          "df3d-areas-counts-20260929-070839",
+          "df3d-areas-counts-20260929-071115",
+          "df3d-areas-dance-20260929-175330",
+          "df3d-areas-dance-color-20260929-210138",
+          "df3d-areas-dance-color-20260929-210250",
+          "df3d-areas-dance-rank-20260929-175456",
+          "df3d-areas-dance-reader-20260929-175724",
+          "df3d-areas-dance-scene-20260929-180450",
+          "df3d-areas-detail-supplies-20260929-155506",
+          "df3d-areas-details-20260929-155256",
+          "df3d-areas-details-frame-20260929-220112",
+          "df3d-areas-details-modal-20260930-065537",
+          "df3d-areas-details-parent-20260930-065057",
+          "df3d-areas-details-parent-20260930-065150",
+          "df3d-areas-details-parent-20260930-065309",
+          "df3d-areas-details-reader-20260929-160428",
+          "df3d-areas-details-routes-20260930-063719",
+          "df3d-areas-details-routes-20260930-064117",
+          "df3d-areas-details-routes-20260930-064429",
+          "df3d-areas-details-state-20260929-193352",
+          "df3d-areas-details-transport-20260929-161939",
+          "df3d-areas-dyes-20260930-025924",
+          "df3d-areas-dyesfix-20260930-030132",
+          "df3d-areas-effect-0930081415",
+          "df3d-areas-elevation-20260928-230811",
+          "df3d-areas-elevation-layout-20260928-232106",
+          "df3d-areas-elevation-native-20260929-084201",
+          "df3d-areas-elevation-retry-20260928-231438",
+          "df3d-areas-elevation-verified-20260928-232706",
+          "df3d-areas-empty-bridge-20260929-074237",
+          "df3d-areas-empty-bridge-20260929-074427",
+          "df3d-areas-empty-bridge-20260929-074700",
+          "df3d-areas-empty-exits-20260929-073851",
+          "df3d-areas-entry-20260929-190312",
+          "df3d-areas-escape-20260930-070132",
+          "df3d-areas-escape-30ms-20260930-070525",
+          "df3d-areas-escape-focus-20260930-070401",
+          "df3d-areas-facilities-read-20260929-172002",
+          "df3d-areas-facilities-transport-20260929-172132",
+          "df3d-areas-filter-editing-20260930-044553",
+          "df3d-areas-filter-editing-20260930-044739",
+          "df3d-areas-filter-events-20260930-043340",
+          "df3d-areas-filter-focus-20260930-045037",
+          "df3d-areas-filter-input-20260930-045512",
+          "df3d-areas-filter-keys-20260930-044045",
+          "df3d-areas-filter-navigation-20260930-050022",
+          "df3d-areas-filter-navigation-20260930-050311",
+          "df3d-areas-filter-queries-20260930-043601",
+          "df3d-areas-filtered-20260928-203527",
+          "df3d-areas-filtered-20260928-203739",
+          "df3d-areas-filtered-20260928-203944",
+          "df3d-areas-footwearfixed-20260929-231145",
+          "df3d-areas-footweartrace-20260929-230913",
+          "df3d-areas-forbiddenmat-20260930-032457",
+          "df3d-areas-fresh-20260928-205239",
+          "df3d-areas-fresh-summary-20260928-1959",
+          "df3d-areas-furniture-20260929-170705",
+          "df3d-areas-furniture-rules-20260929-170942",
+          "df3d-areas-gem-audit-20260928-1915",
+          "df3d-areas-gestures-20260929-072449",
+          "df3d-areas-global-all-20260928-221925",
+          "df3d-areas-global-none-20260928-213456",
+          "df3d-areas-guild-metadata-20260929-095759",
+          "df3d-areas-guild-order-reader-20260929-101457",
+          "df3d-areas-guild-reader-20260929-093835",
+          "df3d-areas-guild-reader-20260929-100302",
+          "df3d-areas-guild-site-controls-20260929-100000",
+          "df3d-areas-guild-workers-20260929-093439",
+          "df3d-areas-hair-20260930-030913",
+          "df3d-areas-hair-20260930-031006",
+          "df3d-areas-hairfix-20260930-031149",
+          "df3d-areas-heading-20260929-210851",
+          "df3d-areas-hides-20260928-204702",
+          "df3d-areas-hover-20260929-203324",
+          "df3d-areas-hover-20260929-203504",
+          "df3d-areas-hover-20260929-203713",
+          "df3d-areas-hover-click-20260929-204217",
+          "df3d-areas-hover-return-20260929-204011",
+          "df3d-areas-hover-view-20260929-205441",
+          "df3d-areas-hudbounds-20260929-145456",
+          "df3d-areas-hudcounts-20260929-145257",
+          "df3d-areas-hudlive-20260929-150253",
+          "df3d-areas-iconmodel-20260930-025642",
+          "df3d-areas-indicator-reader-20260929-095441",
+          "df3d-areas-item-captions-20260928-1924",
+          "df3d-areas-list-scroll-20260929-153917",
+          "df3d-areas-listscroll-20260929-153009",
+          "df3d-areas-location-access-20260929-111234",
+          "df3d-areas-location-catalog-20260929-085857",
+          "df3d-areas-location-choices-20260929-085619",
+          "df3d-areas-location-compare-20260929-110951",
+          "df3d-areas-location-control-20260929-091416",
+          "df3d-areas-location-counts-20260929-092956",
+          "df3d-areas-location-creation-20260929-110244",
+          "df3d-areas-location-creation-20260929-110428",
+          "df3d-areas-location-creation-20260929-110629",
+          "df3d-areas-location-eligibility-20260929-091200",
+          "df3d-areas-location-facts-20260929-090349",
+          "df3d-areas-location-guard-20260929-115642",
+          "df3d-areas-location-indicators-20260929-095120",
+          "df3d-areas-location-membership-20260929-090655",
+          "df3d-areas-location-metadata-20260929-092518",
+          "df3d-areas-location-metadata-20260929-094604",
+          "df3d-areas-location-names-20260929-100906",
+          "df3d-areas-location-overlap-20260929-120856",
+          "df3d-areas-location-reader-20260929-092101",
+          "df3d-areas-location-reassign-20260929-114508",
+          "df3d-areas-location-remove-20260929-113445",
+          "df3d-areas-location-remove-20260929-113626",
+          "df3d-areas-location-remove-20260929-113814",
+          "df3d-areas-location-remove-fix-20260929-114125",
+          "df3d-areas-location-replace-20260929-114833",
+          "df3d-areas-location-replace-fix-20260929-115127",
+          "df3d-areas-location-scene-20260929-143346",
+          "df3d-areas-location-scene-guard-20260929-143538",
+          "df3d-areas-location-scene-layout-20260929-143838",
+          "df3d-areas-location-scene-scroll-20260929-144123",
+          "df3d-areas-location-transfer-20260929-120012",
+          "df3d-areas-location-transport-20260929-103703",
+          "df3d-areas-location-transport-fixed-20260929-103910",
+          "df3d-areas-location-two-zones-20260929-120428",
+          "df3d-areas-location-value-20260929-111609",
+          "df3d-areas-location-value-20260929-111820",
+          "df3d-areas-location-value-query-20260929-112035",
+          "df3d-areas-locationlist-20260929-150757",
+          "df3d-areas-locationlist-20260929-150935",
+          "df3d-areas-locationlist-layout-20260929-152523",
+          "df3d-areas-locationlist-scene-20260929-152354",
+          "df3d-areas-metadata-v22-20260928-161901",
+          "df3d-areas-multi-20260929031709",
+          "df3d-areas-multi-20260929031852",
+          "df3d-areas-multi-20260929032308",
+          "df3d-areas-multi-20260929032507",
+          "df3d-areas-multi-20260929032859",
+          "df3d-areas-multi-20260929033052",
+          "df3d-areas-multi-20260929033411",
+          "df3d-areas-multi-20260929033734",
+          "df3d-areas-multi-20260929033928",
+          "df3d-areas-multi-20260929034216",
+          "df3d-areas-multi-20260929034432",
+          "df3d-areas-multi-20260929034630",
+          "df3d-areas-multi-20260929035826",
+          "df3d-areas-multi-20260929040148",
+          "df3d-areas-multi-20260929040351",
+          "df3d-areas-multi-20260929040759",
+          "df3d-areas-multi-20260929040930",
+          "df3d-areas-multi-20260929041228",
+          "df3d-areas-multi-20260929042000",
+          "df3d-areas-multi-20260929043953",
+          "df3d-areas-multi-20260929044256",
+          "df3d-areas-multi-20260929044407",
+          "df3d-areas-multi-20260929051244",
+          "df3d-areas-multiple-guilds-20260929-101222",
+          "df3d-areas-native-captions-20260928-1943",
+          "df3d-areas-native-location-value-20260929-112716",
+          "df3d-areas-native-none-20260928-220254",
+          "df3d-areas-options-art-20260930-074005",
+          "df3d-areas-options-cancel-20260930-073435",
+          "df3d-areas-options-confirmations-20260930-073530",
+          "df3d-areas-options-grids-20260930-074113",
+          "df3d-areas-options-input-20260930-073207",
+          "df3d-areas-options-physical-20260930-074713",
+          "df3d-areas-options-prompts-20260930-073323",
+          "df3d-areas-options-right-20260930-074822",
+          "df3d-areas-options-textures-20260930-074236",
+          "df3d-areas-ow-0930080757",
+          "df3d-areas-ow-0930080919",
+          "df3d-areas-owner-labels-20260928-1846",
+          "df3d-areas-owner-pointer-20260928-183508",
+          "df3d-areas-owner-portraits-20260928-183132",
+          "df3d-areas-paint-exits-20260929-072937",
+          "df3d-areas-paint-exits-20260929-073046",
+          "df3d-areas-paint-exits-check-20260929-073250",
+          "df3d-areas-paint-lifecycle-20260929-080022",
+          "df3d-areas-paint-order-20260929-081816",
+          "df3d-areas-paint-session-20260929-075719",
+          "df3d-areas-paint-switch-20260929-080423",
+          "df3d-areas-paint-switch-20260929-080649",
+          "df3d-areas-paint-switch-live-20260929-080927",
+          "df3d-areas-paint-v21-20260928-141122",
+          "df3d-areas-paint-v21-20260928-141256",
+          "df3d-areas-paint-v21-20260928-141626",
+          "df3d-areas-pointer-20260928-170402",
+          "df3d-areas-pointer-cancel-20260928-172329",
+          "df3d-areas-pointer-caption-20260928-170838",
+          "df3d-areas-pointer-layout-20260928-170642",
+          "df3d-areas-pointer-reflow-20260928-171019",
+          "df3d-areas-pointer-repaint-20260928-172109",
+          "df3d-areas-read-recovery-20260928-210859",
+          "df3d-areas-refresh-20260929-181041",
+          "df3d-areas-refresh-reader-20260929-181413",
+          "df3d-areas-repaint-brush-20260929-085138",
+          "df3d-areas-repaint-corner-20260929-084936",
+          "df3d-areas-repaint-elevation-20260929-084657",
+          "df3d-areas-repaint-native-20260929-073503",
+          "df3d-areas-repaint-native-20260929-073601",
+          "df3d-areas-repaint-native-20260929-073704",
+          "df3d-areas-restart-catalog-20260928-173457",
+          "df3d-areas-revision-20260928-210233",
+          "df3d-areas-same-choice-20260929-154752",
+          "df3d-areas-same-selection-20260929-154422",
+          "df3d-areas-same-selection-20260929-154512",
+          "df3d-areas-same-selection-20260929-154554",
+          "df3d-areas-save-boundary-20260930-080354",
+          "df3d-areas-save-characters-20260930-075631",
+          "df3d-areas-save-name-20260930-075151",
+          "df3d-areas-save-unicode-20260930-075736",
+          "df3d-areas-scene-mask-20260928-181823",
+          "df3d-areas-scene-poll-20260928-175727",
+          "df3d-areas-scene-restart-20260928-174254",
+          "df3d-areas-scroll-20260928-211523",
+          "df3d-areas-scroll-20260928-211908",
+          "df3d-areas-scroll-20260929-140211",
+          "df3d-areas-scroll-drag-20260929-140912",
+          "df3d-areas-scroll-grid-20260929-140512",
+          "df3d-areas-scroll-states-20260929-142359",
+          "df3d-areas-scroll-states-safe-20260929-142533",
+          "df3d-areas-search-20260928-222838",
+          "df3d-areas-search-20260928-223357",
+          "df3d-areas-selectinput-20260930-033235",
+          "df3d-areas-selector-abbrev-edges-20260930-013931",
+          "df3d-areas-selector-abbreviation-20260930-013629",
+          "df3d-areas-selector-aging-20260930-021858",
+          "df3d-areas-selector-aging-boundaries-20260930-022304",
+          "df3d-areas-selector-aging-controls-20260930-022106",
+          "df3d-areas-selector-aging-fixed-20260930-023026",
+          "df3d-areas-selector-aging-weights-20260930-022657",
+          "df3d-areas-selector-color-clock-20260930-012510",
+          "df3d-areas-selector-color-phase-20260930-012814",
+          "df3d-areas-selector-color-phase-20260930-012915",
+          "df3d-areas-selector-colors-20260930-012203",
+          "df3d-areas-selector-complete-audit-20260930-024005",
+          "df3d-areas-selector-copy-20260930-011503",
+          "df3d-areas-selector-eligibility-20260930-011906",
+          "df3d-areas-selector-equipment-20260930-024435",
+          "df3d-areas-selector-inventory-20260930-023329",
+          "df3d-areas-selector-layers-20260930-023218",
+          "df3d-areas-selector-names-20260930-010113",
+          "df3d-areas-selector-names-20260930-010516",
+          "df3d-areas-selector-portrait-audit-20260930-023716",
+          "df3d-areas-selector-portrait-diagnostic-20260930-021651",
+          "df3d-areas-selector-portrait-parity-20260930-023542",
+          "df3d-areas-selector-portraits-20260930-020926",
+          "df3d-areas-selector-portraits-fixed-20260930-021551",
+          "df3d-areas-selector-portraits-live-20260930-021230",
+          "df3d-areas-selector-professions-20260930-011032",
+          "df3d-areas-selector-render-20260930-005156",
+          "df3d-areas-selector-render-20260930-005253",
+          "df3d-areas-selector-views-20260929-105402",
+          "df3d-areas-selector-views-20260929-105812",
+          "df3d-areas-selectrelease-20260930-033401",
+          "df3d-areas-selectscroll-20260930-033121",
+          "df3d-areas-selectscroll-20260930-033735",
+          "df3d-areas-settings-20260928-1858",
+          "df3d-areas-settings-20260928-1900",
+          "df3d-areas-shared-corner-20260929-081225",
+          "df3d-areas-site-identity-20260929-163528",
+          "df3d-areas-skillssort-20260930-035507",
+          "df3d-areas-sphere-captions-20260929-101824",
+          "df3d-areas-staff-20260929-181659",
+          "df3d-areas-staff-assignment-20260930-050858",
+          "df3d-areas-staff-assignment-20260930-051101",
+          "df3d-areas-staff-assignment-20260930-051233",
+          "df3d-areas-staff-edit-20260930-055622",
+          "df3d-areas-staff-edit-20260930-055730",
+          "df3d-areas-staff-edit-20260930-055821",
+          "df3d-areas-staff-edit-20260930-055905",
+          "df3d-areas-staff-eligibility-20260929-182138",
+          "df3d-areas-staff-filter-20260930-003745",
+          "df3d-areas-staff-filter-feed-20260930-004527",
+          "df3d-areas-staff-filter-r2-20260930-003834",
+          "df3d-areas-staff-fortress-20260930-071000",
+          "df3d-areas-staff-fortress-20260930-071147",
+          "df3d-areas-staff-keyboard-20260930-063322",
+          "df3d-areas-staff-keys-20260930-062534",
+          "df3d-areas-staff-keys-20260930-062620",
+          "df3d-areas-staff-keys-20260930-062712",
+          "df3d-areas-staff-keys-20260930-062801",
+          "df3d-areas-staff-keys-20260930-062900",
+          "df3d-areas-staff-keys-20260930-063207",
+          "df3d-areas-staff-labels-20260929-190932",
+          "df3d-areas-staff-matrix-20260930-051531",
+          "df3d-areas-staff-matrix-20260930-051647",
+          "df3d-areas-staff-metadata-v28-20260930-015136",
+          "df3d-areas-staff-metadata-v28-20260930-015419",
+          "df3d-areas-staff-names-20260929-191420",
+          "df3d-areas-staff-names-reader-20260929-192252",
+          "df3d-areas-staff-names-transport-20260929-192406",
+          "df3d-areas-staff-parent-refresh-20260930-071701",
+          "df3d-areas-staff-reader-20260929-182954",
+          "df3d-areas-staff-receipts-20260930-052845",
+          "df3d-areas-staff-refusal-20260929-183200",
+          "df3d-areas-staff-religion-20260929-182358",
+          "df3d-areas-staff-semantic-20260930-053519",
+          "df3d-areas-staff-semantic-transfer-20260930-053743",
+          "df3d-areas-staff-slots-20260930-052111",
+          "df3d-areas-staff-slots-20260930-052157",
+          "df3d-areas-staff-state-20260930-003400",
+          "df3d-areas-staff-transfer-20260930-052342",
+          "df3d-areas-staff-transport-20260929-184851",
+          "df3d-areas-staff-ui-20260930-002416",
+          "df3d-areas-staff-ui-r2-20260930-002742",
+          "df3d-areas-staff-unknown-20260930-060332",
+          "df3d-areas-staff-viewport-20260930-061722",
+          "df3d-areas-staff-wire-20260930-001447",
+          "df3d-areas-staff-wire-r2-20260930-001611",
+          "df3d-areas-staffactions-20260929-232328",
+          "df3d-areas-staffactionscancel-20260929-232551",
+          "df3d-areas-staffactionsfull-20260929-232436",
+          "df3d-areas-staffbasepixels-20260929-231752",
+          "df3d-areas-staffcandidatecompiled-20260929-234335",
+          "df3d-areas-staffcandidatefinal-20260929-234534",
+          "df3d-areas-staffcandidatemembership-20260929-234933",
+          "df3d-areas-staffcandidatepages-20260929-235658",
+          "df3d-areas-staffcandidatetame-20260929-234731",
+          "df3d-areas-staffcomparators-20260930-040038",
+          "df3d-areas-staffcomparators-20260930-040156",
+          "df3d-areas-staffeligibility-20260929-233449",
+          "df3d-areas-staffeligibilityflags-20260929-233646",
+          "df3d-areas-staffexactpixels-20260929-231634",
+          "df3d-areas-stafffilter-20260930-042437",
+          "df3d-areas-stafficons-20260929-224748",
+          "df3d-areas-stafflayout-20260929-221753",
+          "df3d-areas-stafforder-20260930-040939",
+          "df3d-areas-staffportraits-20260929-224055",
+          "df3d-areas-staffportraits-20260929-224159",
+          "df3d-areas-staffpredicate-20260929-234005",
+          "df3d-areas-staffscroll-20260929-223022",
+          "df3d-areas-staffscrollui-20260929-223440",
+          "df3d-areas-staffselector-20260929-233105",
+          "df3d-areas-staffselectororder-20260929-233249",
+          "df3d-areas-staffsort-20260930-034606",
+          "df3d-areas-staffsort-20260930-034735",
+          "df3d-areas-staffsort-20260930-034908",
+          "df3d-areas-staffsort-20260930-035211",
+          "df3d-areas-staffspritefixed-20260929-231235",
+          "df3d-areas-staffvariants-20260929-225410",
+          "df3d-areas-staffvariantsbaseline-20260929-230437",
+          "df3d-areas-staffvariantsfixed-20260929-230257",
+          "df3d-areas-staffview-20260929-222418",
+          "df3d-areas-staffvisual-20260929-221146",
+          "df3d-areas-startup-20260930-030702",
+          "df3d-areas-templatefix-20260930-031823",
+          "df3d-areas-value-20260929-164033",
+          "df3d-areas-value-visual-20260929-215411",
+          "df3d-areas-visibilityfix-20260930-030441",
+          "df3d-areas-weapon-20260930-031957",
+          "df3d-areas-written-20260929-172715",
+          "df3d-areas-written-derive-20260929-173707",
+          "df3d-areas-written-derive-20260929-173749",
+          "df3d-areas-written-flags-20260929-174509",
+          "df3d-areas-written-reader-20260929-174421",
+          "df3d-areas-written-rules-20260929-173016",
+          "df3d-areas-written-rules-20260929-173550",
+          "df3d-areas-written-scene-20260929-174613",
+          "df3d-areas-zone-names-20260928-1854",
+          "df3d-areas-zone-wall-20260929-000316",
+          "df3d-construction-03b-20260927162834",
+          "df3d-construction-03b2-20260927165517",
+          "df3d-construction-173807",
+          "df3d-construction-190345",
+          "df3d-construction-192727",
+          "df3d-construction-20260927-214250",
+          "df3d-construction-idfix-20260927-202754",
+          "df3d-construction-review-20260927-202325",
+          "df3d-construction-ui-20260927-2245",
+          "df3d-construction-ui-20260927-2250",
+          "df3d-construction-ui-expanded-20260927-2256",
+          "df3d-construction-ui-pointer-20260927-2304",
+          "df3d-construction-ui-scene-20260927-2300",
+          "df3d-gameplay-test-6dc916a094d6",
+          "df3d-gameplay-test-852fbc59dad0",
+          "df3d-gameplay-test-9799c11ec287",
+          "df3d-gameplay-test-e7445ad2edee",
+          "df3d-gameplay-test-f7dbe48712df",
+          "df3d-overlap-evidence-73aab8f21d68",
+          "df3d-reload-040f9f51be174f56866691318e8261e7",
+          "df3d-reload-68b9656114be4875b5c686dd97803cd9",
+          "df3d-reload-bbe1d1acc7f7402d893b1f516b5b25fb",
+          "df3d-save-probe-20260906",
+          "df3d-session-test-0e3cea3f9289",
+          "df3d-session-test-24883b0bb56b",
+          "df3d-session-test-3786ef882a9d",
+          "df3d-session-test-5f93c4464098",
+          "df3d-session-test-abd1d07f7190",
+          "df3d-session-test-d7d675fbe653",
+          "df3d-session-test-f337b3c3cb3e",
+          "df3d-session-test-fd8d82b659e6",
+          "df3d-settings-evidence-04b1e32fdfb4",
+          "df3d-settings-evidence-04ff3120df0b",
+          "df3d-settings-evidence-1abf13e17fd6",
+          "df3d-settings-evidence-1c60a4878e81",
+          "df3d-settings-evidence-1fe71bdd526d",
+          "df3d-settings-evidence-250d25f6546c",
+          "df3d-settings-evidence-298a200238c2",
+          "df3d-settings-evidence-2f18706c7483",
+          "df3d-settings-evidence-301b9c15afba",
+          "df3d-settings-evidence-310c589f0fbc",
+          "df3d-settings-evidence-364fd745daa6",
+          "df3d-settings-evidence-3b99a88a3985",
+          "df3d-settings-evidence-43d1d3d5383d",
+          "df3d-settings-evidence-46d638ae969a",
+          "df3d-settings-evidence-4fff369bef8b",
+          "df3d-settings-evidence-6c5357b24558",
+          "df3d-settings-evidence-73f5185534f3",
+          "df3d-settings-evidence-748499b1478c",
+          "df3d-settings-evidence-7940cf77e20c",
+          "df3d-settings-evidence-7a3f4d03b7fa",
+          "df3d-settings-evidence-7c221e93050b",
+          "df3d-settings-evidence-878c52df9987",
+          "df3d-settings-evidence-87c50da03acf",
+          "df3d-settings-evidence-94d34ab81042",
+          "df3d-settings-evidence-98ce8be46130",
+          "df3d-settings-evidence-e035dd18a08a",
+          "df3d-settings-evidence-e2b6dbca9c1e",
+          "df3d-settings-evidence-e5f49f49d658",
+          "df3d-settings-evidence-eafc9e7088d8",
+          "df3d-settings-evidence-faec558fe852",
+          "df3d-work-details-20260927-213659",
+          "df3d-work-details-review-20260927-203232",
+          "df3d-work-orders-01b-20260927142118",
+          "df3d-work-orders-170311",
+          "df3d-work-orders-173544",
+          "df3d-work-orders-20260927-134902",
+          "df3d-work-orders-20260927-135055",
+          "df3d-work-orders-20260927-135413",
+          "df3d-work-orders-20260927-142344",
+          "df3d-work-orders-20260927-214911",
+          "df3d-work-orders-accept3-20260927150453",
+          "df3d-work-orders-accept4-20260927152840",
+          "df3d-work-orders-ctrl-20260927163117",
+          "df3d-work-orders-ctrl2-20260927165322",
+          "df3d-work-orders-diag-20260927163430",
+          "df3d-work-orders-diag-20260927163540",
+          "df3d-work-orders-seed-20260927135614",
+          "region10",
+          "region11",
+          "region12",
+          "region13",
+          "region14",
+          "region15",
+          "region5"
+        ],
+        "lines": [
+          "Baldmirror",
+          "City",
+          "Save to timeline folder: df3d-areas-pointer-20260928-170402",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-pointer-cancel-20260928-172329",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-pointer-caption-20260928-170838",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-pointer-layout-20260928-170642",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-pointer-reflow-20260928-171019",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-pointer-repaint-20260928-172109",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-read-recovery-20260928-210859",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-refresh-20260929-181041",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-refresh-reader-20260929-181413",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-repaint-brush-20260929-085138",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-repaint-corner-20260929-084936",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-repaint-elevation-20260929-084657",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-repaint-native-20260929-073503",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-repaint-native-20260929-073601",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-repaint-native-20260929-073704",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-restart-catalog-20260928-173457",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-revision-20260928-210233",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-same-choice-20260929-154752",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-same-selection-20260929-154422",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-same-selection-20260929-154512",
+          "Multiple copies of the timeline found.",
+          "Save to timeline folder: df3d-areas-same-selection-20260929-154554",
+          "Multiple copies of the timeline found."
+        ],
+        "name": "empty_timeline",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 1,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 2,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 3,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 4,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 5,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 6,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 7,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 8,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 9,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 10,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 11,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 12,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 13,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 14,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 15,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 16,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 17,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 18,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 19,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 20,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 21,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 22,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 23,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 24,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 25,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 26,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 27,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 28,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 29,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 30,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 31,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 32,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 33,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 34,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 35,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 36,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 37,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 38,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 39,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 40,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 41,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 42,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 43,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 44,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 45,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 46,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 47,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 48,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 49,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 50,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 51,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 52,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 53,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 54,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 55,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 56,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 57,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 58,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 59,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 60,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 61,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 62,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 63,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 64,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 65,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 66,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 67,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 68,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 69,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 70,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 71,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 72,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 73,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 74,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 75,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 76,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 77,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 78,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 79,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 80,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 81,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 82,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 83,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 84,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 85,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 86,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 87,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 88,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 89,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 90,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 91,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 92,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 93,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 94,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 95,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 96,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 97,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 98,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 99,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 100,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 101,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 102,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 103,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 104,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 105,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 106,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 107,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 108,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 109,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 110,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 111,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 112,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 113,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 114,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 115,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 116,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 117,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 118,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 119,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 120,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 121,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 122,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 123,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 124,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 125,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 126,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 127,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 128,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 129,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 130,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 131,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 132,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 133,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 134,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 135,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 136,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 137,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 138,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 139,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 140,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 141,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 142,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 143,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 144,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 145,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 146,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 147,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 148,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 149,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 150,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 151,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 152,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 153,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 154,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 155,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 156,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 157,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 158,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 159,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 160,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 161,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 162,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 163,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 164,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 165,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 166,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 167,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 168,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 169,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 170,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 171,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 172,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 173,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 174,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 175,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 176,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 177,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 178,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 179,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 180,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 181,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 182,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 183,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 184,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 185,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 186,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 187,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 188,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 189,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 190,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 191,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 192,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 193,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 194,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 195,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 196,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 197,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 198,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 199,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 200,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 201,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 202,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 203,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 204,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 205,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 206,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 207,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 208,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 209,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 210,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 211,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 212,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 213,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 214,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 215,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 216,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 217,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 218,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 219,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 220,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 221,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 222,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 223,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 224,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 225,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 226,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 227,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 228,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 229,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 230,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 231,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 232,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 233,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 234,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 235,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 236,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 237,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 238,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 239,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 240,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 241,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 242,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 243,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 244,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 245,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 246,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 247,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 248,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 249,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 250,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 251,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 252,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 253,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 254,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 255,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 256,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 257,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 258,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 259,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 260,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 261,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 262,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 263,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 264,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 265,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 266,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 267,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 268,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 269,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 270,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 271,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 272,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 273,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 274,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 275,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 276,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 277,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 278,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 279,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 280,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 281,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 282,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 283,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 284,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 285,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 286,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 287,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 288,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 289,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 290,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 291,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 292,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 293,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 294,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 295,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 296,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 297,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 298,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 299,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 300,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 301,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 302,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 303,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 304,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 305,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 306,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 307,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 308,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 309,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 310,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 311,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 312,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 313,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 314,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 315,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 316,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 317,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 318,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 319,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 320,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 321,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 322,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 323,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 324,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 325,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 326,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 327,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 328,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 329,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 330,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 331,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 332,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 333,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 334,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 335,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 336,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 337,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 338,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 339,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 340,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 341,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 342,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 343,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 344,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 345,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 346,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 347,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 348,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 349,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 350,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 351,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 352,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 353,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 354,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 355,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 356,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 357,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 358,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 359,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 360,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 361,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 362,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 363,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 364,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 365,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 366,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 367,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 368,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 369,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 370,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 371,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 372,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 373,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 374,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 375,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 376,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 377,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 378,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 379,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 380,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 381,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 382,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 383,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 384,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 385,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 386,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 387,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 388,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 389,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 390,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 391,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 392,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 393,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 394,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 395,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 396,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 397,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 398,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 399,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 400,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 401,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 402,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 403,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 404,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 405,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 406,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 407,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 408,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 409,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 410,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 411,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 412,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 413,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 414,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 415,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 416,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 417,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 418,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 419,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 420,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 421,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 422,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 423,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 424,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 425,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 426,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 427,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 428,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 429,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 430,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 431,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 432,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 433,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 434,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 435,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 436,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 437,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 438,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 439,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 440,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 441,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 442,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 443,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 444,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 445,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 446,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 447,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 448,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 449,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 450,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 451,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 452,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 453,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 454,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 455,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 456,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 457,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 458,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 459,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 460,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 461,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 462,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 463,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 464,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 465,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 466,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 467,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 468,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 469,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 470,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 471,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 472,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 473,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 474,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 475,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 476,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 477,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 478,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 479,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 480,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 481,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 482,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 483,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 484,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 485,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 486,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 487,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 488,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 489,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 490,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 491,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 492,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 493,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 494,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 495,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 496,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 497,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 498,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 499,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 500,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": 501,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      },
+      {
+        "fields": [],
+        "folders": [
+          "region16"
+        ],
+        "lines": [
+          "Save to this timeline",
+          "Recommended!",
+          "Save to new timeline",
+          "Do this if you want to keep the old save.",
+          "Save to new folder (same timeline)",
+          "May interfere with existing saves."
+        ],
+        "name": "restored",
+        "options": [
+          {
+            "folder_index": 0,
+            "token": "SAVE_TO_EXISTING_FOLDER"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_NEW_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE"
+          },
+          {
+            "folder_index": -1,
+            "token": "RETURN"
+          }
+        ]
+      }
+    ],
+    "verified": {
+      "exit_code": 0,
+      "paused_frame": 0,
+      "original_header_restored": true,
+      "owned_save_manifest_unchanged": true,
+      "no_save_destination_selected": true
+    },
+    "omissions": [
+      "Loaded header fields were varied in memory; candidate on-disk headers were not modified.",
+      "Candidate save-type eligibility and cross-root filename collisions remain unverified.",
+      "This is a native oracle, not a runtime destination catalog implementation."
+    ]
+  },
+  "semantic_read": {
+    "source": "build/native-explicit-return-read-20260930-111514",
+    "protocol_version": 9,
+    "request": "session_client destinations",
+    "receipt": 1,
+    "destinations": [
+      {
+        "id": "1:0",
+        "folder": "region16"
+      }
+    ],
+    "sha256": {
+      "destinations.log": "2736a70bf5bf753e4dbd05cb866cb9b1585e130fc56dfe0f92b27a812ad9674c",
+      "choices.json": "0d3ccb6575177589014c720d7be480ce765d133628fca5eeb93de9138c366621",
+      "reloaded.json": "c0c4bea724bd9587b203810737df59544da03453b806701d5b7dd2936b20cd36",
+      "native.log": "cb5feec2f7d0b8ead3347ad248084853a30cde4ce50e4efb230e20efbed64db5",
+      "capture-inputs.log": "f185bae7cc94851190a6ddbe94adc22089ea9522e1e2fbac97b4cf36b2afa90b",
+      "save-preservation.txt": "011b39a29bf6512048f9bb6d47cbec5c710c0016078bc177e60f77b071ab67c3",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+    },
+    "verified": {
+      "exit_code": 0,
+      "matches_native_catalog": true,
+      "owned_save_unchanged": true,
+      "native_chooser_closed": true
+    },
+    "omissions": [
+      "Multiple or empty semantic catalogs, concurrent-client invalidation and epoch changes need protected acceptance.",
+      "Reading a catalog is not save-effect acceptance."
+    ]
+  }
+}

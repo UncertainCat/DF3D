@@ -1,0 +1,4091 @@
+{
+  "native_version": "DF 53.16 Steam / DFHack 53.16-r1",
+  "sources": [
+    "build/reports-membership-native-20261001-043401",
+    "build/reports-type-membership-native-20261001-043619"
+  ],
+  "method": "Protected paused clone. Membership controls vary announcements-vector inclusion and report.flags.announcement independently. Exhaustive type sweep creates twelve distinct report rows per batch, all D_DISPLAY with stored coordinates, opens native All, captures rendered text and screenshots; thirty batches cover every non-sentinel enum value.",
+  "count": {
+    "tested_types": 356,
+    "native_all_visible": 233,
+    "native_all_omitted": 123
+  },
+  "membership_controls": [
+    {
+      "stage": "prepare",
+      "reports": [
+        {
+          "announcement": true,
+          "id": 78822,
+          "text": "Membership probe 1 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": true,
+          "id": 78823,
+          "text": "Membership probe 2 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": false,
+          "id": 78824,
+          "text": "Membership probe 3 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": false,
+          "id": 78825,
+          "text": "Membership probe 4 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": true,
+          "id": 78826,
+          "text": "Membership probe 5 CITIZEN_DEATH",
+          "type": "CITIZEN_DEATH"
+        },
+        {
+          "announcement": true,
+          "id": 78827,
+          "text": "Membership probe 6 COMBAT_DODGE",
+          "type": "COMBAT_DODGE"
+        }
+      ],
+      "announcement_ids": [
+        78822,
+        78824,
+        78826,
+        78827
+      ],
+      "visible_probe_numbers": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "stage": "flags-swapped",
+      "reports": [
+        {
+          "announcement": false,
+          "id": 78822,
+          "text": "Membership probe 1 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": false,
+          "id": 78823,
+          "text": "Membership probe 2 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": true,
+          "id": 78824,
+          "text": "Membership probe 3 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": false,
+          "id": 78825,
+          "text": "Membership probe 4 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": true,
+          "id": 78826,
+          "text": "Membership probe 5 CITIZEN_DEATH",
+          "type": "CITIZEN_DEATH"
+        },
+        {
+          "announcement": true,
+          "id": 78827,
+          "text": "Membership probe 6 COMBAT_DODGE",
+          "type": "COMBAT_DODGE"
+        }
+      ],
+      "announcement_ids": [
+        78822,
+        78824,
+        78826,
+        78827
+      ],
+      "visible_probe_numbers": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "stage": "vector-empty",
+      "reports": [
+        {
+          "announcement": false,
+          "id": 78822,
+          "text": "Membership probe 1 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": false,
+          "id": 78823,
+          "text": "Membership probe 2 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": true,
+          "id": 78824,
+          "text": "Membership probe 3 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": false,
+          "id": 78825,
+          "text": "Membership probe 4 MIGRANT_ARRIVAL",
+          "type": "MIGRANT_ARRIVAL"
+        },
+        {
+          "announcement": true,
+          "id": 78826,
+          "text": "Membership probe 5 CITIZEN_DEATH",
+          "type": "CITIZEN_DEATH"
+        },
+        {
+          "announcement": true,
+          "id": 78827,
+          "text": "Membership probe 6 COMBAT_DODGE",
+          "type": "COMBAT_DODGE"
+        }
+      ],
+      "announcement_ids": [],
+      "visible_probe_numbers": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "alert_type": "GENERAL",
+      "id": 78822,
+      "name": "REACHED_PEAK",
+      "native_all_visible": true,
+      "text": "Native membership type 0",
+      "type": 0,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "ERA_CHANGE",
+      "id": 78823,
+      "name": "ERA_CHANGE",
+      "native_all_visible": true,
+      "text": "Native membership type 1",
+      "type": 1,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78824,
+      "name": "FEATURE_DISCOVERY",
+      "native_all_visible": true,
+      "text": "Native membership type 2",
+      "type": 2,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78825,
+      "name": "STRUCK_DEEP_METAL",
+      "native_all_visible": true,
+      "text": "Native membership type 3",
+      "type": 3,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78826,
+      "name": "STRUCK_MINERAL",
+      "native_all_visible": true,
+      "text": "Native membership type 4",
+      "type": 4,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78827,
+      "name": "STRUCK_ECONOMIC_MINERAL",
+      "native_all_visible": true,
+      "text": "Native membership type 5",
+      "type": 5,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78828,
+      "name": "COMBAT_TWIST_WEAPON",
+      "native_all_visible": false,
+      "text": "Native membership type 6",
+      "type": 6,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78829,
+      "name": "COMBAT_LET_ITEM_DROP",
+      "native_all_visible": false,
+      "text": "Native membership type 7",
+      "type": 7,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78830,
+      "name": "COMBAT_START_CHARGE",
+      "native_all_visible": false,
+      "text": "Native membership type 8",
+      "type": 8,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78831,
+      "name": "COMBAT_SURPRISE_CHARGE",
+      "native_all_visible": false,
+      "text": "Native membership type 9",
+      "type": 9,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78832,
+      "name": "COMBAT_JUMP_DODGE_PROJ",
+      "native_all_visible": false,
+      "text": "Native membership type 10",
+      "type": 10,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78833,
+      "name": "COMBAT_JUMP_DODGE_STRIKE",
+      "native_all_visible": false,
+      "text": "Native membership type 11",
+      "type": 11,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78834,
+      "name": "COMBAT_DODGE",
+      "native_all_visible": false,
+      "text": "Native membership type 12",
+      "type": 12,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78835,
+      "name": "COMBAT_COUNTERSTRIKE",
+      "native_all_visible": false,
+      "text": "Native membership type 13",
+      "type": 13,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78836,
+      "name": "COMBAT_BLOCK",
+      "native_all_visible": false,
+      "text": "Native membership type 14",
+      "type": 14,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78837,
+      "name": "COMBAT_PARRY",
+      "native_all_visible": false,
+      "text": "Native membership type 15",
+      "type": 15,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78838,
+      "name": "COMBAT_CHARGE_COLLISION",
+      "native_all_visible": false,
+      "text": "Native membership type 16",
+      "type": 16,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78839,
+      "name": "COMBAT_CHARGE_DEFENDER_TUMBLES",
+      "native_all_visible": false,
+      "text": "Native membership type 17",
+      "type": 17,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78840,
+      "name": "COMBAT_CHARGE_DEFENDER_KNOCKED_OVER",
+      "native_all_visible": false,
+      "text": "Native membership type 18",
+      "type": 18,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78841,
+      "name": "COMBAT_CHARGE_ATTACKER_TUMBLES",
+      "native_all_visible": false,
+      "text": "Native membership type 19",
+      "type": 19,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78842,
+      "name": "COMBAT_CHARGE_ATTACKER_BOUNCE_BACK",
+      "native_all_visible": false,
+      "text": "Native membership type 20",
+      "type": 20,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78843,
+      "name": "COMBAT_CHARGE_TANGLE_TOGETHER",
+      "native_all_visible": false,
+      "text": "Native membership type 21",
+      "type": 21,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78844,
+      "name": "COMBAT_CHARGE_TANGLE_TUMBLE",
+      "native_all_visible": false,
+      "text": "Native membership type 22",
+      "type": 22,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78845,
+      "name": "COMBAT_CHARGE_RUSH_BY",
+      "native_all_visible": false,
+      "text": "Native membership type 23",
+      "type": 23,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78846,
+      "name": "COMBAT_CHARGE_MANAGE_STOP",
+      "native_all_visible": false,
+      "text": "Native membership type 24",
+      "type": 24,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78847,
+      "name": "COMBAT_CHARGE_OBSTACLE_SLAM",
+      "native_all_visible": false,
+      "text": "Native membership type 25",
+      "type": 25,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78848,
+      "name": "COMBAT_WRESTLE_LOCK",
+      "native_all_visible": false,
+      "text": "Native membership type 26",
+      "type": 26,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78849,
+      "name": "COMBAT_WRESTLE_CHOKEHOLD",
+      "native_all_visible": false,
+      "text": "Native membership type 27",
+      "type": 27,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78850,
+      "name": "COMBAT_WRESTLE_TAKEDOWN",
+      "native_all_visible": false,
+      "text": "Native membership type 28",
+      "type": 28,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78851,
+      "name": "COMBAT_WRESTLE_THROW",
+      "native_all_visible": false,
+      "text": "Native membership type 29",
+      "type": 29,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78852,
+      "name": "COMBAT_WRESTLE_RELEASE_LOCK",
+      "native_all_visible": false,
+      "text": "Native membership type 30",
+      "type": 30,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78853,
+      "name": "COMBAT_WRESTLE_RELEASE_CHOKE",
+      "native_all_visible": false,
+      "text": "Native membership type 31",
+      "type": 31,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78854,
+      "name": "COMBAT_WRESTLE_RELEASE_GRIP",
+      "native_all_visible": false,
+      "text": "Native membership type 32",
+      "type": 32,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78855,
+      "name": "COMBAT_WRESTLE_STRUGGLE",
+      "native_all_visible": false,
+      "text": "Native membership type 33",
+      "type": 33,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78856,
+      "name": "COMBAT_WRESTLE_RELEASE_LATCH",
+      "native_all_visible": false,
+      "text": "Native membership type 34",
+      "type": 34,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78857,
+      "name": "COMBAT_WRESTLE_STRANGLE_KO",
+      "native_all_visible": false,
+      "text": "Native membership type 35",
+      "type": 35,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78858,
+      "name": "COMBAT_WRESTLE_ADJUST_GRIP",
+      "native_all_visible": false,
+      "text": "Native membership type 36",
+      "type": 36,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78859,
+      "name": "COMBAT_GRAB_TEAR",
+      "native_all_visible": false,
+      "text": "Native membership type 37",
+      "type": 37,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78860,
+      "name": "COMBAT_STRIKE_DETAILS",
+      "native_all_visible": false,
+      "text": "Native membership type 38",
+      "type": 38,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78861,
+      "name": "COMBAT_STRIKE_DETAILS_2",
+      "native_all_visible": false,
+      "text": "Native membership type 39",
+      "type": 39,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78862,
+      "name": "COMBAT_EVENT_ENRAGED",
+      "native_all_visible": false,
+      "text": "Native membership type 40",
+      "type": 40,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78863,
+      "name": "COMBAT_EVENT_STUCKIN",
+      "native_all_visible": false,
+      "text": "Native membership type 41",
+      "type": 41,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78864,
+      "name": "COMBAT_EVENT_LATCH_BP",
+      "native_all_visible": false,
+      "text": "Native membership type 42",
+      "type": 42,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78865,
+      "name": "COMBAT_EVENT_LATCH_GENERAL",
+      "native_all_visible": false,
+      "text": "Native membership type 43",
+      "type": 43,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78866,
+      "name": "COMBAT_EVENT_PROPELLED_AWAY",
+      "native_all_visible": false,
+      "text": "Native membership type 44",
+      "type": 44,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78867,
+      "name": "COMBAT_EVENT_KNOCKED_OUT",
+      "native_all_visible": false,
+      "text": "Native membership type 45",
+      "type": 45,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78868,
+      "name": "COMBAT_EVENT_STUNNED",
+      "native_all_visible": false,
+      "text": "Native membership type 46",
+      "type": 46,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78869,
+      "name": "COMBAT_EVENT_WINDED",
+      "native_all_visible": false,
+      "text": "Native membership type 47",
+      "type": 47,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78870,
+      "name": "COMBAT_EVENT_NAUSEATED",
+      "native_all_visible": false,
+      "text": "Native membership type 48",
+      "type": 48,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "MIGRANT",
+      "id": 78871,
+      "name": "MIGRANT_ARRIVAL_NAMED",
+      "native_all_visible": true,
+      "text": "Native membership type 49",
+      "type": 49,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "MIGRANT",
+      "id": 78872,
+      "name": "MIGRANT_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 50",
+      "type": 50,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78873,
+      "name": "DIG_CANCEL_WARM",
+      "native_all_visible": true,
+      "text": "Native membership type 51",
+      "type": 51,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78874,
+      "name": "DIG_CANCEL_DAMP",
+      "native_all_visible": true,
+      "text": "Native membership type 52",
+      "type": 52,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78875,
+      "name": "AMBUSH_DEFENDER",
+      "native_all_visible": true,
+      "text": "Native membership type 53",
+      "type": 53,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78876,
+      "name": "AMBUSH_RESIDENT",
+      "native_all_visible": true,
+      "text": "Native membership type 54",
+      "type": 54,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78877,
+      "name": "AMBUSH_THIEF",
+      "native_all_visible": true,
+      "text": "Native membership type 55",
+      "type": 55,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78878,
+      "name": "AMBUSH_THIEF_SUPPORT_SKULKING",
+      "native_all_visible": true,
+      "text": "Native membership type 56",
+      "type": 56,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78879,
+      "name": "AMBUSH_THIEF_SUPPORT_NATURE",
+      "native_all_visible": true,
+      "text": "Native membership type 57",
+      "type": 57,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78880,
+      "name": "AMBUSH_THIEF_SUPPORT",
+      "native_all_visible": true,
+      "text": "Native membership type 58",
+      "type": 58,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78881,
+      "name": "AMBUSH_MISCHIEVOUS",
+      "native_all_visible": true,
+      "text": "Native membership type 59",
+      "type": 59,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78882,
+      "name": "AMBUSH_SNATCHER",
+      "native_all_visible": true,
+      "text": "Native membership type 60",
+      "type": 60,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78883,
+      "name": "AMBUSH_SNATCHER_SUPPORT",
+      "native_all_visible": true,
+      "text": "Native membership type 61",
+      "type": 61,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78884,
+      "name": "AMBUSH_AMBUSHER_NATURE",
+      "native_all_visible": true,
+      "text": "Native membership type 62",
+      "type": 62,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78885,
+      "name": "AMBUSH_AMBUSHER",
+      "native_all_visible": true,
+      "text": "Native membership type 63",
+      "type": 63,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78886,
+      "name": "AMBUSH_INJURED",
+      "native_all_visible": true,
+      "text": "Native membership type 64",
+      "type": 64,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78887,
+      "name": "AMBUSH_OTHER",
+      "native_all_visible": true,
+      "text": "Native membership type 65",
+      "type": 65,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "AMBUSH",
+      "id": 78888,
+      "name": "AMBUSH_INCAPACITATED",
+      "native_all_visible": true,
+      "text": "Native membership type 66",
+      "type": 66,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "TRADE",
+      "id": 78889,
+      "name": "CARAVAN_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 67",
+      "type": 67,
+      "report_tab": 7
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 78890,
+      "name": "NOBLE_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 68",
+      "type": 68,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "MIGRANT",
+      "id": 78891,
+      "name": "D_MIGRANTS_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 69",
+      "type": 69,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "MIGRANT",
+      "id": 78892,
+      "name": "D_MIGRANT_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 70",
+      "type": 70,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "MIGRANT",
+      "id": 78893,
+      "name": "D_MIGRANT_ARRIVAL_DISCOURAGED",
+      "native_all_visible": true,
+      "text": "Native membership type 71",
+      "type": 71,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "MIGRANT",
+      "id": 78894,
+      "name": "D_NO_MIGRANT_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 72",
+      "type": 72,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 78895,
+      "name": "ANIMAL_TRAP_CATCH",
+      "native_all_visible": true,
+      "text": "Native membership type 73",
+      "type": 73,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 78896,
+      "name": "ANIMAL_TRAP_ROBBED",
+      "native_all_visible": true,
+      "text": "Native membership type 74",
+      "type": 74,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78897,
+      "name": "MISCHIEF_LEVER",
+      "native_all_visible": true,
+      "text": "Native membership type 75",
+      "type": 75,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78898,
+      "name": "MISCHIEF_PLATE",
+      "native_all_visible": true,
+      "text": "Native membership type 76",
+      "type": 76,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78899,
+      "name": "MISCHIEF_CAGE",
+      "native_all_visible": true,
+      "text": "Native membership type 77",
+      "type": 77,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78900,
+      "name": "MISCHIEF_CHAIN",
+      "native_all_visible": true,
+      "text": "Native membership type 78",
+      "type": 78,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 78901,
+      "name": "DIPLOMAT_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 79",
+      "type": 79,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 78902,
+      "name": "LIAISON_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 80",
+      "type": 80,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 78903,
+      "name": "TRADE_DIPLOMAT_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 81",
+      "type": 81,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 78904,
+      "name": "CAVE_COLLAPSE",
+      "native_all_visible": true,
+      "text": "Native membership type 82",
+      "type": 82,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "BIRTH",
+      "id": 78905,
+      "name": "BIRTH_CITIZEN",
+      "native_all_visible": true,
+      "text": "Native membership type 83",
+      "type": 83,
+      "report_tab": 10
+    },
+    {
+      "alert_type": "BIRTH",
+      "id": 78906,
+      "name": "BIRTH_ANIMAL",
+      "native_all_visible": true,
+      "text": "Native membership type 84",
+      "type": 84,
+      "report_tab": 10
+    },
+    {
+      "alert_type": "MOOD",
+      "id": 78907,
+      "name": "STRANGE_MOOD",
+      "native_all_visible": true,
+      "text": "Native membership type 85",
+      "type": 85,
+      "report_tab": 11
+    },
+    {
+      "alert_type": "MOOD",
+      "id": 78908,
+      "name": "MADE_ARTIFACT",
+      "native_all_visible": true,
+      "text": "Native membership type 86",
+      "type": 86,
+      "report_tab": 11
+    },
+    {
+      "alert_type": "MILITARY",
+      "id": 78909,
+      "name": "NAMED_ARTIFACT",
+      "native_all_visible": true,
+      "text": "Native membership type 87",
+      "type": 87,
+      "report_tab": 13
+    },
+    {
+      "alert_type": "MILITARY",
+      "id": 78910,
+      "name": "ITEM_ATTACHMENT",
+      "native_all_visible": true,
+      "text": "Native membership type 88",
+      "type": 88,
+      "report_tab": 13
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 78911,
+      "name": "VERMIN_CAGE_ESCAPE",
+      "native_all_visible": true,
+      "text": "Native membership type 89",
+      "type": 89,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78912,
+      "name": "TRIGGER_WEB",
+      "native_all_visible": true,
+      "text": "Native membership type 90",
+      "type": 90,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "MOOD",
+      "id": 78913,
+      "name": "MOOD_BUILDING_CLAIMED",
+      "native_all_visible": true,
+      "text": "Native membership type 91",
+      "type": 91,
+      "report_tab": 11
+    },
+    {
+      "alert_type": "MOOD",
+      "id": 78914,
+      "name": "ARTIFACT_BEGUN",
+      "native_all_visible": true,
+      "text": "Native membership type 92",
+      "type": 92,
+      "report_tab": 11
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78915,
+      "name": "MEGABEAST_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 93",
+      "type": 93,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78916,
+      "name": "WEREBEAST_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 94",
+      "type": 94,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78917,
+      "name": "BEAST_AMBUSH",
+      "native_all_visible": true,
+      "text": "Native membership type 95",
+      "type": 95,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "BERSERK",
+      "id": 78918,
+      "name": "BERSERK_CITIZEN",
+      "native_all_visible": true,
+      "text": "Native membership type 96",
+      "type": 96,
+      "report_tab": 14
+    },
+    {
+      "alert_type": "ART_DEFACEMENT",
+      "id": 78919,
+      "name": "MAGMA_DEFACES_ENGRAVING",
+      "native_all_visible": true,
+      "text": "Native membership type 97",
+      "type": 97,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "ART_DEFACEMENT",
+      "id": 78920,
+      "name": "ENGRAVING_MELTS",
+      "native_all_visible": true,
+      "text": "Native membership type 98",
+      "type": 98,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "MASTERPIECE",
+      "id": 78921,
+      "name": "MASTERPIECE_CONSTRUCTION",
+      "native_all_visible": true,
+      "text": "Native membership type 99",
+      "type": 99,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "ART_DEFACEMENT",
+      "id": 78922,
+      "name": "MASTER_ARCHITECTURE_LOST",
+      "native_all_visible": true,
+      "text": "Native membership type 100",
+      "type": 100,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "ART_DEFACEMENT",
+      "id": 78923,
+      "name": "MASTER_CONSTRUCTION_LOST",
+      "native_all_visible": true,
+      "text": "Native membership type 101",
+      "type": 101,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78924,
+      "name": "ADV_AWAKEN",
+      "native_all_visible": true,
+      "text": "Native membership type 102",
+      "type": 102,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78925,
+      "name": "ADV_SLEEP_INTERRUPTED",
+      "native_all_visible": true,
+      "text": "Native membership type 103",
+      "type": 103,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 78926,
+      "name": "CANCEL_JOB",
+      "native_all_visible": true,
+      "text": "Native membership type 104",
+      "type": 104,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78927,
+      "name": "ADV_CREATURE_DEATH",
+      "native_all_visible": false,
+      "text": "Native membership type 105",
+      "type": 105,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "DEATH",
+      "id": 78928,
+      "name": "CITIZEN_DEATH",
+      "native_all_visible": false,
+      "text": "Native membership type 106",
+      "type": 106,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "DEATH",
+      "id": 78929,
+      "name": "PET_DEATH",
+      "native_all_visible": false,
+      "text": "Native membership type 107",
+      "type": 107,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78930,
+      "name": "ENDGAME_EVENT_1",
+      "native_all_visible": true,
+      "text": "Native membership type 108",
+      "type": 108,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78931,
+      "name": "ENDGAME_EVENT_1B",
+      "native_all_visible": true,
+      "text": "Native membership type 109",
+      "type": 109,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78932,
+      "name": "ENDGAME_EVENT_2",
+      "native_all_visible": true,
+      "text": "Native membership type 110",
+      "type": 110,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78933,
+      "name": "FALL_OVER",
+      "native_all_visible": false,
+      "text": "Native membership type 111",
+      "type": 111,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78934,
+      "name": "CAUGHT_IN_FLAMES",
+      "native_all_visible": false,
+      "text": "Native membership type 112",
+      "type": 112,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78935,
+      "name": "CAUGHT_IN_WEB",
+      "native_all_visible": false,
+      "text": "Native membership type 113",
+      "type": 113,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78936,
+      "name": "UNIT_PROJECTILE_SLAM_BLOW_APART",
+      "native_all_visible": false,
+      "text": "Native membership type 114",
+      "type": 114,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78937,
+      "name": "UNIT_PROJECTILE_SLAM",
+      "native_all_visible": false,
+      "text": "Native membership type 115",
+      "type": 115,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78938,
+      "name": "UNIT_PROJECTILE_SLAM_INTO_UNIT",
+      "native_all_visible": false,
+      "text": "Native membership type 116",
+      "type": 116,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78939,
+      "name": "VOMIT",
+      "native_all_visible": false,
+      "text": "Native membership type 117",
+      "type": 117,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78940,
+      "name": "LOSE_HOLD_OF_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 118",
+      "type": 118,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78941,
+      "name": "REGAIN_CONSCIOUSNESS",
+      "native_all_visible": false,
+      "text": "Native membership type 119",
+      "type": 119,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78942,
+      "name": "FREE_FROM_WEB",
+      "native_all_visible": false,
+      "text": "Native membership type 120",
+      "type": 120,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78943,
+      "name": "PARALYZED",
+      "native_all_visible": false,
+      "text": "Native membership type 121",
+      "type": 121,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78944,
+      "name": "OVERCOME_PARALYSIS",
+      "native_all_visible": false,
+      "text": "Native membership type 122",
+      "type": 122,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78945,
+      "name": "NOT_STUNNED",
+      "native_all_visible": false,
+      "text": "Native membership type 123",
+      "type": 123,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78946,
+      "name": "EXHAUSTION",
+      "native_all_visible": false,
+      "text": "Native membership type 124",
+      "type": 124,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78947,
+      "name": "PAIN_KO",
+      "native_all_visible": false,
+      "text": "Native membership type 125",
+      "type": 125,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78948,
+      "name": "BREAK_GRIP",
+      "native_all_visible": false,
+      "text": "Native membership type 126",
+      "type": 126,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78949,
+      "name": "NO_BREAK_GRIP",
+      "native_all_visible": false,
+      "text": "Native membership type 127",
+      "type": 127,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78950,
+      "name": "BLOCK_FIRE",
+      "native_all_visible": false,
+      "text": "Native membership type 128",
+      "type": 128,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78951,
+      "name": "BREATHE_FIRE",
+      "native_all_visible": false,
+      "text": "Native membership type 129",
+      "type": 129,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78952,
+      "name": "SHOOT_WEB",
+      "native_all_visible": false,
+      "text": "Native membership type 130",
+      "type": 130,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78953,
+      "name": "PULL_OUT_DROP",
+      "native_all_visible": false,
+      "text": "Native membership type 131",
+      "type": 131,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78954,
+      "name": "STAND_UP",
+      "native_all_visible": false,
+      "text": "Native membership type 132",
+      "type": 132,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "MARTIAL_TRANCE",
+      "id": 78955,
+      "name": "MARTIAL_TRANCE",
+      "native_all_visible": true,
+      "text": "Native membership type 133",
+      "type": 133,
+      "report_tab": 14
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78956,
+      "name": "MAT_BREATH",
+      "native_all_visible": false,
+      "text": "Native membership type 134",
+      "type": 134,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78957,
+      "name": "ADV_REACTION_PRODUCTS",
+      "native_all_visible": true,
+      "text": "Native membership type 135",
+      "type": 135,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78958,
+      "name": "NIGHT_ATTACK_STARTS",
+      "native_all_visible": true,
+      "text": "Native membership type 136",
+      "type": 136,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78959,
+      "name": "NIGHT_ATTACK_ENDS",
+      "native_all_visible": true,
+      "text": "Native membership type 137",
+      "type": 137,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78960,
+      "name": "NIGHT_ATTACK_TRAVEL",
+      "native_all_visible": true,
+      "text": "Native membership type 138",
+      "type": 138,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GHOST",
+      "id": 78961,
+      "name": "GHOST_ATTACK",
+      "native_all_visible": false,
+      "text": "Native membership type 139",
+      "type": 139,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78962,
+      "name": "FLAME_HIT",
+      "native_all_visible": false,
+      "text": "Native membership type 140",
+      "type": 140,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78963,
+      "name": "TRAVEL_SITE_DISCOVERY",
+      "native_all_visible": true,
+      "text": "Native membership type 141",
+      "type": 141,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78964,
+      "name": "TRAVEL_SITE_BUMP",
+      "native_all_visible": true,
+      "text": "Native membership type 142",
+      "type": 142,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78965,
+      "name": "ADVENTURE_INTRO",
+      "native_all_visible": false,
+      "text": "Native membership type 143",
+      "type": 143,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78966,
+      "name": "CREATURE_SOUND",
+      "native_all_visible": false,
+      "text": "Native membership type 144",
+      "type": 144,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 78967,
+      "name": "CREATURE_STEALS_OBJECT",
+      "native_all_visible": true,
+      "text": "Native membership type 145",
+      "type": 145,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78968,
+      "name": "FOUND_TRAP",
+      "native_all_visible": true,
+      "text": "Native membership type 146",
+      "type": 146,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 78969,
+      "name": "BODY_TRANSFORMATION",
+      "native_all_visible": true,
+      "text": "Native membership type 147",
+      "type": 147,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78970,
+      "name": "INTERACTION_ACTOR",
+      "native_all_visible": false,
+      "text": "Native membership type 148",
+      "type": 148,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78971,
+      "name": "INTERACTION_TARGET",
+      "native_all_visible": false,
+      "text": "Native membership type 149",
+      "type": 149,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "UNDEAD_ATTACK",
+      "id": 78972,
+      "name": "UNDEAD_ATTACK",
+      "native_all_visible": true,
+      "text": "Native membership type 150",
+      "type": 150,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "DEATH",
+      "id": 78973,
+      "name": "CITIZEN_MISSING",
+      "native_all_visible": false,
+      "text": "Native membership type 151",
+      "type": 151,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "DEATH",
+      "id": 78974,
+      "name": "PET_MISSING",
+      "native_all_visible": false,
+      "text": "Native membership type 152",
+      "type": 152,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78975,
+      "name": "EMBRACE",
+      "native_all_visible": false,
+      "text": "Native membership type 153",
+      "type": 153,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 78976,
+      "name": "STRANGE_RAIN_SNOW",
+      "native_all_visible": true,
+      "text": "Native membership type 154",
+      "type": 154,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 78977,
+      "name": "STRANGE_CLOUD",
+      "native_all_visible": true,
+      "text": "Native membership type 155",
+      "type": 155,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78978,
+      "name": "SIMPLE_ANIMAL_ACTION",
+      "native_all_visible": false,
+      "text": "Native membership type 156",
+      "type": 156,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78979,
+      "name": "FLOUNDER_IN_LIQUID",
+      "native_all_visible": false,
+      "text": "Native membership type 157",
+      "type": 157,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 78980,
+      "name": "TRAINING_DOWN_TO_SEMI_WILD",
+      "native_all_visible": true,
+      "text": "Native membership type 158",
+      "type": 158,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 78981,
+      "name": "TRAINING_FULL_REVERSION",
+      "native_all_visible": true,
+      "text": "Native membership type 159",
+      "type": 159,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 78982,
+      "name": "ANIMAL_TRAINING_KNOWLEDGE",
+      "native_all_visible": true,
+      "text": "Native membership type 160",
+      "type": 160,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78983,
+      "name": "SKIP_ON_LIQUID",
+      "native_all_visible": false,
+      "text": "Native membership type 161",
+      "type": 161,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78984,
+      "name": "DODGE_FLYING_OBJECT",
+      "native_all_visible": false,
+      "text": "Native membership type 162",
+      "type": 162,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "RUMOR",
+      "id": 78985,
+      "name": "REGULAR_CONVERSATION",
+      "native_all_visible": false,
+      "text": "Native membership type 163",
+      "type": 163,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78986,
+      "name": "BANDIT_EMPTY_CONTAINER",
+      "native_all_visible": false,
+      "text": "Native membership type 164",
+      "type": 164,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78987,
+      "name": "BANDIT_GRAB_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 165",
+      "type": 165,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78988,
+      "name": "COMBAT_EVENT_ATTACK_INTERRUPTED",
+      "native_all_visible": false,
+      "text": "Native membership type 166",
+      "type": 166,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78989,
+      "name": "COMBAT_WRESTLE_CATCH_ATTACK",
+      "native_all_visible": false,
+      "text": "Native membership type 167",
+      "type": 167,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78990,
+      "name": "FAIL_TO_GRAB_SURFACE",
+      "native_all_visible": false,
+      "text": "Native membership type 168",
+      "type": 168,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78991,
+      "name": "LOSE_HOLD_OF_SURFACE",
+      "native_all_visible": false,
+      "text": "Native membership type 169",
+      "type": 169,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78992,
+      "name": "TRAVEL_COMPLAINT",
+      "native_all_visible": true,
+      "text": "Native membership type 170",
+      "type": 170,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "LOSE_EMOTION",
+      "id": 78993,
+      "name": "LOSE_EMOTION",
+      "native_all_visible": false,
+      "text": "Native membership type 171",
+      "type": 171,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78994,
+      "name": "REORGANIZE_POSSESSIONS",
+      "native_all_visible": false,
+      "text": "Native membership type 172",
+      "type": 172,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78995,
+      "name": "PUSH_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 173",
+      "type": 173,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78996,
+      "name": "DRAW_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 174",
+      "type": 174,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78997,
+      "name": "STRAP_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 175",
+      "type": 175,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78998,
+      "name": "GAIN_SITE_CONTROL",
+      "native_all_visible": true,
+      "text": "Native membership type 176",
+      "type": 176,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 78999,
+      "name": "CONFLICT_CONVERSATION",
+      "native_all_visible": false,
+      "text": "Native membership type 177",
+      "type": 177,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79000,
+      "name": "FORT_POSITION_SUCCESSION",
+      "native_all_visible": true,
+      "text": "Native membership type 178",
+      "type": 178,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79001,
+      "name": "MECHANISM_SOUND",
+      "native_all_visible": false,
+      "text": "Native membership type 179",
+      "type": 179,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "BIRTH",
+      "id": 79002,
+      "name": "BIRTH_WILD_ANIMAL",
+      "native_all_visible": true,
+      "text": "Native membership type 180",
+      "type": 180,
+      "report_tab": 10
+    },
+    {
+      "alert_type": "STRESS",
+      "id": 79003,
+      "name": "STRESSED_CITIZEN",
+      "native_all_visible": true,
+      "text": "Native membership type 181",
+      "type": 181,
+      "report_tab": 14
+    },
+    {
+      "alert_type": "STRESS",
+      "id": 79004,
+      "name": "CITIZEN_LOST_TO_STRESS",
+      "native_all_visible": true,
+      "text": "Native membership type 182",
+      "type": 182,
+      "report_tab": 14
+    },
+    {
+      "alert_type": "STRESS",
+      "id": 79005,
+      "name": "CITIZEN_TANTRUM",
+      "native_all_visible": true,
+      "text": "Native membership type 183",
+      "type": 183,
+      "report_tab": 14
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79006,
+      "name": "MOVED_OUT_OF_RANGE",
+      "native_all_visible": true,
+      "text": "Native membership type 184",
+      "type": 184,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79007,
+      "name": "CANNOT_JUMP",
+      "native_all_visible": true,
+      "text": "Native membership type 185",
+      "type": 185,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79008,
+      "name": "NO_TRACKS",
+      "native_all_visible": true,
+      "text": "Native membership type 186",
+      "type": 186,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79009,
+      "name": "ALREADY_SEARCHED_AREA",
+      "native_all_visible": true,
+      "text": "Native membership type 187",
+      "type": 187,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79010,
+      "name": "SEARCH_FOUND_SOMETHING",
+      "native_all_visible": true,
+      "text": "Native membership type 188",
+      "type": 188,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79011,
+      "name": "SEARCH_FOUND_NOTHING",
+      "native_all_visible": true,
+      "text": "Native membership type 189",
+      "type": 189,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79012,
+      "name": "NOTHING_TO_INTERACT",
+      "native_all_visible": true,
+      "text": "Native membership type 190",
+      "type": 190,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79013,
+      "name": "NOTHING_TO_EXAMINE",
+      "native_all_visible": true,
+      "text": "Native membership type 191",
+      "type": 191,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79014,
+      "name": "YOU_YIELDED",
+      "native_all_visible": true,
+      "text": "Native membership type 192",
+      "type": 192,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79015,
+      "name": "YOU_UNYIELDED",
+      "native_all_visible": true,
+      "text": "Native membership type 193",
+      "type": 193,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79016,
+      "name": "YOU_STRAP_ITEM",
+      "native_all_visible": true,
+      "text": "Native membership type 194",
+      "type": 194,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79017,
+      "name": "YOU_DRAW_ITEM",
+      "native_all_visible": true,
+      "text": "Native membership type 195",
+      "type": 195,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79018,
+      "name": "NO_GRASP_TO_DRAW_ITEM",
+      "native_all_visible": true,
+      "text": "Native membership type 196",
+      "type": 196,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79019,
+      "name": "NO_ITEM_TO_STRAP",
+      "native_all_visible": true,
+      "text": "Native membership type 197",
+      "type": 197,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79020,
+      "name": "NO_INV_TO_REMOVE",
+      "native_all_visible": true,
+      "text": "Native membership type 198",
+      "type": 198,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79021,
+      "name": "NO_INV_TO_WEAR",
+      "native_all_visible": true,
+      "text": "Native membership type 199",
+      "type": 199,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79022,
+      "name": "NO_INV_TO_EAT",
+      "native_all_visible": true,
+      "text": "Native membership type 200",
+      "type": 200,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79023,
+      "name": "NO_INV_TO_CONTAIN",
+      "native_all_visible": true,
+      "text": "Native membership type 201",
+      "type": 201,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79024,
+      "name": "NO_INV_TO_DROP",
+      "native_all_visible": true,
+      "text": "Native membership type 202",
+      "type": 202,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79025,
+      "name": "NOTHING_TO_PICK_UP",
+      "native_all_visible": true,
+      "text": "Native membership type 203",
+      "type": 203,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79026,
+      "name": "NO_INV_TO_THROW",
+      "native_all_visible": true,
+      "text": "Native membership type 204",
+      "type": 204,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79027,
+      "name": "NO_INV_TO_FIRE",
+      "native_all_visible": true,
+      "text": "Native membership type 205",
+      "type": 205,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79028,
+      "name": "CURRENT_SMELL",
+      "native_all_visible": true,
+      "text": "Native membership type 206",
+      "type": 206,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79029,
+      "name": "CURRENT_WEATHER",
+      "native_all_visible": true,
+      "text": "Native membership type 207",
+      "type": 207,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79030,
+      "name": "CURRENT_TEMPERATURE",
+      "native_all_visible": true,
+      "text": "Native membership type 208",
+      "type": 208,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79031,
+      "name": "CURRENT_DATE",
+      "native_all_visible": true,
+      "text": "Native membership type 209",
+      "type": 209,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79032,
+      "name": "NO_GRASP_FOR_PICKUP",
+      "native_all_visible": true,
+      "text": "Native membership type 210",
+      "type": 210,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79033,
+      "name": "CANNOT_CHOP_TREE",
+      "native_all_visible": true,
+      "text": "Native membership type 211",
+      "type": 211,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79034,
+      "name": "CANNOT_CLIMB",
+      "native_all_visible": true,
+      "text": "Native membership type 212",
+      "type": 212,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79035,
+      "name": "CANNOT_STAND",
+      "native_all_visible": true,
+      "text": "Native membership type 213",
+      "type": 213,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79036,
+      "name": "MUST_UNRETRACT_FIRST",
+      "native_all_visible": true,
+      "text": "Native membership type 214",
+      "type": 214,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79037,
+      "name": "CANNOT_REST",
+      "native_all_visible": true,
+      "text": "Native membership type 215",
+      "type": 215,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79038,
+      "name": "CANNOT_MAKE_CAMPFIRE",
+      "native_all_visible": true,
+      "text": "Native membership type 216",
+      "type": 216,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79039,
+      "name": "MADE_CAMPFIRE",
+      "native_all_visible": true,
+      "text": "Native membership type 217",
+      "type": 217,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79040,
+      "name": "CANNOT_SET_FIRE",
+      "native_all_visible": true,
+      "text": "Native membership type 218",
+      "type": 218,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79041,
+      "name": "SET_FIRE",
+      "native_all_visible": true,
+      "text": "Native membership type 219",
+      "type": 219,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79042,
+      "name": "DAWN_BREAKS",
+      "native_all_visible": true,
+      "text": "Native membership type 220",
+      "type": 220,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79043,
+      "name": "NOON",
+      "native_all_visible": true,
+      "text": "Native membership type 221",
+      "type": 221,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79044,
+      "name": "NIGHTFALL",
+      "native_all_visible": true,
+      "text": "Native membership type 222",
+      "type": 222,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79045,
+      "name": "UNUSED_0001",
+      "native_all_visible": false,
+      "text": "Native membership type 223",
+      "type": 223,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79046,
+      "name": "EMPTY_CONTAINER",
+      "native_all_visible": true,
+      "text": "Native membership type 224",
+      "type": 224,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79047,
+      "name": "TAKE_OUT_OF_CONTAINER",
+      "native_all_visible": true,
+      "text": "Native membership type 225",
+      "type": 225,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79048,
+      "name": "UNUSED_0002",
+      "native_all_visible": false,
+      "text": "Native membership type 226",
+      "type": 226,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79049,
+      "name": "PUT_INTO_CONTAINER",
+      "native_all_visible": true,
+      "text": "Native membership type 227",
+      "type": 227,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79050,
+      "name": "EAT_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 228",
+      "type": 228,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79051,
+      "name": "DRINK_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 229",
+      "type": 229,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79052,
+      "name": "CONSUME_FAILURE",
+      "native_all_visible": false,
+      "text": "Native membership type 230",
+      "type": 230,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79053,
+      "name": "DROP_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 231",
+      "type": 231,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79054,
+      "name": "PICK_UP_ITEM",
+      "native_all_visible": false,
+      "text": "Native membership type 232",
+      "type": 232,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79055,
+      "name": "YOU_BUILDING_INTERACTION",
+      "native_all_visible": true,
+      "text": "Native membership type 233",
+      "type": 233,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79056,
+      "name": "YOU_ITEM_INTERACTION",
+      "native_all_visible": true,
+      "text": "Native membership type 234",
+      "type": 234,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79057,
+      "name": "YOU_TEMPERATURE_EFFECTS",
+      "native_all_visible": true,
+      "text": "Native membership type 235",
+      "type": 235,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "LABOR_CHANGE",
+      "id": 79058,
+      "name": "PROFESSION_CHANGES",
+      "native_all_visible": true,
+      "text": "Native membership type 236",
+      "type": 236,
+      "report_tab": 12
+    },
+    {
+      "alert_type": "MILITARY",
+      "id": 79059,
+      "name": "RECRUIT_PROMOTED",
+      "native_all_visible": true,
+      "text": "Native membership type 237",
+      "type": 237,
+      "report_tab": 13
+    },
+    {
+      "alert_type": "MILITARY",
+      "id": 79060,
+      "name": "SOLDIER_BECOMES_MASTER",
+      "native_all_visible": true,
+      "text": "Native membership type 238",
+      "type": 238,
+      "report_tab": 13
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79061,
+      "name": "RESOLVE_SHARED_ITEMS",
+      "native_all_visible": false,
+      "text": "Native membership type 239",
+      "type": 239,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79062,
+      "name": "COUGH_BLOOD",
+      "native_all_visible": true,
+      "text": "Native membership type 240",
+      "type": 240,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79063,
+      "name": "VOMIT_BLOOD",
+      "native_all_visible": true,
+      "text": "Native membership type 241",
+      "type": 241,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "TRADE",
+      "id": 79064,
+      "name": "MERCHANTS_UNLOADING",
+      "native_all_visible": true,
+      "text": "Native membership type 242",
+      "type": 242,
+      "report_tab": 7
+    },
+    {
+      "alert_type": "TRADE",
+      "id": 79065,
+      "name": "MERCHANTS_NEED_DEPOT",
+      "native_all_visible": true,
+      "text": "Native membership type 243",
+      "type": 243,
+      "report_tab": 7
+    },
+    {
+      "alert_type": "TRADE",
+      "id": 79066,
+      "name": "MERCHANT_WAGONS_BYPASSED",
+      "native_all_visible": true,
+      "text": "Native membership type 244",
+      "type": 244,
+      "report_tab": 7
+    },
+    {
+      "alert_type": "TRADE",
+      "id": 79067,
+      "name": "MERCHANTS_LEAVING_SOON",
+      "native_all_visible": true,
+      "text": "Native membership type 245",
+      "type": 245,
+      "report_tab": 7
+    },
+    {
+      "alert_type": "TRADE",
+      "id": 79068,
+      "name": "MERCHANTS_EMBARKED",
+      "native_all_visible": true,
+      "text": "Native membership type 246",
+      "type": 246,
+      "report_tab": 7
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 79069,
+      "name": "PET_LOSES_DEAD_OWNER",
+      "native_all_visible": true,
+      "text": "Native membership type 247",
+      "type": 247,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 79070,
+      "name": "PET_ADOPTS_OWNER",
+      "native_all_visible": true,
+      "text": "Native membership type 248",
+      "type": 248,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "VERMIN",
+      "id": 79071,
+      "name": "VERMIN_BITE",
+      "native_all_visible": true,
+      "text": "Native membership type 249",
+      "type": 249,
+      "report_tab": 19
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 79072,
+      "name": "UNABLE_TO_COMPLETE_BUILDING",
+      "native_all_visible": true,
+      "text": "Native membership type 250",
+      "type": 250,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 79073,
+      "name": "JOBS_REMOVED_FROM_UNPOWERED_BUILDING",
+      "native_all_visible": true,
+      "text": "Native membership type 251",
+      "type": 251,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 79074,
+      "name": "CITIZEN_SNATCHED",
+      "native_all_visible": true,
+      "text": "Native membership type 252",
+      "type": 252,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "VERMIN",
+      "id": 79075,
+      "name": "VERMIN_DISTURBED",
+      "native_all_visible": true,
+      "text": "Native membership type 253",
+      "type": 253,
+      "report_tab": 19
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79076,
+      "name": "LAND_GAINS_STATUS",
+      "native_all_visible": true,
+      "text": "Native membership type 254",
+      "type": 254,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79077,
+      "name": "LAND_ELEVATED_STATUS",
+      "native_all_visible": true,
+      "text": "Native membership type 255",
+      "type": 255,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "MASTERPIECE",
+      "id": 79078,
+      "name": "MASTERPIECE_CRAFTED",
+      "native_all_visible": true,
+      "text": "Native membership type 256",
+      "type": 256,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "ART_DEFACEMENT",
+      "id": 79079,
+      "name": "ARTWORK_DEFACED",
+      "native_all_visible": true,
+      "text": "Native membership type 257",
+      "type": 257,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79080,
+      "name": "POWER_LEARNED",
+      "native_all_visible": true,
+      "text": "Native membership type 258",
+      "type": 258,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79081,
+      "name": "YOU_FEED_ON_SUCKEE",
+      "native_all_visible": true,
+      "text": "Native membership type 259",
+      "type": 259,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "ANIMAL",
+      "id": 79082,
+      "name": "ANIMAL_TRAINED",
+      "native_all_visible": true,
+      "text": "Native membership type 260",
+      "type": 260,
+      "report_tab": 9
+    },
+    {
+      "alert_type": "MASTERPIECE",
+      "id": 79083,
+      "name": "DYED_MASTERPIECE",
+      "native_all_visible": true,
+      "text": "Native membership type 261",
+      "type": 261,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "MASTERPIECE",
+      "id": 79084,
+      "name": "COOKED_MASTERPIECE",
+      "native_all_visible": true,
+      "text": "Native membership type 262",
+      "type": 262,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79085,
+      "name": "MANDATE_ENDS",
+      "native_all_visible": true,
+      "text": "Native membership type 263",
+      "type": 263,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79086,
+      "name": "SLOWDOWN_ENDS",
+      "native_all_visible": true,
+      "text": "Native membership type 264",
+      "type": 264,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79087,
+      "name": "FAREWELL_HELPER",
+      "native_all_visible": true,
+      "text": "Native membership type 265",
+      "type": 265,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79088,
+      "name": "ELECTION_RESULTS",
+      "native_all_visible": true,
+      "text": "Native membership type 266",
+      "type": 266,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "UNDERGROUND",
+      "id": 79089,
+      "name": "SITE_PRESENT",
+      "native_all_visible": true,
+      "text": "Native membership type 267",
+      "type": 267,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 79090,
+      "name": "CONSTRUCTION_SUSPENDED",
+      "native_all_visible": true,
+      "text": "Native membership type 268",
+      "type": 268,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 79091,
+      "name": "LINKAGE_SUSPENDED",
+      "native_all_visible": true,
+      "text": "Native membership type 269",
+      "type": 269,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79092,
+      "name": "QUOTA_FILLED",
+      "native_all_visible": true,
+      "text": "Native membership type 270",
+      "type": 270,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 79093,
+      "name": "JOB_OVERWRITTEN",
+      "native_all_visible": true,
+      "text": "Native membership type 271",
+      "type": 271,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "JOB_FAILED",
+      "id": 79094,
+      "name": "NOTHING_TO_CATCH_IN_WATER",
+      "native_all_visible": true,
+      "text": "Native membership type 272",
+      "type": 272,
+      "report_tab": 16
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79095,
+      "name": "DEMAND_FORGOTTEN",
+      "native_all_visible": true,
+      "text": "Native membership type 273",
+      "type": 273,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79096,
+      "name": "NEW_DEMAND",
+      "native_all_visible": true,
+      "text": "Native membership type 274",
+      "type": 274,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79097,
+      "name": "NEW_MANDATE",
+      "native_all_visible": true,
+      "text": "Native membership type 275",
+      "type": 275,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79098,
+      "name": "PRICES_ALTERED",
+      "native_all_visible": true,
+      "text": "Native membership type 276",
+      "type": 276,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "MONSTER",
+      "id": 79099,
+      "name": "NAMED_RESIDENT_CREATURE",
+      "native_all_visible": true,
+      "text": "Native membership type 277",
+      "type": 277,
+      "report_tab": 6
+    },
+    {
+      "alert_type": "BIRTH",
+      "id": 79100,
+      "name": "SOMEBODY_GROWS_UP",
+      "native_all_visible": true,
+      "text": "Native membership type 278",
+      "type": 278,
+      "report_tab": 10
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79101,
+      "name": "GUILD_REQUEST_TAKEN",
+      "native_all_visible": true,
+      "text": "Native membership type 279",
+      "type": 279,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "NOBLE",
+      "id": 79102,
+      "name": "GUILD_WAGES_CHANGED",
+      "native_all_visible": true,
+      "text": "Native membership type 280",
+      "type": 280,
+      "report_tab": 8
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79103,
+      "name": "NEW_WORK_MANDATE",
+      "native_all_visible": true,
+      "text": "Native membership type 281",
+      "type": 281,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "MILITARY",
+      "id": 79104,
+      "name": "CITIZEN_BECOMES_SOLDIER",
+      "native_all_visible": true,
+      "text": "Native membership type 282",
+      "type": 282,
+      "report_tab": 13
+    },
+    {
+      "alert_type": "LABOR_CHANGE",
+      "id": 79105,
+      "name": "CITIZEN_BECOMES_NONSOLDIER",
+      "native_all_visible": true,
+      "text": "Native membership type 283",
+      "type": 283,
+      "report_tab": 12
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79106,
+      "name": "PARTY_ORGANIZED",
+      "native_all_visible": true,
+      "text": "Native membership type 284",
+      "type": 284,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "GHOST",
+      "id": 79107,
+      "name": "POSSESSED_TANTRUM",
+      "native_all_visible": true,
+      "text": "Native membership type 285",
+      "type": 285,
+      "report_tab": 18
+    },
+    {
+      "alert_type": "GHOST",
+      "id": 79108,
+      "name": "BUILDING_TOPPLED_BY_GHOST",
+      "native_all_visible": true,
+      "text": "Native membership type 286",
+      "type": 286,
+      "report_tab": 18
+    },
+    {
+      "alert_type": "MASTERPIECE",
+      "id": 79109,
+      "name": "MASTERFUL_IMPROVEMENT",
+      "native_all_visible": true,
+      "text": "Native membership type 287",
+      "type": 287,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "MASTERPIECE",
+      "id": 79110,
+      "name": "MASTERPIECE_ENGRAVING",
+      "native_all_visible": true,
+      "text": "Native membership type 288",
+      "type": 288,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "MARRIAGE",
+      "id": 79111,
+      "name": "MARRIAGE",
+      "native_all_visible": true,
+      "text": "Native membership type 289",
+      "type": 289,
+      "report_tab": 10
+    },
+    {
+      "alert_type": "MARRIAGE",
+      "id": 79112,
+      "name": "NO_MARRIAGE_CELEBRATION",
+      "native_all_visible": true,
+      "text": "Native membership type 290",
+      "type": 290,
+      "report_tab": 10
+    },
+    {
+      "alert_type": "CURIOUS_GUZZLER",
+      "id": 79113,
+      "name": "CURIOUS_GUZZLER",
+      "native_all_visible": true,
+      "text": "Native membership type 291",
+      "type": 291,
+      "report_tab": 19
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79114,
+      "name": "WEATHER_BECOMES_CLEAR",
+      "native_all_visible": true,
+      "text": "Native membership type 292",
+      "type": 292,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79115,
+      "name": "WEATHER_BECOMES_SNOW",
+      "native_all_visible": true,
+      "text": "Native membership type 293",
+      "type": 293,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79116,
+      "name": "WEATHER_BECOMES_RAIN",
+      "native_all_visible": true,
+      "text": "Native membership type 294",
+      "type": 294,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79117,
+      "name": "SEASON_WET",
+      "native_all_visible": true,
+      "text": "Native membership type 295",
+      "type": 295,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79118,
+      "name": "SEASON_DRY",
+      "native_all_visible": true,
+      "text": "Native membership type 296",
+      "type": 296,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79119,
+      "name": "SEASON_SPRING",
+      "native_all_visible": true,
+      "text": "Native membership type 297",
+      "type": 297,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79120,
+      "name": "SEASON_SUMMER",
+      "native_all_visible": true,
+      "text": "Native membership type 298",
+      "type": 298,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79121,
+      "name": "SEASON_AUTUMN",
+      "native_all_visible": true,
+      "text": "Native membership type 299",
+      "type": 299,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "WEATHER",
+      "id": 79122,
+      "name": "SEASON_WINTER",
+      "native_all_visible": true,
+      "text": "Native membership type 300",
+      "type": 300,
+      "report_tab": 4
+    },
+    {
+      "alert_type": "GUEST_ARRIVAL",
+      "id": 79123,
+      "name": "GUEST_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 301",
+      "type": 301,
+      "report_tab": 5
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79124,
+      "name": "CANNOT_SPEAK",
+      "native_all_visible": true,
+      "text": "Native membership type 302",
+      "type": 302,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "RESEARCH_BREAKTHROUGH",
+      "id": 79125,
+      "name": "RESEARCH_BREAKTHROUGH",
+      "native_all_visible": true,
+      "text": "Native membership type 303",
+      "type": 303,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79126,
+      "name": "SERVICE_ORDER_DELIVERY",
+      "native_all_visible": false,
+      "text": "Native membership type 304",
+      "type": 304,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79127,
+      "name": "PERFORMANCE_START_FAILURE",
+      "native_all_visible": false,
+      "text": "Native membership type 305",
+      "type": 305,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79128,
+      "name": "BEGIN_ACTIVITY",
+      "native_all_visible": false,
+      "text": "Native membership type 306",
+      "type": 306,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79129,
+      "name": "MIDDLE_OF_ACTIVITY",
+      "native_all_visible": false,
+      "text": "Native membership type 307",
+      "type": 307,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79130,
+      "name": "ACTIVITY_SECTION_CHANGE",
+      "native_all_visible": false,
+      "text": "Native membership type 308",
+      "type": 308,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79131,
+      "name": "CONCLUDE_ACTIVITY",
+      "native_all_visible": false,
+      "text": "Native membership type 309",
+      "type": 309,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79132,
+      "name": "LEARNED_WRITTEN_CONTENT",
+      "native_all_visible": false,
+      "text": "Native membership type 310",
+      "type": 310,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79133,
+      "name": "LEARNED_ART_FORM",
+      "native_all_visible": false,
+      "text": "Native membership type 311",
+      "type": 311,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79134,
+      "name": "PERFORMER_UPDATE",
+      "native_all_visible": false,
+      "text": "Native membership type 312",
+      "type": 312,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "ART_DEFACEMENT",
+      "id": 79135,
+      "name": "BUILDING_DESTROYED_OR_TOPPLED",
+      "native_all_visible": true,
+      "text": "Native membership type 313",
+      "type": 313,
+      "report_tab": 15
+    },
+    {
+      "alert_type": "DEITY_CURSE",
+      "id": 79136,
+      "name": "DEITY_CURSE",
+      "native_all_visible": true,
+      "text": "Native membership type 314",
+      "type": 314,
+      "report_tab": 22
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79137,
+      "name": "COMPOSITION_COMPLETE",
+      "native_all_visible": false,
+      "text": "Native membership type 315",
+      "type": 315,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79138,
+      "name": "COMPOSITION_FAILED",
+      "native_all_visible": false,
+      "text": "Native membership type 316",
+      "type": 316,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79139,
+      "name": "NEW_APPRENTICESHIP",
+      "native_all_visible": true,
+      "text": "Native membership type 317",
+      "type": 317,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79140,
+      "name": "PETITION_IGNORED",
+      "native_all_visible": true,
+      "text": "Native membership type 318",
+      "type": 318,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79141,
+      "name": "CHOP_TREE",
+      "native_all_visible": true,
+      "text": "Native membership type 319",
+      "type": 319,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79142,
+      "name": "CANNOT_CONSTRUCT",
+      "native_all_visible": true,
+      "text": "Native membership type 320",
+      "type": 320,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "RUMOR",
+      "id": 79143,
+      "name": "RUMOR_SPREAD",
+      "native_all_visible": true,
+      "text": "Native membership type 321",
+      "type": 321,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 79144,
+      "name": "AMBUSH_HERO",
+      "native_all_visible": true,
+      "text": "Native membership type 322",
+      "type": 322,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "RUMOR",
+      "id": 79145,
+      "name": "SERVICE_ORDER_RUMOR_RECEIVED",
+      "native_all_visible": true,
+      "text": "Native membership type 323",
+      "type": 323,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "RUMOR",
+      "id": 79146,
+      "name": "RETURNING_RUMOR_RECEIVED",
+      "native_all_visible": true,
+      "text": "Native membership type 324",
+      "type": 324,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "HOLDINGS",
+      "id": 79147,
+      "name": "NEW_HOLDING",
+      "native_all_visible": true,
+      "text": "Native membership type 325",
+      "type": 325,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "HOLDINGS",
+      "id": 79148,
+      "name": "NEW_MARKET_LINK",
+      "native_all_visible": true,
+      "text": "Native membership type 326",
+      "type": 326,
+      "report_tab": 3
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79149,
+      "name": "EMERGENCY_TACTICAL_CONTROL",
+      "native_all_visible": true,
+      "text": "Native membership type 327",
+      "type": 327,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79150,
+      "name": "AGREEMENT_SATISFIED",
+      "native_all_visible": true,
+      "text": "Native membership type 328",
+      "type": 328,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79151,
+      "name": "AGREEMENT_WARNING",
+      "native_all_visible": true,
+      "text": "Native membership type 329",
+      "type": 329,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79152,
+      "name": "AGREEMENT_ABANDONED",
+      "native_all_visible": true,
+      "text": "Native membership type 330",
+      "type": 330,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "AGREEMENT",
+      "id": 79153,
+      "name": "NEW_GUILD",
+      "native_all_visible": true,
+      "text": "Native membership type 331",
+      "type": 331,
+      "report_tab": 20
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 79154,
+      "name": "CRIME_WITNESS_HANDOFF",
+      "native_all_visible": true,
+      "text": "Native membership type 332",
+      "type": 332,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 79155,
+      "name": "CRIME_WITNESS_STOLEN",
+      "native_all_visible": true,
+      "text": "Native membership type 333",
+      "type": 333,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 79156,
+      "name": "CRIME_WITNESS_ITEM_MOVED",
+      "native_all_visible": true,
+      "text": "Native membership type 334",
+      "type": 334,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "CRIME",
+      "id": 79157,
+      "name": "CRIME_WITNESS_ITEM_MISSING",
+      "native_all_visible": true,
+      "text": "Native membership type 335",
+      "type": 335,
+      "report_tab": 21
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79158,
+      "name": "MOUNT",
+      "native_all_visible": false,
+      "text": "Native membership type 336",
+      "type": 336,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79159,
+      "name": "CANNOT_MOUNT",
+      "native_all_visible": false,
+      "text": "Native membership type 337",
+      "type": 337,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79160,
+      "name": "FAILED_MOUNT",
+      "native_all_visible": false,
+      "text": "Native membership type 338",
+      "type": 338,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79161,
+      "name": "DISMOUNT",
+      "native_all_visible": false,
+      "text": "Native membership type 339",
+      "type": 339,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79162,
+      "name": "FAILED_DISMOUNT",
+      "native_all_visible": false,
+      "text": "Native membership type 340",
+      "type": 340,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79163,
+      "name": "DIPLOMAT_LEFT_UNHAPPY",
+      "native_all_visible": true,
+      "text": "Native membership type 341",
+      "type": 341,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79164,
+      "name": "EMBARK_MESSAGE",
+      "native_all_visible": false,
+      "text": "Native membership type 342",
+      "type": 342,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79165,
+      "name": "FIRST_CARAVAN_ARRIVAL",
+      "native_all_visible": false,
+      "text": "Native membership type 343",
+      "type": 343,
+      "report_tab": 0
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79166,
+      "name": "MONARCH_ARRIVAL",
+      "native_all_visible": true,
+      "text": "Native membership type 344",
+      "type": 344,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79167,
+      "name": "HASTY_MONARCH",
+      "native_all_visible": true,
+      "text": "Native membership type 345",
+      "type": 345,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79168,
+      "name": "SATISFIED_MONARCH",
+      "native_all_visible": true,
+      "text": "Native membership type 346",
+      "type": 346,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79169,
+      "name": "MOUNTAINHOME",
+      "native_all_visible": true,
+      "text": "Native membership type 347",
+      "type": 347,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "DEATH",
+      "id": 79170,
+      "name": "FOOD_WARNING",
+      "native_all_visible": true,
+      "text": "Native membership type 348",
+      "type": 348,
+      "report_tab": 17
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79171,
+      "name": "PUT_ON_ITEM",
+      "native_all_visible": true,
+      "text": "Native membership type 349",
+      "type": 349,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79172,
+      "name": "TAKE_OFF_ITEM",
+      "native_all_visible": true,
+      "text": "Native membership type 350",
+      "type": 350,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79173,
+      "name": "DEITY_PRONOUNCEMENT",
+      "native_all_visible": true,
+      "text": "Native membership type 351",
+      "type": 351,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79174,
+      "name": "CREATURE_STUCK",
+      "native_all_visible": true,
+      "text": "Native membership type 352",
+      "type": 352,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79175,
+      "name": "CITIZEN_STUCK",
+      "native_all_visible": true,
+      "text": "Native membership type 353",
+      "type": 353,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79176,
+      "name": "BARTENDER_SLACKING",
+      "native_all_visible": true,
+      "text": "Native membership type 354",
+      "type": 354,
+      "report_tab": 2
+    },
+    {
+      "alert_type": "GENERAL",
+      "id": 79177,
+      "name": "UNUSED_50",
+      "native_all_visible": false,
+      "text": "Native membership type 355",
+      "type": 355,
+      "report_tab": 0
+    }
+  ],
+  "findings": [
+    "All retains global report rows independently of announcements-vector inclusion and the announcement flag.",
+    "All applies per-type exclusions beyond the alert_type classification. GENERAL contains both visible and omitted types.",
+    "DEATH types CITIZEN_DEATH, PET_DEATH, CITIZEN_MISSING and PET_MISSING are omitted; FOOD_WARNING is visible. Blanket DEATH-category omission is incorrect."
+  ],
+  "limitations": [
+    "This verifies All membership under controlled fresh rows, not each named tab assignment or existing-row mutation freshness.",
+    "Screenshots for membership controls and sweep batches 0, 1 and 29 were visually inspected. All thirty batches were checked through native rendered text; remaining screenshots are retained, not individually visually accepted.",
+    "COMBAT/SPARRING/HUNTING unit tab contents require unit-log evidence separately.",
+    "No production Tab-view implementation is accepted by this fixture."
+  ],
+  "preservation": "Owned DF52256 and DF37460 ended at frame zero; clone manifests unchanged; captured logs have no classified or unclassified errors.",
+  "copy": "Injected labels are test-only and are not product text.",
+  "named_tab_capture": {
+    "source": "build/reports-tabs-native-20261001-044138",
+    "method": "Read-only protected oracle snapshot of native announcement widget Tabs labels and each child list after injecting all356 report types. Native All widget rows exactly agree with the prior rendered-text sweep. No widget reads are authorized in runtime bridge code.",
+    "tabs": [
+      {
+        "native_index": 0,
+        "name": "All",
+        "types": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          108,
+          109,
+          110,
+          133,
+          135,
+          136,
+          137,
+          138,
+          141,
+          142,
+          145,
+          146,
+          147,
+          150,
+          154,
+          155,
+          158,
+          159,
+          160,
+          170,
+          176,
+          178,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          224,
+          225,
+          227,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255,
+          256,
+          257,
+          258,
+          259,
+          260,
+          261,
+          262,
+          263,
+          264,
+          265,
+          266,
+          267,
+          268,
+          269,
+          270,
+          271,
+          272,
+          273,
+          274,
+          275,
+          276,
+          277,
+          278,
+          279,
+          280,
+          281,
+          282,
+          283,
+          284,
+          285,
+          286,
+          287,
+          288,
+          289,
+          290,
+          291,
+          292,
+          293,
+          294,
+          295,
+          296,
+          297,
+          298,
+          299,
+          300,
+          301,
+          302,
+          303,
+          313,
+          314,
+          317,
+          318,
+          319,
+          320,
+          321,
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329,
+          330,
+          331,
+          332,
+          333,
+          334,
+          335,
+          341,
+          344,
+          345,
+          346,
+          347,
+          348,
+          349,
+          350,
+          351,
+          352,
+          353,
+          354
+        ],
+        "native_row_count": 233
+      },
+      {
+        "native_index": 1,
+        "name": "General",
+        "types": [
+          0,
+          102,
+          103,
+          135,
+          136,
+          137,
+          138,
+          141,
+          142,
+          146,
+          170,
+          176,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          224,
+          225,
+          227,
+          233,
+          234,
+          235,
+          240,
+          241,
+          258,
+          259,
+          265,
+          302,
+          319,
+          320,
+          327,
+          341,
+          344,
+          345,
+          346,
+          347,
+          349,
+          350,
+          351,
+          352,
+          353,
+          354
+        ],
+        "native_row_count": 77
+      },
+      {
+        "native_index": 2,
+        "name": "World",
+        "types": [
+          1,
+          303,
+          321,
+          323,
+          324,
+          325,
+          326
+        ],
+        "native_row_count": 7
+      },
+      {
+        "native_index": 3,
+        "name": "Environment",
+        "types": [
+          2,
+          3,
+          4,
+          5,
+          51,
+          52,
+          82,
+          154,
+          155,
+          267,
+          292,
+          293,
+          294,
+          295,
+          296,
+          297,
+          298,
+          299,
+          300
+        ],
+        "native_row_count": 19
+      },
+      {
+        "native_index": 4,
+        "name": "Arrivals",
+        "types": [
+          49,
+          50,
+          69,
+          70,
+          71,
+          72,
+          301
+        ],
+        "native_row_count": 7
+      },
+      {
+        "native_index": 5,
+        "name": "Attacks",
+        "types": [
+          53,
+          54,
+          56,
+          57,
+          58,
+          59,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          90,
+          93,
+          94,
+          95,
+          108,
+          109,
+          110,
+          147,
+          150,
+          277
+        ],
+        "native_row_count": 22
+      },
+      {
+        "native_index": 6,
+        "name": "Trade",
+        "types": [
+          67,
+          242,
+          243,
+          244,
+          245,
+          246
+        ],
+        "native_row_count": 6
+      },
+      {
+        "native_index": 7,
+        "name": "Nobles",
+        "types": [
+          68,
+          79,
+          80,
+          81,
+          178,
+          254,
+          255,
+          263,
+          266,
+          273,
+          274,
+          275,
+          276,
+          280
+        ],
+        "native_row_count": 14
+      },
+      {
+        "native_index": 8,
+        "name": "Animal",
+        "types": [
+          73,
+          74,
+          89,
+          158,
+          159,
+          160,
+          247,
+          248,
+          260
+        ],
+        "native_row_count": 9
+      },
+      {
+        "native_index": 9,
+        "name": "Life changes",
+        "types": [
+          83,
+          84,
+          180,
+          278,
+          289,
+          290
+        ],
+        "native_row_count": 6
+      },
+      {
+        "native_index": 10,
+        "name": "Strange moods",
+        "types": [
+          85,
+          86,
+          91,
+          92
+        ],
+        "native_row_count": 4
+      },
+      {
+        "native_index": 11,
+        "name": "Profession changes",
+        "types": [
+          236,
+          283
+        ],
+        "native_row_count": 2
+      },
+      {
+        "native_index": 12,
+        "name": "Military",
+        "types": [
+          87,
+          88,
+          237,
+          238,
+          282
+        ],
+        "native_row_count": 5
+      },
+      {
+        "native_index": 13,
+        "name": "Mental state",
+        "types": [
+          96,
+          133,
+          181,
+          182,
+          183
+        ],
+        "native_row_count": 5
+      },
+      {
+        "native_index": 14,
+        "name": "Masterpieces",
+        "types": [
+          97,
+          98,
+          99,
+          100,
+          101,
+          256,
+          257,
+          261,
+          262,
+          287,
+          288,
+          313
+        ],
+        "native_row_count": 12
+      },
+      {
+        "native_index": 15,
+        "name": "Job failures",
+        "types": [
+          104,
+          250,
+          251,
+          268,
+          269,
+          271,
+          272
+        ],
+        "native_row_count": 7
+      },
+      {
+        "native_index": 16,
+        "name": "Death",
+        "types": [
+          348
+        ],
+        "native_row_count": 1
+      },
+      {
+        "native_index": 17,
+        "name": "Ghosts",
+        "types": [
+          285,
+          286
+        ],
+        "native_row_count": 2
+      },
+      {
+        "native_index": 18,
+        "name": "Wildlife",
+        "types": [
+          249,
+          253,
+          291
+        ],
+        "native_row_count": 3
+      },
+      {
+        "native_index": 19,
+        "name": "Labor",
+        "types": [
+          264,
+          270,
+          279,
+          281,
+          284,
+          317,
+          318,
+          328,
+          329,
+          330,
+          331
+        ],
+        "native_row_count": 11
+      },
+      {
+        "native_index": 20,
+        "name": "Crime",
+        "types": [
+          55,
+          60,
+          75,
+          76,
+          77,
+          78,
+          145,
+          252,
+          322,
+          332,
+          333,
+          334,
+          335
+        ],
+        "native_row_count": 13
+      },
+      {
+        "native_index": 21,
+        "name": "Curses",
+        "types": [
+          314
+        ],
+        "native_row_count": 1
+      },
+      {
+        "native_index": 22,
+        "name": "Combat",
+        "types": [],
+        "native_row_count": 97
+      },
+      {
+        "native_index": 23,
+        "name": "Sparring",
+        "types": [],
+        "native_row_count": 11
+      },
+      {
+        "native_index": 24,
+        "name": "Hunting",
+        "types": [],
+        "native_row_count": 0
+      }
+    ],
+    "encoding": "Raw widget JSON contains CP437 unit text; analysis decodes CP437. Classification labels and injected report labels are ASCII. Future oracle script uses df2utf.",
+    "scope": "Native widget membership, not visual acceptance of every named tab or runtime UI. Unit-tab row counts reflect existing unit logs and are not mappings of injected announcement types.",
+    "preservation": "DF54400 ended/frame0/clone unchanged. Initial044039 failed due to shared_ptr traversal; corrected to the supported getWidgetChildren API."
+  },
+  "paging_helper_capture": {
+    "source": "build/reports-tab-helper-live-20261001-044959",
+    "source_files": [
+      "bridge/plugin/report_tabs.lua",
+      "bridge/plugin/report_tab_page.lua"
+    ],
+    "verification": "Inside protected DF, compare semantic helper output for each of22 tabs against native widget children. Match total/count, exact report ID order across forward pages, and all three native unit-tab counts. All233 rows traverse four pages.",
+    "result": "passed",
+    "scope": "Helper-level native acceptance. Not compiled bridge, wire/model/Godot transport or UI acceptance. Backward paging, byte-limit paging, trimming and paused changes have offline coverage; this live run validates forward pages.",
+    "preservation": "DF55628 ended at frame0; clone manifest unchanged; diagnostics.py found no errors."
+  },
+  "compiled_transport_capture": {
+    "source": "build/reports-tabs-live-20261001-050651",
+    "protocols": {
+      "management": 41,
+      "session": 9
+    },
+    "method": "Protected paused clone; 356 injected native types. Oracle reads native widget tab children and raw report fields. Compiled bridge, world model and Godot extension requests compare all 22 announcement tabs in both directions. Runtime reads semantic world data only.",
+    "checks": {
+      "tab_direction_walks": 44,
+      "all_rows": 233,
+      "all_pages_each_direction": 4,
+      "tab_counts": 25,
+      "flat_newest_first_rows": 16,
+      "fields": [
+        "color",
+        "bright",
+        "zoom_type",
+        "zoom_type2",
+        "speaker_id",
+        "position",
+        "position2",
+        "position_visible",
+        "position2_visible",
+        "position_hidden",
+        "position2_hidden"
+      ]
+    },
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "save_unchanged": true,
+    "frame": 0,
+    "owned_df_pid": 8796,
+    "owned_df_closed": true,
+    "limitations": [
+      "No Reports UI or visual acceptance",
+      "UnitList, UnitLog and Entries views remain unsupported",
+      "Current injected positions are revealed primary targets with absent secondary targets; broader position cases retain separate recenter evidence",
+      "No alert-button session fields yet"
+    ],
+    "rejected_attempt": "050553 had matching native counts but failed a JSON-float versus bridge-integer array comparison in the harness; not acceptance evidence. Numeric expected arrays normalized before 050651."
+  }
+}

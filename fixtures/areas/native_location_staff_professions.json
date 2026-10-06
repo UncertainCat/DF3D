@@ -1,0 +1,2647 @@
+{
+  "provenance": {
+    "source": "build/location-staff-selector-professions-20260930-011033/native-location-staff-selector-ui.json",
+    "sha256": "18a2f0033d488acbcb2002ff280407e5b9638127194a39d2fbcb571511325127",
+    "save_manifests_unchanged": 2
+  },
+  "scope": "135 controlled profession values on adult dwarf6032 with short synthetic name Ab and no custom profession.122 appeared as first native candidate.13 absent states are not copy evidence. Colors are for first selected row only, not general profession color. No pixels retained.",
+  "cases": [
+    {
+      "controlled_profession": 0,
+      "profession_token": "MINER",
+      "controlled_first": true,
+      "helper_profession": "Miner",
+      "helper_color": 7,
+      "lines": [
+        "Ab, Miner",
+        ""
+      ],
+      "native_profession": "Miner",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 1,
+      "profession_token": "WOODWORKER",
+      "controlled_first": true,
+      "helper_profession": "Woodworker",
+      "helper_color": 14,
+      "lines": [
+        "Ab, Woodworker",
+        ""
+      ],
+      "native_profession": "Woodworker",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 2,
+      "profession_token": "CARPENTER",
+      "controlled_first": true,
+      "helper_profession": "Carpenter",
+      "helper_color": 14,
+      "lines": [
+        "Ab, Carpenter",
+        ""
+      ],
+      "native_profession": "Carpenter",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 3,
+      "profession_token": "BOWYER",
+      "controlled_first": true,
+      "helper_profession": "Bowyer",
+      "helper_color": 14,
+      "lines": [
+        "Ab, Bowyer",
+        ""
+      ],
+      "native_profession": "Bowyer",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 4,
+      "profession_token": "WOODCUTTER",
+      "controlled_first": true,
+      "helper_profession": "Woodcutter",
+      "helper_color": 14,
+      "lines": [
+        "Ab, Woodcutter",
+        ""
+      ],
+      "native_profession": "Woodcutter",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 5,
+      "profession_token": "STONEWORKER",
+      "controlled_first": true,
+      "helper_profession": "Stoneworker",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Stoneworker",
+        ""
+      ],
+      "native_profession": "Stoneworker",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 6,
+      "profession_token": "STONECUTTER",
+      "controlled_first": true,
+      "helper_profession": "Stonecutter",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Stonecutter",
+        ""
+      ],
+      "native_profession": "Stonecutter",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 7,
+      "profession_token": "STONE_CARVER",
+      "controlled_first": true,
+      "helper_profession": "Stone Carver",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Stone Carver",
+        ""
+      ],
+      "native_profession": "Stone Carver",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 8,
+      "profession_token": "ENGRAVER",
+      "controlled_first": true,
+      "helper_profession": "Engraver",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Engraver",
+        ""
+      ],
+      "native_profession": "Engraver",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 9,
+      "profession_token": "MASON",
+      "controlled_first": true,
+      "helper_profession": "Mason",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Mason",
+        ""
+      ],
+      "native_profession": "Mason",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 10,
+      "profession_token": "RANGER",
+      "controlled_first": true,
+      "helper_profession": "Ranger",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Ranger",
+        ""
+      ],
+      "native_profession": "Ranger",
+      "native_colors": [
+        2
+      ]
+    },
+    {
+      "controlled_profession": 11,
+      "profession_token": "ANIMAL_CARETAKER",
+      "controlled_first": true,
+      "helper_profession": "Animal Caretaker",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Animal Caretaker",
+        ""
+      ],
+      "native_profession": "Animal Caretaker",
+      "native_colors": [
+        2
+      ]
+    },
+    {
+      "controlled_profession": 12,
+      "profession_token": "ANIMAL_TRAINER",
+      "controlled_first": true,
+      "helper_profession": "Animal Trainer",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Animal Trainer",
+        ""
+      ],
+      "native_profession": "Animal Trainer",
+      "native_colors": [
+        2
+      ]
+    },
+    {
+      "controlled_profession": 13,
+      "profession_token": "HUNTER",
+      "controlled_first": true,
+      "helper_profession": "Hunter",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Hunter",
+        ""
+      ],
+      "native_profession": "Hunter",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 14,
+      "profession_token": "TRAPPER",
+      "controlled_first": true,
+      "helper_profession": "Trapper",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Trapper",
+        ""
+      ],
+      "native_profession": "Trapper",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 15,
+      "profession_token": "ANIMAL_DISSECTOR",
+      "controlled_first": true,
+      "helper_profession": "Animal Dissector",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Animal Dissector",
+        ""
+      ],
+      "native_profession": "Animal Dissector",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 16,
+      "profession_token": "METALSMITH",
+      "controlled_first": true,
+      "helper_profession": "Metalsmith",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Metalsmith",
+        ""
+      ],
+      "native_profession": "Metalsmith",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 17,
+      "profession_token": "FURNACE_OPERATOR",
+      "controlled_first": true,
+      "helper_profession": "Furnace Operator",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Furnace Operator",
+        ""
+      ],
+      "native_profession": "Furnace Operator",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 18,
+      "profession_token": "WEAPONSMITH",
+      "controlled_first": true,
+      "helper_profession": "Weaponsmith",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Weaponsmith",
+        ""
+      ],
+      "native_profession": "Weaponsmith",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 19,
+      "profession_token": "ARMORER",
+      "controlled_first": true,
+      "helper_profession": "Armorer",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Armorer",
+        ""
+      ],
+      "native_profession": "Armorer",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 20,
+      "profession_token": "BLACKSMITH",
+      "controlled_first": true,
+      "helper_profession": "Blacksmith",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Blacksmith",
+        ""
+      ],
+      "native_profession": "Blacksmith",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 21,
+      "profession_token": "METALCRAFTER",
+      "controlled_first": true,
+      "helper_profession": "Metalcrafter",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Metalcrafter",
+        ""
+      ],
+      "native_profession": "Metalcrafter",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 22,
+      "profession_token": "JEWELER",
+      "controlled_first": true,
+      "helper_profession": "Jeweler",
+      "helper_color": 10,
+      "lines": [
+        "Ab, Jeweler",
+        ""
+      ],
+      "native_profession": "Jeweler",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 23,
+      "profession_token": "GEM_CUTTER",
+      "controlled_first": true,
+      "helper_profession": "Gem Cutter",
+      "helper_color": 10,
+      "lines": [
+        "Ab, Gem Cutter",
+        ""
+      ],
+      "native_profession": "Gem Cutter",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 24,
+      "profession_token": "GEM_SETTER",
+      "controlled_first": true,
+      "helper_profession": "Gem Setter",
+      "helper_color": 10,
+      "lines": [
+        "Ab, Gem Setter",
+        ""
+      ],
+      "native_profession": "Gem Setter",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 25,
+      "profession_token": "CRAFTSMAN",
+      "controlled_first": true,
+      "helper_profession": "Craftsdwarf",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Craftsdwarf",
+        ""
+      ],
+      "native_profession": "Craftsdwarf",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 26,
+      "profession_token": "WOODCRAFTER",
+      "controlled_first": true,
+      "helper_profession": "Woodcrafter",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Woodcrafter",
+        ""
+      ],
+      "native_profession": "Woodcrafter",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 27,
+      "profession_token": "STONECRAFTER",
+      "controlled_first": true,
+      "helper_profession": "Stonecrafter",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Stonecrafter",
+        ""
+      ],
+      "native_profession": "Stonecrafter",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 28,
+      "profession_token": "LEATHERWORKER",
+      "controlled_first": true,
+      "helper_profession": "Leatherworker",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Leatherworker",
+        ""
+      ],
+      "native_profession": "Leatherworker",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 29,
+      "profession_token": "BONE_CARVER",
+      "controlled_first": true,
+      "helper_profession": "Bone Carver",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Bone Carver",
+        ""
+      ],
+      "native_profession": "Bone Carver",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 30,
+      "profession_token": "WEAVER",
+      "controlled_first": true,
+      "helper_profession": "Weaver",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Weaver",
+        ""
+      ],
+      "native_profession": "Weaver",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 31,
+      "profession_token": "CLOTHIER",
+      "controlled_first": true,
+      "helper_profession": "Clothier",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Clothier",
+        ""
+      ],
+      "native_profession": "Clothier",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 32,
+      "profession_token": "GLASSMAKER",
+      "controlled_first": true,
+      "helper_profession": "Glassmaker",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Glassmaker",
+        ""
+      ],
+      "native_profession": "Glassmaker",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 33,
+      "profession_token": "POTTER",
+      "controlled_first": true,
+      "helper_profession": "Potter",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Potter",
+        ""
+      ],
+      "native_profession": "Potter",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 34,
+      "profession_token": "GLAZER",
+      "controlled_first": true,
+      "helper_profession": "Glazer",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Glazer",
+        ""
+      ],
+      "native_profession": "Glazer",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 35,
+      "profession_token": "WAX_WORKER",
+      "controlled_first": true,
+      "helper_profession": "Wax Worker",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Wax Worker",
+        ""
+      ],
+      "native_profession": "Wax Worker",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 36,
+      "profession_token": "STRAND_EXTRACTOR",
+      "controlled_first": true,
+      "helper_profession": "Strand Extractor",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Strand Extractor",
+        ""
+      ],
+      "native_profession": "Strand Extractor",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 37,
+      "profession_token": "FISHERY_WORKER",
+      "controlled_first": true,
+      "helper_profession": "Fishery Worker",
+      "helper_color": 1,
+      "lines": [
+        "Ab, Fishery Worker",
+        ""
+      ],
+      "native_profession": "Fishery Worker",
+      "native_colors": [
+        1
+      ]
+    },
+    {
+      "controlled_profession": 38,
+      "profession_token": "FISHERMAN",
+      "controlled_first": true,
+      "helper_profession": "Fisherdwarf",
+      "helper_color": 1,
+      "lines": [
+        "Ab, Fisherdwarf",
+        ""
+      ],
+      "native_profession": "Fisherdwarf",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 39,
+      "profession_token": "FISH_DISSECTOR",
+      "controlled_first": true,
+      "helper_profession": "Fish Dissector",
+      "helper_color": 1,
+      "lines": [
+        "Ab, Fish Dissector",
+        ""
+      ],
+      "native_profession": "Fish Dissector",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 40,
+      "profession_token": "FISH_CLEANER",
+      "controlled_first": true,
+      "helper_profession": "Fish Cleaner",
+      "helper_color": 1,
+      "lines": [
+        "Ab, Fish Cleaner",
+        ""
+      ],
+      "native_profession": "Fish Cleaner",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 41,
+      "profession_token": "FARMER",
+      "controlled_first": true,
+      "helper_profession": "Farmer",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Farmer",
+        ""
+      ],
+      "native_profession": "Farmer",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 42,
+      "profession_token": "CHEESE_MAKER",
+      "controlled_first": true,
+      "helper_profession": "Cheesemaker",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Cheesemaker",
+        ""
+      ],
+      "native_profession": "Cheesemaker",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 43,
+      "profession_token": "MILKER",
+      "controlled_first": true,
+      "helper_profession": "Milker",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Milker",
+        ""
+      ],
+      "native_profession": "Milker",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 44,
+      "profession_token": "COOK",
+      "controlled_first": true,
+      "helper_profession": "Cook",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Cook",
+        ""
+      ],
+      "native_profession": "Cook",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 45,
+      "profession_token": "THRESHER",
+      "controlled_first": true,
+      "helper_profession": "Thresher",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Thresher",
+        ""
+      ],
+      "native_profession": "Thresher",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 46,
+      "profession_token": "MILLER",
+      "controlled_first": true,
+      "helper_profession": "Miller",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Miller",
+        ""
+      ],
+      "native_profession": "Miller",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 47,
+      "profession_token": "BUTCHER",
+      "controlled_first": true,
+      "helper_profession": "Butcher",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Butcher",
+        ""
+      ],
+      "native_profession": "Butcher",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 48,
+      "profession_token": "TANNER",
+      "controlled_first": true,
+      "helper_profession": "Tanner",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Tanner",
+        ""
+      ],
+      "native_profession": "Tanner",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 49,
+      "profession_token": "DYER",
+      "controlled_first": true,
+      "helper_profession": "Dyer",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Dyer",
+        ""
+      ],
+      "native_profession": "Dyer",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 50,
+      "profession_token": "PLANTER",
+      "controlled_first": true,
+      "helper_profession": "Planter",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Planter",
+        ""
+      ],
+      "native_profession": "Planter",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 51,
+      "profession_token": "HERBALIST",
+      "controlled_first": true,
+      "helper_profession": "Herbalist",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Herbalist",
+        ""
+      ],
+      "native_profession": "Herbalist",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 52,
+      "profession_token": "BREWER",
+      "controlled_first": true,
+      "helper_profession": "Brewer",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Brewer",
+        ""
+      ],
+      "native_profession": "Brewer",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 53,
+      "profession_token": "SOAP_MAKER",
+      "controlled_first": true,
+      "helper_profession": "Soap Maker",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Soap Maker",
+        ""
+      ],
+      "native_profession": "Soap Maker",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 54,
+      "profession_token": "POTASH_MAKER",
+      "controlled_first": true,
+      "helper_profession": "Potash Maker",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Potash Maker",
+        ""
+      ],
+      "native_profession": "Potash Maker",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 55,
+      "profession_token": "LYE_MAKER",
+      "controlled_first": true,
+      "helper_profession": "Lye Maker",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Lye Maker",
+        ""
+      ],
+      "native_profession": "Lye Maker",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 56,
+      "profession_token": "WOOD_BURNER",
+      "controlled_first": true,
+      "helper_profession": "Wood Burner",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Wood Burner",
+        ""
+      ],
+      "native_profession": "Wood Burner",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 57,
+      "profession_token": "SHEARER",
+      "controlled_first": true,
+      "helper_profession": "Shearer",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Shearer",
+        ""
+      ],
+      "native_profession": "Shearer",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 58,
+      "profession_token": "SPINNER",
+      "controlled_first": true,
+      "helper_profession": "Spinner",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Spinner",
+        ""
+      ],
+      "native_profession": "Spinner",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 59,
+      "profession_token": "PRESSER",
+      "controlled_first": true,
+      "helper_profession": "Presser",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Presser",
+        ""
+      ],
+      "native_profession": "Presser",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 60,
+      "profession_token": "BEEKEEPER",
+      "controlled_first": true,
+      "helper_profession": "Beekeeper",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Beekeeper",
+        ""
+      ],
+      "native_profession": "Beekeeper",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 61,
+      "profession_token": "ENGINEER",
+      "controlled_first": true,
+      "helper_profession": "Engineer",
+      "helper_color": 12,
+      "lines": [
+        "Ab, Engineer",
+        ""
+      ],
+      "native_profession": "Engineer",
+      "native_colors": [
+        12
+      ]
+    },
+    {
+      "controlled_profession": 62,
+      "profession_token": "MECHANIC",
+      "controlled_first": true,
+      "helper_profession": "Mechanic",
+      "helper_color": 12,
+      "lines": [
+        "Ab, Mechanic",
+        ""
+      ],
+      "native_profession": "Mechanic",
+      "native_colors": [
+        12
+      ]
+    },
+    {
+      "controlled_profession": 63,
+      "profession_token": "SIEGE_ENGINEER",
+      "controlled_first": true,
+      "helper_profession": "Siege Engineer",
+      "helper_color": 12,
+      "lines": [
+        "Ab, Siege Engineer",
+        ""
+      ],
+      "native_profession": "Siege Engineer",
+      "native_colors": [
+        12
+      ]
+    },
+    {
+      "controlled_profession": 64,
+      "profession_token": "SIEGE_OPERATOR",
+      "controlled_first": true,
+      "helper_profession": "Siege Operator",
+      "helper_color": 12,
+      "lines": [
+        "Ab, Siege Operator",
+        ""
+      ],
+      "native_profession": "Siege Operator",
+      "native_colors": [
+        12
+      ]
+    },
+    {
+      "controlled_profession": 65,
+      "profession_token": "PUMP_OPERATOR",
+      "controlled_first": true,
+      "helper_profession": "Pump Operator",
+      "helper_color": 12,
+      "lines": [
+        "Ab, Pump Operator",
+        ""
+      ],
+      "native_profession": "Pump Operator",
+      "native_colors": [
+        4
+      ]
+    },
+    {
+      "controlled_profession": 66,
+      "profession_token": "CLERK",
+      "controlled_first": true,
+      "helper_profession": "Clerk",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Clerk",
+        ""
+      ],
+      "native_profession": "Clerk",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 67,
+      "profession_token": "ADMINISTRATOR",
+      "controlled_first": true,
+      "helper_profession": "Administrator",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Administrator",
+        ""
+      ],
+      "native_profession": "Administrator",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 68,
+      "profession_token": "TRADER",
+      "controlled_first": true,
+      "helper_profession": "Trader",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Trader",
+        ""
+      ],
+      "native_profession": "Trader",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 69,
+      "profession_token": "DOCTOR",
+      "controlled_first": true,
+      "helper_profession": "Doctor",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Doctor",
+        ""
+      ],
+      "native_profession": "Doctor",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 70,
+      "profession_token": "DIAGNOSER",
+      "controlled_first": true,
+      "helper_profession": "Diagnoser",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Diagnostician",
+        ""
+      ],
+      "native_profession": "Diagnostician",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 71,
+      "profession_token": "BONE_SETTER",
+      "controlled_first": true,
+      "helper_profession": "Bone Doctor",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Bone Doctor",
+        ""
+      ],
+      "native_profession": "Bone Doctor",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 72,
+      "profession_token": "SUTURER",
+      "controlled_first": true,
+      "helper_profession": "Suturer",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Suturer",
+        ""
+      ],
+      "native_profession": "Suturer",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 73,
+      "profession_token": "SURGEON",
+      "controlled_first": true,
+      "helper_profession": "Surgeon",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Surgeon",
+        ""
+      ],
+      "native_profession": "Surgeon",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 74,
+      "profession_token": "MERCHANT",
+      "controlled_first": false,
+      "helper_profession": "Merchant",
+      "helper_color": 7
+    },
+    {
+      "controlled_profession": 75,
+      "profession_token": "HAMMERMAN",
+      "controlled_first": true,
+      "helper_profession": "Hammerdwarf",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Hammerdwarf",
+        ""
+      ],
+      "native_profession": "Hammerdwarf",
+      "native_colors": [
+        5
+      ]
+    },
+    {
+      "controlled_profession": 76,
+      "profession_token": "MASTER_HAMMERMAN",
+      "controlled_first": true,
+      "helper_profession": "Hammer Lord",
+      "helper_color": 13,
+      "lines": [
+        "Ab, Hammer Lord",
+        ""
+      ],
+      "native_profession": "Hammer Lord",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 77,
+      "profession_token": "SPEARMAN",
+      "controlled_first": true,
+      "helper_profession": "Speardwarf",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Speardwarf",
+        ""
+      ],
+      "native_profession": "Speardwarf",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 78,
+      "profession_token": "MASTER_SPEARMAN",
+      "controlled_first": true,
+      "helper_profession": "Spearmaster",
+      "helper_color": 14,
+      "lines": [
+        "Ab, Spearmaster",
+        ""
+      ],
+      "native_profession": "Spearmaster",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 79,
+      "profession_token": "CROSSBOWMAN",
+      "controlled_first": true,
+      "helper_profession": "Marksdwarf",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Marksdwarf",
+        ""
+      ],
+      "native_profession": "Marksdwarf",
+      "native_colors": [
+        2
+      ]
+    },
+    {
+      "controlled_profession": 80,
+      "profession_token": "MASTER_CROSSBOWMAN",
+      "controlled_first": true,
+      "helper_profession": "Elite Marksdwarf",
+      "helper_color": 10,
+      "lines": [
+        "Ab, Elite Marksdwarf",
+        ""
+      ],
+      "native_profession": "Elite Marksdwarf",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 81,
+      "profession_token": "WRESTLER",
+      "controlled_first": true,
+      "helper_profession": "Wrestler",
+      "helper_color": 7,
+      "lines": [
+        "Ab, Wrestler",
+        ""
+      ],
+      "native_profession": "Wrestler",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 82,
+      "profession_token": "MASTER_WRESTLER",
+      "controlled_first": true,
+      "helper_profession": "Elite Wrestler",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Elite Wrestler",
+        ""
+      ],
+      "native_profession": "Elite Wrestler",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 83,
+      "profession_token": "AXEMAN",
+      "controlled_first": true,
+      "helper_profession": "Axedwarf",
+      "helper_color": 1,
+      "lines": [
+        "Ab, Axedwarf",
+        ""
+      ],
+      "native_profession": "Axedwarf",
+      "native_colors": [
+        1
+      ]
+    },
+    {
+      "controlled_profession": 84,
+      "profession_token": "MASTER_AXEMAN",
+      "controlled_first": true,
+      "helper_profession": "Axe Lord",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Axe Lord",
+        ""
+      ],
+      "native_profession": "Axe Lord",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 85,
+      "profession_token": "SWORDSMAN",
+      "controlled_first": true,
+      "helper_profession": "Swordsdwarf",
+      "helper_color": 3,
+      "lines": [
+        "Ab, Swordsdwarf",
+        ""
+      ],
+      "native_profession": "Swordsdwarf",
+      "native_colors": [
+        3
+      ]
+    },
+    {
+      "controlled_profession": 86,
+      "profession_token": "MASTER_SWORDSMAN",
+      "controlled_first": true,
+      "helper_profession": "Swordsmaster",
+      "helper_color": 11,
+      "lines": [
+        "Ab, Swordmaster",
+        ""
+      ],
+      "native_profession": "Swordmaster",
+      "native_colors": [
+        11
+      ]
+    },
+    {
+      "controlled_profession": 87,
+      "profession_token": "MACEMAN",
+      "controlled_first": true,
+      "helper_profession": "Macedwarf",
+      "helper_color": 4,
+      "lines": [
+        "Ab, Macedwarf",
+        ""
+      ],
+      "native_profession": "Macedwarf",
+      "native_colors": [
+        4
+      ]
+    },
+    {
+      "controlled_profession": 88,
+      "profession_token": "MASTER_MACEMAN",
+      "controlled_first": true,
+      "helper_profession": "Mace Lord",
+      "helper_color": 12,
+      "lines": [
+        "Ab, Mace Lord",
+        ""
+      ],
+      "native_profession": "Mace Lord",
+      "native_colors": [
+        12
+      ]
+    },
+    {
+      "controlled_profession": 89,
+      "profession_token": "PIKEMAN",
+      "controlled_first": true,
+      "helper_profession": "Pikedwarf",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Pikedwarf",
+        ""
+      ],
+      "native_profession": "Pikedwarf",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 90,
+      "profession_token": "MASTER_PIKEMAN",
+      "controlled_first": true,
+      "helper_profession": "Pikemaster",
+      "helper_color": 14,
+      "lines": [
+        "Ab, Pikemaster",
+        ""
+      ],
+      "native_profession": "Pikemaster",
+      "native_colors": [
+        14
+      ]
+    },
+    {
+      "controlled_profession": 91,
+      "profession_token": "BOWMAN",
+      "controlled_first": true,
+      "helper_profession": "Bowdwarf",
+      "helper_color": 2,
+      "lines": [
+        "Ab, Bowdwarf",
+        ""
+      ],
+      "native_profession": "Bowdwarf",
+      "native_colors": [
+        10
+      ]
+    },
+    {
+      "controlled_profession": 92,
+      "profession_token": "MASTER_BOWMAN",
+      "controlled_first": true,
+      "helper_profession": "Elite Bowdwarf",
+      "helper_color": 10,
+      "lines": [
+        "Ab, Elite Bowdwarf",
+        ""
+      ],
+      "native_profession": "Elite Bowdwarf",
+      "native_colors": [
+        2
+      ]
+    },
+    {
+      "controlled_profession": 93,
+      "profession_token": "BLOWGUNMAN",
+      "controlled_first": true,
+      "helper_profession": "Blowgunner",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Blowgunner",
+        ""
+      ],
+      "native_profession": "Blowgunner",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 94,
+      "profession_token": "MASTER_BLOWGUNMAN",
+      "controlled_first": true,
+      "helper_profession": "Master Blowgunner",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Master Blowgunner",
+        ""
+      ],
+      "native_profession": "Master Blowgunner",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 95,
+      "profession_token": "LASHER",
+      "controlled_first": true,
+      "helper_profession": "Lasher",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Lasher",
+        ""
+      ],
+      "native_profession": "Lasher",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 96,
+      "profession_token": "MASTER_LASHER",
+      "controlled_first": true,
+      "helper_profession": "Master Lasher",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Master Lasher",
+        ""
+      ],
+      "native_profession": "Master Lasher",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 97,
+      "profession_token": "RECRUIT",
+      "controlled_first": true,
+      "helper_profession": "Recruit",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Recruit",
+        ""
+      ],
+      "native_profession": "Recruit",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 98,
+      "profession_token": "TRAINED_HUNTER",
+      "controlled_first": false,
+      "helper_profession": "Hunting Peasant",
+      "helper_color": 15
+    },
+    {
+      "controlled_profession": 99,
+      "profession_token": "TRAINED_WAR",
+      "controlled_first": false,
+      "helper_profession": "War Peasant",
+      "helper_color": 8
+    },
+    {
+      "controlled_profession": 100,
+      "profession_token": "MASTER_THIEF",
+      "controlled_first": false,
+      "helper_profession": "Master Thief",
+      "helper_color": 8
+    },
+    {
+      "controlled_profession": 101,
+      "profession_token": "THIEF",
+      "controlled_first": false,
+      "helper_profession": "Thief",
+      "helper_color": 8
+    },
+    {
+      "controlled_profession": 102,
+      "profession_token": "STANDARD",
+      "controlled_first": true,
+      "helper_profession": "Peasant",
+      "helper_color": 3,
+      "lines": [
+        "Ab, Peasant",
+        ""
+      ],
+      "native_profession": "Peasant",
+      "native_colors": [
+        3
+      ]
+    },
+    {
+      "controlled_profession": 103,
+      "profession_token": "CHILD",
+      "controlled_first": false,
+      "helper_profession": "Dwarven Child",
+      "helper_color": 4
+    },
+    {
+      "controlled_profession": 104,
+      "profession_token": "BABY",
+      "controlled_first": false,
+      "helper_profession": "Dwarven Baby",
+      "helper_color": 4
+    },
+    {
+      "controlled_profession": 105,
+      "profession_token": "DRUNK",
+      "controlled_first": false,
+      "helper_profession": "Drunk",
+      "helper_color": 6
+    },
+    {
+      "controlled_profession": 106,
+      "profession_token": "MONSTER_SLAYER",
+      "controlled_first": false,
+      "helper_profession": "Monster Slayer",
+      "helper_color": 6
+    },
+    {
+      "controlled_profession": 107,
+      "profession_token": "SCOUT",
+      "controlled_first": false,
+      "helper_profession": "Scout",
+      "helper_color": 6
+    },
+    {
+      "controlled_profession": 108,
+      "profession_token": "BEAST_HUNTER",
+      "controlled_first": false,
+      "helper_profession": "Beast Hunter",
+      "helper_color": 6
+    },
+    {
+      "controlled_profession": 109,
+      "profession_token": "SNATCHER",
+      "controlled_first": false,
+      "helper_profession": "Snatcher",
+      "helper_color": 6
+    },
+    {
+      "controlled_profession": 110,
+      "profession_token": "MERCENARY",
+      "controlled_first": false,
+      "helper_profession": "Mercenary",
+      "helper_color": 6
+    },
+    {
+      "controlled_profession": 111,
+      "profession_token": "GELDER",
+      "controlled_first": true,
+      "helper_profession": "Gelder",
+      "helper_color": 6,
+      "lines": [
+        "Ab, Gelder",
+        ""
+      ],
+      "native_profession": "Gelder",
+      "native_colors": [
+        6
+      ]
+    },
+    {
+      "controlled_profession": 112,
+      "profession_token": "PERFORMER",
+      "controlled_first": true,
+      "helper_profession": "Performer",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Performer",
+        ""
+      ],
+      "native_profession": "Performer",
+      "native_colors": [
+        5
+      ]
+    },
+    {
+      "controlled_profession": 113,
+      "profession_token": "POET",
+      "controlled_first": true,
+      "helper_profession": "Poet",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Poet",
+        ""
+      ],
+      "native_profession": "Poet",
+      "native_colors": [
+        5
+      ]
+    },
+    {
+      "controlled_profession": 114,
+      "profession_token": "BARD",
+      "controlled_first": true,
+      "helper_profession": "Bard",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Bard",
+        ""
+      ],
+      "native_profession": "Bard",
+      "native_colors": [
+        5
+      ]
+    },
+    {
+      "controlled_profession": 115,
+      "profession_token": "DANCER",
+      "controlled_first": true,
+      "helper_profession": "Dancer",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Dancer",
+        ""
+      ],
+      "native_profession": "Dancer",
+      "native_colors": [
+        5
+      ]
+    },
+    {
+      "controlled_profession": 116,
+      "profession_token": "SAGE",
+      "controlled_first": true,
+      "helper_profession": "Sage",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Sage",
+        ""
+      ],
+      "native_profession": "Sage",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 117,
+      "profession_token": "SCHOLAR",
+      "controlled_first": true,
+      "helper_profession": "Scholar",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Scholar",
+        ""
+      ],
+      "native_profession": "Scholar",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 118,
+      "profession_token": "PHILOSOPHER",
+      "controlled_first": true,
+      "helper_profession": "Philosopher",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Philosopher",
+        ""
+      ],
+      "native_profession": "Philosopher",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 119,
+      "profession_token": "MATHEMATICIAN",
+      "controlled_first": true,
+      "helper_profession": "Mathematician",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Mathematician",
+        ""
+      ],
+      "native_profession": "Mathematician",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 120,
+      "profession_token": "HISTORIAN",
+      "controlled_first": true,
+      "helper_profession": "Historian",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Historian",
+        ""
+      ],
+      "native_profession": "Historian",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 121,
+      "profession_token": "ASTRONOMER",
+      "controlled_first": true,
+      "helper_profession": "Astronomer",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Astronomer",
+        ""
+      ],
+      "native_profession": "Astronomer",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 122,
+      "profession_token": "NATURALIST",
+      "controlled_first": true,
+      "helper_profession": "Naturalist",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Naturalist",
+        ""
+      ],
+      "native_profession": "Naturalist",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 123,
+      "profession_token": "CHEMIST",
+      "controlled_first": true,
+      "helper_profession": "Chemist",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Chemist",
+        ""
+      ],
+      "native_profession": "Chemist",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 124,
+      "profession_token": "GEOGRAPHER",
+      "controlled_first": true,
+      "helper_profession": "Geographer",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Geographer",
+        ""
+      ],
+      "native_profession": "Geographer",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 125,
+      "profession_token": "SCRIBE",
+      "controlled_first": true,
+      "helper_profession": "Scribe",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Scribe",
+        ""
+      ],
+      "native_profession": "Scribe",
+      "native_colors": [
+        13
+      ]
+    },
+    {
+      "controlled_profession": 126,
+      "profession_token": "PAPERMAKER",
+      "controlled_first": true,
+      "helper_profession": "Papermaker",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Papermaker",
+        ""
+      ],
+      "native_profession": "Papermaker",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 127,
+      "profession_token": "BOOKBINDER",
+      "controlled_first": true,
+      "helper_profession": "Bookbinder",
+      "helper_color": 9,
+      "lines": [
+        "Ab, Bookbinder",
+        ""
+      ],
+      "native_profession": "Bookbinder",
+      "native_colors": [
+        9
+      ]
+    },
+    {
+      "controlled_profession": 128,
+      "profession_token": "TAVERN_KEEPER",
+      "controlled_first": true,
+      "helper_profession": "Tavern Keeper",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Tavern Keeper",
+        ""
+      ],
+      "native_profession": "Tavern Keeper",
+      "native_colors": [
+        5
+      ]
+    },
+    {
+      "controlled_profession": 129,
+      "profession_token": "CRIMINAL",
+      "controlled_first": true,
+      "helper_profession": "Criminal",
+      "helper_color": 8,
+      "lines": [
+        "Ab, Criminal",
+        ""
+      ],
+      "native_profession": "Criminal",
+      "native_colors": [
+        8
+      ]
+    },
+    {
+      "controlled_profession": 130,
+      "profession_token": "PEDDLER",
+      "controlled_first": true,
+      "helper_profession": "Peddler",
+      "helper_color": 7,
+      "lines": [
+        "Ab, Peddler",
+        ""
+      ],
+      "native_profession": "Peddler",
+      "native_colors": [
+        7
+      ]
+    },
+    {
+      "controlled_profession": 131,
+      "profession_token": "PROPHET",
+      "controlled_first": true,
+      "helper_profession": "Prophet",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Prophet",
+        ""
+      ],
+      "native_profession": "Prophet",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 132,
+      "profession_token": "PILGRIM",
+      "controlled_first": true,
+      "helper_profession": "Pilgrim",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Pilgrim",
+        ""
+      ],
+      "native_profession": "Pilgrim",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 133,
+      "profession_token": "MONK",
+      "controlled_first": true,
+      "helper_profession": "Monk",
+      "helper_color": 15,
+      "lines": [
+        "Ab, Monk",
+        ""
+      ],
+      "native_profession": "Monk",
+      "native_colors": [
+        15
+      ]
+    },
+    {
+      "controlled_profession": 134,
+      "profession_token": "MESSENGER",
+      "controlled_first": true,
+      "helper_profession": "Messenger",
+      "helper_color": 5,
+      "lines": [
+        "Ab, Messenger",
+        ""
+      ],
+      "native_profession": "Messenger",
+      "native_colors": [
+        5
+      ]
+    }
+  ],
+  "semantic_copy_acceptance": {
+    "source": "build/location-staff-selector-copy-acceptance-20260930-011906/native-location-staff-selector-ui.json",
+    "sha256": "cf36e480f54a864a902ada862ec97340989968704325e351d7a45947b59bf28d",
+    "save_manifests_unchanged": 2,
+    "verified_names": 128,
+    "scope": "Final rebuilt semantic candidate reader matches122 native profession names and6 preserved custom/creature/caste overrides. Candidate presence matches all135 profession states:122 included and13 excluded. Selected-row colors are captured, not implemented.",
+    "eligibility_cases": [
+      {
+        "profession": 0,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 1,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 2,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 3,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 4,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 5,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 6,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 7,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 8,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 9,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 10,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 11,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 12,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 13,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 14,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 15,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 16,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 17,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 18,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 19,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 20,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 21,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 22,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 23,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 24,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 25,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 26,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 27,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 28,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 29,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 30,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 31,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 32,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 33,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 34,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 35,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 36,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 37,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 38,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 39,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 40,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 41,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 42,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 43,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 44,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 45,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 46,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 47,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 48,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 49,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 50,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 51,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 52,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 53,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 54,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 55,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 56,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 57,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 58,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 59,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 60,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 61,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 62,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 63,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 64,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 65,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 66,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 67,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 68,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 69,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 70,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 71,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 72,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 73,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 74,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 75,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 76,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 77,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 78,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 79,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 80,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 81,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 82,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 83,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 84,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 85,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 86,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 87,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 88,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 89,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 90,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 91,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 92,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 93,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 94,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 95,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 96,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 97,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 98,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 99,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 100,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 101,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 102,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 103,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 104,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 105,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 106,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 107,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 108,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 109,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 110,
+        "native_present": false,
+        "compiled_present": false
+      },
+      {
+        "profession": 111,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 112,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 113,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 114,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 115,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 116,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 117,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 118,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 119,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 120,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 121,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 122,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 123,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 124,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 125,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 126,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 127,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 128,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 129,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 130,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 131,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 132,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 133,
+        "native_present": true,
+        "compiled_present": true
+      },
+      {
+        "profession": 134,
+        "native_present": true,
+        "compiled_present": true
+      }
+    ],
+    "overrides": [
+      {
+        "case": "preserve_custom_70",
+        "native": "Ab, Diagnoser",
+        "compiled": "Ab, Diagnoser"
+      },
+      {
+        "case": "preserve_creature_70",
+        "native": "Ab, Diagnoser",
+        "compiled": "Ab, Diagnoser"
+      },
+      {
+        "case": "preserve_caste_70",
+        "native": "Ab, Diagnoser",
+        "compiled": "Ab, Diagnoser"
+      },
+      {
+        "case": "preserve_custom_86",
+        "native": "Ab, Swordsmaster",
+        "compiled": "Ab, Swordsmaster"
+      },
+      {
+        "case": "preserve_creature_86",
+        "native": "Ab, Swordsmaster",
+        "compiled": "Ab, Swordsmaster"
+      },
+      {
+        "case": "preserve_caste_86",
+        "native": "Ab, Swordsmaster",
+        "compiled": "Ab, Swordsmaster"
+      }
+    ]
+  }
+}

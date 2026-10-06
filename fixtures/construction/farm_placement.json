@@ -1,0 +1,2732 @@
+{
+  "cases": [
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1490,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone_center_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1491,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_center_stone"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1492,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_center_wall"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1493,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_center_empty"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1494,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_center_ramp"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1495,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_center_stair"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1496,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_water_one"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_water_two"
+    },
+    {
+      "after_hidden": true,
+      "before_hidden": true,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1497,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_hidden_center"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1498,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_magma_one"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1499,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_grass"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone_mud_elsewhere"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone_center_mud_flagged"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "rough_stone_center_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone_mud_elsewhere_flagged"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1500,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_all_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "soil_water_two_corner"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1501,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_hidden_first"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1502,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_hidden_last"
+    },
+    {
+      "after_hidden": true,
+      "before_hidden": true,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1503,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_all_hidden"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": 1504,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_first_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone_last_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1
+          ],
+          "id": 1505,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 103,
+          "x2": 103,
+          "y1": 39,
+          "y2": 39,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_center_mud_single"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "id": 1506,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 103,
+          "x2": 104,
+          "y1": 39,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_center_mud_to_corner"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": 1507,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_first_soil"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [],
+      "first_selection": {
+        "x": -30000,
+        "y": -30000,
+        "z": -30000
+      },
+      "stage": "PLACING",
+      "variant": "stone_last_soil"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1
+          ],
+          "id": 1508,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 103,
+          "x2": 103,
+          "y1": 39,
+          "y2": 39,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_center_mud_single_unflagged"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1509,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "boulder_all_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1510,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "pebbles_all_mud"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1511,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 102,
+        "y": 38,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "soil_magma_two"
+    },
+    {
+      "after_hidden": false,
+      "before_hidden": false,
+      "buildings": [
+        {
+          "extents": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "id": 1512,
+          "jobs": 1,
+          "max_stage": 3,
+          "stage": 0,
+          "x1": 102,
+          "x2": 104,
+          "y1": 38,
+          "y2": 40,
+          "z": 165
+        }
+      ],
+      "first_selection": {
+        "x": 104,
+        "y": 40,
+        "z": 165
+      },
+      "stage": "PLACING",
+      "variant": "stone_last_soil_reverse"
+    }
+  ],
+  "origin": {
+    "x": 102,
+    "y": 38,
+    "z": 165
+  },
+  "provenance": {
+    "run": "build/construction-farm-native-20261002-090025",
+    "df": "53.16",
+    "dfhack": "53.16-r1",
+    "owned_process_closed": true,
+    "source_unchanged": true,
+    "limits": [
+      "Paused synthetic terrain, actual native two-click gestures and native building/job/extents readback.",
+      "A first_selection.x of -30000 means the first corner was refused; no building then does not establish rectangle invalidity.",
+      "Extents -1 records native null extent pointer: solid full rectangle.",
+      "No natural farming construction completion or planting/crop management in this capture."
+    ]
+  },
+  "installed_comparison": {
+    "run": "build/construction-farm-live-20261002-091709",
+    "result": {
+      "failure": "",
+      "observations": [
+        {
+          "anchor": true,
+          "building": 1491,
+          "case": "soil"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone_center_mud"
+        },
+        {
+          "anchor": true,
+          "building": 1493,
+          "case": "soil_center_stone"
+        },
+        {
+          "anchor": true,
+          "building": 1495,
+          "case": "soil_center_wall"
+        },
+        {
+          "anchor": true,
+          "building": 1497,
+          "case": "soil_center_empty"
+        },
+        {
+          "anchor": true,
+          "building": 1499,
+          "case": "soil_center_ramp"
+        },
+        {
+          "anchor": true,
+          "building": 1501,
+          "case": "soil_center_stair"
+        },
+        {
+          "anchor": true,
+          "building": 1503,
+          "case": "soil_water_one"
+        },
+        {
+          "anchor": true,
+          "building": -1,
+          "case": "soil_water_two"
+        },
+        {
+          "anchor": true,
+          "building": 1505,
+          "case": "soil_hidden_center"
+        },
+        {
+          "anchor": true,
+          "building": 1507,
+          "case": "soil_magma_one"
+        },
+        {
+          "anchor": true,
+          "building": 1509,
+          "case": "soil_grass"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone_mud_elsewhere"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone_center_mud_flagged"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "rough_stone_center_mud"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone_mud_elsewhere_flagged"
+        },
+        {
+          "anchor": true,
+          "building": 1511,
+          "case": "stone_all_mud"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "soil_water_two_corner"
+        },
+        {
+          "anchor": true,
+          "building": 1513,
+          "case": "soil_hidden_first"
+        },
+        {
+          "anchor": true,
+          "building": 1515,
+          "case": "soil_hidden_last"
+        },
+        {
+          "anchor": true,
+          "building": 1517,
+          "case": "soil_all_hidden"
+        },
+        {
+          "anchor": true,
+          "building": 1519,
+          "case": "stone_first_mud"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone_last_mud"
+        },
+        {
+          "anchor": true,
+          "building": 1521,
+          "case": "stone_center_mud_single"
+        },
+        {
+          "anchor": true,
+          "building": 1523,
+          "case": "stone_center_mud_to_corner"
+        },
+        {
+          "anchor": true,
+          "building": 1525,
+          "case": "stone_first_soil"
+        },
+        {
+          "anchor": false,
+          "building": -1,
+          "case": "stone_last_soil"
+        },
+        {
+          "anchor": true,
+          "building": 1527,
+          "case": "stone_center_mud_single_unflagged"
+        },
+        {
+          "anchor": true,
+          "building": 1529,
+          "case": "boulder_all_mud"
+        },
+        {
+          "anchor": true,
+          "building": 1531,
+          "case": "pebbles_all_mud"
+        },
+        {
+          "anchor": true,
+          "building": 1533,
+          "case": "soil_magma_two"
+        },
+        {
+          "anchor": true,
+          "building": 1535,
+          "case": "stone_last_soil_reverse"
+        }
+      ],
+      "status": "passed"
+    },
+    "owned_processes_closed": true,
+    "source_unchanged": true,
+    "diagnostics": "passed_with_known_issues",
+    "native_readback": [
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1490,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1491,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_center_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1492,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1493,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_center_stone"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1494,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1495,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_center_wall"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1496,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1497,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_center_empty"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1498,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1499,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_center_ramp"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1500,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1501,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_center_stair"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1502,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1503,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_water_one"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_water_two"
+      },
+      {
+        "after_hidden": true,
+        "before_hidden": true,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1504,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1505,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_hidden_center"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1506,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1507,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_magma_one"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1508,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1509,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_grass"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_mud_elsewhere"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_center_mud_flagged"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "rough_stone_center_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_mud_elsewhere_flagged"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1510,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1511,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_all_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_water_two_corner"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1512,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1513,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_hidden_first"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1514,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1515,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_hidden_last"
+      },
+      {
+        "after_hidden": true,
+        "before_hidden": true,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1516,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1517,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_all_hidden"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "id": 1518,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": 1519,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_first_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_last_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1
+            ],
+            "id": 1520,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 103,
+            "x2": 103,
+            "y1": 39,
+            "y2": 39,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1
+          ],
+          "id": 1521,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_center_mud_single"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              0,
+              0,
+              0
+            ],
+            "id": 1522,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 103,
+            "x2": 104,
+            "y1": 39,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "id": 1523,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_center_mud_to_corner"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "id": 1524,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": 1525,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_first_soil"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_last_soil"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1
+            ],
+            "id": 1526,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 103,
+            "x2": 103,
+            "y1": 39,
+            "y2": 39,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1
+          ],
+          "id": 1527,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_center_mud_single_unflagged"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1528,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1529,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "boulder_all_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ],
+            "id": 1530,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "id": 1531,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "pebbles_all_mud"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1532,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1533,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "soil_magma_two"
+      },
+      {
+        "after_hidden": false,
+        "before_hidden": false,
+        "buildings": [
+          {
+            "extents": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "id": 1534,
+            "jobs": 1,
+            "max_stage": 3,
+            "stage": 0,
+            "x1": 102,
+            "x2": 104,
+            "y1": 38,
+            "y2": 40,
+            "z": 165
+          }
+        ],
+        "first_click": {
+          "x": 104,
+          "y": 40,
+          "z": 165
+        },
+        "first_selection": {
+          "x": 104,
+          "y": 40,
+          "z": 165
+        },
+        "installed": {
+          "extents": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "id": 1535,
+          "jobs": 1,
+          "stage": 0
+        },
+        "origin": {
+          "x": 102,
+          "y": 38,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "variant": "stone_last_soil_reverse"
+      }
+    ]
+  },
+  "main_scene": {
+    "run": "build/construction-farm-main-20261002-091910",
+    "result": {
+      "failure": "",
+      "observations": [
+        {
+          "unsuitable_first_corner_rejected": true
+        },
+        {
+          "building_id": 1490,
+          "input": "launcher/category/leaf/invalid anchor/reverse corners through viewport pointer",
+          "site": "(121, 46, 165)"
+        },
+        {
+          "buildings": [
+            {
+              "definition": "FarmPlot",
+              "extents": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "id": 1490.0,
+              "items": [],
+              "jobs": 0.0,
+              "maximum": 3.0,
+              "stage": 3.0
+            }
+          ],
+          "frame": 1675.0,
+          "status": "passed"
+        }
+      ],
+      "status": "passed"
+    },
+    "owned_processes_closed": true,
+    "source_unchanged": true,
+    "diagnostics": "passed_with_known_issues",
+    "limits": "Actual pointer menu, rejected dry-stone anchor, reverse corners, natural completion at frame1675 with native irregular extents. Broader farm lifecycle and visual preview parity remain open."
+  }
+}

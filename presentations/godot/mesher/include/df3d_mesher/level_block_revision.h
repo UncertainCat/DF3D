@@ -38,4 +38,15 @@ struct LevelBlockRevision {
         return changed;
     }
 };
+// Open space and brook surfaces depend on liquid immediately below.
+struct MinimapRevision {
+    LevelBlockRevision selected, below;
+    uint64_t blockChecks = 0;
+    bool update(const wm::WorldModel& model, int level) {
+        const bool changed=selected.update(model,level);
+        const bool lowerChanged=below.update(model,level-1);
+        blockChecks=selected.blockChecks+below.blockChecks;
+        return changed || lowerChanged;
+    }
+};
 }

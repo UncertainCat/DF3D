@@ -1,0 +1,2313 @@
+{
+  "build": "DF53.16 Steam24557528",
+  "flags": {
+    "value": "0x901020",
+    "names": [
+      "AllowUnrevealed",
+      "ShallowWater",
+      "WalkLand",
+      "LevelMapless"
+    ]
+  },
+  "setup": "Owned paused clone, bounded flat room with full-height x+1 barrier and fixture items beyond it; leftward Track draft avoids the barrier. Synthetic terrain, liquid, temperature and walkable tags isolate navigation; no simulation steps or save writes.",
+  "limitations": [
+    "Navigation scratch is oracle-only, never runtime input.",
+    "Unreachable fixture items remain native choices with history-dependent negative scratch-derived distances because candidate/walkable state was controlled independently. These are diagnostic stale values, not accepted runtime distance semantics or natural candidate availability.",
+    "Floor cases do not establish lower-opening/ramp liquid classification or generic movement and seed construction.",
+    "No bridge/Godot material-list acceptance."
+  ],
+  "captures": [
+    {
+      "source": "build/connected-track-material-liquid-20260930-195106",
+      "status": "native_oracle_passed",
+      "source_save_unchanged": true,
+      "paused_frame": 0,
+      "inputs": [
+        {
+          "Algorithm": "SHA256",
+          "Hash": "383EC8AF5E94EE877AC519E841C546D74D66E9578BE09FBC3F281E825827E34D",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\construction_track.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "A2C823B9706CCA0A4566F0D26704AC6EE3433E93C844098106E9726319CF7D09",
+          "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "4539C37B5C705DF7A389886643AE1634663F7ECE7BCA6AB59146FCE46C74A896",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\pm\\connected-track-material-liquid.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "6203FC9852A8300111DE908B8ACC019FA761F515C7580A648618470FFD884EA4",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\pm\\connected-track-material-liquid.ps1"
+        }
+      ],
+      "raw_cases_sha256": "a441cbd3add6064e7f6c9263f33bd2a3afc97abb7fefae361f4e8e5691691308",
+      "cases": [
+        {
+          "scenario": {
+            "label": "water_0"
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 1,
+            "sample": [
+              {
+                "cost": 4,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 5,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 6,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 7,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_1"
+          },
+          "depth": 1,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 6250001,
+            "sample": [
+              {
+                "cost": 6250004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 6250005,
+                "depth": 1,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 6250006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 6250007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_2"
+          },
+          "depth": 2,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 12500001,
+            "sample": [
+              {
+                "cost": 12500004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 12500005,
+                "depth": 2,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 12500006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 12500007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_3"
+          },
+          "depth": 3,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 18750001,
+            "sample": [
+              {
+                "cost": 18750004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 18750005,
+                "depth": 3,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 18750006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 18750007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_4"
+          },
+          "depth": 4,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 25000001,
+            "sample": [
+              {
+                "cost": 25000004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 25000005,
+                "depth": 4,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 25000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 25000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_5"
+          },
+          "depth": 5,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 31250001,
+            "sample": [
+              {
+                "cost": 31250004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 31250005,
+                "depth": 5,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 31250006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 31250007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_6"
+          },
+          "depth": 6,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 37500001,
+            "sample": [
+              {
+                "cost": 37500004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 37500005,
+                "depth": 6,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 37500006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 37500007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "water_7"
+          },
+          "depth": 7,
+          "magma": false,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 43750001,
+            "sample": [
+              {
+                "cost": 43750004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 37500005,
+                "depth": 7,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 37500006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 37500007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -6249994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -6249994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_0"
+          },
+          "depth": 0,
+          "magma": true,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 50000001,
+            "sample": [
+              {
+                "cost": 50000004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_1"
+          },
+          "depth": 1,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 56250001,
+            "sample": [
+              {
+                "cost": 56250004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 1,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -6249994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -6249994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_2"
+          },
+          "depth": 2,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 62500001,
+            "sample": [
+              {
+                "cost": 62500004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 2,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -12499994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -12499994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_3"
+          },
+          "depth": 3,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 68750001,
+            "sample": [
+              {
+                "cost": 68750004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 3,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -18749994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -18749994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_4"
+          },
+          "depth": 4,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 75000001,
+            "sample": [
+              {
+                "cost": 75000004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 4,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -24999994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -24999994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_5"
+          },
+          "depth": 5,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 81250001,
+            "sample": [
+              {
+                "cost": 81250004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 5,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -31249994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -31249994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_6"
+          },
+          "depth": 6,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 87500001,
+            "sample": [
+              {
+                "cost": 87500004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 6,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -37499994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -37499994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "magma_7"
+          },
+          "depth": 7,
+          "magma": true,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 93750001,
+            "sample": [
+              {
+                "cost": 93750004,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000005,
+                "depth": 7,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              },
+              {
+                "cost": 50000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": -43749994
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": -43749994
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "build/connected-track-material-environment-20260930-195236",
+      "status": "native_oracle_passed",
+      "source_save_unchanged": true,
+      "paused_frame": 0,
+      "inputs": [
+        {
+          "Algorithm": "SHA256",
+          "Hash": "383EC8AF5E94EE877AC519E841C546D74D66E9578BE09FBC3F281E825827E34D",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\construction_track.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "A2C823B9706CCA0A4566F0D26704AC6EE3433E93C844098106E9726319CF7D09",
+          "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "2CE3FE7D816D88A1BFA1B589FE0956E665B77DE3BB976A95FEFB394971813DC9",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\pm\\connected-track-material-environment.lua"
+        },
+        {
+          "Algorithm": "SHA256",
+          "Hash": "F0583748C331AF946597D0EB151987CA444471D727476D8C44BEC7C73DD066C7",
+          "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\pm\\connected-track-material-environment.ps1"
+        }
+      ],
+      "raw_cases_sha256": "edbbd7189b898674a5caa787ceab6b45209f9b8823ea089be327e6d42e9e3e48",
+      "cases": [
+        {
+          "scenario": {
+            "label": "baseline",
+            "temp": 10015
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 1,
+            "sample": [
+              {
+                "cost": 4,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 5,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 6,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 7,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "hidden": true,
+            "label": "hidden",
+            "temp": 10015
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 6250001,
+            "sample": [
+              {
+                "cost": 6250004,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 6250005,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": true,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 47
+              },
+              {
+                "cost": 6250006,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 6250007,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "dolomite blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "petrified wood blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "jet blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "iron bars",
+              "distance": -6250001
+            },
+            {
+              "name": "slate blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "siltstone blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "marcasite blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "horn silver blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "tin bars",
+              "distance": -6250001
+            },
+            {
+              "name": "sphalerite blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "platinum bars",
+              "distance": -6250001
+            },
+            {
+              "name": "steel bars",
+              "distance": -6250001
+            },
+            {
+              "name": "microcline",
+              "distance": -6250001
+            },
+            {
+              "name": "microcline blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "talc blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "copper bars",
+              "distance": -6250001
+            },
+            {
+              "name": "silver bars",
+              "distance": -6250001
+            },
+            {
+              "name": "rock salt blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "rock salt",
+              "distance": -6250001
+            },
+            {
+              "name": "chert blocks",
+              "distance": -6250001
+            },
+            {
+              "name": "date palm wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "mahogany logs",
+              "distance": -6250001
+            },
+            {
+              "name": "olive wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "bitter orange wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "custard-apple wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "citron wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "paradise nut wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "pomegranate wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "durian wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "coffee wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "kumquat wood logs",
+              "distance": -6250001
+            },
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "zero_walkable_group",
+            "temp": 10015,
+            "zero_group": true
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 12500001,
+            "sample": [
+              {
+                "cost": 12500004,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 12500005,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 0
+              },
+              {
+                "cost": 12500006,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 12500007,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            },
+            {
+              "name": "dolomite blocks",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "flow_forbid": true,
+            "label": "flow_forbid",
+            "temp": 10015
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 18750001,
+            "sample": [
+              {
+                "cost": 18750004,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 12500005,
+                "depth": 0,
+                "flow_forbid": true,
+                "hidden": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 47
+              },
+              {
+                "cost": 12500006,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 12500007,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "dolomite blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "petrified wood blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "jet blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "iron bars",
+              "distance": -18750001
+            },
+            {
+              "name": "slate blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "siltstone blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "marcasite blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "horn silver blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "tin bars",
+              "distance": -18750001
+            },
+            {
+              "name": "sphalerite blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "platinum bars",
+              "distance": -18750001
+            },
+            {
+              "name": "steel bars",
+              "distance": -18750001
+            },
+            {
+              "name": "microcline",
+              "distance": -18750001
+            },
+            {
+              "name": "microcline blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "talc blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "copper bars",
+              "distance": -18750001
+            },
+            {
+              "name": "silver bars",
+              "distance": -18750001
+            },
+            {
+              "name": "rock salt blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "rock salt",
+              "distance": -18750001
+            },
+            {
+              "name": "chert blocks",
+              "distance": -18750001
+            },
+            {
+              "name": "date palm wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "mahogany logs",
+              "distance": -18750001
+            },
+            {
+              "name": "olive wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "bitter orange wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "custard-apple wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "citron wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "paradise nut wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "pomegranate wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "durian wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "coffee wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "kumquat wood logs",
+              "distance": -18750001
+            },
+            {
+              "name": "cherry wood logs",
+              "distance": -6249994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "temperature_10199",
+            "temp": 10199
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": true,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 25000001,
+            "sample": [
+              {
+                "cost": 25000004,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 25000005,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10199,
+                "walkable": 47
+              },
+              {
+                "cost": 25000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 25000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "dolomite blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "petrified wood blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "jet blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "iron bars",
+              "distance": -25000001
+            },
+            {
+              "name": "slate blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "siltstone blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "marcasite blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "horn silver blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "tin bars",
+              "distance": -25000001
+            },
+            {
+              "name": "sphalerite blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "platinum bars",
+              "distance": -25000001
+            },
+            {
+              "name": "steel bars",
+              "distance": -25000001
+            },
+            {
+              "name": "microcline",
+              "distance": -25000001
+            },
+            {
+              "name": "microcline blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "talc blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "copper bars",
+              "distance": -25000001
+            },
+            {
+              "name": "silver bars",
+              "distance": -25000001
+            },
+            {
+              "name": "rock salt blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "rock salt",
+              "distance": -25000001
+            },
+            {
+              "name": "chert blocks",
+              "distance": -25000001
+            },
+            {
+              "name": "date palm wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "mahogany logs",
+              "distance": -25000001
+            },
+            {
+              "name": "olive wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "bitter orange wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "custard-apple wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "citron wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "paradise nut wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "pomegranate wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "durian wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "coffee wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "kumquat wood logs",
+              "distance": -25000001
+            },
+            {
+              "name": "cherry wood logs",
+              "distance": 6
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "temperature_10200",
+            "temp": 10200
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 31250001,
+            "sample": [
+              {
+                "cost": 31250004,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 25000005,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10200,
+                "walkable": 47
+              },
+              {
+                "cost": 25000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 25000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "dolomite blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "petrified wood blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "jet blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "iron bars",
+              "distance": -31250001
+            },
+            {
+              "name": "slate blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "siltstone blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "marcasite blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "horn silver blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "tin bars",
+              "distance": -31250001
+            },
+            {
+              "name": "sphalerite blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "platinum bars",
+              "distance": -31250001
+            },
+            {
+              "name": "steel bars",
+              "distance": -31250001
+            },
+            {
+              "name": "microcline",
+              "distance": -31250001
+            },
+            {
+              "name": "microcline blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "talc blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "copper bars",
+              "distance": -31250001
+            },
+            {
+              "name": "silver bars",
+              "distance": -31250001
+            },
+            {
+              "name": "rock salt blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "rock salt",
+              "distance": -31250001
+            },
+            {
+              "name": "chert blocks",
+              "distance": -31250001
+            },
+            {
+              "name": "date palm wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "mahogany logs",
+              "distance": -31250001
+            },
+            {
+              "name": "olive wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "bitter orange wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "custard-apple wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "citron wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "paradise nut wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "pomegranate wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "durian wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "coffee wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "kumquat wood logs",
+              "distance": -31250001
+            },
+            {
+              "name": "cherry wood logs",
+              "distance": -6249994
+            }
+          ]
+        },
+        {
+          "scenario": {
+            "label": "temperature_10201",
+            "temp": 10201
+          },
+          "depth": 0,
+          "magma": false,
+          "native_reached": false,
+          "native_navigation": {
+            "barrier": [],
+            "generation": 37500001,
+            "sample": [
+              {
+                "cost": 37500004,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 103,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 25000005,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 104,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10201,
+                "walkable": 47
+              },
+              {
+                "cost": 25000006,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 105,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              },
+              {
+                "cost": 25000007,
+                "depth": 0,
+                "flow_forbid": false,
+                "hidden": false,
+                "pos": {
+                  "x": 106,
+                  "y": 39,
+                  "z": 165
+                },
+                "temperature": 10015,
+                "walkable": 2690
+              }
+            ]
+          },
+          "group_distances": [
+            {
+              "name": "dolomite blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "petrified wood blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "jet blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "iron bars",
+              "distance": -37500001
+            },
+            {
+              "name": "slate blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "siltstone blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "marcasite blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "horn silver blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "tin bars",
+              "distance": -37500001
+            },
+            {
+              "name": "sphalerite blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "platinum bars",
+              "distance": -37500001
+            },
+            {
+              "name": "steel bars",
+              "distance": -37500001
+            },
+            {
+              "name": "microcline",
+              "distance": -37500001
+            },
+            {
+              "name": "microcline blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "talc blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "copper bars",
+              "distance": -37500001
+            },
+            {
+              "name": "silver bars",
+              "distance": -37500001
+            },
+            {
+              "name": "rock salt blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "rock salt",
+              "distance": -37500001
+            },
+            {
+              "name": "chert blocks",
+              "distance": -37500001
+            },
+            {
+              "name": "date palm wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "mahogany logs",
+              "distance": -37500001
+            },
+            {
+              "name": "olive wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "bitter orange wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "custard-apple wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "citron wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "paradise nut wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "pomegranate wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "durian wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "coffee wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "kumquat wood logs",
+              "distance": -37500001
+            },
+            {
+              "name": "cherry wood logs",
+              "distance": -12499994
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

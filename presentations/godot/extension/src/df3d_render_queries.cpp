@@ -25,13 +25,13 @@ int Df3dWorld::doorCellClass(int x, int y, int z) const {
 
 void Df3dWorld::resetDoorOrientationCache() const {
     doorOrientationCells_.clear();
-    doorOrientationScope_ = {source_.model().sessionGeneration(), topZ_, windowDepth_, revealHidden_};
+    doorOrientationScope_ = {source_.model().sessionGeneration(), topZ_, get_window_depth(), revealHidden_};
     doorOrientationTerrain_ = UINT64_MAX;
     ++doorOrientationRevision_;
 }
 
 void Df3dWorld::ensureDoorOrientationScope() const {
-    if (doorOrientationScope_ != std::make_tuple(source_.model().sessionGeneration(), topZ_, windowDepth_, revealHidden_))
+    if (doorOrientationScope_ != std::make_tuple(source_.model().sessionGeneration(), topZ_, get_window_depth(), revealHidden_))
         resetDoorOrientationCache();
 }
 
@@ -99,7 +99,7 @@ SpriteCeilingCache::Result Df3dWorld::spriteCeilingQuery(const godot::AABB& boun
     const SpriteCeilingCache::Bounds coverage{
         int(std::floor(bounds.position.x+.0001)),int(std::floor(bounds.position.z+.0001)),floorZ+1,
         int(std::floor(end.x-.0001)),int(std::floor(end.z-.0001)),int(std::ceil(end.y))};
-    return spriteCeilingCache_.query(source_.model(),coverage,topZ_,windowDepth_);
+    return spriteCeilingCache_.query(source_.model(),coverage,topZ_,get_window_depth());
 }
 
 godot::Dictionary Df3dWorld::sprite_ceiling_cache_stats() const {

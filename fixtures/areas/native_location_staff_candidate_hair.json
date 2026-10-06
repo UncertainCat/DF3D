@@ -1,0 +1,33 @@
+{
+  "controls": [
+    {
+      "case": "both",
+      "conditions": 2,
+      "visible_rgba_sha256": "9cc16549f3cf19c0d1cb15ef2d1ca6f0368028586a36575a4de09c61a4ae0803"
+    },
+    {
+      "case": "none",
+      "conditions": 0,
+      "visible_rgba_sha256": "caa3d5271d1aa56e12b9d19189f4146bd0b2c5ee9cf5ac807af9049c5bb65935"
+    },
+    {
+      "case": "head_only",
+      "conditions": 1,
+      "visible_rgba_sha256": "caa3d5271d1aa56e12b9d19189f4146bd0b2c5ee9cf5ac807af9049c5bb65935"
+    },
+    {
+      "case": "cloak_only",
+      "conditions": 1,
+      "visible_rgba_sha256": "9cc16549f3cf19c0d1cb15ef2d1ca6f0368028586a36575a4de09c61a4ae0803"
+    },
+    {
+      "case": "restored",
+      "conditions": 2,
+      "visible_rgba_sha256": "9cc16549f3cf19c0d1cb15ef2d1ca6f0368028586a36575a4de09c61a4ae0803"
+    }
+  ],
+  "layer": "LONG_PONY_TAIL_RED",
+  "unit_id": 7124,
+  "source": "build/location-staff-selector-hair-20260930-031006",
+  "scope": "Native unit7124 long ponytail hair: cloak worn, no headgear. Both clauses equal cloak-only; none equals head-only. Restored original hash. No artwork retained. Other clause families and unclipped large-hair composition remain unverified."
+}

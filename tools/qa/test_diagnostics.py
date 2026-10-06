@@ -72,5 +72,35 @@ class DiagnosticTests(unittest.TestCase):
         self.assertEqual(console_summary(dict(id="ok", status="passed")), "ok: PASSED")
         self.assertIn("missing compiler", console_summary(dict(id="build", status="incomplete", reasons=["missing compiler"])))
 
+    def test_godot_warnings_cannot_hide_behind_completion_marker(self):
+        warning = "WARNING: Ellipsis must be exactly one character long (3 characters given).\n"
+        output = BANNER + warning + "   at: set_ellipsis_char (scene/gui/label.cpp:1310)\nPASS\n"
+        self.assertEqual(error_summary(output)["unclassified"], [{"message":warning.strip(),"count":1}])
+        self.assertEqual(classify({"completion":"^PASS$"},0,output)[0],"failed")
+
+    def test_configured_thread_notice_requires_pinned_callsite(self):
+        text = (BANNER + "WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.\n"
+                "However, bear in mind that at the moment it can lead to project crashes or instability.\n"
+                "So, unless you want to test the engine, set the project setting to Safe.\n"
+                "   at: setup2 (main/main.cpp:3518)\nPASS\n")
+        self.assertEqual(classify({"completion":"^PASS$"},0,text)[0],"passed_with_known_issues")
+        self.assertEqual(classify({"completion":"^PASS$"},0,text.replace(":3518)",":9999)"))[0],"failed")
+
+    def test_shutdown_object_pair_requires_same_process_d3d12_baseline(self):
+        notice = ("WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.\n"
+                  " at: setup2 (main/main.cpp:3518)\n")
+        finalize = ("ERROR: This function (finalize) can only be called from the render thread.\n"
+                    " at: finalize (servers/rendering/rendering_device.cpp:8862)\n")
+        leaked = ("WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n"
+                  " at: cleanup (core/object/object.cpp:2536)\n")
+        prefix = BANNER + "D3D12 12_0 - Forward+ - Using Device #0: test\n" + notice + finalize
+        self.assertEqual(error_summary(prefix + leaked)["unclassified"], [])
+        for text in (BANNER + leaked, prefix.replace("D3D12 ", "Vulkan ") + leaked,
+                     prefix.replace(finalize, "") + leaked, prefix.replace(notice, "") + leaked,
+                     prefix + BANNER + leaked, prefix + leaked * 2,
+                     prefix + leaked.replace("2 ObjectDB", "3 ObjectDB"),
+                     prefix + leaked.replace(":2536)", ":9999)")):
+            self.assertTrue(error_summary(text)["unclassified"], text)
+
 if __name__ == "__main__":
     unittest.main()

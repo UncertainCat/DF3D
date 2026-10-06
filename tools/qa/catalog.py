@@ -8,7 +8,7 @@ MANIFEST = Path(__file__).with_name("checks.json")
 BUILTIN_PREREQUISITES = {
     "root_build", "extension_build", "installed_lua", "df_assets", "real_renderer",
     "protected_live", "bridge_attested", "bridge_configured", "python_lupa", "cmake_tool",
-    "recorded_mature_fixture", "synthetic_demo_fixture",
+    "recorded_mature_fixture", "synthetic_demo_fixture", "recorded_location_catalog",
 }
 
 

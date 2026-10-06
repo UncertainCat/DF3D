@@ -8,7 +8,9 @@ Requires the Steam Windows x64 Dwarf Fortress 53.16 build 24557528.
 The original game is required and remains responsible for the simulation.
 Game artwork and audio are read from your own installation at runtime.
 
-Run DF3D-0.1.0-windows-x64.exe, select the game installation, and follow setup.
+Material lookup is faster in the tested fortress; larger or unusual searches can still take time.
+
+Run DF3D-0.1.0-rc.5-windows-x64.exe, select the game installation, and follow setup.
 Godot, the native extension and required runtimes are included; no build tools
 or separate Godot installation are needed. A Steam library is detected automatically;
 Browse or DF3D_DF_PATH can select another installation.
@@ -20,6 +22,19 @@ Closing DF3D does not terminate Dwarf Fortress. Save and quit from the game
 before closing it or restoring installation files. The launcher cannot protect
 saves against every crash or game bug, so keep your own backup outside the
 game's save directory.
+
+This candidate adds Reports/alerts and construction across the native build
+catalog. An animated activity marker now indicates pending construction material
+loading/placement. Closing a panel also makes Play respond immediately.
+This follow-up includes the fix for construction material selection while the fortress
+is running by holding simulation during the picker. Material lookup can still
+take roughly two seconds. Pause on new starts off in each fortress session and
+remembers explicit toggles; this simplification is maintainer-approved.
+Known issues for this cut: some placement refusals lack
+native explanatory text, and unusual material-navigation states can refuse a
+valid selection. Reinforced Wall Closest has an unresolved native bar-choice
+inconsistency across equivalent captures. Small panel spacing differences remain. See ENGINEERING.md for
+verification limits and retained defects. These are not permanent scope cuts.
 
 DF3D is MIT licensed; see notices/DF3D-LICENSE.txt.
 Third-party licenses are in notices/. The included DFHack distribution also

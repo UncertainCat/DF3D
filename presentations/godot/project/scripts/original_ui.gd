@@ -169,6 +169,12 @@ func compact_panel() -> StyleBox:
 	for side in [SIDE_LEFT, SIDE_RIGHT, SIDE_TOP, SIDE_BOTTOM]: style.set_content_margin(side, 8)
 	return style
 
+func native_message_panel() -> StyleBox:
+	# Native shortage frame013136 matches the installed HOVER_RECTANGLE pixels.
+	var style := make_style("HOVER_RECTANGLE",8)
+	for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_texture_margin(side,12)
+	return style
+
 static func bitmap_font(path: String) -> FontFile:
 	if path.is_empty() or not FileAccess.file_exists(path): return null
 	var image := Image.load_from_file(path)

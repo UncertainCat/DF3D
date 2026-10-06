@@ -621,7 +621,7 @@ bool sameFace(const Face& a, const Face& b) {
   const FaceTag& y = b.tag;
   return a.v == b.v && a.normal == b.normal && x.shape == y.shape &&
          x.materialKind == y.materialKind && x.material == y.material && x.liquid == y.liquid &&
-         x.liquidLevel == y.liquidLevel && x.flags == y.flags && x.dir == y.dir &&
+         x.liquidLevel == y.liquidLevel && x.flags == y.flags && x.completedTrack == y.completedTrack && x.dir == y.dir &&
          x.part == y.part && x.slopeHigh == y.slopeHigh && x.walls == y.walls && x.lx == y.lx &&
          x.ly == y.ly;
 }
@@ -1145,19 +1145,19 @@ TEST_CASE("joined thin foreground caps do not leave floating point seam slivers"
 
 #include "df3d_mesher/minimap.h"
 TEST_CASE("minimap hides unknown and hidden terrain before inspecting materials") {
- CHECK(minimapPalette(std::nullopt)==-1);
+ CHECK(minimapColor(std::nullopt)==-1);
  TileState tile; tile.shape=TileShape::Wall; tile.materialKind=MaterialKind::Stone;
- CHECK(minimapPalette(tile)==7);
+ CHECK(minimapColor(tile)==0x404040);
  tile.flags=wm::kTileHidden; tile.liquidLevel=7; tile.liquidKind=LiquidKind::Magma;
- CHECK(minimapPalette(tile)==-1);
+ CHECK(minimapColor(tile)==-1);
  tile.flags=0; tile.shape=TileShape::Unknown;
- CHECK(minimapPalette(tile)==-1);
+ CHECK(minimapColor(tile)==-1);
  tile.shape=TileShape::Empty;
- CHECK(minimapPalette(tile)==12);
+ CHECK(minimapColor(tile)==0x801800);
  tile.liquidLevel=0;
- CHECK(minimapPalette(tile)==-1);
+ CHECK(minimapColor(tile)==0x64e0ff);
  tile.shape=TileShape::Floor; tile.materialKind=MaterialKind::Grass;
- CHECK(minimapPalette(tile)==10);
+ CHECK(minimapColor(tile)==0x80c000);
 }
 TEST_CASE("minimap representative sampling is bounded on nonsquare maps") {
  CHECK(minimapSample(0,256,512)==1);
@@ -1454,4 +1454,107 @@ TEST_CASE("ground item pose policy excludes living-looking corpses and fluid glo
         CHECK(df3d::mesher::itemLiesOnGround(kind));
     for (auto kind : {I::Unknown,I::Weapon,I::Armor,I::Cage,I::Meat,I::Plant})
         CHECK_FALSE(df3d::mesher::itemLiesOnGround(kind));
+}
+
+TEST_CASE("completed Track face direction is independent of pending carve direction") {
+  MapSource map(16,16,1);
+  auto floor=tile(TileShape::Floor,MaterialKind::Constructed);
+  floor.track=5;floor.completedTrack=10;map.set(3,4,0,floor);
+  auto mesh=meshBlock(map,{0,0,0});
+  const auto* top=find(mesh,3,4,FaceDir::PosZ);REQUIRE(top);
+  CHECK(top->tag.completedTrack==10);
+  CHECK(countPart(mesh,FacePart::Feature)==1);
+  for(const auto& face:mesh.faces) if(face.tag.part==FacePart::Feature) {
+    CHECK(face.tag.completedTrack==10);
+    CHECK(face.tag.dir==FaceDir::PosZ);
+  }
+  floor.completedTrack=6;map.set(3,4,0,floor);
+  mesh=meshBlock(map,{0,0,0});top=find(mesh,3,4,FaceDir::PosZ);REQUIRE(top);
+  CHECK(top->tag.completedTrack==6);
+  floor.completedTrack=0;map.set(3,4,0,floor);
+  mesh=meshBlock(map,{0,0,0});top=find(mesh,3,4,FaceDir::PosZ);REQUIRE(top);
+  CHECK(top->tag.completedTrack==0);
+  CHECK(countPart(mesh,FacePart::Feature)==0);
+}
+
+TEST_CASE("completed ramp Track overlay follows every slope and lone top") {
+  const int dx[]={1,-1,0,0,0}, dy[]={0,0,1,-1,0};
+  for(int side=0;side<5;++side) {
+    MapSource map(16,16,2);
+    auto ramp=tile(TileShape::Ramp);ramp.completedTrack=3;map.set(5,5,0,ramp);
+    if(side<4) map.set(5+dx[side],5+dy[side],0,kWall);
+    auto mesh=meshBlock(map,{0,0,0});
+    const Face* base=nullptr;const Face* overlay=nullptr;
+    for(const auto& face:mesh.faces) {
+      if(face.tag.lx!=5 || face.tag.ly!=5)continue;
+      if(face.tag.part==FacePart::Feature) {CHECK(overlay==nullptr);overlay=&face;}
+      if(face.tag.part==FacePart::Terrain && face.tag.dir==(side<4?FaceDir::Slope:FaceDir::PosZ))base=&face;
+    }
+    REQUIRE(base);REQUIRE(overlay);
+    CHECK(overlay->tag.completedTrack==3);
+    CHECK(overlay->tag.slopeHigh==base->tag.slopeHigh);
+    for(size_t i=0;i<4;++i) {
+      CHECK(overlay->v[i].x==doctest::Approx(base->v[i].x));
+      CHECK(overlay->v[i].y==doctest::Approx(base->v[i].y));
+      CHECK(overlay->v[i].z==doctest::Approx(base->v[i].z+.001f));
+    }
+    ramp.completedTrack=0;map.set(5,5,0,ramp);
+    CHECK(countPart(meshBlock(map,{0,0,0}),FacePart::Feature)==0);
+  }
+}
+
+TEST_CASE("native minimap material precedence and floor-finish matrix") {
+ TileState tile;tile.shape=TileShape::Floor;tile.materialKind=MaterialKind::Stone;
+ CHECK(minimapColor(tile)==0x808080);
+ tile.flags=wm::kTileSmooth;CHECK(minimapColor(tile)==0x80c000);
+ tile.subterranean=true;CHECK(minimapColor(tile)==0xc0c0c0);
+ tile.flags=0;CHECK(minimapColor(tile)==0xc0c0c0);
+ tile.materialKind=MaterialKind::Ice;CHECK(minimapColor(tile)==0xe0ffff);
+ tile.shape=TileShape::Wall;CHECK(minimapColor(tile)==0xe0ffff);
+ tile.materialKind=MaterialKind::Stone;tile.liquidLevel=1;tile.liquidKind=LiquidKind::Magma;
+ CHECK(minimapColor(tile)==0x801800);
+ tile.liquidKind=LiquidKind::Water;CHECK(minimapColor(tile)==0x0018c0);
+ tile.buildingOccupancy=2;CHECK(minimapColor(tile)==0xc88c00);
+ tile.flags=wm::kTileHidden;CHECK(minimapColor(tile)==-1);
+ tile.flags=0;tile.buildingOccupancy=0;tile.liquidLevel=0;tile.liquidKind=LiquidKind::None;
+ tile.shape=TileShape::Floor;
+ TileState below;below.liquidLevel=7;below.liquidKind=LiquidKind::Water;below.flags=wm::kTileHidden;
+ CHECK(minimapColor(tile,below)==0xc0c0c0);
+ tile.brookTop=true;CHECK(minimapColor(tile,below)==0x0018c0);
+ tile.brookTop=false;tile.shape=TileShape::Empty;CHECK(minimapColor(tile,below)==0x0018c0);
+ CHECK(minimapColor(tile)==0x64e0ff);
+ tile.shape=TileShape::Floor;tile.materialKind=MaterialKind::Ice;CHECK(minimapColor(tile,below)==0xe0ffff);
+}
+
+TEST_CASE("native surface rough ramps and stairs differ from rough ground") {
+ TileState t;t.materialKind=MaterialKind::Stone;
+ for(auto shape:{TileShape::Ramp,TileShape::StairUp,TileShape::StairDown,TileShape::StairUpDown}) {
+  t.shape=shape;CHECK(minimapColor(t)==0x80c000);
+ }
+ t.materialKind=MaterialKind::Soil;t.shape=TileShape::Ramp;CHECK(minimapColor(t)==0x80c000);
+ t.shape=TileShape::Floor;CHECK(minimapColor(t)==0x804000);
+}
+
+TEST_CASE("native root columns retain wall color distinct from tree trunks") {
+ TileState t;t.shape=TileShape::TreeTrunk;t.materialKind=MaterialKind::Wood;
+ CHECK(minimapColor(t)==0x644600);
+ t.root=true;CHECK(minimapColor(t)==0x404040);
+ t.buildingOccupancy=2;CHECK(minimapColor(t)==0xc88c00);
+ t.flags=wm::kTileHidden;CHECK(minimapColor(t)==-1);
+}
+
+TEST_CASE("native map boundary lightens exposed walls roots and fortifications after higher priorities") {
+ TileState t;t.materialKind=MaterialKind::Stone;
+ for(auto shape:{TileShape::Wall,TileShape::Fortification}) {
+  t.shape=shape;CHECK(minimapColor(t,std::nullopt,true)==0xc0c0c0);
+  CHECK(minimapColor(t)==0x404040);
+ }
+ t.shape=TileShape::TreeTrunk;t.materialKind=MaterialKind::Wood;t.root=true;
+ CHECK(minimapColor(t,std::nullopt,true)==0xc0c0c0);
+ t.shape=TileShape::Wall;t.materialKind=MaterialKind::Ice;t.root=false;
+ CHECK(minimapColor(t,std::nullopt,true)==0xe0ffff);
+ t.materialKind=MaterialKind::Constructed;CHECK(minimapColor(t,std::nullopt,true)==0xc88c00);
+ t.materialKind=MaterialKind::Stone;t.liquidLevel=7;t.liquidKind=LiquidKind::Magma;
+ CHECK(minimapColor(t,std::nullopt,true)==0x801800);
+ t.flags=wm::kTileHidden;CHECK(minimapColor(t,std::nullopt,true)==-1);
 }

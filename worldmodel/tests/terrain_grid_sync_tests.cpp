@@ -52,7 +52,7 @@ TEST_CASE("v7 shared grid preserves exact operation and rejects invalid values")
   auto g=makeGrid(16,16,1);
   auto tile=gridTile(11,6,kNoMaterial,kTileDigDesignated);
   tile.designation=shm::terrainDesignation(uint8_t(DesignationKind::Chop),2,true);
-  tile.track=9; tile.traffic=2; tile.warnings=1; tile.track_blockers=15;
+  tile.track=9; tile.traffic=2; tile.warnings=1; tile.track_blockers=15 | (10<<4);
   shm::terrainBeginWrite(g.h);fillBlock(g.h,0,0,0,tile);shm::terrainEndWrite(g.h,10);
   SnapshotData data;data.tick=10;data.mapSize={16,16,1};
   detail::GridScratch scratch;uint64_t tick=0;std::string error;
@@ -63,6 +63,7 @@ TEST_CASE("v7 shared grid preserves exact operation and rejects invalid values")
   CHECK(model.tileAt({2,3,0})->designationPriority==2);
   CHECK(model.tileAt({2,3,0})->designationMarker);
   CHECK(model.tileAt({2,3,0})->track==9);
+  CHECK(model.tileAt({2,3,0})->completedTrack==10);
   CHECK(model.tileAt({2,3,0})->trackClearanceBlocked);
   CHECK(model.tileAt({2,3,0})->trackHorizontalBlocked);
   CHECK(model.tileAt({2,3,0})->trackSupport); CHECK(model.tileAt({2,3,0})->trackOpen);
@@ -235,4 +236,27 @@ TEST_CASE("grid path rejects every out-of-range tile value, not only the designa
   shm::terrainEndWrite(g.h, ++data.tick);
   CHECK(detail::synthesizeFullFromGrid(g.h, scratch, data, tick, error));
   CHECK(error.empty());
+}
+
+TEST_CASE("resident tile environment is preserved cleared and validated") {
+  auto g=makeGrid(16,16,1);auto tile=gridTile(2,1,kNoMaterial);
+  tile.environment_flags=7;tile.building_occupancy=7;
+  SnapshotData data;data.tick=10;data.mapSize={16,16,1};
+  detail::GridScratch scratch;uint64_t tick=0;std::string error;
+  shm::terrainBeginWrite(g.h);fillBlock(g.h,0,0,0,tile);shm::terrainEndWrite(g.h,10);
+  REQUIRE(detail::synthesizeFullFromGrid(g.h,scratch,data,tick,error));
+  WorldModel model;model.ingest(data,0.0);
+  const auto old=model.tileAt({2,3,0});REQUIRE(old);
+  CHECK(old->subterranean);CHECK(old->brookTop);CHECK(old->root);CHECK(old->buildingOccupancy==7);
+  tile.environment_flags=0;tile.building_occupancy=0;data.tick=11;
+  shm::terrainBeginWrite(g.h);fillBlock(g.h,0,0,0,tile);shm::terrainEndWrite(g.h,11);
+  REQUIRE(detail::synthesizeFullFromGrid(g.h,scratch,data,tick,error));model.ingest(data,0.1);
+  const auto cleared=model.tileAt({2,3,0});REQUIRE(cleared);
+  CHECK_FALSE(cleared->subterranean);CHECK_FALSE(cleared->brookTop);CHECK_FALSE(cleared->root);CHECK(cleared->buildingOccupancy==0);
+  for(int field=0;field<2;++field) {
+    tile.environment_flags=field==0?8:0;tile.building_occupancy=field==1?8:0;
+    shm::terrainBeginWrite(g.h);fillBlock(g.h,0,0,0,tile);shm::terrainEndWrite(g.h,12+field);
+    CHECK_FALSE(detail::synthesizeFullFromGrid(g.h,scratch,data,tick,error));
+    CHECK(error=="invalid tile environment");
+  }
 }

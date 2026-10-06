@@ -47,6 +47,7 @@ func force_upload():
  scene._update_units()
  scene._update_items()
 func run():
+ preload("res://tests/recorded_fixture.gd").configure_scene()
  scene=load("res://scenes/main.tscn").instantiate()
  root.add_child(scene)
  # This oracle compares the complete source population across different cell

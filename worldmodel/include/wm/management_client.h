@@ -46,6 +46,13 @@ struct CreatureInfo {
   std::vector<CreatureSection> sections;
   SelectionAppearance portrait;
 };
+struct AreaSpan { int16_t y=0,x=0; uint16_t length=0; };
+struct AreaZoneSettings {
+  uint8_t pondMode=0,facing=0;
+  int8_t tombCitizens=-1,tombPets=-1,gatherTrees=-1,gatherShrubs=-1;
+  friend bool operator==(const AreaZoneSettings&,const AreaZoneSettings&)=default;
+};
+struct AreaPaintPreview { int16_t x=0,y=0; uint16_t width=0,height=0; };
 struct AreaRequest {
   AreaKind kind = AreaKind::Stockpile;
   int32_t id=-1,x=0,y=0,z=0;
@@ -57,11 +64,29 @@ struct AreaRequest {
   bool give=true,unlink=false;
   std::string query;
   uint32_t cursor=0;
+  AreaOperation operation=AreaOperation::None;
+  int64_t expectedRevision=0,expectedListRevision=0;
+  std::string listKey,rowKey,name;
+  uint8_t scope=0,value=0,preset=0,paintMode=0,locationKind=0,candidateKind=0,sort=0;
+  std::vector<AreaSpan> spans;
+  int16_t paintZ=-1,profession=-1;
+  int32_t locationId=-2,deityId=-1,unitId=-1,squadId=-1;
+  int8_t deityKind=-1,assign=-1,squadUse=-1,organic=-1,inorganic=-1;
+  AreaZoneSettings zoneSettings;
+  bool sortDescending=false;
+  uint8_t roomFurniture=0;
+  int64_t interactionId=0,undoToken=0;
+  int64_t countGeneration=0;
+  std::optional<AreaPaintPreview> paintPreview;
+  int32_t locationSiteId=-1,occupationId=-1;
 };
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;
   AreaKind kind=AreaKind::Stockpile;
   std::string name,ownerName;
+  std::string ownerProfession;
+  uint8_t locationKind=0;
+  int8_t ownerSex=-1;
   uint16_t width=0,height=0;
   std::vector<uint8_t> extents;
   int16_t zoneType=-1,barrels=0,bins=0,wheelbarrows=0;
@@ -69,13 +94,91 @@ struct AreaInfo {
   bool linksOnly=false,active=false,ownerAllowed=false;
   int32_t ownerId=-1;
   std::vector<int32_t> gives,takes;
+  int64_t revision=0;
+  std::string zoneLabel,locationName,religion;
+  int32_t locationId=-1,tileCount=-1,assignedCount=-1,locationSiteId=-1;
+  int8_t organic=-1,inorganic=-1;
+  AreaZoneSettings zoneSettings;
 };
-struct AreaChoice { int32_t id=-1; std::string name; };
+struct AreaChoice { int32_t id=-1; std::string name; std::string label{}; };
+struct AreaSettingRow { std::string key; int32_t index=-1; std::string label; uint8_t kind=0,state=0; bool estimated=false; };
+struct AreaLocationRow { int32_t id=-1; std::string name; uint8_t locationKind=0; std::string religion; int16_t guildProfession=-1; int32_t locationTier=-1; int32_t siteId=-1; };
+struct LocationDeity { int32_t id=-1; std::string name; std::vector<int32_t> spheres; };
+struct LocationReligion { uint8_t kind=0; int32_t id=-1; std::string name; int32_t worshippers=0; bool hasTemple=false; std::vector<LocationDeity> deities; };
+struct LocationGuild { int32_t profession=-1,workers=0; bool hasMeetingPlace=false; int32_t guildId=-1; std::string guildName; int32_t members=0; };
+struct LocationCatalog {
+  uint8_t kind=0; int64_t revision=0; uint32_t cursor=0,total=0,nextCursor=0;
+  std::vector<LocationReligion> religions; std::vector<LocationGuild> guilds;
+};
+struct AreaCandidateRow {
+  int32_t id=-1;
+  std::string name,profession;
+  int8_t sex=-1;
+  uint8_t mood=0;
+  bool grazer=false,assigned=false;
+  int8_t squadUse=-1;
+};
+struct AreaLinkRow { int32_t id=-1; AreaKind kind=AreaKind::Stockpile; uint8_t direction=0; std::string name; };
+struct LocationSupplyQuantity { uint8_t kind=0; int32_t stored=0,desired=0; };
+struct LocationFacilities { int32_t chests=0,beds=0,tables=0,tractionBenches=0,bookcases=0,chairs=0,rooms=0,rentedRooms=0; };
+struct LocationStaffNames { std::string positionName,holderName; uint8_t holderKind=0; int32_t holderId=-1; };
+struct LocationStaffRow {
+  uint8_t source=0;
+  int32_t occupationId=-1,role=-1,histfigId=-1,unitId=-1,locationId=-1,siteId=-1,groupId=-1;
+  int32_t entityId=-1,positionId=-1,assignmentId=-1;
+  std::optional<LocationStaffNames> names;
+};
+struct LocationStaffSkill { int32_t id=-1,rating=0,experience=0,weight=0; };
+struct LocationStaffCandidate {
+  int32_t unitId=-1,histfigId=-1,score=0,professionColor=-1;
+  std::string name,baseName,professionName; bool legendary=false;
+  int32_t sourceIndex=-1,professionOrder=-1,statusOrder=-1;
+  std::vector<uint8_t> nameSortKey,professionSortKey;
+  std::vector<LocationStaffSkill> skills;
+};
+struct LocationStaffCandidates {
+  int32_t siteId=-1,locationId=-1,occupationId=-1,role=-1;
+  int64_t revision=0; uint32_t cursor=0,nextCursor=0,total=0;
+  std::vector<LocationStaffCandidate> rows;
+};
+struct LocationStaffSnapshot { std::vector<LocationStaffRow> rows; std::vector<int32_t> missingRoles; };
+struct LocationAffiliation { uint8_t kind=0; int32_t id=-1; std::string name; int32_t count=0,workers=-1; };
+struct LocationDetails {
+  int32_t siteId=-1,id=-1; uint8_t kind=0; std::string name; int64_t revision=0;
+  uint8_t access=0; bool visitors=false,residents=false,members=false;
+  int32_t profession=-1,tier=-1,value=-1,desiredCopies=0,appraisal=-2,writtenObjects=-1,danceFloorX=-1,danceFloorY=-1; bool recognized=false;
+  std::vector<LocationSupplyQuantity> supplies; std::vector<int32_t> zoneIds;
+  std::optional<LocationFacilities> facilities;
+  std::optional<LocationStaffSnapshot> staff;
+  std::optional<LocationAffiliation> affiliation;
+};
 struct AreaState {
+  LocationEntryOutcome locationEntryOutcome=LocationEntryOutcome::None;
+  LocationEditOutcome locationEditOutcome=LocationEditOutcome::None;
+  std::optional<LocationDetails> locationDetails;
+  std::optional<LocationStaffCandidates> locationStaffCandidates;
+  std::optional<LocationCatalog> locationCatalog;
   std::vector<AreaInfo> areas;
   std::vector<AreaChoice> choices;
   uint32_t nextCursor=0;
   bool truncated=false;
+  AreaOperation operation=AreaOperation::None;
+  int32_t areaId=-1;
+  std::string listKey,query;
+  uint8_t candidateKind=0,sort=0,buildPhase=0;
+  bool sortDescending=false;
+  std::vector<AreaSettingRow> settings;
+  std::vector<AreaLocationRow> locations;
+  std::vector<AreaCandidateRow> candidates;
+  std::vector<AreaLinkRow> links;
+  int64_t listRevision=0,capturedTick=-1;
+  uint32_t buildDone=0,buildTotal=0,omitted=0;
+  int64_t interactionId=0,undoToken=0;
+  AreaRoomOutcome roomOutcome=AreaRoomOutcome::None;
+  uint32_t roomsCreated=0,roomsInUse=0,roomsUnenclosed=0,roomsRemoved=0;
+  uint32_t roomsDormitories=0;
+  int64_t countGeneration=0;
+  int32_t paintedCount=-1,previewCount=-1;
 };
 struct ProductionRequest {
   int32_t buildingId=-1,jobId=-1,cropId=-1;
@@ -228,16 +331,31 @@ struct WorkOrderState {
 struct ConstructionSelection {
   int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=1;
   int64_t expectedListRevision=-1;
+  std::optional<std::vector<int32_t>> itemIds;
+  int32_t individualId=-1;
 };
 struct ConstructionFilter {
   int16_t index=-1,itemType=-1,itemSubtype=-1; std::string caption,requirement; int32_t quantity=-1;
 };
+struct ConstructionItemAppearance {
+  std::string materialToken,subtypeRaw,colorToken; uint32_t stack=1; uint8_t flags=0;
+};
+struct ConstructionMaterialCandidate {
+  int32_t id=-1; std::string name; uint32_t distance=0;
+  std::optional<ConstructionItemAppearance> appearance;
+};
 struct ConstructionMaterial {
   int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; std::string name,caption; uint32_t count=0;
+  std::optional<std::vector<ConstructionMaterialCandidate>> candidates;
+  int32_t individualId=-1;
+  std::string lastName;
 };
 struct ConstructionFootprint {
   uint8_t direction=0; uint16_t width=0,height=0; int16_t centerX=-1,centerY=-1;
 };
+struct PressureCreatureExample { int32_t size=0,raceId=-1; std::string name; };
+enum class ConnectedTrackStatus:uint8_t { Found, NoPath, InvalidInput, FrontierLimit, UnverifiedTerrain, PayloadLimit };
+struct ConnectedTrackPreview { ConnectedTrackStatus status=ConnectedTrackStatus::UnverifiedTerrain; std::vector<TilePos> path; };
 struct ConstructionState {
   std::string buildingKey; int16_t filter=-1;
   std::vector<ConstructionFilter> filters; std::vector<ConstructionMaterial> materials;
@@ -245,6 +363,10 @@ struct ConstructionState {
   int64_t listRevision=0; uint8_t buildPhase=0; bool estimated=false;
   int32_t firstBuilding=-1; std::vector<uint8_t> validMask,pieces;
   std::optional<ConstructionFootprint> footprint;
+  std::vector<PressureCreatureExample> pressureCreatures;
+  std::optional<ConnectedTrackPreview> connectedTrack;
+  ConstructionOutcome outcome=ConstructionOutcome::None;
+  uint32_t updated=0;int32_t failedIndex=-1;
 };
 struct BuildingDefinition {
   std::string key, name;
@@ -260,14 +382,23 @@ struct AlertRequest { AlertOperation operation=AlertOperation::OpenCategory; int
 struct AlertEntry { std::string text; int32_t reportId=-1,unitId=-1; int8_t unitCategory=-1; bool canRecenter=false; };
 struct AlertState { AlertView view=AlertView::Closed; uint64_t receipt=0; int16_t category=-1; int32_t unitId=-1; int8_t unitCategory=-1; std::vector<AlertEntry> entries; std::vector<std::string> tabs; int16_t selectedTab=-1; int32_t scroll=0; uint32_t total=0; bool complete=true; int32_t focusX=-1,focusY=-1,focusZ=-1; };
 
-struct ReportRequest { int32_t id=-1,beforeId=-1; std::string query; bool announcementsOnly=true; };
+struct ReportEntryUnit {int32_t unitId=-1; uint8_t category=0;};
+struct ReportRequest { int32_t id=-1,beforeId=-1; std::string query; bool announcementsOnly=true; ReportView view=ReportView::Flat; ReportTab tab=ReportTab::Unknown; int32_t afterId=-1; bool fromEnd=false; int32_t unitId=-1; int8_t unitCategory=-1; uint32_t cursor=0; uint64_t expectedListRevision=0; std::vector<int32_t> ids; std::vector<ReportEntryUnit> units; bool refresh=false; int16_t notificationCategory=-1; bool alertButton=false; };
 struct ReportInfo {
   int32_t id=0,year=0,yearTick=0,repeatCount=0;
   std::string category,text;
   bool continuation=false,textComplete=true,positionVisible=false,position2Visible=false;
   int32_t x=-1,y=-1,z=-1,x2=-1,y2=-1,z2=-1;
+  ReportTab tab=ReportTab::Unknown; int16_t color=-1; bool bright=false;
+  ReportZoom zoomType=ReportZoom::Unknown,zoomType2=ReportZoom::Unknown;
+  bool positionHidden=false,position2Hidden=false; int32_t speakerId=-1;
 };
-struct ReportState { std::vector<ReportInfo> reports; int32_t nextBeforeId=-1; bool announcementsOnly=true; std::string detail; };
+struct ReportUnitInfo { int32_t unitId=-1; int8_t category=-1; std::string profession,name; bool dead=false; uint32_t logCount=0; std::string error; };
+struct ReportState { std::vector<ReportInfo> reports; int32_t nextBeforeId=-1; bool announcementsOnly=true; std::string detail;
+ ReportView view=ReportView::Flat; ReportTab tab=ReportTab::Unknown; int32_t afterId=-1; bool fromEnd=false;
+ std::vector<uint32_t> tabCounts; uint32_t total=0; int32_t nextAfterId=-1,trimmedThrough=-1; bool gap=false;
+ int32_t unitId=-1; int8_t unitCategory=-1; uint32_t cursor=0,nextCursor=0; uint64_t listRevision=0; std::vector<ReportUnitInfo> units; std::vector<int32_t> missingIds; int16_t notificationCategory=-1; bool alertButton=false;
+};
 struct AgreementDetail {
  int32_t id=0,siteId=-1,year=0,yearTick=0,applicantParty=-1,governmentParty=-1,tier=-1,deityId=-1;
  int16_t kind=-1,locationType=-1,profession=-1,deityType=-1;
@@ -323,6 +454,20 @@ struct ManagementRequest {
   SelectionRequest selection;
   int32_t creatureUnitId=-1;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
+  uint32_t rollerSpeed=0;
+  bool cancelRemoval=false;
+  struct TrackStopOptions { uint32_t friction=50000; uint8_t dumpDirection=0; };
+  std::optional<TrackStopOptions> trackStop;
+  struct PressurePlateOptions {
+    bool units=false, water=false, magma=false, citizens=false, resets=true, track=false;
+    int32_t unitMin=5000, unitMax=200000;
+    int8_t waterMin=1, waterMax=7, magmaMin=1, magmaMax=7;
+    int32_t trackMin=1, trackMax=2000;
+  };
+  std::optional<PressurePlateOptions> pressurePlate;
+  // origin x/y/z is the press point; endpoint order must not be normalized.
+  std::optional<TilePos> connectedTrackDestination;
+  std::optional<TilePos> materialAnchor;
   std::vector<ConstructionSelection> selections; int64_t expectedListRevision=0;
 };
 struct ManagementState {

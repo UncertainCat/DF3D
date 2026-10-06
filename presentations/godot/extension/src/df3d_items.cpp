@@ -357,7 +357,7 @@ void Df3dWorld::updateItems() {
         // the newly demanded semantic region. Ordinary events never take this path.
         for (const auto& [id,indices] : itemInstanceIndices_) itemUpdateIDs_.insert(id);
         if (topZ_ >= 0) {
-            const int bottom=std::max(0,topZ_-windowDepth_+1);
+            const int bottom=std::max(0,topZ_-spriteWindowDepth()+1);
             const auto select=[&](const wm::MapItem& item){itemUpdateIDs_.insert(item.id);};
             if (presentationRegionEnabled_) {
                 const auto end=presentationRegion_.get_end();
@@ -380,7 +380,7 @@ void Df3dWorld::updateItems() {
             itemCompositePending_-=pending->second; pendingItemComposites_.erase(pending);
         }
         const auto* item=source_.model().item(id);
-        const bool visible=item && !hiddenCorpses_.count(id) && topZ_>=0 && zInWindow(item->pos.z) && tileVisible(item->pos) && presentationTileDemanded(item->pos);
+        const bool visible=item && !hiddenCorpses_.count(id) && topZ_>=0 && zInSpriteWindow(item->pos.z) && tileVisible(item->pos) && presentationTileDemanded(item->pos);
         const int wanted=visible?(item->stack>1?2:1):0;
         auto owned=itemInstanceIndices_.find(id);
         while (owned!=itemInstanceIndices_.end() && int(owned->second.size())>wanted) {

@@ -702,3 +702,29 @@ TEST_CASE("items: corpse pieces, skeletons and webs resolve to DF's tiles") {
     CHECK(r.sprite == at(idx, "ITEM_CLOTH", 0, 0));
   }
 }
+
+TEST_CASE("pending construction uses native directional art without material recolouring") {
+  auto idx = entityIndex();
+  // Native captured zigzag: S, NE, SW, NE, W. Also cover raw EW/WE spelling.
+  ingestRawText(idx, "[OBJECT:GRAPHICS]\n"
+    "[TILE_GRAPHICS:WORKSHOPS:0:0:PLANNED_CONSTRUCTION_TRACK_S]\n"
+    "[TILE_GRAPHICS:WORKSHOPS:1:0:PLANNED_CONSTRUCTION_TRACK_NE]\n"
+    "[TILE_GRAPHICS:WORKSHOPS:2:0:PLANNED_CONSTRUCTION_TRACK_SW]\n"
+    "[TILE_GRAPHICS:WORKSHOPS:3:0:PLANNED_CONSTRUCTION_TRACK_W]\n"
+    "[TILE_GRAPHICS:WORKSHOPS:4:0:PLANNED_CONSTRUCTION_TRACK_WE]\n"
+    "[TILE_GRAPHICS:WORKSHOPS:5:0:PLANNED_CONSTRUCTION_TRACK_RNSWE]\n",
+    "/synth/mod/graphics", "pending", nullptr);
+  finalizeIndex(idx);
+  const uint16_t subtypes[] = {8,12,15,10,16,36};
+  for (int i=0;i<6;++i) {
+    auto q=bq(wm::BuildingKind::Construction,1,1,"INORGANIC:GRANITE",wm::BuildingStage::Planned,subtypes[i]);
+    auto r=resolveBuildingTiles(idx,q);
+    REQUIRE(r.found); REQUIRE(r.tiles.size()==1);
+    CHECK(r.tiles[0].sprite.x==i); CHECK(r.tiles[0].sprite.y==0);
+    CHECK(r.decal); CHECK(r.stageArt); CHECK(r.paletteRow==-1); CHECK(r.colorName.empty());
+    q.stage=wm::BuildingStage::Complete;
+    CHECK_FALSE(resolveBuildingTiles(idx,q).found);
+    q.stage=wm::BuildingStage::Planned;q.subtype=65535;
+    CHECK_FALSE(resolveBuildingTiles(idx,q).found);
+  }
+}

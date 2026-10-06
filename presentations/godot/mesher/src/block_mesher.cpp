@@ -352,6 +352,7 @@ struct Emitter {
     const auto high = rampHighSide(n, lx, ly);
     if (!high) {
       box(lx, ly, 0, 0, 0, 1, 1, kLoneRampHeight, tag);  // slopeHigh stays PosZ
+      if (tag.completedTrack) decal(lx, ly, tag, kLoneRampHeight - kH + .001f);
       return;
     }
     tag.slopeHigh = *high;  // every face of the wedge carries its direction
@@ -373,6 +374,11 @@ struct Emitter {
       t.dir = FaceDir::Slope;
       std::array<Vec3, 4> v = {Vec3{0, 0, h00}, Vec3{1, 0, h10}, Vec3{1, 1, h11}, Vec3{0, 1, h01}};
       quad(lx, ly, v, Vec3{0, 0, 1}, t);
+      if (tag.completedTrack) {
+        t.part = FacePart::Feature;
+        for (auto& vertex : v) vertex.z += .001f;
+        quad(lx, ly, v, Vec3{0, 0, 1}, t);
+      }
     }
     // Four sides: full square on the high side, strip on the low side,
     // trapezoids on the other two. Each is culled by its bounding rect.
@@ -474,6 +480,7 @@ struct Emitter {
     tag.materialKind = t.materialKind;
     tag.material = t.material;
     tag.flags = t.flags;
+    tag.completedTrack = t.completedTrack;
     tag.walls = wallMask(n, lx, ly);
     tag.lx = static_cast<uint8_t>(lx);
     tag.ly = static_cast<uint8_t>(ly);
@@ -488,7 +495,10 @@ struct Emitter {
       case TileShape::Fortification:
       case TileShape::TreeTrunk:
       case TileShape::Unknown: box(lx, ly, 0, 0, 0, 1, 1, 1, tag); break;
-      case TileShape::Floor: floorSlab(lx, ly, tag); break;
+      case TileShape::Floor:
+        floorSlab(lx, ly, tag);
+        if (t.completedTrack) decal(lx, ly, feature, .001f);
+        break;
       case TileShape::Ramp: ramp(lx, ly, tag); break;
       case TileShape::StairUp:
       case TileShape::StairUpDown:

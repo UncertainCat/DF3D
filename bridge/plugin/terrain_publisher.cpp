@@ -92,7 +92,7 @@ struct TerrainPublisher::Impl {
         df::tile_designation::mask_flow_size | df::tile_designation::mask_dig |
         df::tile_designation::mask_smooth | df::tile_designation::mask_hidden |
         df::tile_designation::mask_outside | df::tile_designation::mask_liquid_type |
-        df::tile_designation::mask_water_table;
+        df::tile_designation::mask_water_table | df::tile_designation::mask_subterranean;
 
     struct TerrainState {
 #ifdef _WIN32
@@ -605,6 +605,10 @@ struct TerrainPublisher::Impl {
 
                 const df::tiletype_shape shape = tileShape(tt);
                 const df::tiletype_material tm = tileMaterial(tt);
+                o.environment_flags=uint8_t((des.bits.subterranean?1:0) |
+                    (shape==df::tiletype_shape::BROOK_TOP?2:0) |
+                    (tm==df::tiletype_material::ROOT?4:0));
+                o.building_occupancy=uint8_t(blk->occupancy[lx][ly].bits.building);
                 // DF's tree trunks (and cap/root columns) are WALL-shaped tiles of
                 // TREE/MUSHROOM/ROOT material; the schema's TreeTrunk is that
                 // shape. Constructed wood walls keep CONSTRUCTION material and
@@ -786,6 +790,12 @@ struct TerrainPublisher::Impl {
                 }
                 const auto detail=details[ly*16+lx];
                 o.track_blockers=uint8_t((detail>>17)&15);
+                if (tileSpecial(tt) == df::tiletype_special::TRACK) {
+                    const auto direction = tileDirection(tt);
+                    const uint8_t completed = (direction.north ? 1 : 0) | (direction.south ? 2 : 0) |
+                        (direction.east ? 4 : 0) | (direction.west ? 8 : 0);
+                    o.track_blockers |= uint8_t(completed << 4);
+                }
                 if(detail & (1u<<16)) flags |= static_cast<uint8_t>(mir::TileFlags::DigAuto);
                 o.track=(detail>>8)&15; o.traffic=(detail>>12)&3; o.warnings=(detail>>14)&3;
                 o.designation=static_cast<uint8_t>(operation) | ((operation!=mir::DesignationKind::None || o.track) ? uint8_t(detail) : 0);
@@ -1194,13 +1204,16 @@ struct TerrainPublisher::Impl {
         mir::TileState tiles[256];
         std::vector<mir::DesignationDetail> details;
         std::vector<mir::MapIndicator> indicators;
+        std::vector<mir::TileEnvironment> environment;
         std::vector<uint16_t> trackClearanceBlocked,trackHorizontalBlocked,trackSupport,trackOpen;
         details.reserve(256);
         for (size_t i = 0; i < count; ++i) {
             const uint32_t idx = blocks[i];
             const shm::TerrainTile* src = shm::terrainBlockTiles(t.grid, idx);
-            details.clear(); indicators.clear(); trackClearanceBlocked.clear(); trackHorizontalBlocked.clear(); trackSupport.clear(); trackOpen.clear();
+            details.clear(); indicators.clear(); environment.clear(); trackClearanceBlocked.clear(); trackHorizontalBlocked.clear(); trackSupport.clear(); trackOpen.clear();
             for (int k = 0; k < 256; ++k) {
+                if(src[k].environment_flags || src[k].building_occupancy)
+                    environment.emplace_back(uint16_t(k),src[k].environment_flags,src[k].building_occupancy);
                 if(src[k].track_blockers&1) trackClearanceBlocked.push_back(uint16_t(k));
                 if(src[k].track_blockers&4) trackSupport.push_back(uint16_t(k));
                 if(src[k].track_blockers&8) trackOpen.push_back(uint16_t(k));
@@ -1211,15 +1224,15 @@ struct TerrainPublisher::Impl {
                                           src[k].liquid_level,
                                           static_cast<mir::LiquidKind>(src[k].liquid_kind),
                                           static_cast<mir::TileFlags>(src[k].flags), static_cast<mir::DesignationKind>(shm::terrainOperation(src[k].designation)));
-                if(src[k].track || src[k].traffic || src[k].warnings)
-                    indicators.emplace_back(uint16_t(k),src[k].track,src[k].traffic,src[k].warnings);
+                if(src[k].track || src[k].traffic || src[k].warnings || (src[k].track_blockers>>4))
+                    indicators.emplace_back(uint16_t(k),src[k].track,src[k].traffic,src[k].warnings,src[k].track_blockers>>4);
                 if(shm::terrainPriority(src[k].designation) || shm::terrainMarker(src[k].designation))
                     details.emplace_back(uint16_t(k),shm::terrainPriority(src[k].designation),shm::terrainMarker(src[k].designation));
             }
             int32_t bx, by, bz;
             blockCoords(idx, bx, by, bz);
             auto tilesVec = fbb.CreateVectorOfStructs(tiles, 256);
-            blockOffsets.push_back(mir::CreateMapBlock(fbb, bx, by, bz, tilesVec, fbb.CreateVectorOfStructs(details), fbb.CreateVectorOfStructs(indicators), fbb.CreateVector(trackClearanceBlocked), fbb.CreateVector(trackHorizontalBlocked),fbb.CreateVector(trackSupport),fbb.CreateVector(trackOpen)));
+            blockOffsets.push_back(mir::CreateMapBlock(fbb, bx, by, bz, tilesVec, fbb.CreateVectorOfStructs(details), fbb.CreateVectorOfStructs(indicators), fbb.CreateVector(trackClearanceBlocked), fbb.CreateVector(trackHorizontalBlocked),fbb.CreateVector(trackSupport),fbb.CreateVector(trackOpen),fbb.CreateVectorOfStructs(environment)));
         }
         return fbb.CreateVector(blockOffsets);
     }
@@ -1231,7 +1244,7 @@ struct TerrainPublisher::Impl {
     size_t maxDeltaBlocks(size_t cap) {
         const size_t reserve = 6u * 1024 * 1024;
         if (cap <= reserve) return 0;
-        return (cap - reserve) / (256 * (sizeof(mir::TileState)+sizeof(mir::DesignationDetail)+sizeof(mir::MapIndicator)) + 96);
+        return (cap - reserve) / (256 * (sizeof(mir::TileState)+sizeof(mir::DesignationDetail)+sizeof(mir::MapIndicator)+sizeof(mir::TileEnvironment)) + 96);
     }
 
 

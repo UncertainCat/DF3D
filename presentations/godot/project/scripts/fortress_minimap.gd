@@ -6,7 +6,6 @@ var camera_rig
 var interaction
 var allowed := false
 var data: Dictionary = {}
-var dragging := false
 var elapsed := 0.25
 var footprint := PackedVector2Array()
 
@@ -14,7 +13,7 @@ func _ready():
  mouse_filter = Control.MOUSE_FILTER_STOP
  clip_contents = true
  texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
- tooltip_text = "Revealed terrain at selected elevation · click or drag to pan"
+ # No native tooltip copy is mapped for this presentation yet.
 
 static func fitted_rect(bounds: Vector2, map_size: Vector2) -> Rect2:
  if map_size.x <= 0 or map_size.y <= 0: return Rect2()
@@ -45,7 +44,6 @@ func map_rect() -> Rect2:
 
 func set_allowed(value: bool):
  allowed = value
- if not value: dragging = false
 
 func refresh():
  if world == null or not world.has_method("minimap_data"):
@@ -87,18 +85,16 @@ func update_footprint():
 
 func _draw():
  var rect := map_rect()
- draw_rect(Rect2(Vector2.ZERO, size), Color(0.035, 0.035, 0.035))
+ # Native113913/124838 uncovered background is RGB128, independent of this
+ # installation's DGRAY palette entry (160). Texture/footprint parity is separate.
+ draw_rect(Rect2(Vector2.ZERO, size), Color8(128,128,128))
  if not data.get("available", false): return
  draw_texture_rect(data.texture, rect, false)
  if footprint.size() == 5:
   for index in 4:
    var segment := clipped_segment(footprint[index], footprint[index+1], rect)
-   if segment.size() == 2: draw_line(segment[0], segment[1], Color.WHITE, 1.0)
- var position3: Vector3 = camera_rig.position
- var center := rect.position + Vector2(position3.x, position3.z) / Vector2(data.map_size) * rect.size
- if rect.has_point(center):
-  draw_line(center - Vector2(3,0), center + Vector2(3,0), Color.WHITE)
-  draw_line(center - Vector2(0,3), center + Vector2(0,3), Color.WHITE)
+   # Native133800: one-pixel pale-yellow perimeter, no center cross.
+   if segment.size() == 2: draw_line(segment[0], segment[1], Color8(255,224,128), 1.0)
 
 func navigate(point: Vector2):
  if not allowed or not data.get("available", false): return
@@ -116,11 +112,9 @@ func _gui_input(event: InputEvent):
  # designation or camera zoom underneath the widget.
  if event is InputEventMouseButton:
   accept_event()
-  if event.button_index == MOUSE_BUTTON_LEFT:
-   if event.pressed:
-    dragging = allowed and data.get("available", false) and map_rect().has_point(event.position)
-    if dragging: navigate(event.position)
-   else: dragging = false
+  # Native132402: only a fresh press navigates, in the fortress and both
+  # alert popup views. Held movement is inert (Reports drag control passed).
+  if event.button_index == MOUSE_BUTTON_LEFT and event.pressed and map_rect().has_point(event.position):
+   navigate(event.position)
  elif event is InputEventMouseMotion:
   accept_event()
-  if dragging and event.button_mask & MOUSE_BUTTON_MASK_LEFT: navigate(event.position)

@@ -8,6 +8,14 @@
 
 #include "PluginManager.h"
 #include "contact_capture.h"
+#include "room_discovery_native.h"
+#include "room_mutation_native.h"
+#include "paint_water_native.h"
+#include "location_catalog_native.h"
+#include "location_details_native.h"
+#include "location_staff_native.h"
+#include "location_staff_page.h"
+#include "jsoncpp-ex.h"
 
 #include "modules/Maps.h"
 #include "modules/Materials.h"
@@ -1394,6 +1402,327 @@ command_result cmdRecordStart(color_ostream& out, const string& path) {
 command_result df3d_command(color_ostream& out, vector<string>& parameters) {
     if (parameters.empty() || parameters[0] == "status")
         return cmdStatus(out);
+      if (parameters[0] == "material-distances-read" || parameters[0] == "track-material-candidates-read" || parameters[0] == "track-material-order-read") {
+          if(parameters.size()!=8)return CR_WRONG_USAGE;
+          std::array<int32_t,6> positions{};int32_t limit=0;
+          for(size_t i=0;i<7;++i) {
+              const auto& value=parameters[i+1];int32_t number=0;
+              const auto parsed=std::from_chars(value.data(),value.data()+value.size(),number);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+              if(i<6)positions[i]=number;else limit=number;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          if(parameters[0]=="track-material-order-read") {
+              if(limit<=0)return CR_WRONG_USAGE;
+              return df3d_management::printTrackMaterialCandidates(out,positions,65536,limit)?CR_OK:CR_FAILURE;
+          }
+          if(parameters[0]=="track-material-candidates-read")
+              return df3d_management::printTrackMaterialCandidates(out,positions,limit)?CR_OK:CR_FAILURE;
+          return df3d_management::printMaterialDistances(out,positions,limit)?CR_OK:CR_FAILURE;
+      }
+      if (parameters[0] == "room-create") {
+          if(parameters.size()!=8)return CR_WRONG_USAGE;
+          int32_t values[6]{};
+          for(size_t i=0;i<6;++i) {
+              const auto& value=parameters[i+1];
+              const auto parsed=std::from_chars(value.data(),value.data()+value.size(),values[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+          }
+          uint64_t epoch=0;const auto& value=parameters[7];
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),epoch);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size() || values[0]<1 || values[0]>4)
+              return CR_WRONG_USAGE;
+          if(!state.mapLoaded || !epoch || epoch!=state.terrain.epoch() ||
+             !df::global::pause_state || !*df::global::pause_state || df3d_session::saving()) {
+              out.printerr("df3d: room-create requires the current fortress epoch, paused and not saving\n");
+              return CR_FAILURE;
+          }
+          const auto result=df3d_area::createNativeRooms(static_cast<df3d_area::RoomFurniture>(values[0]),
+              {values[1],values[2],values[4],values[5]},values[3]);
+          out.print("{{\"status\":{},\"error\":{},\"in_use\":{},\"unenclosed\":{},\"created\":[",
+              int(result.status),int(result.error),result.plan.rejectedInUse,result.plan.rejectedUnenclosed);
+          for(size_t i=0;i<result.createdIds.size();++i) {
+              out.print("{}{}",i?",":"",result.createdIds[i]);
+              ent::hintBuilding(result.createdIds[i]);
+          }
+          out.print("]}}\n");
+          return CR_OK;
+      }
+      if (parameters[0] == "room-plan") {
+          if(parameters.size()!=7)return CR_WRONG_USAGE;
+          int32_t values[6]{};
+          for(size_t i=0;i<6;++i) {
+              const auto& value=parameters[i+1];
+              const auto parsed=std::from_chars(value.data(),value.data()+value.size(),values[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]<1 || values[0]>4)return CR_WRONG_USAGE;
+          const auto plan=df3d_area::observeNativeRoomPlan(static_cast<df3d_area::RoomFurniture>(values[0]),
+              {values[1],values[2],values[4],values[5]},values[3]);
+          out.print("{{\"status\":{},\"in_use\":{},\"unenclosed\":{},\"rooms\":[",
+              int(plan.status),plan.rejectedInUse,plan.rejectedUnenclosed);
+          for(size_t i=0;i<plan.rooms.size();++i) {
+              const auto& room=plan.rooms[i];const auto& f=room.footprint;
+              out.print("{}{{\"seed\":{},\"dormitory\":{},\"x\":{},\"y\":{},\"z\":{},\"width\":{},\"height\":{},\"extents\":[",
+                  i?",":"",room.seedId,room.dormitory,f.bounds.x,f.bounds.y,f.z,f.bounds.width,f.bounds.height);
+              for(size_t j=0;j<f.extents.size();++j)out.print("{}{}",j?",":"",int(f.extents[j]));
+              out.print("]}}");
+          }
+          out.print("]}}\n");
+          return CR_OK;
+      }
+      if (parameters[0] == "room-seed") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;
+          const auto& value=parameters[1];
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+          const auto seed=df3d_area::observeNativeRoomSeed(id);
+          out.print("{{\"valid\":{},\"id\":{},\"x\":{},\"y\":{},\"z\":{},\"furniture\":{},\"in_use\":{}}}\n",
+              seed.valid,seed.id,seed.x,seed.y,seed.z,int(seed.furniture),seed.inUse);
+          return CR_OK;
+      }
+      if(parameters[0]=="location-staff-candidates" || parameters[0]=="location-staff-set") {
+        static df3d_area::LocationStaffCandidateSnapshot snapshot;
+        const bool edit=parameters[0]=="location-staff-set";
+        if(edit && parameters.size()!=6)return CR_WRONG_USAGE;
+        if(parameters.size()!=4 && parameters.size()!=6)return CR_WRONG_USAGE;
+        int32_t ids[3]{};
+        for(size_t i=0;i<3;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        auto observed=df3d_area::observeNativeLocationStaffCandidates(ids[0],ids[1],ids[2]);
+        if(edit) {
+          int32_t unitId=-1;uint64_t revision=0;
+          const auto& u=parameters[4];const auto& r=parameters[5];
+          const auto pu=std::from_chars(u.data(),u.data()+u.size(),unitId);
+          const auto pr=std::from_chars(r.data(),r.data()+r.size(),revision);
+          if(pu.ec!=std::errc{} || pu.ptr!=u.data()+u.size() || pr.ec!=std::errc{} || pr.ptr!=r.data()+r.size() || unitId< -1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+          const df3d_area::LocationStaffTarget target{ids[0],ids[1],ids[2]};
+          const auto epoch=state.terrain.epoch();snapshot.observe(epoch,target,observed);
+          auto outcome=df3d_area::LocationStaffEditOutcome::Rejected;
+          if(revision && snapshot.page(epoch,target,0,revision).status==df3d_area::LocationPageStatus::Ready)
+            outcome=df3d_area::editNativeLocationStaff(ids[0],ids[1],ids[2],unitId);
+          if(outcome==df3d_area::LocationStaffEditOutcome::Applied || outcome==df3d_area::LocationStaffEditOutcome::Unknown)snapshot.invalidate();
+          Json::Value result(Json::objectValue);result["outcome"]=int(outcome);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        Json::Value value(Json::objectValue);value["valid"]=observed.has_value();value["rows"]=Json::Value(Json::arrayValue);
+        if(parameters.size()==6) {
+          uint32_t cursor=0;uint64_t revision=0;
+          const auto& c=parameters[4];const auto& v=parameters[5];
+          const auto pc=std::from_chars(c.data(),c.data()+c.size(),cursor);
+          const auto pr=std::from_chars(v.data(),v.data()+v.size(),revision);
+          if(pc.ec!=std::errc{} || pc.ptr!=c.data()+c.size() || pr.ec!=std::errc{} || pr.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          const df3d_area::LocationStaffTarget target{ids[0],ids[1],ids[2]};
+          const uint64_t epoch=state.mapLoaded?state.terrain.epoch():0;
+          snapshot.observe(epoch,target,observed);
+          const auto page=snapshot.page(epoch,target,cursor,revision);
+          value["page_status"]=int(page.status);value["revision"]=Json::UInt64(page.revision);
+          value["next_cursor"]=page.nextCursor;value["total"]=page.total;
+          if(page.status==df3d_area::LocationPageStatus::Ready)observed->rows=page.rows;
+          else observed.reset();
+          value["valid"]=observed.has_value();
+        }
+        if(observed) {
+          value["role"]=observed->role;
+          for(const auto& candidate:observed->rows) {
+            Json::Value row(Json::objectValue);row["unit_id"]=candidate.unitId;row["histfig_id"]=candidate.histfigId;
+            row["name"]=candidate.name;row["score"]=candidate.score;
+            row["base_name"]=candidate.baseName;row["profession_name"]=candidate.professionName;
+            row["source_index"]=candidate.sourceIndex;row["profession_order"]=candidate.professionOrder;row["status_order"]=candidate.statusOrder;
+            row["name_sort_key"]=Json::Value(Json::arrayValue);row["profession_sort_key"]=Json::Value(Json::arrayValue);
+            for(auto byte:candidate.nameSortKey)row["name_sort_key"].append(int(byte));
+            for(auto byte:candidate.professionSortKey)row["profession_sort_key"].append(int(byte));
+            row["profession_color"]=candidate.professionColor;row["legendary"]=candidate.legendary;row["skills"]=Json::Value(Json::arrayValue);
+            for(const auto& skill:candidate.skills) {
+              Json::Value item(Json::objectValue);item["id"]=skill.id;item["rating"]=skill.rating;
+              item["experience"]=skill.experience;item["weight"]=skill.weight;row["skills"].append(item);
+            }
+            value["rows"].append(row);
+          }
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
+      if (parameters[0] == "location-staff-read" || parameters[0] == "location-staff-prepare") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        Json::Value value(Json::objectValue);
+        if(parameters[0]=="location-staff-prepare")value["prepared"]=df3d_area::prepareNativeLocationStaff(ids[0],ids[1]);
+        const auto observed=df3d_area::observeNativeLocationStaff(ids[0],ids[1]);value["valid"]=observed.has_value();
+        if(observed) {
+          value["missing_roles"]=Json::Value(Json::arrayValue);for(auto role:observed->missingRoles)value["missing_roles"].append(role);
+          value["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& r:observed->rows) {
+            Json::Value row(Json::objectValue);row["entity"]=r.entityId;row["position"]=r.positionId;row["assignment"]=r.assignmentId;
+            if(r.names) {
+              Json::Value names(Json::objectValue);names["position_name"]=r.names->positionName;names["holder_name"]=r.names->holderName;
+              names["holder_kind"]=r.names->holderKind;names["holder_id"]=r.names->holderId;row["names"]=names;
+            }
+            row["occupation"]=false;
+            if(r.source==df3d_area::LocationStaffSource::Occupation) {
+              Json::Value occupation(Json::objectValue);occupation["id"]=r.occupationId;occupation["type"]=r.role;
+              occupation["histfig_id"]=r.histfigId;occupation["unit_id"]=r.unitId;
+              occupation["location_id"]=r.locationId;occupation["site_id"]=r.siteId;occupation["group_id"]=r.groupId;
+              row["occupation"]=occupation;
+            }
+            value["rows"].append(row);
+          }
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
+      if (parameters[0] == "location-access-set") {
+        if(parameters.size()!=5)return CR_WRONG_USAGE;
+        int32_t values[3]{};
+        for(size_t i=0;i<3;++i) {
+          const auto& value=parameters[i+1];
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),values[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        uint64_t receipt=0;const auto& text=parameters[4];
+        const auto parsed=std::from_chars(text.data(),text.data()+text.size(),receipt);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size() || values[2]<0 || values[2]>3)return CR_WRONG_USAGE;
+        if(!state.mapLoaded || !df::global::pause_state || !*df::global::pause_state || df3d_session::saving())return CR_FAILURE;
+        const auto outcome=df3d_area::setNativeLocationAccess(values[0],values[1],receipt,
+            static_cast<df3d_area::LocationAccess>(values[2]));
+        out.print("{{\"outcome\":{}}}\n",int(outcome));return CR_OK;
+      }
+      if (parameters[0] == "location-details-refresh") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& value=parameters[i+1];
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        Json::Value value(Json::objectValue);
+        value["refreshed"]=df3d_area::refreshNativeLocationDetailsCaches(ids[0],ids[1]);
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
+      if (parameters[0] == "location-details-read") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& value=parameters[i+1];
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        const auto result=df3d_area::observeNativeLocationDetailsCore(ids[0],ids[1]);
+        Json::Value value(Json::objectValue);value["valid"]=result.has_value();
+        if(result) {
+          const auto& row=*result;
+          value["site_id"]=row.siteId;value["id"]=row.id;value["kind"]=row.kind;value["name"]=row.name;
+          // Preserve the exact 63-bit receipt through Lua/JSON number readers.
+          value["revision"]=std::to_string(df3d_area::locationDetailsRevision(row));
+          value["access"]=int(row.access);value["visitors"]=row.accessFlags.visitors;
+          value["residents"]=row.accessFlags.residents;value["members"]=row.accessFlags.members;
+          value["profession"]=row.profession;value["tier"]=row.tier;value["value"]=row.value;
+          value["recognized"]=row.recognized;value["desired_copies"]=row.desiredCopies;value["appraisal"]=row.appraisal;value["written_objects"]=row.writtenObjects;value["dance_floor_x"]=row.danceFloorX;value["dance_floor_y"]=row.danceFloorY;
+          const auto& f=row.facilities;
+          value["facilities"]["chests"]=f.chests;value["facilities"]["beds"]=f.beds;value["facilities"]["tables"]=f.tables;value["facilities"]["traction_benches"]=f.tractionBenches;value["facilities"]["bookcases"]=f.bookcases;value["facilities"]["chairs"]=f.chairs;value["facilities"]["rooms"]=f.rooms;value["facilities"]["rented_rooms"]=f.rentedRooms;
+          value["zones"]=Json::Value(Json::arrayValue);for(auto id:row.zoneIds)value["zones"].append(id);
+          value["supplies"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<row.supplies.size();++i) {
+            Json::Value supply(Json::objectValue);supply["kind"]=int(i);
+            supply["stored"]=row.supplies[i].stored;supply["desired"]=row.supplies[i].desired;
+            value["supplies"].append(supply);
+          }
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
+      if (parameters[0] == "location-affiliation-read") {
+        if(parameters.size()!=3)return CR_WRONG_USAGE;
+        int32_t ids[2]{};
+        for(size_t i=0;i<2;++i) {
+          const auto& text=parameters[i+1];
+          const auto parsed=std::from_chars(text.data(),text.data()+text.size(),ids[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        }
+        const auto result=df3d_area::observeNativeLocationAffiliation(ids[0],ids[1]);
+        Json::Value value(Json::objectValue);value["valid"]=result.has_value();
+        if(result) {
+          value["kind"]=result->kind;value["id"]=result->id;
+          value["count"]=result->count;value["name"]=result->name;value["workers"]=result->workers;
+        }
+        out.print("{}",Json::FastWriter().write(value));return CR_OK;
+      }
+      if (parameters[0] == "location-religions-read") {
+        if(parameters.size()!=1)return CR_WRONG_USAGE;
+        const auto result=df3d_area::observeNativeLocationReligions();
+        out.print("{{\"valid\":{},\"choices\":[",result.has_value());
+        if(result)for(size_t i=0;i<result->size();++i) {
+          const auto& row=(*result)[i];
+          Json::Value value(Json::objectValue);
+          value["kind"]=int(row.kind);value["id"]=row.id;value["worshippers"]=row.worshippers;
+          value["has_temple"]=row.hasTemple;value["name"]=row.name;value["deities"]=Json::Value(Json::arrayValue);
+          for(const auto& deity:row.deities) {
+            Json::Value item(Json::objectValue);item["id"]=deity.id;item["name"]=deity.name;item["spheres"]=Json::Value(Json::arrayValue);
+            for(auto sphere:deity.spheres)item["spheres"].append(sphere);
+            value["deities"].append(item);
+          }
+          out.print("{}{}",i?",":"",Json::FastWriter().write(value));
+        }
+        out.print("]}}\n");return CR_OK;
+      }
+      if (parameters[0] == "location-guilds-read") {
+        if(parameters.size()!=1)return CR_WRONG_USAGE;
+        const auto result=df3d_area::observeNativeLocationGuilds();
+        out.print("{{\"valid\":{},\"choices\":[",result.has_value());
+        if(result)for(size_t i=0;i<result->size();++i) {
+          const auto& row=(*result)[i];
+          Json::Value value(Json::objectValue);
+          value["profession"]=row.profession;value["workers"]=row.workers;value["has_meeting_place"]=row.hasMeetingPlace;
+          value["guild_id"]=row.guildId;value["members"]=row.members;value["guild_name"]=row.guildName;
+          out.print("{}{}",i?",":"",Json::FastWriter().write(value));
+        }
+        out.print("]}}\n");return CR_OK;
+      }
+      if (parameters[0] == "paint-water-read" || parameters[0] == "paint-base-read" || parameters[0] == "paint-material-read") {
+        if(parameters.size()!=4)return CR_WRONG_USAGE;
+        int32_t xyz[3]{};
+        for(size_t i=0;i<3;++i) {
+          const auto& value=parameters[i+1];
+          const auto parsed=std::from_chars(value.data(),value.data()+value.size(),xyz[i]);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        if(parameters[0] == "paint-material-read") {
+          const auto result=df3d_area::observeNativePaintMaterial(xyz[0],xyz[1],xyz[2]);
+          out.print("{{\"sand\":{},\"clay\":{}}}\n",int(result.sand),int(result.clay));
+          return CR_OK;
+        }
+        if(parameters[0] == "paint-base-read") {
+          const auto result=df3d_area::observeNativePaintBase(xyz[0],xyz[1],xyz[2]);
+          out.print("{{\"ordinary\":{},\"pond\":{}}}\n",int(result.ordinary),int(result.pond));
+          return CR_OK;
+        }
+        const auto result=df3d_area::observeNativePaintWater(xyz[0],xyz[1],xyz[2]);
+        out.print("{{\"water\":{},\"fishing\":{}}}\n",int(result.water),int(result.fishing));
+        return CR_OK;
+      }
+      if (parameters[0] == "room-read") {
+        if(parameters.size()!=4)return CR_WRONG_USAGE;
+        int32_t xyz[3]{};
+        for(size_t i=0;i<3;++i) {
+            const auto& value=parameters[i+1];
+            const auto parsed=std::from_chars(value.data(),value.data()+value.size(),xyz[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        }
+        const auto room=df3d_area::observeNativeRoom(xyz[0],xyz[1],xyz[2]);
+        out.print("{{\"status\":{},\"x\":{},\"y\":{},\"z\":{},\"width\":{},\"height\":{},\"extents\":[",
+            int(room.traversal.status),room.x,room.y,room.z,room.width,room.height);
+        for(size_t i=0;i<room.traversal.reached.size();++i)
+            out.print("{}{}",i?",":"",int(room.traversal.reached[i]));
+        out.print("]}}\n");
+        return CR_OK;
+    }
     if (parameters[0] == "record") {
         if (parameters.size() >= 2 && parameters[1] == "stop") {
             std::unique_lock<std::mutex> lock(state.recordMutex);
@@ -1604,6 +1933,29 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         false,  // run with core suspended
         "df3d [status]\n"
         "    Print bridge state (shm region, terrain grid, timings, counters).\n"
+        "df3d paint-water-read <x> <y> <z> (0 unknown, 1 ineligible, 2 eligible)\n"
+        "df3d paint-base-read <x> <y> <z> (ordinary/Pond eligibility; same codes)\n"
+        "df3d paint-material-read <x> <y> <z> (sand/clay eligibility; same codes)\n"
+        "df3d location-religions-read (ordered semantic temple identities; read-only)\n"
+        "df3d location-staff-candidates <site id> <location id> <occupation id> [cursor revision] (semantic candidates; read-only)\n"
+        "df3d location-staff-set <site id> <location id> <occupation id> <unit id|-1> <revision> (protected staff mutation)\n"
+        "df3d location-staff-read <site id> <location id> (semantic staffing rows; read-only)\n"
+        "df3d location-staff-prepare <site id> <location id> (create missing empty roles; protected acceptance)\n"
+        "df3d location-access-set <site id> <location id> <mode 0..3> <revision> (protected access mutation)\n"
+        "df3d location-details-refresh <site id> <location id> (refresh semantic caches; protected acceptance)\n"
+        "df3d location-details-read <site id> <location id> (partial semantic Details facts; read-only)\n"
+        "df3d location-guilds-read (ordered native guild professions and workers; read-only)\n"
+        "df3d material-distances-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
+        "df3d track-material-order-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
+        "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
+        "df3d room-read <x> <y> <z>\n"
+        "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"
+          "df3d room-seed <building id>\n"
+          "    Read-only diagnostic: furniture identity and native room-use relations as JSON.\n"
+          "df3d room-plan <furniture 1..4> <x> <y> <z> <width> <height>\n"
+          "    Read-only diagnostic: native-order room grouping, extents and rejection counts.\n"
+          "df3d room-create <furniture 1..4> <x> <y> <z> <width> <height> <epoch>\n"
+          "    Mutating diagnostic: create native rooms while paused in the specified fortress epoch.\n"
         "df3d record start <path>\n"
         "    Start a DF3DFIX1 fixture: a Full terrain snapshot, then every\n"
         "    published snapshot.\n"
@@ -1782,6 +2134,16 @@ DFhackCExport command_result plugin_onupdate(color_ostream& out) {
         return CR_OK;
 
     const int32_t frame = world->frame_counter;
+    // Native cancellation/placement changes the building sequence even while
+    // paused. Detect that cheaply, then publish current entities and released
+    // item reservations once. Pending subtype/stage changes also need refresh,
+    // even when completed native building objects remain in the same list.
+    if (World::ReadPauseState()) {
+        const bool pendingChanged = ent::pendingConstructionChanged([](int32_t x,int32_t y,int32_t z) {
+            state.terrain.hintBlock(x>>4,y>>4,z);
+        });
+        if (pendingChanged || ent::buildingSequenceChanged()) state.entityFullPending = true;
+    }
 
     // Terrain maintenance runs every update (paused too) so the grid stays
     // current; the ring carries the resulting Deltas when the sim advances

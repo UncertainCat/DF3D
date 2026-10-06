@@ -19,6 +19,23 @@ struct NotificationGroups {
   bool complete=true;
   std::string key;
 };
+struct AlertButtonReports {
+  std::vector<int32_t> ids;
+  uint32_t count=0;
+  bool complete=true;
+  std::string key;
+};
+template<class NativeIds>
+inline AlertButtonReports readAlertButton(const NativeIds& source) {
+  AlertButtonReports result;
+  result.count=uint32_t(std::min<size_t>(source.size(),UINT32_MAX));
+  for(size_t i=0;i<std::min<size_t>(source.size(),df3d::mirror::kMaxNotificationReferences);++i)
+    if(source[i]>=0)result.ids.push_back(source[i]);
+  result.complete=result.ids.size()==source.size();
+  result.key=std::to_string(result.count)+":"+std::to_string(result.complete);
+  for(auto id:result.ids)result.key+="r"+std::to_string(id);
+  return result;
+}
 template<class NativeGroups>
 inline NotificationGroups readNotificationGroups(const NativeGroups& source) {
   namespace m=df3d::mirror;

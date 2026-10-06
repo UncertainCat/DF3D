@@ -5,6 +5,8 @@ func _initialize(): call_deferred("run")
 func check(ok: bool, message: String):
 	if not ok:failures.append(message);push_error(message)
 func run():
+	var capture_dir := ProjectSettings.globalize_path("res://../../../build/truescale-review")
+	check(DirAccess.make_dir_recursive_absolute(capture_dir)==OK,"capture directory available")
 	OS.set_environment("DF3D_FIXTURE",ProjectSettings.globalize_path("res://../../../build/truescale-test.df3dfix"))
 	OS.set_environment("DF3D_FIXTURE_TICK","1000")
 	OS.set_environment("DF3D_UI_SETTINGS_PATH",ProjectSettings.globalize_path("res://../../../build/truescale-test.cfg"))
@@ -57,7 +59,7 @@ func run():
 		for counter in ["transforms_written","custom_written","colors_written","ceiling_evaluations"]:
 			check(before[counter]==after[counter],style+" toggle/camera must not write "+counter)
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/truescale-review/fixture-"+style+".png"))
+		check(root.get_texture().get_image().save_png(capture_dir.path_join("fixture-"+style+".png"))==OK,"capture saved for "+style)
 	scene.queue_free()
 	for frame in 5:await process_frame
 	print("TRUESCALE_RUNTIME_PASS" if failures.is_empty() else "TRUESCALE_RUNTIME_FAIL")

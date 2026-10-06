@@ -62,3 +62,19 @@ TEST_CASE("notification category and reference boundaries preserve completeness"
     CHECK(data.groups[0].complete);
   }
 }
+
+TEST_CASE("alert button references preserve source order and expose incomplete snapshots") {
+ for(int count:{0,256,257}) {
+  std::vector<int32_t> ids;for(int i=0;i<count;++i)ids.push_back(i);
+  const auto result=df3d_session::readAlertButton(ids);
+  CHECK(result.count==count);CHECK(result.complete==(count<=256));CHECK(result.ids.size()==size_t(std::min(count,256)));
+  for(size_t i=0;i<result.ids.size();++i)CHECK(result.ids[i]==int32_t(i));
+ }
+ const auto initial=df3d_session::readAlertButton(std::vector<int32_t>{41,0,17});
+ CHECK(initial.ids==std::vector<int32_t>{41,0,17});
+ const auto invalid=df3d_session::readAlertButton(std::vector<int32_t>{41,-1,17});
+ CHECK_FALSE(invalid.complete);CHECK(invalid.count==3);CHECK(invalid.ids==std::vector<int32_t>{41,17});
+ CHECK(initial.key!=invalid.key);
+ CHECK(initial.key!=df3d_session::readAlertButton(std::vector<int32_t>{0,41,17}).key);
+ CHECK(initial.key!=df3d_session::readAlertButton(std::vector<int32_t>{}).key);
+}

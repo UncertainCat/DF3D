@@ -288,10 +288,10 @@ Dictionary Df3dWorld::minimap_data(int z, int resolution) {
         const double scale=std::min(1.0,static_cast<double>(resolution)/std::max(size.x,size.y));
         const int w=std::max(1,static_cast<int>(std::round(size.x*scale)));
         const int h=std::max(1,static_cast<int>(std::round(size.y*scale)));
-        std::vector<int8_t> pixels(size_t(w)*h, -1);
+        std::vector<int32_t> pixels(size_t(w)*h, -1);
         for(int y=0;y<h;++y) for(int x=0;x<w;++x) {
-            const int index=mesher::minimapPalette(source_.model().tileAt({mesher::minimapSample(x,w,size.x),mesher::minimapSample(y,h,size.y),z}));
-            pixels[size_t(y)*w+x] = static_cast<int8_t>(index);
+            const int tx=mesher::minimapSample(x,w,size.x), ty=mesher::minimapSample(y,h,size.y);
+            pixels[size_t(y)*w+x] = mesher::minimapColor(source_.model().tileAt({tx,ty,z}),source_.model().tileAt({tx,ty,z-1}),tx==0 || ty==0 || tx==size.x-1 || ty==size.y-1);
         }
         minimapSamples_ += pixels.size(); ++minimapEvaluations_;
         // Water depth/order/material metadata may change without changing the
@@ -302,8 +302,7 @@ Dictionary Df3dWorld::minimap_data(int z, int resolution) {
             for(int y=0;y<h;++y) for(int x=0;x<w;++x) {
                 const int index=pixels[size_t(y)*w+x];
                 if(index<0)continue;
-                const auto c=assets_->classicPalette.colors[static_cast<size_t>(index)];
-                image->set_pixel(x,y,Color(c.r/255.0f,c.g/255.0f,c.b/255.0f,1));
+                image->set_pixel(x,y,Color(((index>>16)&255)/255.0f,((index>>8)&255)/255.0f,(index&255)/255.0f,1));
             }
             minimapTexture_=submission::texture(image, submission::TextureSite::Minimap); ++minimapBuilds_;
         }
@@ -350,6 +349,8 @@ Dictionary Df3dWorld::tile_hover_info(const Vector3i& tile) const {
     out["engraved"] = bool(t->flags & wm::kTileEngraved);
     out["liquid"] = String(wm::liquidKindName(t->liquidKind));
     out["liquid_level"] = int(t->liquidLevel);
+    out["completed_track"] = int(t->completedTrack);
+    out["pending_carve_track"] = int(t->track);
     return out;
 }
 
@@ -581,7 +582,7 @@ bool Df3dWorld::poll() {
             // the terrain they stand on.
             if (sliceUnits_ && source_.model().hasTerrain() && topZ_ >= 0 &&
                 (presented.sliceZ > static_cast<float>(topZ_) ||
-                 presented.sliceZ <= static_cast<float>(topZ_ - windowDepth_))) {
+                 presented.sliceZ <= static_cast<float>(topZ_ - spriteWindowDepth()))) {
                 continue;
             }
             positions_.push_back(Vector3(r.pos.x + 0.5f, r.pos.z + lift, r.pos.y + 0.5f));
@@ -656,7 +657,7 @@ uint64_t Df3dWorld::key(wm::BlockPos p) {
 }
 
 bool Df3dWorld::inWindow(wm::BlockPos p) const {
-    return p.bz <= topZ_ && p.bz > topZ_ - windowDepth_;
+    return p.bz <= topZ_ && p.bz > topZ_ - get_window_depth();
 }
 
 bool Df3dWorld::blockInMap(wm::BlockPos p) const {
@@ -734,9 +735,10 @@ void Df3dWorld::set_top_z(int z) {
 }
 
 void Df3dWorld::set_window_depth(int levels) {
-    levels = std::max(1, levels);
+    levels = std::max(0, levels);
     if (levels == windowDepth_) return;
     windowDepth_ = levels;
+    lastRenderedTick_ = UINT64_MAX;
     itemsDirty_ = true;
     layoutScopeDirty_ = true;
     enqueueBuildingWindow();
@@ -753,6 +755,15 @@ void Df3dWorld::set_window_depth(int levels) {
         }
     }
     enqueueWindow();
+}
+
+void Df3dWorld::set_sprite_depth(int levels) {
+    levels = std::max(0, levels);
+    if (levels == spriteDepth_) return;
+    spriteDepth_ = levels;
+    itemsDirty_ = true;
+    layoutViewDirty_ = true; // Reapply retained stack intervals to returning instances.
+    lastRenderedTick_ = UINT64_MAX; // Range changes apply even while DF is paused.
 }
 
 void Df3dWorld::set_reveal_hidden(bool reveal) {
@@ -776,7 +787,7 @@ void Df3dWorld::enqueueWindow() {
     const wm::TilePos map = source_.model().mapSize();
     const int32_t bxCount = (map.x + wm::kBlockSize - 1) / wm::kBlockSize;
     const int32_t byCount = (map.y + wm::kBlockSize - 1) / wm::kBlockSize;
-    for (int32_t z = std::min(topZ_, map.z - 1); z > topZ_ - windowDepth_ && z >= 0; --z) {
+    for (int32_t z = std::min(topZ_, map.z - 1); z > topZ_ - get_window_depth() && z >= 0; --z) {
         for (int32_t by = 0; by < byCount; ++by)
             for (int32_t bx = 0; bx < bxCount; ++bx) {
                 const wm::BlockPos p{bx, by, z};
@@ -834,7 +845,7 @@ void Df3dWorld::resetTerrain() {
 
 void Df3dWorld::updateBackdrop() {
     if (!source_.model().hasTerrain() || topZ_ < 0) return;
-    if (backdrop_ && backdropTopZ_ == topZ_ && backdropDepth_ == windowDepth_) return;
+    if (backdrop_ && backdropTopZ_ == topZ_ && backdropDepth_ == get_window_depth()) return;
     if (backdrop_) {
         terrainRoot_->remove_child(backdrop_);
         godot::memdelete(backdrop_);
@@ -842,7 +853,7 @@ void Df3dWorld::updateBackdrop() {
     }
     const wm::TilePos m = source_.model().mapSize();
     // Just under the lowest window layer's bottom faces, past the map edges.
-    const float y = static_cast<float>(topZ_ - windowDepth_ + 1) - 0.05f;
+    const float y = static_cast<float>(std::max(0, topZ_ - get_window_depth() + 1)) - 0.05f;
     const float pad = 8.0f;
     PackedVector3Array v;
     v.push_back(Vector3(-pad, y, -pad));
@@ -874,7 +885,7 @@ void Df3dWorld::updateBackdrop() {
     backdrop_->set_mesh(mesh);
     get_terrain_root()->add_child(backdrop_);
     backdropTopZ_ = topZ_;
-    backdropDepth_ = windowDepth_;
+    backdropDepth_ = get_window_depth();
 }
 
 void Df3dWorld::ensureMaterials() {

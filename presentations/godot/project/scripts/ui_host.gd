@@ -1,4 +1,5 @@
 extends Node
+signal input_gate_changed
 signal views_reset
 # Sole owner of local panel and world-input transitions. Requests live elsewhere.
 var interaction
@@ -76,10 +77,21 @@ func set_overlay_blocked(value: bool) -> void:
 func allows_panel_input(controller: Node) -> bool:
 	return play_enabled and not overlay_blocked and active == controller
 
+func allows_minimap_input() -> bool:
+	if not play_enabled or overlay_blocked:return false
+	if not is_instance_valid(active) or not active.modal_input:return true
+	return active.has_method("allows_minimap_input") and active.allows_minimap_input()
+
+func allows_elevation_input() -> bool:
+	if not play_enabled or overlay_blocked: return false
+	if not is_instance_valid(active) or not active.modal_input: return true
+	return active.has_method("allows_elevation_input") and active.allows_elevation_input()
+
 func _sync_input() -> void:
 	interaction.construction_active = is_instance_valid(active) and bool(active.modal_input)
 	interaction.shell_blocked = overlay_blocked
 	interaction.panel.visible = play_enabled and not interaction.construction_active and not overlay_blocked and not interaction.shell_enabled
+	input_gate_changed.emit()
 
 func reset_local_views() -> void:
 	close_active()
@@ -93,5 +105,6 @@ func _input(event: InputEvent) -> void:
 			reset_local_views()
 			get_viewport().set_input_as_handled()
 		elif event.keycode == KEY_ESCAPE and is_instance_valid(active) and not overlay_blocked:
-			close_active()
+			if active.has_method("handle_back"): active.handle_back()
+			else: close_active()
 			get_viewport().set_input_as_handled()

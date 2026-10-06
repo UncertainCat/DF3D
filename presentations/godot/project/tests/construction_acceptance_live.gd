@@ -10,6 +10,13 @@ var step := "startup"
 var handshake := 0
 var lane_deadline_ms: int = 0
 
+# JSON numbers are floats. Normalize once so Array.has() can match the integer
+# identities retained by the lane, including its completed-wall exclusion.
+static func building_ids(verification: Dictionary) -> Array[int]:
+	var ids: Array[int] = []
+	for id in verification.get("ids", []): ids.append(int(id))
+	return ids
+
 func lane_budget_ok() -> bool:
 	if Time.get_ticks_msec() < lane_deadline_ms: return true
 	incomplete("shared lane budget exhausted; no command replay", true)
@@ -92,15 +99,20 @@ func request_pause(want_paused: bool) -> bool:
 	if not check(seq > 0, "pause command not sent: " + world.last_error()): return false
 	var deadline := Time.get_ticks_msec() + 30000
 	var accepted := false
+	var session: Dictionary = {}
 	while Time.get_ticks_msec() < deadline:
 		world.poll()
 		for receipt in world.drain_command_results():
+			print("CONSTRUCTION_PAUSE_RECEIPT wanted=", want_paused, " seq=", seq, " receipt=", receipt)
 			if int(receipt.seq) == seq:
 				if not check(int(receipt.status) == 0 and receipt.message == ("paused" if want_paused else "unpaused"), "pause command refused: " + str(receipt.message)): return false
 				accepted = true
-		var session: Dictionary = world.poll_session()
+		session = world.poll_session()
 		if accepted and session.get("fortress_valid", false) and session.get("paused", not want_paused) == want_paused: return true
 		await create_timer(0.02).timeout
+	print("CONSTRUCTION_PAUSE_TIMEOUT accepted=", accepted, " wanted=", want_paused,
+		" phase=", session.get("phase"), " fortress_valid=", session.get("fortress_valid"),
+		" paused=", session.get("paused"), " error=", world.last_error())
 	incomplete("pause receipt/readback wait cap hit; no replay", true)
 	return false
 
@@ -181,7 +193,7 @@ func selection_rows(key: String, origin: Vector3i, filters: Array, weapon_count:
 		return []
 	return selections
 
-func place(key: String, site_name: String, direction: int = 0, retracting: bool = false, dimensions: Vector3i = Vector3i.ZERO, weapon_count: int = -1, explicit_origin: Dictionary = {}) -> Dictionary:
+func place(key: String, site_name: String, direction: int = 0, retracting: bool = false, dimensions: Vector3i = Vector3i.ZERO, weapon_count: int = -1, explicit_origin: Dictionary = {}, roller_speed: int = 0, track_stop: Dictionary = {}, pressure_plate: Dictionary = {}) -> Dictionary:
 	if stopped: return {}
 	if not catalog.has(key) or not catalog[key].supported:
 		incomplete(key + " unavailable in catalog")
@@ -201,8 +213,12 @@ func place(key: String, site_name: String, direction: int = 0, retracting: bool 
 			if int(fp.direction) == (4 if retracting else direction): size = Vector3i(int(fp.width), int(fp.height), 1)
 	if not check(size != Vector3i.ZERO, "catalog footprint missing"): return {}
 	var query := {"action":1, "definition":key, "origin":origin, "width":size.x, "height":size.y, "depth":size.z, "direction":direction, "retracting":retracting}
+	if key == "Rollers": query.roller_speed = roller_speed
+	if key == "Trap:TrackStop": query.track_stop = track_stop.duplicate()
+	if key == "Trap:PressurePlate": query.pressure_plate = pressure_plate.duplicate()
 	var preview := await request(query)
 	if stopped: return {}
+	if not check(preview.get("placement_valid",false),"successful Preview did not mark placement valid"): return {}
 	var c: Dictionary = preview.construction
 	var mask: Array = Array(c.valid_mask)
 	if int(catalog[key].area_mode) >= 3:
@@ -219,10 +235,16 @@ func place(key: String, site_name: String, direction: int = 0, retracting: bool 
 	c = receipt.construction
 	var args := {"definition":key, "origin":native_point(origin), "width":size.x, "height":size.y, "depth":size.z, "direction":direction, "retracting":retracting, "mode":int(catalog[key].area_mode), "mask":mask, "placed":int(c.placed), "skipped":int(c.skipped)}
 	if weapon_count >= 0: args.weapon_count = weapon_count
+	if key == "Rollers": args.roller_speed = roller_speed if roller_speed > 0 else 50000
+	if key == "Trap:TrackStop": args.track_stop = track_stop.duplicate()
+	if key == "Trap:PressurePlate": args.pressure_plate = pressure_plate.duplicate()
 	var verified := await native("placed", args)
 	if stopped: return {}
-	for id in verified.get("ids", []): placed.append({"id":int(id), "key":key, "origin":origin})
-	return {"receipt":receipt, "origin":origin, "ids":verified.get("ids", []), "width":size.x, "height":size.y}
+	var ids := building_ids(verified)
+	for id in ids:
+		placed.append({"id":id, "key":key, "origin":origin})
+		await native("exists", {"id":id, "origin":native_point(origin), "phase":"after placement"})
+	return {"receipt":receipt, "origin":origin, "ids":ids, "width":size.x, "height":size.y}
 
 # Release a sequential fixture site through semantic commands. A marked-for-
 # removal building is insufficient: every tile must actually be free before
@@ -263,13 +285,19 @@ func catalog_pages() -> void:
 		total = int(state.construction.total)
 		if not check(not seen.has(int(query.get("cursor", 0))), "catalog cursor repeated"): return
 		seen.append(int(query.get("cursor", 0)))
+		if int(query.get("cursor",0)) == 0:
+			var examples: Array = state.construction.get("pressure_creatures",[])
+			if not check(examples.size()==200,"pressure example metadata missing"): return
+			await native("pressure_examples",{"rows":examples})
+			if stopped: return
+			print("PRESSURE_EXAMPLES_TRANSPORT_PASS rows=",examples.size())
 		for row in state.catalog:
 			if not check(not catalog.has(row.key), "duplicate catalog key"): return
 			catalog[row.key] = row
 			if not row.supported:
-				var fixed_reasons := {"Windmill":"Windmill placement rule not captured", "Construction:Track":"Track piece selection not captured", "Trap:PressurePlate":"Pressure plate options not captured", "Trap:TrackStop":"Track stop options not captured"}
+				var fixed_reasons := {"Windmill":"Windmill placement rule not captured", "Construction:Track":"Track semantic services unavailable"}
 				if fixed_reasons.has(row.key): check(row.reason == fixed_reasons[row.key], "catalog refusal mismatch " + row.key)
-				if not check(row.reason in ["Building has no recipe", "Recipe has more than 8 inputs", "Placed from the stockpile and zone menus", "Magma placement rule not captured", "Windmill placement rule not captured", "Pressure plate options not captured", "Track stop options not captured", "Track piece selection not captured", "Not permitted for this civilization", "Native placement check rejected this site"], "unknown unsupported reason: " + row.reason): return
+				if not check(row.reason in ["Building has no recipe", "Recipe has more than 8 inputs", "Placed from the stockpile and zone menus", "Magma placement rule not captured", "Windmill placement rule not captured", "Pressure plate options not captured", "Track stop options not captured", "Track semantic services unavailable", "Not permitted for this civilization", "Native placement check rejected this site"], "unknown unsupported reason: " + row.reason): return
 		if int(state.next_cursor) == 0: break
 		query.cursor = int(state.next_cursor)
 		query.expected_list_revision = int(state.construction.list_revision)
@@ -382,10 +410,14 @@ func departure_report() -> void:
 	# Preserve unresolved subquestions; do not turn one answered part into full parity.
 	rows.append({"id":"uncaptured", "text":"D2 metric/reference tile, D3 three-level middle/rebuild, D7 farm footprint, D8 refusal wording: incomplete: evidence missing"})
 	for finding in evidence:
-		if str(finding.text).contains("Track stop: dump") or str(finding.text).contains("Pressure plate: Resets"):
-			rows.append({"id":"D5_options", "text":"D5: mismatch " + finding.line + " (catalog explicitly refuses these options)"})
+		if str(finding.text).contains("Track stop: dump"):
+			rows.append({"id":"D5_track_stop", "text":"D5: " + ("all25 profiles read back from native buildings" if observed.get("track_stop_profiles",0)==25 else "incomplete: TrackStop profile matrix") + "; " + finding.line})
+		if str(finding.text).contains("Pressure plate: Resets"):
+			rows.append({"id":"D5_options", "text":"D5: " + ("12 PressurePlate profiles read back from native buildings; controls and trigger effects incomplete" if observed.get("pressure_plate_profiles",0)==12 else "incomplete: PressurePlate profile matrix") + "; " + finding.line})
 		if str(finding.text).contains("5 speeds"):
-			rows.append({"id":"D6_speed", "text":"D6: mismatch " + finding.line + " (request carries no speed selection)"})
+			var speeds: Array = observed.get("roller_speeds", [])
+			var speed_result := "match: all five requested speeds read back from native buildings" if speeds == [10000,20000,30000,40000,50000] else "incomplete: all five native speed readbacks not established"
+			rows.append({"id":"D6_speed", "text":"D6: " + speed_result + "; " + finding.line})
 	# Discover named native dumps at run time. Compare only explicit material
 	# identities/counts/order; absent columns do not imply any native answer.
 	var dump_found := false
@@ -398,6 +430,67 @@ func departure_report() -> void:
 			rows.append({"id":"materials_dump", "text":compare_dump(repo, matched.get_string(1), finding)})
 	if not dump_found: rows.append({"id":"materials_dump", "text":"incomplete: evidence missing (no materials dump named in findings)"})
 	write_json("departures.json", rows)
+
+func reload_fortress() -> void:
+	if stopped: return
+	if not fixture.sites.has("depot"):
+		incomplete("reload material site unavailable"); return
+	var previous: Dictionary = world.poll_session()
+	var previous_epoch := int(previous.get("fortress_epoch", 0))
+	# Send one read-only materials intent. Its outcome may be terminal or unknown;
+	# the handshake never sends it again, including after producer replacement.
+	var origin := point(fixture.sites.depot)
+	var seq: int = world.management_request("construction", {"action":63, "definition":"TradeDepot", "filter":0, "origin":origin})
+	if not check(seq > 0, "pre-reload materials request not sent"): return
+	handshake += 1
+	write_json("request-%d.json" % handshake, {"op":"reload"})
+	var file := FileAccess.open(directory + "/verify.tmp", FileAccess.WRITE)
+	file.store_string(str(handshake)); file.close()
+	if not check(DirAccess.rename_absolute(directory + "/verify.tmp", directory + "/verify.txt") == OK, "reload handshake rename failed"): return
+	var deadline := Time.get_ticks_msec() + 960000
+	var ack: Dictionary = {}
+	var outcome := "unknown"
+	while ack.is_empty():
+		world.poll(); world.poll_session()
+		var observed: Dictionary = world.poll_management()
+		if int(observed.get("world_epoch", 0)) == previous_epoch and int(observed.get("request_seq", 0)) == seq and int(observed.get("status", S.Idle)) in [S.Ok, S.Rejected]: outcome = "terminal"
+		for state in ["failed", "incomplete", "ack"]:
+			var path := directory + "/%s-%d" % [state, handshake]
+			if not FileAccess.file_exists(path): continue
+			var reply: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+			if state == "failed": check(false, "reload: " + str(reply.reason)); return
+			if state == "incomplete": incomplete("reload: " + str(reply.reason), true); return
+			ack = reply
+		if Time.get_ticks_msec() >= deadline: incomplete("reload handshake timeout; no replay", true); return
+		await create_timer(0.02).timeout
+	var epoch := int(str(ack.epoch))
+	if not check(epoch != previous_epoch and (epoch >> 32) == int(ack.pid), "reload epoch/process identity"): return
+	var inprocess: bool = ack.get("route", "restart") == "inprocess"
+	if not check(((previous_epoch >> 32) == int(ack.pid)) == inprocess, "reload route/process mismatch"): return
+	deadline = Time.get_ticks_msec() + 60000
+	var ready := false
+	while Time.get_ticks_msec() < deadline:
+		world.poll()
+		var session: Dictionary = world.poll_session()
+		var state: Dictionary = world.poll_management()
+		if int(state.get("world_epoch", 0)) == epoch:
+			if not check(int(state.get("request_seq", 0)) != seq, "old sequence survived restart"): return
+			if int(session.get("fortress_epoch", 0)) == epoch and session.get("paused", false): ready = true; break
+		await create_timer(0.02).timeout
+	if not ready: incomplete("reload: presentation did not reattach", true); return
+	print("RELOAD_TICKET_OUTCOME ", outcome)
+	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
+	catalog.clear(); placed.clear()
+	await catalog_pages()
+	if stopped: return
+	var first := await request({"action":63, "definition":"TradeDepot", "filter":0, "origin":point(fixture.sites.depot)})
+	if stopped: return
+	check(int(first.construction.build_phase) == 1 and int(first.construction.build_done) == 0, "materials did not restart from 0/total")
+	if inprocess:
+		print("RELOAD_INPROCESS construction materials restarted at 0/total with retained DLL")
+		print("RELOAD_DISCLOSURE exact World changed reply and mid-Place reload remain offline-only")
+	else:
+		print("RELOAD_DISCLOSURE World changed reply and mid-Place reload remain offline-only; live reload replaces the producer")
 
 func exercise() -> void:
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
@@ -430,7 +523,46 @@ func exercise() -> void:
 		var pump := await place("ScrewPump", "pump" + str(direction), direction)
 		await release_site(pump)
 	await place("WaterWheel", "wheel")
+	for speed in [10000,20000,30000,40000,50000]:
+		var roller := await place("Rollers", "pump0", 0, false, Vector3i.ONE, -1, {}, speed)
+		if stopped: return
+		if not check(not roller.is_empty(), "Roller speed placement prerequisite missing"): return
+		print("ROLLER_SPEED_NATIVE_PASS speed=", speed, " ids=", roller.ids)
+		if not observed.has("roller_speeds"): observed.roller_speeds = []
+		observed.roller_speeds.append(speed)
+		await release_site(roller)
 	await place("FarmPlot", "farm", 0, false, Vector3i(3, 3, 1))
+	for dump in 5:
+		for friction in [10,50,500,10000,50000]:
+			var profile := {"friction":friction,"dump_direction":dump}
+			var stop := await place("Trap:TrackStop", "pump0",0,false,Vector3i.ONE,-1,{},0,profile)
+			if stopped: return
+			if not check(not stop.is_empty(),"TrackStop profile placement unavailable"): return
+			observed.track_stop_profiles = int(observed.get("track_stop_profiles",0))+1
+			print("TRACK_STOP_NATIVE_PASS profile=",profile," ids=",stop.ids)
+			await release_site(stop)
+	# Native defaults/ranges: fixtures/construction/pressure_plate.json.
+	var pressure_default := {"units":false,"water":false,"magma":false,"citizens":false,"resets":true,"track":false,
+		"unit_min":5000,"unit_max":200000,"water_min":1,"water_max":7,"magma_min":1,"magma_max":7,"track_min":1,"track_max":2000}
+	var pressure_profiles: Array[Dictionary] = [pressure_default]
+	for flag in ["units","water","magma","citizens","resets","track"]:
+		var profile: Dictionary = pressure_default.duplicate()
+		profile[flag] = not profile[flag]
+		pressure_profiles.append(profile)
+	for changes in [{"units":true,"water":true,"magma":true,"citizens":true,"resets":false,"track":true},
+		{"units":true,"unit_min":200000,"unit_max":200999}, {"units":true,"unit_min":1000,"unit_max":1999},
+		{"water":true,"water_min":0,"water_max":0,"magma":true,"magma_min":0,"magma_max":0,"track":true,"track_min":1,"track_max":1},
+		{"track":true,"track_min":2000,"track_max":2000}]:
+		var profile: Dictionary = pressure_default.duplicate()
+		profile.merge(changes,true)
+		pressure_profiles.append(profile)
+	for profile in pressure_profiles:
+		var plate := await place("Trap:PressurePlate","pump0",0,false,Vector3i.ONE,-1,{},0,{},profile)
+		if stopped: return
+		if not check(not plate.is_empty(),"PressurePlate profile placement unavailable"): return
+		observed.pressure_plate_profiles = int(observed.get("pressure_plate_profiles",0))+1
+		print("PRESSURE_PLATE_NATIVE_PASS profile=",profile," ids=",plate.ids)
+		await release_site(plate)
 	await place("Bridge", "bridge", 2, false, Vector3i(3, 3, 1))
 	await place("Bridge", "retracting", 0, true, Vector3i(3, 3, 1))
 	var facings := 0
@@ -498,8 +630,7 @@ func exercise() -> void:
 		if stopped: return
 		await guarded({"action":4, "building_id":int(row.id), "definition":"Chair" if inspection.construction.building_key != "Chair" else "Table"}, "Building changed; inspect again")
 	for row in placed:
-		if str(row.key).begins_with("Workshop:Custom:"):
-			await native("exists", {"id":int(row.id), "origin":native_point(row.origin), "phase":"before step 6"})
+		await native("exists", {"id":int(row.id), "origin":native_point(row.origin), "phase":"before step 6"})
 	if stopped: return
 	step = "6"
 	var wall := await place("Construction:Wall", "wall")
@@ -515,7 +646,8 @@ func exercise() -> void:
 		await native("removed_construction", {"origin":native_point(wall.origin)})
 	else: incomplete("RemoveConstruction requires a completed wall")
 	step = "8"
-	incomplete(FileAccess.get_file_as_string(directory + "/reload.txt").strip_edges())
+	await reload_fortress()
+	if stopped: return
 	step = "final"
 	await native("final")
 

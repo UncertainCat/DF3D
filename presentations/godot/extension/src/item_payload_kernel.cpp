@@ -52,6 +52,7 @@ Dictionary ItemPayloadKernel::prepare(Object* group, const Dictionary& record,
     transforms.resize(count); custom.resize(count); colors.resize(count);
     PackedInt32Array moved, recustom, recolor;
     bool bounds_changed = !sparse || count != old_count;
+    bool clipping_changed = false;
     int64_t queries = 0, hits = 0;
     const int candidates = sparse ? changes.size() : count;
     for (int offset = 0; offset < candidates; ++offset) {
@@ -90,6 +91,7 @@ Dictionary ItemPayloadKernel::prepare(Object* group, const Dictionary& record,
         }
         value.g = ground[index] ? 1 : 0;
         if (index < stack_ordinals.size()) value.b = stack_ordinals[index];
+        if (oriented && (ordinal >= old_count || custom[ordinal].r != value.r)) clipping_changed = true;
         if (force || ordinal >= old_count || custom[ordinal] != value) {
             custom.set(ordinal, value); recustom.push_back(ordinal);
         }
@@ -97,8 +99,9 @@ Dictionary ItemPayloadKernel::prepare(Object* group, const Dictionary& record,
             colors.set(ordinal, source_colors[index]); recolor.push_back(ordinal);
         }
     }
-    if (bounds_changed) {
+    if (bounds_changed || clipping_changed) {
         AABB bounds;
+        AABB render_bounds;
         bool first = true;
         int clip_floor=std::numeric_limits<int>::max();
         for (int i = 0; i < count; ++i) {
@@ -111,8 +114,17 @@ Dictionary ItemPayloadKernel::prepare(Object* group, const Dictionary& record,
             box.size.y += 1.9;
             if(!oriented) { const real_t slope=.9*std::max(extent.x*sizes[index].x,extent.z*sizes[index].y);box.position.y-=slope;box.size.y+=2*slope; }
             bounds = first ? box : bounds.merge(box); first = false;
+            // fragment() discards all billboard pixels at/above this ceiling.
+            // Retain the unclipped box above for source dependency tracking.
+            if (oriented) {
+                const real_t top = std::min(box.get_end().y, real_t(custom[i].r));
+                box.position.y = std::min(box.position.y, top);
+                box.size.y = std::max(real_t(.001), top - box.position.y);
+            }
+            render_bounds = i == 0 ? box : render_bounds.merge(box);
         }
         group->set("bounds", bounds);
+        group->set("render_bounds", render_bounds);
         group->set("clip_floor_z",count ? clip_floor : 0);
     }
     group->set("transforms", transforms); group->set("custom", custom); group->set("colors", colors);

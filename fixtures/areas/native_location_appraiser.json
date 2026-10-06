@@ -1,0 +1,343 @@
+{
+  "frame": 0,
+  "restored": true,
+  "rows": [
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "no_assignments",
+      "line": "Temple, ?  (next at 10000 )                 53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "?"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "primary_only",
+      "line": "Temple, 2000 ? (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "secondary_only",
+      "line": "Temple, 12345  (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "secondary_last",
+      "line": "Temple, 12345  (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "primary_last",
+      "line": "Temple, 2000 ? (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "skip_missing_histfigs",
+      "line": "Temple, 12345  (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "skip_missing_unit",
+      "line": "Temple, 2000 ? (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "inactive_unit_still_resolved",
+      "line": "Temple, 12345  (next at 10000 )             53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "all_missing",
+      "line": "Temple, ?  (next at 10000 )                 53 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "?"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 0,
+      "kind": "TEMPLE",
+      "label": "restored",
+      "line": "Temple, ?  (next at 10000 )                 53 worshippers",
+      "tier": 1,
+      "value": 5675,
+      "displayed": "?"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "no_assignments",
+      "line": "Temple, ?  (next at 10000 )                 45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "?"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "primary_only",
+      "line": "Temple, 2000 ? (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "secondary_only",
+      "line": "Temple, 12345  (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "secondary_last",
+      "line": "Temple, 12345  (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "primary_last",
+      "line": "Temple, 2000 ? (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "skip_missing_histfigs",
+      "line": "Temple, 12345  (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "skip_missing_unit",
+      "line": "Temple, 2000 ? (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "inactive_unit_still_resolved",
+      "line": "Temple, 12345  (next at 10000 )             45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "all_missing",
+      "line": "Temple, ?  (next at 10000 )                 45 worshippers",
+      "tier": 1,
+      "value": 12345,
+      "displayed": "?"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 3,
+      "kind": "TEMPLE",
+      "label": "restored",
+      "line": "Temple, ?  (next at 10000 )                 45 worshippers",
+      "tier": 1,
+      "value": 9229,
+      "displayed": "?"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "no_assignments",
+      "line": "Meeting place, ?  (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "?"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "primary_only",
+      "line": "Meeting place, 2000 ? (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "secondary_only",
+      "line": "Meeting place, 12345  (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "secondary_last",
+      "line": "Meeting place, 12345  (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "primary_last",
+      "line": "Meeting place, 2000 ? (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "skip_missing_histfigs",
+      "line": "Meeting place, 12345  (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": 0,
+      "broker": 988,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "skip_missing_unit",
+      "line": "Meeting place, 2000 ? (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "2000 ?"
+    },
+    {
+      "appraisal": 15,
+      "broker": 996,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "inactive_unit_still_resolved",
+      "line": "Meeting place, 12345  (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "12345"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "all_missing",
+      "line": "Meeting place, ?  (next at 2000 )",
+      "tier": 0,
+      "value": 12345,
+      "displayed": "?"
+    },
+    {
+      "appraisal": -1,
+      "broker": -1,
+      "id": 5,
+      "kind": "GUILDHALL",
+      "label": "restored",
+      "line": "Meeting place, ?  (next at 2000 )",
+      "tier": 0,
+      "value": 825,
+      "displayed": "?"
+    }
+  ],
+  "unit_id": 988,
+  "provenance": {
+    "capture": "build/location-value-capture-20260929-165005",
+    "sha256": "5a79e58473a331868d4c080a0424d48fccd53e04acd15d35964cfb6c59dfb36c",
+    "method": "Protected paused disposable clone. Native rendered temple/guild Details for controlled ordered TRADE assignments, missing historical figures/units and inactive unit flag. Pointers/skills/values/flags restored; source/clone manifests unchanged.",
+    "scope": "30 native rendered observations. Runtime broker observation is not yet implemented."
+  }
+}

@@ -1,0 +1,1294 @@
+{
+  "evidence": {
+    "spheres": {
+      "path": "build/areas-acceptance-20260929-101825/native-sphere-captions.json",
+      "sha256": "038050dd361e68d937aa88be6350b569f367dabeb51601302287c454ebf3b9da"
+    },
+    "guilds": {
+      "path": "build/notes/pm/runs/04-U/native-guild-labels.json",
+      "sha256": "30198b2d5cb7411ba6677905e7cb9ec36853e8da14483239f3147d5ce4b865c2"
+    },
+    "guild_professions": {
+      "path": "build/location-list-capture-20260929-150935/native-guild-subtitles.json",
+      "sha256": "ca0777e4e02ef18f4e670e64a51b3965b00e5f85de36c931372a056063f35d8b",
+      "note": "Native location chooser controlled profession/tier matrix. Tier 3 renders the profession prefix alone; ranks 0/1/2 supply meeting place/guildhall/grand guildhall. All 276 row captions captured."
+    }
+  },
+  "spheres": [
+    {
+      "id": 0,
+      "key": "AGRICULTURE",
+      "label": "Agriculture"
+    },
+    {
+      "id": 1,
+      "key": "ANIMALS",
+      "label": "Animals"
+    },
+    {
+      "id": 2,
+      "key": "ART",
+      "label": "Art"
+    },
+    {
+      "id": 3,
+      "key": "BALANCE",
+      "label": "Balance"
+    },
+    {
+      "id": 4,
+      "key": "BEAUTY",
+      "label": "Beauty"
+    },
+    {
+      "id": 5,
+      "key": "BIRTH",
+      "label": "Birth"
+    },
+    {
+      "id": 6,
+      "key": "BLIGHT",
+      "label": "Blight"
+    },
+    {
+      "id": 7,
+      "key": "BOUNDARIES",
+      "label": "Boundaries"
+    },
+    {
+      "id": 8,
+      "key": "CAVERNS",
+      "label": "Caverns"
+    },
+    {
+      "id": 9,
+      "key": "CHAOS",
+      "label": "Chaos"
+    },
+    {
+      "id": 10,
+      "key": "CHARITY",
+      "label": "Charity"
+    },
+    {
+      "id": 11,
+      "key": "CHILDREN",
+      "label": "Children"
+    },
+    {
+      "id": 12,
+      "key": "COASTS",
+      "label": "Coasts"
+    },
+    {
+      "id": 13,
+      "key": "CONSOLATION",
+      "label": "Consolation"
+    },
+    {
+      "id": 14,
+      "key": "COURAGE",
+      "label": "Courage"
+    },
+    {
+      "id": 15,
+      "key": "CRAFTS",
+      "label": "Crafts"
+    },
+    {
+      "id": 16,
+      "key": "CREATION",
+      "label": "Creation"
+    },
+    {
+      "id": 17,
+      "key": "DANCE",
+      "label": "Dance"
+    },
+    {
+      "id": 18,
+      "key": "DARKNESS",
+      "label": "Darkness"
+    },
+    {
+      "id": 19,
+      "key": "DAWN",
+      "label": "The Dawn"
+    },
+    {
+      "id": 20,
+      "key": "DAY",
+      "label": "Day"
+    },
+    {
+      "id": 21,
+      "key": "DEATH",
+      "label": "Death"
+    },
+    {
+      "id": 22,
+      "key": "DEFORMITY",
+      "label": "Deformity"
+    },
+    {
+      "id": 23,
+      "key": "DEPRAVITY",
+      "label": "Depravity"
+    },
+    {
+      "id": 24,
+      "key": "DISCIPLINE",
+      "label": "Discipline"
+    },
+    {
+      "id": 25,
+      "key": "DISEASE",
+      "label": "Disease"
+    },
+    {
+      "id": 26,
+      "key": "DREAMS",
+      "label": "Dreams"
+    },
+    {
+      "id": 27,
+      "key": "DUSK",
+      "label": "Dusk"
+    },
+    {
+      "id": 28,
+      "key": "DUTY",
+      "label": "Duty"
+    },
+    {
+      "id": 29,
+      "key": "EARTH",
+      "label": "Earth"
+    },
+    {
+      "id": 30,
+      "key": "FAMILY",
+      "label": "Family"
+    },
+    {
+      "id": 31,
+      "key": "FAME",
+      "label": "Fame"
+    },
+    {
+      "id": 32,
+      "key": "FATE",
+      "label": "Fate"
+    },
+    {
+      "id": 33,
+      "key": "FERTILITY",
+      "label": "Fertility"
+    },
+    {
+      "id": 34,
+      "key": "FESTIVALS",
+      "label": "Festivals"
+    },
+    {
+      "id": 35,
+      "key": "FIRE",
+      "label": "Fire"
+    },
+    {
+      "id": 36,
+      "key": "FISH",
+      "label": "Fish"
+    },
+    {
+      "id": 37,
+      "key": "FISHING",
+      "label": "Fishing"
+    },
+    {
+      "id": 38,
+      "key": "FOOD",
+      "label": "Food"
+    },
+    {
+      "id": 39,
+      "key": "FORGIVENESS",
+      "label": "Forgiveness"
+    },
+    {
+      "id": 40,
+      "key": "FORTRESSES",
+      "label": "Fortresses"
+    },
+    {
+      "id": 41,
+      "key": "FREEDOM",
+      "label": "Freedom"
+    },
+    {
+      "id": 42,
+      "key": "GAMBLING",
+      "label": "Gambling"
+    },
+    {
+      "id": 43,
+      "key": "GAMES",
+      "label": "Games"
+    },
+    {
+      "id": 44,
+      "key": "GENEROSITY",
+      "label": "Generosity"
+    },
+    {
+      "id": 45,
+      "key": "HAPPINESS",
+      "label": "Happiness"
+    },
+    {
+      "id": 46,
+      "key": "HEALING",
+      "label": "Healing"
+    },
+    {
+      "id": 47,
+      "key": "HOSPITALITY",
+      "label": "Hospitality"
+    },
+    {
+      "id": 48,
+      "key": "HUNTING",
+      "label": "Hunting"
+    },
+    {
+      "id": 49,
+      "key": "INSPIRATION",
+      "label": "Inspiration"
+    },
+    {
+      "id": 50,
+      "key": "JEALOUSY",
+      "label": "Jealousy"
+    },
+    {
+      "id": 51,
+      "key": "JEWELS",
+      "label": "Jewels"
+    },
+    {
+      "id": 52,
+      "key": "JUSTICE",
+      "label": "Justice"
+    },
+    {
+      "id": 53,
+      "key": "LABOR",
+      "label": "Labor"
+    },
+    {
+      "id": 54,
+      "key": "LAKES",
+      "label": "Lakes"
+    },
+    {
+      "id": 55,
+      "key": "LAWS",
+      "label": "Laws"
+    },
+    {
+      "id": 56,
+      "key": "LIES",
+      "label": "Lies"
+    },
+    {
+      "id": 57,
+      "key": "LIGHT",
+      "label": "Light"
+    },
+    {
+      "id": 58,
+      "key": "LIGHTNING",
+      "label": "Lightning"
+    },
+    {
+      "id": 59,
+      "key": "LONGEVITY",
+      "label": "Longevity"
+    },
+    {
+      "id": 60,
+      "key": "LOVE",
+      "label": "Love"
+    },
+    {
+      "id": 61,
+      "key": "LOYALTY",
+      "label": "Loyalty"
+    },
+    {
+      "id": 62,
+      "key": "LUCK",
+      "label": "Luck"
+    },
+    {
+      "id": 63,
+      "key": "LUST",
+      "label": "Lust"
+    },
+    {
+      "id": 64,
+      "key": "MARRIAGE",
+      "label": "Marriage"
+    },
+    {
+      "id": 65,
+      "key": "MERCY",
+      "label": "Mercy"
+    },
+    {
+      "id": 66,
+      "key": "METALS",
+      "label": "Metals"
+    },
+    {
+      "id": 67,
+      "key": "MINERALS",
+      "label": "Minerals"
+    },
+    {
+      "id": 68,
+      "key": "MISERY",
+      "label": "Misery"
+    },
+    {
+      "id": 69,
+      "key": "MIST",
+      "label": "Mist"
+    },
+    {
+      "id": 70,
+      "key": "MOON",
+      "label": "The Moon"
+    },
+    {
+      "id": 71,
+      "key": "MOUNTAINS",
+      "label": "Mountains"
+    },
+    {
+      "id": 72,
+      "key": "MUCK",
+      "label": "Muck"
+    },
+    {
+      "id": 73,
+      "key": "MURDER",
+      "label": "Murder"
+    },
+    {
+      "id": 74,
+      "key": "MUSIC",
+      "label": "Music"
+    },
+    {
+      "id": 75,
+      "key": "NATURE",
+      "label": "Nature"
+    },
+    {
+      "id": 76,
+      "key": "NIGHT",
+      "label": "The Night"
+    },
+    {
+      "id": 77,
+      "key": "NIGHTMARES",
+      "label": "Nightmares"
+    },
+    {
+      "id": 78,
+      "key": "OATHS",
+      "label": "Oaths"
+    },
+    {
+      "id": 79,
+      "key": "OCEANS",
+      "label": "Oceans"
+    },
+    {
+      "id": 80,
+      "key": "ORDER",
+      "label": "Order"
+    },
+    {
+      "id": 81,
+      "key": "PAINTING",
+      "label": "Painting"
+    },
+    {
+      "id": 82,
+      "key": "PEACE",
+      "label": "Peace"
+    },
+    {
+      "id": 83,
+      "key": "PERSUASION",
+      "label": "Persuasion"
+    },
+    {
+      "id": 84,
+      "key": "PLANTS",
+      "label": "Plants"
+    },
+    {
+      "id": 85,
+      "key": "POETRY",
+      "label": "Poetry"
+    },
+    {
+      "id": 86,
+      "key": "PREGNANCY",
+      "label": "Pregnancy"
+    },
+    {
+      "id": 87,
+      "key": "RAIN",
+      "label": "The Rain"
+    },
+    {
+      "id": 88,
+      "key": "RAINBOWS",
+      "label": "Rainbows"
+    },
+    {
+      "id": 89,
+      "key": "REBIRTH",
+      "label": "Rebirth"
+    },
+    {
+      "id": 90,
+      "key": "REVELRY",
+      "label": "Revelry"
+    },
+    {
+      "id": 91,
+      "key": "REVENGE",
+      "label": "Revenge"
+    },
+    {
+      "id": 92,
+      "key": "RIVERS",
+      "label": "Rivers"
+    },
+    {
+      "id": 93,
+      "key": "RULERSHIP",
+      "label": "Rulership"
+    },
+    {
+      "id": 94,
+      "key": "RUMORS",
+      "label": "Rumors"
+    },
+    {
+      "id": 95,
+      "key": "SACRIFICE",
+      "label": "Sacrifice"
+    },
+    {
+      "id": 96,
+      "key": "SALT",
+      "label": "Salt"
+    },
+    {
+      "id": 97,
+      "key": "SCHOLARSHIP",
+      "label": "Scholarship"
+    },
+    {
+      "id": 98,
+      "key": "SEASONS",
+      "label": "The Seasons"
+    },
+    {
+      "id": 99,
+      "key": "SILENCE",
+      "label": "Silence"
+    },
+    {
+      "id": 100,
+      "key": "SKY",
+      "label": "The Sky"
+    },
+    {
+      "id": 101,
+      "key": "SONG",
+      "label": "Song"
+    },
+    {
+      "id": 102,
+      "key": "SPEECH",
+      "label": "Speech"
+    },
+    {
+      "id": 103,
+      "key": "STARS",
+      "label": "The Stars"
+    },
+    {
+      "id": 104,
+      "key": "STORMS",
+      "label": "Storms"
+    },
+    {
+      "id": 105,
+      "key": "STRENGTH",
+      "label": "Strength"
+    },
+    {
+      "id": 106,
+      "key": "SUICIDE",
+      "label": "Suicide"
+    },
+    {
+      "id": 107,
+      "key": "SUN",
+      "label": "The Sun"
+    },
+    {
+      "id": 108,
+      "key": "THEFT",
+      "label": "Theft"
+    },
+    {
+      "id": 109,
+      "key": "THRALLDOM",
+      "label": "Thralldom"
+    },
+    {
+      "id": 110,
+      "key": "THUNDER",
+      "label": "Thunder"
+    },
+    {
+      "id": 111,
+      "key": "TORTURE",
+      "label": "Torture"
+    },
+    {
+      "id": 112,
+      "key": "TRADE",
+      "label": "Trade"
+    },
+    {
+      "id": 113,
+      "key": "TRAVELERS",
+      "label": "Travelers"
+    },
+    {
+      "id": 114,
+      "key": "TREACHERY",
+      "label": "Treachery"
+    },
+    {
+      "id": 115,
+      "key": "TREES",
+      "label": "Trees"
+    },
+    {
+      "id": 116,
+      "key": "TRICKERY",
+      "label": "Trickery"
+    },
+    {
+      "id": 117,
+      "key": "TRUTH",
+      "label": "Truth"
+    },
+    {
+      "id": 118,
+      "key": "TWILIGHT",
+      "label": "Twilight"
+    },
+    {
+      "id": 119,
+      "key": "VALOR",
+      "label": "Valor"
+    },
+    {
+      "id": 120,
+      "key": "VICTORY",
+      "label": "Victory"
+    },
+    {
+      "id": 121,
+      "key": "VOLCANOS",
+      "label": "Volcanos"
+    },
+    {
+      "id": 122,
+      "key": "WAR",
+      "label": "War"
+    },
+    {
+      "id": 123,
+      "key": "WATER",
+      "label": "Water"
+    },
+    {
+      "id": 124,
+      "key": "WEALTH",
+      "label": "Wealth"
+    },
+    {
+      "id": 125,
+      "key": "WEATHER",
+      "label": "The Weather"
+    },
+    {
+      "id": 126,
+      "key": "WIND",
+      "label": "The Wind"
+    },
+    {
+      "id": 127,
+      "key": "WISDOM",
+      "label": "Wisdom"
+    },
+    {
+      "id": 128,
+      "key": "WRITING",
+      "label": "Writing"
+    },
+    {
+      "id": 129,
+      "key": "YOUTH",
+      "label": "Youth"
+    }
+  ],
+  "guilds": [
+    {
+      "enum": "MINER",
+      "profession": 0,
+      "label": "Miners hall"
+    },
+    {
+      "enum": "WOODWORKER",
+      "profession": 1,
+      "label": "Woodworkers hall"
+    },
+    {
+      "enum": "CARPENTER",
+      "profession": 2,
+      "label": "Carpenters hall"
+    },
+    {
+      "enum": "BOWYER",
+      "profession": 3,
+      "label": "Bowyers hall"
+    },
+    {
+      "enum": "WOODCUTTER",
+      "profession": 4,
+      "label": "Woodcutters hall"
+    },
+    {
+      "enum": "STONEWORKER",
+      "profession": 5,
+      "label": "Stoneworkers hall"
+    },
+    {
+      "enum": "ENGRAVER",
+      "profession": 8,
+      "label": "Engravers hall"
+    },
+    {
+      "enum": "MASON",
+      "profession": 9,
+      "label": "Masons hall"
+    },
+    {
+      "enum": "RANGER",
+      "profession": 10,
+      "label": "Rangers hall"
+    },
+    {
+      "enum": "ANIMAL_CARETAKER",
+      "profession": 11,
+      "label": "Animal Caretakers hall"
+    },
+    {
+      "enum": "ANIMAL_TRAINER",
+      "profession": 12,
+      "label": "Animal Trainers hall"
+    },
+    {
+      "enum": "HUNTER",
+      "profession": 13,
+      "label": "Hunters hall"
+    },
+    {
+      "enum": "TRAPPER",
+      "profession": 14,
+      "label": "Trappers hall"
+    },
+    {
+      "enum": "ANIMAL_DISSECTOR",
+      "profession": 15,
+      "label": "Animal Dissectors hall"
+    },
+    {
+      "enum": "METALSMITH",
+      "profession": 16,
+      "label": "Metalsmiths hall"
+    },
+    {
+      "enum": "FURNACE_OPERATOR",
+      "profession": 17,
+      "label": "Furnace Operators hall"
+    },
+    {
+      "enum": "WEAPONSMITH",
+      "profession": 18,
+      "label": "Weaponsmiths hall"
+    },
+    {
+      "enum": "ARMORER",
+      "profession": 19,
+      "label": "Armorers hall"
+    },
+    {
+      "enum": "BLACKSMITH",
+      "profession": 20,
+      "label": "Blacksmiths hall"
+    },
+    {
+      "enum": "METALCRAFTER",
+      "profession": 21,
+      "label": "Metalcrafters hall"
+    },
+    {
+      "enum": "JEWELER",
+      "profession": 22,
+      "label": "Jewelers hall"
+    },
+    {
+      "enum": "GEM_CUTTER",
+      "profession": 23,
+      "label": "Gem Cutters hall"
+    },
+    {
+      "enum": "GEM_SETTER",
+      "profession": 24,
+      "label": "Gem Setters hall"
+    },
+    {
+      "enum": "CRAFTSMAN",
+      "profession": 25,
+      "label": "Craftsdwarves hall"
+    },
+    {
+      "enum": "WOODCRAFTER",
+      "profession": 26,
+      "label": "Woodcrafters hall"
+    },
+    {
+      "enum": "STONECRAFTER",
+      "profession": 27,
+      "label": "Stonecrafters hall"
+    },
+    {
+      "enum": "LEATHERWORKER",
+      "profession": 28,
+      "label": "Leatherworkers hall"
+    },
+    {
+      "enum": "BONE_CARVER",
+      "profession": 29,
+      "label": "Bone Carvers hall"
+    },
+    {
+      "enum": "WEAVER",
+      "profession": 30,
+      "label": "Weavers hall"
+    },
+    {
+      "enum": "CLOTHIER",
+      "profession": 31,
+      "label": "Clothiers hall"
+    },
+    {
+      "enum": "GLASSMAKER",
+      "profession": 32,
+      "label": "Glassmakers hall"
+    },
+    {
+      "enum": "POTTER",
+      "profession": 33,
+      "label": "Potters hall"
+    },
+    {
+      "enum": "GLAZER",
+      "profession": 34,
+      "label": "Glazers hall"
+    },
+    {
+      "enum": "WAX_WORKER",
+      "profession": 35,
+      "label": "Wax Workers hall"
+    },
+    {
+      "enum": "STRAND_EXTRACTOR",
+      "profession": 36,
+      "label": "Strand Extractors hall"
+    },
+    {
+      "enum": "FISHERY_WORKER",
+      "profession": 37,
+      "label": "Fishery Workers hall"
+    },
+    {
+      "enum": "FISHERMAN",
+      "profession": 38,
+      "label": "Fisherdwarves hall"
+    },
+    {
+      "enum": "FISH_DISSECTOR",
+      "profession": 39,
+      "label": "Fish Dissectors hall"
+    },
+    {
+      "enum": "FISH_CLEANER",
+      "profession": 40,
+      "label": "Fish Cleaners hall"
+    },
+    {
+      "enum": "FARMER",
+      "profession": 41,
+      "label": "Farmers hall"
+    },
+    {
+      "enum": "CHEESE_MAKER",
+      "profession": 42,
+      "label": "Cheesemakers hall"
+    },
+    {
+      "enum": "MILKER",
+      "profession": 43,
+      "label": "Milkers hall"
+    },
+    {
+      "enum": "COOK",
+      "profession": 44,
+      "label": "Cooks hall"
+    },
+    {
+      "enum": "THRESHER",
+      "profession": 45,
+      "label": "Threshers hall"
+    },
+    {
+      "enum": "MILLER",
+      "profession": 46,
+      "label": "Millers hall"
+    },
+    {
+      "enum": "BUTCHER",
+      "profession": 47,
+      "label": "Butchers hall"
+    },
+    {
+      "enum": "TANNER",
+      "profession": 48,
+      "label": "Tanners hall"
+    },
+    {
+      "enum": "DYER",
+      "profession": 49,
+      "label": "Dyers hall"
+    },
+    {
+      "enum": "PLANTER",
+      "profession": 50,
+      "label": "Planters hall"
+    },
+    {
+      "enum": "HERBALIST",
+      "profession": 51,
+      "label": "Herbalists hall"
+    },
+    {
+      "enum": "BREWER",
+      "profession": 52,
+      "label": "Brewers hall"
+    },
+    {
+      "enum": "SOAP_MAKER",
+      "profession": 53,
+      "label": "Soap Makers hall"
+    },
+    {
+      "enum": "POTASH_MAKER",
+      "profession": 54,
+      "label": "Potash Makers hall"
+    },
+    {
+      "enum": "LYE_MAKER",
+      "profession": 55,
+      "label": "Lye Makers hall"
+    },
+    {
+      "enum": "WOOD_BURNER",
+      "profession": 56,
+      "label": "Wood Burners hall"
+    },
+    {
+      "enum": "SHEARER",
+      "profession": 57,
+      "label": "Shearers hall"
+    },
+    {
+      "enum": "SPINNER",
+      "profession": 58,
+      "label": "Spinners hall"
+    },
+    {
+      "enum": "PRESSER",
+      "profession": 59,
+      "label": "Pressers hall"
+    },
+    {
+      "enum": "BEEKEEPER",
+      "profession": 60,
+      "label": "Beekeepers hall"
+    },
+    {
+      "enum": "ENGINEER",
+      "profession": 61,
+      "label": "Engineers hall"
+    },
+    {
+      "enum": "MECHANIC",
+      "profession": 62,
+      "label": "Mechanics hall"
+    },
+    {
+      "enum": "SIEGE_ENGINEER",
+      "profession": 63,
+      "label": "Siege Engineers hall"
+    },
+    {
+      "enum": "SIEGE_OPERATOR",
+      "profession": 64,
+      "label": "Siege Operators hall"
+    },
+    {
+      "enum": "PUMP_OPERATOR",
+      "profession": 65,
+      "label": "Pump Operators hall"
+    },
+    {
+      "enum": "DOCTOR",
+      "profession": 69,
+      "label": "Doctors hall"
+    },
+    {
+      "enum": "DIAGNOSER",
+      "profession": 70,
+      "label": "Diagnosticians hall"
+    },
+    {
+      "enum": "BONE_SETTER",
+      "profession": 71,
+      "label": "Bone Doctors hall"
+    },
+    {
+      "enum": "SUTURER",
+      "profession": 72,
+      "label": "Suturers hall"
+    },
+    {
+      "enum": "SURGEON",
+      "profession": 73,
+      "label": "Surgeons hall"
+    }
+  ],
+  "guild_professions": [
+    {
+      "profession": 0,
+      "label": "Miners"
+    },
+    {
+      "profession": 1,
+      "label": "Woodworkers"
+    },
+    {
+      "profession": 2,
+      "label": "Carpenters"
+    },
+    {
+      "profession": 3,
+      "label": "Bowyers"
+    },
+    {
+      "profession": 4,
+      "label": "Woodcutters"
+    },
+    {
+      "profession": 5,
+      "label": "Stoneworkers"
+    },
+    {
+      "profession": 8,
+      "label": "Engravers"
+    },
+    {
+      "profession": 9,
+      "label": "Masons"
+    },
+    {
+      "profession": 10,
+      "label": "Rangers"
+    },
+    {
+      "profession": 11,
+      "label": "Animal Caretakers"
+    },
+    {
+      "profession": 12,
+      "label": "Animal Trainers"
+    },
+    {
+      "profession": 13,
+      "label": "Hunters"
+    },
+    {
+      "profession": 14,
+      "label": "Trappers"
+    },
+    {
+      "profession": 15,
+      "label": "Animal Dissectors"
+    },
+    {
+      "profession": 16,
+      "label": "Metalsmiths"
+    },
+    {
+      "profession": 17,
+      "label": "Furnace Operators"
+    },
+    {
+      "profession": 18,
+      "label": "Weaponsmiths"
+    },
+    {
+      "profession": 19,
+      "label": "Armorers"
+    },
+    {
+      "profession": 20,
+      "label": "Blacksmiths"
+    },
+    {
+      "profession": 21,
+      "label": "Metalcrafters"
+    },
+    {
+      "profession": 22,
+      "label": "Jewelers"
+    },
+    {
+      "profession": 23,
+      "label": "Gem Cutters"
+    },
+    {
+      "profession": 24,
+      "label": "Gem Setters"
+    },
+    {
+      "profession": 25,
+      "label": "Craftsdwarves"
+    },
+    {
+      "profession": 26,
+      "label": "Woodcrafters"
+    },
+    {
+      "profession": 27,
+      "label": "Stonecrafters"
+    },
+    {
+      "profession": 28,
+      "label": "Leatherworkers"
+    },
+    {
+      "profession": 29,
+      "label": "Bone Carvers"
+    },
+    {
+      "profession": 30,
+      "label": "Weavers"
+    },
+    {
+      "profession": 31,
+      "label": "Clothiers"
+    },
+    {
+      "profession": 32,
+      "label": "Glassmakers"
+    },
+    {
+      "profession": 33,
+      "label": "Potters"
+    },
+    {
+      "profession": 34,
+      "label": "Glazers"
+    },
+    {
+      "profession": 35,
+      "label": "Wax Workers"
+    },
+    {
+      "profession": 36,
+      "label": "Strand Extractors"
+    },
+    {
+      "profession": 37,
+      "label": "Fishery Workers"
+    },
+    {
+      "profession": 38,
+      "label": "Fisherdwarves"
+    },
+    {
+      "profession": 39,
+      "label": "Fish Dissectors"
+    },
+    {
+      "profession": 40,
+      "label": "Fish Cleaners"
+    },
+    {
+      "profession": 41,
+      "label": "Farmers"
+    },
+    {
+      "profession": 42,
+      "label": "Cheesemakers"
+    },
+    {
+      "profession": 43,
+      "label": "Milkers"
+    },
+    {
+      "profession": 44,
+      "label": "Cooks"
+    },
+    {
+      "profession": 45,
+      "label": "Threshers"
+    },
+    {
+      "profession": 46,
+      "label": "Millers"
+    },
+    {
+      "profession": 47,
+      "label": "Butchers"
+    },
+    {
+      "profession": 48,
+      "label": "Tanners"
+    },
+    {
+      "profession": 49,
+      "label": "Dyers"
+    },
+    {
+      "profession": 50,
+      "label": "Planters"
+    },
+    {
+      "profession": 51,
+      "label": "Herbalists"
+    },
+    {
+      "profession": 52,
+      "label": "Brewers"
+    },
+    {
+      "profession": 53,
+      "label": "Soap Makers"
+    },
+    {
+      "profession": 54,
+      "label": "Potash Makers"
+    },
+    {
+      "profession": 55,
+      "label": "Lye Makers"
+    },
+    {
+      "profession": 56,
+      "label": "Wood Burners"
+    },
+    {
+      "profession": 57,
+      "label": "Shearers"
+    },
+    {
+      "profession": 58,
+      "label": "Spinners"
+    },
+    {
+      "profession": 59,
+      "label": "Pressers"
+    },
+    {
+      "profession": 60,
+      "label": "Beekeepers"
+    },
+    {
+      "profession": 61,
+      "label": "Engineers"
+    },
+    {
+      "profession": 62,
+      "label": "Mechanics"
+    },
+    {
+      "profession": 63,
+      "label": "Siege Engineers"
+    },
+    {
+      "profession": 64,
+      "label": "Siege Operators"
+    },
+    {
+      "profession": 65,
+      "label": "Pump Operators"
+    },
+    {
+      "profession": 69,
+      "label": "Doctors"
+    },
+    {
+      "profession": 70,
+      "label": "Diagnosticians"
+    },
+    {
+      "profession": 71,
+      "label": "Bone Doctors"
+    },
+    {
+      "profession": 72,
+      "label": "Suturers"
+    },
+    {
+      "profession": 73,
+      "label": "Surgeons"
+    }
+  ]
+}

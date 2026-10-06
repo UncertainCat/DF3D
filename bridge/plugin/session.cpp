@@ -2,6 +2,7 @@
 // Load/save are documented global exceptions; ordinary panels never use them.
 #include "session.h"
 #include "session_load_policy.h"
+#include "session_save_file.h"
 #include "interruption.h"
 #include "petition.h"
 #include "fortress_population.h"
@@ -26,6 +27,7 @@
 #include "df/graphic.h"
 #include "df/enabler.h"
 #include "df/world.h"
+#include "df/world_data.h"
 #include "df/global_objects.h"
 #include "session_util.h"
 #include "shm_layout.h"
@@ -52,11 +54,7 @@ namespace df3d_session {
 // when initialization skipped the compressor. A new checkpoint also needs an
 // actual nonempty world file. The live lane additionally reloads the result.
 static bool hasSavedWorld(const std::filesystem::path& directory) {
-    std::error_code error;
-    const auto file=directory/"world.sav";
-    if(!std::filesystem::is_regular_file(file,error)||error)return false;
-    const auto size=std::filesystem::file_size(file,error);
-    return !error && size>0;
+    return savedWorldStamp(directory).has_value();
 }
 
 namespace m = df3d::mirror;
@@ -72,16 +70,26 @@ m::LoadRequestStatus status = m::LoadRequestStatus::None;
 m::SessionAction action = m::SessionAction::LoadFortress;
 bool fortressValid = false, paused = false, canSave = false, canSaveReturn = false;
 uint64_t fortressEpoch=0, pendingSaveEpoch=0;
+uint64_t requestEpoch=0, catalogCounter=0, catalogReceipt=0, catalogEpoch=0, catalogClient=0;
+std::vector<std::string> catalogFolders;
+std::string destinationId(size_t index) { return std::to_string(catalogReceipt)+":"+std::to_string(index); }
+m::SaveReturnMode returnMode=m::SaveReturnMode::None;
+std::string timelineName, pendingTimeline;
 InterruptionInfo interruption;
 PetitionInfo petition;
 NotificationGroups notificationGroups;
+AlertButtonReports alertButtonReports;
 int32_t year = 0, yearTick = 0;
-std::string fortName;
+std::string fortName, fortOriginalName;
+int16_t fortressRank=-1;
+bool fortressCapital=false;
+int8_t moonPhase=-1;
 bool summaryAvailable=false, stressAvailable=false, resourcesAvailable=false;
 int32_t population=0,elevationOffset=0;
 uint32_t levelCount=0;
 std::array<uint32_t,7> stressCounts{};
 std::array<int32_t,7> resourceCounts{};
+int32_t bookkeeperPrecision=-1;
 uint64_t summaryEpoch=0;
 std::chrono::steady_clock::time_point lastHeader;
 void refreshPopulation() {
@@ -98,14 +106,20 @@ std::string summaryKey() {
   std::string key=std::to_string(summaryAvailable)+":"+std::to_string(population)+":"+std::to_string(elevationOffset)+":"+std::to_string(levelCount)+":"+std::to_string(stressAvailable);
   for(auto value:stressCounts)key+=":"+std::to_string(value);
   key+=":"+std::to_string(resourcesAvailable);
+  key+=":"+std::to_string(bookkeeperPrecision);
   for(auto value:resourceCounts)key+=":"+std::to_string(value);
   return key;
 }
 std::string checkpointName;
 bool saveSawProgress = false;
+bool saveIssued = false;
+bool quitIssued = false;
+std::string pendingExistingPath;
+std::optional<SavedWorldStamp> existingWorldBefore;
 std::set<std::string> previousSaveIds;
 std::set<std::string> observedSaveIds;
 bool cleanupRequested = false;
+bool cleanupQuitConfirmation = false;
 int cleanupFrames = 0;
 std::chrono::steady_clock::time_point lastStatus;
 std::string message, activeId, pendingId, pendingFilename, savedId;
@@ -132,26 +146,35 @@ bool checkpointExists(const std::string& name) {
 }
 bool isFort(df::savegame_headerst* h) { return h && h->gametype == df::game_type::DWARF_MAIN; }
 void reject(const std::string& reason) {
-  if ((action == m::SessionAction::SaveContinue || action == m::SessionAction::SaveReturn) && navigationStage > 0 && !saveSawProgress) {
-    cleanupRequested = true; cleanupFrames = 0;
+  const bool uncertain=(saveIssued && (action==m::SessionAction::SaveContinue || action==m::SessionAction::SaveReturn)) || (quitIssued && action==m::SessionAction::QuitWithoutSaving);
+  if ((action == m::SessionAction::SaveContinue || action == m::SessionAction::SaveReturn || action==m::SessionAction::ReadSaveDestinations || action==m::SessionAction::QuitWithoutSaving) && navigationStage > 0 && !uncertain) {
+    cleanupRequested = true; cleanupFrames = 0;cleanupQuitConfirmation=action==m::SessionAction::QuitWithoutSaving;
   }
-  status = m::LoadRequestStatus::Rejected; message = reason; pendingId.clear(); navigationStage = 0;
+  status = uncertain?m::LoadRequestStatus::UnknownOutcome:m::LoadRequestStatus::Rejected;
+  message = reason; pendingId.clear(); navigationStage = 0;
 }
 void publish(bool broadcast=true) {
   const std::string key = std::to_string(int(phase)) + ":" + std::to_string(int(status)) + ":" +
       std::to_string(requestSeq) + ":" + std::to_string(saveRevision) + ":" + activeId + ":" + message + ":" +
       std::to_string(int(action)) + ":" + std::to_string(fortressValid) + ":" + std::to_string(paused) + ":" +
-      std::to_string(year) + ":" + std::to_string(yearTick) + ":" + fortName + ":" +
+      std::to_string(year) + ":" + std::to_string(yearTick) + ":" + fortName + ":" + fortOriginalName + ":" +
+      std::to_string(fortressRank) + ":" + std::to_string(fortressCapital) + ":" + std::to_string(moonPhase) + ":" +
       std::to_string(canSave) + ":" + std::to_string(canSaveReturn) + ":" + savedId + ":" + std::to_string(fortressEpoch) + ":" + std::to_string(interruption.kind) + ":" + std::to_string(interruption.receipt) + ":" + interruption.text + ":" + interruption.reason + ":" + std::to_string(interruption.popupCount) + ":" + std::to_string(interruption.canAcknowledge) + ":" + std::to_string(petition.revision);
-  if (broadcast && key + summaryKey() + notificationGroups.key + ":" + std::to_string(requestClient) == lastPublished) return;
-  if(broadcast)lastPublished = key + summaryKey() + notificationGroups.key + ":" + std::to_string(requestClient);
+  if (broadcast && key + summaryKey() + notificationGroups.key + alertButtonReports.key + ":" + std::to_string(requestClient) == lastPublished) return;
+  if(broadcast)lastPublished = key + summaryKey() + notificationGroups.key + alertButtonReports.key + ":" + std::to_string(requestClient);
   flatbuffers::FlatBufferBuilder b;
   std::vector<flatbuffers::Offset<m::FortressSave>> ss;
   for (const auto& s : saves) ss.push_back(m::CreateFortressSave(b, b.CreateString(s.id), b.CreateString(s.fort), b.CreateString(s.world), s.year));
+  flatbuffers::Offset<m::SaveDestinationCatalog> catalog;
+  if(action==m::SessionAction::ReadSaveDestinations && status==m::LoadRequestStatus::Ok && catalogClient==requestClient && catalogReceipt) {
+    std::vector<flatbuffers::Offset<m::SaveDestination>> destinations;
+    for(size_t i=0;i<catalogFolders.size();++i)destinations.push_back(m::CreateSaveDestination(b,b.CreateString(destinationId(i)),b.CreateString(DF2UTF(catalogFolders[i]))));
+    catalog=m::CreateSaveDestinationCatalog(b,catalogReceipt,catalogEpoch,b.CreateVector(destinations));
+  }
   auto state = m::CreateSessionState(b, m::kSessionVersion, ++revision, phase, b.CreateVector(ss), b.CreateString(activeId),
       requestSeq, status, b.CreateString(message), action, fortressValid, paused, year, yearTick,
       b.CreateString(fortName), canSave, canSaveReturn, b.CreateString(savedId),fortressEpoch,
-      m::CreateInterruptionState(b,m::InterruptionKind(interruption.kind),interruption.receipt,b.CreateString(interruption.text),b.CreateString(interruption.reason),interruption.popupCount,interruption.canAcknowledge),serializePetition(b,petition), summaryAvailable ? m::CreateFortressSummary(b,population,b.CreateVector(stressCounts.data(),stressCounts.size()),stressAvailable,elevationOffset,levelCount,resourcesAvailable ? b.CreateVector(resourceCounts.data(),resourceCounts.size()) : 0,resourcesAvailable) : 0,serializeNotificationGroups(b,notificationGroups),notificationGroups.complete,requestClient);
+      m::CreateInterruptionState(b,m::InterruptionKind(interruption.kind),interruption.receipt,b.CreateString(interruption.text),b.CreateString(interruption.reason),interruption.popupCount,interruption.canAcknowledge),serializePetition(b,petition), summaryAvailable ? m::CreateFortressSummary(b,population,b.CreateVector(stressCounts.data(),stressCounts.size()),stressAvailable,elevationOffset,levelCount,resourcesAvailable ? b.CreateVector(resourceCounts.data(),resourceCounts.size()) : 0,resourcesAvailable,bookkeeperPrecision) : 0,serializeNotificationGroups(b,notificationGroups),notificationGroups.complete,requestClient,requestEpoch,catalog,b.CreateVector(alertButtonReports.ids),alertButtonReports.count,alertButtonReports.complete,b.CreateString(fortOriginalName),fortressRank,fortressCapital,moonPhase);
   b.Finish(state);
   if(broadcast)sh::publishSnapshot(region, b.GetBufferPointer(), b.GetSize(), revision);
   if(reply)sh::publishSnapshot(reply->region(),b.GetBufferPointer(),b.GetSize(),revision);
@@ -198,7 +221,7 @@ void navigate(df::viewscreen_titlest* t) {
   if (navigationStage == 1 && t->mode == df::title_mode_type::CONTINUE_ACTIVE_WORLD) {
     auto* chosen = *target;
     auto it = std::find_if(t->savegame_header_world.begin(), t->savegame_header_world.end(), [&](auto* h) {
-      return h && h->world_header.id1 == chosen->world_header.id1 && h->world_header.id2 == chosen->world_header.id2;
+      return h && sameSaveTimeline(h->world_header, chosen->world_header);
     });
     if (it == t->savegame_header_world.end()) { reject("Selected fortress world is unavailable"); return; }
     t->scroll_position_world_choice = static_cast<int32_t>(it - t->savegame_header_world.begin());
@@ -227,14 +250,17 @@ bool saveContext(df::viewscreen* view) {
 }
 // Pinned native options adapter. Both semantic enum identity and rendered row
 // text must agree before feeding a click; unfamiliar layouts fail closed.
-bool clickLabel(df::viewscreen_dwarfmodest* view, const std::string& label) {
+bool clickLabel(df::viewscreen_dwarfmodest* view, const std::string& label,
+                const std::string& requiredText = {}) {
   auto* gps = df::global::gps;
   const auto size = Screen::getWindowSize();
   if (!gps) return false;
   int y = -1, clickX = -1;
+  bool contextRendered = requiredText.empty();
   for (int rowY = 0; rowY < size.y; ++rowY) {
     std::string row;
     for (int x = 0; x < size.x; ++x) row += Screen::readTile(x, rowY).ch;
+    if (!requiredText.empty() && row.find(requiredText) != std::string::npos) contextRendered = true;
     const auto at = row.find(label);
     if (at == std::string::npos) continue;
     const auto end = at + label.size();
@@ -242,7 +268,7 @@ bool clickLabel(df::viewscreen_dwarfmodest* view, const std::string& label) {
     if (y >= 0) return false; // Duplicate text cannot identify an input target.
     y = rowY; clickX = int(at + label.size() / 2);
   }
-  if (y < 0) return false;
+  if (y < 0 || !contextRendered) return false;
   const int x = gps->mouse_x, oldY = gps->mouse_y, px = gps->precise_mouse_x, py = gps->precise_mouse_y;
   gps->mouse_x = clickX; gps->mouse_y = y;
   gps->precise_mouse_x = gps->mouse_x * gps->tile_pixel_x;
@@ -269,19 +295,75 @@ void cleanupOwnedMenus(df::viewscreen* current) {
   if (!opts.open) { cleanupRequested = false; return; }
   // Never dismiss a writer, including a concurrently started native autosave.
   if (autoSaving() || saveSawProgress || opts.manual_save_timer > 0) return;
-  if (opts.entering_manual_folder || opts.confirm_manual_overwrite) {
+  if (opts.entering_manual_folder || opts.confirm_manual_overwrite || opts.entering_timeline ||
+      (cleanupQuitConfirmation && opts.fort_quit_without_saving_confirm)) {
     clickLabel(view, "Cancel"); return;
   }
   if (opts.context != df::options_context_type::MAIN_DWARF &&
       opts.context != df::options_context_type::MAIN_DWARF_SAVE_AND_EXIT_CHOICES) { cleanupRequested = false; return; }
   auto it = std::find(opts.option.begin(), opts.option.end(), df::main_menu_option_type::RETURN);
   if (it != opts.option.end()) clickOption(view, size_t(it-opts.option.begin()),
-      opts.context == df::options_context_type::MAIN_DWARF ? "Return to game" : "Return");
+      "Return to game");
+}
+bool readDestinationFolders(std::vector<std::string>& folders) {
+  const auto& opts=df::global::game->main_interface.options;
+  std::set<std::string> unique;
+  size_t bytes=0;
+  for(size_t i=0;i<opts.option.size();++i) {
+    if(opts.option[i]!=df::main_menu_option_type::SAVE_TO_EXISTING_FOLDER)continue;
+    if(i>=opts.option_index.size())return false;
+    const auto index=opts.option_index[i];
+    if(index<0 || size_t(index)>=opts.overwrite_save_folder.size() || !opts.overwrite_save_folder[index])return false;
+    const auto& folder=*opts.overwrite_save_folder[index];
+    if(!m::validSaveId(folder) || !unique.insert(folder).second || unique.size()>m::kMaxSaveDestinations)return false;
+    // Native commands address a folder basename. Refuse ambiguous basenames
+    // across discovered roots rather than inventing which path native will use.
+    size_t matches=0;
+    for(const auto& save:saves)if(lowerAscii(std::filesystem::path(save.id).filename().string())==lowerAscii(folder))++matches;
+    if(matches!=1)return false;
+    bytes+=folder.size()+DF2UTF(folder).size();
+    if(bytes>m::kSessionCapacity/4)return false;
+    folders.push_back(folder);
+  }
+  return true;
+}
+void navigateQuit(df::viewscreen* current) {
+  auto* view=virtual_cast<df::viewscreen_dwarfmodest>(current);
+  if(!view || !df::global::game)return;
+  auto& opts=df::global::game->main_interface.options;
+  if(autoSaving() || opts.manual_save_timer>0 || (opts.do_manual_save && opts.saver.stage<51)) {
+    reject("Native session operation is busy");return;
+  }
+  if(navigationStage==0) {
+    std::set<df::interface_key> keys{df::interface_key::OPTIONS};view->feed(&keys);
+    navigationStage=1;return;
+  }
+  if(navigationStage==1 && opts.open && opts.context==df::options_context_type::MAIN_DWARF) {
+    auto it=std::find(opts.option.begin(),opts.option.end(),df::main_menu_option_type::QUIT_WITHOUT_SAVING);
+    if(it==opts.option.end()){reject("Native quit option is unavailable");return;}
+    if(clickOption(view,size_t(it-opts.option.begin()),"Quit without saving"))navigationStage=2;
+  } else if(navigationStage==2 && opts.open && opts.fort_quit_without_saving_confirm) {
+    // The options flag changes before the new screen is rendered. Do not
+    // mistake the preceding "Quit without saving" row for the confirm button.
+    // Both strings come from the pinned native confirmation fixture.
+    if(clickLabel(view,"Quit","Really quit without saving?")){quitIssued=true;navigationStage=3;}
+  }
 }
 void navigateReturn(df::viewscreen* current) {
   auto* view = virtual_cast<df::viewscreen_dwarfmodest>(current);
   if (!view || !df::global::game) return;
   auto& opts = df::global::game->main_interface.options;
+  if(action==m::SessionAction::ReadSaveDestinations && navigationStage==5) {
+    if(!opts.open) {status=m::LoadRequestStatus::Ok;phase=m::SessionPhase::Ready;pendingId.clear();navigationStage=0;message.clear();}
+    else clickLabel(view,"Return to game");
+    return;
+  }
+  if(action==m::SessionAction::SaveReturn && navigationStage==5 && opts.entering_timeline) {
+    opts.entering_timeline_str=timelineName;
+    saveIssued=true;
+    std::set<df::interface_key> keys{df::interface_key::SELECT};view->feed(&keys);
+    navigationStage=4;return;
+  }
   if (navigationStage == 0) {
     std::set<df::interface_key> keys{df::interface_key::OPTIONS}; view->feed(&keys);
     navigationStage = 1; return;
@@ -293,11 +375,30 @@ void navigateReturn(df::viewscreen* current) {
     if (clickOption(view, size_t(it-opts.option.begin()), staying ? "Save and continue playing" : "Save and return to title menu")) navigationStage = 2;
   } else if (navigationStage == 2 && action == m::SessionAction::SaveContinue && opts.open && opts.entering_manual_folder) {
     opts.entering_manual_str = checkpointName;
+    saveIssued=true;
     std::set<df::interface_key> keys{df::interface_key::SELECT}; view->feed(&keys);
     navigationStage = 3;
   } else if (navigationStage == 3 && action == m::SessionAction::SaveContinue && opts.confirm_manual_overwrite) {
+    // The native confirmation proves the writer has not been started.
+    saveIssued=false;
     reject("Checkpoint name already exists; choose a new name. No overwrite was confirmed.");
   } else if (navigationStage == 2 && opts.open && opts.context == df::options_context_type::MAIN_DWARF_SAVE_AND_EXIT_CHOICES) {
+    std::vector<std::string> folders;
+    if(!readDestinationFolders(folders)) {reject("Save destination catalog is incomplete or ambiguous");return;}
+    if(action==m::SessionAction::ReadSaveDestinations) {
+      catalogFolders=std::move(folders);catalogEpoch=pendingSaveEpoch;catalogClient=requestClient;catalogReceipt=++catalogCounter;
+      navigationStage=5;return;
+    }
+    if(folders!=catalogFolders) {reject("Save destinations changed before selection");return;}
+    if(returnMode==m::SaveReturnMode::NewFolder || returnMode==m::SaveReturnMode::NewTimeline) {
+      const bool newTimeline=returnMode==m::SaveReturnMode::NewTimeline;
+      auto it=std::find(opts.option.begin(),opts.option.end(),newTimeline?df::main_menu_option_type::SAVE_TO_NEW_FOLDER_NEW_TIMELINE:df::main_menu_option_type::SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE);
+      if(it==opts.option.end()) {reject("Requested native destination action is unavailable");return;}
+      if(clickOption(view,size_t(it-opts.option.begin()),newTimeline?"Save to new timeline":"Save to new folder (same timeline)")) {
+        navigationStage=newTimeline?5:4;saveIssued=!newTimeline;
+      }
+      return;
+    }
     int chosen = -1;
     for (size_t i = 0; i < opts.option.size(); ++i) {
       if (opts.option[i] != df::main_menu_option_type::SAVE_TO_EXISTING_FOLDER || i >= opts.option_index.size()) continue;
@@ -308,17 +409,21 @@ void navigateReturn(df::viewscreen* current) {
       chosen = int(i);
     }
     if (chosen < 0) {
-      auto it = std::find(opts.option.begin(), opts.option.end(), df::main_menu_option_type::SAVE_TO_NEW_FOLDER_EXISTING_TIMELINE);
-      if (it == opts.option.end()) { reject("Native new-timeline-folder option is unavailable"); return; }
-      if (clickOption(view, size_t(it-opts.option.begin()), "Save to new folder (same timeline)")) navigationStage = 4;
-      return;
+      reject("Selected save destination is no longer available");return;
     }
-    if (clickOption(view, size_t(chosen), "Save to timeline folder: " + pendingFilename)) navigationStage = 3;
+    pendingExistingPath.clear();
+    for(const auto& save:saves)if(lowerAscii(std::filesystem::path(save.id).filename().string())==lowerAscii(pendingFilename)) {
+      if(!pendingExistingPath.empty()){reject("Save destination catalog is incomplete or ambiguous");return;}
+      pendingExistingPath=save.id;
+    }
+    existingWorldBefore=pendingExistingPath.empty()?std::nullopt:savedWorldStamp(pendingExistingPath);
+    if(!existingWorldBefore){reject("Selected save destination is no longer available");return;}
+    if (clickOption(view, size_t(chosen), folders.size()==1?"Save to this timeline":"Save to timeline folder: " + pendingFilename)) {navigationStage = 3;saveIssued=true;}
   }
 }
 }
 bool start(color_ostream& out) {
-  resetInterruption();resetPetition();fortressEpoch=0;interruption={};petition={};notificationGroups={};
+  resetInterruption();resetPetition();fortressEpoch=0;interruption={};petition={};notificationGroups={};alertButtonReports={};
   if (region) return true;
   const size_t size = sh::regionSize(m::kSessionCapacity, m::kSessionCommandCapacity);
   mapping = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, static_cast<DWORD>(size), m::kSessionRegionName);
@@ -347,22 +452,24 @@ bool start(color_ostream& out) {
   sh::atomicStoreRelease(&owner->pid, GetCurrentProcessId());
   lastPublished.clear(); saveRevision = 0; lastDiscovery = {};
   reply.reset(); requestClient=0;
+  requestEpoch=catalogCounter=catalogReceipt=catalogEpoch=catalogClient=0;catalogFolders.clear();
+  returnMode=m::SaveReturnMode::None;timelineName.clear();pendingTimeline.clear();
   revision = requestSeq = 0; phase = m::SessionPhase::Starting; status = m::LoadRequestStatus::None;
   message.clear(); activeId.clear(); pendingId.clear(); savedId.clear(); saves.clear(); navigationStage = 0;
   action = m::SessionAction::LoadFortress; fortressValid = paused = canSave = canSaveReturn = false;
-  year = yearTick = 0; fortName.clear(); lastStatus = {}; saveSawProgress = false;
+  year = yearTick = 0; fortName.clear(); fortOriginalName.clear(); fortressRank=-1; fortressCapital=false; moonPhase=-1; lastStatus = {}; saveSawProgress = saveIssued = quitIssued = false;
   observedSaveIds.clear(); previousSaveIds.clear();
-  cleanupRequested = false; cleanupFrames = 0;
+  cleanupRequested = cleanupQuitConfirmation = false; cleanupFrames = 0;
   publish(); return true;
 }
 void stop() {
-  resetInterruption();resetPetition();fortressEpoch=0;interruption={};petition={};notificationGroups={};
+  resetInterruption();resetPetition();fortressEpoch=0;interruption={};petition={};notificationGroups={};alertButtonReports={};
   canSave = canSaveReturn = false;
   if (region) { sh::atomicStoreRelease(&m::sessionOwner(region)->pid, 0); phase = m::SessionPhase::Unavailable; message = "DF session bridge stopped"; publish(); reply.reset(); UnmapViewOfFile(region); }
   if (mapping) CloseHandle(mapping);
   mapping = nullptr; region = nullptr;
 }
-bool saving() { return region && phase == m::SessionPhase::Saving; }
+bool saving() { return region && (phase == m::SessionPhase::Saving || phase == m::SessionPhase::Unloading); }
 void update(bool mapLoaded,uint64_t epoch) {
   if (!region) return;
   auto* view = Gui::getCurViewscreen(true);
@@ -383,18 +490,18 @@ void update(bool mapLoaded,uint64_t epoch) {
     }
   } else if (!pendingId.empty() || loading) phase = m::SessionPhase::Loading;
   else if (title && title->mode == df::title_mode_type::MAIN_MENU) { phase = m::SessionPhase::Menu; discover(title); }
-  else { if (phase != m::SessionPhase::Error) phase = m::SessionPhase::Unavailable; if (status != m::LoadRequestStatus::Rejected) message = "Return Dwarf Fortress to its main menu to load a fortress"; }
+  else { if (phase != m::SessionPhase::Error) phase = m::SessionPhase::Unavailable; if (status != m::LoadRequestStatus::Rejected && status != m::LoadRequestStatus::UnknownOutcome) message = "Return Dwarf Fortress to its main menu to load a fortress"; }
   fortressValid = mapLoaded && df::global::plotinfo && df::global::world && World::isFortressMode();
   // Pause belongs to the loaded simulation, including object-testing maps;
   // observing it must not grant fortress menus, save eligibility or an epoch.
   paused = mapLoaded && df::global::world && World::ReadPauseState();
   fortressEpoch=fortressValid?epoch:0;
-  if(!fortressValid)notificationGroups={};
+  if(!fortressValid){notificationGroups={};alertButtonReports={};}
   const auto now = std::chrono::steady_clock::now();
   if (fortressValid) {
     activeId = df::global::world->loaded_save_path.generic_string();
     if (!activeId.empty()) observedSaveIds.insert(activeId);
-    if(summaryEpoch!=fortressEpoch) {summaryEpoch=fortressEpoch;lastStatus={};lastHeader={};population=0;stressCounts={};stressAvailable=false;resourceCounts={};resourcesAvailable=false;}
+    if(summaryEpoch!=fortressEpoch) {summaryEpoch=fortressEpoch;lastStatus={};lastHeader={};population=0;stressCounts={};stressAvailable=false;resourceCounts={};resourcesAvailable=false;bookkeeperPrecision=-1;}
     if(now-lastHeader>=std::chrono::milliseconds(250)) {
       lastHeader=now;
       refreshPopulation();
@@ -402,42 +509,56 @@ void update(bool mapLoaded,uint64_t epoch) {
     if (now - lastStatus >= std::chrono::milliseconds(250)) {
       lastStatus = now;
       notificationGroups=readNotificationGroups(df::global::world->status.announcement_alert);
+      alertButtonReports=readAlertButton(df::global::world->status.alert_button_announcement_id);
       year = df::global::cur_year ? std::max(0, *df::global::cur_year) : 0;
       yearTick = df::global::cur_year_tick ? std::clamp(*df::global::cur_year_tick, 0, 403199) : 0;
       const auto& map=df::global::world->map;
       const auto& food=df::global::plotinfo->tasks.food;
       resourceCounts={food.total,food.drink,food.seeds,food.meat,food.fish,food.plant,food.other};
+      bookkeeperPrecision=std::max(0,df::global::plotinfo->nobles.bookkeeper_precision);
       resourcesAvailable=std::all_of(resourceCounts.begin(),resourceCounts.end(),[](int32_t value){return value>=0;});
       if(!resourcesAvailable)resourceCounts={};
       elevationOffset=map.region_z-100;levelCount=uint32_t(std::max(0,map.z_count));
       summaryAvailable=stressAvailable && population>=0 && levelCount>0 && levelCount<=65536 && elevationOffset>=-65536 && elevationOffset<=65536;
       auto* site = df::global::plotinfo->main.fortress_site;
       fortName = site ? DF2UTF(Translation::translateName(&site->name, true)) : "";
+      fortOriginalName = site ? DF2UTF(Translation::translateName(&site->name, false)) : "";
+      const auto rank=df::global::plotinfo->fortress_rank;
+      fortressRank=site && rank>=0 && rank<=5 ? rank : -1;
+      fortressCapital=site && df::global::plotinfo->king_arrived;
+      const auto* worldData=df::global::world->world_data;
+      moonPhase=worldData && worldData->moon_phase>=0 && worldData->moon_phase<=27 ? int8_t(worldData->moon_phase) : -1;
     }
-  } else { activeId.clear(); fortName.clear(); year = yearTick = 0; summaryAvailable=stressAvailable=resourcesAvailable=false;summaryEpoch=0;population=elevationOffset=0;levelCount=0;stressCounts={};resourceCounts={}; }
-  if (status == m::LoadRequestStatus::Pending && (action == m::SessionAction::SaveContinue || action == m::SessionAction::SaveReturn) && fortressValid && !m::sessionEpochMatches(pendingSaveEpoch,fortressEpoch)) {
+  } else { activeId.clear(); fortName.clear(); fortOriginalName.clear(); fortressRank=-1; fortressCapital=false; moonPhase=-1; year = yearTick = 0; summaryAvailable=stressAvailable=resourcesAvailable=false;summaryEpoch=0;population=elevationOffset=0;levelCount=0;stressCounts={};resourceCounts={};bookkeeperPrecision=-1; }
+  if (status == m::LoadRequestStatus::Pending && (action == m::SessionAction::SaveContinue || action == m::SessionAction::SaveReturn || action==m::SessionAction::ReadSaveDestinations || action==m::SessionAction::QuitWithoutSaving) && fortressValid && !m::sessionEpochMatches(pendingSaveEpoch,fortressEpoch)) {
     reject("Fortress changed before save completed"); cleanupRequested=false;
   }
-  if (status == m::LoadRequestStatus::Pending && (action == m::SessionAction::SaveContinue || action == m::SessionAction::SaveReturn)) {
+  if (status == m::LoadRequestStatus::Pending && (action == m::SessionAction::SaveContinue || action == m::SessionAction::SaveReturn || action==m::SessionAction::ReadSaveDestinations)) {
     phase = m::SessionPhase::Saving;
+    if(action==m::SessionAction::ReadSaveDestinations)navigateReturn(view);
     if (action == m::SessionAction::SaveReturn) {
       if (virtual_cast<df::viewscreen_savegamest>(view)) saveSawProgress = true;
       if (title && (navigationStage == 3 || navigationStage == 4)) {
         auto found = std::find_if(title->savegame_header.begin(), title->savegame_header.end(), [](auto* h) {
           return isFort(h) && (navigationStage == 4 ? !previousSaveIds.count(idOf(h)) : h->filename_noext == pendingFilename) &&
-              h->world_header.id1 == pendingWorld1 && h->world_header.id2 == pendingWorld2;
+              h->world_header.id1 == pendingWorld1 && h->world_header.id2 == pendingWorld2 &&
+              h->world_header.timeline_name==pendingTimeline;
         });
         if (found != title->savegame_header.end() && navigationStage == 4) {
           const auto count = std::count_if(title->savegame_header.begin(), title->savegame_header.end(), [](auto* h) {
-            return isFort(h) && !previousSaveIds.count(idOf(h)) && h->world_header.id1 == pendingWorld1 && h->world_header.id2 == pendingWorld2;
+            return isFort(h) && !previousSaveIds.count(idOf(h)) && h->world_header.id1 == pendingWorld1 && h->world_header.id2 == pendingWorld2 && h->world_header.timeline_name==pendingTimeline;
           });
           if (count != 1) { reject("New save identity is ambiguous; inspect Dwarf Fortress"); found = title->savegame_header.end(); }
         }
-        if (found != title->savegame_header.end() && saveSawProgress && !mapLoaded) {
-          status = m::LoadRequestStatus::Ok; phase = m::SessionPhase::Menu;
-          savedId = idOf(*found);
-          message = "Fortress saved to " + (*found)->filename_noext + "; returned to menu"; pendingId.clear(); navigationStage = 0;
-          lastDiscovery = {}; discover(title);
+        if (found != title->savegame_header.end() && saveSawProgress && !mapLoaded && hasSavedWorld((*found)->full_path)) {
+          if(navigationStage==3 && (idOf(*found)!=pendingExistingPath || !savedWorldChanged(existingWorldBefore,savedWorldStamp((*found)->full_path)))) {
+            reject("DF save identity or world file could not be verified; save was not confirmed");
+          } else {
+            status = m::LoadRequestStatus::Ok; phase = m::SessionPhase::Menu;
+            savedId = idOf(*found);
+            message = "Fortress saved to " + (*found)->filename_noext + "; returned to menu"; pendingId.clear(); navigationStage = 0;
+            lastDiscovery = {}; discover(title);
+          }
         }
       } else navigateReturn(view);
     }
@@ -463,13 +584,26 @@ void update(bool mapLoaded,uint64_t epoch) {
         }
       }
     }
-    if (status == m::LoadRequestStatus::Pending && navigationStage < 3 &&
+    if (status == m::LoadRequestStatus::Pending && (navigationStage < 3 || navigationStage==5) &&
         now - requestedAt > std::chrono::seconds(15)) {
       reject("Native save dialog was not recognized; save was not started");
     } else if (status == m::LoadRequestStatus::Pending && now - requestedAt > std::chrono::minutes(5)) {
       reject("Save completion is unverified; inspect Dwarf Fortress before closing it");
     }
-  } else if (fortressValid && (nativeSaveBusy(view) || cleanupRequested)) phase = m::SessionPhase::Saving;
+  } else if (fortressValid && (nativeSaveBusy(view) || cleanupRequested))
+    phase = cleanupRequested && cleanupQuitConfirmation && !nativeSaveBusy(view)?m::SessionPhase::Unloading:m::SessionPhase::Saving;
+  if(status==m::LoadRequestStatus::Pending && action==m::SessionAction::QuitWithoutSaving) {
+    phase=m::SessionPhase::Unloading;
+    if(quitIssued && title && title->mode==df::title_mode_type::MAIN_MENU && !mapLoaded) {
+      status=m::LoadRequestStatus::Ok;phase=m::SessionPhase::Menu;
+      pendingId.clear();navigationStage=0;message.clear();savedId.clear();
+      lastDiscovery={};discover(title);
+    } else {
+      if(!quitIssued)navigateQuit(view);
+      if(status==m::LoadRequestStatus::Pending && now-requestedAt>(quitIssued?std::chrono::seconds(300):std::chrono::seconds(15)))
+        reject("Native quit completion could not be verified");
+    }
+  }
   canSave = fortressValid && phase == m::SessionPhase::Ready && !cleanupRequested && status != m::LoadRequestStatus::Pending && saveContext(view);
   canSaveReturn = canSave;
   // Passive status reads simulation popup data, never native panel/focus state.
@@ -504,15 +638,18 @@ void update(bool mapLoaded,uint64_t epoch) {
       // A busy response belongs only to the competing client. Preserve the
       // active lifecycle operation and its receipt unchanged.
       auto activeReply=std::move(reply);reply=std::move(nextReply);
-      const auto oldSeq=requestSeq,oldClient=requestClient;const auto oldAction=action;const auto oldStatus=status;
+      const auto oldSeq=requestSeq,oldClient=requestClient,oldEpoch=requestEpoch;const auto oldAction=action;const auto oldStatus=status;
       const auto oldMessage=message,oldSaved=savedId;
-      requestSeq=c->seq();requestClient=c->client_id();action=c->action();
+      requestSeq=c->seq();requestClient=c->client_id();action=c->action();requestEpoch=c->fortress_epoch();
       status=m::LoadRequestStatus::Rejected;message="Another client has a session operation in progress";savedId.clear();
       publish(false);
-      requestSeq=oldSeq;requestClient=oldClient;action=oldAction;status=oldStatus;message=oldMessage;savedId=oldSaved;
+      requestSeq=oldSeq;requestClient=oldClient;requestEpoch=oldEpoch;action=oldAction;status=oldStatus;message=oldMessage;savedId=oldSaved;
       reply=std::move(activeReply);continue;
     }
     reply=std::move(nextReply);requestClient=c->client_id();requestSeq=c->seq();
+    requestEpoch=c->fortress_epoch();
+    saveIssued=saveSawProgress=quitIssued=false;
+    pendingExistingPath.clear();existingWorldBefore.reset();
     savedId.clear();
     action = c->action();
     if(!m::runtimeSessionAction(action)) {
@@ -522,7 +659,25 @@ void update(bool mapLoaded,uint64_t epoch) {
       if(!m::sessionEpochMatches(c->fortress_epoch(),fortressEpoch)) { reject("Fortress changed; save was not started"); continue; }
       pendingSaveEpoch=c->fortress_epoch();
       if (!(action == m::SessionAction::SaveReturn ? canSaveReturn : canSave) || nativeSaveBusy(view)) { reject("Close native DF panels and wait for any current save before saving"); continue; }
+      if(action==m::SessionAction::QuitWithoutSaving) {
+        const auto& header=df::global::world->cur_savegame.world_header;
+        pendingWorld1=header.id1;pendingWorld2=header.id2;pendingId=activeId;
+        requestedAt=now;navigationStage=0;status=m::LoadRequestStatus::Pending;
+        phase=m::SessionPhase::Unloading;message.clear();canSave=canSaveReturn=false;
+        continue;
+      }
       {
+        returnMode=c->save_return_mode();timelineName.clear();
+        if(c->timeline_name())timelineName.assign(c->timeline_name()->begin(),c->timeline_name()->end());
+        if(action==m::SessionAction::SaveReturn &&
+           (!catalogReceipt || c->save_catalog_receipt()!=catalogReceipt || catalogClient!=requestClient || catalogEpoch!=pendingSaveEpoch)) {
+          reject("Save destination catalog is no longer owned by this request");continue;
+        }
+        size_t chosen=catalogFolders.size();
+        if(c->save_destination_id())for(size_t i=0;i<catalogFolders.size();++i)if(destinationId(i)==c->save_destination_id()->str())chosen=i;
+        if(action==m::SessionAction::SaveReturn && returnMode==m::SaveReturnMode::ExistingDestination && chosen==catalogFolders.size()) {
+          reject("Requested destination is not in the save catalog");continue;
+        }
         checkpointName = c->checkpoint_name() ? c->checkpoint_name()->str() : "";
         if (action == m::SessionAction::SaveContinue && checkpointExists(checkpointName)) {
           reject("Checkpoint name already exists; choose a new name"); continue;
@@ -532,6 +687,11 @@ void update(bool mapLoaded,uint64_t epoch) {
         for (const auto& save : saves) previousSaveIds.insert(save.id);
         auto& current = df::global::world->cur_savegame;
         pendingFilename = current.save_dir; pendingWorld1 = current.world_header.id1; pendingWorld2 = current.world_header.id2;
+        pendingTimeline=current.world_header.timeline_name;
+        if(action==m::SessionAction::SaveReturn) {
+          if(returnMode==m::SaveReturnMode::ExistingDestination)pendingFilename=catalogFolders[chosen];
+          if(returnMode==m::SaveReturnMode::NewTimeline)pendingTimeline=timelineName;
+        }
         saveSawProgress = false; navigationStage = 0; requestedAt = now;
         status = m::LoadRequestStatus::Pending; phase = m::SessionPhase::Saving;
         message = action == m::SessionAction::SaveContinue ? "Saving manual checkpoint" : "Saving fortress and returning to menu";

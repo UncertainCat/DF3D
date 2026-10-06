@@ -12,6 +12,10 @@ $deadline=(Get-Date).AddSeconds(1800)
 function Write-Lf([string]$Path,[string]$Text) {
  [IO.File]::WriteAllText($Path,($Text -replace "`r`n","`n"),[Text.UTF8Encoding]::new($false))
 }
+function Write-Ack([string]$Path,[string]$Text) {
+ Write-Lf "$Path.tmp" $Text
+ Move-Item -LiteralPath "$Path.tmp" -Destination $Path
+}
 function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  # Lua long strings prevent paths/SaveId from becoming executable Lua text.
  $r=Invoke-DfhackRaw -CommandArgs @('lua',"assert(loadfile([==[$repo/tools/smoke/$Name]==]))($Arguments)")
@@ -57,7 +61,7 @@ try {
 
  Set-DfPrefs
  Install-DfMenuStartup -DfPath $DfPath
- Start-Df3d -DfPath $DfPath | Out-Null
+ $fixtureProcess=Start-Df3d -DfPath $DfPath
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'INCOMPLETE disposable clone could not be loaded'}
  $loaded=$true
@@ -74,8 +78,6 @@ try {
    if(($probe.Output -join "`n") -notmatch $marker){throw "Guard probe $mode failed"}
   }
  }
- # HEAD exports no reload helper. Do not improvise a save or process restart.
- Write-Lf "$out/reload.txt" 'incomplete step 9: Df3dLane exports no reload helper'
  Write-Lf "$out/capture-questions.txt" "What does DF's Labor widget show if a detail is deleted while the native Work Details tab is open?`n"
  $departures=@()
  $evidence="$repo/build/evidence/native/e6/findings.md"
@@ -112,6 +114,32 @@ try {
    $index=[int](Get-Content -Raw "$out/verify.txt")
    Remove-Item -LiteralPath "$out/verify.txt"
    $request=Get-Content -Raw "$out/request-$index.json" | ConvertFrom-Json
+   if($request.op -eq 'reload') {
+    # Once restart begins, the old fixture belongs to the old process only.
+    $loaded=$false
+    $oldFixtureProcess=$fixtureProcess
+    try {
+     $restart=Restart-Df3dFortress -SaveId $clone -SaveRoots $saveRoots -EvidenceDir "$out/restart-$index"
+     if($restart.Status -eq 'ready') {
+      $fixtureProcess=Get-Process -Id $restart.Pid
+      $r=Invoke-LuaFile 'work-details-acceptance-fixture.lua' "[==[$out]==]"
+      $fixtureText=$r.Output -join "`n"
+      if($fixtureText -match 'FIXTURE_INCOMPLETE (.+)') {
+       Write-Ack "$out/incomplete-$index" (@{reason=$Matches[1]} | ConvertTo-Json -Compress)
+      } elseif($fixtureText -notmatch 'FIXTURE_READY') {
+       Write-Ack "$out/failed-$index" (@{reason='Fixture failed after reload'} | ConvertTo-Json -Compress)
+      } else {
+       $loaded=$true
+       Write-Ack "$out/ack-$index" (@{pid=$restart.Pid;epoch=[string]$restart.Epoch} | ConvertTo-Json -Compress)
+      }
+     } else {
+      Write-Ack "$out/$($restart.Status)-$index" (@{reason=$restart.Reason} | ConvertTo-Json -Compress)
+     }
+    } catch { Write-Ack "$out/failed-$index" (@{reason=$_.Exception.Message} | ConvertTo-Json -Compress) }
+    $oldFixtureProcess.Refresh()
+    if(-not $oldFixtureProcess.HasExited){$loaded=$true}
+    continue
+   }
    # Refusal guards are mandatory, including without -GuardProbe.
    if($request.op -eq 'guard_before' -or $request.op -eq 'guard_after') {
     $mode=if($request.op -eq 'guard_before'){'before'}else{'after'}
@@ -141,7 +169,7 @@ try {
    }
    $r=Invoke-LuaFile 'work-details-acceptance-verify.lua' "[==[$out]==],$index"
    if(($r.Output -join "`n") -notmatch 'SEMANTIC_(PASS|INCOMPLETE|FAIL)'){throw "Native verification $index failed: $($r.Output)"}
-   Write-Lf "$out/ack-$index" 'ok'
+   Write-Ack "$out/ack-$index" 'ok'
   }
   Start-Sleep -Milliseconds 100
   $g.Refresh()
@@ -158,7 +186,7 @@ try {
 } finally {
  try {
   if($g -and -not $g.HasExited){$g.Kill();$g.WaitForExit()}
-  if($loaded) {
+  if($loaded -and $fixtureProcess -and -not $fixtureProcess.HasExited) {
    # On an interrupted wait, re-pause first; the separate final assertion still
    # verifies pause before module-owned teardown, including failure paths.
    $r=Invoke-LuaFile 'work-details-acceptance-verify.lua' "[==[$out]==],'pause'"

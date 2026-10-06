@@ -4,6 +4,11 @@ var requested := -1
 class Hud extends RefCounted:
 	var summary := {"elevation_offset": -100}
 	var minimap := {"allowed": true}
+	var enabled := true
+	var elevation_allowed := true
+	var overlay := false
+	func elevation_available(): return elevation_allowed
+	func blocks_camera(): return overlay
 	func elevation_rect(): return Rect2(0,0,16,500)
 func _initialize(): call_deferred("run")
 func run():
@@ -36,6 +41,15 @@ func run():
 	assert(requested == 100)
 	overview.hud.minimap.allowed = false
 	overview.navigate(400)
-	assert(requested == 100)
+	assert(requested == Overview.level_at(400,500,200),"placement elevation is independent of minimap camera navigation")
+	requested = -1; overview.hud.elevation_allowed = false
+	overview.navigate(250)
+	assert(requested == -1,"material selection blocks overview navigation")
+	overview.hud.elevation_allowed = true; overview.hud.overlay = true
+	overview.navigate(250)
+	assert(requested == -1,"HUD overlay blocks overview navigation")
+	overview.hud.overlay = false; overview.hud.enabled = false
+	overview.navigate(250)
+	assert(requested == -1,"save and disabled play block overview navigation")
 	print("ELEVATION_OVERVIEW_PASS")
 	quit()

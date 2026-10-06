@@ -109,5 +109,7 @@ func run() -> void:
 	check(not audio.current_path.ends_with("song_title.ogg") and audio.playlist.size() == 10, "entering fort restores fortress music")
 	audio.free()
 	world.free()
+	# AudioServer retires playback references on its mixer cycle after node teardown.
+	await create_timer(0.1).timeout
 	if failures == 0: print("audio tests: PASS")
 	quit(0 if failures == 0 else 1)

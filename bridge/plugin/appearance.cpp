@@ -6,18 +6,23 @@
 #endif
 
 #include "appearance.h"
+#include "appearance_random.h"
+#include "appearance_color.h"
+#include "appearance_template_native.h"
 #include "dwarf_layer_anatomy.h"
 
 #include "modules/DFSDL.h"
 #include "modules/Filesystem.h"
 #include "modules/Materials.h"
 #include "modules/Units.h"
+#include "modules/World.h"
 
 #include "df/appearance_modifier_type.h"
 #include "df/bp_appearance_modifier.h"
 #include "df/body_part_raw.h"
 #include "df/caste_body_info.h"
 #include "df/caste_raw.h"
+#include "df/d_init.h"
 #include "df/cgl_bp_conditionst.h"
 #include "df/cgl_itemst.h"
 #include "df/cgl_tissue_layer_conditionst.h"
@@ -74,6 +79,11 @@ using df::global::world;
 namespace df3d_appearance {
 
 namespace {
+
+bool fortressClothingDyes() {
+    return World::isFortressMode() && df::global::d_init &&
+        df::global::d_init->display.flags.is_set(df::d_init_flags1::FORT_SHOW_CLOTHING_DYES);
+}
 
 // ---- texpos -> (page, tile) map ----
 
@@ -152,7 +162,8 @@ struct Ctx {
     df::caste_raw* caste = nullptr;
     df::creature_raw_graphics* g = nullptr;
     int32_t casteIdx = -1;
-    int32_t seedId = 0;        // CONDITION_RANDOM_PART_INDEX stand-in seed (unit id)
+    int32_t seedId = 0;        // Legacy corpse fallback, still awaiting native parity.
+    uint32_t randomAppearanceNumber = 0;
     int32_t profession = -1;   // df::profession of the unit (or the dead unit)
     bool child = false, baby = false, ghost = false, undead = false;
     int32_t haulCount = 0;
@@ -180,6 +191,7 @@ bool buildCtx(df::unit* u, Ctx& c) {
     c.u = u;
     if (!buildCasteCtx(c, u->race, u->caste)) return false;
     c.seedId = u->id;
+    c.randomAppearanceNumber = u->job.random_appearance_number;
     c.profession = static_cast<int32_t>(u->profession);
     c.child = Units::isChild(u);
     c.baby = Units::isBaby(u);
@@ -286,9 +298,16 @@ void tissueColors(const Ctx& c, int16_t bp, int16_t tl, std::vector<int16_t>& ou
     out.clear();
     const auto& cms = c.caste->color_modifiers;
     const auto& sel = *c.colors;
-    for (size_t i = 0; i < cms.size(); ++i) {
+    // Later effective modifiers replace earlier colors. Corpse age has no
+    // verified source here; preserve that separate legacy path for now.
+    const double ageDays = c.u && df::global::cur_year && df::global::cur_year_tick
+        ? df3d_appearance::nativeAgeDays(*df::global::cur_year,*df::global::cur_year_tick,
+                                       c.u->birth_year,c.u->birth_time) : -1.0;
+    for (size_t n = 0; n < cms.size(); ++n) {
+        const size_t i = ageDays >= 0 ? cms.size()-1-n : n;
         const df::color_modifier_raw* cm = cms[i];
         if (!cm) continue;
+        if (ageDays >= 0 && !df3d_appearance::nativeColorModifierActive(cm->start_date,cm->end_date,ageDays)) continue;
         bool covers = false;
         for (size_t j = 0; j < cm->body_part_id.size() && j < cm->tissue_layer_id.size(); ++j) {
             if (cm->body_part_id[j] == bp && cm->tissue_layer_id[j] == tl) { covers = true; break; }
@@ -425,16 +444,26 @@ bool inventoryModeMatches(const df::cgl_itemst& c, df::inv_item_role_type mode) 
            mode == M::WrappedAround || mode == M::Strapped || mode == M::SewnInto;
 }
 
-const df::unit_inventory_item* findItem(const Ctx& c, const df::cgl_itemst& cond) {
+bool materialConditionPasses(const df::creature_graphics_layer_materialst& m, df::item* it);
+
+const df::unit_inventory_item* findItem(const Ctx& c, const df::cgl_itemst& cond,
+                                      const df::creature_graphics_layer_materialst* material=nullptr) {
     if (!c.u) return nullptr;  // corpses carry no inventory
-    for (const df::unit_inventory_item* inv : c.u->inventory) {
+    // Native graphics matching scans inventory backwards (supported build,
+    // 0x14071fe1b..0x14071fe47). Later matching worn items supply the palette;
+    // forward iteration incorrectly colors shoes from the socks beneath them.
+    for (auto itInv = c.u->inventory.rbegin(); itInv != c.u->inventory.rend(); ++itInv) {
+        const df::unit_inventory_item* inv = *itInv;
         if (!inv || !inv->item) continue;
         if (!inventoryModeMatches(cond, inv->mode)) continue;
         df::item* it = inv->item;
         if (cond.item_type != df::item_type::NONE && it->getType() != cond.item_type) continue;
         // PROCEDURAL_<kind> conditions match by the item's procedural
         // graphics family (weapon / shield shape), not by type/subtype.
-        if (cond.procedural_item_graphics != df::procedural_item_graphics_type::NONE &&
+        // Native ordinary item conditions use-1 here (captured steel earring,
+        // 023329). The named enum NONE is1, not the field's unset sentinel.
+        if (static_cast<int32_t>(cond.procedural_item_graphics) >= 0 &&
+            cond.procedural_item_graphics != df::procedural_item_graphics_type::NONE &&
             !it->has_procedural_item_graphics(cond.procedural_item_graphics))
             continue;
         if (!cond.item_subtype.empty() &&
@@ -453,6 +482,7 @@ const df::unit_inventory_item* findItem(const Ctx& c, const df::cgl_itemst& cond
         if (cond.max_dam_level >= 0 && cond.max_dam_level < 1000000 &&
             (it->getWear() < cond.min_dam_level || it->getWear() > cond.max_dam_level))
             continue;
+        if(material && !materialConditionPasses(*material,it))continue;
         return inv;
     }
     return nullptr;
@@ -509,11 +539,9 @@ bool materialConditionPasses(const df::creature_graphics_layer_materialst& m, df
     return true;
 }
 
-// CONDITION_RANDOM_PART_INDEX:<name>:<index>:<max>. DF's per-unit seed for
-// this is not identified yet; this deterministic
-// stand-in keeps the choice stable per unit and name so the stack is at
-// least consistent frame to frame. `g_randomOverride` lets the survey
-// diagnostic try every index against DF's composite.
+// CONDITION_RANDOM_PART_INDEX: unit selection follows the native53.16 predicate.
+// The legacy corpse fallback remains unverified. The diagnostic override permits
+// independent pixel comparisons against each alternative native layer.
 uint32_t fnv(const std::string& s) {
     uint32_t h = 2166136261u;
     for (unsigned char ch : s) h = (h ^ ch) * 16777619u;
@@ -528,6 +556,7 @@ RandomOverride g_randomOverride;
 int32_t randomPartIndex(const Ctx& c, const std::string& name, int32_t max) {
     if (max <= 0) return 1;
     if (g_randomOverride.name && *g_randomOverride.name == name) return g_randomOverride.index;
+    if (c.u) return df3d_appearance::nativeRandomPart(c.randomAppearanceNumber, name, max);
     const uint32_t h = (static_cast<uint32_t>(c.seedId) * 2654435761u) ^ fnv(name);
     return static_cast<int32_t>(h % static_cast<uint32_t>(max)) + 1;
 }
@@ -568,9 +597,12 @@ bool layerPasses(const Ctx& c, const df::creature_graphics_layer_setst& set, con
     if (!L.required_caste.empty() &&
         std::find(L.required_caste.begin(), L.required_caste.end(), c.casteIdx) == L.required_caste.end())
         return fail("CONDITION_CASTE");
+    // Native fortress dye mode skips profession-colored alternatives so the
+    // group's ordinary item-palette layer can win. Corpse parity is separate.
     if (!L.required_profession.empty() &&
-        std::find(L.required_profession.begin(), L.required_profession.end(), c.profession) ==
-            L.required_profession.end())
+        ((!c.corpse && fortressClothingDyes()) ||
+         std::find(L.required_profession.begin(), L.required_profession.end(), c.profession) ==
+            L.required_profession.end()))
         return fail("CONDITION_PROFESSION_CATEGORY");
     for (const std::string* cls : L.required_syn_class)
         if (cls && !hasSynClass(c, *cls)) return fail("CONDITION_SYN_CLASS");
@@ -587,9 +619,8 @@ bool layerPasses(const Ctx& c, const df::creature_graphics_layer_setst& set, con
     // Item conditions. Measured against DF's composites: several
     // CONDITION_ITEM_WORN lines on one layer are alternatives (a hood
     // layer listing a cloak and a hood item draws for a cloak alone), and
-    // several SHUT_OFF_IF_ITEM_PRESENT lines all have to hold to shut the
-    // layer off (a cloak alone does not hide the hair that lists helms
-    // and cloaks).
+    // SHUT_OFF_IF_ITEM_PRESENT clauses are also alternatives: native031006
+    // suppresses long ponytail hair with a cloak alone, without headgear.
     if (!L.required_item.empty()) {
         bool any = false;
         for (const df::cgl_itemst* ic : L.required_item) {
@@ -613,14 +644,11 @@ bool layerPasses(const Ctx& c, const df::creature_graphics_layer_setst& set, con
         }
         if (!any) return fail("CONDITION_ITEM_WORN");
     }
-    if (!L.forbidden_item.empty()) {
-        bool all = true;
-        for (const df::cgl_itemst* ic : L.forbidden_item) {
-            if (!ic) continue;
-            if (!findItem(c, *ic)) { all = false; break; }
-        }
-        if (all) return fail("SHUT_OFF_IF_ITEM_PRESENT");
-    }
+    for (const df::cgl_itemst* ic : L.forbidden_item)
+        // Native71f8ef..71f90e applies the layer's material restriction to
+        // suppressing items too. An artifact weapon does not suppress the
+        // ordinary gauntlet layer whose condition requires NOT_ARTIFACT.
+        if (ic && findItem(c, *ic,L.mat)) return fail("SHUT_OFF_IF_ITEM_PRESENT");
     if (L.mat && !materialConditionPasses(*L.mat, matched ? matched->item : nullptr)) return fail("CONDITION_MATERIAL_*");
     if (!L.dye_color_index.empty()) {
         if (!matched || !matched->item->isDyed()) return fail("CONDITION_DYE (not dyed)");
@@ -764,6 +792,18 @@ bool resolveCtx(const Ctx& c, Result& out, bool portrait) {
     ensureTexposMap();
     const df::creature_graphics_layer_setst* set = chooseSet(c, out.role, out.prof, portrait);
     if (!set) return !portrait && resolveSimple(c, out);
+    if(!set->layer_set_template_token.empty()) {
+        const auto expand=graphicsTemplateFunction();
+        if(!expand || !texture)return false;
+        const auto found=std::find_if(texture->layer_set_template.begin(),texture->layer_set_template.end(),
+            [&](const auto* value){return value && value->token==set->layer_set_template_token;});
+        if(found==texture->layer_set_template.end())return false;
+        auto* writable=const_cast<df::creature_graphics_layer_setst*>(set);
+        expand(writable,*found,c.raw,c.caste);
+        // Native callers consume the token after expansion, preventing duplicate
+        // groups on the next resolution. Keep native-owned allocations native.
+        writable->layer_set_template_token.clear();
+    }
     out.layered = true;
     // Named vanilla map pieces can reflect anatomy even though vanilla's map
     // raws omit presence conditions. Portraits retain their own explicit rules.
@@ -851,9 +891,32 @@ uint32_t corpseFingerprint(const df::item* it) {
 uint32_t fingerprint(const df::unit* u) {
     uint32_t h = 2166136261u;
     auto mix = [&](uint32_t v) { h = (h ^ v) * 16777619u; h ^= h >> 15; };
+    mix(fortressClothingDyes() ? 1u : 0u);
     mix(static_cast<uint32_t>(u->profession));
     mix(static_cast<uint32_t>(u->caste));
     mix(static_cast<uint32_t>(u->race));
+    // Templates may be materialized after the actor's first publication while
+    // the simulation remains paused. Their raw structure is an appearance input.
+    if(const auto* raw=df::creature_raw::find(u->race)) {
+        const auto* caste=u->caste>=0 && static_cast<size_t>(u->caste)<raw->caste.size()?raw->caste[u->caste]:nullptr;
+        const auto* graphics=caste && caste->caste_graphics?caste->caste_graphics:raw->graphics;
+        if(graphics)for(const auto* set:graphics->graphics_layer_set)if(set) {
+            mix(static_cast<uint32_t>(set->graphics_layer.size()));
+            mix(set->layer_set_template_token.empty()?0u:1u);
+        }
+    }
+    for (int32_t color : u->appearance.colors) mix(static_cast<uint32_t>(color));
+    // Age need not rebuild appearance every tick/day: only a modifier becoming
+    // effective changes the observed color selection.
+    if (df::global::cur_year && df::global::cur_year_tick) {
+        const auto* raw=df::creature_raw::find(u->race);
+        if (raw && u->caste>=0 && static_cast<size_t>(u->caste)<raw->caste.size()) {
+            const auto* caste=raw->caste[u->caste];
+            const double days=df3d_appearance::nativeAgeDays(*df::global::cur_year,*df::global::cur_year_tick,u->birth_year,u->birth_time);
+            if (caste) for (const auto* cm:caste->color_modifiers)
+                mix(cm && df3d_appearance::nativeColorModifierActive(cm->start_date,cm->end_date,days) ? 1u : 0u);
+        }
+    }
     mix(u->flags3.bits.ghostly ? 1u : 0u);
     mix(u->enemy.undead ? 1u : 0u);
     mix(static_cast<uint32_t>(u->inventory.size()));

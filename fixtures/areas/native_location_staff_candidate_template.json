@@ -1,0 +1,64 @@
+{
+  "source": "build/location-staff-selector-startup-20260930-030702",
+  "scope": "Protected paused clone; native selector initialized a previously empty graphics template. This establishes missing initialization, not an authorized native-screen runtime dependency.",
+  "unit_id": 2346,
+  "race": "PORCUPINE_MAN",
+  "before": {
+    "caste": {
+      "exists": false
+    },
+    "id": 2346,
+    "raw": {
+      "exists": true,
+      "sets": [
+        {
+          "layers": 0,
+          "portrait": false,
+          "profession": -1,
+          "role": 0
+        },
+        {
+          "layers": 1,
+          "portrait": true,
+          "profession": -1,
+          "role": 0
+        }
+      ]
+    },
+    "seed": 4136971128
+  },
+  "after": {
+    "caste": {
+      "exists": false
+    },
+    "id": 2346,
+    "raw": {
+      "exists": true,
+      "sets": [
+        {
+          "layers": 237,
+          "portrait": false,
+          "profession": -1,
+          "role": 0
+        },
+        {
+          "layers": 1,
+          "portrait": true,
+          "profession": -1,
+          "role": 0
+        }
+      ]
+    },
+    "seed": 4136971128
+  },
+  "source_sha256": {
+    "before-graphics.json": "0ed4e7029bfc82be1f5f777ace5f56108adf8aa604282497d22047a69f997674",
+    "after-graphics.json": "d0e3085ba8595fedb36dd96e603a980d4e9959242a9a6b155a46e17020cc2dfd",
+    "before_2346.txt": "d1f48a63e31cf7e5cf8fdb98f64254fd4e85fb5c6875ff9ff54f4880af20f59d",
+    "after_2346.txt": "1c0385122321a32454b02e978eb32a1c65aa7c7d9554a969803b3c1d1d082034"
+  },
+  "resolved_layers_before": 0,
+  "resolved_layers_after": 10,
+  "fingerprint_before": 1773184274,
+  "fingerprint_after": 1773184274
+}

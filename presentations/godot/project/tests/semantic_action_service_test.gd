@@ -18,16 +18,78 @@ class FakeWorld:
 		if reject: return 0
 		calls.append({"domain": domain, "request": request.duplicate(true)})
 		return calls.size()
+class HeaderWorld:
+	extends FakeWorld
+	var payload_calls := 0
+	var refuse_payload := false
+	func poll_management_header():
+		var header := {}
+		for key in ["world_epoch","revision","status","request_seq","action","transport_alive"]:
+			if state.has(key): header[key] = state[key]
+		return header
+	func management_payload(epoch,revision,sequence):
+		payload_calls += 1
+		if refuse_payload or epoch!=state.world_epoch or revision!=state.revision or sequence!=state.request_seq: return {}
+		return state.duplicate(true)
 func check(ok: bool, message: String):
 	if not ok:
 		failures += 1
 		push_error(message)
 func _initialize(): call_deferred("run")
+func test_continuation_order() -> void:
+	for outcome in ["ok","rejected","unknown","read"]:
+		var world := FakeWorld.new()
+		var service := Service.new(); service.configure(world)
+		var continuations: Array = []
+		var follow := {"action":11,"kind":1,"id":77,"expected_revision":9007199254740993}
+		var first := service.submit("areas",{"action":9 if outcome == "read" else 10},func(ticket,_result,_request):
+			check(service.submit_continuation(ticket,"construction",{"action":2},Callable()) == 0,"continuation cannot cross domains")
+			check(service.submit_continuation(ticket,"areas",{"action":9},Callable()) == 0,"continuation cannot promote reads")
+			continuations.append(service.submit_continuation(ticket,"areas",follow,Callable()))
+			check(service.submit_continuation(ticket,"areas",follow,Callable()) == 0,"receipt cannot schedule duplicate continuations"))
+		service.poll()
+		service.submit("areas",{"action":10},Callable())
+		check(service.submit_continuation(first,"areas",follow,Callable()) == 0,"queued interaction cannot borrow a pending receipt")
+		if outcome == "unknown":
+			service.timeout_seconds = 0.001; service.poll(0.01)
+			check(world.calls.size() == 1,"unknown predecessor blocks queued transport")
+			world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":2,"action":10}
+		else:
+			world.state = {"world_epoch":5,"revision":2,"request_seq":1,"status":3 if outcome == "rejected" else 2,"action":9 if outcome == "read" else 10}
+		service.poll()
+		check(continuations.size() == 1 and (int(continuations[0]) > 0) == (outcome == "ok"),"only successful mutation observer owns one continuation")
+		check(world.calls.size() == 2 and world.calls[-1].request.action == (11 if outcome == "ok" else 10),"existing interaction continuation precedes newer command")
+		check(service.submit_continuation(first,"areas",follow,Callable()) == 0,"continuation authority expires outside observer")
+		service.free()
+
+func test_construction_outcomes() -> void:
+	for outcome in [Contract.ConstructionOutcome.Partial,Contract.ConstructionOutcome.Unknown]:
+		var world := FakeWorld.new()
+		var service := Service.new();service.configure(world)
+		var ticket := service.submit("construction",{"action":2},Callable())
+		service.poll()
+		world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":3,"action":2,
+			"construction":{"outcome":outcome,"placed":2,"updated":1,"first_building":99,"failed_index":4}}
+		service.poll()
+		var result: Dictionary = service.result(ticket)
+		check(result.outcome==("unknown" if outcome==Contract.ConstructionOutcome.Unknown else "partial"),"construction outcome classification")
+		check(result.construction.placed==2 and result.construction.updated==1 and result.construction.failed_index==4,"confirmed construction effects survive failure")
+		for i in 5: service.poll()
+		check(world.calls.size()==1,"partial/unknown construction must never replay")
+		check(service.submit_continuation(ticket,"construction",{"action":2},Callable())==0,"failed construction cannot schedule a success continuation")
+		service.free()
+
 func run():
+	test_header_payload_delivery()
+	test_result_ownership()
+	test_construction_outcomes()
+	test_location_entry_unknown()
+	test_continuation_order()
 	test_queued_cancellation()
 	test_domain_routing()
 	test_construction_materials()
 	test_work_orders()
+	test_area_operations()
 	test_citizens()
 	test_production()
 	test_reports()
@@ -433,4 +495,99 @@ func test_agreements():
 		check(not service._outcomes.has(ticket), "agreement has no mutation receipt")
 		for i in 3: service.poll(1.0)
 		check(world.calls.size() == sent and observed.size() == before+1, "agreement never replays")
+	service.free()
+
+func test_area_operations():
+	var world := FakeWorld.new()
+	var service := Service.new()
+	service.configure(world)
+	var observed: Array = []
+	var callback := func(t, r, q): observed.append([t, r, q])
+	# Op selectors never override action-level mutation ownership.
+	for action in [Service.Action.AreaCreate, Service.Action.AreaUpdate, Service.Action.AreaDelete, Service.Action.AreaLink]:
+		var operations: Array = [0, 5] if action == Service.Action.AreaCreate else [0, 15] if action == Service.Action.AreaLink else [0]
+		if action == Service.Action.AreaUpdate:
+			operations = [0, 2, 3, 4, 5, 7, 8, 9, 11, 12, 13]
+		for operation in operations:
+			var request := {"action":action, "operation":operation, "id":7, "expected_revision":19}
+			var before := observed.size()
+			var ticket := service.submit("areas", request, callback)
+			service.poll(0.0)
+			var sent := world.calls.size()
+			check(world.calls.back().request == request, "area operation and revision reach transport unchanged")
+			world.state = {"world_epoch":5,"revision":sent+1,"request_seq":sent,"action":action,
+				"status":Contract.ManagementStatus.Rejected,"message":"Area changed; inspect again"}
+			service.poll(0.0)
+			check(service._outcomes.has(ticket), "every area mutation selector retains a receipt")
+			check(service.result(ticket).message == "Area changed; inspect again" and observed.size() == before+1, "area rejection reaches its observer once")
+			for index in 3: service.poll(1.0)
+			check(world.calls.size() == sent and observed.size() == before+1, "rejected area mutations never replay")
+	for operation in [1, 6, 10, 14]:
+		var action: int = Service.Action.AreaCandidates if operation == 14 else Service.Action.AreaInspect
+		for phase in [1, 2, 3]:
+			var request := {"action":action,"operation":operation,"id":7}
+			var ticket := service.submit("areas", request, callback)
+			service.poll(0.0)
+			var sent := world.calls.size()
+			world.state = {"world_epoch":5,"revision":sent+1,"request_seq":sent,"action":action,
+				"status":Contract.ManagementStatus.Ok,"area":{"operation":operation,"build_phase":phase,"build_done":0,"build_total":100}}
+			service.poll(0.0)
+			check(service.result(ticket).area.build_phase == phase and service.result(ticket).status == Contract.ManagementStatus.Ok, "area build progress remains an ordinary Ok reply")
+			check(service._active == 0 and not service._requests.has(ticket) and not service._outcomes.has(ticket), "area progress releases transport without mutation receipt")
+			for index in 3: service.poll(1.0)
+			check(world.calls.size() == sent, "area list polling belongs to the panel")
+	service.free()
+
+func test_location_entry_unknown() -> void:
+	var world := FakeWorld.new()
+	var service := Service.new();service.configure(world)
+	var observations: Array=[]
+	var ticket := service.submit("areas",{"action":Contract.ManagementAction.AreaUpdate,"operation":Contract.AreaOperation.LocationOpen},
+		func(_ticket,result,_request): observations.append(result))
+	service.poll()
+	world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":3,"action":11,
+		"area":{"operation":Contract.AreaOperation.LocationOpen,"location_entry_outcome":Contract.LocationEntryOutcome.Unknown}}
+	service.poll()
+	check(observations.size()==1 and observations[0].get("outcome","")=="unknown","partial entry must remain unknown")
+	check(service.result(ticket).get("outcome","")=="unknown","entry outcome retained")
+	service.poll();check(world.calls.size()==1,"partial entry is never replayed")
+	service.free()
+
+func test_result_ownership() -> void:
+	for listen in [false,true]:
+		var world := FakeWorld.new()
+		var service := Service.new(); service.configure(world)
+		if listen:
+			service.completed.connect(func(_ticket,result): result.construction.materials[0].name="signal mutation")
+		var seen := []
+		var ticket := service.submit("construction",{"action":Contract.ManagementAction.ConstructionMaterials},func(_ticket,result,_request):
+			seen.append(result.construction.materials[0].name)
+			result.construction.materials[0].name="observer mutation")
+		service.poll()
+		world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":2,"action":Contract.ManagementAction.ConstructionMaterials,"construction":{"materials":[{"name":"fixture name"}]}}
+		service.poll()
+		check(seen==["fixture name"] and service.result(ticket).construction.materials[0].name=="fixture name","one-shot payload transfer isolates signal, observer and retained receipt")
+		service.free()
+
+func test_header_payload_delivery() -> void:
+	var world := HeaderWorld.new()
+	var service := Service.new(); service.configure(world)
+	var seen := []
+	var ticket := service.submit("construction",{"action":Contract.ManagementAction.ConstructionMaterials},func(_ticket,result,_request):seen.append(result.construction.materials[0].name))
+	service.poll()
+	world.state={"world_epoch":5,"revision":1,"request_seq":1,"status":1,"action":Contract.ManagementAction.ConstructionMaterials}
+	for frame in 120: service.poll()
+	check(world.payload_calls==0 and service._active==ticket,"pending metadata never converts a material payload")
+	world.state.status=2; world.state.revision=2; world.state.construction={"materials":[{"name":"fixture material"}]}
+	world.refuse_payload=true; service.poll()
+	check(service._active==ticket and seen.is_empty(),"identity mismatch retains the active ticket without a partial receipt")
+	world.refuse_payload=false; service.poll()
+	check(seen==["fixture material"] and service._active==0,"matching receipt publishes a complete payload once")
+	for frame in 120: service.poll()
+	check(world.payload_calls==2,"unchanged terminal metadata does not reconvert delivered payloads")
+	service.submit("construction",{"action":Contract.ManagementAction.ConstructionMaterials},Callable()); service.poll()
+	world.state.request_seq=999; service.poll()
+	check(world.payload_calls==2,"unrelated sequence does not fetch a payload")
+	world.generation+=1; service.poll()
+	check(world.payload_calls==2 and service._active==0,"generation replacement invalidates before fetching a stale receipt")
 	service.free()

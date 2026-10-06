@@ -1,0 +1,2158 @@
+{
+  "reference": {
+    "source": "build/construction-machine-directions-native-20261002-185612",
+    "owned_df_pid": 11940,
+    "owned_df_closed": true,
+    "source_unchanged": true,
+    "frame": 0,
+    "raw_sha256": "4765649eb1a509f28e9ff472bc7f4478bb6fd29a102d7fa2e26d08c64febfe00"
+  },
+  "status": "Native30 and installed catalog/recipe comparisons passed; pump source art mapping corrected and visually verified in main-scene191731",
+  "cases": [
+    {
+      "actual_direction": 2,
+      "clicked": "N",
+      "definition": "ScrewPump",
+      "direction": 2,
+      "items": [
+        48828,
+        48832,
+        48836
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Screw Pump.                                   Set the liquid flow direction below.",
+            "y": 6
+          },
+          {
+            "text": "                                                                              Water flows from the adjacent input tile",
+            "y": 7
+          },
+          {
+            "text": "                                                                              and from the tile below the input tile.",
+            "y": 8
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "actual_direction": 3,
+      "clicked": "E",
+      "definition": "ScrewPump",
+      "direction": 3,
+      "items": [
+        48828,
+        48832,
+        48836
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Screw Pump.                                   Set the liquid flow direction below.",
+            "y": 6
+          },
+          {
+            "text": "                                                                              Water flows from the adjacent input tile",
+            "y": 7
+          },
+          {
+            "text": "                                                                              and from the tile below the input tile.",
+            "y": 8
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "actual_direction": 0,
+      "clicked": "S",
+      "definition": "ScrewPump",
+      "direction": 0,
+      "items": [
+        48828,
+        48832,
+        48836
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Screw Pump.                                   Set the liquid flow direction below.",
+            "y": 6
+          },
+          {
+            "text": "                                                                              Water flows from the adjacent input tile",
+            "y": 7
+          },
+          {
+            "text": "                                                                              and from the tile below the input tile.",
+            "y": 8
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 38,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "actual_direction": 1,
+      "clicked": "W",
+      "definition": "ScrewPump",
+      "direction": 1,
+      "items": [
+        48828,
+        48832,
+        48836
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Screw Pump.                                   Set the liquid flow direction below.",
+            "y": 6
+          },
+          {
+            "text": "                                                                              Water flows from the adjacent input tile",
+            "y": 7
+          },
+          {
+            "text": "                                                                              and from the tile below the input tile.",
+            "y": 8
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 104,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NS",
+      "definition": "WaterWheel",
+      "direction": 1,
+      "items": [
+        48842,
+        48843,
+        48844
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Water Wheel.                                  Water wheels are 1x3 or 3x1.",
+            "y": 6
+          },
+          {
+            "text": "                                                                              The long side should align",
+            "y": 7
+          },
+          {
+            "text": "                                                                              with the water's flow.",
+            "y": 8
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      },
+      "vertical": true
+    },
+    {
+      "clicked": "WE",
+      "definition": "WaterWheel",
+      "direction": 0,
+      "items": [
+        48842,
+        48843,
+        48844
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Water Wheel.                                  Water wheels are 1x3 or 3x1.",
+            "y": 6
+          },
+          {
+            "text": "                                                                              The long side should align",
+            "y": 7
+          },
+          {
+            "text": "                                                                              with the water's flow.",
+            "y": 8
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood logs                                                                                                           Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      },
+      "vertical": false
+    },
+    {
+      "clicked": "N",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 0,
+      "facing": 0,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NE",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 1,
+      "facing": 1,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "E",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 2,
+      "facing": 2,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "SE",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 3,
+      "facing": 3,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "S",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 4,
+      "facing": 4,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "SW",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 5,
+      "facing": 5,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "W",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 6,
+      "facing": 6,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NW",
+      "definition": "SiegeEngine:Ballista",
+      "direction": 7,
+      "facing": 7,
+      "items": [
+        48846,
+        48847,
+        48848
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Ballista.                                     A ballista's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood ballista parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "N",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 0,
+      "facing": 0,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NE",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 1,
+      "facing": 1,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "E",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 2,
+      "facing": 2,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "SE",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 3,
+      "facing": 3,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "S",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 4,
+      "facing": 4,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "SW",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 5,
+      "facing": 5,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "W",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 6,
+      "facing": 6,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NW",
+      "definition": "SiegeEngine:Catapult",
+      "direction": 7,
+      "facing": 7,
+      "items": [
+        48850,
+        48851,
+        48852
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Catapult.                                     A catapult's orientation cannot be changed",
+            "y": 6
+          },
+          {
+            "text": "                                                                              once it is placed.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "        Use last material",
+            "y": 15
+          },
+          {
+            "text": "         Cherry wood catapult parts                                                                                                 Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 18
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 102,
+        "x2": 104,
+        "y1": 38,
+        "y2": 40,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "N",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 0,
+      "facing": 0,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NE",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 1,
+      "facing": 1,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "E",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 2,
+      "facing": 2,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "SE",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 3,
+      "facing": 3,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "S",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 4,
+      "facing": 4,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "SW",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 5,
+      "facing": 5,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "W",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 6,
+      "facing": 6,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    },
+    {
+      "clicked": "NW",
+      "definition": "SiegeEngine:BoltThrower",
+      "direction": 7,
+      "facing": 7,
+      "items": [
+        48856,
+        48864,
+        48868,
+        48860
+      ],
+      "placement": {
+        "closest": true,
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "      Click a tile to place the Bolt Thrower.                                 A bolt thrower can be freely turned by the",
+            "y": 6
+          },
+          {
+            "text": "                                                                              operator.  Choose a resting orientation.",
+            "y": 7
+          },
+          {
+            "text": "        Select material after placement",
+            "y": 9
+          },
+          {
+            "text": "        Use closest material",
+            "y": 12
+          },
+          {
+            "text": "            Keep building after placement",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "stage": "PLACING"
+      },
+      "shape": {
+        "x1": 103,
+        "x2": 103,
+        "y1": 39,
+        "y2": 39,
+        "z": 165
+      },
+      "site": {
+        "x": 103,
+        "y": 39,
+        "z": 165
+      }
+    }
+  ],
+  "findings": [
+    "Pump enums identify input side, arrows identify flow: S=0,W=1,N=2,E=3. Pointer anchors output tile: centers (0,1),(0,0),(0,0),(1,0).",
+    "WaterWheel defaults to north-south=1; native controls place NS before WE.",
+    "All eight facing values for each of three siege engines match native actual building fields.",
+    "BoltThrower native input order parts/mechanisms/chains/bins differs from DFHack helper."
+  ],
+  "installed_catalog": {
+    "source": "build/construction-machine-catalog-live-20261002-190109",
+    "owned_df_pid": 54288,
+    "owned_df_closed": true,
+    "source_unchanged": true,
+    "status": "passed_with_known_issues"
+  }
+}

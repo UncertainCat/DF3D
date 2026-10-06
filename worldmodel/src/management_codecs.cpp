@@ -81,11 +81,22 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     agreement = encodeAgreement(b, r.agreement);
   }
   flatbuffers::Offset<m::ReportRequest> report;
-  if (r.action >= ManagementAction::ReportList && r.action <= ManagementAction::ReportInspect) {
+  if ((r.action >= ManagementAction::ReportList && r.action <= ManagementAction::ReportInspect) || r.action==ManagementAction::PrepareAlertDismissal || r.action==ManagementAction::DismissAlert) {
     report = encodeReport(b, r.report);
   }
   std::vector<flatbuffers::Offset<m::ConstructionSelection>> selections;
-  for(const auto& v:r.selections)selections.push_back(m::CreateConstructionSelection(b,v.filter,v.itemType,v.itemSubtype,v.matType,v.matIndex,v.count,v.expectedListRevision));
+  for(const auto& v:r.selections) {
+    const auto ids=v.itemIds ? b.CreateVector(*v.itemIds) : flatbuffers::Offset<flatbuffers::Vector<int32_t>>{};
+    selections.push_back(m::CreateConstructionSelection(b,v.filter,v.itemType,v.itemSubtype,v.matType,v.matIndex,v.count,v.expectedListRevision,ids,v.individualId));
+  }
+  flatbuffers::Offset<m::ConnectedTrackOptions> connectedTrack;
+  if (r.connectedTrackDestination) {
+    const auto& end=*r.connectedTrackDestination;
+    const m::TilePos destination(end.x,end.y,end.z);
+    connectedTrack=m::CreateConnectedTrackOptions(b,&destination);
+  }
+  const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
+  const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   auto request = m::CreateConstructionRequest(
       b, m::kManagementVersion, clientId, sequence, worldEpoch, m::ManagementAction(r.action),
       b.CreateString(r.definition), &p, r.width, r.height, r.direction, b.CreateVector(r.items),
@@ -93,7 +104,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       stocks, appointments, kitchen, alert, selection,
       r.action == ManagementAction::CreatureInspect ? m::CreateCreatureRequest(b, r.creatureUnitId)
                                                     : flatbuffers::Offset<m::CreatureRequest>{},
-      r.depth,r.retracting,r.filter,b.CreateVector(selections),uint64_t(r.expectedListRevision));
+      r.depth,r.retracting,r.filter,b.CreateVector(selections),uint64_t(r.expectedListRevision),r.rollerSpeed,
+      r.trackStop?m::CreateTrackStopOptions(b,r.trackStop->friction,r.trackStop->dumpDirection):flatbuffers::Offset<m::TrackStopOptions>{},
+      r.pressurePlate?m::CreatePressurePlateOptions(b,r.pressurePlate->units,r.pressurePlate->water,r.pressurePlate->magma,
+          r.pressurePlate->citizens,r.pressurePlate->resets,r.pressurePlate->track,r.pressurePlate->unitMin,r.pressurePlate->unitMax,
+          r.pressurePlate->waterMin,r.pressurePlate->waterMax,r.pressurePlate->magmaMin,r.pressurePlate->magmaMax,
+          r.pressurePlate->trackMin,r.pressurePlate->trackMax):flatbuffers::Offset<m::PressurePlateOptions>{},connectedTrack,r.materialAnchor ? &materialAnchor : nullptr,r.cancelRemoval);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

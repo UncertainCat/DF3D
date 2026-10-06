@@ -1,0 +1,774 @@
+{
+  "cases": [
+    {
+      "action": "location",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 304,
+      "y": 190
+    },
+    {
+      "action": "details",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 336,
+      "y": 190
+    },
+    {
+      "action": "owner",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 336,
+      "y": 154
+    },
+    {
+      "action": "rename",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 336,
+      "y": 82
+    },
+    {
+      "action": "repaint",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 272,
+      "y": 118
+    },
+    {
+      "action": "suspend",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 304,
+      "y": 118
+    },
+    {
+      "action": "new_zone_type",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 120,
+      "y": 358
+    },
+    {
+      "action": "world_map",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": false,
+        "context": 0,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "zone",
+      "x": 1050,
+      "y": 430
+    },
+    {
+      "action": "location",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 304,
+      "y": 190
+    },
+    {
+      "action": "details",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 336,
+      "y": 190
+    },
+    {
+      "action": "owner",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 336,
+      "y": 154
+    },
+    {
+      "action": "rename",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 336,
+      "y": 82
+    },
+    {
+      "action": "repaint",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 272,
+      "y": 118
+    },
+    {
+      "action": "suspend",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 304,
+      "y": 118
+    },
+    {
+      "action": "new_zone_type",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 120,
+      "y": 358
+    },
+    {
+      "action": "world_map",
+      "after": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "before": {
+        "active": true,
+        "bottom": 3,
+        "chooser_open": true,
+        "context": 1,
+        "current_zone": 23,
+        "details_open": true,
+        "focus": [
+          "dwarfmode/Zone/Some/Bedroom",
+          "dwarfmode/LocationSelector/Default",
+          "dwarfmode/LocationDetails"
+        ],
+        "location": 1,
+        "name": "",
+        "owner": 6538,
+        "selected": 1,
+        "textbox": false,
+        "unit_selector": false,
+        "zone_type": 92
+      },
+      "route": "chooser",
+      "x": 1050,
+      "y": 430
+    }
+  ],
+  "frame": 0,
+  "provenance": {
+    "source": "build/location-details-parent-input-20260930-065309/native-details-parent-input.json",
+    "sha256": "5fc2d729cbc8eed5fcd8de7c77dde4bf01ac6a1b3dca9a7961c97f4577fdeb6c",
+    "method": "Protected owned never-saved clone. Native Details opened from both assigned-zone and chooser routes. Sixteen parent-control/map clicks; observed UI and semantic zone fields remain unchanged. Both save manifests unchanged."
+  },
+  "omissions": [
+    "No Escape outer-dispatch acceptance.",
+    "No global HUD, overlay, keyboard focus/shortcut, wheel or drag acceptance."
+  ],
+  "validation": {
+    "source": "build/areas-acceptance-20260930-065537",
+    "status": "passed_with_known_issues",
+    "controls": {
+      "chooser": [
+        "location",
+        "owner",
+        "rename",
+        "repaint",
+        "suspend",
+        "new_zone_type",
+        "world_map"
+      ],
+      "zone": [
+        "location",
+        "location_details",
+        "owner",
+        "rename",
+        "repaint",
+        "suspend",
+        "new_zone_type",
+        "world_map"
+      ]
+    },
+    "checks": [
+      "actual main fortress scene viewport clicks through both Details entry routes",
+      "parent clicks and map clicks preserve Details/zone/route/drafts and submit no request",
+      "native guard_before/guard_after facts unchanged",
+      "six chooser and fourteen assigned-zone entry/Back routes repeated",
+      "seven location creation/removal/reassignment scenarios and existing access/staff candidate checks repeated",
+      "final pause, fixture cleanup, preferences and both unchanged save manifests"
+    ],
+    "diagnostics": "known Godot thread notice only; no unclassified diagnostics",
+    "files": {
+      "details-parent-input.json": "2ad68f1ee59cc8588f438b4b9e808a594756a5bf35391cfa7ed9a23ecf9f3dc1",
+      "result.json": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "native_version": "DF53.16 build24557528",
+  "protocol_version": 31,
+  "native_control_source": "build/roller-native-20260930-133828",
+  "native_default": 50000,
+  "native_buttons": [
+    {
+      "speed": 10000,
+      "hit_pixel": [
+        776,
+        150
+      ],
+      "top_left_cell": [
+        95,
+        11
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "speed": 20000,
+      "hit_pixel": [
+        816,
+        150
+      ],
+      "top_left_cell": [
+        100,
+        11
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "speed": 30000,
+      "hit_pixel": [
+        856,
+        150
+      ],
+      "top_left_cell": [
+        105,
+        11
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "speed": 40000,
+      "hit_pixel": [
+        896,
+        150
+      ],
+      "top_left_cell": [
+        110,
+        11
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "speed": 50000,
+      "hit_pixel": [
+        936,
+        150
+      ],
+      "top_left_cell": [
+        115,
+        11
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    }
+  ],
+  "native_sha256": {
+    "controls.json": "913e551c3c7a6255fdb6776adcf3c2d1908b9d51b7a06a3cd1c4cff0de31e1c8",
+    "choices.json": "af88ef1b350bbecd520e9966cc601a05b2a2d51405af2d2213279aa1fdd58ef1",
+    "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+    "capture-inputs.json": "ae1d3ca1fe5d29275f3854170360d6e809a9cfc0da53c54ed56423009c307921",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+  },
+  "semantic_effect_source": "build/construction-acceptance-20260930-133402",
+  "semantic_status": "passed_with_known_issues",
+  "semantic_sha256": {
+    "godot.log": "69f3383fb1ed2ad7e193744bc7db2a01fb3eb8717e93c903d6ea4c5c523c0198",
+    "native.log": "89201165cae814097822133fbfa16cb3c1f6ee525819af0a3f2f5d4418c80f0d",
+    "binaries.log": "ba2fa536d24cfe75a84fe6218d79fa10428d82f0705a09df2f02f8077f06ca84",
+    "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "summary.txt": "aa1cbc2a250a2db5ee4de51b7cb117376cfef9e7aeec3a57ee03ded3b654cfe1",
+    "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+    "save-preservation.txt": "bc6bedf0566f142d04c8700376a92441c7518515ca98b6385f03f7a31264435a",
+    "godot-diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234"
+  },
+  "gpu_source": "build/qa/construction-diagnostic-copy-20260930",
+  "gpu_status": "passed_with_known_issues",
+  "gpu_sha256": {
+    "summary.json": "3df555c8f2ca64ac7ddd739eeeab844e556a51452ae03727ec0e0cd33607de4a",
+    "build_menu_capture.log": "d32445642d5d64cc5d836d14ec0d5dcbb323935d69bed20c58d216478fe65f39"
+  },
+  "gpu_screenshots": {
+    "controller_rollers_10000.png": "37dea55e520f52973bb735bcdd19cf8eca8f36a78a540fb86d791cbd565ecd6c",
+    "controller_rollers_20000.png": "ac2ebe9ed4438ae5e6830f49e209f775621f5f69216a95baaa8b0016d60e916d",
+    "controller_rollers_30000.png": "77507a3c3b117896c56ed081b94dcbeb124b7b08d6d837eb3b1ec927a2da3bbf",
+    "controller_rollers_40000.png": "da5a7e62965cfa6a423c44e0dcfa8a54c615befaa7116dff177b158101606864",
+    "controller_rollers_50000.png": "95ca84f9a5beae6fccbd1b613b9bfca9a8abe8c130db59c9c6e0637cd232a387"
+  },
+  "verified": [
+    "Native button clicks select all five values without assigning widget state.",
+    "Actual native buildings receive each semantic requested speed; all five placements read back.",
+    "Actual Godot viewport pointer events select all five buttons.",
+    "Native one-cell horizontal gaps restored; no invented unsupported-speed tooltip.",
+    "Owned source saves unchanged after native capture and semantic effect."
+  ],
+  "layout_limits": [
+    "Godot control origin is2px to the right of native; hint wraps differently in the current panel. Relative button sizes and40px pitch preserved; not pixel-identical whole-panel acceptance."
+  ],
+  "omissions": [
+    "Whole Construction parity/exposure remains open, including TrackStop and PressurePlate options."
+  ],
+  "gpu_screenshot_source": "build/qa/construction-diagnostic-copy-20260930/screenshots"
+}

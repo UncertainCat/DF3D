@@ -1,0 +1,801 @@
+{
+  "scope": "Native Windows Escape dispatch, isolated from prior SELECT trials. Three consecutive key-down/up events in each protected owned paused never-saved clone. Escape opens Options and clears nested location/zone panels, closes Options, then reopens Options from Default.",
+  "cases": [
+    {
+      "source": "build/location-escape-dispatch-20260930-070133/native-escape-dispatch.json",
+      "sha256": "8c1c46b80c1c010f12d24f91e6d029d89e64e06e50235b6c4e00569f505f835b",
+      "filter_focused": false,
+      "key_down_ms": 70,
+      "steps": [
+        {
+          "step": 1,
+          "before": {
+            "active": true,
+            "details_open": true,
+            "chooser_open": true,
+            "focused": false,
+            "listening": false,
+            "bottom": 3,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Zone/Some/Bedroom",
+              "dwarfmode/UnitSelector/OCCUPATION_ASSIGNMENT",
+              "dwarfmode/LocationSelector/Default",
+              "dwarfmode/LocationDetails"
+            ],
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": true,
+                "details_open": true,
+                "chooser_open": true,
+                "focused": false,
+                "listening": false,
+                "bottom": 3,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Zone/Some/Bedroom",
+                  "dwarfmode/UnitSelector/OCCUPATION_ASSIGNMENT",
+                  "dwarfmode/LocationSelector/Default",
+                  "dwarfmode/LocationDetails"
+                ],
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 204,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        },
+        {
+          "step": 2,
+          "before": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Default"
+            ],
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 62,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Default"
+                ],
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "before": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Default"
+            ],
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Default"
+                ],
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 63,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        }
+      ],
+      "save_preservation_sha256": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    {
+      "source": "build/location-escape-dispatch-20260930-070401/native-escape-dispatch.json",
+      "sha256": "6bd69c1cf6bc0d68601f820faf7743015f5d3fd0667fd459af3c22ec23f76895",
+      "filter_focused": true,
+      "key_down_ms": 70,
+      "steps": [
+        {
+          "step": 1,
+          "before": {
+            "active": true,
+            "details_open": true,
+            "chooser_open": true,
+            "focused": true,
+            "listening": true,
+            "bottom": 3,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Zone/Some/Bedroom",
+              "dwarfmode/UnitSelector/OCCUPATION_ASSIGNMENT",
+              "dwarfmode/LocationSelector/Default",
+              "dwarfmode/LocationDetails"
+            ],
+            "options_open": false,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "options_open": true,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": true,
+                "details_open": true,
+                "chooser_open": true,
+                "focused": true,
+                "listening": true,
+                "bottom": 3,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Zone/Some/Bedroom",
+                  "dwarfmode/UnitSelector/OCCUPATION_ASSIGNMENT",
+                  "dwarfmode/LocationSelector/Default",
+                  "dwarfmode/LocationDetails"
+                ],
+                "options_open": false,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 219,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "options_open": true,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        },
+        {
+          "step": 2,
+          "before": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "options_open": true,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Default"
+            ],
+            "options_open": false,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "options_open": true,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 31,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Default"
+                ],
+                "options_open": false,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "before": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Default"
+            ],
+            "options_open": false,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "options_open": true,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Default"
+                ],
+                "options_open": false,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 62,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "options_open": true,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        }
+      ],
+      "save_preservation_sha256": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    },
+    {
+      "source": "build/location-escape-dispatch-20260930-070526/native-escape-dispatch.json",
+      "sha256": "51417b852d0bf52d882e05b175bb142560a473e9535ab93514178e675148264c",
+      "filter_focused": true,
+      "key_down_ms": 30,
+      "steps": [
+        {
+          "step": 1,
+          "before": {
+            "active": true,
+            "details_open": true,
+            "chooser_open": true,
+            "focused": true,
+            "listening": true,
+            "bottom": 3,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Zone/Some/Bedroom",
+              "dwarfmode/UnitSelector/OCCUPATION_ASSIGNMENT",
+              "dwarfmode/LocationSelector/Default",
+              "dwarfmode/LocationDetails"
+            ],
+            "options_open": false,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "options_open": true,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": true,
+                "details_open": true,
+                "chooser_open": true,
+                "focused": true,
+                "listening": true,
+                "bottom": 3,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Zone/Some/Bedroom",
+                  "dwarfmode/UnitSelector/OCCUPATION_ASSIGNMENT",
+                  "dwarfmode/LocationSelector/Default",
+                  "dwarfmode/LocationDetails"
+                ],
+                "options_open": false,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 203,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "options_open": true,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        },
+        {
+          "step": 2,
+          "before": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "options_open": true,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Default"
+            ],
+            "options_open": false,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 0,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "options_open": true,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 63,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Default"
+                ],
+                "options_open": false,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        },
+        {
+          "step": 3,
+          "before": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Default"
+            ],
+            "options_open": false,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "after": {
+            "active": false,
+            "details_open": false,
+            "chooser_open": false,
+            "focused": false,
+            "listening": false,
+            "bottom": -1,
+            "zone": 23,
+            "focus": [
+              "dwarfmode/Options"
+            ],
+            "options_open": true,
+            "options_context": 0,
+            "unit_id": -1,
+            "histfig_id": -1
+          },
+          "transitions": [
+            {
+              "elapsed_ms": 15,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Default"
+                ],
+                "options_open": false,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            },
+            {
+              "elapsed_ms": 31,
+              "state": {
+                "active": false,
+                "details_open": false,
+                "chooser_open": false,
+                "focused": false,
+                "listening": false,
+                "bottom": -1,
+                "zone": 23,
+                "focus": [
+                  "dwarfmode/Options"
+                ],
+                "options_open": true,
+                "options_context": 0,
+                "unit_id": -1,
+                "histfig_id": -1
+              }
+            }
+          ]
+        }
+      ],
+      "save_preservation_sha256": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
+  ],
+  "omissions": [
+    "No runtime physical Escape/Options implementation acceptance.",
+    "No nondefault keybinding/modifier/repeat acceptance.",
+    "No physical Escape acceptance in painting, Multi, other management surfaces or destructive/save confirmations.",
+    "Native Options actions and Settings require independent semantic and presentation acceptance; no save/retire/abandon/quit action was invoked."
+  ],
+  "native_options": {
+    "source": "build/location-escape-dispatch-20260930-070526/native-options.json",
+    "sha256": "5b49482461ecba754896074b6dca6acbb11ea644494325094e9a7fe36112125f",
+    "context": "MAIN_DWARF",
+    "header": "Dwarf Fortress",
+    "options": [
+      {
+        "index": -1,
+        "token": "SAVE_AND_QUIT"
+      },
+      {
+        "index": -1,
+        "token": "SAVE_AND_CONTINUE"
+      },
+      {
+        "index": -1,
+        "token": "RETIRE_FORTRESS"
+      },
+      {
+        "index": -1,
+        "token": "ABANDON_FORTRESS"
+      },
+      {
+        "index": -1,
+        "token": "QUIT_WITHOUT_SAVING"
+      },
+      {
+        "index": -1,
+        "token": "SETTINGS"
+      },
+      {
+        "index": -1,
+        "token": "RETURN"
+      }
+    ],
+    "rendered_rows": [
+      {
+        "y": 22,
+        "x": 67,
+        "text": "Dwarf Fortress"
+      },
+      {
+        "y": 25,
+        "x": 60,
+        "text": "Save and return to title menu"
+      },
+      {
+        "y": 28,
+        "x": 62,
+        "text": "Save and continue playing"
+      },
+      {
+        "y": 31,
+        "x": 54,
+        "text": "Retire the fortress (for the time being)"
+      },
+      {
+        "y": 34,
+        "x": 60,
+        "text": "Abandon the fortress to ruin"
+      },
+      {
+        "y": 37,
+        "x": 65,
+        "text": "Quit without saving"
+      },
+      {
+        "y": 40,
+        "x": 70,
+        "text": "Settings"
+      },
+      {
+        "y": 43,
+        "x": 67,
+        "text": "Return to game"
+      }
+    ],
+    "image": "build/location-escape-dispatch-20260930-070526/native-options.png",
+    "image_sha256": "8b510512df86c9abae19ec7228adf46041df55d810e5aa79db9080eb914d8767"
+  },
+  "implementation_defects": [
+    {
+      "file": "presentations/godot/project/scripts/ui_host.gd",
+      "issue": "Escape dispatch calls handle_back on active panels, which proves only one-level local navigation and does not open native Options."
+    },
+    {
+      "file": "presentations/godot/project/scripts/areas.gd",
+      "issue": "Escape and right-click share handle_back; native physical Escape in the captured nested location flow opens Options and closes all those panels."
+    },
+    {
+      "file": "presentations/godot/project/scripts/fortress_hud.gd",
+      "issue": "Existing Game menu is not the native Options menu. Its Game/Close/Save game/Camera help content and actions do not reproduce the captured seven-option menu; do not use it as a parity substitute."
+    }
+  ]
+}

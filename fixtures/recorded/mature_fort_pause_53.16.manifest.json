@@ -6,10 +6,32 @@
   },
   "files": {
     "mature_fort_pause_53.16.df3dfix.gz": {
-      "sha256": "5062bbd11fd0432711b135ca6af284b455020d77f388a51d92b92b5898f159d1",
-      "uncompressed_sha256": "8d117421ef55853fb478de19673fae90d748140b54ab6381e014878d28f8da88",
-      "uncompressed_bytes": 63941328
+      "sha256": "3d8969bd84c3f446351495799553a5fce7db725b1ed604ab398afd7a856abec5",
+      "uncompressed_sha256": "e27cb69583a40689023afeb1b5e8067ee87d885d475122a4270143c821deda35",
+      "uncompressed_bytes": 98592208
     }
   },
-  "provenance_note": "Recorded from a maintainer development fortress on the supported build. Numeric bridge recording only: no game text or art. Personal paths absent. Expand with tools/qa/expand_fixtures.py; the uncompressed .df3dfix is not tracked."
+  "provenance_note": "Captured from a paused, owned clone of the maintainer development fortress on DF 53.16 with management 53, snapshot schema 11 and resident grid 6. Pointer-free semantic bridge data only; no game artwork or audio. The source save and clone hashes were verified unchanged and the owned session ended without saving. This is a fresh capture, not a schema migration; it does not establish running simulation or deep-pit coverage.",
+  "schema_version": 11,
+  "view": {
+    "top_z": 165,
+    "x": 132,
+    "y": 72,
+    "distance": 60,
+    "tick": 0
+  },
+  "capture": {
+    "date": "2026-10-06",
+    "bridge_sha256": "39eb30bf3f01f935be996558495158ebe58392dac821b5073999f704e16bea69",
+    "map_size": [
+      192,
+      192,
+      193
+    ],
+    "paused": true,
+    "native_frame": 0,
+    "evidence": "build/notes/height-benchmark/occluder-inset1",
+    "source_unchanged": true,
+    "clone_unchanged": true
+  }
 }

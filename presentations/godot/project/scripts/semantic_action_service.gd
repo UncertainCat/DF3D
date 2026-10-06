@@ -6,6 +6,7 @@ const Status = Contract.ManagementStatus
 signal session_changed
 signal completed(ticket: int, result: Dictionary)
 var world
+var _split_payload := false
 var timeout_seconds := 15.0
 var retention_limit := 128
 var _next_ticket := 1
@@ -18,9 +19,17 @@ var _epoch := 0
 var _generation := -1
 var _invalidating := false
 var _transport_lost := false
+var _bootstrap := false
+var _needs_claim := false
+var _claim_delay := 0.0
+var _continuation_ticket := 0
+var _continuation_domain := ""
+var _continuation_used := false
 
-func configure(source) -> void:
+func configure(source, bootstrap := false) -> void:
+	_bootstrap = bootstrap; _needs_claim = bootstrap; _claim_delay = 0.0
 	world = source
+	_split_payload = world.has_method("poll_management_header") and world.has_method("management_payload")
 	world.reconnect_management()
 
 func submit(domain: String, request: Dictionary, observer: Callable) -> int:
@@ -45,6 +54,21 @@ func detach(ticket: int) -> void:
 				"message": "Draft cancelled before submission"})
 			_requests.erase(ticket)
 	if _outcomes.has(ticket): _outcomes[ticket].detached = true
+
+func submit_continuation(previous: int, domain: String, request: Dictionary, observer: Callable) -> int:
+	# A successful mutation's one-shot observer may finish its existing intent
+	# before later queued interactions. This is not a retry or a general priority
+	# queue: authority expires on returning from that observer, and cannot cross
+	# domains, rejection, unknown outcomes or epoch invalidation.
+	var action = request.get("action",-1)
+	if previous <= 0 or previous != _continuation_ticket or _continuation_used or domain != _continuation_domain:
+		return 0
+	if typeof(action) != TYPE_INT or not Contract.is_mutation(action) or Contract.domain_of(action) != domain: return 0
+	var ticket := submit(domain,request,observer)
+	if ticket != 0:
+		_continuation_used = true
+		_queue.erase(ticket); _queue.push_front(ticket)
+	return ticket
 
 func result(ticket: int) -> Dictionary:
 	return _results.get(ticket, {}).duplicate(true)
@@ -74,11 +98,22 @@ func _publish(ticket: int, state: Dictionary) -> void:
 		_outcomes.erase(expired)
 	var observer: Callable = item.observer
 	item.observer = Callable()
-	completed.emit(ticket, state.duplicate(true))
-	if observer.is_valid(): observer.call(ticket, state.duplicate(true), item.request.duplicate(true))
+	var previous_ticket := _continuation_ticket
+	var previous_domain := _continuation_domain
+	var previous_used := _continuation_used
+	_continuation_ticket = 0; _continuation_domain = ""; _continuation_used = false
+	if completed.has_connections(): completed.emit(ticket, state.duplicate(true))
+	if not _invalidating and not item.unknown and int(item.sequence) > 0 and int(state.get("status",Status.Rejected)) == Status.Ok and str(state.get("outcome","")) != "unknown" and typeof(raw_action) == TYPE_INT and Contract.is_mutation(raw_action):
+		_continuation_ticket = ticket; _continuation_domain = str(item.domain)
+	# poll_management returns an owned value; retention and signal delivery above
+	# already have isolated copies. Transfer this last local copy to the one-shot
+	# observer instead of copying every material candidate yet again.
+	if observer.is_valid(): observer.call(ticket, state, item.request.duplicate(true))
+	_continuation_ticket = previous_ticket; _continuation_domain = previous_domain; _continuation_used = previous_used
 
 func _invalidate(message: String = "The world changed before this action was confirmed; it will not be retried automatically") -> void:
 	_invalidating = true
+	_needs_claim = _bootstrap; _claim_delay = 0.0
 	session_changed.emit()
 	var invalidated := _requests.keys()
 	_queue.clear()
@@ -91,7 +126,7 @@ func _invalidate(message: String = "The world changed before this action was con
 
 func poll(delta: float = 0.0) -> void:
 	if world == null: return
-	var state: Dictionary = world.poll_management()
+	var state: Dictionary = world.poll_management_header() if _split_payload else world.poll_management()
 	# Only confirmed producer loss releases an uncertain sent operation. An
 	# elapsed timeout alone must keep draining its durable private receipt.
 	if not bool(state.get("transport_alive", true)):
@@ -117,20 +152,40 @@ func poll(delta: float = 0.0) -> void:
 		_transport_lost = false
 		# Reconcile model identity first: a new generation must not invalidate
 		# the replacement connection's fresh read-only claim.
-		submit("construction", {"action": Action.Catalog}, Callable())
+		if not _bootstrap: submit("construction", {"action": Action.Catalog}, Callable())
 	if _active != 0:
 		var ticket := _active
 		var item: Dictionary = _requests[ticket]
 		item.elapsed += maxf(0.0, delta)
 		var terminal := int(state.get("status", Status.Idle)) in [Status.Ok, Status.Rejected]
 		if terminal and int(state.get("request_seq", 0)) == int(item.sequence):
+			if _split_payload:
+				state = world.management_payload(epoch,int(state.get("revision",0)),int(item.sequence))
+				if state.is_empty(): return # Identity changed; retain the ticket and drain.
 			_active = 0
+			if (int(state.get("area",{}).get("location_entry_outcome",0)) == Contract.LocationEntryOutcome.Unknown
+				or int(state.get("area",{}).get("location_edit_outcome",0)) == Contract.LocationEditOutcome.Unknown
+				or int(state.get("construction",{}).get("outcome",0)) == Contract.ConstructionOutcome.Unknown):
+				state["outcome"] = "unknown"
+			elif int(state.get("construction",{}).get("outcome",0)) == Contract.ConstructionOutcome.Partial:
+				state["outcome"] = "partial"
 			_publish(ticket, state)
 			_requests.erase(ticket)
 		elif not item.unknown and (float(item.elapsed) >= timeout_seconds or (int(state.get("revision", 0)) == 0 and int(state.get("status", Status.Idle)) == Status.Rejected)):
 			item.unknown = true
 			_publish(ticket, {"status": Status.Rejected, "outcome": "unknown", "message": "The result is unknown; it will not be retried automatically"})
 			# Keep draining this sequence: releasing a timed-out mutation could overwrite its receipt.
+	if _active == 0 and _needs_claim:
+		_claim_delay = maxf(0.0, _claim_delay - maxf(0.0, delta))
+		if _claim_delay > 0.0 or epoch <= 0 or not world.is_live(): return
+		# The native client requires its own Catalog receipt before any other
+		# request. Claim first on startup and after session invalidation.
+		var claim := submit("construction", {"action": Action.Catalog}, func(_ticket, result, _sent):
+			if int(result.get("status", Status.Rejected)) != Status.Ok or int(result.get("action", -1)) != Action.Catalog or result.get("outcome", "") == "unknown":
+				_needs_claim = true; _claim_delay = 0.5)
+		if claim == 0: return
+		_needs_claim = false
+		_queue.erase(claim); _queue.push_front(claim)
 	if _active != 0 or _queue.is_empty(): return
 	var ticket: int = _queue.pop_front()
 	var item: Dictionary = _requests[ticket]

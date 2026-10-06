@@ -46,15 +46,23 @@ struct Publisher {
   }
   void publish(uint64_t rev, m::SessionPhase phase, uint64_t seq=0,
                m::LoadRequestStatus status=m::LoadRequestStatus::None, bool empty=false,
-               m::SessionAction action=m::SessionAction::LoadFortress, const std::string& savedId={}) {
+               m::SessionAction action=m::SessionAction::LoadFortress, const std::string& savedId={},uint64_t requestEpoch=0) {
     flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<m::FortressSave>> saves;
     if (!empty) saves.push_back(m::CreateFortressSave(b,b.CreateString("save-a"),b.CreateString("Fort A"),b.CreateString("World A"),100));
-    const bool loaded = phase == m::SessionPhase::Ready || phase == m::SessionPhase::Saving;
+    const bool loaded = phase == m::SessionPhase::Ready || phase == m::SessionPhase::Saving || phase==m::SessionPhase::Unloading;
     auto s = m::CreateSessionState(b,m::kSessionVersion,rev,phase,b.CreateVector(saves),0,seq,status,0,
         action,loaded,true,loaded ? 105:0,loaded ? 33600:0,b.CreateString(loaded ? "Fort A":""),
-        phase==m::SessionPhase::Ready,phase==m::SessionPhase::Ready,b.CreateString(savedId),loaded ? 71 : 0,0,0,0,0,true,lastClient);
+        phase==m::SessionPhase::Ready,phase==m::SessionPhase::Ready,b.CreateString(savedId),loaded ? 71 : 0,0,0,0,0,true,lastClient,requestEpoch);
     b.Finish(s); REQUIRE(write(b.GetBufferPointer(),b.GetSize()));
+  }
+  void publishIdentity(uint64_t rev, bool valid, const std::string& original, int16_t rank, bool capital, int8_t moon=-1) {
+    flatbuffers::FlatBufferBuilder b;
+    auto name=b.CreateString(original);
+    m::SessionStateBuilder s(b);s.add_schema_version(m::kSessionVersion);s.add_revision(rev);
+    s.add_phase(valid?m::SessionPhase::Ready:m::SessionPhase::Menu);s.add_fortress_valid(valid);
+    s.add_fort_original_name(name);s.add_fortress_rank(rank);s.add_fortress_capital(capital);s.add_moon_phase(moon);
+    b.Finish(s.Finish());REQUIRE(write(b.GetBufferPointer(),b.GetSize()));
   }
   void publishInterruption(uint64_t rev,uint64_t epoch,uint64_t receipt,uint32_t count,
       uint64_t seq=0,m::LoadRequestStatus status=m::LoadRequestStatus::None,
@@ -66,7 +74,7 @@ struct Publisher {
       passive && receipt && phase==m::SessionPhase::Ready && status!=m::LoadRequestStatus::Pending);
     m::SessionStateBuilder s(b);s.add_schema_version(m::kSessionVersion);s.add_revision(rev);s.add_phase(phase);
     s.add_request_client_id(lastClient);s.add_request_seq(seq);s.add_request_status(status);s.add_request_action(m::SessionAction::AcknowledgeAnnouncement);
-    s.add_fortress_valid(loaded);s.add_paused(true);s.add_fortress_epoch(epoch);s.add_interruption(notice);
+    s.add_fortress_valid(loaded);s.add_paused(true);s.add_fortress_epoch(epoch);s.add_interruption(notice);s.add_request_fortress_epoch(epoch);
     b.Finish(s.Finish());
     REQUIRE_FALSE(m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())).has_value());
     REQUIRE(write(b.GetBufferPointer(),b.GetSize()));
@@ -158,9 +166,8 @@ TEST_CASE("session save uses no path, retains matching result, and carries autho
   CHECK(reconnect->state().requestStatus==wm::LoadRequestStatus::None); CHECK(reconnect->sendSave(false,"Checkpoint 1")==0);
   p.publish(3,m::SessionPhase::Ready,seq,m::LoadRequestStatus::Ok,false,m::SessionAction::SaveContinue);
   REQUIRE(reconnect->poll()); CHECK(reconnect->state().requestStatus==wm::LoadRequestStatus::None);
-  CHECK(reconnect->sendSave(true)==1);
-  REQUIRE(p.pop(bytes,sizeof(bytes))>0);
-  CHECK(flatbuffers::GetRoot<m::SessionCommand>(bytes)->action()==m::SessionAction::SaveReturn);
+  CHECK(reconnect->sendSave(true)==0);
+  CHECK(p.pop(bytes,sizeof(bytes))==0);
   sh::atomicStoreRelease(&m::sessionOwner(p.r)->pid,0);
   REQUIRE(c->poll()); CHECK_FALSE(c->state().fortressValid); CHECK(c->sendSave(false,"Checkpoint 1")==0);
 }
@@ -168,6 +175,8 @@ TEST_CASE("only global lifecycle session actions remain executable") {
   CHECK(m::runtimeSessionAction(m::SessionAction::LoadFortress));
   CHECK(m::runtimeSessionAction(m::SessionAction::SaveContinue));
   CHECK(m::runtimeSessionAction(m::SessionAction::SaveReturn));
+  CHECK(m::runtimeSessionAction(m::SessionAction::ReadSaveDestinations));
+  CHECK(m::runtimeSessionAction(m::SessionAction::QuitWithoutSaving));
   for(int action=int(m::SessionAction::AcknowledgeAnnouncement);action<=int(m::SessionAction::ClosePetition);++action)
     CHECK_FALSE(m::runtimeSessionAction(static_cast<m::SessionAction>(action)));
 }
@@ -179,7 +188,11 @@ TEST_CASE("session schema validates versions enums metadata and request ownershi
   CHECK(m::validateSessionCommand(*flatbuffers::GetRoot<m::SessionCommand>(b.GetBufferPointer())).has_value());
   CHECK_FALSE(m::validSaveId("")); CHECK_FALSE(m::validSaveId(std::string(2049,'x')));
   CHECK(m::validCheckpointName("My fort 105-Granite"));
-  for (const auto* name : {"", "../region1", "C:/save", " leading", "trailing ", "NUL", "con", "COM1"})
+  CHECK(m::validCheckpointName("df3d.manual-0930081415")); // native effect081415
+  CHECK(m::validCheckpointName(std::string(40,'x')));
+  CHECK_FALSE(m::validCheckpointName(std::string(41,'x')));
+  for (const auto* name : {"", "../region1", "C:/save", " leading", "trailing ", "NUL", "con", "COM1",
+                          "NUL.save", "con .save", "COM1.test", "fort.", ".", ".."})
     CHECK_FALSE(m::validCheckpointName(name));
   for (int which=0; which<3; ++which) {
     b.Clear(); auto bad=m::CreateSessionCommand(b,m::kSessionVersion,1,
@@ -388,11 +401,11 @@ TEST_CASE("petition transport retains exact review identity and consumes pending
 
 TEST_CASE("fortress resource statistics reject invalid counts and clear stale data") {
   Publisher p;
-  auto publish=[&](uint64_t rev,uint64_t epoch,bool available,std::vector<int32_t> counts,bool loaded=true) {
+  auto publish=[&](uint64_t rev,uint64_t epoch,bool available,std::vector<int32_t> counts,bool loaded=true,int32_t precision=-1) {
     flatbuffers::FlatBufferBuilder b;
     std::vector<uint32_t> stress(7);
     auto summary=m::CreateFortressSummary(b,177,b.CreateVector(stress),false,-129,256,
-      counts.empty()?0:b.CreateVector(counts),available);
+      counts.empty()?0:b.CreateVector(counts),available,precision);
     m::SessionStateBuilder state(b);state.add_schema_version(m::kSessionVersion);state.add_revision(rev);
     state.add_phase(loaded?m::SessionPhase::Ready:m::SessionPhase::Menu);
     state.add_fortress_valid(loaded);state.add_fortress_epoch(loaded?epoch:0);
@@ -407,13 +420,17 @@ TEST_CASE("fortress resource statistics reject invalid counts and clear stale da
   CHECK_FALSE(publish(1,71,true,{1,2,3,4,5,6,7,8}));
   CHECK_FALSE(publish(1,71,true,{1,2,3,-1,5,6,7}));
   CHECK_FALSE(publish(1,71,false,{0,0,0,0,0,0,0}));
+  CHECK_FALSE(publish(1,71,true,{1,2,3,4,5,6,7},true,-2));
   REQUIRE(publish(1,71,true,{852,135,310,206,14,453,247}));
   std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
   CHECK(c->state().fortressSummary.resourcesAvailable);
+  CHECK(c->state().fortressSummary.bookkeeperPrecision==-1);
   CHECK(c->state().fortressSummary.resourceCounts==std::vector<int32_t>{852,135,310,206,14,453,247});
-  REQUIRE(publish(2,71,true,{0,INT32_MAX,0,0,0,0,0}));REQUIRE(c->poll());
+  REQUIRE(publish(2,71,true,{0,INT32_MAX,0,0,0,0,0},true,1000));REQUIRE(c->poll());
+  CHECK(c->state().fortressSummary.bookkeeperPrecision==1000);
   CHECK(c->state().fortressSummary.resourceCounts[1]==INT32_MAX);
   REQUIRE(publish(3,72,false,{}));REQUIRE(c->poll());
+  CHECK(c->state().fortressSummary.bookkeeperPrecision==-1);
   CHECK_FALSE(c->state().fortressSummary.resourcesAvailable);CHECK(c->state().fortressSummary.resourceCounts.empty());
   REQUIRE(publish(4,72,true,{1,2,3,4,5,6,7}));REQUIRE(c->poll());
   REQUIRE(publish(5,0,false,{},false));REQUIRE(c->poll());
@@ -518,4 +535,238 @@ TEST_CASE("session transport rejects replaced producer identity before sending")
   uint8_t bytes[4096]; CHECK(sh::popCommand(p.r,bytes,sizeof(bytes))==0);
   REQUIRE(c->poll()); CHECK(c->state().phase==wm::SessionPhase::Unavailable);
 }
+TEST_CASE("explicit save catalog is private and preserves intent bytes and originating epoch") {
+  Publisher p;p.publish(1,m::SessionPhase::Ready);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  CHECK(c->sendSaveReturn(71,9,wm::SaveReturnMode::NewFolder)==0);
+  auto seq=c->sendReadSaveDestinations(71);REQUIRE(seq==1);
+  uint8_t bytes[4096];REQUIRE(p.pop(bytes,sizeof(bytes))>0);
+  CHECK(flatbuffers::GetRoot<m::SessionCommand>(bytes)->action()==m::SessionAction::ReadSaveDestinations);
+  auto publishCatalog=[&](uint64_t rev) {
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<m::SaveDestination>> destinations{m::CreateSaveDestination(b,b.CreateString("9:0"),b.CreateString("region16"))};
+    auto catalog=m::CreateSaveDestinationCatalog(b,9,71,b.CreateVector(destinations));
+    m::SessionStateBuilder state(b);state.add_schema_version(m::kSessionVersion);state.add_revision(rev);
+    state.add_phase(m::SessionPhase::Ready);state.add_fortress_valid(true);state.add_fortress_epoch(71);state.add_can_save_return(true);
+    state.add_request_seq(seq);state.add_request_client_id(p.lastClient);state.add_request_status(m::LoadRequestStatus::Ok);
+    state.add_request_action(m::SessionAction::ReadSaveDestinations);state.add_request_fortress_epoch(71);state.add_save_destinations(catalog);
+    b.Finish(state.Finish());REQUIRE_FALSE(m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())));
+    REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));
+  };
+  publishCatalog(2);REQUIRE(c->poll());
+  auto other=wm::SessionClient::open(error,p.name);REQUIRE(other);REQUIRE(other->poll());
+  CHECK(other->state().saveDestinations.receipt==0);
+  CHECK(c->state().saveDestinations.destinations.at(0).folder=="region16");
+  CHECK(c->sendSaveReturn(72,9,wm::SaveReturnMode::NewFolder)==0);
+  CHECK(c->sendSaveReturn(71,8,wm::SaveReturnMode::NewFolder)==0);
+  CHECK(c->sendSaveReturn(71,9,wm::SaveReturnMode::ExistingDestination,"region16")==0);
+  CHECK(c->sendSaveReturn(71,9,wm::SaveReturnMode::NewFolder,"9:0")==0);
+  CHECK(c->sendSaveReturn(71,9,wm::SaveReturnMode::NewTimeline,{},std::vector<uint8_t>(41,'x'))==0);
+  const std::vector<uint8_t> name{'a','/',0xc3};
+  seq=c->sendSaveReturn(71,9,wm::SaveReturnMode::NewTimeline,{},name);REQUIRE(seq==2);
+  REQUIRE(p.pop(bytes,sizeof(bytes))>0);
+  const auto* command=flatbuffers::GetRoot<m::SessionCommand>(bytes);
+  CHECK(command->save_return_mode()==m::SaveReturnMode::NewTimeline);CHECK(command->save_catalog_receipt()==9);
+  CHECK(std::vector<uint8_t>(command->timeline_name()->begin(),command->timeline_name()->end())==name);
+  CHECK_FALSE(m::validateSessionCommand(*command));
+  CHECK(c->sendSaveReturn(71,9,wm::SaveReturnMode::NewFolder)==0);
+  flatbuffers::FlatBufferBuilder b;auto saved=b.CreateString("owned/region-new");
+  m::SessionStateBuilder state(b);state.add_schema_version(m::kSessionVersion);state.add_revision(3);state.add_phase(m::SessionPhase::Menu);
+  state.add_request_seq(seq);state.add_request_client_id(p.lastClient);state.add_request_status(m::LoadRequestStatus::Ok);
+  state.add_request_action(m::SessionAction::SaveReturn);state.add_request_fortress_epoch(71);state.add_saved_save_id(saved);
+  b.Finish(state.Finish());REQUIRE(p.write(b.GetBufferPointer(),b.GetSize()));REQUIRE(c->poll());
+  CHECK(c->state().fortressEpoch==0);CHECK(c->state().requestFortressEpoch==71);CHECK(c->state().savedSaveId=="owned/region-new");
+}
+TEST_CASE("save destination wire rejects implicit choices and malformed catalogs") {
+  for(int invalid=0;invalid<9;++invalid) {
+    flatbuffers::FlatBufferBuilder b;
+    const std::vector<uint8_t> name=invalid==6?std::vector<uint8_t>(41,'x'):invalid==7?std::vector<uint8_t>{0}:std::vector<uint8_t>{'a','/'};
+    auto command=m::CreateSessionCommand(b,m::kSessionVersion,1,0,
+      invalid==8?m::SessionAction::ReadSaveDestinations:m::SessionAction::SaveReturn,0,71,0,-1,0,1,
+      invalid==0?0:9,invalid==1?m::SaveReturnMode::None:invalid==2?static_cast<m::SaveReturnMode>(255):
+      invalid==3?m::SaveReturnMode::ExistingDestination:invalid==4?m::SaveReturnMode::NewFolder:m::SaveReturnMode::NewTimeline,
+      b.CreateString(invalid==4 || invalid==5?"unexpected":""),b.CreateVector(name));
+    b.Finish(command);CAPTURE(invalid);
+    CHECK(m::validateSessionCommand(*flatbuffers::GetRoot<m::SessionCommand>(b.GetBufferPointer())).has_value());
+  }
+  for(int invalid=0;invalid<5;++invalid) {
+    flatbuffers::FlatBufferBuilder b;
+    auto row=m::CreateSaveDestination(b,b.CreateString("id"),b.CreateString("region16"));
+    std::vector<flatbuffers::Offset<m::SaveDestination>> rows(invalid==2?2:1,row);
+    auto catalog=m::CreateSaveDestinationCatalog(b,invalid==0?0:9,invalid==1?72:71,b.CreateVector(rows));
+    m::SessionStateBuilder state(b);state.add_schema_version(m::kSessionVersion);state.add_revision(1);
+    state.add_request_seq(1);state.add_request_fortress_epoch(71);state.add_request_status(invalid==3?m::LoadRequestStatus::Rejected:m::LoadRequestStatus::Ok);
+    state.add_request_action(invalid==4?m::SessionAction::SaveReturn:m::SessionAction::ReadSaveDestinations);state.add_save_destinations(catalog);
+    b.Finish(state.Finish());CAPTURE(invalid);
+    CHECK(m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())).has_value());
+  }
+}
+TEST_CASE("producer loss retains unknown save identity before reconnecting at title") {
+  Publisher p;p.publish(1,m::SessionPhase::Ready);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  const auto seq=c->sendSave(false,"owned-checkpoint");REQUIRE(seq==1);
+  uint8_t bytes[4096];REQUIRE(p.pop(bytes,sizeof(bytes))>0);
+  SUBCASE("before producer receipt") {
+    p.lastClient=0;p.publish(2,m::SessionPhase::Ready);REQUIRE(c->poll());
+    CHECK(c->state().requestFortressEpoch==71);
+    sh::atomicStoreRelease(&m::sessionOwner(p.r)->pid,0);
+  }
+  SUBCASE("after pending receipt and generation replacement") {
+    p.publish(2,m::SessionPhase::Saving,seq,m::LoadRequestStatus::Pending,false,m::SessionAction::SaveContinue,{},71);
+    REQUIRE(c->poll());
+    sh::atomicStoreRelease(&m::sessionOwner(p.r)->generation,99);
+  }
+  REQUIRE(c->poll());
+  CHECK(c->state().phase==wm::SessionPhase::Unavailable);
+  CHECK(c->state().requestStatus==wm::LoadRequestStatus::UnknownOutcome);
+  CHECK(c->state().requestSeq==seq);CHECK(c->state().requestFortressEpoch==71);
+  CHECK(c->state().requestAction==wm::SessionAction::SaveContinue);
+  CHECK(c->state().savedSaveId.empty());CHECK_FALSE(c->state().canSave);
+  CHECK(p.pop(bytes,sizeof(bytes))==0);
+  p.reset();p.lastClient=0;p.publish(1,m::SessionPhase::Menu);
+  REQUIRE(c->poll());CHECK(c->state().phase==wm::SessionPhase::Menu);
+  CHECK(c->state().requestStatus==wm::LoadRequestStatus::None);
+  CHECK(p.pop(bytes,sizeof(bytes))==0);
+}
+TEST_CASE("producer replacement rejects pending catalog without inventing an empty success") {
+  Publisher p;p.publish(1,m::SessionPhase::Ready);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  const auto seq=c->sendReadSaveDestinations(71);REQUIRE(seq==1);
+  uint8_t bytes[4096];REQUIRE(p.pop(bytes,sizeof(bytes))>0);
+  p.reset();p.lastClient=0;p.publish(1,m::SessionPhase::Menu);
+  REQUIRE(c->poll());
+  CHECK(c->state().phase==wm::SessionPhase::Unavailable);
+  CHECK(c->state().requestStatus==wm::LoadRequestStatus::Rejected);
+  CHECK(c->state().requestAction==wm::SessionAction::ReadSaveDestinations);
+  CHECK(c->state().requestSeq==seq);CHECK(c->state().requestFortressEpoch==71);
+  CHECK(c->state().saveDestinations.receipt==0);
+  CHECK(c->state().saveDestinations.destinations.empty());
+  REQUIRE(c->poll());CHECK(c->state().phase==wm::SessionPhase::Menu);
+  CHECK(c->state().requestStatus==wm::LoadRequestStatus::None);
+  CHECK(p.pop(bytes,sizeof(bytes))==0);
+}
+TEST_CASE("explicit quit retains originating identity through native unload or producer loss") {
+  Publisher p;p.publish(1,m::SessionPhase::Ready);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  CHECK(c->sendQuitWithoutSaving(0)==0);CHECK(c->sendQuitWithoutSaving(72)==0);
+  const auto seq=c->sendQuitWithoutSaving(71);REQUIRE(seq==1);
+  CHECK(c->sendQuitWithoutSaving(71)==0);
+  uint8_t bytes[4096];REQUIRE(p.pop(bytes,sizeof(bytes))>0);
+  const auto* command=flatbuffers::GetRoot<m::SessionCommand>(bytes);
+  CHECK(command->action()==m::SessionAction::QuitWithoutSaving);CHECK(command->fortress_epoch()==71);
+  CHECK_FALSE(m::validateSessionCommand(*command));
+  p.publish(2,m::SessionPhase::Unloading,seq,m::LoadRequestStatus::Pending,false,m::SessionAction::QuitWithoutSaving,{},71);
+  REQUIRE(c->poll());CHECK(c->state().phase==wm::SessionPhase::Unloading);CHECK_FALSE(c->state().canSave);
+  CHECK(c->sendQuitWithoutSaving(71)==0);
+  SUBCASE("native title completion") {
+    p.publish(3,m::SessionPhase::Menu,seq,m::LoadRequestStatus::Ok,false,m::SessionAction::QuitWithoutSaving,{},71);
+    REQUIRE(c->poll());CHECK(c->state().requestStatus==wm::LoadRequestStatus::Ok);
+    CHECK(c->state().fortressEpoch==0);
+  }
+  SUBCASE("producer ended") {
+    sh::atomicStoreRelease(&m::sessionOwner(p.r)->pid,0);REQUIRE(c->poll());
+    CHECK(c->state().requestStatus==wm::LoadRequestStatus::UnknownOutcome);
+  }
+  CHECK(c->state().requestSeq==seq);CHECK(c->state().requestFortressEpoch==71);
+  CHECK(c->state().requestAction==wm::SessionAction::QuitWithoutSaving);
+  CHECK(c->state().savedSaveId.empty());CHECK(p.pop(bytes,sizeof(bytes))==0);
+}
+TEST_CASE("quit wire rejects destination fields and save-success identity") {
+  for(int variant=0;variant<9;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    auto path=b.CreateString(variant==2?"owned/path":"");auto name=b.CreateString(variant==3?"checkpoint":"");
+    auto destination=b.CreateString(variant==6?"9:0":"");auto timeline=b.CreateVector(std::vector<uint8_t>(variant==8?1:0,'a'));
+    m::SessionCommandBuilder command(b);command.add_schema_version(m::kSessionVersion);command.add_seq(1);command.add_client_id(1);
+    command.add_action(m::SessionAction::QuitWithoutSaving);command.add_fortress_epoch(variant==1?0:71);
+    command.add_save_id(path);command.add_checkpoint_name(name);command.add_save_destination_id(destination);command.add_timeline_name(timeline);
+    command.add_save_catalog_receipt(variant==4?9:0);command.add_interruption_receipt(variant==5?1:0);
+    command.add_save_return_mode(variant==7?m::SaveReturnMode::NewFolder:m::SaveReturnMode::None);
+    b.Finish(command.Finish());CAPTURE(variant);
+    CHECK(m::validateSessionCommand(*flatbuffers::GetRoot<m::SessionCommand>(b.GetBufferPointer())).has_value()==(variant!=0));
+  }
+  for(bool saved:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;auto id=b.CreateString(saved?"owned/save":"");
+    m::SessionStateBuilder state(b);state.add_schema_version(m::kSessionVersion);state.add_revision(1);state.add_phase(m::SessionPhase::Menu);
+    state.add_request_seq(1);state.add_request_action(m::SessionAction::QuitWithoutSaving);state.add_request_fortress_epoch(71);
+    state.add_request_status(m::LoadRequestStatus::Ok);state.add_saved_save_id(id);b.Finish(state.Finish());
+    CHECK(m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())).has_value()==saved);
+  }
+}
+TEST_CASE("session unknown save receipt retires pending transport without replay or success") {
+  Publisher p;p.publish(1,m::SessionPhase::Ready);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  const auto seq=c->sendSave(false,"owned-checkpoint");REQUIRE(seq==1);
+  uint8_t bytes[4096];REQUIRE(p.pop(bytes,sizeof(bytes))>0);
+  p.publish(2,m::SessionPhase::Menu,seq,m::LoadRequestStatus::UnknownOutcome,false,m::SessionAction::SaveContinue,{},71);
+  REQUIRE(c->poll());CHECK(c->state().requestStatus==wm::LoadRequestStatus::UnknownOutcome);
+  CHECK(c->state().requestFortressEpoch==71);CHECK(c->state().savedSaveId.empty());
+  CHECK_FALSE(c->poll());CHECK(p.pop(bytes,sizeof(bytes))==0);
+  auto other=wm::SessionClient::open(error,p.name);REQUIRE(other);REQUIRE(other->poll());
+  CHECK(other->state().requestStatus==wm::LoadRequestStatus::None);
+  for(const auto action:{m::SessionAction::LoadFortress,m::SessionAction::ReadSaveDestinations}) {
+    flatbuffers::FlatBufferBuilder b;m::SessionStateBuilder s(b);s.add_schema_version(m::kSessionVersion);s.add_revision(1);
+    s.add_request_seq(1);s.add_request_action(action);s.add_request_status(m::LoadRequestStatus::UnknownOutcome);s.add_request_fortress_epoch(71);
+    b.Finish(s.Finish());CHECK(m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())).has_value());
+  }
+}
+
+TEST_CASE("alert button wire keeps duplicates but bounds counts and ownership") {
+ for(int mode=0;mode<7;++mode) {
+  flatbuffers::FlatBufferBuilder b;std::vector<int32_t> ids{41,0,41};
+  if(mode==1)ids[1]=-1;
+  if(mode==2)ids.resize(257,41);
+  const auto encoded=b.CreateVector(ids);m::SessionStateBuilder state(b);
+  state.add_revision(1);state.add_fortress_valid(mode!=3);state.add_fortress_epoch(71);
+  state.add_alert_button_report_ids(encoded);state.add_alert_button_report_count(mode==4?2:mode>=5?5:uint32_t(ids.size()));
+  state.add_alert_button_complete(mode!=6);b.Finish(state.Finish());
+  CHECK(bool(m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())))==(mode>=1 && mode<=5));
+ }
+}
 #endif
+
+TEST_CASE("fortress identity transports UTF-8 and clears on unload and producer loss") {
+  Publisher p;p.publishIdentity(1,true,"Roder\xc3\xb2nul",4,false);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  CHECK(c->state().fortOriginalName=="Roder\xc3\xb2nul");CHECK(c->state().fortressRank==4);CHECK_FALSE(c->state().fortressCapital);
+  p.publishIdentity(2,true,"Changed",5,true);REQUIRE(c->poll());
+  CHECK(c->state().fortOriginalName=="Changed");CHECK(c->state().fortressRank==5);CHECK(c->state().fortressCapital);
+  p.publishIdentity(3,false,"",-1,false);REQUIRE(c->poll());
+  CHECK(c->state().fortOriginalName.empty());CHECK(c->state().fortressRank==-1);CHECK_FALSE(c->state().fortressCapital);
+  p.publishIdentity(4,true,"Again",0,true);REQUIRE(c->poll());
+  sh::atomicStoreRelease(&m::sessionOwner(p.r)->pid,0);REQUIRE(c->poll());
+  CHECK(c->state().fortOriginalName.empty());CHECK(c->state().fortressRank==-1);CHECK_FALSE(c->state().fortressCapital);
+}
+TEST_CASE("fortress identity validator rejects invalid ranks, oversize names and unloaded facts") {
+  auto invalid=[](bool valid,const std::string& name,int16_t rank,bool capital) {
+    flatbuffers::FlatBufferBuilder b;auto text=b.CreateString(name);
+    m::SessionStateBuilder s(b);s.add_schema_version(m::kSessionVersion);s.add_revision(1);s.add_fortress_valid(valid);
+    s.add_fort_original_name(text);s.add_fortress_rank(rank);s.add_fortress_capital(capital);
+    b.Finish(s.Finish());return m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer())).has_value();
+  };
+  CHECK_FALSE(invalid(true,"",-1,false));CHECK_FALSE(invalid(true,"Native",5,true));
+  CHECK(invalid(true,"",-2,false));CHECK(invalid(true,"",6,false));CHECK(invalid(true,std::string(4097,'x'),0,false));
+  CHECK(invalid(false,"Native",-1,false));CHECK(invalid(false,"",0,false));CHECK(invalid(false,"",-1,true));
+}
+
+TEST_CASE("moon phase transports independently of calendar and clears on unload") {
+  Publisher p;p.publishIdentity(1,true,"",-1,false,0);
+  std::string error;auto c=wm::SessionClient::open(error,p.name);REQUIRE(c);REQUIRE(c->poll());
+  CHECK(c->state().moonPhase==0);
+  for(int phase=1;phase<28;++phase) {
+    p.publishIdentity(phase+1,true,"",-1,false,int8_t(phase));REQUIRE(c->poll());
+    CHECK(c->state().moonPhase==phase);CHECK(c->state().yearTick==0);
+  }
+  p.publishIdentity(29,true,"",-1,false);REQUIRE(c->poll());CHECK(c->state().moonPhase==-1);
+  p.publishIdentity(30,true,"",-1,false,12);REQUIRE(c->poll());
+  p.publishIdentity(31,false,"",-1,false);REQUIRE(c->poll());CHECK(c->state().moonPhase==-1);
+  p.publishIdentity(32,true,"",-1,false,27);REQUIRE(c->poll());
+  sh::atomicStoreRelease(&m::sessionOwner(p.r)->pid,0);REQUIRE(c->poll());CHECK(c->state().moonPhase==-1);
+}
+TEST_CASE("moon phase validator rejects unknown ranges and unloaded phases") {
+  for(int phase: {-2,-1,0,27,28}) for(bool loaded: {false,true}) {
+    flatbuffers::FlatBufferBuilder b;m::SessionStateBuilder s(b);
+    s.add_schema_version(m::kSessionVersion);s.add_revision(1);s.add_fortress_valid(loaded);s.add_moon_phase(int8_t(phase));
+    b.Finish(s.Finish());auto error=m::validateSessionState(*flatbuffers::GetRoot<m::SessionState>(b.GetBufferPointer()));
+    CHECK(error.has_value()==(phase < -1 || phase>27 || (!loaded && phase!=-1)));
+  }
+}

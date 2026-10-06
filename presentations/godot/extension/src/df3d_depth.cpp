@@ -68,19 +68,28 @@ godot::Dictionary Df3dWorld::item_physical_layout() const {
 
 bool Df3dWorld::layout_matches_reference() const {
     mesher::DepthSceneSources source;
-    source.generation=source_.model().sessionGeneration();source.top=topZ_;source.window=windowDepth_;
+    source.generation=source_.model().sessionGeneration();source.top=topZ_;source.window=get_window_depth();
     source.reveal=revealHidden_;source.sliceUnits=sliceUnits_;
     for(const auto& [id,value]:buildingFootprintCache_)
         source.buildings.emplace(id,mesher::BuildingFootprintSource{value.version,value.cells,value.foreground});
     const auto plan=mesher::prepareDepthScene(source_.model(),source);
-    if(!plan.valid || plan.units.size()!=size_t(ids_.size()))return false;
-    for(int i=0;i<ids_.size();++i)
-        if(plan.units[i]!=wm::UnitId(ids_[i]) || unitCutoutPositions_[i]!=unitCutoutPosition(i,plan.unitDepth[i].bottom) || unitThicknesses_[i]!=plan.unitDepth[i].thickness)return false;
+    if(!plan.valid)return false;
+    size_t visibleUnits=0;
+    for(size_t i=0;i<plan.units.size();++i) {
+        const auto unit=source_.model().evaluate(plan.units[i],double(source_.model().latestTick()));
+        if(sliceUnits_ && source_.model().hasTerrain() && topZ_>=0 &&
+            unit.pos.z<=topZ_-spriteWindowDepth())continue;
+        const int index=int(visibleUnits++);
+        if(index>=ids_.size() || plan.units[i]!=wm::UnitId(ids_[index]) ||
+            unitCutoutPositions_[index]!=unitCutoutPosition(index,plan.unitDepth[i].bottom) ||
+            unitThicknesses_[index]!=plan.unitDepth[i].thickness)return false;
+    }
+    if(visibleUnits!=size_t(ids_.size()))return false;
     std::map<wm::ItemId,int> quantities;
     size_t materialized=0;
     for(size_t i=0;i<plan.items.size();++i) {
         const auto* item=source_.model().item(plan.items[i]);
-        if(!item || !presentationTileDemanded(item->pos))continue;
+        if(!item || !zInSpriteWindow(item->pos.z) || !presentationTileDemanded(item->pos))continue;
         ++materialized;
         const auto found=itemInstanceIndices_.find(plan.items[i]);
         const auto ordinal=quantities[plan.items[i]]++;

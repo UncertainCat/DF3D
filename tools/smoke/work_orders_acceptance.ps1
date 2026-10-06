@@ -1,6 +1,7 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}),
+ [ValidateSet('restart','inprocess')][string]$Route='restart', [string]$OwnedSaveManifest='')
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -9,8 +10,18 @@ New-Item -ItemType Directory -Path $out | Out-Null
 $summary='failed startup'; $entered=$false; $loaded=$false; $finalPaused=$false; $g=$null
 $oldInput=$env:DF3D_WORK_ORDERS_ACCEPTANCE
 $deadline=(Get-Date).AddSeconds(7200)
+$sourceProof=$null
+function Source-Manifest([string]$Root) {
+ return (@(Get-ChildItem -LiteralPath $Root -Recurse -File | ForEach-Object {
+  $_.FullName.Substring($Root.Length).TrimStart('\','/')+' '+(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash
+ } | Sort-Object) -join "`n")
+}
 function Write-Lf([string]$Path,[string]$Text) {
  [IO.File]::WriteAllText($Path,($Text -replace "`r`n","`n"),[Text.UTF8Encoding]::new($false))
+}
+function Write-Ack([string]$Path,[string]$Text) {
+ Write-Lf "$Path.tmp" $Text
+ Move-Item -LiteralPath "$Path.tmp" -Destination $Path
 }
 function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  # Lua long strings prevent paths/SaveId from becoming executable Lua text.
@@ -31,8 +42,20 @@ try {
  $entered=$true
  # Compare exact directory names across both DF save roots BEFORE creating a copy.
  # A prefix check would confuse region5 with region50 and does not prove ownership.
- if($SaveId -notmatch '^df3d-work-orders-[A-Za-z0-9_-]+$'){throw 'Expected a new df3d-work-orders-* disposable save name'}
+ if($SaveId -notmatch '^[A-Za-z0-9_-]+$'){throw 'Expected an exact save directory name'}
  $saveRoots=@((Join-Path $DfPath 'save'),(Join-Path $env:APPDATA 'Bay 12 Games/Dwarf Fortress/save'))
+ if($OwnedSaveManifest) {
+  $clone=[IO.Path]::GetFullPath((Join-Path $saveRoots[1] $SaveId)).Replace('\','/')
+  $sourceProof=(Get-Content -LiteralPath $OwnedSaveManifest -Raw).TrimEnd("`r","`n")
+  if((Source-Manifest $clone) -cne $sourceProof){throw 'Owned save differs from its verified SHA256 manifest'}
+  # The native catalog oracle was captured from region5. Establish that exact
+  # provenance from file contents, never by relabelling a related timeline.
+  $original=Join-Path $saveRoots[0] 'region5'
+  $matchesOriginal=(Test-Path -LiteralPath $original -PathType Container) -and ((Source-Manifest $original) -ceq $sourceProof)
+  Write-Lf "$out/source-save-id.txt" $(if($matchesOriginal){'region5'}else{$SaveId})
+  Write-Lf "$out/source-provenance.txt" $(if($matchesOriginal){'Owned clone matches every region5 file by SHA256.'}else{'Owned save verified; exact region5 provenance not established.'})
+ } else {
+ if($SaveId -notmatch '^df3d-work-orders-[A-Za-z0-9_-]+$'){throw 'Expected a new df3d-work-orders-* disposable save name'}
  foreach($saveRoot in $saveRoots) {
   if(Test-Path -LiteralPath $saveRoot) {
    foreach($save in Get-ChildItem -LiteralPath $saveRoot -Directory) {
@@ -51,12 +74,15 @@ try {
   if((Get-FileHash -LiteralPath $file.FullName).Hash -ne (Get-FileHash -LiteralPath (Join-Path $clone $relative)).Hash){throw 'Disposable copy verification failed'}
  }
  Write-Lf "$out/source-save-id.txt" 'region5'
+ $sourceProof=Source-Manifest $clone
+ }
+ Write-Lf "$out/source-manifest.txt" $sourceProof
  Write-Lf "$out/clone-path.txt" $clone
  # 2,100 s native waits + bounded paging/handshakes fit inside the 7,200 s lane cap.
 
  Set-DfPrefs
  Install-DfMenuStartup -DfPath $DfPath
- Start-Df3d -DfPath $DfPath | Out-Null
+ $fixtureProcess=Start-Df3d -DfPath $DfPath
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'INCOMPLETE disposable clone could not be loaded'}
  $loaded=$true
@@ -67,9 +93,6 @@ try {
  $text=$r.Output -join "`n"
  if($text -match 'FIXTURE_INCOMPLETE (.+)'){throw "INCOMPLETE $($Matches[1])"}
  if($text -notmatch 'FIXTURE_READY'){throw 'Fixture failed'}
- # No save-free return/reload exists in the session API. A process restart would
- # destroy the holding array and cannot test step 8's same-DLL lifetime contract.
- Write-Lf "$out/reload.txt" 'incomplete step 8: session load requires Menu; only SaveReturn reaches Menu from a loaded fortress'
  $env:DF3D_WORK_ORDERS_ACCEPTANCE=$out
  $project="$repo/presentations/godot/project"
  $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "--headless --path `"$project`" --script res://tests/work_orders_acceptance_live.gd --log-file `"$out/godot.log`"" -WorkingDir $project
@@ -78,6 +101,32 @@ try {
    $index=[int](Get-Content -Raw "$out/verify.txt")
    Remove-Item -LiteralPath "$out/verify.txt"
    $request=Get-Content -Raw "$out/request-$index.json" | ConvertFrom-Json
+   if($request.op -eq 'reload') {
+    # Once restart begins, the old fixture belongs to the old process only.
+    $loaded=$false
+    $oldFixtureProcess=$fixtureProcess
+    try {
+     $restart=Restart-Df3dFortress -Route $Route -SaveId $clone -SaveRoots @($clone) -EvidenceDir "$out/restart-$index"
+     if($restart.Status -eq 'ready') {
+      $fixtureProcess=Get-Process -Id $restart.Pid
+      $r=Invoke-LuaFile 'work-orders-acceptance-fixture.lua' "[==[$out]==]"
+      $fixtureText=$r.Output -join "`n"
+      if($fixtureText -match 'FIXTURE_INCOMPLETE (.+)') {
+       Write-Ack "$out/incomplete-$index" (@{reason=$Matches[1]} | ConvertTo-Json -Compress)
+      } elseif($fixtureText -notmatch 'FIXTURE_READY') {
+       Write-Ack "$out/failed-$index" (@{reason='Fixture failed after reload'} | ConvertTo-Json -Compress)
+      } else {
+       $loaded=$true
+       Write-Ack "$out/ack-$index" (@{pid=$restart.Pid;epoch=[string]$restart.Epoch;route=$restart.Route} | ConvertTo-Json -Compress)
+      }
+     } else {
+      Write-Ack "$out/$($restart.Status)-$index" (@{reason=$restart.Reason} | ConvertTo-Json -Compress)
+     }
+    } catch { Write-Ack "$out/failed-$index" (@{reason=$_.Exception.Message} | ConvertTo-Json -Compress) }
+    $oldFixtureProcess.Refresh()
+    if(-not $oldFixtureProcess.HasExited){$loaded=$true}
+    continue
+   }
    # Step 6/10 guards are mandatory. No second client sends work-order commands.
    if($request.op -eq 'guard_before' -or $request.op -eq 'guard_after') {
     $mode=if($request.op -eq 'guard_before'){'before'}else{'after'}
@@ -98,7 +147,7 @@ try {
    }
    $r=Invoke-LuaFile 'work-orders-acceptance-verify.lua' "[==[$out]==],$index"
    if(($r.Output -join "`n") -notmatch 'SEMANTIC_(PASS|INCOMPLETE)'){throw "Native verification $index failed: $($r.Output)"}
-   Write-Lf "$out/ack-$index" 'ok'
+   Write-Ack "$out/ack-$index" 'ok'
   }
   Start-Sleep -Milliseconds 100
   $g.Refresh()
@@ -115,7 +164,7 @@ try {
 } finally {
  try {
   if($g -and -not $g.HasExited){$g.Kill();$g.WaitForExit()}
-  if($loaded) {
+  if($loaded -and $fixtureProcess -and -not $fixtureProcess.HasExited) {
    # On an interrupted wait, re-pause first; the separate final assertion still
    # verifies pause before module-owned teardown, including failure paths.
    $r=Invoke-LuaFile 'work-orders-acceptance-verify.lua' "[==[$out]==],'pause'"
@@ -144,6 +193,12 @@ try {
    }
   }
   catch {$summary='failed teardown: '+$_.Exception.Message}
+  try {
+   if($null -ne $sourceProof) {
+    if((Source-Manifest $clone) -cne $sourceProof){throw 'Owned source files changed'}
+    Write-Lf "$out/save-preservation.txt" 'Owned source files unchanged.'
+   }
+  } catch {$summary='failed preservation: '+$_.Exception.Message}
   $env:DF3D_WORK_ORDERS_ACCEPTANCE=$oldInput
   Write-Lf "$out/summary.txt" ($summary+"`n")
   Write-Host "$summary -- $out"

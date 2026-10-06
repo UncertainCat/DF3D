@@ -1,12 +1,16 @@
 extends Node
-# Composition of accepted UI only. The host owns input; actions outlive views.
+# Composition of registered UI; staged routes remain hidden by the registry.
+# The host owns input; actions outlive views.
 const Registry = preload("res://scripts/ui_availability.gd")
 var view
 var world
 var host
 var actions
 var controllers := {}
+var red_alert_dismissal
 var session_timer := 0.0
+var native_options
+var native_options_session
 
 func setup(owner, audio_panel, original_ui) -> void:
 	view = owner
@@ -15,7 +19,7 @@ func setup(owner, audio_panel, original_ui) -> void:
 	host.interaction = view._interaction
 	add_child(host)
 	actions = preload("res://scripts/semantic_action_service.gd").new()
-	actions.configure(world)
+	actions.configure(world,true)
 	add_child(actions)
 	actions.session_changed.connect(host.reset_local_views)
 	view._interaction.selection_panel = self
@@ -40,7 +44,23 @@ func setup(owner, audio_panel, original_ui) -> void:
 	hud.audio_panel = audio_panel
 	hud.ui_host = host
 	add_child(hud)
+	if view._fixture == "":
+		var options_layer := CanvasLayer.new()
+		options_layer.layer = 22
+		add_child(options_layer)
+		native_options = preload("res://scripts/native_options.gd").new()
+		options_layer.add_child(native_options)
+		native_options.configure(world)
+		native_options.input_allowed = func(): return view._loader.entered
+		native_options_session = preload("res://scripts/native_options_session.gd").new()
+		add_child(native_options_session)
+		native_options_session.configure(world,native_options)
+		hud.native_options = native_options
+		native_options.visibility_changed.connect(hud.sync_menu_gate)
+		host.views_reset.connect(native_options.close)
 	hud.panel_requested.connect(open_destination)
+	hud.notification_requested.connect(open_notification)
+	hud.notification_dismissal_requested.connect(dismiss_notification)
 	hud.info_requested.connect(func(destination): open_destination(preload("res://scripts/native_info_frame.gd").destination(destination)))
 	hud.recovery_requested.connect(host.reset_local_views)
 	host.views_reset.connect(hud.close_menus)
@@ -53,11 +73,13 @@ func setup(owner, audio_panel, original_ui) -> void:
 	elevation.level_requested.connect(func(level):
 		view._interaction.cancel_selection()
 		view._step_top_z(level-world.get_top_z()))
-	var hover = preload("res://scripts/tile_hover.gd").new()
-	hover.world = world
-	hover.hud = hud
-	hover.camera = view.camera_rig.get_node("Camera3D")
-	add_child(hover)
+	if Registry.TILE_HOVER_AVAILABLE:
+		var hover = preload("res://scripts/tile_hover.gd").new()
+		hover.name = "TileHover"
+		hover.world = world
+		hover.hud = hud
+		hover.camera = view.camera_rig.get_node("Camera3D")
+		add_child(hover)
 	view._interaction.enable_shell()
 	audio_panel.launcher.hide()
 	if view._loader != null: view._set_play_enabled(false)
@@ -66,15 +88,32 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
+	if id in ["reports", "alerts"]:
+		add_child(panel)
+		panel.configure(world,actions,host)
+		panel.focus_requested.connect(focus_tile)
+		if id == "reports": panel.speaker_requested.connect(inspect_report_speaker)
+		else:
+			panel.history_requested.connect(func(): open_destination("Reports"))
+			panel.panel.minimap_input=func(point):
+				if view==null or not "_fortress_hud" in view:return false
+				var hud=view._fortress_hud
+				if hud==null or not hud.minimap.is_visible_in_tree() or not hud.minimap.allowed:return false
+				return Rect2(hud.minimap.get_global_transform_with_canvas()*Vector2.ZERO,hud.minimap.size*hud.minimap.get_global_transform_with_canvas().get_scale()).has_point(point)
+		controllers[id] = panel
+		return panel
 	panel.world = world
 	panel.interaction = view._interaction
 	panel.ui_host = host
+	if id == "inspector": panel.action_service = actions
+	if id in ["construction", "areas"]: panel.hud = view._fortress_hud
 	if id in ["construction", "areas"]:
 		panel.action_service = actions
 		panel.camera = view.camera_rig.get_node("Camera3D")
 	add_child(panel)
 	host.register(panel)
 	controllers[id] = panel
+	if id == "areas": panel.focus_requested.connect(focus_tile)
 	if id == "readouts":
 		panel.info_frame.destination_requested.connect(open_destination)
 		panel.focus_requested.connect(focus_tile)
@@ -90,11 +129,24 @@ func open_destination(destination: String) -> void:
 	destination = Registry.READ_LAUNCHERS.get(destination,destination)
 	if not Registry.PANEL_ROUTES.has(destination) or not host.play_enabled: return
 	var panel = controller(Registry.PANEL_ROUTES[destination])
+	if destination in ["Stockpiles", "Zones"]: panel.set_area_kind(0 if destination == "Stockpiles" else 1)
 	if panel.has_method("set_info_page"): panel.set_info_page(destination)
 	panel.open_panel()
 
 func open_target(tile: Vector3i, kind: int, id: int) -> void:
 	if host.play_enabled: controller("inspector").open_target(tile,kind,id)
+
+func open_notification(group:Dictionary) -> void:
+	if host.play_enabled: controller("alerts").open_group(group)
+
+func inspect_report_speaker(unit_id:int) -> void:
+	if not host.play_enabled:return
+	var target:Dictionary=world.inspect_entity(1,unit_id)
+	if target.is_empty():return
+	if controllers.has("reports"): controllers.reports.close_panel()
+	# Native speaker navigation targets the current creature, not report.pos.
+	focus_tile(target.tile)
+	open_target(target.tile,1,unit_id)
 
 func close_panel() -> void:
 	if controllers.has("inspector"): controllers.inspector.close_panel()
@@ -103,7 +155,11 @@ func is_open() -> bool:
 	return controllers.has("inspector") and controllers.inspector.is_open()
 
 func focus_tile(tile: Vector3i) -> void:
+	# Leaving Walk restores its previous cutaway. Do that before selecting the
+	# report/entity destination, then synchronize the rig before it clamps focus.
+	view.camera_rig.exit_walk()
 	world.set_top_z(tile.z)
+	view.camera_rig.follow_level(world.get_top_z())
 	view.camera_rig.focus_on(Vector3(tile.x+0.5,tile.z+1.0,tile.y+0.5),view.camera_rig.current_distance())
 
 # Session UI is global. Rendering only needs the resulting attachment/input gates.
@@ -115,6 +171,12 @@ func update_session(delta: float) -> bool:
 		view._session_state = world.poll_session()
 	view._loader.update_session(view._session_state, view._fort_ready(), world.last_error())
 	view._session_controls.update_session(view._session_state, view._loader.entered)
+	if native_options_session != null:
+		native_options_session.update_session(view._session_state)
+		# The global host dismisses local drafts on loss of the entered fortress;
+		# submitted requests remain owned until their matching receipt settles.
+		if not view._loader.entered: native_options.close()
+
 	if view._release_close != null: view._release_close.update_session(view._session_state)
 	view._set_play_enabled(view._loader.entered and not view._session_controls.blocks_commands(), view._loader.entered)
 	view._audio.set_menu(not view._loader.entered)
@@ -125,3 +187,11 @@ func update_controls(enabled: bool, keep_map: bool) -> void:
 		if not view._fortress_hud.menu_open() or view._interaction.construction_active or not (enabled or keep_map):
 			view._session_controls.panel.hide()
 	view._fortress_hud.update_state(enabled, enabled or keep_map, view._session_state)
+
+func dismiss_notification(group:Dictionary) -> void:
+	if not group.get("alert_button",false):return
+	if red_alert_dismissal==null:
+		red_alert_dismissal=preload("res://scripts/red_alert_dismiss_controller.gd").new()
+		add_child(red_alert_dismissal)
+		red_alert_dismissal.configure(world,actions)
+	red_alert_dismissal.dismiss(int(group.get("fortress_epoch",0)))

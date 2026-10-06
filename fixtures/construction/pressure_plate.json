@@ -1,0 +1,5562 @@
+{
+  "native_version": "DF53.16 build24557528",
+  "source": "build/pressure-plate-native-20260930-140915",
+  "capture_status": "passed",
+  "coverage": "Native controls and examples, metadata transport, draft rules, rendered pointer controls, semantic profiles and live pointer placement/cancellation/reopening; trigger effects and full pixel parity incomplete",
+  "default": {
+    "building_type": "Trap",
+    "flags": {
+      "citizens": false,
+      "magma": false,
+      "resets": true,
+      "track": false,
+      "units": false,
+      "water": false
+    },
+    "focus": [
+      "dwarfmode/Building/Placement"
+    ],
+    "magma_max": 7,
+    "magma_min": 1,
+    "subtype": 1,
+    "track_max": 2000,
+    "track_min": 1,
+    "unit_max": 200000,
+    "unit_min": 5000,
+    "water_max": 7,
+    "water_min": 1
+  },
+  "copy": {
+    "reset_modes": [
+      "Resets",
+      "One use only"
+    ],
+    "disabled_triggers": [
+      "Water does not trigger",
+      "Magma does not trigger",
+      "Minecarts do not trigger",
+      "Creatures do not trigger"
+    ],
+    "active_trigger_labels": [
+      "Water",
+      "Depth",
+      "Magma",
+      "Cart",
+      "Weight",
+      "Creature trigger settings"
+    ],
+    "citizens_disabled": "Citizens do not trigger",
+    "citizens_enabled": "Citizens trigger"
+  },
+  "toggle_top_left_cells": {
+    "water": [
+      73,
+      8
+    ],
+    "magma": [
+      73,
+      11
+    ],
+    "track": [
+      73,
+      14
+    ],
+    "units": [
+      73,
+      17
+    ],
+    "citizens": [
+      73,
+      20
+    ]
+  },
+  "fluid_buttons": {
+    "depths": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "first_x": 86,
+    "pitch_x": 4,
+    "water_y": 8,
+    "magma_y": 11,
+    "size_cells": [
+      4,
+      3
+    ]
+  },
+  "fluid_observations": {
+    "water": [
+      {
+        "building_type": "Trap",
+        "clicked_depth": 0,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 0
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 3,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 3,
+        "water_min": 3
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 6,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 6,
+        "water_min": 3
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 3,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 3,
+        "water_min": 3
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 7,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 3
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 0,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 0
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 0,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 0,
+        "water_min": 0
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 7,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 0
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 2,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 2,
+        "water_min": 2
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 5,
+        "flags": {
+          "citizens": false,
+          "magma": false,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": true
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 1,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 5,
+        "water_min": 2
+      }
+    ],
+    "magma": [
+      {
+        "building_type": "Trap",
+        "clicked_depth": 0,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 0,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 3,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 3,
+        "magma_min": 3,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 6,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 6,
+        "magma_min": 3,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 3,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 3,
+        "magma_min": 3,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 7,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 3,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 0,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 0,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 0,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 0,
+        "magma_min": 0,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 7,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 7,
+        "magma_min": 0,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 2,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 2,
+        "magma_min": 2,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      },
+      {
+        "building_type": "Trap",
+        "clicked_depth": 5,
+        "flags": {
+          "citizens": false,
+          "magma": true,
+          "resets": true,
+          "track": false,
+          "units": false,
+          "water": false
+        },
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "magma_max": 5,
+        "magma_min": 2,
+        "subtype": 1,
+        "track_max": 2000,
+        "track_min": 1,
+        "unit_max": 200000,
+        "unit_min": 5000,
+        "water_max": 7,
+        "water_min": 1
+      }
+    ]
+  },
+  "cart_weights": [
+    1,
+    50,
+    100,
+    150,
+    200,
+    250,
+    300,
+    350,
+    400,
+    450,
+    500,
+    550,
+    600,
+    650,
+    700,
+    750,
+    800,
+    850,
+    900,
+    950,
+    1000,
+    1050,
+    1100,
+    1150,
+    1200,
+    1250,
+    1300,
+    1350,
+    1400,
+    1450,
+    1500,
+    1550,
+    1600,
+    1650,
+    1700,
+    1750,
+    1800,
+    1850,
+    1900,
+    1950,
+    2000
+  ],
+  "cart_observations": [
+    {
+      "building_type": "Trap",
+      "clicked_x": 95,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 50,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 95,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 100,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 95,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 150,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 86,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 100,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 102,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 1950,
+      "track_min": 100,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 102,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 1900,
+      "track_min": 100,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 111,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 1950,
+      "track_min": 100,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 86,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 1950,
+      "track_min": 50,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 86,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 1950,
+      "track_min": 1,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_x": 86,
+      "flags": {
+        "citizens": false,
+        "magma": false,
+        "resets": true,
+        "track": true,
+        "units": false,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 1950,
+      "track_min": 1,
+      "unit_max": 200000,
+      "unit_min": 5000,
+      "water_max": 7,
+      "water_min": 1
+    }
+  ],
+  "creature_choices": [
+    {
+      "name": "gremlin",
+      "race_id": 577,
+      "raw_id": "GREMLIN",
+      "size": 1000
+    },
+    {
+      "name": "kobold",
+      "race_id": 576,
+      "raw_id": "KOBOLD",
+      "size": 2000
+    },
+    {
+      "name": "bat man",
+      "race_id": 624,
+      "raw_id": "BAT_MAN",
+      "size": 3000
+    },
+    {
+      "name": "rodent man",
+      "race_id": 637,
+      "raw_id": "RODENT MAN",
+      "size": 4000
+    },
+    {
+      "name": "reptile man",
+      "race_id": 634,
+      "raw_id": "REPTILE_MAN",
+      "size": 5000
+    },
+    {
+      "name": "dwarf",
+      "race_id": 572,
+      "raw_id": "DWARF",
+      "size": 6000
+    },
+    {
+      "name": "human",
+      "race_id": 573,
+      "raw_id": "HUMAN",
+      "size": 7000
+    },
+    {
+      "name": "ostrich man",
+      "race_id": 32,
+      "raw_id": "OSTRICH MAN",
+      "size": 8000
+    },
+    {
+      "name": "black bear man",
+      "race_id": 279,
+      "raw_id": "BEAR_BLACK_MAN",
+      "size": 9000
+    },
+    {
+      "name": "deer man",
+      "race_id": 282,
+      "raw_id": "DEER_MAN",
+      "size": 10000
+    },
+    {
+      "name": "harp seal man",
+      "race_id": 465,
+      "raw_id": "HARP_SEAL_MAN",
+      "size": 11000
+    },
+    {
+      "name": "black bear",
+      "race_id": 278,
+      "raw_id": "BEAR_BLACK",
+      "size": 12000
+    },
+    {
+      "name": "reindeer",
+      "race_id": 183,
+      "raw_id": "REINDEER",
+      "size": 13000
+    },
+    {
+      "name": "giant tortoise man",
+      "race_id": 385,
+      "raw_id": "GIANT TORTOISE MAN",
+      "size": 14000
+    },
+    {
+      "name": "beak dog",
+      "race_id": 594,
+      "raw_id": "BEAK_DOG",
+      "size": 15000
+    },
+    {
+      "name": "harp seal",
+      "race_id": 464,
+      "raw_id": "HARP_SEAL",
+      "size": 16000
+    },
+    {
+      "name": "muskox man",
+      "race_id": 391,
+      "raw_id": "MUSKOX_MAN",
+      "size": 17000
+    },
+    {
+      "name": "llama",
+      "race_id": 186,
+      "raw_id": "LLAMA",
+      "size": 18000
+    },
+    {
+      "race_id": -1,
+      "size": 19000
+    },
+    {
+      "name": "giant rat",
+      "race_id": 609,
+      "raw_id": "RAT_GIANT",
+      "size": 20000
+    },
+    {
+      "name": "giant kiwi",
+      "race_id": 30,
+      "raw_id": "BIRD_KIWI_GIANT",
+      "size": 21000
+    },
+    {
+      "name": "minotaur",
+      "race_id": 587,
+      "raw_id": "MINOTAUR",
+      "size": 22000
+    },
+    {
+      "name": "polar bear man",
+      "race_id": 397,
+      "raw_id": "BEAR_POLAR_MAN",
+      "size": 23000
+    },
+    {
+      "name": "moose man",
+      "race_id": 318,
+      "raw_id": "MOOSE MAN",
+      "size": 24000
+    },
+    {
+      "name": "troll",
+      "race_id": 578,
+      "raw_id": "TROLL",
+      "size": 25000
+    },
+    {
+      "name": "giant vulture",
+      "race_id": 374,
+      "raw_id": "GIANT_VULTURE",
+      "size": 26000
+    },
+    {
+      "name": "giant swan",
+      "race_id": 75,
+      "raw_id": "GIANT_SWAN",
+      "size": 27000
+    },
+    {
+      "name": "one-humped camel man",
+      "race_id": 364,
+      "raw_id": "CAMEL_1_HUMP_MAN",
+      "size": 28000
+    },
+    {
+      "race_id": -1,
+      "size": 29000
+    },
+    {
+      "name": "donkey",
+      "race_id": 173,
+      "raw_id": "DONKEY",
+      "size": 30000
+    },
+    {
+      "race_id": -1,
+      "size": 31000
+    },
+    {
+      "race_id": -1,
+      "size": 32000
+    },
+    {
+      "race_id": -1,
+      "size": 33000
+    },
+    {
+      "name": "giant gazelle",
+      "race_id": 346,
+      "raw_id": "GIANT_GAZELLE",
+      "size": 34000
+    },
+    {
+      "race_id": -1,
+      "size": 35000
+    },
+    {
+      "race_id": -1,
+      "size": 36000
+    },
+    {
+      "name": "giant wombat",
+      "race_id": 691,
+      "raw_id": "GIANT_WOMBAT",
+      "size": 37000
+    },
+    {
+      "race_id": -1,
+      "size": 38000
+    },
+    {
+      "race_id": -1,
+      "size": 39000
+    },
+    {
+      "name": "mule",
+      "race_id": 172,
+      "raw_id": "MULE",
+      "size": 40000
+    },
+    {
+      "name": "giant snapping turtle",
+      "race_id": 501,
+      "raw_id": "GIANT_SNAPPING_TURTLE",
+      "size": 41000
+    },
+    {
+      "name": "moose",
+      "race_id": 317,
+      "raw_id": "MOOSE",
+      "size": 42000
+    },
+    {
+      "name": "saltwater crocodile man",
+      "race_id": 370,
+      "raw_id": "CROCODILE_SALTWATER_MAN",
+      "size": 43000
+    },
+    {
+      "race_id": -1,
+      "size": 44000
+    },
+    {
+      "name": "giant emu",
+      "race_id": 87,
+      "raw_id": "GIANT_EMU",
+      "size": 45000
+    },
+    {
+      "race_id": -1,
+      "size": 46000
+    },
+    {
+      "race_id": -1,
+      "size": 47000
+    },
+    {
+      "name": "giant wolf",
+      "race_id": 298,
+      "raw_id": "GIANT_WOLF",
+      "size": 48000
+    },
+    {
+      "race_id": -1,
+      "size": 49000
+    },
+    {
+      "name": "horse",
+      "race_id": 174,
+      "raw_id": "HORSE",
+      "size": 50000
+    },
+    {
+      "race_id": -1,
+      "size": 51000
+    },
+    {
+      "name": "giant capybara",
+      "race_id": 312,
+      "raw_id": "CAPYBARA, GIANT",
+      "size": 52000
+    },
+    {
+      "name": "giraffe man",
+      "race_id": 379,
+      "raw_id": "GIRAFFE_MAN",
+      "size": 53000
+    },
+    {
+      "race_id": -1,
+      "size": 54000
+    },
+    {
+      "race_id": -1,
+      "size": 55000
+    },
+    {
+      "name": "giant cassowary",
+      "race_id": 42,
+      "raw_id": "GIANT_CASSOWARY",
+      "size": 56000
+    },
+    {
+      "race_id": -1,
+      "size": 57000
+    },
+    {
+      "race_id": -1,
+      "size": 58000
+    },
+    {
+      "race_id": -1,
+      "size": 59000
+    },
+    {
+      "name": "cow",
+      "race_id": 175,
+      "raw_id": "COW",
+      "size": 60000
+    },
+    {
+      "race_id": -1,
+      "size": 61000
+    },
+    {
+      "race_id": -1,
+      "size": 62000
+    },
+    {
+      "name": "narwhal man",
+      "race_id": 263,
+      "raw_id": "NARWHAL MAN",
+      "size": 63000
+    },
+    {
+      "race_id": -1,
+      "size": 64000
+    },
+    {
+      "name": "swordfish",
+      "race_id": 257,
+      "raw_id": "FISH_SWORDFISH",
+      "size": 65000
+    },
+    {
+      "name": "giant bark scorpion",
+      "race_id": 129,
+      "raw_id": "GIANT_BARK_SCORPION",
+      "size": 66000
+    },
+    {
+      "race_id": -1,
+      "size": 67000
+    },
+    {
+      "race_id": -1,
+      "size": 68000
+    },
+    {
+      "race_id": -1,
+      "size": 69000
+    },
+    {
+      "name": "yak",
+      "race_id": 185,
+      "raw_id": "YAK",
+      "size": 70000
+    },
+    {
+      "race_id": -1,
+      "size": 71000
+    },
+    {
+      "race_id": -1,
+      "size": 72000
+    },
+    {
+      "race_id": -1,
+      "size": 73000
+    },
+    {
+      "name": "giant jaguar",
+      "race_id": 337,
+      "raw_id": "GIANT_JAGUAR",
+      "size": 74000
+    },
+    {
+      "race_id": -1,
+      "size": 75000
+    },
+    {
+      "race_id": -1,
+      "size": 76000
+    },
+    {
+      "race_id": -1,
+      "size": 77000
+    },
+    {
+      "name": "walrus man",
+      "race_id": 226,
+      "raw_id": "WALRUS_MAN",
+      "size": 78000
+    },
+    {
+      "race_id": -1,
+      "size": 79000
+    },
+    {
+      "name": "saltwater crocodile",
+      "race_id": 369,
+      "raw_id": "CROCODILE_SALTWATER",
+      "size": 80000
+    },
+    {
+      "race_id": -1,
+      "size": 81000
+    },
+    {
+      "race_id": -1,
+      "size": 82000
+    },
+    {
+      "race_id": -1,
+      "size": 83000
+    },
+    {
+      "race_id": -1,
+      "size": 84000
+    },
+    {
+      "name": "giant ostrich",
+      "race_id": 33,
+      "raw_id": "BIRD_OSTRICH_GIANT",
+      "size": 85000
+    },
+    {
+      "race_id": -1,
+      "size": 86000
+    },
+    {
+      "race_id": -1,
+      "size": 87000
+    },
+    {
+      "race_id": -1,
+      "size": 88000
+    },
+    {
+      "race_id": -1,
+      "size": 89000
+    },
+    {
+      "name": "voracious cave crawler",
+      "race_id": 408,
+      "raw_id": "VORACIOUS_CAVE_CRAWLER",
+      "size": 90000
+    },
+    {
+      "race_id": -1,
+      "size": 91000
+    },
+    {
+      "race_id": -1,
+      "size": 92000
+    },
+    {
+      "name": "giant warthog",
+      "race_id": 328,
+      "raw_id": "GIANT_WARTHOG",
+      "size": 93000
+    },
+    {
+      "race_id": -1,
+      "size": 94000
+    },
+    {
+      "race_id": -1,
+      "size": 95000
+    },
+    {
+      "race_id": -1,
+      "size": 96000
+    },
+    {
+      "race_id": -1,
+      "size": 97000
+    },
+    {
+      "race_id": -1,
+      "size": 98000
+    },
+    {
+      "race_id": -1,
+      "size": 99000
+    },
+    {
+      "name": "water buffalo",
+      "race_id": 182,
+      "raw_id": "WATER_BUFFALO",
+      "size": 100000
+    },
+    {
+      "name": "elephant seal man",
+      "race_id": 462,
+      "raw_id": "ELEPHANT_SEAL_MAN",
+      "size": 101000
+    },
+    {
+      "race_id": -1,
+      "size": 102000
+    },
+    {
+      "race_id": -1,
+      "size": 103000
+    },
+    {
+      "race_id": -1,
+      "size": 104000
+    },
+    {
+      "race_id": -1,
+      "size": 105000
+    },
+    {
+      "race_id": -1,
+      "size": 106000
+    },
+    {
+      "race_id": -1,
+      "size": 107000
+    },
+    {
+      "name": "giant black bear",
+      "race_id": 280,
+      "raw_id": "GIANT_BEAR_BLACK",
+      "size": 108000
+    },
+    {
+      "race_id": -1,
+      "size": 109000
+    },
+    {
+      "race_id": -1,
+      "size": 110000
+    },
+    {
+      "race_id": -1,
+      "size": 111000
+    },
+    {
+      "race_id": -1,
+      "size": 112000
+    },
+    {
+      "race_id": -1,
+      "size": 113000
+    },
+    {
+      "race_id": -1,
+      "size": 114000
+    },
+    {
+      "race_id": -1,
+      "size": 115000
+    },
+    {
+      "name": "gigantic panda",
+      "race_id": 309,
+      "raw_id": "PANDA, GIGANTIC",
+      "size": 116000
+    },
+    {
+      "race_id": -1,
+      "size": 117000
+    },
+    {
+      "race_id": -1,
+      "size": 118000
+    },
+    {
+      "race_id": -1,
+      "size": 119000
+    },
+    {
+      "name": "narwhal",
+      "race_id": 262,
+      "raw_id": "NARWHAL",
+      "size": 120000
+    },
+    {
+      "race_id": -1,
+      "size": 121000
+    },
+    {
+      "race_id": -1,
+      "size": 122000
+    },
+    {
+      "name": "giant deer",
+      "race_id": 283,
+      "raw_id": "GIANT_DEER",
+      "size": 123000
+    },
+    {
+      "race_id": -1,
+      "size": 124000
+    },
+    {
+      "race_id": -1,
+      "size": 125000
+    },
+    {
+      "race_id": -1,
+      "size": 126000
+    },
+    {
+      "race_id": -1,
+      "size": 127000
+    },
+    {
+      "race_id": -1,
+      "size": 128000
+    },
+    {
+      "race_id": -1,
+      "size": 129000
+    },
+    {
+      "race_id": -1,
+      "size": 130000
+    },
+    {
+      "race_id": -1,
+      "size": 131000
+    },
+    {
+      "race_id": -1,
+      "size": 132000
+    },
+    {
+      "race_id": -1,
+      "size": 133000
+    },
+    {
+      "race_id": -1,
+      "size": 134000
+    },
+    {
+      "race_id": -1,
+      "size": 135000
+    },
+    {
+      "race_id": -1,
+      "size": 136000
+    },
+    {
+      "race_id": -1,
+      "size": 137000
+    },
+    {
+      "race_id": -1,
+      "size": 138000
+    },
+    {
+      "race_id": -1,
+      "size": 139000
+    },
+    {
+      "race_id": -1,
+      "size": 140000
+    },
+    {
+      "race_id": -1,
+      "size": 141000
+    },
+    {
+      "name": "giant harp seal",
+      "race_id": 466,
+      "raw_id": "GIANT_HARP_SEAL",
+      "size": 142000
+    },
+    {
+      "race_id": -1,
+      "size": 143000
+    },
+    {
+      "race_id": -1,
+      "size": 144000
+    },
+    {
+      "race_id": -1,
+      "size": 145000
+    },
+    {
+      "race_id": -1,
+      "size": 146000
+    },
+    {
+      "race_id": -1,
+      "size": 147000
+    },
+    {
+      "race_id": -1,
+      "size": 148000
+    },
+    {
+      "race_id": -1,
+      "size": 149000
+    },
+    {
+      "name": "walrus",
+      "race_id": 225,
+      "raw_id": "WALRUS",
+      "size": 150000
+    },
+    {
+      "race_id": -1,
+      "size": 151000
+    },
+    {
+      "race_id": -1,
+      "size": 152000
+    },
+    {
+      "name": "rhinoceros man",
+      "race_id": 376,
+      "raw_id": "RHINOCEROS_MAN",
+      "size": 153000
+    },
+    {
+      "race_id": -1,
+      "size": 154000
+    },
+    {
+      "race_id": -1,
+      "size": 155000
+    },
+    {
+      "race_id": -1,
+      "size": 156000
+    },
+    {
+      "race_id": -1,
+      "size": 157000
+    },
+    {
+      "race_id": -1,
+      "size": 158000
+    },
+    {
+      "race_id": -1,
+      "size": 159000
+    },
+    {
+      "race_id": -1,
+      "size": 160000
+    },
+    {
+      "race_id": -1,
+      "size": 161000
+    },
+    {
+      "race_id": -1,
+      "size": 162000
+    },
+    {
+      "race_id": -1,
+      "size": 163000
+    },
+    {
+      "race_id": -1,
+      "size": 164000
+    },
+    {
+      "race_id": -1,
+      "size": 165000
+    },
+    {
+      "race_id": -1,
+      "size": 166000
+    },
+    {
+      "race_id": -1,
+      "size": 167000
+    },
+    {
+      "race_id": -1,
+      "size": 168000
+    },
+    {
+      "race_id": -1,
+      "size": 169000
+    },
+    {
+      "name": "giant tapir",
+      "race_id": 751,
+      "raw_id": "GIANT_TAPIR",
+      "size": 170000
+    },
+    {
+      "race_id": -1,
+      "size": 171000
+    },
+    {
+      "race_id": -1,
+      "size": 172000
+    },
+    {
+      "race_id": -1,
+      "size": 173000
+    },
+    {
+      "race_id": -1,
+      "size": 174000
+    },
+    {
+      "race_id": -1,
+      "size": 175000
+    },
+    {
+      "race_id": -1,
+      "size": 176000
+    },
+    {
+      "race_id": -1,
+      "size": 177000
+    },
+    {
+      "race_id": -1,
+      "size": 178000
+    },
+    {
+      "race_id": -1,
+      "size": 179000
+    },
+    {
+      "race_id": -1,
+      "size": 180000
+    },
+    {
+      "race_id": -1,
+      "size": 181000
+    },
+    {
+      "race_id": -1,
+      "size": 182000
+    },
+    {
+      "race_id": -1,
+      "size": 183000
+    },
+    {
+      "race_id": -1,
+      "size": 184000
+    },
+    {
+      "name": "gigantic tortoise",
+      "race_id": 386,
+      "raw_id": "GIGANTIC TORTOISE",
+      "size": 185000
+    },
+    {
+      "race_id": -1,
+      "size": 186000
+    },
+    {
+      "race_id": -1,
+      "size": 187000
+    },
+    {
+      "race_id": -1,
+      "size": 188000
+    },
+    {
+      "name": "giant tiger",
+      "race_id": 340,
+      "raw_id": "GIANT_TIGER",
+      "size": 189000
+    },
+    {
+      "race_id": -1,
+      "size": 190000
+    },
+    {
+      "race_id": -1,
+      "size": 191000
+    },
+    {
+      "race_id": -1,
+      "size": 192000
+    },
+    {
+      "race_id": -1,
+      "size": 193000
+    },
+    {
+      "race_id": -1,
+      "size": 194000
+    },
+    {
+      "name": "elephant seal",
+      "race_id": 461,
+      "raw_id": "ELEPHANT_SEAL",
+      "size": 195000
+    },
+    {
+      "race_id": -1,
+      "size": 196000
+    },
+    {
+      "race_id": -1,
+      "size": 197000
+    },
+    {
+      "race_id": -1,
+      "size": 198000
+    },
+    {
+      "race_id": -1,
+      "size": 199000
+    },
+    {
+      "name": "dragon",
+      "race_id": 581,
+      "raw_id": "DRAGON",
+      "size": 200000
+    }
+  ],
+  "creature_observations": [
+    {
+      "building_type": "Trap",
+      "clicked_y": 26,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 200000,
+      "unit_min": 1000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_y": 31,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 6999,
+      "unit_min": 6000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_y": 33,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 8999,
+      "unit_min": 6000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_y": 29,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 8999,
+      "unit_min": 4000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_y": 29,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 4999,
+      "unit_min": 4000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_y": 40,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 15999,
+      "unit_min": 4000,
+      "water_max": 7,
+      "water_min": 1
+    },
+    {
+      "building_type": "Trap",
+      "clicked_y": 26,
+      "flags": {
+        "citizens": true,
+        "magma": false,
+        "resets": true,
+        "track": false,
+        "units": true,
+        "water": false
+      },
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "magma_max": 7,
+      "magma_min": 1,
+      "subtype": 1,
+      "track_max": 2000,
+      "track_min": 1,
+      "unit_max": 15999,
+      "unit_min": 1000,
+      "water_max": 7,
+      "water_min": 1
+    }
+  ],
+  "sha256": {
+    "capture-inputs.json": "891e6461ba01c0d43de441269ee3dc70b645d80b51e8549cac1ed7a7b8272ea1",
+    "cart-weight-choices.json": "4e4e0a6f87ade8a5f913a5ccae7480029dce2e3c277fd42a3d048638a137f7dc",
+    "cart-weights.json": "2d0fe8ea36cbd6ca31f20c37852081a9a4687c07d4a1c89cb5406b4559c856a1",
+    "citizens-enabled.json": "bdb940e9ef51a00dfb7aa576dd64e772d1af79e4c19e976da2db9c9e99de7d28",
+    "controls.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "creature-choices.json": "6e339dc893348ed3144a18b875f6a0857c6ba718f6ec4bb2aa6d12fd655a4024",
+    "creature-range-choices.json": "28f263ee0d103c81ed4b8be350766fd2f5960a51a5a07bdab4d3a5979d5f6503",
+    "creature-range.json": "55b6f3c57253e5c1186b5c60033d97723d4b2a25a61b9b0075b5e3c10928469b",
+    "magma-depth-choices.json": "55aa07ce4ffb0fcaceb2330603f53129cc7db8444f394e684a7d9a35a960a101",
+    "magma-disabled.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "magma-enabled.json": "a60506846f6cbf144272032b5b89c6f2548d4de09deb93afb3b405d332183d5d",
+    "magma-range.json": "e4d743b88915b3a2a4f4123d108f00ead76b60adb1e714b7f50ee290827e0729",
+    "one-use.json": "699c3a4c62bef333c02d0ca0a9b398a4e03c219e907a182b4b0e9d0b1361405e",
+    "raw-sizes.json": "17740c48ef4d195796407ad2b4a3155602faa1e2a828cae2c7f5e9362709c6c1",
+    "reopened-after-ranges.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "reopened.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "repeat-one-use.json": "4377c22359cc68fef49fbde46e4a782fcf0ff6497d5f7b9dbccf697730fc8374",
+    "resets.json": "2426937bdfd64f14fd43fff85f095d055e4cead69a6e7c1dd45cfcaf23f22c3c",
+    "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+    "track-disabled.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "track-enabled.json": "2b9c1fabb35d9a755644fd5020e2a54d6233cddd743b050a76e3d11730b34801",
+    "units-disabled.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "units-enabled.json": "b451c200a582a02936fc76dc26156f3057a2e899c256c701a3bf9058aa5364e6",
+    "water-depth-choices.json": "58b716508b1f42c1f7889f866f5cfe20fa8786a530d9b811c4bf4a20315a90ad",
+    "water-disabled.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+    "water-enabled.json": "50073fa7c509db25ecba69317fe1a436c4ad26251f72a8abec381812abdba765",
+    "water-range.json": "01223824a91b07476712af12f75d4e4d180a2538e556a8e9afe5e0142324d074"
+  },
+  "verified": [
+    "All four trigger toggles return to default when disabled.",
+    "Resets and One use only are exclusive; repeat selection retains mode.",
+    "Fluid clicks outside a range expand it; clicks inside collapse to one depth for the recorded sequence.",
+    "Cart arrows traverse the recorded finite weight list; decrement at minimum1 stays1.",
+    "Creature clicks use size bands (e.g. dwarf6000..6999), not equal min/max.",
+    "Cancel/reopen resets observed options; source save unchanged."
+  ],
+  "omissions": [
+    "Independent example reader is accepted separately below; captured race IDs/names are never runtime constants.",
+    "Control, scroll, copy, draft and rendered-pointer evidence is retained below; lifecycle and actual trigger-effect gaps remain.",
+    "Control and reader oracles alone do not establish placement. The placement section separately verifies semantic building profiles; trigger effects and Godot controls remain incomplete."
+  ],
+  "reader": {
+    "status": "passed",
+    "source": "build/pressure-plate-reader-20260930-144401",
+    "implementation": "bridge/plugin/construction.lua pressure_creatures private reader; management transport and UI remain unwired",
+    "native_case_count": 142,
+    "buckets_per_case": 200,
+    "native_comparisons": 28400,
+    "cases": [
+      "baseline",
+      "gremlin-v-crundle",
+      "equal-flags",
+      "GREMLIN:ALL_CASTES_ALIVE=false",
+      "CRUNDLE:ALL_CASTES_ALIVE=false",
+      "GREMLIN:ARTIFICIAL_HIVEABLE=true",
+      "CRUNDLE:ARTIFICIAL_HIVEABLE=true",
+      "GREMLIN:DOES_NOT_EXIST=true",
+      "CRUNDLE:DOES_NOT_EXIST=true",
+      "GREMLIN:EQUIPMENT=true",
+      "CRUNDLE:EQUIPMENT=true",
+      "GREMLIN:EQUIPMENT_WAGON=true",
+      "CRUNDLE:EQUIPMENT_WAGON=true",
+      "GREMLIN:EVIL=true",
+      "CRUNDLE:EVIL=true",
+      "GREMLIN:FANCIFUL=true",
+      "CRUNDLE:FANCIFUL=true",
+      "GREMLIN:GENERATED=true",
+      "CRUNDLE:GENERATED=true",
+      "GREMLIN:GOOD=true",
+      "CRUNDLE:GOOD=true",
+      "GREMLIN:HAS_ANY_BENIGN=true",
+      "CRUNDLE:HAS_ANY_BENIGN=true",
+      "GREMLIN:HAS_ANY_CAN_SWIM=false",
+      "CRUNDLE:HAS_ANY_CAN_SWIM=false",
+      "GREMLIN:HAS_ANY_CANNOT_BREATHE_AIR=true",
+      "CRUNDLE:HAS_ANY_CANNOT_BREATHE_AIR=true",
+      "GREMLIN:HAS_ANY_CANNOT_BREATHE_WATER=false",
+      "CRUNDLE:HAS_ANY_CANNOT_BREATHE_WATER=false",
+      "GREMLIN:HAS_ANY_CARNIVORE=false",
+      "CRUNDLE:HAS_ANY_CARNIVORE=false",
+      "GREMLIN:HAS_ANY_COMMON_DOMESTIC=true",
+      "CRUNDLE:HAS_ANY_COMMON_DOMESTIC=true",
+      "GREMLIN:HAS_ANY_CURIOUS_BEAST=true",
+      "CRUNDLE:HAS_ANY_CURIOUS_BEAST=true",
+      "GREMLIN:HAS_ANY_DEMON=true",
+      "CRUNDLE:HAS_ANY_DEMON=true",
+      "GREMLIN:HAS_ANY_FEATURE_BEAST=true",
+      "CRUNDLE:HAS_ANY_FEATURE_BEAST=true",
+      "GREMLIN:HAS_ANY_FLIER=true",
+      "CRUNDLE:HAS_ANY_FLIER=true",
+      "GREMLIN:HAS_ANY_FLY_RACE_GAIT=true",
+      "CRUNDLE:HAS_ANY_FLY_RACE_GAIT=true",
+      "GREMLIN:HAS_ANY_GRASP=false",
+      "CRUNDLE:HAS_ANY_GRASP=false",
+      "GREMLIN:HAS_ANY_GRAZER=true",
+      "CRUNDLE:HAS_ANY_GRAZER=true",
+      "GREMLIN:HAS_ANY_HAS_BLOOD=false",
+      "CRUNDLE:HAS_ANY_HAS_BLOOD=false",
+      "GREMLIN:HAS_ANY_IMMOBILE=true",
+      "CRUNDLE:HAS_ANY_IMMOBILE=true",
+      "GREMLIN:HAS_ANY_INTELLIGENT_LEARNS=true",
+      "CRUNDLE:HAS_ANY_INTELLIGENT_LEARNS=true",
+      "GREMLIN:HAS_ANY_INTELLIGENT_SPEAKS=true",
+      "CRUNDLE:HAS_ANY_INTELLIGENT_SPEAKS=true",
+      "GREMLIN:HAS_ANY_LARGE_PREDATOR=true",
+      "CRUNDLE:HAS_ANY_LARGE_PREDATOR=true",
+      "GREMLIN:HAS_ANY_LOCAL_POPS_CONTROLLABLE=true",
+      "CRUNDLE:HAS_ANY_LOCAL_POPS_CONTROLLABLE=true",
+      "GREMLIN:HAS_ANY_LOCAL_POPS_PRODUCE_HEROES=true",
+      "CRUNDLE:HAS_ANY_LOCAL_POPS_PRODUCE_HEROES=true",
+      "GREMLIN:HAS_ANY_MEGABEAST=true",
+      "CRUNDLE:HAS_ANY_MEGABEAST=true",
+      "GREMLIN:HAS_ANY_MISCHIEVOUS=true",
+      "CRUNDLE:HAS_ANY_MISCHIEVOUS=true",
+      "GREMLIN:HAS_ANY_NATURAL_ANIMAL=true",
+      "CRUNDLE:HAS_ANY_NATURAL_ANIMAL=true",
+      "GREMLIN:HAS_ANY_NIGHT_CREATURE=true",
+      "CRUNDLE:HAS_ANY_NIGHT_CREATURE=true",
+      "GREMLIN:HAS_ANY_NIGHT_CREATURE_BOGEYMAN=true",
+      "CRUNDLE:HAS_ANY_NIGHT_CREATURE_BOGEYMAN=true",
+      "GREMLIN:HAS_ANY_NIGHT_CREATURE_EXPERIMENTER=true",
+      "CRUNDLE:HAS_ANY_NIGHT_CREATURE_EXPERIMENTER=true",
+      "GREMLIN:HAS_ANY_NIGHT_CREATURE_HUNTER=true",
+      "CRUNDLE:HAS_ANY_NIGHT_CREATURE_HUNTER=true",
+      "GREMLIN:HAS_ANY_NIGHT_CREATURE_NIGHTMARE=true",
+      "CRUNDLE:HAS_ANY_NIGHT_CREATURE_NIGHTMARE=true",
+      "GREMLIN:HAS_ANY_NOT_FIREIMMUNE=false",
+      "CRUNDLE:HAS_ANY_NOT_FIREIMMUNE=false",
+      "GREMLIN:HAS_ANY_NOT_FLIER=true",
+      "CRUNDLE:HAS_ANY_NOT_FLIER=true",
+      "GREMLIN:HAS_ANY_NOT_LIVING=true",
+      "CRUNDLE:HAS_ANY_NOT_LIVING=true",
+      "GREMLIN:HAS_ANY_OUTSIDER_CONTROLLABLE=true",
+      "CRUNDLE:HAS_ANY_OUTSIDER_CONTROLLABLE=true",
+      "GREMLIN:HAS_ANY_POWER=true",
+      "CRUNDLE:HAS_ANY_POWER=true",
+      "GREMLIN:HAS_ANY_RACE_GAIT=false",
+      "CRUNDLE:HAS_ANY_RACE_GAIT=false",
+      "GREMLIN:HAS_ANY_SEMIMEGABEAST=true",
+      "CRUNDLE:HAS_ANY_SEMIMEGABEAST=true",
+      "GREMLIN:HAS_ANY_SLOW_LEARNER=true",
+      "CRUNDLE:HAS_ANY_SLOW_LEARNER=true",
+      "GREMLIN:HAS_ANY_SUPERNATURAL=true",
+      "CRUNDLE:HAS_ANY_SUPERNATURAL=true",
+      "GREMLIN:HAS_ANY_TITAN=true",
+      "CRUNDLE:HAS_ANY_TITAN=true",
+      "GREMLIN:HAS_ANY_UNIQUE_DEMON=true",
+      "CRUNDLE:HAS_ANY_UNIQUE_DEMON=true",
+      "GREMLIN:HAS_ANY_UTTERANCES=true",
+      "CRUNDLE:HAS_ANY_UTTERANCES=true",
+      "GREMLIN:HAS_ANY_VERMIN_HATEABLE=true",
+      "CRUNDLE:HAS_ANY_VERMIN_HATEABLE=true",
+      "GREMLIN:HAS_ANY_VERMIN_MICRO=true",
+      "CRUNDLE:HAS_ANY_VERMIN_MICRO=true",
+      "GREMLIN:HAS_FEMALE=false",
+      "CRUNDLE:HAS_FEMALE=false",
+      "GREMLIN:HAS_MALE=false",
+      "CRUNDLE:HAS_MALE=false",
+      "GREMLIN:HAS_REAL_WORLD_EXTINCT=true",
+      "CRUNDLE:HAS_REAL_WORLD_EXTINCT=true",
+      "GREMLIN:LARGE_ROAMING=false",
+      "CRUNDLE:LARGE_ROAMING=false",
+      "GREMLIN:LOOSE_CLUSTERS=true",
+      "CRUNDLE:LOOSE_CLUSTERS=true",
+      "GREMLIN:MATES_TO_BREED=false",
+      "CRUNDLE:MATES_TO_BREED=false",
+      "GREMLIN:MUNDANE=true",
+      "CRUNDLE:MUNDANE=true",
+      "GREMLIN:OCCURS_AS_ENTITY_RACE=true",
+      "CRUNDLE:OCCURS_AS_ENTITY_RACE=true",
+      "GREMLIN:SAVAGE=true",
+      "CRUNDLE:SAVAGE=true",
+      "GREMLIN:SMALL_RACE=true",
+      "CRUNDLE:SMALL_RACE=true",
+      "GREMLIN:TWO_GENDERS=false",
+      "CRUNDLE:TWO_GENDERS=false",
+      "GREMLIN:UBIQUITOUS=true",
+      "CRUNDLE:UBIQUITOUS=true",
+      "GREMLIN:VERMIN_EATER=true",
+      "CRUNDLE:VERMIN_EATER=true",
+      "GREMLIN:VERMIN_FISH=true",
+      "CRUNDLE:VERMIN_FISH=true",
+      "GREMLIN:VERMIN_GROUNDER=true",
+      "CRUNDLE:VERMIN_GROUNDER=true",
+      "GREMLIN:VERMIN_ROTTER=true",
+      "CRUNDLE:VERMIN_ROTTER=true",
+      "GREMLIN:VERMIN_SOIL=true",
+      "CRUNDLE:VERMIN_SOIL=true",
+      "GREMLIN:VERMIN_SOIL_COLONY=true",
+      "CRUNDLE:VERMIN_SOIL_COLONY=true",
+      "restored"
+    ],
+    "source_files_unchanged": true,
+    "sha256": {
+      "results.json": "ed8b0d058010b26b880ffbfa63bbd45c04198eae3ad27455d0b290af42589704",
+      "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "capture-inputs.json": "62c895004aa79721b88d02b2d1af76aa823e1918ace0a17bdfc03b2024980bc9",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "source_sha256": "a3bf9aa88442822280ced51b865c5926f2c75dc6545f563e98c1e60128027977",
+    "native_executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "verified": [
+      "All200 raw-derived examples match native on baseline and every controlled flag state, including absent examples and first-raw ties.",
+      "Reader uses aggregate raw size, frequency, flags, game mode and perspective race; no native widgets or buildreq are runtime inputs.",
+      "Raw flags/sizes restored; native baseline restored; owned source unchanged."
+    ],
+    "offline_checks": [
+      "25 construction adapter tests pass, including frequency ties, perspective-race scope, exclusions, aggregate-size authority and final search ceiling.",
+      "Construction catalog regression passes.",
+      "MSVC bridge build/install passes."
+    ],
+    "limits": [
+      "No management/schema or Godot selector integration yet.",
+      "Rendered labels, numeric bands, scroll controls, profile placement and trigger effects remain separate acceptance work."
+    ]
+  },
+  "controls": {
+    "source": "build/pressure-plate-controls-20260930-144803",
+    "status": "passed; native input oracle only",
+    "fluid_ranges": [
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 0
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 1
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 2
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 3
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 4
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 5
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 0,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 1
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 2
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 3
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 4
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 5
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 1,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 2,
+        "expected_max": 2
+      },
+      {
+        "kind": "water",
+        "expected_min": 2,
+        "expected_max": 3
+      },
+      {
+        "kind": "water",
+        "expected_min": 2,
+        "expected_max": 4
+      },
+      {
+        "kind": "water",
+        "expected_min": 2,
+        "expected_max": 5
+      },
+      {
+        "kind": "water",
+        "expected_min": 2,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 2,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 3,
+        "expected_max": 3
+      },
+      {
+        "kind": "water",
+        "expected_min": 3,
+        "expected_max": 4
+      },
+      {
+        "kind": "water",
+        "expected_min": 3,
+        "expected_max": 5
+      },
+      {
+        "kind": "water",
+        "expected_min": 3,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 3,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 4,
+        "expected_max": 4
+      },
+      {
+        "kind": "water",
+        "expected_min": 4,
+        "expected_max": 5
+      },
+      {
+        "kind": "water",
+        "expected_min": 4,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 4,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 5,
+        "expected_max": 5
+      },
+      {
+        "kind": "water",
+        "expected_min": 5,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 5,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 6,
+        "expected_max": 6
+      },
+      {
+        "kind": "water",
+        "expected_min": 6,
+        "expected_max": 7
+      },
+      {
+        "kind": "water",
+        "expected_min": 7,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 0
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 1
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 2
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 3
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 4
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 5
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 0,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 1
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 2
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 3
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 4
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 5
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 1,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 2,
+        "expected_max": 2
+      },
+      {
+        "kind": "magma",
+        "expected_min": 2,
+        "expected_max": 3
+      },
+      {
+        "kind": "magma",
+        "expected_min": 2,
+        "expected_max": 4
+      },
+      {
+        "kind": "magma",
+        "expected_min": 2,
+        "expected_max": 5
+      },
+      {
+        "kind": "magma",
+        "expected_min": 2,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 2,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 3,
+        "expected_max": 3
+      },
+      {
+        "kind": "magma",
+        "expected_min": 3,
+        "expected_max": 4
+      },
+      {
+        "kind": "magma",
+        "expected_min": 3,
+        "expected_max": 5
+      },
+      {
+        "kind": "magma",
+        "expected_min": 3,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 3,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 4,
+        "expected_max": 4
+      },
+      {
+        "kind": "magma",
+        "expected_min": 4,
+        "expected_max": 5
+      },
+      {
+        "kind": "magma",
+        "expected_min": 4,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 4,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 5,
+        "expected_max": 5
+      },
+      {
+        "kind": "magma",
+        "expected_min": 5,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 5,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 6,
+        "expected_max": 6
+      },
+      {
+        "kind": "magma",
+        "expected_min": 6,
+        "expected_max": 7
+      },
+      {
+        "kind": "magma",
+        "expected_min": 7,
+        "expected_max": 7
+      }
+    ],
+    "cart_boundaries": [
+      {
+        "phase": "min-up",
+        "step": 1,
+        "track_min": 50,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 2,
+        "track_min": 100,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 3,
+        "track_min": 150,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 4,
+        "track_min": 200,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 5,
+        "track_min": 250,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 6,
+        "track_min": 300,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 7,
+        "track_min": 350,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 8,
+        "track_min": 400,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 9,
+        "track_min": 450,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 10,
+        "track_min": 500,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 11,
+        "track_min": 550,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 12,
+        "track_min": 600,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 13,
+        "track_min": 650,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 14,
+        "track_min": 700,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 15,
+        "track_min": 750,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 16,
+        "track_min": 800,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 17,
+        "track_min": 850,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 18,
+        "track_min": 900,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 19,
+        "track_min": 950,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 20,
+        "track_min": 1000,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 21,
+        "track_min": 1050,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 22,
+        "track_min": 1100,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 23,
+        "track_min": 1150,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 24,
+        "track_min": 1200,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 25,
+        "track_min": 1250,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 26,
+        "track_min": 1300,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 27,
+        "track_min": 1350,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 28,
+        "track_min": 1400,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 29,
+        "track_min": 1450,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 30,
+        "track_min": 1500,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 31,
+        "track_min": 1550,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 32,
+        "track_min": 1600,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 33,
+        "track_min": 1650,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 34,
+        "track_min": 1700,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 35,
+        "track_min": 1750,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 36,
+        "track_min": 1800,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 37,
+        "track_min": 1850,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 38,
+        "track_min": 1900,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 39,
+        "track_min": 1950,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 40,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 41,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up",
+        "step": 42,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 1,
+        "track_min": 1950,
+        "track_max": 1950
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 2,
+        "track_min": 1900,
+        "track_max": 1900
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 3,
+        "track_min": 1850,
+        "track_max": 1850
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 4,
+        "track_min": 1800,
+        "track_max": 1800
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 5,
+        "track_min": 1750,
+        "track_max": 1750
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 6,
+        "track_min": 1700,
+        "track_max": 1700
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 7,
+        "track_min": 1650,
+        "track_max": 1650
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 8,
+        "track_min": 1600,
+        "track_max": 1600
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 9,
+        "track_min": 1550,
+        "track_max": 1550
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 10,
+        "track_min": 1500,
+        "track_max": 1500
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 11,
+        "track_min": 1450,
+        "track_max": 1450
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 12,
+        "track_min": 1400,
+        "track_max": 1400
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 13,
+        "track_min": 1350,
+        "track_max": 1350
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 14,
+        "track_min": 1300,
+        "track_max": 1300
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 15,
+        "track_min": 1250,
+        "track_max": 1250
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 16,
+        "track_min": 1200,
+        "track_max": 1200
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 17,
+        "track_min": 1150,
+        "track_max": 1150
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 18,
+        "track_min": 1100,
+        "track_max": 1100
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 19,
+        "track_min": 1050,
+        "track_max": 1050
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 20,
+        "track_min": 1000,
+        "track_max": 1000
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 21,
+        "track_min": 950,
+        "track_max": 950
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 22,
+        "track_min": 900,
+        "track_max": 900
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 23,
+        "track_min": 850,
+        "track_max": 850
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 24,
+        "track_min": 800,
+        "track_max": 800
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 25,
+        "track_min": 750,
+        "track_max": 750
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 26,
+        "track_min": 700,
+        "track_max": 700
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 27,
+        "track_min": 650,
+        "track_max": 650
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 28,
+        "track_min": 600,
+        "track_max": 600
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 29,
+        "track_min": 550,
+        "track_max": 550
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 30,
+        "track_min": 500,
+        "track_max": 500
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 31,
+        "track_min": 450,
+        "track_max": 450
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 32,
+        "track_min": 400,
+        "track_max": 400
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 33,
+        "track_min": 350,
+        "track_max": 350
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 34,
+        "track_min": 300,
+        "track_max": 300
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 35,
+        "track_min": 250,
+        "track_max": 250
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 36,
+        "track_min": 200,
+        "track_max": 200
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 37,
+        "track_min": 150,
+        "track_max": 150
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 38,
+        "track_min": 100,
+        "track_max": 100
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 39,
+        "track_min": 50,
+        "track_max": 50
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 40,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 41,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down-after-min-up",
+        "step": 42,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 1,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 2,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 3,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 4,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 5,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 6,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 7,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 8,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 9,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 10,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 11,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 12,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 13,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 14,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 15,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 16,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 17,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 18,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 19,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 20,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 21,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 22,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 23,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 24,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 25,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 26,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 27,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 28,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 29,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 30,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 31,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 32,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 33,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 34,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 35,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 36,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 37,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 38,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 39,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 40,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 41,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-down",
+        "step": 42,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 1,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 2,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 3,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 4,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 5,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 6,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 7,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 8,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 9,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 10,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 11,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 12,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 13,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 14,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 15,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 16,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 17,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 18,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 19,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 20,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 21,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 22,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 23,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 24,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 25,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 26,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 27,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 28,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 29,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 30,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 31,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 32,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 33,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 34,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 35,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 36,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 37,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 38,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 39,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 40,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 41,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "max-down",
+        "step": 42,
+        "track_min": 1,
+        "track_max": 1
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 1,
+        "track_min": 50,
+        "track_max": 50
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 2,
+        "track_min": 100,
+        "track_max": 100
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 3,
+        "track_min": 150,
+        "track_max": 150
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 4,
+        "track_min": 200,
+        "track_max": 200
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 5,
+        "track_min": 250,
+        "track_max": 250
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 6,
+        "track_min": 300,
+        "track_max": 300
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 7,
+        "track_min": 350,
+        "track_max": 350
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 8,
+        "track_min": 400,
+        "track_max": 400
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 9,
+        "track_min": 450,
+        "track_max": 450
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 10,
+        "track_min": 500,
+        "track_max": 500
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 11,
+        "track_min": 550,
+        "track_max": 550
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 12,
+        "track_min": 600,
+        "track_max": 600
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 13,
+        "track_min": 650,
+        "track_max": 650
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 14,
+        "track_min": 700,
+        "track_max": 700
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 15,
+        "track_min": 750,
+        "track_max": 750
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 16,
+        "track_min": 800,
+        "track_max": 800
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 17,
+        "track_min": 850,
+        "track_max": 850
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 18,
+        "track_min": 900,
+        "track_max": 900
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 19,
+        "track_min": 950,
+        "track_max": 950
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 20,
+        "track_min": 1000,
+        "track_max": 1000
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 21,
+        "track_min": 1050,
+        "track_max": 1050
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 22,
+        "track_min": 1100,
+        "track_max": 1100
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 23,
+        "track_min": 1150,
+        "track_max": 1150
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 24,
+        "track_min": 1200,
+        "track_max": 1200
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 25,
+        "track_min": 1250,
+        "track_max": 1250
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 26,
+        "track_min": 1300,
+        "track_max": 1300
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 27,
+        "track_min": 1350,
+        "track_max": 1350
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 28,
+        "track_min": 1400,
+        "track_max": 1400
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 29,
+        "track_min": 1450,
+        "track_max": 1450
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 30,
+        "track_min": 1500,
+        "track_max": 1500
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 31,
+        "track_min": 1550,
+        "track_max": 1550
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 32,
+        "track_min": 1600,
+        "track_max": 1600
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 33,
+        "track_min": 1650,
+        "track_max": 1650
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 34,
+        "track_min": 1700,
+        "track_max": 1700
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 35,
+        "track_min": 1750,
+        "track_max": 1750
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 36,
+        "track_min": 1800,
+        "track_max": 1800
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 37,
+        "track_min": 1850,
+        "track_max": 1850
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 38,
+        "track_min": 1900,
+        "track_max": 1900
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 39,
+        "track_min": 1950,
+        "track_max": 1950
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 40,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 41,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "min-up-after-max-down",
+        "step": 42,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 1,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 2,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 3,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 4,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 5,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 6,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 7,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 8,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 9,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 10,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 11,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 12,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 13,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 14,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 15,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 16,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 17,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 18,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 19,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 20,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 21,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 22,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 23,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 24,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 25,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 26,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 27,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 28,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 29,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 30,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 31,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 32,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 33,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 34,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 35,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 36,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 37,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 38,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 39,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 40,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 41,
+        "track_min": 2000,
+        "track_max": 2000
+      },
+      {
+        "phase": "max-up",
+        "step": 42,
+        "track_min": 2000,
+        "track_max": 2000
+      }
+    ],
+    "toggle_persistence": {
+      "creature": {
+        "enabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": true,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "disabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "reenabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": true,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 7,
+          "water_min": 1
+        }
+      },
+      "water": {
+        "enabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "disabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "reenabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 3,
+          "water_min": 3
+        }
+      },
+      "cart": {
+        "enabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": true,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 100,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "disabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 100,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "reenabled": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": true,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 100,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 7,
+          "water_min": 1
+        }
+      }
+    },
+    "verified": [
+      "All 36 inclusive ranges from 0 through 7 captured for each fluid.",
+      "Cart endpoint arrows cap at 1 and 2000 and move the opposite endpoint on crossing in the recorded phases.",
+      "Disabling and reenabling each recorded trigger preserves its range; creature disabling also preserves the citizen flag."
+    ],
+    "sha256": {
+      "capture-inputs.json": "b185ff9b5201c88169092dc3045bd7c89a0f630ac62c4e75a6719d01aabfe782",
+      "cart-before-toggle.json": "d1e54586f7599d887fcc2bfdb522d13bc457831368518a6d2d8ac90ffec71af5",
+      "cart-boundaries.json": "068ca1bcf739d736fd00b86614935c0d29fa2304605eff3c7419c571981bc695",
+      "cart-off.json": "3f5a907473ab07db4cbaa256cb20108b66ac223743824ab9c8f1da5e2e79ca0e",
+      "cart-on-again.json": "3ca2ecf128e32256e886b8c6bb83ca207859e9eb1214bc7f5f7b836ff1292ad3",
+      "creature-before-toggle.json": "b31c898943a4cfff37c9bbdb927f8d7edb84c67efda8109194d3651f0c77d92f",
+      "creature-off.json": "d671922b0bb99999067d39293af45582919fce497bb974e82f193cb278d6363e",
+      "creature-on-again.json": "b31c898943a4cfff37c9bbdb927f8d7edb84c67efda8109194d3651f0c77d92f",
+      "fluid-matrix.json": "d24b918e07a7f772a5c8c64bf9c085838c81c1503123a8ce97104bdcb3ee7bb5",
+      "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "water-before-toggle.json": "46d8a31908e6d70462b5b75d9df2851431a41f41bc2adfa5163f3318b2bf61a9",
+      "water-off.json": "9cab331d6653e518ecd46072cfb618c51283113a5a54d18544e90822ee10300f",
+      "water-on-again.json": "90aa40ec9003b0f8c15fb9c113ca65762de56e492d2b766e62d43d12c845af61"
+    },
+    "omissions": [
+      "Scroll attempts in this run did not advance; bottom-labelled captures are not bottom-row evidence.",
+      "These observations do not establish semantic placement, trigger effects or Godot reproduction."
+    ]
+  },
+  "scroll": {
+    "source": "build/pressure-plate-scroll-20260930-150005",
+    "status": "passed; native arrow input oracle only",
+    "last_scroll_position": 185,
+    "visible_rows": 15,
+    "bottom_labels": [
+      "(186000)",
+      "(187000)",
+      "(188000)",
+      "giant tiger",
+      "(190000)",
+      "(191000)",
+      "(192000)",
+      "(193000)",
+      "(194000)",
+      "elephant seal",
+      "(196000)",
+      "(197000)",
+      "(198000)",
+      "(199000)",
+      "dragon"
+    ],
+    "missing_example_label_format": "({size})",
+    "range_summary_format": "Range: {minimum_example_or_parenthesized_threshold} to {maximum_example_or_parenthesized_threshold}",
+    "unnamed_range_examples": [
+      "Range: (186000) to dragon",
+      "Range: (186000) to (186000)"
+    ],
+    "bottom_choices": [
+      {
+        "clicked_y": 40,
+        "unit_min": 200000,
+        "unit_max": 200999
+      },
+      {
+        "clicked_y": 39,
+        "unit_min": 199000,
+        "unit_max": 200999
+      },
+      {
+        "clicked_y": 26,
+        "unit_min": 186000,
+        "unit_max": 200999
+      },
+      {
+        "clicked_y": 40,
+        "unit_min": 200000,
+        "unit_max": 200999
+      },
+      {
+        "clicked_y": 40,
+        "unit_min": 200000,
+        "unit_max": 200999
+      }
+    ],
+    "verified": [
+      "Repeated scrollbar down-arrow clicks reach the final 15 of 200 rows.",
+      "Rows with no creature example render a parenthesized decimal threshold, not an empty label.",
+      "Final-row trigger selection uses 200000..200999; the independent example-search ceiling 200000999 is a different rule.",
+      "Selections below the range extend it; selecting within it collapses to the clicked band; repeating retains it.",
+      "Cancel/reopen restores defaults."
+    ],
+    "sha256": {
+      "bottom-choice-1.json": "4ae82c347561d25c4acb09b2e971fb0cbf25badcf0adb29789185b8571033f97",
+      "bottom-choice-2.json": "8a3f4960f26a1f86681a9ba727f3e5e306a4c6e69ba5e80d6809a02a5752a393",
+      "bottom-choice-3.json": "27acaf8ce834afc426dd8403be11068b360850abe71a2559dd5cca3ab0ea8a9b",
+      "bottom-choice-4.json": "fc5789d8f7bfa83379d7269af088a941fd6cebd26a8e069fdfbe1d9661c005d8",
+      "bottom-choice-5.json": "4ae82c347561d25c4acb09b2e971fb0cbf25badcf0adb29789185b8571033f97",
+      "bottom-choices.json": "0298e8ef035352b6ee4b2092ccea62621ec3f291cdf821dca3cb7d1b4f31a934",
+      "bottom-position.json": "77009bc4fd915a0d4175ee21fcdb97b3843f0fec467311800e0e42805d36d9dc",
+      "bottom-selected.json": "4ae82c347561d25c4acb09b2e971fb0cbf25badcf0adb29789185b8571033f97",
+      "bottom.json": "bfaebd55e7bcf1e4cdbfc997c12bfd23e80f4117694dd34d16214d1b8af84905",
+      "capture-inputs.json": "2c346d1139762c1de25a67afb3a5aed3e3650a945e4a4b1bdb7307fc97b6317e",
+      "controls.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+      "early-scroll.json": "1fb0013e64c1adcb64e93a56138c24b3d2921a36485d55f357f21ce12a2909ee",
+      "reopened.json": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612",
+      "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "scroll-steps.json": "edf9ab7b84b248ad70f1aa40260fdfad97bc1f208db08835886cac6ef38a6570",
+      "scroll-trials.json": "4fec040b81b3d3b4e13defd286904be601052e7b7c4fcb59402af1d068fdca59",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "unnamed-only.json": "58ed304f243aa36a5e352c42189b194dcf8f1750f685f7f0a03ef8fe9c1fb4d7",
+      "unnamed-to-dragon.json": "6788a5ea245ddfc3895cdda61989a6bc39ec867f8cfe4a792a98452e653f3304"
+    },
+    "omissions": [
+      "The later scroll_inputs and ui sections separately verify wheel/page/drag cases.",
+      "Control pointer tests do not establish native placement or activation effects by themselves."
+    ]
+  },
+  "placement": {
+    "protocol_version": 33,
+    "source": "build/construction-acceptance-20260930-150929",
+    "status": "passed_with_known_issues",
+    "profiles": [
+      {
+        "units": false,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": false,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1527
+      },
+      {
+        "units": true,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": false,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1528
+      },
+      {
+        "units": false,
+        "water": true,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": false,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1529
+      },
+      {
+        "units": false,
+        "water": false,
+        "magma": true,
+        "citizens": false,
+        "resets": true,
+        "track": false,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1530
+      },
+      {
+        "units": false,
+        "water": false,
+        "magma": false,
+        "citizens": true,
+        "resets": true,
+        "track": false,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1531
+      },
+      {
+        "units": false,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": false,
+        "track": false,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1532
+      },
+      {
+        "units": false,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": true,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1533
+      },
+      {
+        "units": true,
+        "water": true,
+        "magma": true,
+        "citizens": true,
+        "resets": false,
+        "track": true,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1534
+      },
+      {
+        "units": true,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": false,
+        "unit_min": 200000,
+        "unit_max": 200999,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1535
+      },
+      {
+        "units": true,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": false,
+        "unit_min": 1000,
+        "unit_max": 1999,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 1,
+        "track_max": 2000,
+        "building_id": 1536
+      },
+      {
+        "units": false,
+        "water": true,
+        "magma": true,
+        "citizens": false,
+        "resets": true,
+        "track": true,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 0,
+        "water_max": 0,
+        "magma_min": 0,
+        "magma_max": 0,
+        "track_min": 1,
+        "track_max": 1,
+        "building_id": 1537
+      },
+      {
+        "units": false,
+        "water": false,
+        "magma": false,
+        "citizens": false,
+        "resets": true,
+        "track": true,
+        "unit_min": 5000,
+        "unit_max": 200000,
+        "water_min": 1,
+        "water_max": 7,
+        "magma_min": 1,
+        "magma_max": 7,
+        "track_min": 2000,
+        "track_max": 2000,
+        "building_id": 1538
+      }
+    ],
+    "sha256": {
+      "godot.log": "45097fd1dcb9df1add274635c67cf5c6c986cd8113f237eff7e50e5d517360d4",
+      "native.log": "cb125296fea3ca3f34153d75438b2a75feccd7f79cd78dcbeb4baa84b9000630",
+      "binaries.log": "52e3e9c58f4e45ee5e13c17f3dfc6e2ebd8f70e4557749778a1aff740beb2fe0",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "summary.txt": "697f43fb947ee8bdc0d83c4c383baa4744222d8ef3e452761025ae1c24754670",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "save-preservation.txt": "bc6bedf0566f142d04c8700376a92441c7518515ca98b6385f03f7a31264435a",
+      "godot-diagnostics.json": "092e002ad67a4835b07eea6dd9076d4ca4e2dc4504c7dc4f0952f9bad0fa4b90"
+    },
+    "verified": [
+      "Twelve explicit profiles travel through the Godot extension, model, wire validation and Lua adapter to real native buildings.",
+      "Native building readback checks all six flags and eight range fields against each semantic request.",
+      "Profiles include native defaults, each flag flipped independently, combined triggers, first/final creature bands, both fluid zero ranges and both cart endpoints.",
+      "Owned source save files are unchanged; the lane ends without saving."
+    ],
+    "omissions": [
+      "These are semantic requests, not end-to-end pressure-control pointer input.",
+      "Metadata transport and rendered controls have separate evidence below.",
+      "Activation/deactivation and linked-building trigger effects remain unverified.",
+      "The run summary contains an obsolete D5 catalog-refusal sentence; twelve per-profile readback assertions and markers establish placement. The report generator is corrected for future runs.",
+      "Known pinned Godot diagnostics remain classified separately from a clean pass."
+    ]
+  },
+  "transport": {
+    "protocol_version": 33,
+    "source": "build/construction-acceptance-20260930-152306",
+    "status": "passed_with_known_issues",
+    "native_baseline_source": "build/pressure-plate-native-20260930-140915",
+    "rows_compared": 200,
+    "sha256": {
+      "godot.log": "e3d053050a1258367d8d132d745280523e763e42c37e2f711c0c11d2a533698e",
+      "native.log": "6ca0a5edd5e77e7c5d8338ae50c911318eece71fad8d9b3a380f352f42bae609",
+      "binaries.log": "cef5c92ec0068f6e246cbde59dbe931bd86b9c968cc862399f9aa9bfd53c2820",
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "summary.txt": "5c3e34e9172b0b43d40f53420a995087496f7404190617fc2f88a5a5a41e6bb6",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "save-preservation.txt": "bc6bedf0566f142d04c8700376a92441c7518515ca98b6385f03f7a31264435a",
+      "godot-diagnostics.json": "092e002ad67a4835b07eea6dd9076d4ca4e2dc4504c7dc4f0952f9bad0fa4b90",
+      "request-1.json": "3ad5fe5b4d7278568f8bb78c17c3bffa6a7c11df9dee78aa4ccf8ec06388d20d",
+      "response-1.json": "13e5550c779f5c721e9e814354201cbf6cb75a29a9495a9825187f5dc7d50215"
+    },
+    "draft_source": "build/qa/pressure-examples-godot-fixed",
+    "draft_sha256": {
+      "summary.json": "a43dd7bc7611fa477c6ed1756b31fa51b41ccbb7cc1370887c5f6619206bc5d2",
+      "construction_test.log": "9e8192f666ebdcdbcae4f39e5be9f1eaa866ee025c6a0af621988b4ce2abe377",
+      "construction_draft_test.log": "0a65b84888e7fb1bb303a40ab1149605bfe778971bc0d1ad2c05a23433dfde4d"
+    },
+    "verified": [
+      "All200 first-page catalog rows pass through the bridge, model and Godot extension and match the retained native UI baseline for the unchanged owned source.",
+      "Live raw readback verifies transported names, identities, sizes and eligibility. The independent 142-state oracle separately verifies example-selection priority.",
+      "The local controller retains examples across catalog pages and clears them on close/world replacement.",
+      "Draft tests replay72 recorded fluid ranges,252 cart boundary actions and final-row creature selections, with native defaults and toggle persistence.",
+      "Twelve semantic placement profiles and same-process reload/cache reset pass again; source files remain unchanged."
+    ],
+    "omissions": [
+      "These are headless controller/draft checks and live semantic requests; the ui section separately establishes rendered control and pointer acceptance.",
+      "The scroll_inputs section separately verifies recorded wheel/page/drag cases. Linked-building trigger effects still need acceptance."
+    ]
+  },
+  "scroll_inputs": {
+    "source": "build/pressure-plate-scroll-sync-20260930-153854",
+    "track_click_source": "build/pressure-plate-scroll-inputs-20260930-153708",
+    "observations": [
+      {
+        "case": "CONTEXT_SCROLL_DOWN-80-1",
+        "dragging": false,
+        "first": 1,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_DOWN-80-2",
+        "dragging": false,
+        "first": 2,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEDOWN-80-1",
+        "dragging": false,
+        "first": 17,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEDOWN-80-2",
+        "dragging": false,
+        "first": 32,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_UP-80-1",
+        "dragging": false,
+        "first": 31,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_UP-80-2",
+        "dragging": false,
+        "first": 30,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEUP-80-1",
+        "dragging": false,
+        "first": 15,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEUP-80-2",
+        "dragging": false,
+        "first": 0,
+        "mx": 80,
+        "my": 33,
+        "px": 644,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_DOWN-119-1",
+        "dragging": false,
+        "first": 1,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_DOWN-119-2",
+        "dragging": false,
+        "first": 2,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEDOWN-119-1",
+        "dragging": false,
+        "first": 17,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEDOWN-119-2",
+        "dragging": false,
+        "first": 32,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_UP-119-1",
+        "dragging": false,
+        "first": 31,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_UP-119-2",
+        "dragging": false,
+        "first": 30,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEUP-119-1",
+        "dragging": false,
+        "first": 15,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "CONTEXT_SCROLL_PAGEUP-119-2",
+        "dragging": false,
+        "first": 0,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "drag-initial",
+        "dragging": false,
+        "first": 0,
+        "mx": -1,
+        "my": -1,
+        "px": -1,
+        "py": -1
+      },
+      {
+        "case": "drag-start",
+        "dragging": true,
+        "first": 0,
+        "mx": 119,
+        "my": 27,
+        "px": 956,
+        "py": 330
+      },
+      {
+        "case": "drag-to-33",
+        "dragging": true,
+        "first": 85,
+        "mx": 119,
+        "my": 33,
+        "px": 956,
+        "py": 402
+      },
+      {
+        "case": "drag-to-38",
+        "dragging": true,
+        "first": 156,
+        "mx": 119,
+        "my": 38,
+        "px": 956,
+        "py": 462
+      },
+      {
+        "case": "drag-to-40",
+        "dragging": true,
+        "first": 185,
+        "mx": 119,
+        "my": 40,
+        "px": 956,
+        "py": 486
+      },
+      {
+        "case": "drag-to-26",
+        "dragging": true,
+        "first": 0,
+        "mx": 119,
+        "my": 26,
+        "px": 956,
+        "py": 318
+      },
+      {
+        "case": "drag-release",
+        "dragging": false,
+        "first": 0,
+        "mx": 119,
+        "my": 26,
+        "px": 956,
+        "py": 318
+      }
+    ],
+    "track_clicks": [
+      {
+        "case": "track-initial",
+        "dragging": false,
+        "first": 0
+      },
+      {
+        "case": "track-click-35",
+        "dragging": false,
+        "first": 15
+      },
+      {
+        "case": "track-click-35",
+        "dragging": false,
+        "first": 30
+      },
+      {
+        "case": "track-click-30",
+        "dragging": false,
+        "first": 45
+      },
+      {
+        "case": "track-click-40",
+        "dragging": false,
+        "first": 46
+      },
+      {
+        "case": "track-click-26",
+        "dragging": false,
+        "first": 45
+      }
+    ],
+    "sha256": {
+      "input-observations.json": "47303dd2efb6f32a221dd781296fe805e4b16b29645ed0750ae3f57aeb74ff00",
+      "capture-inputs.json": "1d6cf5e2368653e3b21a9ec56b85f949119aef53a06989e7333371fd68cf7058",
+      "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "track_click_sha256": {
+      "input-observations.json": "0a23559594fe0bdc71fe443bf2404dec9b56816c0c0ec0be48e1998dc6440c2c",
+      "capture-inputs.json": "4ac5fbcd0f46ba20bccefd77e1616b6be61265eac095a2bbdd8ee518e334fb5f",
+      "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "verified": [
+      "Native context wheel moves one row, shifted context wheel moves15, over both rows and bar.",
+      "Native page-track and arrow click sequence matches the retained offsets.",
+      "Native drag from the first thumb maps captured y positions to85,156,185,0 and releases dragging state."
+    ],
+    "capture_note": "Synchronous pointer/input injection is required: yielding lets native polling clear the injected mouse position. Earlier non-advancing key trials were not evidence of unsupported wheel behavior."
+  },
+  "ui": {
+    "source": "build/qa/pressure-controls-gpu-final",
+    "status": "passed_with_known_issues",
+    "sha256": {
+      "summary.json": "d789a68293d027bd200f01228c9202bf9f3102f21a3914ad38cfec4261253e83",
+      "build_menu_capture.log": "5fe1a7c2235a84e8f48119e57a81238ed43f24f2f205b7dbf1f744481517946a",
+      "construction_test.log": "94c866f0c266881040cde0e7c2da9c5c44620b75eecea809ee78eb0eb6047bd3",
+      "construction_draft_test.log": "0a65b84888e7fb1bb303a40ab1149605bfe778971bc0d1ad2c05a23433dfde4d"
+    },
+    "screenshots": {
+      "controller_pressure_default.png": "4acbe1a39ea98265288efda8d46f72ef72e38cc932756c95f1df225c595ccea8",
+      "controller_pressure_enabled.png": "0f4c88a5cc54cc8dbea271afa1d1e7a4ce95f3a8868a5bf5ebba1cf2ee97ebc7",
+      "controller_pressure_final.png": "6e96c5175df21f2c4e02ed56b6d94ad6a35176c8228817567fdd09c0db218367",
+      "controller_pressure_unnamed.png": "9b10d0b7a4e9f54a973513fea78d306aac8055a67b599077f2f8b3fc2c7e7a71"
+    },
+    "native_content_origin_pixels": [
+      584,
+      60
+    ],
+    "copy_source": "build/pressure-plate-native-20260930-140915",
+    "cart_unit_native_cp437": 226,
+    "verified": [
+      "Installed native art renders reset modes, four trigger toggles, fluid-depth buttons, cart arrows and citizen toggle without authored tooltips.",
+      "Viewport pointer events select reset/trigger/range options and named/unnamed creature rows; the complete draft profile records the choices.",
+      "Viewport wheel over rows and bar, Shift-wheel, drag and down-arrow sequence match native recorded offsets, including bottom185.",
+      "Twelve-pixel row hit areas prevent adjacent-row overlap; pending requests disable controls.",
+      "Four retained rendered states were visually inspected."
+    ],
+    "limits": [
+      "Existing outer Construction editor/exposure and material/Keep-building lifecycle remain separate incomplete work.",
+      "Cart numeric centering still needs direct pixel comparison; full outer-panel pixel parity is not claimed.",
+      "Live pointer-to-placement and linked-building activation effects remain unverified.",
+      "Known pinned Godot startup/shutdown diagnostics remain distinct from a clean pass."
+    ]
+  },
+  "lifecycle": {
+    "source": "build/pressure-plate-lifecycle-20260930-155421",
+    "status": "passed",
+    "inputs": "Native menu, pointer controls and material row; Escape and right-click cancellation. No staged profile assignment.",
+    "states": {
+      "configured": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "9196b6d45b615df4980045f6756ef04b961d2d0a3b84c5f0d18c3f37db9a1aaf"
+      },
+      "materials-first": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Building/PickMaterials"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "38bc7b4f3c8e9b40ef90400661302422acc3a15a525aa33862ae513606393088"
+      },
+      "after-material-cancel": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Default"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "97fbd65e6ceb1726380868dd80b663a354e231ce1daf3648fa0336c63b1e6125"
+      },
+      "reopened-after-cancel": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "sha256": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612"
+      },
+      "after-right-cancel": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Default"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "97fbd65e6ceb1726380868dd80b663a354e231ce1daf3648fa0336c63b1e6125"
+      },
+      "reopened-after-right": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "sha256": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612"
+      },
+      "configured-for-place": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "a806fb9827300e057bdf7a09c9964ca3cb5e9494d1fa79f58eafde18dcc8c2c7"
+      },
+      "materials-for-place": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Building/PickMaterials"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "38bc7b4f3c8e9b40ef90400661302422acc3a15a525aa33862ae513606393088"
+      },
+      "after-place": {
+        "state": {
+          "building_type": "NONE",
+          "flags": {
+            "citizens": true,
+            "magma": false,
+            "resets": false,
+            "track": true,
+            "units": true,
+            "water": true
+          },
+          "focus": [
+            "dwarfmode/Default"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "sha256": "ac41891e4115a3620673ce6a24c7163fa197760671ff38428b167da9cff1e39b"
+      },
+      "reopened-after-place": {
+        "state": {
+          "building_type": "Trap",
+          "flags": {
+            "citizens": false,
+            "magma": false,
+            "resets": true,
+            "track": false,
+            "units": false,
+            "water": false
+          },
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "magma_max": 7,
+          "magma_min": 1,
+          "subtype": 1,
+          "track_max": 2000,
+          "track_min": 1,
+          "unit_max": 200000,
+          "unit_min": 5000,
+          "water_max": 7,
+          "water_min": 1
+        },
+        "sha256": "ac3a352951f635b06acf139a4e1519b245a4915deb862aaca73a965f52d58612"
+      }
+    },
+    "building": {
+      "id": 1490,
+      "profile": {
+        "flags": {
+          "citizens": true,
+          "magma": false,
+          "resets": false,
+          "track": true,
+          "units": true,
+          "water": true
+        },
+        "magma_max": 7,
+        "magma_min": 1,
+        "track_max": 2000,
+        "track_min": 50,
+        "unit_max": 6999,
+        "unit_min": 6000,
+        "water_max": 3,
+        "water_min": 3
+      },
+      "stage": 0
+    },
+    "layout": "SUPERSEDED LAYOUT CLAIM: Pressure Plate placement shows the right option pane without generic construction material-strategy, Keep-building, Inspect, Remove or Cancel footer controls. The hidden-footer interpretation is invalid; see native_placement_hover_correction and keep_options_reference. Historical job effects are separate from layout acceptance.",
+    "behavior": "Material cancellation and successful placement return to the map. Reopening restores native defaults.",
+    "limits": [
+      "Linked-building trigger effects and full outer-panel pixel parity remain unverified."
+    ],
+    "presentation": {
+      "source": "build/construction-acceptance-20260930-160216",
+      "status": "passed_with_known_issues",
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "readback": {
+        "cancel": [
+          "escape",
+          "right"
+        ],
+        "id": 1501,
+        "profile": {
+          "citizens": true,
+          "magma": false,
+          "magma_max": 7,
+          "magma_min": 1,
+          "resets": false,
+          "track": true,
+          "track_max": 2000,
+          "track_min": 50,
+          "unit_max": 6999,
+          "unit_min": 6000,
+          "units": true,
+          "water": true,
+          "water_max": 3,
+          "water_min": 3
+        },
+        "returns_to_map": true
+      },
+      "coverage": "Actual viewport launcher, menu, profile, map and material input; Escape/right-click cancellation; default restoration on reopening, including after Place; native profile readback.",
+      "screenshots": {
+        "scene_pressure_place_options.png": "b6463076aa9fa4cf2bec2957e61a87313f128d107bef0965f9531afcbaaa7176",
+        "scene_pressure_place_materials.png": "eb806601c5e29fa6d8be27340a96f72d2325b237264e849af853fc53b3e8ed2a"
+      },
+      "visual_review": "SUPERSEDED LAYOUT CLAIM: Both screenshots inspected; pressure footer absent, selected options and material pane visible. The hidden-footer interpretation is invalid; see native_placement_hover_correction and keep_options_reference. Historical job effects are separate from layout acceptance.",
+      "save_preservation": "Owned source files unchanged."
+    }
+  },
+  "native_placement_hover_correction": {
+    "source": "build/construction-single-options-native-20261002-155957",
+    "owned_df_pid": 3520,
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "capture": {
+      "closest": false,
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "lines": [
+        {
+          "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "      Click a tile to place the Pressure Plate.                            Resets     One use only",
+          "y": 6
+        },
+        {
+          "text": "        Select material after placement                                       Water does not trigger",
+          "y": 9
+        },
+        {
+          "text": "        Use closest material                                                  Magma does not trigger",
+          "y": 12
+        },
+        {
+          "text": "            Keep building after placement                                     Minecarts do not trigger",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "      Need trigger type                                                       Creatures do not trigger",
+          "y": 18
+        }
+      ],
+      "stage": "PLACING"
+    },
+    "screenshot": "PressurePlate-placement.png",
+    "correction": "Earlier hidden-footer conclusions are invalid: the hidden-desktop harness omitted mouse hover/tracking before rendering. Native placement has the left Select material after placement / Use closest material / Keep building after placement pane alongside its right option pane. Earlier job effects and inherited strategy evidence remain valid; they do not establish a hidden footer.",
+    "limits": "Layout and native copy only; this audit does not establish Keep building lifecycle or Pressure Plate Closest material selection."
+  },
+  "keep_options_reference": {
+    "source": "build/construction-keep-options-native-20261002-161440",
+    "owned_df_pid": 40124,
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "paused_frame": 0,
+    "cases": [
+      {
+        "after": {
+          "building_type": "NONE",
+          "closest": true,
+          "focus": [
+            "dwarfmode/Default"
+          ],
+          "keep": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            }
+          ],
+          "stage": "STAGES",
+          "subtype": 1,
+          "water": true
+        },
+        "before": {
+          "closest": true,
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to place the Pressure Plate.                            Resets     One use only",
+              "y": 6
+            },
+            {
+              "text": "                                                                              Water",
+              "y": 8
+            },
+            {
+              "text": "        Select material after placement                                       Depth",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material                                                  Magma does not trigger",
+              "y": 12
+            },
+            {
+              "text": "            Keep building after placement                                     Minecarts do not trigger",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "                                                                              Creatures do not trigger",
+              "y": 18
+            }
+          ],
+          "stage": "PLACING"
+        },
+        "definition": "PressurePlate",
+        "id": 1492,
+        "items": [
+          48599
+        ],
+        "keep": false
+      },
+      {
+        "after": {
+          "building_type": "Trap",
+          "closest": true,
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "keep": true,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "                                                                           Resets     One use only",
+              "y": 6
+            },
+            {
+              "text": "                                                                              Water does not trigger",
+              "y": 9
+            },
+            {
+              "text": "                                                                              Magma does not trigger",
+              "y": 12
+            },
+            {
+              "text": "                                                                              Minecarts do not trigger",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "                                                                              Creatures do not trigger",
+              "y": 18
+            }
+          ],
+          "stage": "PLACING",
+          "subtype": 1,
+          "water": false
+        },
+        "before": {
+          "closest": true,
+          "focus": [
+            "dwarfmode/Building/Placement"
+          ],
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to place the Pressure Plate.                            Resets     One use only",
+              "y": 6
+            },
+            {
+              "text": "                                                                              Water",
+              "y": 8
+            },
+            {
+              "text": "        Select material after placement                                       Depth",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material                                                  Magma does not trigger",
+              "y": 12
+            },
+            {
+              "text": "        Use last material                                                     Minecarts do not trigger",
+              "y": 15
+            },
+            {
+              "text": "         Dolomite mechanisms                                                                                                        Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "            Keep building after placement                                     Creatures do not trigger",
+              "y": 18
+            }
+          ],
+          "stage": "PLACING"
+        },
+        "definition": "PressurePlate",
+        "id": 1493,
+        "items": [
+          48599
+        ],
+        "keep": true
+      }
+    ],
+    "verified": "Visible checkbox located from native text because Last shifts it down. Unchecked placement exits to map; checked placement remains in placement. Pressure Plate resets its configured water trigger. Native Last appears after a matching placement; screenshot inspected.",
+    "limits": "Closest native jobs only, then cancelled; not natural completion, retained nondefault Bridge direction or generic Last semantics. Earlier160933 lacked reachable material,161104/161255 clicked Last instead of the shifted checkbox; their keep=true labels are not acceptance."
+  }
+}

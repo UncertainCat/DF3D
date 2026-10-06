@@ -9,7 +9,7 @@ class ManagementHelperOwners {
 protected:
     using Action=df3d::mirror::ManagementAction;
     struct Range { Action first,last; };
-    inline static constexpr std::array<Range,9> ranges_{{
+    inline static constexpr std::array<Range,10> ranges_{{
         {Action::Catalog,Action::RemoveConstruction},
         {Action::AreaCatalog,Action::AreaCandidates},
         {Action::ProductionList,Action::FarmSetCrop},
@@ -18,7 +18,8 @@ protected:
         {Action::ReportList,Action::ReportInspect},
         {Action::AgreementList,Action::AgreementInspect},
         {Action::TradeList,Action::TradeBring},
-        {Action::CreatureInspect,Action::CreatureInspect}
+        {Action::CreatureInspect,Action::CreatureInspect},
+        {Action::PrepareAlertDismissal,Action::DismissAlert}
     }};
 public:
     bool sameOwner(Action a,Action b) const {

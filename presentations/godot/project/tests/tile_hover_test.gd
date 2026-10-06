@@ -1,5 +1,7 @@
 extends SceneTree
+# Synthetic prototype formatting only; these strings are not native copy evidence.
 func _initialize():
+	assert(not preload("res://scripts/ui_availability.gd").TILE_HOVER_AVAILABLE)
 	var hover = preload("res://scripts/tile_hover.gd")
 	assert(hover.describe({}) == "")
 	assert(hover.describe({"shape":"Empty"}) == "Open space")

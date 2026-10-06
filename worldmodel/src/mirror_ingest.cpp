@@ -157,7 +157,8 @@ DF3D_SAME(BuildingKind::Instrument, m::BuildingKind::Instrument);
 DF3D_SAME(BuildingKind::Bookcase, m::BuildingKind::Bookcase);
 DF3D_SAME(BuildingKind::DisplayFurniture, m::BuildingKind::DisplayFurniture);
 DF3D_SAME(BuildingKind::OfferingPlace, m::BuildingKind::OfferingPlace);
-static_assert(static_cast<int>(m::BuildingKind::MAX) == static_cast<int>(BuildingKind::OfferingPlace),
+DF3D_SAME(BuildingKind::Construction, m::BuildingKind::Construction);
+static_assert(static_cast<int>(m::BuildingKind::MAX) == static_cast<int>(BuildingKind::Construction),
               "schema BuildingKind grew: extend wm::BuildingKind and buildingKindName()");
 DF3D_SAME(ItemKind::Unknown, m::ItemKind::Unknown);
 DF3D_SAME(ItemKind::Bar, m::ItemKind::Bar);
@@ -651,9 +652,15 @@ SnapshotData detail::toSnapshotData(const m::Snapshot& s, bool withTerrain) {
         }
         if (const auto* indicators=b->indicators()) for (const auto* d : *indicators) {
           auto& tile=out.tileStorage[base+d->tile_index()];
-          tile.track=d->track(); tile.traffic=d->traffic(); tile.warnings=d->warnings();
+          tile.completedTrack=d->completed_track(); tile.track=d->track(); tile.traffic=d->traffic(); tile.warnings=d->warnings();
         }
         if(const auto* bits=b->track_support()) for(uint16_t index:*bits) out.tileStorage[base+index].trackSupport=true;
+        if(const auto* env=b->environment()) for(const auto* e:*env) {
+          auto& tile=out.tileStorage[base+e->tile_index()];
+          tile.subterranean=(e->flags()&1)!=0; tile.brookTop=(e->flags()&2)!=0;
+          tile.root=(e->flags()&4)!=0;
+          tile.buildingOccupancy=e->building_occupancy();
+        }
         if(const auto* bits=b->track_open()) for(uint16_t index:*bits) out.tileStorage[base+index].trackOpen=true;
         if(const auto* blocked=b->track_horizontal_blocked()) for(uint16_t index:*blocked)
           out.tileStorage[base+index].trackHorizontalBlocked=true;

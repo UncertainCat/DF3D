@@ -6,9 +6,17 @@ import re
 # familiar message at a new callsite stays unclassified. Counts are occurrences,
 # not distinct defects. Raw logs and gate status remain authoritative.
 KNOWN = (
+    ("godot-separate-thread-notice", "Configured separate-renderer startup notice", "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model",
+     r"WARNING: The separate rendering thread feature is experimental\. Feel free to try it since it will eventually become a stable feature\.",
+     r"at: setup2 \(main/main\.cpp:3518\)"),
     ("godot-device-finalize", "Godot separate-renderer shutdown", "https://github.com/godotengine/godot/issues/119000",
      r"ERROR: This function \(finalize\) can only be called from the render thread\.\s*",
      r"at: finalize \(servers/rendering/rendering_device\.cpp:8862\)"),
+    # Reproduced in an empty project, without DF3D scripts or GDExtension.
+    # Only recognize this alongside this process's known D3D12 shutdown below.
+    ("godot-shutdown-objects", "Godot D3D12 shutdown object pair", "ENGINEERING.md#tests-and-known-problems",
+     r"WARNING: 2 ObjectDB instances were leaked at exit \(run with `--verbose` for details\)\.",
+     r"at: cleanup \(core/object/object\.cpp:2536\)"),
     ("godot-font-atlas", "Godot empty-image upload signature", "https://github.com/godotengine/godot/issues/122206",
      r'ERROR: Condition "p_image\.is_null\(\) \|\| p_image->is_empty\(\)" is true\.',
      r"at: _texture_2d_update \(servers/rendering/renderer_rd/storage_rd/texture_storage\.cpp:1617\)"),
@@ -25,21 +33,32 @@ def error_summary(output):
     known = Counter()
     unexpected = Counter()
     pinned = False
+    process_known = set()
+    d3d12 = False
     for index, line in enumerate(lines):
         if line.startswith("Godot Engine v"):
+            process_known.clear()
+            d3d12 = False
             pinned = bool(re.match(r"^Godot Engine v4\.7\.2\.stable\.steam\.ed1daf0bf(?:[ \t]|$)", line))
-        if not re.match(r"^\s*(?:SCRIPT ERROR:|ERROR:|FAIL(?:\b|:))", line):
+        if line.startswith("D3D12 ") and "Using Device #" in line:
+            d3d12 = True
+        if not re.match(r"^\s*(?:SCRIPT ERROR:|ERROR:|WARNING:|FAIL(?:\b|:))", line):
             continue
         # Engine callsites normally immediately follow. Permit one interleaved
         # info line but never search across another error or distant traceback.
         context = []
         for following in lines[index + 1:index + 4]:
-            if re.match(r"^\s*(?:SCRIPT ERROR:|ERROR:|FAIL(?:\b|:))", following): break
+            if re.match(r"^\s*(?:SCRIPT ERROR:|ERROR:|WARNING:|FAIL(?:\b|:))", following): break
             context.append(following.strip())
         match = next((entry for entry in KNOWN if pinned and
                       re.fullmatch(entry[3], line.strip()) and
                       any(re.fullmatch(entry[4], at) for at in context)), None)
+        if match and match[0] == "godot-shutdown-objects":
+            if not (d3d12 and {"godot-separate-thread-notice", "godot-device-finalize"} <= process_known
+                    and "godot-shutdown-objects" not in process_known):
+                match = None
         if match:
+            process_known.add(match[0])
             known[match[0]] += 1
         else:
             unexpected[line.strip()] += 1
@@ -61,7 +80,7 @@ def console_summary(row):
         details.append("deferred known issues: " + ", ".join(f"{r['id']} x{r['count']}" for r in known))
     # Avoid repeating errors already included above. Still show missing markers,
     # process failures, prerequisite failures and probe assertion failures.
-    reasons = [r for r in row.get("reasons", []) if not re.match(r"^\s*(?:ERROR:|SCRIPT ERROR:|FAIL\b)", r)]
+    reasons = [r for r in row.get("reasons", []) if not re.match(r"^\s*(?:ERROR:|WARNING:|SCRIPT ERROR:|FAIL\b)", r)]
     details.extend(dict.fromkeys(reasons))
     result = f"{row['id']}: {status_label(row['status'])}"
     if details: result += " | " + " | ".join(details)

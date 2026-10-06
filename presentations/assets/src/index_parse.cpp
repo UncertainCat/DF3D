@@ -398,13 +398,34 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
 
   if (object == "GRAPHICS") {
     index.stats.graphicsFiles += 1;
-    enum class Block { None, Plant, Creature, Other };
+    enum class Block { None, Plant, Creature, CustomWorkshop, Other };
     Block block = Block::None;
     PlantGraphics* plant = nullptr;
     CreatureGraphics* creature = nullptr;
     std::string itemBlock;  // itemdef of the open *_GRAPHICS item block
+    std::string customWorkshop;
     for (const RawToken& t : tokens) {
       const std::string& n = t.name();
+      if (n == "CUSTOM_WORKSHOP_GRAPHICS") {
+        block = Block::CustomWorkshop;
+        plant = nullptr;
+        creature = nullptr;
+        customWorkshop = t.argc() >= 2 ? t.args[1] : "";
+        continue;
+      }
+      if (block == Block::CustomWorkshop && n == "LIST_ICON" && !customWorkshop.empty()) {
+        if (auto sprite = spriteAt(index, t.args, 1, pending)) {
+          // Namespaced install reference, consumed through the usual ui_texture
+          // path. Never copy a custom workshop's pixels into the presentation.
+          const std::string key = "CUSTOM_WORKSHOP_LIST_ICON:" + customWorkshop;
+          if (index.tileGraphics.emplace(key, std::vector<SpriteRef>{*sprite}).second)
+            ++index.stats.tileGraphics;
+          ++consumed;
+        } else {
+          diag(t, "Custom workshop LIST_ICON needs PAGE:x:y");
+        }
+        continue;
+      }
       if (n == "TILE_GRAPHICS") {
         // PAGE:x:y:NAME[:variant[:frame]]
         if (t.argc() < 5) {

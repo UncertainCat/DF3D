@@ -110,15 +110,15 @@ void Df3dWorld::resetLayoutScope() {
     tileLayouts_.clear(source_.model().sessionGeneration());
     layoutUnitTiles_.clear();unitDepthById_.clear();unitStackOrdinalById_.clear();
     const auto size=source_.model().mapSize();
-    stackAtlas_.reset(size.x,size.y,std::max(0,topZ_-windowDepth_+1),topZ_-std::max(0,topZ_-windowDepth_+1)+1);
+    stackAtlas_.reset(size.x,size.y,std::max(0,topZ_-get_window_depth()+1),topZ_-std::max(0,topZ_-get_window_depth()+1)+1);
     terrainSupportDependencies_.clear();
-    for(int z=std::max(0,topZ_-windowDepth_+1);z<=topZ_;++z)
+    for(int z=std::max(0,topZ_-get_window_depth()+1);z<=topZ_;++z)
         for(int y=0;y<size.y;y+=16)for(int x=0;x<size.x;x+=16)
             if(source_.model().block({x/16,y/16,z}))refreshTerrainSupport({x/16,y/16,z},false);
     layoutBuildingBlocks_.clear();layoutBuildingsByBlock_.clear();
     layoutBuildingChanges_.clear();layoutItemChanges_.clear();
     source_.model().forEachBuilding([&](const auto& b){if(zInWindow(b.z))syncLayoutBuilding(b.id);});
-    source_.model().forEachItemInZRange(std::max(0,topZ_-windowDepth_+1),topZ_,[&](const auto& item){syncLayoutItem(item.id);});
+    source_.model().forEachItemInZRange(std::max(0,topZ_-get_window_depth()+1),topZ_,[&](const auto& item){syncLayoutItem(item.id);});
     layoutScopeDirty_=false;
     layoutViewDirty_=true;
 }
@@ -254,7 +254,7 @@ void Df3dWorld::updatePresentationLayout() {
         const auto size=source_.model().mapSize();
         const auto p=presentationRegionEnabled_?presentationRegion_.position:godot::Vector2i(0,0);
         const auto end=presentationRegionEnabled_?presentationRegion_.get_end():godot::Vector2i(size.x,size.y);
-        for(const auto tile:tileLayouts_.occupiedTiles({std::max(0,topZ_-windowDepth_+1),p.x,p.y},
+        for(const auto tile:tileLayouts_.occupiedTiles({std::max(0,topZ_-get_window_depth()+1),p.x,p.y},
                 {topZ_,end.x-1,end.y-1}))requested.insert(tile);
     }
     const bool forceItems=layoutViewDirty_;

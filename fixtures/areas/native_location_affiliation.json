@@ -1,0 +1,2435 @@
+{
+  "provenance": {
+    "source": "build\\location-affiliation-reader-20260929-212149\\native-location-heading.json",
+    "sha256": "86e11a09492f867b344eabf1397125aed545d01398c308bf1dc3256bf527dadd",
+    "plugin_sha256": "6413DEC02C0E1AA3EE6B4183D58DF60BE9D51E85E9BB9DC5DBFA5D50237346FE",
+    "scope": "Paired native Details presentation and compiled semantic observer:129 cases, including69 guild professions, temple practices, zero populations and eligibility changes.13 identity/lifecycle refusals. All6 baseline/restored native cell grids and affiliation facts identical. Source/clone unchanged, final paused. Diagnostic only; Details transport/revision/UI integration remains pending."
+  },
+  "cases": [
+    {
+      "case": "baseline",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 53 worshippers"
+    },
+    {
+      "case": "tier_0_recognized_false",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Shrine, ?  (next at 2000 )                  53 worshippers"
+    },
+    {
+      "case": "tier_0_recognized_true",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Shrine, ?  (next at 2000 )                  53 worshippers"
+    },
+    {
+      "case": "tier_1_recognized_false",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 53 worshippers"
+    },
+    {
+      "case": "tier_1_recognized_true",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 53 worshippers"
+    },
+    {
+      "case": "tier_2_recognized_false",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple Complex, ?                           53 worshippers"
+    },
+    {
+      "case": "tier_2_recognized_true",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple Complex, ?                           53 worshippers"
+    },
+    {
+      "case": "tier_3_recognized_false",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "53 worshippers"
+    },
+    {
+      "case": "tier_3_recognized_true",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "53 worshippers"
+    },
+    {
+      "case": "no_dedication",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": -1,
+        "kind": -1
+      },
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 1,
+        "name": "",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "No particular deity",
+      "native_value_count": "Temple, ?  (next at 10000 )                 No worshippers"
+    },
+    {
+      "case": "deity_483",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 483,
+        "kind": 0,
+        "local_name": "Laltur Usenkerlîg Ninur",
+        "name": "Laltur Helpshell the Escorted"
+      },
+      "affiliation": {
+        "count": 0,
+        "id": 483,
+        "kind": 2,
+        "name": "Laltur Helpshell the Escorted",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Laltur Helpshell the Escorted",
+      "native_value_count": "Temple, ?  (next at 10000 )                 No worshippers"
+    },
+    {
+      "case": "deity_482",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 482,
+        "kind": 0,
+        "local_name": "Stettad",
+        "name": "Stettad"
+      },
+      "affiliation": {
+        "count": 67,
+        "id": 482,
+        "kind": 2,
+        "name": "Stettad",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Stettad",
+      "native_value_count": "Temple, ?  (next at 10000 )                 67 worshippers"
+    },
+    {
+      "case": "deity_481",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 481,
+        "kind": 0,
+        "local_name": "Bekom",
+        "name": "Bekom"
+      },
+      "affiliation": {
+        "count": 1,
+        "id": 481,
+        "kind": 2,
+        "name": "Bekom",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Bekom",
+      "native_value_count": "Temple, ?  (next at 10000 )                 1 worshipper"
+    },
+    {
+      "case": "deity_480",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 480,
+        "kind": 0,
+        "local_name": "Ushdish",
+        "name": "Ushdish"
+      },
+      "affiliation": {
+        "count": 2,
+        "id": 480,
+        "kind": 2,
+        "name": "Ushdish",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Ushdish",
+      "native_value_count": "Temple, ?  (next at 10000 )                 2 worshippers"
+    },
+    {
+      "case": "deity_479",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 479,
+        "kind": 0,
+        "local_name": "Tâmol Darosshetbêth",
+        "name": "Tâmol Mosstwinkled"
+      },
+      "affiliation": {
+        "count": 60,
+        "id": 479,
+        "kind": 2,
+        "name": "Tâmol Mosstwinkled",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Tâmol Mosstwinkled",
+      "native_value_count": "Temple, ?  (next at 10000 )                 60 worshippers"
+    },
+    {
+      "case": "all_inactive",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 0,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 No worshippers"
+    },
+    {
+      "case": "member_foreign_civ",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 52,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 52 worshippers"
+    },
+    {
+      "case": "member_ghost",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 52,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 52 worshippers"
+    },
+    {
+      "case": "member_berserk",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 52,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 52 worshippers"
+    },
+    {
+      "case": "restored",
+      "location_id": 0,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 383,
+        "kind": 1,
+        "local_name": "Istrathfarash",
+        "name": "The Bejeweled Creed"
+      },
+      "affiliation": {
+        "count": 53,
+        "id": 383,
+        "kind": 3,
+        "name": "The Bejeweled Creed",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Bejeweled Creed",
+      "native_value_count": "Temple, ?  (next at 10000 )                 53 worshippers"
+    },
+    {
+      "case": "baseline",
+      "location_id": 1,
+      "location_kind": "INN_TAVERN",
+      "profession": -1,
+      "practice": null,
+      "affiliation": {
+        "valid": false
+      },
+      "native_affiliation": "Tavern",
+      "native_value_count": "Chests in common area: 3"
+    },
+    {
+      "case": "restored",
+      "location_id": 1,
+      "location_kind": "INN_TAVERN",
+      "profession": -1,
+      "practice": null,
+      "affiliation": {
+        "valid": false
+      },
+      "native_affiliation": "Tavern",
+      "native_value_count": "Chests in common area: 3"
+    },
+    {
+      "case": "baseline",
+      "location_id": 2,
+      "location_kind": "HOSPITAL",
+      "profession": -1,
+      "practice": null,
+      "affiliation": {
+        "valid": false
+      },
+      "native_affiliation": "Hospital",
+      "native_value_count": "Tables in common area: 1"
+    },
+    {
+      "case": "restored",
+      "location_id": 2,
+      "location_kind": "HOSPITAL",
+      "profession": -1,
+      "practice": null,
+      "affiliation": {
+        "valid": false
+      },
+      "native_affiliation": "Hospital",
+      "native_value_count": "Tables in common area: 1"
+    },
+    {
+      "case": "baseline",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 45 worshippers"
+    },
+    {
+      "case": "tier_0_recognized_false",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Shrine, ?  (next at 2000 )                  45 worshippers"
+    },
+    {
+      "case": "tier_0_recognized_true",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Shrine, ?  (next at 2000 )                  45 worshippers"
+    },
+    {
+      "case": "tier_1_recognized_false",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 45 worshippers"
+    },
+    {
+      "case": "tier_1_recognized_true",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 45 worshippers"
+    },
+    {
+      "case": "tier_2_recognized_false",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple Complex, ?                           45 worshippers"
+    },
+    {
+      "case": "tier_2_recognized_true",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple Complex, ?                           45 worshippers"
+    },
+    {
+      "case": "tier_3_recognized_false",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "45 worshippers"
+    },
+    {
+      "case": "tier_3_recognized_true",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "45 worshippers"
+    },
+    {
+      "case": "no_dedication",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": -1,
+        "kind": -1
+      },
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 1,
+        "name": "",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "No particular deity",
+      "native_value_count": "Temple, ?  (next at 10000 )                 No worshippers"
+    },
+    {
+      "case": "deity_483",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 483,
+        "kind": 0,
+        "local_name": "Laltur Usenkerlîg Ninur",
+        "name": "Laltur Helpshell the Escorted"
+      },
+      "affiliation": {
+        "count": 0,
+        "id": 483,
+        "kind": 2,
+        "name": "Laltur Helpshell the Escorted",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Laltur Helpshell the Escorted",
+      "native_value_count": "Temple, ?  (next at 10000 )                 No worshippers"
+    },
+    {
+      "case": "deity_482",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 482,
+        "kind": 0,
+        "local_name": "Stettad",
+        "name": "Stettad"
+      },
+      "affiliation": {
+        "count": 67,
+        "id": 482,
+        "kind": 2,
+        "name": "Stettad",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Stettad",
+      "native_value_count": "Temple, ?  (next at 10000 )                 67 worshippers"
+    },
+    {
+      "case": "deity_481",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 481,
+        "kind": 0,
+        "local_name": "Bekom",
+        "name": "Bekom"
+      },
+      "affiliation": {
+        "count": 1,
+        "id": 481,
+        "kind": 2,
+        "name": "Bekom",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Bekom",
+      "native_value_count": "Temple, ?  (next at 10000 )                 1 worshipper"
+    },
+    {
+      "case": "deity_480",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 480,
+        "kind": 0,
+        "local_name": "Ushdish",
+        "name": "Ushdish"
+      },
+      "affiliation": {
+        "count": 2,
+        "id": 480,
+        "kind": 2,
+        "name": "Ushdish",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Ushdish",
+      "native_value_count": "Temple, ?  (next at 10000 )                 2 worshippers"
+    },
+    {
+      "case": "deity_479",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 479,
+        "kind": 0,
+        "local_name": "Tâmol Darosshetbêth",
+        "name": "Tâmol Mosstwinkled"
+      },
+      "affiliation": {
+        "count": 60,
+        "id": 479,
+        "kind": 2,
+        "name": "Tâmol Mosstwinkled",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "Dedicated to Tâmol Mosstwinkled",
+      "native_value_count": "Temple, ?  (next at 10000 )                 60 worshippers"
+    },
+    {
+      "case": "all_inactive",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 0,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 No worshippers"
+    },
+    {
+      "case": "member_foreign_civ",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 44,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 44 worshippers"
+    },
+    {
+      "case": "member_ghost",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 44,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 44 worshippers"
+    },
+    {
+      "case": "member_berserk",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 44,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 44 worshippers"
+    },
+    {
+      "case": "restored",
+      "location_id": 3,
+      "location_kind": "TEMPLE",
+      "profession": -1,
+      "practice": {
+        "id": 434,
+        "kind": 1,
+        "local_name": "Girustistrathevost",
+        "name": "The Scintillating Bejeweled Sect"
+      },
+      "affiliation": {
+        "count": 45,
+        "id": 434,
+        "kind": 3,
+        "name": "The Scintillating Bejeweled Sect",
+        "valid": true,
+        "workers": -1
+      },
+      "native_affiliation": "The Scintillating Bejeweled Sect",
+      "native_value_count": "Temple, ?  (next at 10000 )                 45 worshippers"
+    },
+    {
+      "case": "baseline",
+      "location_id": 4,
+      "location_kind": "LIBRARY",
+      "profession": -1,
+      "practice": null,
+      "affiliation": {
+        "valid": false
+      },
+      "native_affiliation": "Library",
+      "native_value_count": "Bookcases: 17       Tables: 1           Chairs: 1"
+    },
+    {
+      "case": "restored",
+      "location_id": 4,
+      "location_kind": "LIBRARY",
+      "profession": -1,
+      "practice": null,
+      "affiliation": {
+        "valid": false
+      },
+      "native_affiliation": "Library",
+      "native_value_count": "Bookcases: 17       Tables: 1           Chairs: 1"
+    },
+    {
+      "case": "baseline",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "tier_0_recognized_false",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "tier_0_recognized_true",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "tier_1_recognized_false",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Guildhall, ?  (next at 10000 )"
+    },
+    {
+      "case": "tier_1_recognized_true",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Guildhall, ?  (next at 10000 )"
+    },
+    {
+      "case": "tier_2_recognized_false",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Grand Guildhall, ?"
+    },
+    {
+      "case": "tier_2_recognized_true",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Grand Guildhall, ?"
+    },
+    {
+      "case": "tier_3_recognized_false",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": ""
+    },
+    {
+      "case": "tier_3_recognized_true",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": ""
+    },
+    {
+      "case": "all_inactive",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "The Hall of Births, no members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "member_foreign_civ",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 23,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 23 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "member_ghost",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 23,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 23 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "member_berserk",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 23,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 23 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_0",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 0,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 4
+      },
+      "native_affiliation": "No established guild, 4 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_1",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 1,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 10
+      },
+      "native_affiliation": "No established guild, 10 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_2",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 2,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 4
+      },
+      "native_affiliation": "No established guild, 4 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_3",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 3,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_4",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 4,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_5",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 5,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 3
+      },
+      "native_affiliation": "No established guild, 3 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_8",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 8,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_9",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 9,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_10",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 10,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 4
+      },
+      "native_affiliation": "No established guild, 4 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_11",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 11,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_12",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 12,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_13",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 13,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_14",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 14,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_15",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 15,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_16",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 16,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 8
+      },
+      "native_affiliation": "No established guild, 8 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_17",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 17,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 4
+      },
+      "native_affiliation": "No established guild, 4 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_18",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 18,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 3
+      },
+      "native_affiliation": "No established guild, 3 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_19",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 19,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_20",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 20,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_21",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 21,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_22",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 22,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 3
+      },
+      "native_affiliation": "No established guild, 3 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_23",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 23,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_24",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 24,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_25",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 25,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 8
+      },
+      "native_affiliation": "No established guild, 8 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_26",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 26,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_27",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 27,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_28",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 28,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_29",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 29,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_30",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 30,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_31",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 31,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_32",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 32,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_33",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 33,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_34",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 34,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_35",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 35,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_36",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 36,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_37",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 37,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 6
+      },
+      "native_affiliation": "No established guild, 6 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_38",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 38,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_39",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 39,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 3
+      },
+      "native_affiliation": "No established guild, 3 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_40",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 40,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_41",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_42",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 42,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_43",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 43,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_44",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 44,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_45",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 45,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_46",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 46,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_47",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 47,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_48",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 48,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_49",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 49,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_50",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 50,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 8
+      },
+      "native_affiliation": "No established guild, 8 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_51",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 51,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_52",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 52,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_53",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 53,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_54",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 54,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 3
+      },
+      "native_affiliation": "No established guild, 3 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_55",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 55,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_56",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 56,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_57",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 57,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_58",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 58,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_59",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 59,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_60",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 60,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_61",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 61,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 5
+      },
+      "native_affiliation": "No established guild, 5 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_62",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 62,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_63",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 63,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_64",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 64,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 2
+      },
+      "native_affiliation": "No established guild, 2 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_65",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 65,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_69",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 69,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 6
+      },
+      "native_affiliation": "No established guild, 6 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_70",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 70,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 3
+      },
+      "native_affiliation": "No established guild, 3 workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_71",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 71,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_72",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 72,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 0
+      },
+      "native_affiliation": "No established guild, no workers",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "profession_73",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 73,
+      "practice": null,
+      "affiliation": {
+        "count": 0,
+        "id": -1,
+        "kind": 4,
+        "name": "",
+        "valid": true,
+        "workers": 1
+      },
+      "native_affiliation": "No established guild, 1 worker",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    },
+    {
+      "case": "restored",
+      "location_id": 5,
+      "location_kind": "GUILDHALL",
+      "profession": 41,
+      "practice": null,
+      "affiliation": {
+        "count": 24,
+        "id": 1316,
+        "kind": 4,
+        "name": "The Hall of Births",
+        "valid": true,
+        "workers": 29
+      },
+      "native_affiliation": "The Hall of Births, 24 members",
+      "native_value_count": "Meeting place, ?  (next at 2000 )"
+    }
+  ],
+  "refusals": [
+    [
+      -1,
+      0
+    ],
+    [
+      652,
+      0
+    ],
+    [
+      651,
+      -1
+    ],
+    [
+      651,
+      2147483647
+    ],
+    {
+      "flag": "DOES_NOT_EXIST",
+      "id": 0
+    },
+    {
+      "flag": "WG_RUINED",
+      "id": 0
+    },
+    {
+      "flag": "PWG_RUINED",
+      "id": 0
+    },
+    {
+      "flag": "DOES_NOT_EXIST",
+      "id": 3
+    },
+    {
+      "flag": "WG_RUINED",
+      "id": 3
+    },
+    {
+      "flag": "PWG_RUINED",
+      "id": 3
+    },
+    {
+      "flag": "DOES_NOT_EXIST",
+      "id": 5
+    },
+    {
+      "flag": "WG_RUINED",
+      "id": 5
+    },
+    {
+      "flag": "PWG_RUINED",
+      "id": 5
+    }
+  ],
+  "transport_acceptance": {
+    "capture": "build\\areas-acceptance-20260929-213358",
+    "native_log_sha256": "b703fa281fe7cc41333fcd94dde900e7cb977bbdc91940344a9cbb20b7b74010",
+    "plugin_sha256": "BCAFB31D0AB759175023B9573F2068524D932A8D8B3CA8897BF6DD56D43DF9AE",
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "coverage": "Full-scene Details reads decode independent native affiliation facts before/during/after all-unit inactivation, restore complete snapshots and repeated receipts; existing entry/access/creation/location workflows pass. Source/clone manifests unchanged; cleanup and final pause verified.",
+    "offline": "build/qa/location-affiliation-transport:18 CTests, extension, management contract, Details lifecycle clean pass.",
+    "remaining": "Affiliation view rows; single-member guild wording; recognition eligibility and full Details screen/actions."
+  }
+}

@@ -300,7 +300,11 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     // translucent ghost for planned buildings.
     Color tint(1, 1, 1, 1);
     SurfaceKind kind = kSurfDecal;
-    if (b->stage == wm::BuildingStage::Planned) {
+    if (b->kind == wm::BuildingKind::Construction) {
+        // Native planned artwork owns partial alpha (e.g. Track grooves at
+        // 115/255). Cutout discards those pixels; retain full source opacity.
+        kind = kSurfGhost;
+    } else if (b->stage == wm::BuildingStage::Planned) {
         tint = Color(1, 1, 1, 0.4f);
         kind = kSurfGhost;
     } else if (b->stage == wm::BuildingStage::InProgress && !r.stageArt) {

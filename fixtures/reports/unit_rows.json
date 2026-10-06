@@ -1,0 +1,3831 @@
+{
+  "native_version": "DF53.16 Steam / DFHack53.16-r1",
+  "source": "build/reports-units-native-20261001-051105",
+  "method": "Paused protected clone, unmodified unit logs. Native widget row text compared in source unit order with candidate semantic profession helper plus translated names. Runtime helper reads no widget state.",
+  "rows": [
+    {
+      "unit_id": 998,
+      "category": 0,
+      "native_text": "The Dwarven child Vabôk Odgúblòr is fighting!",
+      "name": "Vabôk Odgúblòr",
+      "profession": "Dwarven child",
+      "dfhack_profession": "Dwarven Child",
+      "animal": false,
+      "dead": true,
+      "log_count": 59,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 1012,
+      "category": 0,
+      "native_text": "The Blacksmith Rîsen Bomrekód is fighting!",
+      "name": "Rîsen Bomrekód",
+      "profession": "Blacksmith",
+      "dfhack_profession": "Blacksmith",
+      "animal": false,
+      "dead": true,
+      "log_count": 56,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 1017,
+      "category": 0,
+      "native_text": "The bookkeeper Stodir Tangakurvad is fighting!",
+      "name": "Stodir Tangakurvad",
+      "profession": "bookkeeper",
+      "dfhack_profession": "bookkeeper",
+      "animal": false,
+      "dead": false,
+      "log_count": 19,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2062,
+      "category": 0,
+      "native_text": "The Human Spearman Riñih Goctaape is fighting!",
+      "name": "Riñih Goctaape",
+      "profession": "Human Spearman",
+      "dfhack_profession": "Human Spearman",
+      "animal": false,
+      "dead": true,
+      "log_count": 102,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2222,
+      "category": 0,
+      "native_text": "The Human Hammerman Therset Damsouthra Candolalgi is fighting!",
+      "name": "Therset Damsouthra Candolalgi",
+      "profession": "Human Hammerman",
+      "dfhack_profession": "Human Hammerman",
+      "animal": false,
+      "dead": true,
+      "log_count": 666,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2345,
+      "category": 0,
+      "native_text": "The Human Bard Leto Jamaslonel is fighting!",
+      "name": "Leto Jamaslonel",
+      "profession": "Human Bard",
+      "dfhack_profession": "Human Bard",
+      "animal": false,
+      "dead": false,
+      "log_count": 4,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2446,
+      "category": 0,
+      "native_text": "The Human Bard Umil Kespomba is fighting!",
+      "name": "Umil Kespomba",
+      "profession": "Human Bard",
+      "dfhack_profession": "Human Bard",
+      "animal": false,
+      "dead": true,
+      "log_count": 7,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2449,
+      "category": 0,
+      "native_text": "The Human Bard Necar Tirinpirni is fighting!",
+      "name": "Necar Tirinpirni",
+      "profession": "Human Bard",
+      "dfhack_profession": "Human Bard",
+      "animal": false,
+      "dead": true,
+      "log_count": 65,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2465,
+      "category": 0,
+      "native_text": "The Human Bard Thur Sathreliki is fighting!",
+      "name": "Thur Sathreliki",
+      "profession": "Human Bard",
+      "dfhack_profession": "Human Bard",
+      "animal": false,
+      "dead": true,
+      "log_count": 14,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2574,
+      "category": 0,
+      "native_text": "The Human Bard Lum Licpuja is fighting!",
+      "name": "Lum Licpuja",
+      "profession": "Human Bard",
+      "dfhack_profession": "Human Bard",
+      "animal": false,
+      "dead": true,
+      "log_count": 33,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2905,
+      "category": 0,
+      "native_text": "The Human Swordmaster Ronu Samosan is fighting!",
+      "name": "Ronu Samosan",
+      "profession": "Human Swordmaster",
+      "dfhack_profession": "Human Swordsmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 95,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 4338,
+      "category": 0,
+      "native_text": "The Human Poet Lam Gukisubi is fighting!",
+      "name": "Lam Gukisubi",
+      "profession": "Human Poet",
+      "dfhack_profession": "Human Poet",
+      "animal": false,
+      "dead": false,
+      "log_count": 85,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5561,
+      "category": 0,
+      "native_text": "The Bronze Colossus Okom Soxoslar Osplu Onsmost is fighting!",
+      "name": "Okom Soxoslar Osplu Onsmost",
+      "profession": "Bronze Colossus",
+      "dfhack_profession": "Bronze Colossus",
+      "animal": false,
+      "dead": true,
+      "log_count": 628,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5573,
+      "category": 0,
+      "native_text": "The Miner Olon Arzesnil is fighting!",
+      "name": "Olon Arzesnil",
+      "profession": "Miner",
+      "dfhack_profession": "Miner",
+      "animal": false,
+      "dead": false,
+      "log_count": 45,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5575,
+      "category": 0,
+      "native_text": "The Axe Lord Feb Anambomrek is fighting!",
+      "name": "Feb Anambomrek",
+      "profession": "Axe Lord",
+      "dfhack_profession": "Axe Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 585,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5577,
+      "category": 0,
+      "native_text": "The Stoneworker Kol Asobstettad is fighting!",
+      "name": "Kol Asobstettad",
+      "profession": "Stoneworker",
+      "dfhack_profession": "Stoneworker",
+      "animal": false,
+      "dead": true,
+      "log_count": 6,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5578,
+      "category": 0,
+      "native_text": "The Wrestler Zas Rigòthrosat is fighting!",
+      "name": "Zas Rigòthrosat",
+      "profession": "Wrestler",
+      "dfhack_profession": "Wrestler",
+      "animal": false,
+      "dead": true,
+      "log_count": 482,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5579,
+      "category": 0,
+      "native_text": "The Dog is fighting!",
+      "name": "",
+      "profession": "Dog",
+      "dfhack_profession": "Dog",
+      "animal": true,
+      "dead": true,
+      "log_count": 733,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5580,
+      "category": 0,
+      "native_text": "The Dog is fighting!",
+      "name": "",
+      "profession": "Dog",
+      "dfhack_profession": "Dog",
+      "animal": true,
+      "dead": true,
+      "log_count": 443,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5583,
+      "category": 0,
+      "native_text": "The Ewe is fighting!",
+      "name": "",
+      "profession": "Ewe",
+      "dfhack_profession": "Ewe",
+      "animal": true,
+      "dead": true,
+      "log_count": 1,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5697,
+      "category": 0,
+      "native_text": "The Miner Uzol Bardumtekkud is fighting!",
+      "name": "Uzol Bardumtekkud",
+      "profession": "Miner",
+      "dfhack_profession": "Miner",
+      "animal": false,
+      "dead": false,
+      "log_count": 13,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5698,
+      "category": 0,
+      "native_text": "The Dwarven child Doren Thosbutalåth is fighting!",
+      "name": "Doren Thosbutalåth",
+      "profession": "Dwarven child",
+      "dfhack_profession": "Dwarven Child",
+      "animal": false,
+      "dead": false,
+      "log_count": 189,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5699,
+      "category": 0,
+      "native_text": "The Dwarven child Adil Lolorgemsit is fighting!",
+      "name": "Adil Lolorgemsit",
+      "profession": "Dwarven child",
+      "dfhack_profession": "Dwarven Child",
+      "animal": false,
+      "dead": false,
+      "log_count": 27,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5700,
+      "category": 0,
+      "native_text": "The Alpaca is fighting!",
+      "name": "",
+      "profession": "Alpaca",
+      "dfhack_profession": "Alpaca",
+      "animal": true,
+      "dead": true,
+      "log_count": 1,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5769,
+      "category": 0,
+      "native_text": "The Gray Langur is fighting!",
+      "name": "",
+      "profession": "Gray Langur",
+      "dfhack_profession": "Gray Langur",
+      "animal": true,
+      "dead": true,
+      "log_count": 309,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5774,
+      "category": 0,
+      "native_text": "The Gray Langur is fighting!",
+      "name": "",
+      "profession": "Gray Langur",
+      "dfhack_profession": "Gray Langur",
+      "animal": true,
+      "dead": true,
+      "log_count": 420,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5813,
+      "category": 0,
+      "native_text": "The mayor Kûbuk ïngizkor is fighting!",
+      "name": "Kûbuk ïngizkor",
+      "profession": "mayor",
+      "dfhack_profession": "mayor",
+      "animal": false,
+      "dead": false,
+      "log_count": 30,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5815,
+      "category": 0,
+      "native_text": "The Performer Goden Abanshigós is fighting!",
+      "name": "Goden Abanshigós",
+      "profession": "Performer",
+      "dfhack_profession": "Performer",
+      "animal": false,
+      "dead": true,
+      "log_count": 85,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5982,
+      "category": 0,
+      "native_text": "The Metalsmith Datan Avuzdakon is fighting!",
+      "name": "Datan Avuzdakon",
+      "profession": "Metalsmith",
+      "dfhack_profession": "Metalsmith",
+      "animal": false,
+      "dead": true,
+      "log_count": 38,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5984,
+      "category": 0,
+      "native_text": "The militia captain Kikrost Thosbutuzol is fighting!",
+      "name": "Kikrost Thosbutuzol",
+      "profession": "militia captain",
+      "dfhack_profession": "militia captain",
+      "animal": false,
+      "dead": false,
+      "log_count": 33,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 5985,
+      "category": 0,
+      "native_text": "The Farmer Dôbar Gébarunib is fighting!",
+      "name": "Dôbar Gébarunib",
+      "profession": "Farmer",
+      "dfhack_profession": "Farmer",
+      "animal": false,
+      "dead": false,
+      "log_count": 27,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6032,
+      "category": 0,
+      "native_text": "The Swordmaster Dodók Kilruderush is fighting!",
+      "name": "Dodók Kilruderush",
+      "profession": "Swordmaster",
+      "dfhack_profession": "Swordsmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 94,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6033,
+      "category": 0,
+      "native_text": "The Weaver Monom Eggutmeng is fighting!",
+      "name": "Monom Eggutmeng",
+      "profession": "Weaver",
+      "dfhack_profession": "Weaver",
+      "animal": false,
+      "dead": true,
+      "log_count": 47,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6034,
+      "category": 0,
+      "native_text": "The Stoneworker Rimtar Ebalrovod is fighting!",
+      "name": "Rimtar Ebalrovod",
+      "profession": "Stoneworker",
+      "dfhack_profession": "Stoneworker",
+      "animal": false,
+      "dead": true,
+      "log_count": 21,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6035,
+      "category": 0,
+      "native_text": "The Dog Inod Gusilmilol is fighting!",
+      "name": "Inod Gusilmilol",
+      "profession": "Dog",
+      "dfhack_profession": "Dog",
+      "animal": true,
+      "dead": true,
+      "log_count": 127,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6136,
+      "category": 0,
+      "native_text": "The Performer Uzol Zulbanromlam is fighting!",
+      "name": "Uzol Zulbanromlam",
+      "profession": "Performer",
+      "dfhack_profession": "Performer",
+      "animal": false,
+      "dead": false,
+      "log_count": 52,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6208,
+      "category": 0,
+      "native_text": "The Dwarven child Tun Dodóktomêm is fighting!",
+      "name": "Tun Dodóktomêm",
+      "profession": "Dwarven child",
+      "dfhack_profession": "Dwarven Child",
+      "animal": false,
+      "dead": true,
+      "log_count": 17,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6531,
+      "category": 0,
+      "native_text": "The Spearmaster Asën Govososlan is fighting!",
+      "name": "Asën Govososlan",
+      "profession": "Spearmaster",
+      "dfhack_profession": "Spearmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 308,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6534,
+      "category": 0,
+      "native_text": "The Gem Cutter Thob âtastfikod is fighting!",
+      "name": "Thob âtastfikod",
+      "profession": "Gem Cutter",
+      "dfhack_profession": "Gem Cutter",
+      "animal": false,
+      "dead": false,
+      "log_count": 26,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6539,
+      "category": 0,
+      "native_text": "The Hammer Lord Doren Matkadôl is fighting!",
+      "name": "Doren Matkadôl",
+      "profession": "Hammer Lord",
+      "dfhack_profession": "Hammer Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 616,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6543,
+      "category": 0,
+      "native_text": "The Axedwarf Oddom Tekkudzaneg is fighting!",
+      "name": "Oddom Tekkudzaneg",
+      "profession": "Axedwarf",
+      "dfhack_profession": "Axedwarf",
+      "animal": false,
+      "dead": true,
+      "log_count": 509,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6546,
+      "category": 0,
+      "native_text": "The Scribe Lòr Eshtânmìshos is fighting!",
+      "name": "Lòr Eshtânmìshos",
+      "profession": "Scribe",
+      "dfhack_profession": "Scribe",
+      "animal": false,
+      "dead": false,
+      "log_count": 16,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6548,
+      "category": 0,
+      "native_text": "The Dog ïngiz Lelumerush is fighting!",
+      "name": "ïngiz Lelumerush",
+      "profession": "Dog",
+      "dfhack_profession": "Dog",
+      "animal": true,
+      "dead": false,
+      "log_count": 18,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6553,
+      "category": 0,
+      "native_text": "The Hunter Logem Imeshdumat is fighting!",
+      "name": "Logem Imeshdumat",
+      "profession": "Hunter",
+      "dfhack_profession": "Hunter",
+      "animal": false,
+      "dead": false,
+      "log_count": 7,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6555,
+      "category": 0,
+      "native_text": "The Diagnostician Vucar Domasdoren is fighting!",
+      "name": "Vucar Domasdoren",
+      "profession": "Diagnostician",
+      "dfhack_profession": "Diagnoser",
+      "animal": false,
+      "dead": false,
+      "log_count": 12,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6595,
+      "category": 0,
+      "native_text": "The Planter Zas Libashsigun is fighting!",
+      "name": "Zas Libashsigun",
+      "profession": "Planter",
+      "dfhack_profession": "Planter",
+      "animal": false,
+      "dead": false,
+      "log_count": 12,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6596,
+      "category": 0,
+      "native_text": "The Gem Cutter Zulban Bakustoslan is fighting!",
+      "name": "Zulban Bakustoslan",
+      "profession": "Gem Cutter",
+      "dfhack_profession": "Gem Cutter",
+      "animal": false,
+      "dead": true,
+      "log_count": 43,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6597,
+      "category": 0,
+      "native_text": "The Farmer Meng Ducimkezat is fighting!",
+      "name": "Meng Ducimkezat",
+      "profession": "Farmer",
+      "dfhack_profession": "Farmer",
+      "animal": false,
+      "dead": false,
+      "log_count": 14,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6598,
+      "category": 0,
+      "native_text": "The Spearmaster Zutthan Kadôlnimak is fighting!",
+      "name": "Zutthan Kadôlnimak",
+      "profession": "Spearmaster",
+      "dfhack_profession": "Spearmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 388,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6633,
+      "category": 0,
+      "native_text": "The Goblin Thief Smunstu Kugmeomosp is fighting!",
+      "name": "Smunstu Kugmeomosp",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 54,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6634,
+      "category": 0,
+      "native_text": "The Goblin Thief Zolak Ostaono is fighting!",
+      "name": "Zolak Ostaono",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 321,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6677,
+      "category": 0,
+      "native_text": "The Fish Dissector Kûbuk ïngizkosak is fighting!",
+      "name": "Kûbuk ïngizkosak",
+      "profession": "Fish Dissector",
+      "dfhack_profession": "Fish Dissector",
+      "animal": false,
+      "dead": false,
+      "log_count": 48,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6682,
+      "category": 0,
+      "native_text": "The Wrestler Dîshmab Zimkelnomal is fighting!",
+      "name": "Dîshmab Zimkelnomal",
+      "profession": "Wrestler",
+      "dfhack_profession": "Wrestler",
+      "animal": false,
+      "dead": true,
+      "log_count": 178,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6729,
+      "category": 0,
+      "native_text": "The Dwarven child Thob Gethlogem is fighting!",
+      "name": "Thob Gethlogem",
+      "profession": "Dwarven child",
+      "dfhack_profession": "Dwarven Child",
+      "animal": false,
+      "dead": false,
+      "log_count": 17,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6760,
+      "category": 0,
+      "native_text": "The Goblin Thief Ngokang Zusmusmaslot is fighting!",
+      "name": "Ngokang Zusmusmaslot",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 70,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6761,
+      "category": 0,
+      "native_text": "The Goblin Thief Dostngosp Oguspngom is fighting!",
+      "name": "Dostngosp Oguspngom",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 30,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6762,
+      "category": 0,
+      "native_text": "The Goblin Thief Ngom Urarobxog is fighting!",
+      "name": "Ngom Urarobxog",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 58,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6811,
+      "category": 0,
+      "native_text": "The Axe Lord èzum Amostmörul is fighting!",
+      "name": "èzum Amostmörul",
+      "profession": "Axe Lord",
+      "dfhack_profession": "Axe Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 78,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6812,
+      "category": 0,
+      "native_text": "The militia commander Såkzul Nåzomkivish is fighting!",
+      "name": "Såkzul Nåzomkivish",
+      "profession": "militia commander",
+      "dfhack_profession": "militia commander",
+      "animal": false,
+      "dead": false,
+      "log_count": 111,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6822,
+      "category": 0,
+      "native_text": "The Clothier Urist Kodzas is fighting!",
+      "name": "Urist Kodzas",
+      "profession": "Clothier",
+      "dfhack_profession": "Clothier",
+      "animal": false,
+      "dead": false,
+      "log_count": 5,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6834,
+      "category": 0,
+      "native_text": "The Dog Tholtig Nolrith is fighting!",
+      "name": "Tholtig Nolrith",
+      "profession": "Dog",
+      "dfhack_profession": "Dog",
+      "animal": true,
+      "dead": true,
+      "log_count": 34,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6835,
+      "category": 0,
+      "native_text": "The Furnace Operator Alåth Nåzomavuz is fighting!",
+      "name": "Alåth Nåzomavuz",
+      "profession": "Furnace Operator",
+      "dfhack_profession": "Furnace Operator",
+      "animal": false,
+      "dead": false,
+      "log_count": 8,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6837,
+      "category": 0,
+      "native_text": "The Hammer Lord Kadôl Nîlesmûthkat is fighting!",
+      "name": "Kadôl Nîlesmûthkat",
+      "profession": "Hammer Lord",
+      "dfhack_profession": "Hammer Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 214,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6838,
+      "category": 0,
+      "native_text": "The Axe Lord Litast Urrïthzon is fighting!",
+      "name": "Litast Urrïthzon",
+      "profession": "Axe Lord",
+      "dfhack_profession": "Axe Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 348,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6871,
+      "category": 0,
+      "native_text": "The Human Spearman Cadi Innahhibor is fighting!",
+      "name": "Cadi Innahhibor",
+      "profession": "Human Spearman",
+      "dfhack_profession": "Human Spearman",
+      "animal": false,
+      "dead": true,
+      "log_count": 896,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6916,
+      "category": 0,
+      "native_text": "The Goblin Crossbowman Olngö Stekugzolak is fighting!",
+      "name": "Olngö Stekugzolak",
+      "profession": "Goblin Crossbowman",
+      "dfhack_profession": "Goblin Crossbowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 30,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6917,
+      "category": 0,
+      "native_text": "The Goblin Crossbowman Song Uslangosnun is fighting!",
+      "name": "Song Uslangosnun",
+      "profession": "Goblin Crossbowman",
+      "dfhack_profession": "Goblin Crossbowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 30,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6918,
+      "category": 0,
+      "native_text": "The Goblin Crossbowman Aslot Soxukge is fighting!",
+      "name": "Aslot Soxukge",
+      "profession": "Goblin Crossbowman",
+      "dfhack_profession": "Goblin Crossbowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 136,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6919,
+      "category": 0,
+      "native_text": "The Goblin Bowman Aslot Amxuzesm is fighting!",
+      "name": "Aslot Amxuzesm",
+      "profession": "Goblin Bowman",
+      "dfhack_profession": "Goblin Bowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 333,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6920,
+      "category": 0,
+      "native_text": "The Goblin Crossbowman Utes Ngamurar is fighting!",
+      "name": "Utes Ngamurar",
+      "profession": "Goblin Crossbowman",
+      "dfhack_profession": "Goblin Crossbowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 6,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6921,
+      "category": 0,
+      "native_text": "The Goblin Bowman Tode Kabudang is fighting!",
+      "name": "Tode Kabudang",
+      "profession": "Goblin Bowman",
+      "dfhack_profession": "Goblin Bowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 12,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6970,
+      "category": 0,
+      "native_text": "The Woodworker Urvad Kosoththosbut is fighting!",
+      "name": "Urvad Kosoththosbut",
+      "profession": "Woodworker",
+      "dfhack_profession": "Woodworker",
+      "animal": false,
+      "dead": false,
+      "log_count": 61,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6973,
+      "category": 0,
+      "native_text": "The Siege Engineer Ingish Imikfikod is fighting!",
+      "name": "Ingish Imikfikod",
+      "profession": "Siege Engineer",
+      "dfhack_profession": "Siege Engineer",
+      "animal": false,
+      "dead": false,
+      "log_count": 12,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7065,
+      "category": 0,
+      "native_text": "The Goblin Maceman Kurik Agzes is fighting!",
+      "name": "Kurik Agzes",
+      "profession": "Goblin Maceman",
+      "dfhack_profession": "Goblin Maceman",
+      "animal": false,
+      "dead": true,
+      "log_count": 36,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7066,
+      "category": 0,
+      "native_text": "The Goblin Spearman Nako Amxuosnuk is fighting!",
+      "name": "Nako Amxuosnuk",
+      "profession": "Goblin Spearman",
+      "dfhack_profession": "Goblin Spearman",
+      "animal": false,
+      "dead": true,
+      "log_count": 69,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7067,
+      "category": 0,
+      "native_text": "The Goblin Swordsman Snodub Songspösp is fighting!",
+      "name": "Snodub Songspösp",
+      "profession": "Goblin Swordsman",
+      "dfhack_profession": "Goblin Swordsman",
+      "animal": false,
+      "dead": true,
+      "log_count": 109,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7068,
+      "category": 0,
+      "native_text": "The Goblin Bowman ûsbu Lâsmolngö is fighting!",
+      "name": "ûsbu Lâsmolngö",
+      "profession": "Goblin Bowman",
+      "dfhack_profession": "Goblin Bowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 93,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7069,
+      "category": 0,
+      "native_text": "The Goblin Hammerman Snodub Spâsposnang is fighting!",
+      "name": "Snodub Spâsposnang",
+      "profession": "Goblin Hammerman",
+      "dfhack_profession": "Goblin Hammerman",
+      "animal": false,
+      "dead": true,
+      "log_count": 18,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7070,
+      "category": 0,
+      "native_text": "The Goblin Lasher Utes Angotstrodno is fighting!",
+      "name": "Utes Angotstrodno",
+      "profession": "Goblin Lasher",
+      "dfhack_profession": "Goblin Lasher",
+      "animal": false,
+      "dead": true,
+      "log_count": 92,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7071,
+      "category": 0,
+      "native_text": "The Goblin Axeman Asno ûdatu is fighting!",
+      "name": "Asno ûdatu",
+      "profession": "Goblin Axeman",
+      "dfhack_profession": "Goblin Axeman",
+      "animal": false,
+      "dead": true,
+      "log_count": 82,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7072,
+      "category": 0,
+      "native_text": "The Goblin Pikeman Strodno Omngosnang is fighting!",
+      "name": "Strodno Omngosnang",
+      "profession": "Goblin Pikeman",
+      "dfhack_profession": "Goblin Pikeman",
+      "animal": false,
+      "dead": true,
+      "log_count": 95,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7073,
+      "category": 0,
+      "native_text": "The Goblin Crossbowman Nako Ozngom is fighting!",
+      "name": "Nako Ozngom",
+      "profession": "Goblin Crossbowman",
+      "dfhack_profession": "Goblin Crossbowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 51,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7074,
+      "category": 0,
+      "native_text": "The Goblin Lasher Zolak Kodem is fighting!",
+      "name": "Zolak Kodem",
+      "profession": "Goblin Lasher",
+      "dfhack_profession": "Goblin Lasher",
+      "animal": false,
+      "dead": true,
+      "log_count": 157,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7104,
+      "category": 0,
+      "native_text": "The Armadillo Boar is fighting!",
+      "name": "",
+      "profession": "Armadillo Boar",
+      "dfhack_profession": "Armadillo Boar",
+      "animal": true,
+      "dead": true,
+      "log_count": 10,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7116,
+      "category": 0,
+      "native_text": "The Leopard is fighting!",
+      "name": "",
+      "profession": "Leopard",
+      "dfhack_profession": "Leopard",
+      "animal": true,
+      "dead": true,
+      "log_count": 24,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7117,
+      "category": 0,
+      "native_text": "The Furnace Operator Stukos Kolsikel is fighting!",
+      "name": "Stukos Kolsikel",
+      "profession": "Furnace Operator",
+      "dfhack_profession": "Furnace Operator",
+      "animal": false,
+      "dead": false,
+      "log_count": 9,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7120,
+      "category": 0,
+      "native_text": "The Peasant Ingish Kêshshakubbul is fighting!",
+      "name": "Ingish Kêshshakubbul",
+      "profession": "Peasant",
+      "dfhack_profession": "Peasant",
+      "animal": false,
+      "dead": false,
+      "log_count": 2,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7124,
+      "category": 0,
+      "native_text": "The Bone Doctor Lòr Astthum is fighting!",
+      "name": "Lòr Astthum",
+      "profession": "Bone Doctor",
+      "dfhack_profession": "Bone Doctor",
+      "animal": false,
+      "dead": false,
+      "log_count": 21,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7127,
+      "category": 0,
+      "native_text": "The Gray Langur is fighting!",
+      "name": "",
+      "profession": "Gray Langur",
+      "dfhack_profession": "Gray Langur",
+      "animal": true,
+      "dead": true,
+      "log_count": 17,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7130,
+      "category": 0,
+      "native_text": "The Gray Langur is fighting!",
+      "name": "",
+      "profession": "Gray Langur",
+      "dfhack_profession": "Gray Langur",
+      "animal": true,
+      "dead": true,
+      "log_count": 99,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7161,
+      "category": 0,
+      "native_text": "The Goblin Thief Stozu Stosbûbuxzo is fighting!",
+      "name": "Stozu Stosbûbuxzo",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 45,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7162,
+      "category": 0,
+      "native_text": "The Goblin Thief Osta Ozudsnosstrosp is fighting!",
+      "name": "Osta Ozudsnosstrosp",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 55,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7164,
+      "category": 0,
+      "native_text": "The Goblin Thief Smunstu Uksossad is fighting!",
+      "name": "Smunstu Uksossad",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 125,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7238,
+      "category": 0,
+      "native_text": "The Goblin Thief Em Slobustâsost is fighting!",
+      "name": "Em Slobustâsost",
+      "profession": "Goblin Thief",
+      "dfhack_profession": "Goblin Thief",
+      "animal": false,
+      "dead": true,
+      "log_count": 86,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7294,
+      "category": 0,
+      "native_text": "The Human Bowman Zocol Nentukònul is fighting!",
+      "name": "Zocol Nentukònul",
+      "profession": "Human Bowman",
+      "dfhack_profession": "Human Bowman",
+      "animal": false,
+      "dead": true,
+      "log_count": 42,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7295,
+      "category": 0,
+      "native_text": "The Human Spearman Gogol Iralbathru is fighting!",
+      "name": "Gogol Iralbathru",
+      "profession": "Human Spearman",
+      "dfhack_profession": "Human Spearman",
+      "animal": false,
+      "dead": true,
+      "log_count": 116,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 7303,
+      "category": 0,
+      "native_text": "The Human Spearman Rakbin Komodoto is fighting!",
+      "name": "Rakbin Komodoto",
+      "profession": "Human Spearman",
+      "dfhack_profession": "Human Spearman",
+      "animal": false,
+      "dead": true,
+      "log_count": 17,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 2905,
+      "category": 1,
+      "native_text": "The Human Swordmaster Ronu Samosan is sparring.",
+      "name": "Ronu Samosan",
+      "profession": "Human Swordmaster",
+      "dfhack_profession": "Human Swordsmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 9891,
+      "retained_count": 697
+    },
+    {
+      "unit_id": 5575,
+      "category": 1,
+      "native_text": "The Axe Lord Feb Anambomrek is sparring.",
+      "name": "Feb Anambomrek",
+      "profession": "Axe Lord",
+      "dfhack_profession": "Axe Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 10982,
+      "retained_count": 511
+    },
+    {
+      "unit_id": 6032,
+      "category": 1,
+      "native_text": "The Swordmaster Dodók Kilruderush is sparring.",
+      "name": "Dodók Kilruderush",
+      "profession": "Swordmaster",
+      "dfhack_profession": "Swordsmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 7254,
+      "retained_count": 244
+    },
+    {
+      "unit_id": 6531,
+      "category": 1,
+      "native_text": "The Spearmaster Asën Govososlan is sparring.",
+      "name": "Asën Govososlan",
+      "profession": "Spearmaster",
+      "dfhack_profession": "Spearmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 14982,
+      "retained_count": 883
+    },
+    {
+      "unit_id": 6539,
+      "category": 1,
+      "native_text": "The Hammer Lord Doren Matkadôl is sparring.",
+      "name": "Doren Matkadôl",
+      "profession": "Hammer Lord",
+      "dfhack_profession": "Hammer Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 13727,
+      "retained_count": 36
+    },
+    {
+      "unit_id": 6543,
+      "category": 1,
+      "native_text": "The Axedwarf Oddom Tekkudzaneg is sparring.",
+      "name": "Oddom Tekkudzaneg",
+      "profession": "Axedwarf",
+      "dfhack_profession": "Axedwarf",
+      "animal": false,
+      "dead": true,
+      "log_count": 219,
+      "retained_count": 0
+    },
+    {
+      "unit_id": 6598,
+      "category": 1,
+      "native_text": "The Spearmaster Zutthan Kadôlnimak is sparring.",
+      "name": "Zutthan Kadôlnimak",
+      "profession": "Spearmaster",
+      "dfhack_profession": "Spearmaster",
+      "animal": false,
+      "dead": false,
+      "log_count": 17197,
+      "retained_count": 1143
+    },
+    {
+      "unit_id": 6811,
+      "category": 1,
+      "native_text": "The Axe Lord èzum Amostmörul is sparring.",
+      "name": "èzum Amostmörul",
+      "profession": "Axe Lord",
+      "dfhack_profession": "Axe Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 10776,
+      "retained_count": 206
+    },
+    {
+      "unit_id": 6812,
+      "category": 1,
+      "native_text": "The militia commander Såkzul Nåzomkivish is sparring.",
+      "name": "Såkzul Nåzomkivish",
+      "profession": "militia commander",
+      "dfhack_profession": "militia commander",
+      "animal": false,
+      "dead": false,
+      "log_count": 18754,
+      "retained_count": 550
+    },
+    {
+      "unit_id": 6837,
+      "category": 1,
+      "native_text": "The Hammer Lord Kadôl Nîlesmûthkat is sparring.",
+      "name": "Kadôl Nîlesmûthkat",
+      "profession": "Hammer Lord",
+      "dfhack_profession": "Hammer Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 10890,
+      "retained_count": 838
+    },
+    {
+      "unit_id": 6838,
+      "category": 1,
+      "native_text": "The Axe Lord Litast Urrïthzon is sparring.",
+      "name": "Litast Urrïthzon",
+      "profession": "Axe Lord",
+      "dfhack_profession": "Axe Lord",
+      "animal": false,
+      "dead": false,
+      "log_count": 11566,
+      "retained_count": 657
+    }
+  ],
+  "counts": [
+    97,
+    11,
+    0
+  ],
+  "status": "passed",
+  "frame": 0,
+  "save_unchanged": true,
+  "owned_df_closed": true,
+  "limitations": [
+    "Helper not yet integrated into public UnitList transport",
+    "Only existing unit professions and Combat/Sparring rows checked; empty Hunting",
+    "Custom professions, agitated variants and full profession enum still need native evidence",
+    "No unit-log UI click or visual acceptance"
+  ],
+  "corrections": [
+    "Species-only animal naming is rejected: Ewe, Armadillo Boar and capitalized Gray Langur are native",
+    "Diagnoser caption maps to native Diagnostician",
+    "STANDARD foreign race Bronze Colossus preserves native capitalization"
+  ],
+  "paging_helper_capture": {
+    "source": "build/reports-units-native-20261001-051358",
+    "status": "passed",
+    "verification": [
+      {
+        "category": 0,
+        "pages": 2,
+        "revision": 3381670796541702112,
+        "rows": 97
+      },
+      {
+        "category": 1,
+        "pages": 1,
+        "revision": 3381670796541702112,
+        "rows": 11
+      },
+      {
+        "category": 2,
+        "pages": 1,
+        "revision": 3381670796541702112,
+        "rows": 0
+      }
+    ],
+    "method": "Production semantic helper invoked inside DF; paged row counts/text/order compared with native widget list; source logs unchanged. Combat97 spans2 pages; Sparring11 one; empty Hunting one.",
+    "frame": 0,
+    "save_unchanged": true,
+    "owned_df_pid": 45764,
+    "owned_df_closed": true,
+    "limitations": [
+      "Helper only; compiled UnitList schema and consumers not integrated",
+      "Revision stale-list rejection is offline-tested, not yet live-mutated"
+    ]
+  },
+  "log_helper_capture": {
+    "source": "build/reports-units-native-20261001-051639",
+    "status": "passed",
+    "walks": 216,
+    "pages": 384,
+    "retained_references": 5765,
+    "verification": [
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 998
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 998
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 1012
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 1012
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 1017
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 1017
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2062
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2062
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2222
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2222
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2345
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2345
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2446
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2446
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2449
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2449
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2465
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2465
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2574
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2574
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2905
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 2905
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 11,
+        "rows": 697,
+        "unit_id": 2905
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 11,
+        "rows": 697,
+        "unit_id": 2905
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 4338
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 4338
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5561
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5561
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5573
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5573
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5575
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5575
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 8,
+        "rows": 511,
+        "unit_id": 5575
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 8,
+        "rows": 511,
+        "unit_id": 5575
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5577
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5577
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5578
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5578
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5579
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5579
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5580
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5580
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5583
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5583
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5697
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5697
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5698
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5698
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5699
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5699
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5700
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5700
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5769
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5769
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5774
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5774
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5813
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5813
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5815
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5815
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5982
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5982
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5984
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5984
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5985
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 5985
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6032
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6032
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 4,
+        "rows": 244,
+        "unit_id": 6032
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 4,
+        "rows": 244,
+        "unit_id": 6032
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6033
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6033
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6034
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6034
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6035
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6035
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6136
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6136
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6208
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6208
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6531
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6531
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 14,
+        "rows": 883,
+        "unit_id": 6531
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 14,
+        "rows": 883,
+        "unit_id": 6531
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6534
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6534
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6539
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6539
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 1,
+        "rows": 36,
+        "unit_id": 6539
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 1,
+        "rows": 36,
+        "unit_id": 6539
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6543
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6543
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6543
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6543
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6546
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6546
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6548
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6548
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6553
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6553
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6555
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6555
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6595
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6595
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6596
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6596
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6597
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6597
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6598
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6598
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 18,
+        "rows": 1143,
+        "unit_id": 6598
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 18,
+        "rows": 1143,
+        "unit_id": 6598
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6633
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6633
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6634
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6634
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6677
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6677
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6682
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6682
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6729
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6729
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6760
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6760
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6761
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6761
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6762
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6762
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6811
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6811
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 4,
+        "rows": 206,
+        "unit_id": 6811
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 4,
+        "rows": 206,
+        "unit_id": 6811
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6812
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6812
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 9,
+        "rows": 550,
+        "unit_id": 6812
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 9,
+        "rows": 550,
+        "unit_id": 6812
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6822
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6822
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6834
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6834
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6835
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6835
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6837
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6837
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 14,
+        "rows": 838,
+        "unit_id": 6837
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 14,
+        "rows": 838,
+        "unit_id": 6837
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6838
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6838
+      },
+      {
+        "backwards": false,
+        "category": 1,
+        "pages": 11,
+        "rows": 657,
+        "unit_id": 6838
+      },
+      {
+        "backwards": true,
+        "category": 1,
+        "pages": 11,
+        "rows": 657,
+        "unit_id": 6838
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6871
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6871
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6916
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6916
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6917
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6917
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6918
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6918
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6919
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6919
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6920
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6920
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6921
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6921
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6970
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6970
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6973
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 6973
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7065
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7065
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7066
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7066
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7067
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7067
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7068
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7068
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7069
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7069
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7070
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7070
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7071
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7071
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7072
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7072
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7073
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7073
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7074
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7074
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7104
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7104
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7116
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7116
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7117
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7117
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7120
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7120
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7124
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7124
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7127
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7127
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7130
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7130
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7161
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7161
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7162
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7162
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7164
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7164
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7238
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7238
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7294
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7294
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7295
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7295
+      },
+      {
+        "backwards": false,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7303
+      },
+      {
+        "backwards": true,
+        "category": 0,
+        "pages": 1,
+        "rows": 0,
+        "unit_id": 7303
+      }
+    ],
+    "method": "Production UnitLog helper runs in DF over unmodified unit report vectors, comparing all retained IDs in exact order for every existing Combat/Sparring log, both directions. Oracle reads raw DF logs independently.",
+    "frame": 0,
+    "save_unchanged": true,
+    "owned_df_pid": 36756,
+    "owned_df_closed": true,
+    "limitations": [
+      "Helper-only acceptance; UnitLog public transport remains unavailable",
+      "No native unit-log view click or visual acceptance",
+      "Live logs unchanged; trim/growth mutation cases are offline tests"
+    ]
+  },
+  "compiled_transport_capture": {
+    "source": "build/reports-unit-wire-live-20261001-052646",
+    "management_version": 42,
+    "session_version": 9,
+    "status": "passed_with_known_issues",
+    "unit_rows": 108,
+    "directional_log_walks": 216,
+    "pages": 384,
+    "retained_references": 5765,
+    "method": "Godot report_request through model/wire/compiled bridge. Paged UnitList rows compared against native names/professions/dead flags/counts/order; every retained native unit-log ID compared in both directions.",
+    "diagnostics": [
+      {
+        "id": "godot-separate-thread-notice",
+        "count": 1,
+        "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+      },
+      {
+        "id": "godot-device-finalize",
+        "count": 1,
+        "reference": "https://github.com/godotengine/godot/issues/119000"
+      },
+      {
+        "id": "godot-shutdown-objects",
+        "count": 1,
+        "reference": "ENGINEERING.md#tests-and-known-problems"
+      }
+    ],
+    "frame": 0,
+    "save_unchanged": true,
+    "owned_df_pid": 21284,
+    "owned_df_closed": true,
+    "rejected_attempt": "052504 lacked required helper message field. Fixed dispatcher envelope, added integrated regression, rebuilt bridge and reran.",
+    "limitations": [
+      "No Reports UI acceptance",
+      "Entries and alert-button references pending",
+      "Live stale-list mutation, additional professions and native log navigation remain open"
+    ]
+  },
+  "controller_capture": {
+    "source": "build/reports-controller-live-20261001-061416",
+    "method": "Protected paused clone. Actual reports_controller and semantic_action_service with live Df3dWorld. Native unit identity/name/profession and retained log IDs compared with oracle units.json.",
+    "observations": [
+      {
+        "rows": 20,
+        "view": "All"
+      },
+      {
+        "category": 0,
+        "rows": 97,
+        "view": "Units"
+      },
+      {
+        "category": 1,
+        "rows": 11,
+        "view": "Units"
+      },
+      {
+        "rows": 697,
+        "unit_id": 2905.0,
+        "view": "UnitLog"
+      }
+    ],
+    "owned_df_pid": 40320,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "status": "passed_with_known_issues",
+    "limitations": [
+      "No complete rendered Reports acceptance",
+      "No live epoch/disconnect injection; these use offline lifecycle checks",
+      "One Sparring unit log tested through controller; broader transport coverage recorded separately"
+    ]
+  },
+  "category_rendering": {
+    "source": "build/reports-unit-colors-native-20261001-074522",
+    "method": "Native pointer clicks to all three category tabs. Hunting seeded with one existing report reference on owned paused clone; label text is native. RGB sampled from first-row glyph pixels.",
+    "owned_df_pid": 33984,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "categories": [
+      {
+        "name": "Combat",
+        "category": 0,
+        "rgb": [
+          255,
+          113,
+          17
+        ],
+        "rows": [
+          {
+            "category": 0,
+            "log_count": 59,
+            "name": "Vabôk Odgúblòr",
+            "profession": "Dwarven child",
+            "unit_id": 998
+          },
+          {
+            "category": 0,
+            "log_count": 56,
+            "name": "Rîsen Bomrekód",
+            "profession": "Blacksmith",
+            "unit_id": 1012
+          },
+          {
+            "category": 0,
+            "log_count": 19,
+            "name": "Stodir Tangakurvad",
+            "profession": "bookkeeper",
+            "unit_id": 1017
+          },
+          {
+            "category": 0,
+            "log_count": 102,
+            "name": "Riñih Goctaape",
+            "profession": "Human Spearman",
+            "unit_id": 2062
+          },
+          {
+            "category": 0,
+            "log_count": 666,
+            "name": "Therset Damsouthra Candolalgi",
+            "profession": "Human Hammerman",
+            "unit_id": 2222
+          },
+          {
+            "category": 0,
+            "log_count": 4,
+            "name": "Leto Jamaslonel",
+            "profession": "Human Bard",
+            "unit_id": 2345
+          },
+          {
+            "category": 0,
+            "log_count": 7,
+            "name": "Umil Kespomba",
+            "profession": "Human Bard",
+            "unit_id": 2446
+          },
+          {
+            "category": 0,
+            "log_count": 65,
+            "name": "Necar Tirinpirni",
+            "profession": "Human Bard",
+            "unit_id": 2449
+          },
+          {
+            "category": 0,
+            "log_count": 14,
+            "name": "Thur Sathreliki",
+            "profession": "Human Bard",
+            "unit_id": 2465
+          },
+          {
+            "category": 0,
+            "log_count": 33,
+            "name": "Lum Licpuja",
+            "profession": "Human Bard",
+            "unit_id": 2574
+          },
+          {
+            "category": 0,
+            "log_count": 95,
+            "name": "Ronu Samosan",
+            "profession": "Human Swordmaster",
+            "unit_id": 2905
+          },
+          {
+            "category": 0,
+            "log_count": 85,
+            "name": "Lam Gukisubi",
+            "profession": "Human Poet",
+            "unit_id": 4338
+          },
+          {
+            "category": 0,
+            "log_count": 628,
+            "name": "Okom Soxoslar Osplu Onsmost",
+            "profession": "Bronze Colossus",
+            "unit_id": 5561
+          },
+          {
+            "category": 0,
+            "log_count": 45,
+            "name": "Olon Arzesnil",
+            "profession": "Miner",
+            "unit_id": 5573
+          },
+          {
+            "category": 0,
+            "log_count": 585,
+            "name": "Feb Anambomrek",
+            "profession": "Axe Lord",
+            "unit_id": 5575
+          },
+          {
+            "category": 0,
+            "log_count": 6,
+            "name": "Kol Asobstettad",
+            "profession": "Stoneworker",
+            "unit_id": 5577
+          },
+          {
+            "category": 0,
+            "log_count": 482,
+            "name": "Zas Rigòthrosat",
+            "profession": "Wrestler",
+            "unit_id": 5578
+          },
+          {
+            "category": 0,
+            "log_count": 733,
+            "name": "",
+            "profession": "Dog",
+            "unit_id": 5579
+          },
+          {
+            "category": 0,
+            "log_count": 443,
+            "name": "",
+            "profession": "Dog",
+            "unit_id": 5580
+          },
+          {
+            "category": 0,
+            "log_count": 1,
+            "name": "",
+            "profession": "Ewe",
+            "unit_id": 5583
+          },
+          {
+            "category": 0,
+            "log_count": 13,
+            "name": "Uzol Bardumtekkud",
+            "profession": "Miner",
+            "unit_id": 5697
+          },
+          {
+            "category": 0,
+            "log_count": 189,
+            "name": "Doren Thosbutalåth",
+            "profession": "Dwarven child",
+            "unit_id": 5698
+          },
+          {
+            "category": 0,
+            "log_count": 27,
+            "name": "Adil Lolorgemsit",
+            "profession": "Dwarven child",
+            "unit_id": 5699
+          },
+          {
+            "category": 0,
+            "log_count": 1,
+            "name": "",
+            "profession": "Alpaca",
+            "unit_id": 5700
+          },
+          {
+            "category": 0,
+            "log_count": 309,
+            "name": "",
+            "profession": "Gray Langur",
+            "unit_id": 5769
+          },
+          {
+            "category": 0,
+            "log_count": 420,
+            "name": "",
+            "profession": "Gray Langur",
+            "unit_id": 5774
+          },
+          {
+            "category": 0,
+            "log_count": 30,
+            "name": "Kûbuk ïngizkor",
+            "profession": "mayor",
+            "unit_id": 5813
+          },
+          {
+            "category": 0,
+            "log_count": 85,
+            "name": "Goden Abanshigós",
+            "profession": "Performer",
+            "unit_id": 5815
+          },
+          {
+            "category": 0,
+            "log_count": 38,
+            "name": "Datan Avuzdakon",
+            "profession": "Metalsmith",
+            "unit_id": 5982
+          },
+          {
+            "category": 0,
+            "log_count": 33,
+            "name": "Kikrost Thosbutuzol",
+            "profession": "militia captain",
+            "unit_id": 5984
+          },
+          {
+            "category": 0,
+            "log_count": 27,
+            "name": "Dôbar Gébarunib",
+            "profession": "Farmer",
+            "unit_id": 5985
+          },
+          {
+            "category": 0,
+            "log_count": 94,
+            "name": "Dodók Kilruderush",
+            "profession": "Swordmaster",
+            "unit_id": 6032
+          },
+          {
+            "category": 0,
+            "log_count": 47,
+            "name": "Monom Eggutmeng",
+            "profession": "Weaver",
+            "unit_id": 6033
+          },
+          {
+            "category": 0,
+            "log_count": 21,
+            "name": "Rimtar Ebalrovod",
+            "profession": "Stoneworker",
+            "unit_id": 6034
+          },
+          {
+            "category": 0,
+            "log_count": 127,
+            "name": "Inod Gusilmilol",
+            "profession": "Dog",
+            "unit_id": 6035
+          },
+          {
+            "category": 0,
+            "log_count": 52,
+            "name": "Uzol Zulbanromlam",
+            "profession": "Performer",
+            "unit_id": 6136
+          },
+          {
+            "category": 0,
+            "log_count": 17,
+            "name": "Tun Dodóktomêm",
+            "profession": "Dwarven child",
+            "unit_id": 6208
+          },
+          {
+            "category": 0,
+            "log_count": 308,
+            "name": "Asën Govososlan",
+            "profession": "Spearmaster",
+            "unit_id": 6531
+          },
+          {
+            "category": 0,
+            "log_count": 26,
+            "name": "Thob âtastfikod",
+            "profession": "Gem Cutter",
+            "unit_id": 6534
+          },
+          {
+            "category": 0,
+            "log_count": 616,
+            "name": "Doren Matkadôl",
+            "profession": "Hammer Lord",
+            "unit_id": 6539
+          },
+          {
+            "category": 0,
+            "log_count": 509,
+            "name": "Oddom Tekkudzaneg",
+            "profession": "Axedwarf",
+            "unit_id": 6543
+          },
+          {
+            "category": 0,
+            "log_count": 16,
+            "name": "Lòr Eshtânmìshos",
+            "profession": "Scribe",
+            "unit_id": 6546
+          },
+          {
+            "category": 0,
+            "log_count": 18,
+            "name": "ïngiz Lelumerush",
+            "profession": "Dog",
+            "unit_id": 6548
+          },
+          {
+            "category": 0,
+            "log_count": 7,
+            "name": "Logem Imeshdumat",
+            "profession": "Hunter",
+            "unit_id": 6553
+          },
+          {
+            "category": 0,
+            "log_count": 12,
+            "name": "Vucar Domasdoren",
+            "profession": "Diagnostician",
+            "unit_id": 6555
+          },
+          {
+            "category": 0,
+            "log_count": 12,
+            "name": "Zas Libashsigun",
+            "profession": "Planter",
+            "unit_id": 6595
+          },
+          {
+            "category": 0,
+            "log_count": 43,
+            "name": "Zulban Bakustoslan",
+            "profession": "Gem Cutter",
+            "unit_id": 6596
+          },
+          {
+            "category": 0,
+            "log_count": 14,
+            "name": "Meng Ducimkezat",
+            "profession": "Farmer",
+            "unit_id": 6597
+          },
+          {
+            "category": 0,
+            "log_count": 388,
+            "name": "Zutthan Kadôlnimak",
+            "profession": "Spearmaster",
+            "unit_id": 6598
+          },
+          {
+            "category": 0,
+            "log_count": 54,
+            "name": "Smunstu Kugmeomosp",
+            "profession": "Goblin Thief",
+            "unit_id": 6633
+          },
+          {
+            "category": 0,
+            "log_count": 321,
+            "name": "Zolak Ostaono",
+            "profession": "Goblin Thief",
+            "unit_id": 6634
+          },
+          {
+            "category": 0,
+            "log_count": 48,
+            "name": "Kûbuk ïngizkosak",
+            "profession": "Fish Dissector",
+            "unit_id": 6677
+          },
+          {
+            "category": 0,
+            "log_count": 178,
+            "name": "Dîshmab Zimkelnomal",
+            "profession": "Wrestler",
+            "unit_id": 6682
+          },
+          {
+            "category": 0,
+            "log_count": 17,
+            "name": "Thob Gethlogem",
+            "profession": "Dwarven child",
+            "unit_id": 6729
+          },
+          {
+            "category": 0,
+            "log_count": 70,
+            "name": "Ngokang Zusmusmaslot",
+            "profession": "Goblin Thief",
+            "unit_id": 6760
+          },
+          {
+            "category": 0,
+            "log_count": 30,
+            "name": "Dostngosp Oguspngom",
+            "profession": "Goblin Thief",
+            "unit_id": 6761
+          },
+          {
+            "category": 0,
+            "log_count": 58,
+            "name": "Ngom Urarobxog",
+            "profession": "Goblin Thief",
+            "unit_id": 6762
+          },
+          {
+            "category": 0,
+            "log_count": 78,
+            "name": "èzum Amostmörul",
+            "profession": "Axe Lord",
+            "unit_id": 6811
+          },
+          {
+            "category": 0,
+            "log_count": 111,
+            "name": "Såkzul Nåzomkivish",
+            "profession": "militia commander",
+            "unit_id": 6812
+          },
+          {
+            "category": 0,
+            "log_count": 5,
+            "name": "Urist Kodzas",
+            "profession": "Clothier",
+            "unit_id": 6822
+          },
+          {
+            "category": 0,
+            "log_count": 34,
+            "name": "Tholtig Nolrith",
+            "profession": "Dog",
+            "unit_id": 6834
+          },
+          {
+            "category": 0,
+            "log_count": 8,
+            "name": "Alåth Nåzomavuz",
+            "profession": "Furnace Operator",
+            "unit_id": 6835
+          },
+          {
+            "category": 0,
+            "log_count": 214,
+            "name": "Kadôl Nîlesmûthkat",
+            "profession": "Hammer Lord",
+            "unit_id": 6837
+          },
+          {
+            "category": 0,
+            "log_count": 348,
+            "name": "Litast Urrïthzon",
+            "profession": "Axe Lord",
+            "unit_id": 6838
+          },
+          {
+            "category": 0,
+            "log_count": 896,
+            "name": "Cadi Innahhibor",
+            "profession": "Human Spearman",
+            "unit_id": 6871
+          },
+          {
+            "category": 0,
+            "log_count": 30,
+            "name": "Olngö Stekugzolak",
+            "profession": "Goblin Crossbowman",
+            "unit_id": 6916
+          },
+          {
+            "category": 0,
+            "log_count": 30,
+            "name": "Song Uslangosnun",
+            "profession": "Goblin Crossbowman",
+            "unit_id": 6917
+          },
+          {
+            "category": 0,
+            "log_count": 136,
+            "name": "Aslot Soxukge",
+            "profession": "Goblin Crossbowman",
+            "unit_id": 6918
+          },
+          {
+            "category": 0,
+            "log_count": 333,
+            "name": "Aslot Amxuzesm",
+            "profession": "Goblin Bowman",
+            "unit_id": 6919
+          },
+          {
+            "category": 0,
+            "log_count": 6,
+            "name": "Utes Ngamurar",
+            "profession": "Goblin Crossbowman",
+            "unit_id": 6920
+          },
+          {
+            "category": 0,
+            "log_count": 12,
+            "name": "Tode Kabudang",
+            "profession": "Goblin Bowman",
+            "unit_id": 6921
+          },
+          {
+            "category": 0,
+            "log_count": 61,
+            "name": "Urvad Kosoththosbut",
+            "profession": "Woodworker",
+            "unit_id": 6970
+          },
+          {
+            "category": 0,
+            "log_count": 12,
+            "name": "Ingish Imikfikod",
+            "profession": "Siege Engineer",
+            "unit_id": 6973
+          },
+          {
+            "category": 0,
+            "log_count": 36,
+            "name": "Kurik Agzes",
+            "profession": "Goblin Maceman",
+            "unit_id": 7065
+          },
+          {
+            "category": 0,
+            "log_count": 69,
+            "name": "Nako Amxuosnuk",
+            "profession": "Goblin Spearman",
+            "unit_id": 7066
+          },
+          {
+            "category": 0,
+            "log_count": 109,
+            "name": "Snodub Songspösp",
+            "profession": "Goblin Swordsman",
+            "unit_id": 7067
+          },
+          {
+            "category": 0,
+            "log_count": 93,
+            "name": "ûsbu Lâsmolngö",
+            "profession": "Goblin Bowman",
+            "unit_id": 7068
+          },
+          {
+            "category": 0,
+            "log_count": 18,
+            "name": "Snodub Spâsposnang",
+            "profession": "Goblin Hammerman",
+            "unit_id": 7069
+          },
+          {
+            "category": 0,
+            "log_count": 92,
+            "name": "Utes Angotstrodno",
+            "profession": "Goblin Lasher",
+            "unit_id": 7070
+          },
+          {
+            "category": 0,
+            "log_count": 82,
+            "name": "Asno ûdatu",
+            "profession": "Goblin Axeman",
+            "unit_id": 7071
+          },
+          {
+            "category": 0,
+            "log_count": 95,
+            "name": "Strodno Omngosnang",
+            "profession": "Goblin Pikeman",
+            "unit_id": 7072
+          },
+          {
+            "category": 0,
+            "log_count": 51,
+            "name": "Nako Ozngom",
+            "profession": "Goblin Crossbowman",
+            "unit_id": 7073
+          },
+          {
+            "category": 0,
+            "log_count": 157,
+            "name": "Zolak Kodem",
+            "profession": "Goblin Lasher",
+            "unit_id": 7074
+          },
+          {
+            "category": 0,
+            "log_count": 10,
+            "name": "",
+            "profession": "Armadillo Boar",
+            "unit_id": 7104
+          },
+          {
+            "category": 0,
+            "log_count": 24,
+            "name": "",
+            "profession": "Leopard",
+            "unit_id": 7116
+          },
+          {
+            "category": 0,
+            "log_count": 9,
+            "name": "Stukos Kolsikel",
+            "profession": "Furnace Operator",
+            "unit_id": 7117
+          },
+          {
+            "category": 0,
+            "log_count": 2,
+            "name": "Ingish Kêshshakubbul",
+            "profession": "Peasant",
+            "unit_id": 7120
+          },
+          {
+            "category": 0,
+            "log_count": 21,
+            "name": "Lòr Astthum",
+            "profession": "Bone Doctor",
+            "unit_id": 7124
+          },
+          {
+            "category": 0,
+            "log_count": 17,
+            "name": "",
+            "profession": "Gray Langur",
+            "unit_id": 7127
+          },
+          {
+            "category": 0,
+            "log_count": 99,
+            "name": "",
+            "profession": "Gray Langur",
+            "unit_id": 7130
+          },
+          {
+            "category": 0,
+            "log_count": 45,
+            "name": "Stozu Stosbûbuxzo",
+            "profession": "Goblin Thief",
+            "unit_id": 7161
+          },
+          {
+            "category": 0,
+            "log_count": 55,
+            "name": "Osta Ozudsnosstrosp",
+            "profession": "Goblin Thief",
+            "unit_id": 7162
+          },
+          {
+            "category": 0,
+            "log_count": 125,
+            "name": "Smunstu Uksossad",
+            "profession": "Goblin Thief",
+            "unit_id": 7164
+          },
+          {
+            "category": 0,
+            "log_count": 86,
+            "name": "Em Slobustâsost",
+            "profession": "Goblin Thief",
+            "unit_id": 7238
+          },
+          {
+            "category": 0,
+            "log_count": 42,
+            "name": "Zocol Nentukònul",
+            "profession": "Human Bowman",
+            "unit_id": 7294
+          },
+          {
+            "category": 0,
+            "log_count": 116,
+            "name": "Gogol Iralbathru",
+            "profession": "Human Spearman",
+            "unit_id": 7295
+          },
+          {
+            "category": 0,
+            "log_count": 17,
+            "name": "Rakbin Komodoto",
+            "profession": "Human Spearman",
+            "unit_id": 7303
+          }
+        ]
+      },
+      {
+        "name": "Sparring",
+        "category": 1,
+        "rgb": [
+          18,
+          254,
+          207
+        ],
+        "rows": [
+          {
+            "category": 1,
+            "log_count": 9891,
+            "name": "Ronu Samosan",
+            "profession": "Human Swordmaster",
+            "unit_id": 2905
+          },
+          {
+            "category": 1,
+            "log_count": 10982,
+            "name": "Feb Anambomrek",
+            "profession": "Axe Lord",
+            "unit_id": 5575
+          },
+          {
+            "category": 1,
+            "log_count": 7254,
+            "name": "Dodók Kilruderush",
+            "profession": "Swordmaster",
+            "unit_id": 6032
+          },
+          {
+            "category": 1,
+            "log_count": 14982,
+            "name": "Asën Govososlan",
+            "profession": "Spearmaster",
+            "unit_id": 6531
+          },
+          {
+            "category": 1,
+            "log_count": 13727,
+            "name": "Doren Matkadôl",
+            "profession": "Hammer Lord",
+            "unit_id": 6539
+          },
+          {
+            "category": 1,
+            "log_count": 219,
+            "name": "Oddom Tekkudzaneg",
+            "profession": "Axedwarf",
+            "unit_id": 6543
+          },
+          {
+            "category": 1,
+            "log_count": 17197,
+            "name": "Zutthan Kadôlnimak",
+            "profession": "Spearmaster",
+            "unit_id": 6598
+          },
+          {
+            "category": 1,
+            "log_count": 10776,
+            "name": "èzum Amostmörul",
+            "profession": "Axe Lord",
+            "unit_id": 6811
+          },
+          {
+            "category": 1,
+            "log_count": 18754,
+            "name": "Såkzul Nåzomkivish",
+            "profession": "militia commander",
+            "unit_id": 6812
+          },
+          {
+            "category": 1,
+            "log_count": 10890,
+            "name": "Kadôl Nîlesmûthkat",
+            "profession": "Hammer Lord",
+            "unit_id": 6837
+          },
+          {
+            "category": 1,
+            "log_count": 11566,
+            "name": "Litast Urrïthzon",
+            "profession": "Axe Lord",
+            "unit_id": 6838
+          }
+        ]
+      },
+      {
+        "name": "Hunting",
+        "category": 2,
+        "rgb": [
+          19,
+          253,
+          101
+        ],
+        "rows": [
+          {
+            "category": 2,
+            "log_count": 1,
+            "name": "Ronu Samosan",
+            "profession": "Human Swordmaster",
+            "unit_id": 2905
+          }
+        ]
+      }
+    ],
+    "gpu_verification": {
+      "source": "build/reports-unit-palette-gpu",
+      "comparison": {
+        "Combat": {
+          "rows": 15,
+          "rectangle": [
+            48,
+            148,
+            944,
+            688
+          ],
+          "different_pixels": 0
+        },
+        "Sparring": {
+          "rows": 11,
+          "rectangle": [
+            48,
+            148,
+            944,
+            544
+          ],
+          "different_pixels": 0
+        },
+        "Hunting": {
+          "rows": 1,
+          "rectangle": [
+            48,
+            148,
+            944,
+            184
+          ],
+          "different_pixels": 0
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      "palette_indices": [
+        12,
+        11,
+        10
+      ],
+      "palette_tokens": [
+        "LRED",
+        "LCYAN",
+        "LGREEN"
+      ]
+    }
+  }
+}

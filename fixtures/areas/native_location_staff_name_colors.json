@@ -1,0 +1,7184 @@
+{
+  "provenance": {
+    "source": "build/location-staff-selector-color-phase-20260930-012915/native-location-staff-selector-ui.json",
+    "sha256": "d9b62d55b0341d436b6ba5557edabfbfec9948930fde0f56ab7c8138c9af6aa9",
+    "save_manifests_unchanged": 2
+  },
+  "scope": "Native first selected candidate, adult dwarf6032 with all other skills zero and controlled Persuasion14/15;16 controlled caste/creature base colors.1024 observations over3219ms. Render argument fixed0. Raw palette, names and skills restored. No pixels.",
+  "tick_uncertainty_ms": 16,
+  "limitations": [
+    "GetTickCount granularity does not establish an exact sub-frame transition edge;333ms alternate phase per1000ms matches every interval.",
+    "The current candidate wire lacks an all-skills legendary fact and profession color; do not infer legendary from only role-relevant skills.",
+    "Runtime animation clock synchronization and unselected-row rendering still need acceptance."
+  ],
+  "cases": [
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315170968,
+      "tick_after": 315170984,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315170984,
+      "tick_after": 315170984,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315170984,
+      "tick_after": 315170984,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315170984,
+      "tick_after": 315170984,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315170984,
+      "tick_after": 315170984,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315170984,
+      "tick_after": 315171000,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171000,
+      "tick_after": 315171000,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171000,
+      "tick_after": 315171000,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171000,
+      "tick_after": 315171000,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171000,
+      "tick_after": 315171000,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171000,
+      "tick_after": 315171015,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171015,
+      "tick_after": 315171015,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171015,
+      "tick_after": 315171015,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171015,
+      "tick_after": 315171015,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171015,
+      "tick_after": 315171015,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171015,
+      "tick_after": 315171015,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171015,
+      "tick_after": 315171031,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171031,
+      "tick_after": 315171031,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171031,
+      "tick_after": 315171031,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171031,
+      "tick_after": 315171031,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171031,
+      "tick_after": 315171031,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171031,
+      "tick_after": 315171046,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171046,
+      "tick_after": 315171046,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171046,
+      "tick_after": 315171046,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171046,
+      "tick_after": 315171046,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171046,
+      "tick_after": 315171046,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171046,
+      "tick_after": 315171062,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171062,
+      "tick_after": 315171062,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171062,
+      "tick_after": 315171062,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171062,
+      "tick_after": 315171062,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171062,
+      "tick_after": 315171062,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171062,
+      "tick_after": 315171078,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171078,
+      "tick_after": 315171078,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171078,
+      "tick_after": 315171078,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171078,
+      "tick_after": 315171078,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171078,
+      "tick_after": 315171078,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171078,
+      "tick_after": 315171093,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171093,
+      "tick_after": 315171093,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171093,
+      "tick_after": 315171093,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171093,
+      "tick_after": 315171093,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171093,
+      "tick_after": 315171093,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171093,
+      "tick_after": 315171109,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171109,
+      "tick_after": 315171109,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171109,
+      "tick_after": 315171109,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171109,
+      "tick_after": 315171109,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171109,
+      "tick_after": 315171109,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171109,
+      "tick_after": 315171109,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171109,
+      "tick_after": 315171125,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171125,
+      "tick_after": 315171125,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171125,
+      "tick_after": 315171125,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171125,
+      "tick_after": 315171125,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171125,
+      "tick_after": 315171125,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171140,
+      "tick_after": 315171140,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171140,
+      "tick_after": 315171140,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171140,
+      "tick_after": 315171140,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171140,
+      "tick_after": 315171140,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171140,
+      "tick_after": 315171140,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171140,
+      "tick_after": 315171156,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171156,
+      "tick_after": 315171156,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171156,
+      "tick_after": 315171156,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171156,
+      "tick_after": 315171156,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171156,
+      "tick_after": 315171156,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171156,
+      "tick_after": 315171171,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171171,
+      "tick_after": 315171171,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171171,
+      "tick_after": 315171171,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171171,
+      "tick_after": 315171171,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171171,
+      "tick_after": 315171171,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171171,
+      "tick_after": 315171187,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171187,
+      "tick_after": 315171187,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171187,
+      "tick_after": 315171187,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171187,
+      "tick_after": 315171187,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171187,
+      "tick_after": 315171187,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171187,
+      "tick_after": 315171203,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171203,
+      "tick_after": 315171203,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171203,
+      "tick_after": 315171203,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171203,
+      "tick_after": 315171203,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171203,
+      "tick_after": 315171203,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171203,
+      "tick_after": 315171218,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171218,
+      "tick_after": 315171218,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171218,
+      "tick_after": 315171218,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171218,
+      "tick_after": 315171218,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171218,
+      "tick_after": 315171218,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171218,
+      "tick_after": 315171218,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171234,
+      "tick_after": 315171234,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171234,
+      "tick_after": 315171234,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171234,
+      "tick_after": 315171234,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171234,
+      "tick_after": 315171234,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171234,
+      "tick_after": 315171234,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171234,
+      "tick_after": 315171250,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171250,
+      "tick_after": 315171250,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171250,
+      "tick_after": 315171250,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171250,
+      "tick_after": 315171250,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171250,
+      "tick_after": 315171250,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171250,
+      "tick_after": 315171265,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171265,
+      "tick_after": 315171265,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171265,
+      "tick_after": 315171265,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171265,
+      "tick_after": 315171265,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171265,
+      "tick_after": 315171265,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171265,
+      "tick_after": 315171281,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171281,
+      "tick_after": 315171281,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171281,
+      "tick_after": 315171281,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171281,
+      "tick_after": 315171281,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171281,
+      "tick_after": 315171281,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171281,
+      "tick_after": 315171281,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171296,
+      "tick_after": 315171296,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171296,
+      "tick_after": 315171296,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171296,
+      "tick_after": 315171296,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171296,
+      "tick_after": 315171296,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171296,
+      "tick_after": 315171296,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171312,
+      "tick_after": 315171312,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171312,
+      "tick_after": 315171312,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171312,
+      "tick_after": 315171312,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171312,
+      "tick_after": 315171312,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171312,
+      "tick_after": 315171312,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171312,
+      "tick_after": 315171328,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171328,
+      "tick_after": 315171328,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171328,
+      "tick_after": 315171328,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171328,
+      "tick_after": 315171328,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171328,
+      "tick_after": 315171328,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171328,
+      "tick_after": 315171343,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171343,
+      "tick_after": 315171343,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171343,
+      "tick_after": 315171343,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171343,
+      "tick_after": 315171343,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171343,
+      "tick_after": 315171343,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171343,
+      "tick_after": 315171359,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171359,
+      "tick_after": 315171359,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171359,
+      "tick_after": 315171359,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171359,
+      "tick_after": 315171359,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171359,
+      "tick_after": 315171359,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171359,
+      "tick_after": 315171375,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171375,
+      "tick_after": 315171375,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171375,
+      "tick_after": 315171375,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171375,
+      "tick_after": 315171375,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171375,
+      "tick_after": 315171375,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171375,
+      "tick_after": 315171390,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171390,
+      "tick_after": 315171390,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171390,
+      "tick_after": 315171390,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171390,
+      "tick_after": 315171390,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171390,
+      "tick_after": 315171390,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171390,
+      "tick_after": 315171390,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171390,
+      "tick_after": 315171406,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171406,
+      "tick_after": 315171406,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171406,
+      "tick_after": 315171406,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171406,
+      "tick_after": 315171406,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171406,
+      "tick_after": 315171406,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171406,
+      "tick_after": 315171421,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171421,
+      "tick_after": 315171421,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171421,
+      "tick_after": 315171421,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171421,
+      "tick_after": 315171421,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171421,
+      "tick_after": 315171421,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171421,
+      "tick_after": 315171437,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171437,
+      "tick_after": 315171437,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171437,
+      "tick_after": 315171437,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171437,
+      "tick_after": 315171437,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171437,
+      "tick_after": 315171437,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171437,
+      "tick_after": 315171453,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171453,
+      "tick_after": 315171453,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171453,
+      "tick_after": 315171453,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171453,
+      "tick_after": 315171453,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171453,
+      "tick_after": 315171453,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171453,
+      "tick_after": 315171468,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171468,
+      "tick_after": 315171468,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171468,
+      "tick_after": 315171468,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171468,
+      "tick_after": 315171468,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171468,
+      "tick_after": 315171468,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171468,
+      "tick_after": 315171484,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171484,
+      "tick_after": 315171484,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171484,
+      "tick_after": 315171484,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171484,
+      "tick_after": 315171484,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171484,
+      "tick_after": 315171484,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171484,
+      "tick_after": 315171500,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171500,
+      "tick_after": 315171500,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171500,
+      "tick_after": 315171500,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171500,
+      "tick_after": 315171500,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171500,
+      "tick_after": 315171500,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171500,
+      "tick_after": 315171515,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171515,
+      "tick_after": 315171515,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171515,
+      "tick_after": 315171515,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171515,
+      "tick_after": 315171515,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171515,
+      "tick_after": 315171515,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171515,
+      "tick_after": 315171515,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171515,
+      "tick_after": 315171531,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171531,
+      "tick_after": 315171531,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171531,
+      "tick_after": 315171531,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171531,
+      "tick_after": 315171531,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171531,
+      "tick_after": 315171531,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171531,
+      "tick_after": 315171546,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171546,
+      "tick_after": 315171546,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171546,
+      "tick_after": 315171546,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171546,
+      "tick_after": 315171546,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171546,
+      "tick_after": 315171546,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171546,
+      "tick_after": 315171562,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171562,
+      "tick_after": 315171562,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171562,
+      "tick_after": 315171562,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171562,
+      "tick_after": 315171562,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171562,
+      "tick_after": 315171562,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171562,
+      "tick_after": 315171578,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171578,
+      "tick_after": 315171578,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171578,
+      "tick_after": 315171578,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171578,
+      "tick_after": 315171578,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171578,
+      "tick_after": 315171578,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171578,
+      "tick_after": 315171593,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171593,
+      "tick_after": 315171593,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171593,
+      "tick_after": 315171593,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171593,
+      "tick_after": 315171593,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171593,
+      "tick_after": 315171593,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171593,
+      "tick_after": 315171609,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171609,
+      "tick_after": 315171609,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171609,
+      "tick_after": 315171609,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171609,
+      "tick_after": 315171609,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171609,
+      "tick_after": 315171609,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171609,
+      "tick_after": 315171609,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171609,
+      "tick_after": 315171625,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171625,
+      "tick_after": 315171625,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171625,
+      "tick_after": 315171625,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171625,
+      "tick_after": 315171625,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171625,
+      "tick_after": 315171625,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171625,
+      "tick_after": 315171640,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171640,
+      "tick_after": 315171640,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171640,
+      "tick_after": 315171640,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171640,
+      "tick_after": 315171640,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171640,
+      "tick_after": 315171640,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171640,
+      "tick_after": 315171656,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171656,
+      "tick_after": 315171656,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171656,
+      "tick_after": 315171656,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171656,
+      "tick_after": 315171656,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171656,
+      "tick_after": 315171656,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171656,
+      "tick_after": 315171671,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171671,
+      "tick_after": 315171671,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171671,
+      "tick_after": 315171671,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171671,
+      "tick_after": 315171671,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171671,
+      "tick_after": 315171671,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171671,
+      "tick_after": 315171687,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171687,
+      "tick_after": 315171687,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171687,
+      "tick_after": 315171687,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171687,
+      "tick_after": 315171687,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171687,
+      "tick_after": 315171687,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171687,
+      "tick_after": 315171703,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171703,
+      "tick_after": 315171703,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171703,
+      "tick_after": 315171703,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171703,
+      "tick_after": 315171703,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171703,
+      "tick_after": 315171703,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171703,
+      "tick_after": 315171718,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171718,
+      "tick_after": 315171718,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171718,
+      "tick_after": 315171718,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171718,
+      "tick_after": 315171718,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171718,
+      "tick_after": 315171718,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171718,
+      "tick_after": 315171718,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171734,
+      "tick_after": 315171734,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171734,
+      "tick_after": 315171734,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171734,
+      "tick_after": 315171734,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171734,
+      "tick_after": 315171734,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171734,
+      "tick_after": 315171750,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171750,
+      "tick_after": 315171750,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171750,
+      "tick_after": 315171750,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171750,
+      "tick_after": 315171750,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171750,
+      "tick_after": 315171750,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171750,
+      "tick_after": 315171750,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171765,
+      "tick_after": 315171765,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171765,
+      "tick_after": 315171765,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171765,
+      "tick_after": 315171765,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171765,
+      "tick_after": 315171765,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171765,
+      "tick_after": 315171765,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171781,
+      "tick_after": 315171781,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171781,
+      "tick_after": 315171781,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171781,
+      "tick_after": 315171781,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171781,
+      "tick_after": 315171781,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171781,
+      "tick_after": 315171781,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171781,
+      "tick_after": 315171796,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171796,
+      "tick_after": 315171796,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171796,
+      "tick_after": 315171796,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171796,
+      "tick_after": 315171796,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171796,
+      "tick_after": 315171796,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171796,
+      "tick_after": 315171812,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171812,
+      "tick_after": 315171812,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171812,
+      "tick_after": 315171812,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171812,
+      "tick_after": 315171812,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171812,
+      "tick_after": 315171812,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171812,
+      "tick_after": 315171828,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171828,
+      "tick_after": 315171828,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171828,
+      "tick_after": 315171828,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171828,
+      "tick_after": 315171828,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171828,
+      "tick_after": 315171828,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171828,
+      "tick_after": 315171843,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171843,
+      "tick_after": 315171843,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171843,
+      "tick_after": 315171843,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171843,
+      "tick_after": 315171843,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171843,
+      "tick_after": 315171843,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171843,
+      "tick_after": 315171859,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171859,
+      "tick_after": 315171859,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171859,
+      "tick_after": 315171859,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171859,
+      "tick_after": 315171859,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171859,
+      "tick_after": 315171859,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171859,
+      "tick_after": 315171875,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171875,
+      "tick_after": 315171875,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171875,
+      "tick_after": 315171875,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171875,
+      "tick_after": 315171875,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171875,
+      "tick_after": 315171875,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171875,
+      "tick_after": 315171890,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171890,
+      "tick_after": 315171890,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171890,
+      "tick_after": 315171890,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171890,
+      "tick_after": 315171890,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315171890,
+      "tick_after": 315171890,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315171890,
+      "tick_after": 315171906,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315171906,
+      "tick_after": 315171906,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315171906,
+      "tick_after": 315171906,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315171906,
+      "tick_after": 315171906,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315171906,
+      "tick_after": 315171906,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315171906,
+      "tick_after": 315171921,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315171921,
+      "tick_after": 315171921,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315171921,
+      "tick_after": 315171921,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315171921,
+      "tick_after": 315171921,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315171921,
+      "tick_after": 315171921,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315171921,
+      "tick_after": 315171937,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315171937,
+      "tick_after": 315171937,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315171937,
+      "tick_after": 315171937,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315171937,
+      "tick_after": 315171937,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315171937,
+      "tick_after": 315171937,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315171937,
+      "tick_after": 315171953,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315171953,
+      "tick_after": 315171953,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315171953,
+      "tick_after": 315171953,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315171953,
+      "tick_after": 315171953,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315171953,
+      "tick_after": 315171953,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315171953,
+      "tick_after": 315171968,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315171968,
+      "tick_after": 315171968,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315171968,
+      "tick_after": 315171968,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315171968,
+      "tick_after": 315171968,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315171968,
+      "tick_after": 315171968,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315171968,
+      "tick_after": 315171984,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315171984,
+      "tick_after": 315171984,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315171984,
+      "tick_after": 315171984,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315171984,
+      "tick_after": 315171984,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315171984,
+      "tick_after": 315171984,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315171984,
+      "tick_after": 315172000,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172000,
+      "tick_after": 315172000,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172000,
+      "tick_after": 315172000,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172000,
+      "tick_after": 315172000,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172000,
+      "tick_after": 315172000,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172000,
+      "tick_after": 315172015,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172015,
+      "tick_after": 315172015,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172015,
+      "tick_after": 315172015,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172015,
+      "tick_after": 315172015,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172015,
+      "tick_after": 315172015,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172015,
+      "tick_after": 315172015,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172031,
+      "tick_after": 315172031,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172031,
+      "tick_after": 315172031,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172031,
+      "tick_after": 315172031,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172031,
+      "tick_after": 315172031,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172031,
+      "tick_after": 315172031,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172046,
+      "tick_after": 315172046,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172046,
+      "tick_after": 315172046,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172046,
+      "tick_after": 315172046,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172046,
+      "tick_after": 315172046,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172046,
+      "tick_after": 315172046,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172046,
+      "tick_after": 315172062,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172062,
+      "tick_after": 315172062,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172062,
+      "tick_after": 315172062,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172062,
+      "tick_after": 315172062,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172062,
+      "tick_after": 315172062,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172062,
+      "tick_after": 315172078,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172078,
+      "tick_after": 315172078,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172078,
+      "tick_after": 315172078,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172078,
+      "tick_after": 315172078,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172078,
+      "tick_after": 315172078,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172078,
+      "tick_after": 315172093,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172093,
+      "tick_after": 315172093,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172093,
+      "tick_after": 315172093,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172093,
+      "tick_after": 315172093,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172093,
+      "tick_after": 315172093,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172093,
+      "tick_after": 315172109,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172109,
+      "tick_after": 315172109,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172109,
+      "tick_after": 315172109,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172109,
+      "tick_after": 315172109,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172109,
+      "tick_after": 315172109,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172109,
+      "tick_after": 315172125,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172125,
+      "tick_after": 315172125,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172125,
+      "tick_after": 315172125,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172125,
+      "tick_after": 315172125,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172125,
+      "tick_after": 315172125,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172125,
+      "tick_after": 315172140,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172140,
+      "tick_after": 315172140,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172140,
+      "tick_after": 315172140,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172140,
+      "tick_after": 315172140,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172140,
+      "tick_after": 315172140,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172140,
+      "tick_after": 315172156,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172156,
+      "tick_after": 315172156,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172156,
+      "tick_after": 315172156,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172156,
+      "tick_after": 315172156,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172156,
+      "tick_after": 315172156,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172156,
+      "tick_after": 315172171,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172171,
+      "tick_after": 315172171,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172171,
+      "tick_after": 315172171,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172171,
+      "tick_after": 315172171,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172171,
+      "tick_after": 315172171,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172171,
+      "tick_after": 315172187,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172187,
+      "tick_after": 315172187,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172187,
+      "tick_after": 315172187,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172187,
+      "tick_after": 315172187,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172187,
+      "tick_after": 315172187,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172187,
+      "tick_after": 315172187,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172203,
+      "tick_after": 315172203,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172203,
+      "tick_after": 315172203,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172203,
+      "tick_after": 315172203,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172203,
+      "tick_after": 315172203,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172203,
+      "tick_after": 315172218,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172218,
+      "tick_after": 315172218,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172218,
+      "tick_after": 315172218,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172218,
+      "tick_after": 315172218,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172218,
+      "tick_after": 315172218,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172218,
+      "tick_after": 315172234,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172234,
+      "tick_after": 315172234,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172234,
+      "tick_after": 315172234,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172234,
+      "tick_after": 315172234,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172234,
+      "tick_after": 315172234,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172234,
+      "tick_after": 315172250,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172250,
+      "tick_after": 315172250,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172250,
+      "tick_after": 315172250,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172250,
+      "tick_after": 315172250,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172250,
+      "tick_after": 315172250,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172250,
+      "tick_after": 315172265,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172265,
+      "tick_after": 315172265,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172265,
+      "tick_after": 315172265,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172265,
+      "tick_after": 315172265,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172265,
+      "tick_after": 315172265,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172265,
+      "tick_after": 315172281,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172281,
+      "tick_after": 315172281,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172281,
+      "tick_after": 315172281,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172281,
+      "tick_after": 315172281,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172281,
+      "tick_after": 315172281,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172281,
+      "tick_after": 315172296,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172296,
+      "tick_after": 315172296,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172296,
+      "tick_after": 315172296,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172296,
+      "tick_after": 315172296,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172296,
+      "tick_after": 315172296,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172296,
+      "tick_after": 315172312,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172312,
+      "tick_after": 315172312,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172312,
+      "tick_after": 315172312,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172312,
+      "tick_after": 315172312,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172312,
+      "tick_after": 315172312,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172312,
+      "tick_after": 315172328,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172328,
+      "tick_after": 315172328,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172328,
+      "tick_after": 315172328,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172328,
+      "tick_after": 315172328,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172328,
+      "tick_after": 315172328,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172328,
+      "tick_after": 315172343,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172343,
+      "tick_after": 315172343,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172343,
+      "tick_after": 315172343,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172343,
+      "tick_after": 315172343,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172343,
+      "tick_after": 315172343,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172343,
+      "tick_after": 315172359,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172359,
+      "tick_after": 315172359,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172359,
+      "tick_after": 315172359,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172359,
+      "tick_after": 315172359,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172359,
+      "tick_after": 315172359,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172359,
+      "tick_after": 315172375,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172375,
+      "tick_after": 315172375,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172375,
+      "tick_after": 315172375,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172375,
+      "tick_after": 315172375,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172375,
+      "tick_after": 315172375,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172375,
+      "tick_after": 315172390,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172390,
+      "tick_after": 315172390,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172390,
+      "tick_after": 315172390,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172390,
+      "tick_after": 315172390,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172390,
+      "tick_after": 315172390,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172406,
+      "tick_after": 315172406,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172406,
+      "tick_after": 315172406,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172406,
+      "tick_after": 315172406,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172406,
+      "tick_after": 315172406,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172406,
+      "tick_after": 315172421,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172421,
+      "tick_after": 315172421,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172421,
+      "tick_after": 315172421,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172421,
+      "tick_after": 315172421,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172421,
+      "tick_after": 315172421,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172421,
+      "tick_after": 315172437,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172437,
+      "tick_after": 315172437,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172437,
+      "tick_after": 315172437,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172437,
+      "tick_after": 315172437,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172437,
+      "tick_after": 315172437,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172437,
+      "tick_after": 315172453,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172453,
+      "tick_after": 315172453,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172453,
+      "tick_after": 315172453,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172453,
+      "tick_after": 315172453,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172453,
+      "tick_after": 315172453,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172453,
+      "tick_after": 315172468,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172468,
+      "tick_after": 315172468,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172468,
+      "tick_after": 315172468,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172468,
+      "tick_after": 315172468,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172468,
+      "tick_after": 315172468,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172468,
+      "tick_after": 315172484,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172484,
+      "tick_after": 315172484,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172484,
+      "tick_after": 315172484,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172484,
+      "tick_after": 315172484,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172484,
+      "tick_after": 315172484,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172484,
+      "tick_after": 315172500,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172500,
+      "tick_after": 315172500,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172500,
+      "tick_after": 315172500,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172500,
+      "tick_after": 315172500,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172500,
+      "tick_after": 315172500,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172500,
+      "tick_after": 315172515,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172515,
+      "tick_after": 315172515,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172515,
+      "tick_after": 315172515,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172515,
+      "tick_after": 315172515,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172515,
+      "tick_after": 315172515,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172515,
+      "tick_after": 315172531,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172531,
+      "tick_after": 315172531,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172531,
+      "tick_after": 315172531,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172531,
+      "tick_after": 315172531,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172531,
+      "tick_after": 315172531,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172531,
+      "tick_after": 315172546,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172546,
+      "tick_after": 315172546,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172546,
+      "tick_after": 315172546,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172546,
+      "tick_after": 315172546,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172546,
+      "tick_after": 315172546,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172546,
+      "tick_after": 315172562,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172562,
+      "tick_after": 315172562,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172562,
+      "tick_after": 315172562,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172562,
+      "tick_after": 315172562,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172562,
+      "tick_after": 315172562,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172562,
+      "tick_after": 315172578,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172578,
+      "tick_after": 315172578,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172578,
+      "tick_after": 315172578,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172578,
+      "tick_after": 315172578,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172578,
+      "tick_after": 315172578,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172578,
+      "tick_after": 315172593,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172593,
+      "tick_after": 315172593,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172593,
+      "tick_after": 315172593,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172593,
+      "tick_after": 315172593,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172593,
+      "tick_after": 315172593,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172593,
+      "tick_after": 315172609,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172609,
+      "tick_after": 315172609,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172609,
+      "tick_after": 315172609,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172609,
+      "tick_after": 315172609,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172609,
+      "tick_after": 315172609,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172609,
+      "tick_after": 315172625,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172625,
+      "tick_after": 315172625,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172625,
+      "tick_after": 315172625,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172625,
+      "tick_after": 315172625,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172625,
+      "tick_after": 315172625,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172625,
+      "tick_after": 315172640,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172640,
+      "tick_after": 315172640,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172640,
+      "tick_after": 315172640,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172640,
+      "tick_after": 315172640,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172640,
+      "tick_after": 315172640,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172640,
+      "tick_after": 315172656,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172656,
+      "tick_after": 315172656,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172656,
+      "tick_after": 315172656,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172656,
+      "tick_after": 315172656,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172656,
+      "tick_after": 315172656,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172656,
+      "tick_after": 315172671,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172671,
+      "tick_after": 315172671,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172671,
+      "tick_after": 315172671,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172671,
+      "tick_after": 315172671,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172671,
+      "tick_after": 315172671,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172671,
+      "tick_after": 315172687,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172687,
+      "tick_after": 315172687,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172687,
+      "tick_after": 315172687,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172687,
+      "tick_after": 315172687,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172687,
+      "tick_after": 315172687,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172687,
+      "tick_after": 315172703,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172703,
+      "tick_after": 315172703,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172703,
+      "tick_after": 315172703,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172703,
+      "tick_after": 315172703,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172703,
+      "tick_after": 315172703,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172703,
+      "tick_after": 315172718,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172718,
+      "tick_after": 315172718,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172718,
+      "tick_after": 315172718,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172718,
+      "tick_after": 315172718,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172718,
+      "tick_after": 315172718,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172718,
+      "tick_after": 315172734,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172734,
+      "tick_after": 315172734,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172734,
+      "tick_after": 315172734,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172734,
+      "tick_after": 315172734,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172734,
+      "tick_after": 315172734,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172734,
+      "tick_after": 315172750,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172750,
+      "tick_after": 315172750,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172750,
+      "tick_after": 315172750,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172750,
+      "tick_after": 315172750,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172750,
+      "tick_after": 315172750,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172750,
+      "tick_after": 315172765,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172765,
+      "tick_after": 315172765,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172765,
+      "tick_after": 315172765,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172765,
+      "tick_after": 315172765,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172765,
+      "tick_after": 315172765,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172765,
+      "tick_after": 315172781,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172781,
+      "tick_after": 315172781,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172781,
+      "tick_after": 315172781,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172781,
+      "tick_after": 315172781,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172781,
+      "tick_after": 315172781,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172781,
+      "tick_after": 315172781,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172796,
+      "tick_after": 315172796,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172796,
+      "tick_after": 315172796,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172796,
+      "tick_after": 315172796,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172796,
+      "tick_after": 315172796,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172796,
+      "tick_after": 315172812,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172812,
+      "tick_after": 315172812,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172812,
+      "tick_after": 315172812,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172812,
+      "tick_after": 315172812,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172812,
+      "tick_after": 315172812,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172812,
+      "tick_after": 315172812,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172828,
+      "tick_after": 315172828,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172828,
+      "tick_after": 315172828,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172828,
+      "tick_after": 315172828,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172828,
+      "tick_after": 315172828,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172828,
+      "tick_after": 315172843,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172843,
+      "tick_after": 315172843,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172843,
+      "tick_after": 315172843,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172843,
+      "tick_after": 315172843,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172843,
+      "tick_after": 315172843,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172843,
+      "tick_after": 315172843,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172843,
+      "tick_after": 315172859,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172859,
+      "tick_after": 315172859,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172859,
+      "tick_after": 315172859,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172859,
+      "tick_after": 315172859,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172859,
+      "tick_after": 315172859,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172859,
+      "tick_after": 315172875,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172875,
+      "tick_after": 315172875,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172875,
+      "tick_after": 315172875,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172875,
+      "tick_after": 315172875,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172875,
+      "tick_after": 315172875,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172890,
+      "tick_after": 315172890,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172890,
+      "tick_after": 315172890,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172890,
+      "tick_after": 315172890,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315172890,
+      "tick_after": 315172890,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315172890,
+      "tick_after": 315172890,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315172890,
+      "tick_after": 315172906,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315172906,
+      "tick_after": 315172906,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315172906,
+      "tick_after": 315172906,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315172906,
+      "tick_after": 315172906,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315172906,
+      "tick_after": 315172906,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315172921,
+      "tick_after": 315172921,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315172921,
+      "tick_after": 315172921,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315172921,
+      "tick_after": 315172921,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315172921,
+      "tick_after": 315172921,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315172921,
+      "tick_after": 315172921,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315172921,
+      "tick_after": 315172937,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315172937,
+      "tick_after": 315172937,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315172937,
+      "tick_after": 315172937,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315172937,
+      "tick_after": 315172937,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315172937,
+      "tick_after": 315172937,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315172953,
+      "tick_after": 315172953,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315172953,
+      "tick_after": 315172953,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315172953,
+      "tick_after": 315172953,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315172953,
+      "tick_after": 315172953,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315172953,
+      "tick_after": 315172968,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315172968,
+      "tick_after": 315172968,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315172968,
+      "tick_after": 315172968,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315172968,
+      "tick_after": 315172968,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315172968,
+      "tick_after": 315172968,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315172968,
+      "tick_after": 315172968,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315172984,
+      "tick_after": 315172984,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315172984,
+      "tick_after": 315172984,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315172984,
+      "tick_after": 315172984,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315172984,
+      "tick_after": 315172984,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315172984,
+      "tick_after": 315173000,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173000,
+      "tick_after": 315173000,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173000,
+      "tick_after": 315173000,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173000,
+      "tick_after": 315173015,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173015,
+      "tick_after": 315173015,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173015,
+      "tick_after": 315173015,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173015,
+      "tick_after": 315173015,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173015,
+      "tick_after": 315173031,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173031,
+      "tick_after": 315173031,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173031,
+      "tick_after": 315173031,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173031,
+      "tick_after": 315173031,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173046,
+      "tick_after": 315173046,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173046,
+      "tick_after": 315173046,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173046,
+      "tick_after": 315173046,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173046,
+      "tick_after": 315173062,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173062,
+      "tick_after": 315173062,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173062,
+      "tick_after": 315173062,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173062,
+      "tick_after": 315173078,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173078,
+      "tick_after": 315173078,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173078,
+      "tick_after": 315173078,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173078,
+      "tick_after": 315173078,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173078,
+      "tick_after": 315173093,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173093,
+      "tick_after": 315173093,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173093,
+      "tick_after": 315173093,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173093,
+      "tick_after": 315173109,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173109,
+      "tick_after": 315173109,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173109,
+      "tick_after": 315173109,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173109,
+      "tick_after": 315173109,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173109,
+      "tick_after": 315173125,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173125,
+      "tick_after": 315173125,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173125,
+      "tick_after": 315173125,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173125,
+      "tick_after": 315173125,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173125,
+      "tick_after": 315173140,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173140,
+      "tick_after": 315173140,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173140,
+      "tick_after": 315173140,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173140,
+      "tick_after": 315173140,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173140,
+      "tick_after": 315173156,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173156,
+      "tick_after": 315173156,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173156,
+      "tick_after": 315173156,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173156,
+      "tick_after": 315173156,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173156,
+      "tick_after": 315173156,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173156,
+      "tick_after": 315173171,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173171,
+      "tick_after": 315173171,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173171,
+      "tick_after": 315173171,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173171,
+      "tick_after": 315173171,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173171,
+      "tick_after": 315173171,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173171,
+      "tick_after": 315173187,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173187,
+      "tick_after": 315173187,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173187,
+      "tick_after": 315173187,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173187,
+      "tick_after": 315173187,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173187,
+      "tick_after": 315173187,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173187,
+      "tick_after": 315173203,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173203,
+      "tick_after": 315173203,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173203,
+      "tick_after": 315173203,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173203,
+      "tick_after": 315173203,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173203,
+      "tick_after": 315173203,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173203,
+      "tick_after": 315173218,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173218,
+      "tick_after": 315173218,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173218,
+      "tick_after": 315173218,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173218,
+      "tick_after": 315173218,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173218,
+      "tick_after": 315173218,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173218,
+      "tick_after": 315173234,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173234,
+      "tick_after": 315173234,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173234,
+      "tick_after": 315173234,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173234,
+      "tick_after": 315173234,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173234,
+      "tick_after": 315173234,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173234,
+      "tick_after": 315173250,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173250,
+      "tick_after": 315173250,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173250,
+      "tick_after": 315173250,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173250,
+      "tick_after": 315173250,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173250,
+      "tick_after": 315173250,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173250,
+      "tick_after": 315173265,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173265,
+      "tick_after": 315173265,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173265,
+      "tick_after": 315173265,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173265,
+      "tick_after": 315173265,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173265,
+      "tick_after": 315173265,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173265,
+      "tick_after": 315173265,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173281,
+      "tick_after": 315173281,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173281,
+      "tick_after": 315173281,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173281,
+      "tick_after": 315173281,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173281,
+      "tick_after": 315173281,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173281,
+      "tick_after": 315173281,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173281,
+      "tick_after": 315173296,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173296,
+      "tick_after": 315173296,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173296,
+      "tick_after": 315173296,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173296,
+      "tick_after": 315173296,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173296,
+      "tick_after": 315173296,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173312,
+      "tick_after": 315173312,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173312,
+      "tick_after": 315173312,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173312,
+      "tick_after": 315173312,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173312,
+      "tick_after": 315173312,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173312,
+      "tick_after": 315173312,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173312,
+      "tick_after": 315173328,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173328,
+      "tick_after": 315173328,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173328,
+      "tick_after": 315173328,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173328,
+      "tick_after": 315173328,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173328,
+      "tick_after": 315173328,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173328,
+      "tick_after": 315173343,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173343,
+      "tick_after": 315173343,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173343,
+      "tick_after": 315173343,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173343,
+      "tick_after": 315173343,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173343,
+      "tick_after": 315173343,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173343,
+      "tick_after": 315173359,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173359,
+      "tick_after": 315173359,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173359,
+      "tick_after": 315173359,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173359,
+      "tick_after": 315173359,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173359,
+      "tick_after": 315173359,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173359,
+      "tick_after": 315173375,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173375,
+      "tick_after": 315173375,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173375,
+      "tick_after": 315173375,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173375,
+      "tick_after": 315173375,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173375,
+      "tick_after": 315173375,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173375,
+      "tick_after": 315173390,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173390,
+      "tick_after": 315173390,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173390,
+      "tick_after": 315173390,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173390,
+      "tick_after": 315173390,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173390,
+      "tick_after": 315173390,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173390,
+      "tick_after": 315173406,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173406,
+      "tick_after": 315173406,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173406,
+      "tick_after": 315173406,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173406,
+      "tick_after": 315173406,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173406,
+      "tick_after": 315173406,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173406,
+      "tick_after": 315173406,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173421,
+      "tick_after": 315173421,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173421,
+      "tick_after": 315173421,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173421,
+      "tick_after": 315173421,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173421,
+      "tick_after": 315173421,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173421,
+      "tick_after": 315173421,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173437,
+      "tick_after": 315173437,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173437,
+      "tick_after": 315173437,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173437,
+      "tick_after": 315173437,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173437,
+      "tick_after": 315173437,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173437,
+      "tick_after": 315173437,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173437,
+      "tick_after": 315173453,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173453,
+      "tick_after": 315173453,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173453,
+      "tick_after": 315173453,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173453,
+      "tick_after": 315173453,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173453,
+      "tick_after": 315173453,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173468,
+      "tick_after": 315173468,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173468,
+      "tick_after": 315173468,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173468,
+      "tick_after": 315173468,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173468,
+      "tick_after": 315173468,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173468,
+      "tick_after": 315173468,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173468,
+      "tick_after": 315173484,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173484,
+      "tick_after": 315173484,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173484,
+      "tick_after": 315173484,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173484,
+      "tick_after": 315173484,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173484,
+      "tick_after": 315173484,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173484,
+      "tick_after": 315173500,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173500,
+      "tick_after": 315173500,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173500,
+      "tick_after": 315173500,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173500,
+      "tick_after": 315173500,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173500,
+      "tick_after": 315173500,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173500,
+      "tick_after": 315173515,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173515,
+      "tick_after": 315173515,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173515,
+      "tick_after": 315173515,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173515,
+      "tick_after": 315173515,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173515,
+      "tick_after": 315173515,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173515,
+      "tick_after": 315173531,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173531,
+      "tick_after": 315173531,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173531,
+      "tick_after": 315173531,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173531,
+      "tick_after": 315173531,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173531,
+      "tick_after": 315173531,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173531,
+      "tick_after": 315173546,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173546,
+      "tick_after": 315173546,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173546,
+      "tick_after": 315173546,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173546,
+      "tick_after": 315173546,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173546,
+      "tick_after": 315173546,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173546,
+      "tick_after": 315173562,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173562,
+      "tick_after": 315173562,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173562,
+      "tick_after": 315173562,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173562,
+      "tick_after": 315173562,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173562,
+      "tick_after": 315173562,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173562,
+      "tick_after": 315173562,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173578,
+      "tick_after": 315173578,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173578,
+      "tick_after": 315173578,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173578,
+      "tick_after": 315173578,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173578,
+      "tick_after": 315173578,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173578,
+      "tick_after": 315173578,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173593,
+      "tick_after": 315173593,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173593,
+      "tick_after": 315173593,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173593,
+      "tick_after": 315173593,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173593,
+      "tick_after": 315173593,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173593,
+      "tick_after": 315173609,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173609,
+      "tick_after": 315173609,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173609,
+      "tick_after": 315173609,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173609,
+      "tick_after": 315173609,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173609,
+      "tick_after": 315173609,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173609,
+      "tick_after": 315173609,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173609,
+      "tick_after": 315173625,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173625,
+      "tick_after": 315173625,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173625,
+      "tick_after": 315173625,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173625,
+      "tick_after": 315173625,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173625,
+      "tick_after": 315173625,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173625,
+      "tick_after": 315173640,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173640,
+      "tick_after": 315173640,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173640,
+      "tick_after": 315173640,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173640,
+      "tick_after": 315173640,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173640,
+      "tick_after": 315173640,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173640,
+      "tick_after": 315173656,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173656,
+      "tick_after": 315173656,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173656,
+      "tick_after": 315173656,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173656,
+      "tick_after": 315173656,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173656,
+      "tick_after": 315173671,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173671,
+      "tick_after": 315173671,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173671,
+      "tick_after": 315173671,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173671,
+      "tick_after": 315173671,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173671,
+      "tick_after": 315173671,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173671,
+      "tick_after": 315173687,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173687,
+      "tick_after": 315173687,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173687,
+      "tick_after": 315173687,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173687,
+      "tick_after": 315173687,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173687,
+      "tick_after": 315173687,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173687,
+      "tick_after": 315173687,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173703,
+      "tick_after": 315173703,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173703,
+      "tick_after": 315173703,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173703,
+      "tick_after": 315173703,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173703,
+      "tick_after": 315173703,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173703,
+      "tick_after": 315173718,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173718,
+      "tick_after": 315173718,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173718,
+      "tick_after": 315173718,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173718,
+      "tick_after": 315173718,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173718,
+      "tick_after": 315173718,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173718,
+      "tick_after": 315173734,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173734,
+      "tick_after": 315173734,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173734,
+      "tick_after": 315173734,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173734,
+      "tick_after": 315173734,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173734,
+      "tick_after": 315173734,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173734,
+      "tick_after": 315173734,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173734,
+      "tick_after": 315173750,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173750,
+      "tick_after": 315173750,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173750,
+      "tick_after": 315173750,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173750,
+      "tick_after": 315173750,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173750,
+      "tick_after": 315173750,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173750,
+      "tick_after": 315173765,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173765,
+      "tick_after": 315173765,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173765,
+      "tick_after": 315173765,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173765,
+      "tick_after": 315173765,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173765,
+      "tick_after": 315173765,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173781,
+      "tick_after": 315173781,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173781,
+      "tick_after": 315173781,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173781,
+      "tick_after": 315173781,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173781,
+      "tick_after": 315173781,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173781,
+      "tick_after": 315173781,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173796,
+      "tick_after": 315173796,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173796,
+      "tick_after": 315173796,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173796,
+      "tick_after": 315173796,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173796,
+      "tick_after": 315173796,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173796,
+      "tick_after": 315173812,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173812,
+      "tick_after": 315173812,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173812,
+      "tick_after": 315173812,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173812,
+      "tick_after": 315173812,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173812,
+      "tick_after": 315173812,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173812,
+      "tick_after": 315173828,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173828,
+      "tick_after": 315173828,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173828,
+      "tick_after": 315173828,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173828,
+      "tick_after": 315173828,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173828,
+      "tick_after": 315173828,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173828,
+      "tick_after": 315173843,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173843,
+      "tick_after": 315173843,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173843,
+      "tick_after": 315173843,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173843,
+      "tick_after": 315173843,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173843,
+      "tick_after": 315173843,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173843,
+      "tick_after": 315173859,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173859,
+      "tick_after": 315173859,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173859,
+      "tick_after": 315173859,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173859,
+      "tick_after": 315173859,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173859,
+      "tick_after": 315173859,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173859,
+      "tick_after": 315173875,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173875,
+      "tick_after": 315173875,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173875,
+      "tick_after": 315173875,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173875,
+      "tick_after": 315173875,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173875,
+      "tick_after": 315173875,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173875,
+      "tick_after": 315173890,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173890,
+      "tick_after": 315173890,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173890,
+      "tick_after": 315173890,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173890,
+      "tick_after": 315173890,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173890,
+      "tick_after": 315173890,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315173890,
+      "tick_after": 315173906,
+      "observed_color": 1
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315173906,
+      "tick_after": 315173906,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315173906,
+      "tick_after": 315173906,
+      "observed_color": 2
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315173906,
+      "tick_after": 315173906,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315173906,
+      "tick_after": 315173906,
+      "observed_color": 3
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315173906,
+      "tick_after": 315173906,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315173921,
+      "tick_after": 315173921,
+      "observed_color": 4
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315173921,
+      "tick_after": 315173921,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315173921,
+      "tick_after": 315173921,
+      "observed_color": 5
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315173921,
+      "tick_after": 315173921,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315173921,
+      "tick_after": 315173937,
+      "observed_color": 6
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315173937,
+      "tick_after": 315173937,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315173937,
+      "tick_after": 315173937,
+      "observed_color": 7
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315173937,
+      "tick_after": 315173937,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315173937,
+      "tick_after": 315173937,
+      "observed_color": 8
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315173937,
+      "tick_after": 315173953,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315173953,
+      "tick_after": 315173953,
+      "observed_color": 9
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315173953,
+      "tick_after": 315173953,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315173953,
+      "tick_after": 315173953,
+      "observed_color": 10
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315173953,
+      "tick_after": 315173953,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315173953,
+      "tick_after": 315173953,
+      "observed_color": 11
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315173953,
+      "tick_after": 315173968,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315173968,
+      "tick_after": 315173968,
+      "observed_color": 12
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315173968,
+      "tick_after": 315173968,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315173968,
+      "tick_after": 315173968,
+      "observed_color": 13
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315173968,
+      "tick_after": 315173968,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315173968,
+      "tick_after": 315173984,
+      "observed_color": 14
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315173984,
+      "tick_after": 315173984,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315173984,
+      "tick_after": 315173984,
+      "observed_color": 15
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315173984,
+      "tick_after": 315173984,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315173984,
+      "tick_after": 315173984,
+      "observed_color": 8
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315173984,
+      "tick_after": 315174000,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315174000,
+      "tick_after": 315174000,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315174000,
+      "tick_after": 315174000,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315174000,
+      "tick_after": 315174000,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315174000,
+      "tick_after": 315174000,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315174000,
+      "tick_after": 315174015,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315174015,
+      "tick_after": 315174015,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315174015,
+      "tick_after": 315174015,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315174015,
+      "tick_after": 315174015,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315174015,
+      "tick_after": 315174015,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315174015,
+      "tick_after": 315174031,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315174031,
+      "tick_after": 315174031,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315174031,
+      "tick_after": 315174031,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315174031,
+      "tick_after": 315174031,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315174031,
+      "tick_after": 315174031,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315174031,
+      "tick_after": 315174046,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315174046,
+      "tick_after": 315174046,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315174046,
+      "tick_after": 315174046,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315174046,
+      "tick_after": 315174046,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315174046,
+      "tick_after": 315174046,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315174046,
+      "tick_after": 315174062,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315174062,
+      "tick_after": 315174062,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315174062,
+      "tick_after": 315174062,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315174062,
+      "tick_after": 315174062,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315174062,
+      "tick_after": 315174062,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315174062,
+      "tick_after": 315174078,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315174078,
+      "tick_after": 315174078,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315174078,
+      "tick_after": 315174078,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315174078,
+      "tick_after": 315174078,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315174078,
+      "tick_after": 315174078,
+      "observed_color": 7
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 14,
+      "tick_before": 315174078,
+      "tick_after": 315174093,
+      "observed_color": 8
+    },
+    {
+      "base_color": 0,
+      "skill_rating": 15,
+      "tick_before": 315174093,
+      "tick_after": 315174093,
+      "observed_color": 7
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 14,
+      "tick_before": 315174093,
+      "tick_after": 315174093,
+      "observed_color": 1
+    },
+    {
+      "base_color": 1,
+      "skill_rating": 15,
+      "tick_before": 315174093,
+      "tick_after": 315174093,
+      "observed_color": 9
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 14,
+      "tick_before": 315174093,
+      "tick_after": 315174093,
+      "observed_color": 2
+    },
+    {
+      "base_color": 2,
+      "skill_rating": 15,
+      "tick_before": 315174093,
+      "tick_after": 315174093,
+      "observed_color": 10
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 14,
+      "tick_before": 315174109,
+      "tick_after": 315174109,
+      "observed_color": 3
+    },
+    {
+      "base_color": 3,
+      "skill_rating": 15,
+      "tick_before": 315174109,
+      "tick_after": 315174109,
+      "observed_color": 11
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 14,
+      "tick_before": 315174109,
+      "tick_after": 315174109,
+      "observed_color": 4
+    },
+    {
+      "base_color": 4,
+      "skill_rating": 15,
+      "tick_before": 315174109,
+      "tick_after": 315174109,
+      "observed_color": 12
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 14,
+      "tick_before": 315174109,
+      "tick_after": 315174125,
+      "observed_color": 5
+    },
+    {
+      "base_color": 5,
+      "skill_rating": 15,
+      "tick_before": 315174125,
+      "tick_after": 315174125,
+      "observed_color": 13
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 14,
+      "tick_before": 315174125,
+      "tick_after": 315174125,
+      "observed_color": 6
+    },
+    {
+      "base_color": 6,
+      "skill_rating": 15,
+      "tick_before": 315174125,
+      "tick_after": 315174125,
+      "observed_color": 14
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 14,
+      "tick_before": 315174125,
+      "tick_after": 315174125,
+      "observed_color": 7
+    },
+    {
+      "base_color": 7,
+      "skill_rating": 15,
+      "tick_before": 315174125,
+      "tick_after": 315174125,
+      "observed_color": 15
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 14,
+      "tick_before": 315174125,
+      "tick_after": 315174140,
+      "observed_color": 8
+    },
+    {
+      "base_color": 8,
+      "skill_rating": 15,
+      "tick_before": 315174140,
+      "tick_after": 315174140,
+      "observed_color": 7
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 14,
+      "tick_before": 315174140,
+      "tick_after": 315174140,
+      "observed_color": 9
+    },
+    {
+      "base_color": 9,
+      "skill_rating": 15,
+      "tick_before": 315174140,
+      "tick_after": 315174140,
+      "observed_color": 1
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 14,
+      "tick_before": 315174140,
+      "tick_after": 315174140,
+      "observed_color": 10
+    },
+    {
+      "base_color": 10,
+      "skill_rating": 15,
+      "tick_before": 315174156,
+      "tick_after": 315174156,
+      "observed_color": 2
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 14,
+      "tick_before": 315174156,
+      "tick_after": 315174156,
+      "observed_color": 11
+    },
+    {
+      "base_color": 11,
+      "skill_rating": 15,
+      "tick_before": 315174156,
+      "tick_after": 315174156,
+      "observed_color": 3
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 14,
+      "tick_before": 315174156,
+      "tick_after": 315174156,
+      "observed_color": 12
+    },
+    {
+      "base_color": 12,
+      "skill_rating": 15,
+      "tick_before": 315174156,
+      "tick_after": 315174156,
+      "observed_color": 4
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 14,
+      "tick_before": 315174156,
+      "tick_after": 315174171,
+      "observed_color": 13
+    },
+    {
+      "base_color": 13,
+      "skill_rating": 15,
+      "tick_before": 315174171,
+      "tick_after": 315174171,
+      "observed_color": 5
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 14,
+      "tick_before": 315174171,
+      "tick_after": 315174171,
+      "observed_color": 14
+    },
+    {
+      "base_color": 14,
+      "skill_rating": 15,
+      "tick_before": 315174171,
+      "tick_after": 315174171,
+      "observed_color": 6
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 14,
+      "tick_before": 315174171,
+      "tick_after": 315174171,
+      "observed_color": 15
+    },
+    {
+      "base_color": 15,
+      "skill_rating": 15,
+      "tick_before": 315174171,
+      "tick_after": 315174187,
+      "observed_color": 7
+    }
+  ]
+}

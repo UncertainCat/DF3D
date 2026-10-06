@@ -1,0 +1,614 @@
+{
+  "categories": [
+    {
+      "key": "ammo",
+      "label": "Ammo",
+      "bit": 6,
+      "icon": "STOCKPILE_ICON_AMMO",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "animals",
+      "label": "Animals",
+      "bit": 0,
+      "icon": "STOCKPILE_ICON_ANIMALS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "armor",
+      "label": "Armor",
+      "bit": 15,
+      "icon": "STOCKPILE_ICON_ARMOR",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "bars_blocks",
+      "label": "Bars/blocks",
+      "bit": 8,
+      "icon": "STOCKPILE_ICON_BARS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "cloth",
+      "label": "Cloth",
+      "bit": 12,
+      "icon": "STOCKPILE_ICON_CLOTH",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "coins",
+      "label": "Coins",
+      "bit": 7,
+      "icon": "STOCKPILE_ICON_COINS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "finished_goods",
+      "label": "Finished goods",
+      "bit": 10,
+      "icon": "STOCKPILE_ICON_FINISHED_GOODS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "food",
+      "label": "Food",
+      "bit": 1,
+      "icon": "STOCKPILE_ICON_FOOD",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "furniture",
+      "label": "Furniture/siege ammo",
+      "bit": 2,
+      "icon": "STOCKPILE_ICON_FURNITURE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "gems",
+      "label": "Gems",
+      "bit": 9,
+      "icon": "STOCKPILE_ICON_GEMS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "leather",
+      "label": "Leather",
+      "bit": 11,
+      "icon": "STOCKPILE_ICON_LEATHER",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "corpses",
+      "label": "Corpses",
+      "bit": 3,
+      "icon": "STOCKPILE_ICON_CORPSES",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "refuse",
+      "label": "Refuse",
+      "bit": 4,
+      "icon": "STOCKPILE_ICON_REFUSE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "sheet",
+      "label": "Sheet",
+      "bit": 16,
+      "icon": "STOCKPILE_ICON_SHEETS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "stone",
+      "label": "Stone",
+      "bit": 5,
+      "icon": "STOCKPILE_ICON_STONE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "weapons",
+      "label": "Weapons/trap comps",
+      "bit": 14,
+      "icon": "STOCKPILE_ICON_WEAPONS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    },
+    {
+      "key": "wood",
+      "label": "Wood",
+      "bit": 13,
+      "icon": "STOCKPILE_ICON_WOOD",
+      "evidence": "build/evidence/native/e5/areas_stockpile_custom_settings.png"
+    }
+  ],
+  "presets": [
+    {
+      "key": "all",
+      "label": "All",
+      "preset": 1,
+      "icon": "STOCKPILE_ICON_ALL",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "ammo",
+      "label": "Ammo",
+      "preset": 8,
+      "icon": "STOCKPILE_ICON_AMMO",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "animals",
+      "label": "Animals",
+      "preset": 2,
+      "icon": "STOCKPILE_ICON_ANIMALS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "armor",
+      "label": "Armor",
+      "preset": 17,
+      "icon": "STOCKPILE_ICON_ARMOR",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "bars_blocks",
+      "label": "Bars and Blocks",
+      "preset": 10,
+      "icon": "STOCKPILE_ICON_BARS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "cloth",
+      "label": "Cloth",
+      "preset": 14,
+      "icon": "STOCKPILE_ICON_CLOTH",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "coins",
+      "label": "Coins",
+      "preset": 9,
+      "icon": "STOCKPILE_ICON_COINS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "corpses",
+      "label": "Corpses",
+      "preset": 5,
+      "icon": "STOCKPILE_ICON_CORPSES",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "finished_goods",
+      "label": "Finished Goods",
+      "preset": 12,
+      "icon": "STOCKPILE_ICON_FINISHED_GOODS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "food",
+      "label": "Food",
+      "preset": 3,
+      "icon": "STOCKPILE_ICON_FOOD",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "furniture",
+      "label": "Furniture",
+      "preset": 4,
+      "icon": "STOCKPILE_ICON_FURNITURE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "gems",
+      "label": "Gem",
+      "preset": 11,
+      "icon": "STOCKPILE_ICON_GEMS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "leather",
+      "label": "Leather",
+      "preset": 13,
+      "icon": "STOCKPILE_ICON_LEATHER",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "refuse",
+      "label": "Refuse",
+      "preset": 6,
+      "icon": "STOCKPILE_ICON_REFUSE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "sheet",
+      "label": "Sheets",
+      "preset": 18,
+      "icon": "STOCKPILE_ICON_SHEETS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "stone",
+      "label": "Stone",
+      "preset": 7,
+      "icon": "STOCKPILE_ICON_STONE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "weapons",
+      "label": "Weapons",
+      "preset": 16,
+      "icon": "STOCKPILE_ICON_WEAPONS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "wood",
+      "label": "Wood",
+      "preset": 15,
+      "icon": "STOCKPILE_ICON_WOOD",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "none",
+      "label": "None",
+      "preset": 19,
+      "icon": "STOCKPILE_ICON_BLANK",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    {
+      "key": "custom",
+      "label": "Custom",
+      "preset": 0,
+      "icon": "STOCKPILE_ICON_CUSTOM",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    }
+  ],
+  "zones": [
+    {
+      "name": "MeetingHall",
+      "label": "Meeting Area",
+      "icon": "ZONE_MEETING",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "location_details"
+      ],
+      "evidence": "build/evidence/native/e2/zone_meeting_area_panel.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Bedroom",
+      "label": "Bedroom",
+      "icon": "ZONE_BEDROOM",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "owner"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_bedroom.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "DiningHall",
+      "label": "Dining Hall",
+      "icon": "ZONE_DINING_HALL",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "owner"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_dining_hall.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Pen",
+      "label": "Pen/Pasture",
+      "icon": "ZONE_PEN",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "animals"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_pen_pasture.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Pond",
+      "label": "Pit/Pond",
+      "icon": "ZONE_PIT",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "animals",
+        "pond_mode"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_pit_pond.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "WaterSource",
+      "label": "Water Source",
+      "icon": "ZONE_WATER_SOURCE",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_water_source.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Dungeon",
+      "label": "Dungeon",
+      "icon": "ZONE_DUNGEON",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_dungeon.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "FishingArea",
+      "label": "Fishing",
+      "icon": "ZONE_FISHING",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_fishing.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "SandCollection",
+      "label": "Sand",
+      "icon": "ZONE_SAND",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_sand.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Office",
+      "label": "Office",
+      "icon": "ZONE_OFFICE",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "owner",
+        "location_details"
+      ],
+      "evidence": "build/evidence/native/e2/zone_office_panel.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Dormitory",
+      "label": "Dormitory",
+      "icon": "ZONE_DORMITORY",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_dormitory.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Barracks",
+      "label": "Barracks",
+      "icon": "ZONE_BARRACKS",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "squads"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_barracks.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "ArcheryRange",
+      "label": "Archery Range",
+      "icon": "ZONE_ARCHERY_RANGE",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "squads",
+        "facing"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_archery_range.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Dump",
+      "label": "Garbage Dump",
+      "icon": "ZONE_DUMP",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_garbage_dump.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "AnimalTraining",
+      "label": "Animal Training",
+      "icon": "ZONE_ANIMAL_TRAINING",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_animal_training.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "Tomb",
+      "label": "Tomb",
+      "icon": "ZONE_TOMB",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "owner",
+        "tomb_citizens",
+        "tomb_pets"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_tomb.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "PlantGathering",
+      "label": "Gather Fruit",
+      "icon": "ZONE_GATHER",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location",
+        "gather_trees",
+        "gather_shrubs"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_gather_fruit.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    {
+      "name": "ClayCollection",
+      "label": "Clay",
+      "icon": "ZONE_CLAY",
+      "controls": [
+        "rename",
+        "repaint",
+        "suspend",
+        "remove",
+        "location"
+      ],
+      "evidence": "build/evidence/native/e5/areas_zone_panel_clay.png",
+      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+    }
+  ],
+  "paint_tools": [
+    {
+      "key": "rectangle",
+      "icon": "BUTTON_PAINT_RECTANGLE_INACTIVE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_rect.png"
+    },
+    {
+      "key": "brush",
+      "icon": "BUTTON_FREE_PAINT_INACTIVE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_brush.png"
+    },
+    {
+      "key": "erase",
+      "icon": "STOCKPILE_ERASE_INACTIVE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_erase.png"
+    },
+    {
+      "key": "remove",
+      "icon": "STOCKPILE_REMOVE_EXISTING",
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_remove.png"
+    }
+  ],
+  "stockpile_controls": [
+    {
+      "key": "repaint",
+      "icon": "STOCKPILE_REPAINT",
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_repaint.png"
+    },
+    {
+      "key": "remove",
+      "icon": "STOCKPILE_REMOVE_EXISTING",
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_remove.png"
+    },
+    {
+      "key": "links_only",
+      "icon": "STOCKPILE_TAKE_FROM_ANYWHERE",
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_take_anywhere_toggle.png"
+    },
+    {
+      "key": "links",
+      "icon": "STOCKPILE_SET_CONNECTIONS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_links.png"
+    },
+    {
+      "key": "containers",
+      "icon": "STOCKPILE_TOOL_SETTINGS",
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_containers.png"
+    }
+  ],
+  "text": {
+    "stockpile_paint": {
+      "label": "Click in the play area to paint the stockpile.",
+      "evidence": "build/evidence/native/e5/areas_stockpile_mode.png"
+    },
+    "stockpile_footer": {
+      "label": "Click an icon to set stockpile type.",
+      "evidence": "build/evidence/native/e5/areas_stockpile_panel_after_accept.png"
+    },
+    "zone_select": {
+      "label": "Click an existing zone to select it.\nSelect a type below to add a zone.",
+      "evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    "zone_types": {
+      "label": "Click an icon to add a new zone.",
+      "evidence": "build/evidence/native/zone_create_menu.png"
+    },
+    "containers": {
+      "label": "Storage and tools",
+      "evidence": "build/evidence/native/e5/areas_stockpile_containers_popup.png"
+    },
+    "locations": {
+      "label": "Add or choose a location.",
+      "evidence": "build/evidence/native/e2/zone_location_selector.png"
+    },
+    "take": {
+      "label": "Select a stockpile or workshop to take from.",
+      "evidence": "build/evidence/native/e5/areas_stockpile_links_take_mode.png"
+    }
+  }
+}

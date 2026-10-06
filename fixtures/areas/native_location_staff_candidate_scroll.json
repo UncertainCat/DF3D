@@ -1,0 +1,270 @@
+{
+  "source": "build/location-staff-selector-scroll-input-20260930-033235",
+  "source_sha256": "dac2899eb2005d0ae2f183ad7e591aa7b9229fb94f09cec70b6d37dfbc59e91f",
+  "scope": "115-row native performer list: discrete keyboard selection/page bounds, single mouse press arrow/track, wheel over rows. Held repeat/release timing, dragging, wheel over scrollbar and sorting/filtering unverified. Later release experiments exposed timing-sensitive repeated clicks; do not infer held-input behavior from these single-event samples.",
+  "total": 115,
+  "page": 16,
+  "location_id": 0,
+  "role": 1,
+  "cases": [
+    {
+      "action": "STANDARDSCROLL_DOWN",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 1
+    },
+    {
+      "action": "STANDARDSCROLL_DOWN",
+      "start_first": 0,
+      "start_cursor": 1,
+      "first": 0,
+      "cursor": 2
+    },
+    {
+      "action": "STANDARDSCROLL_UP",
+      "start_first": 0,
+      "start_cursor": 2,
+      "first": 0,
+      "cursor": 1
+    },
+    {
+      "action": "STANDARDSCROLL_PAGEDOWN",
+      "start_first": 0,
+      "start_cursor": 1,
+      "first": 2,
+      "cursor": 17
+    },
+    {
+      "action": "STANDARDSCROLL_PAGEUP",
+      "start_first": 2,
+      "start_cursor": 17,
+      "first": 1,
+      "cursor": 1
+    },
+    {
+      "action": "pagedown_1",
+      "start_first": 1,
+      "start_cursor": 1,
+      "first": 2,
+      "cursor": 17
+    },
+    {
+      "action": "pagedown_2",
+      "start_first": 2,
+      "start_cursor": 17,
+      "first": 18,
+      "cursor": 33
+    },
+    {
+      "action": "pagedown_3",
+      "start_first": 18,
+      "start_cursor": 33,
+      "first": 34,
+      "cursor": 49
+    },
+    {
+      "action": "pagedown_4",
+      "start_first": 34,
+      "start_cursor": 49,
+      "first": 50,
+      "cursor": 65
+    },
+    {
+      "action": "pagedown_5",
+      "start_first": 50,
+      "start_cursor": 65,
+      "first": 66,
+      "cursor": 81
+    },
+    {
+      "action": "pagedown_6",
+      "start_first": 66,
+      "start_cursor": 81,
+      "first": 82,
+      "cursor": 97
+    },
+    {
+      "action": "pagedown_7",
+      "start_first": 82,
+      "start_cursor": 97,
+      "first": 98,
+      "cursor": 113
+    },
+    {
+      "action": "pagedown_8",
+      "start_first": 98,
+      "start_cursor": 113,
+      "first": 99,
+      "cursor": 114
+    },
+    {
+      "action": "pagedown_9",
+      "start_first": 99,
+      "start_cursor": 114,
+      "first": 99,
+      "cursor": 114
+    },
+    {
+      "action": "pagedown_10",
+      "start_first": 99,
+      "start_cursor": 114,
+      "first": 99,
+      "cursor": 114
+    },
+    {
+      "action": "pagedown_11",
+      "start_first": 99,
+      "start_cursor": 114,
+      "first": 99,
+      "cursor": 114
+    },
+    {
+      "action": "pagedown_12",
+      "start_first": 99,
+      "start_cursor": 114,
+      "first": 99,
+      "cursor": 114
+    },
+    {
+      "action": "pageup_1",
+      "start_first": 99,
+      "start_cursor": 114,
+      "first": 98,
+      "cursor": 98
+    },
+    {
+      "action": "pageup_2",
+      "start_first": 98,
+      "start_cursor": 98,
+      "first": 82,
+      "cursor": 82
+    },
+    {
+      "action": "pageup_3",
+      "start_first": 82,
+      "start_cursor": 82,
+      "first": 66,
+      "cursor": 66
+    },
+    {
+      "action": "pageup_4",
+      "start_first": 66,
+      "start_cursor": 66,
+      "first": 50,
+      "cursor": 50
+    },
+    {
+      "action": "pageup_5",
+      "start_first": 50,
+      "start_cursor": 50,
+      "first": 34,
+      "cursor": 34
+    },
+    {
+      "action": "pageup_6",
+      "start_first": 34,
+      "start_cursor": 34,
+      "first": 18,
+      "cursor": 18
+    },
+    {
+      "action": "pageup_7",
+      "start_first": 18,
+      "start_cursor": 18,
+      "first": 2,
+      "cursor": 2
+    },
+    {
+      "action": "pageup_8",
+      "start_first": 2,
+      "start_cursor": 2,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "pageup_9",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "pageup_10",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "pageup_11",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "pageup_12",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "single_arrow_down",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 1,
+      "cursor": 0
+    },
+    {
+      "action": "single_arrow_up",
+      "start_first": 1,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "single_track_below",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 16,
+      "cursor": 0
+    },
+    {
+      "action": "single_track_above",
+      "start_first": 16,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "wheel_rows_down",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 1,
+      "cursor": 0
+    },
+    {
+      "action": "wheel_rows_up",
+      "start_first": 1,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    },
+    {
+      "action": "wheel_rows_pagedown",
+      "start_first": 0,
+      "start_cursor": 0,
+      "first": 16,
+      "cursor": 0
+    },
+    {
+      "action": "wheel_rows_pageup",
+      "start_first": 16,
+      "start_cursor": 0,
+      "first": 0,
+      "cursor": 0
+    }
+  ]
+}

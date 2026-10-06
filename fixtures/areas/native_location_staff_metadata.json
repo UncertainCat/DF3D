@@ -1,0 +1,938 @@
+{
+  "provenance": {
+    "source": "build/location-staff-selector-render-20260930-005254/native-location-staff-selector-ui.json",
+    "sha256": "cb2d9093af3f72346989a23bc3f8c7d61c630039f8f0717ce8bb81641bc6724e",
+    "observed_rows": 1152
+  },
+  "scope": "Semantic unit facts recorded with ten native selector lists, deduplicated by unit ID. Base name separated from recorded helper profession suffix; two fallback captions corrected by native_location_staff_professions.json. Legendary derives from ALL recorded soul skills. No UI state or pixels as runtime inputs. Does not establish full row rendering.",
+  "units": [
+    {
+      "unit_id": 1017,
+      "name": "Stodir Tangakurvad, bookkeeper",
+      "base_name": "Stodir Tangakurvad",
+      "profession_name": "bookkeeper",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 2345,
+      "name": "Leto Jamaslonel, Human Bard",
+      "base_name": "Leto Jamaslonel",
+      "profession_name": "Human Bard",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 2346,
+      "name": "Rûxu Kodkasprax, Porcupine Man Bard",
+      "base_name": "Rûxu Kodkasprax",
+      "profession_name": "Porcupine Man Bard",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 2569,
+      "name": "Jasro Thersetdak, Human Poet",
+      "base_name": "Jasro Thersetdak",
+      "profession_name": "Human Poet",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 2571,
+      "name": "Meng Okilnomal, Bard",
+      "base_name": "Meng Okilnomal",
+      "profession_name": "Bard",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 3050,
+      "name": "Irene Ethithièÿida, Elf Poet",
+      "base_name": "Irene Ethithièÿida",
+      "profession_name": "Elf Poet",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 3326,
+      "name": "Atir Ekullon, Human Poet",
+      "base_name": "Atir Ekullon",
+      "profession_name": "Human Poet",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 3845,
+      "name": "Zulur Putikamca, Human Poet",
+      "base_name": "Zulur Putikamca",
+      "profession_name": "Human Poet",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 4237,
+      "name": "Uram Felori, lord consort",
+      "base_name": "Uram Felori",
+      "profession_name": "lord consort",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 4338,
+      "name": "Lam Gukisubi, Human Poet",
+      "base_name": "Lam Gukisubi",
+      "profession_name": "Human Poet",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 5573,
+      "name": "Olon Arzesnil, Miner",
+      "base_name": "Olon Arzesnil",
+      "profession_name": "Miner",
+      "profession_color": 7,
+      "legendary": true
+    },
+    {
+      "unit_id": 5574,
+      "name": "Zon Mistêmrovod, Carpenter",
+      "base_name": "Zon Mistêmrovod",
+      "profession_name": "Carpenter",
+      "profession_color": 14,
+      "legendary": true
+    },
+    {
+      "unit_id": 5575,
+      "name": "Feb Anambomrek, Axe Lord",
+      "base_name": "Feb Anambomrek",
+      "profession_name": "Axe Lord",
+      "profession_color": 9,
+      "legendary": true
+    },
+    {
+      "unit_id": 5697,
+      "name": "Uzol Bardumtekkud, Miner",
+      "base_name": "Uzol Bardumtekkud",
+      "profession_name": "Miner",
+      "profession_color": 7,
+      "legendary": false
+    },
+    {
+      "unit_id": 5813,
+      "name": "Kûbuk ïngizkor, mayor",
+      "base_name": "Kûbuk ïngizkor",
+      "profession_name": "mayor",
+      "profession_color": 5,
+      "legendary": true
+    },
+    {
+      "unit_id": 5981,
+      "name": "Unib Rakustazin, king",
+      "base_name": "Unib Rakustazin",
+      "profession_name": "king",
+      "profession_color": 13,
+      "legendary": true
+    },
+    {
+      "unit_id": 5984,
+      "name": "Kikrost Thosbutuzol, militia captain",
+      "base_name": "Kikrost Thosbutuzol",
+      "profession_name": "militia captain",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 5985,
+      "name": "Dôbar Gébarunib, Farmer",
+      "base_name": "Dôbar Gébarunib",
+      "profession_name": "Farmer",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6032,
+      "name": "Dodók Kilruderush, Swordmaster",
+      "base_name": "Dodók Kilruderush",
+      "profession_name": "Swordmaster",
+      "profession_color": 11,
+      "legendary": true
+    },
+    {
+      "unit_id": 6134,
+      "name": "Rigòth Shinatír, sacred call",
+      "base_name": "Rigòth Shinatír",
+      "profession_name": "sacred call",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6135,
+      "name": "Asmel Akrulokol, Miner",
+      "base_name": "Asmel Akrulokol",
+      "profession_name": "Miner",
+      "profession_color": 7,
+      "legendary": true
+    },
+    {
+      "unit_id": 6136,
+      "name": "Uzol Zulbanromlam, Performer",
+      "base_name": "Uzol Zulbanromlam",
+      "profession_name": "Performer",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6274,
+      "name": "Zuntîr Vutokrodim, Brewer",
+      "base_name": "Zuntîr Vutokrodim",
+      "profession_name": "Brewer",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6277,
+      "name": "Ustuth óssibrek, Planter",
+      "base_name": "Ustuth óssibrek",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": true
+    },
+    {
+      "unit_id": 6392,
+      "name": "Kogan Atîsteling, Miner",
+      "base_name": "Kogan Atîsteling",
+      "profession_name": "Miner",
+      "profession_color": 7,
+      "legendary": false
+    },
+    {
+      "unit_id": 6531,
+      "name": "Asën Govososlan, Spearmaster",
+      "base_name": "Asën Govososlan",
+      "profession_name": "Spearmaster",
+      "profession_color": 14,
+      "legendary": true
+    },
+    {
+      "unit_id": 6534,
+      "name": "Thob âtastfikod, Gem Cutter",
+      "base_name": "Thob âtastfikod",
+      "profession_name": "Gem Cutter",
+      "profession_color": 10,
+      "legendary": false
+    },
+    {
+      "unit_id": 6536,
+      "name": "Stukos Vudtharkûbuk, Performer",
+      "base_name": "Stukos Vudtharkûbuk",
+      "profession_name": "Performer",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6538,
+      "name": "Kikrost Fikodshoduk, Bone Carver",
+      "base_name": "Kikrost Fikodshoduk",
+      "profession_name": "Bone Carver",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 6539,
+      "name": "Doren Matkadôl, Hammer Lord",
+      "base_name": "Doren Matkadôl",
+      "profession_name": "Hammer Lord",
+      "profession_color": 13,
+      "legendary": true
+    },
+    {
+      "unit_id": 6540,
+      "name": "Fikod âbirlokum, Glazer",
+      "base_name": "Fikod âbirlokum",
+      "profession_name": "Glazer",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 6541,
+      "name": "Sigun Ushatilrom, Bookbinder",
+      "base_name": "Sigun Ushatilrom",
+      "profession_name": "Bookbinder",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 6542,
+      "name": "Urvad Kadôlbisek, Diagnostician",
+      "base_name": "Urvad Kadôlbisek",
+      "profession_name": "Diagnostician",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6544,
+      "name": "Ducim Mozibfikod, Farmer",
+      "base_name": "Ducim Mozibfikod",
+      "profession_name": "Farmer",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6546,
+      "name": "Lòr Eshtânmìshos, Scribe",
+      "base_name": "Lòr Eshtânmìshos",
+      "profession_name": "Scribe",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6549,
+      "name": "Ineth Zuglariseth, Scholar",
+      "base_name": "Ineth Zuglariseth",
+      "profession_name": "Scholar",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6553,
+      "name": "Logem Imeshdumat, Hunter",
+      "base_name": "Logem Imeshdumat",
+      "profession_name": "Hunter",
+      "profession_color": 2,
+      "legendary": false
+    },
+    {
+      "unit_id": 6554,
+      "name": "Kel Iklistendok, Soap Maker",
+      "base_name": "Kel Iklistendok",
+      "profession_name": "Soap Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6555,
+      "name": "Vucar Domasdoren, Diagnostician",
+      "base_name": "Vucar Domasdoren",
+      "profession_name": "Diagnostician",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6591,
+      "name": "Rovod Gusiletes, Leatherworker",
+      "base_name": "Rovod Gusiletes",
+      "profession_name": "Leatherworker",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 6592,
+      "name": "Melbil Cattenlushôn, Planter",
+      "base_name": "Melbil Cattenlushôn",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6594,
+      "name": "Onget Solonmetul, Planter",
+      "base_name": "Onget Solonmetul",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6595,
+      "name": "Zas Libashsigun, Planter",
+      "base_name": "Zas Libashsigun",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6597,
+      "name": "Meng Ducimkezat, Farmer",
+      "base_name": "Meng Ducimkezat",
+      "profession_name": "Farmer",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6598,
+      "name": "Zutthan Kadôlnimak, Spearmaster",
+      "base_name": "Zutthan Kadôlnimak",
+      "profession_name": "Spearmaster",
+      "profession_color": 14,
+      "legendary": true
+    },
+    {
+      "unit_id": 6661,
+      "name": "Id Tunthol, Planter",
+      "base_name": "Id Tunthol",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6677,
+      "name": "Kûbuk ïngizkosak, Fish Dissector",
+      "base_name": "Kûbuk ïngizkosak",
+      "profession_name": "Fish Dissector",
+      "profession_color": 1,
+      "legendary": false
+    },
+    {
+      "unit_id": 6678,
+      "name": "Kûbuk Letmosral, Bowyer",
+      "base_name": "Kûbuk Letmosral",
+      "profession_name": "Bowyer",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 6681,
+      "name": "Cog Zondurad, Dyer",
+      "base_name": "Cog Zondurad",
+      "profession_name": "Dyer",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6683,
+      "name": "Rakust ádolbomrek, Weaponsmith",
+      "base_name": "Rakust ádolbomrek",
+      "profession_name": "Weaponsmith",
+      "profession_color": 8,
+      "legendary": false
+    },
+    {
+      "unit_id": 6684,
+      "name": "Dîshmab Evonmûthkat, Planter",
+      "base_name": "Dîshmab Evonmûthkat",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6685,
+      "name": "Erush Kàlrethral, Milker",
+      "base_name": "Erush Kàlrethral",
+      "profession_name": "Milker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6807,
+      "name": "Kogan Riththocit, Carpenter",
+      "base_name": "Kogan Riththocit",
+      "profession_name": "Carpenter",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 6808,
+      "name": "Erush Tabardeler, Potash Maker",
+      "base_name": "Erush Tabardeler",
+      "profession_name": "Potash Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6809,
+      "name": "Zefon Dorencatten, Weaponsmith",
+      "base_name": "Zefon Dorencatten",
+      "profession_name": "Weaponsmith",
+      "profession_color": 8,
+      "legendary": false
+    },
+    {
+      "unit_id": 6811,
+      "name": "èzum Amostmörul, Axe Lord",
+      "base_name": "èzum Amostmörul",
+      "profession_name": "Axe Lord",
+      "profession_color": 9,
+      "legendary": true
+    },
+    {
+      "unit_id": 6812,
+      "name": "Såkzul Nåzomkivish, militia commander",
+      "base_name": "Såkzul Nåzomkivish",
+      "profession_name": "militia commander",
+      "profession_color": 13,
+      "legendary": true
+    },
+    {
+      "unit_id": 6814,
+      "name": "äs Mörulsebïr, Fisherdwarf",
+      "base_name": "äs Mörulsebïr",
+      "profession_name": "Fisherdwarf",
+      "profession_color": 1,
+      "legendary": false
+    },
+    {
+      "unit_id": 6815,
+      "name": "Rith Suluslogem, chief medical dwarf",
+      "base_name": "Rith Suluslogem",
+      "profession_name": "chief medical dwarf",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6817,
+      "name": "èrith Mamotavuz, Surgeon",
+      "base_name": "èrith Mamotavuz",
+      "profession_name": "Surgeon",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 6819,
+      "name": "Ustuth Avédkeskal, Glassmaker",
+      "base_name": "Ustuth Avédkeskal",
+      "profession_name": "Glassmaker",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 6822,
+      "name": "Urist Kodzas, Clothier",
+      "base_name": "Urist Kodzas",
+      "profession_name": "Clothier",
+      "profession_color": 9,
+      "legendary": true
+    },
+    {
+      "unit_id": 6824,
+      "name": "Stodir ònulgúr, Farmer",
+      "base_name": "Stodir ònulgúr",
+      "profession_name": "Farmer",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6827,
+      "name": "Rakust Kuletdatan, Fish Cleaner",
+      "base_name": "Rakust Kuletdatan",
+      "profession_name": "Fish Cleaner",
+      "profession_color": 1,
+      "legendary": false
+    },
+    {
+      "unit_id": 6828,
+      "name": "Libash Ducimastesh, Peasant",
+      "base_name": "Libash Ducimastesh",
+      "profession_name": "Peasant",
+      "profession_color": 3,
+      "legendary": false
+    },
+    {
+      "unit_id": 6830,
+      "name": "Mosus Logemïteb, Soap Maker",
+      "base_name": "Mosus Logemïteb",
+      "profession_name": "Soap Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6831,
+      "name": "Rigòth Ralnóton, Stonecrafter",
+      "base_name": "Rigòth Ralnóton",
+      "profession_name": "Stonecrafter",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 6832,
+      "name": "Atír Estilshem, Lye Maker",
+      "base_name": "Atír Estilshem",
+      "profession_name": "Lye Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6835,
+      "name": "Alåth Nåzomavuz, Furnace Operator",
+      "base_name": "Alåth Nåzomavuz",
+      "profession_name": "Furnace Operator",
+      "profession_color": 8,
+      "legendary": false
+    },
+    {
+      "unit_id": 6836,
+      "name": "Minkot Cattensákrith, Engraver",
+      "base_name": "Minkot Cattensákrith",
+      "profession_name": "Engraver",
+      "profession_color": 15,
+      "legendary": false
+    },
+    {
+      "unit_id": 6837,
+      "name": "Kadôl Nîlesmûthkat, Hammer Lord",
+      "base_name": "Kadôl Nîlesmûthkat",
+      "profession_name": "Hammer Lord",
+      "profession_color": 13,
+      "legendary": true
+    },
+    {
+      "unit_id": 6838,
+      "name": "Litast Urrïthzon, Axe Lord",
+      "base_name": "Litast Urrïthzon",
+      "profession_name": "Axe Lord",
+      "profession_color": 9,
+      "legendary": true
+    },
+    {
+      "unit_id": 6969,
+      "name": "Stodir Olonadek, Woodworker",
+      "base_name": "Stodir Olonadek",
+      "profession_name": "Woodworker",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 6970,
+      "name": "Urvad Kosoththosbut, Woodworker",
+      "base_name": "Urvad Kosoththosbut",
+      "profession_name": "Woodworker",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 6971,
+      "name": "Ilral Nikottun, Presser",
+      "base_name": "Ilral Nikottun",
+      "profession_name": "Presser",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 6972,
+      "name": "Sazir Sosadid, Mason",
+      "base_name": "Sazir Sosadid",
+      "profession_name": "Mason",
+      "profession_color": 15,
+      "legendary": false
+    },
+    {
+      "unit_id": 6973,
+      "name": "Ingish Imikfikod, Siege Engineer",
+      "base_name": "Ingish Imikfikod",
+      "profession_name": "Siege Engineer",
+      "profession_color": 12,
+      "legendary": false
+    },
+    {
+      "unit_id": 6974,
+      "name": "Dakost Rirasatîs, Peasant",
+      "base_name": "Dakost Rirasatîs",
+      "profession_name": "Peasant",
+      "profession_color": 3,
+      "legendary": false
+    },
+    {
+      "unit_id": 6976,
+      "name": "Moldath Råshdomas, Furnace Operator",
+      "base_name": "Moldath Råshdomas",
+      "profession_name": "Furnace Operator",
+      "profession_color": 8,
+      "legendary": false
+    },
+    {
+      "unit_id": 6977,
+      "name": "Vucar ântobul, Siege Operator",
+      "base_name": "Vucar ântobul",
+      "profession_name": "Siege Operator",
+      "profession_color": 12,
+      "legendary": false
+    },
+    {
+      "unit_id": 7117,
+      "name": "Stukos Kolsikel, Furnace Operator",
+      "base_name": "Stukos Kolsikel",
+      "profession_name": "Furnace Operator",
+      "profession_color": 8,
+      "legendary": false
+    },
+    {
+      "unit_id": 7118,
+      "name": "Eshtân Avuzmusar, Peasant",
+      "base_name": "Eshtân Avuzmusar",
+      "profession_name": "Peasant",
+      "profession_color": 3,
+      "legendary": false
+    },
+    {
+      "unit_id": 7120,
+      "name": "Ingish Kêshshakubbul, Peasant",
+      "base_name": "Ingish Kêshshakubbul",
+      "profession_name": "Peasant",
+      "profession_color": 3,
+      "legendary": false
+    },
+    {
+      "unit_id": 7123,
+      "name": "Amost Zastathur, Glassmaker",
+      "base_name": "Amost Zastathur",
+      "profession_name": "Glassmaker",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 7124,
+      "name": "Lòr Astthum, Bone Doctor",
+      "base_name": "Lòr Astthum",
+      "profession_name": "Bone Doctor",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 7125,
+      "name": "Urdim Uzolvuthil, Siege Operator",
+      "base_name": "Urdim Uzolvuthil",
+      "profession_name": "Siege Operator",
+      "profession_color": 12,
+      "legendary": false
+    },
+    {
+      "unit_id": 7126,
+      "name": "Etur Avuzarkim, Trapper",
+      "base_name": "Etur Avuzarkim",
+      "profession_name": "Trapper",
+      "profession_color": 2,
+      "legendary": false
+    },
+    {
+      "unit_id": 7202,
+      "name": "Aban Atulilral, Lye Maker",
+      "base_name": "Aban Atulilral",
+      "profession_name": "Lye Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7203,
+      "name": "Kel Onolmelbil, Carpenter",
+      "base_name": "Kel Onolmelbil",
+      "profession_name": "Carpenter",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 7204,
+      "name": "Kumil Dorenothlest, Animal Trainer",
+      "base_name": "Kumil Dorenothlest",
+      "profession_name": "Animal Trainer",
+      "profession_color": 2,
+      "legendary": false
+    },
+    {
+      "unit_id": 7205,
+      "name": "Vabôk Kìrarmeng, Animal Caretaker",
+      "base_name": "Vabôk Kìrarmeng",
+      "profession_name": "Animal Caretaker",
+      "profession_color": 2,
+      "legendary": false
+    },
+    {
+      "unit_id": 7206,
+      "name": "Doren Mörulkûbuk, Carpenter",
+      "base_name": "Doren Mörulkûbuk",
+      "profession_name": "Carpenter",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 7207,
+      "name": "Avuz Rimtarnóton, Miller",
+      "base_name": "Avuz Rimtarnóton",
+      "profession_name": "Miller",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7208,
+      "name": "Catten Nishkälán, Gem Setter",
+      "base_name": "Catten Nishkälán",
+      "profession_name": "Gem Setter",
+      "profession_color": 10,
+      "legendary": false
+    },
+    {
+      "unit_id": 7209,
+      "name": "Sibrek Enshalaban, Bowyer",
+      "base_name": "Sibrek Enshalaban",
+      "profession_name": "Bowyer",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 7262,
+      "name": "Uvash Mengteshkad, Planter",
+      "base_name": "Uvash Mengteshkad",
+      "profession_name": "Planter",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7263,
+      "name": "Sodel Nishrâluk, Fish Dissector",
+      "base_name": "Sodel Nishrâluk",
+      "profession_name": "Fish Dissector",
+      "profession_color": 1,
+      "legendary": false
+    },
+    {
+      "unit_id": 7266,
+      "name": "Eral ònulozkak, Potash Maker",
+      "base_name": "Eral ònulozkak",
+      "profession_name": "Potash Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7267,
+      "name": "Uvash Kolnikuz, Fish Dissector",
+      "base_name": "Uvash Kolnikuz",
+      "profession_name": "Fish Dissector",
+      "profession_color": 1,
+      "legendary": false
+    },
+    {
+      "unit_id": 7268,
+      "name": "Såkzul Rigòthost, Woodworker",
+      "base_name": "Såkzul Rigòthost",
+      "profession_name": "Woodworker",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 7271,
+      "name": "Sazir Lolorurdim, Tanner",
+      "base_name": "Sazir Lolorurdim",
+      "profession_name": "Tanner",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7272,
+      "name": "Bëmbul Mozibsolon, Potash Maker",
+      "base_name": "Bëmbul Mozibsolon",
+      "profession_name": "Potash Maker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7273,
+      "name": "Moldath Etostingish, Gem Cutter",
+      "base_name": "Moldath Etostingish",
+      "profession_name": "Gem Cutter",
+      "profession_color": 10,
+      "legendary": false
+    },
+    {
+      "unit_id": 7274,
+      "name": "Datan Datansazir, Siege Engineer",
+      "base_name": "Datan Datansazir",
+      "profession_name": "Siege Engineer",
+      "profession_color": 12,
+      "legendary": false
+    },
+    {
+      "unit_id": 7275,
+      "name": "Goden Borushadil, Engraver",
+      "base_name": "Goden Borushadil",
+      "profession_name": "Engraver",
+      "profession_color": 15,
+      "legendary": false
+    },
+    {
+      "unit_id": 7276,
+      "name": "Goden Idenlaltur, Milker",
+      "base_name": "Goden Idenlaltur",
+      "profession_name": "Milker",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7278,
+      "name": "Edëm Datannish, Fish Cleaner",
+      "base_name": "Edëm Datannish",
+      "profession_name": "Fish Cleaner",
+      "profession_color": 1,
+      "legendary": false
+    },
+    {
+      "unit_id": 7279,
+      "name": "Ast Zonrithlut, Weaver",
+      "base_name": "Ast Zonrithlut",
+      "profession_name": "Weaver",
+      "profession_color": 9,
+      "legendary": false
+    },
+    {
+      "unit_id": 7280,
+      "name": "Obok Ostarkeskal, Peasant",
+      "base_name": "Obok Ostarkeskal",
+      "profession_name": "Peasant",
+      "profession_color": 3,
+      "legendary": false
+    },
+    {
+      "unit_id": 7281,
+      "name": "Kosoth Róthmörul, Engineer",
+      "base_name": "Kosoth Róthmörul",
+      "profession_name": "Engineer",
+      "profession_color": 12,
+      "legendary": false
+    },
+    {
+      "unit_id": 7282,
+      "name": "Oddom Angenkûbuk, Diagnostician",
+      "base_name": "Oddom Angenkûbuk",
+      "profession_name": "Diagnostician",
+      "profession_color": 5,
+      "legendary": false
+    },
+    {
+      "unit_id": 7284,
+      "name": "Kivish åmmosus, Herbalist",
+      "base_name": "Kivish åmmosus",
+      "profession_name": "Herbalist",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7344,
+      "name": "îton Oddomgigin, Cook",
+      "base_name": "îton Oddomgigin",
+      "profession_name": "Cook",
+      "profession_color": 6,
+      "legendary": false
+    },
+    {
+      "unit_id": 7345,
+      "name": "Kulet Tôsedoddom, Peasant",
+      "base_name": "Kulet Tôsedoddom",
+      "profession_name": "Peasant",
+      "profession_color": 3,
+      "legendary": false
+    },
+    {
+      "unit_id": 7348,
+      "name": "Zulban Okilaban, Woodworker",
+      "base_name": "Zulban Okilaban",
+      "profession_name": "Woodworker",
+      "profession_color": 14,
+      "legendary": false
+    },
+    {
+      "unit_id": 7349,
+      "name": "Bomrek Lisidlolor, Metalcrafter",
+      "base_name": "Bomrek Lisidlolor",
+      "profession_name": "Metalcrafter",
+      "profession_color": 8,
+      "legendary": false
+    }
+  ]
+}

@@ -6,6 +6,11 @@
 namespace df3d_builder {
 // Registry at task 03-B dispatch: highest kind 17 plus one.
 constexpr size_t kBuilderKindCount=18;
+// Explicit synchronous writes do not borrow a read budget. Keep their work
+// metrics separately; wide counts must never narrow before this decision.
+constexpr uint32_t readCharge(uint32_t remaining,uint64_t measured,bool synchronousWrite) {
+    return synchronousWrite ? 0 : uint32_t(std::min(uint64_t(remaining),measured));
+}
 // Select only enabled domains owned by the request's helper.
 template<class Table,class Owns>
 uint32_t requestMask(const Table& table,Owns owns) {

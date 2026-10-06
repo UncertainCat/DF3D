@@ -309,6 +309,25 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
   };
 
   switch (q.kind) {
+    case BuildingKind::Construction: {
+      // Native construction_type order; named art owns colour and transparency.
+      static constexpr const char* names[] = {
+        "FORTIFICATION", "WALL", "FLOOR", "STAIR_UP", "STAIR_DOWN", "STAIR_UPDOWN", "RAMP",
+        "TRACK_N", "TRACK_S", "TRACK_E", "TRACK_W", "TRACK_NS", "TRACK_NE", "TRACK_NW",
+        "TRACK_SE", "TRACK_SW", "TRACK_WE", "TRACK_NSE", "TRACK_NSW", "TRACK_NWE",
+        "TRACK_SWE", "TRACK_NSWE", "TRACK_RN", "TRACK_RS", "TRACK_RE", "TRACK_RW",
+        "TRACK_RNS", "TRACK_RNE", "TRACK_RNW", "TRACK_RSE", "TRACK_RSW", "TRACK_RWE",
+        "TRACK_RNSE", "TRACK_RNSW", "TRACK_RNWE", "TRACK_RSWE", "TRACK_RNSWE", "REINFORCED_WALL"};
+      r.decal = true; r.stageArt = true;
+      if (q.stage == wm::BuildingStage::Complete || q.subtype >= std::size(names)) {
+        r.rule = "construction.no-pending-art"; return r;
+      }
+      const auto name = std::string("PLANNED_CONSTRUCTION_") + names[q.subtype];
+      fillTiles(q, idx.tile(name), r);
+      r.found = !r.tiles.empty();
+      r.rule = r.found ? "construction.pending" : "missing-tile";
+      return r;
+    }
     // --- layouts ---
     case BuildingKind::Workshop:
     case BuildingKind::Furnace:

@@ -1,0 +1,109 @@
+{
+  "provenance": {
+    "source": "build/location-staff-variants-20260929-225411/native-location-staff-variants.json",
+    "sha256": "f319486b79fb6727143174113ac08950dd6ab704f7c56224b1ed6cc8a04c0655",
+    "scope": "Read-only native cached textures, appearance resolver diagnostic and single HEAD override survey; best-fit is diagnostic evidence, not a native random algorithm. Both saves unchanged. Cached pixel data remains ignored."
+  },
+  "rows": [
+    {
+      "unit_id": 6817,
+      "random_appearance_number": 2326521738,
+      "native_map_equals_staff": true,
+      "map_texpos": 160517,
+      "sheet_texpos": 160518,
+      "best_head_index": 2,
+      "remaining_mismatch_percent_tolerance8": 2.5,
+      "survey_line": "6817    DWARF       73    21     layered  on-screen        5.5  HEAD: 2/4 (2.5%) id 6817 ran 2326521738"
+    },
+    {
+      "unit_id": 6546,
+      "random_appearance_number": 2896660398,
+      "native_map_equals_staff": true,
+      "map_texpos": 160525,
+      "sheet_texpos": 160526,
+      "best_head_index": 3,
+      "remaining_mismatch_percent_tolerance8": 2.1,
+      "survey_line": "6546    DWARF       125   21     layered  on-screen        4.3  HEAD: 3/4 (2.1%) id 6546 ran 2896660398"
+    },
+    {
+      "unit_id": 5813,
+      "random_appearance_number": 2761052,
+      "native_map_equals_staff": true,
+      "map_texpos": 160507,
+      "sheet_texpos": 160508,
+      "best_head_index": 2,
+      "remaining_mismatch_percent_tolerance8": 0.8,
+      "survey_line": "5813    DWARF       17    21     layered  on-screen        2.9  HEAD: 2/4 (0.8%) id 5813 ran 2761052"
+    },
+    {
+      "unit_id": 6134,
+      "random_appearance_number": 2187532448,
+      "native_map_equals_staff": true,
+      "map_texpos": 160519,
+      "sheet_texpos": 160520,
+      "best_head_index": 1,
+      "remaining_mismatch_percent_tolerance8": 0.3,
+      "survey_line": "6134    DWARF       50    19     layered  on-screen        3.2  HEAD: 1/4 (0.3%) id 6134 ran 2187532448"
+    },
+    {
+      "unit_id": 6136,
+      "random_appearance_number": 2922069844,
+      "native_map_equals_staff": true,
+      "map_texpos": 160521,
+      "sheet_texpos": 160522,
+      "best_head_index": 2,
+      "remaining_mismatch_percent_tolerance8": 0.5,
+      "survey_line": "6136    DWARF       112   20     layered  on-screen        2.8  HEAD: 2/4 (0.5%) id 6136 ran 2922069844"
+    },
+    {
+      "unit_id": 6555,
+      "random_appearance_number": 68403368,
+      "native_map_equals_staff": true,
+      "map_texpos": 160515,
+      "sheet_texpos": 160516,
+      "best_head_index": 2,
+      "remaining_mismatch_percent_tolerance8": 0.5,
+      "survey_line": "6555    DWARF       70    22     layered  on-screen        3.1  HEAD: 2/4 (0.5%) id 6555 ran 68403368"
+    },
+    {
+      "unit_id": 6549,
+      "random_appearance_number": 2051436528,
+      "native_map_equals_staff": true,
+      "map_texpos": 160523,
+      "sheet_texpos": 160524,
+      "best_head_index": 1,
+      "remaining_mismatch_percent_tolerance8": 0.6,
+      "survey_line": "6549    DWARF       117   19     layered  on-screen        4.2  HEAD: 1/4 (0.6%) id 6549 ran 2051436528"
+    },
+    {
+      "unit_id": 6536,
+      "random_appearance_number": 1918080274,
+      "native_map_equals_staff": true,
+      "map_texpos": 160509,
+      "sheet_texpos": 160510,
+      "best_head_index": 3,
+      "remaining_mismatch_percent_tolerance8": 1.0,
+      "survey_line": "6536    DWARF       112   20     layered  on-screen        3.9  HEAD: 3/4 (1.0%) id 6536 ran 1918080274"
+    },
+    {
+      "unit_id": 6542,
+      "random_appearance_number": 2452092014,
+      "native_map_equals_staff": true,
+      "map_texpos": 160513,
+      "sheet_texpos": 160514,
+      "best_head_index": 3,
+      "remaining_mismatch_percent_tolerance8": 0.0,
+      "survey_line": "6542    DWARF       70    21     layered  on-screen        2.1  HEAD: 3/4 (0.0%) id 6542 ran 2452092014"
+    },
+    {
+      "unit_id": 6815,
+      "random_appearance_number": 3883667634,
+      "native_map_equals_staff": true,
+      "map_texpos": 160511,
+      "sheet_texpos": 160512,
+      "best_head_index": 4,
+      "remaining_mismatch_percent_tolerance8": 0.0,
+      "survey_line": "6815    DWARF       69    20     layered  on-screen        2.6  HEAD: 4/4 (0.0%) id 6815 ran 3883667634"
+    }
+  ]
+}

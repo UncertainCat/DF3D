@@ -1,0 +1,895 @@
+{
+  "cases": [
+    {
+      "action": "pointer Return to game",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 1
+    },
+    {
+      "action": "right-click outside",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 2
+    },
+    {
+      "action": "pointer Settings",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options",
+          "dwarfmode/Settings/VIDEO"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "back": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 3
+    },
+    {
+      "action": "open save-continue prompt",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": true,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "back": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": true,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "cancel": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "closed": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 4
+    },
+    {
+      "action": "open save-return prompt",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF_SAVE_AND_EXIT_CHOICES",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "back": {
+        "abandon": false,
+        "context": "MAIN_DWARF_SAVE_AND_EXIT_CHOICES",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "closed": {
+        "abandon": false,
+        "context": "MAIN_DWARF_SAVE_AND_EXIT_CHOICES",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 5
+    },
+    {
+      "action": "open retire prompt",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": true
+      },
+      "back": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": true
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "cancel": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "closed": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 6
+    },
+    {
+      "action": "open abandon prompt",
+      "after": {
+        "abandon": true,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "back": {
+        "abandon": true,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "cancel": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "closed": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 7
+    },
+    {
+      "action": "open quit prompt",
+      "after": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": true,
+        "retire": false
+      },
+      "back": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": true,
+        "retire": false
+      },
+      "before": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "cancel": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Options"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": true,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "closed": {
+        "abandon": false,
+        "context": "MAIN_DWARF",
+        "do_manual_save": false,
+        "entering_manual_folder": false,
+        "entering_timeline": false,
+        "focus": [
+          "dwarfmode/Default"
+        ],
+        "frame": 0,
+        "manual_save_timer": 0,
+        "open": false,
+        "paused": true,
+        "quit": false,
+        "retire": false
+      },
+      "trial": 8
+    }
+  ],
+  "source": "build/native-options-input-20260930-073531/native-options-input.json",
+  "sha256": "f136878433276d59785686b1198d06e4913a52eb782b26f0ae84b43a9722a4b1",
+  "input_mechanism": "Options opened with Windows Escape down/up in owned hidden window; pointer actions use simulateInput(_MOUSE_L/_MOUSE_R); Back uses simulateInput(LEAVESCREEN). Not physical-key cancellation evidence for child prompts.",
+  "validation": {
+    "terminal_exit": 0,
+    "status": "passed",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "simulation_frame": 0,
+    "runtime_gpu": "build/qa/native-options-input-20260930",
+    "runtime_scope": "Unexposed top-level component: all seven pointer signals, blank click, right-click/physical-key event dismissal, child-owner gate and hidden state. No session effects or main-scene Escape integration."
+  },
+  "prompts": [
+    {
+      "name": "save-continue",
+      "source": "build/native-options-input-20260930-073531/save-continue.json",
+      "sha256": "584659ae6c0dc308a6f81ad5f9c189d92ad2f327ddc33f9c9c5398041da81b4e",
+      "rendered_rows": [
+        {
+          "y": 30,
+          "x": 45,
+          "text": "What would you like to name this manual"
+        },
+        {
+          "y": 31,
+          "x": 45,
+          "text": "save?  It will never be overwritten,"
+        },
+        {
+          "y": 32,
+          "x": 45,
+          "text": "but you can delete it while loading."
+        },
+        {
+          "y": 35,
+          "x": 96,
+          "text": "Cancel"
+        }
+      ]
+    },
+    {
+      "name": "save-return",
+      "source": "build/native-options-input-20260930-073531/save-return.json",
+      "sha256": "477c0eaf0f0b077d37909c389ce5473129c9072b286afae61960059bd5451723",
+      "rendered_rows": [
+        {
+          "y": 1,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-pointer-cancel-20260928-172329"
+        },
+        {
+          "y": 2,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 4,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-pointer-caption-20260928-170838"
+        },
+        {
+          "y": 5,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 7,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-pointer-layout-20260928-170642"
+        },
+        {
+          "y": 8,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 10,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-pointer-reflow-20260928-171019"
+        },
+        {
+          "y": 11,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 13,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-pointer-repaint-20260928-172109"
+        },
+        {
+          "y": 14,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 16,
+          "x": 42,
+          "text": "Save to timeline folder: df3d-areas-read-recovery-20260928-210859"
+        },
+        {
+          "y": 17,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 19,
+          "x": 45,
+          "text": "Save to timeline folder: df3d-areas-refresh-20260929-181041"
+        },
+        {
+          "y": 20,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 22,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-refresh-reader-20260929-181413"
+        },
+        {
+          "y": 23,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 25,
+          "x": 42,
+          "text": "Save to timeline folder: df3d-areas-repaint-brush-20260929-085138"
+        },
+        {
+          "y": 26,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 28,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-repaint-corner-20260929-084936"
+        },
+        {
+          "y": 29,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 31,
+          "x": 40,
+          "text": "Save to timeline folder: df3d-areas-repaint-elevation-20260929-084657"
+        },
+        {
+          "y": 32,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 34,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-repaint-native-20260929-073503"
+        },
+        {
+          "y": 35,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 37,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-repaint-native-20260929-073601"
+        },
+        {
+          "y": 38,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 40,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-repaint-native-20260929-073704"
+        },
+        {
+          "y": 41,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 43,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-restart-catalog-20260928-173457"
+        },
+        {
+          "y": 44,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 46,
+          "x": 44,
+          "text": "Save to timeline folder: df3d-areas-revision-20260928-210233"
+        },
+        {
+          "y": 47,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 49,
+          "x": 43,
+          "text": "Save to timeline folder: df3d-areas-same-choice-20260929-154752"
+        },
+        {
+          "y": 50,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 52,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-same-selection-20260929-154422"
+        },
+        {
+          "y": 53,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 55,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-same-selection-20260929-154512"
+        },
+        {
+          "y": 56,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 58,
+          "x": 41,
+          "text": "Save to timeline folder: df3d-areas-same-selection-20260929-154554"
+        },
+        {
+          "y": 59,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 61,
+          "x": 43,
+          "text": "Save to timeline folder: df3d-areas-scene-mask-20260928-181823"
+        },
+        {
+          "y": 62,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        },
+        {
+          "y": 64,
+          "x": 43,
+          "text": "Save to timeline folder: df3d-areas-scene-poll-20260928-175727"
+        },
+        {
+          "y": 65,
+          "x": 55,
+          "text": "Multiple copies of the timeline found."
+        }
+      ],
+      "context": "MAIN_DWARF_SAVE_AND_EXIT_CHOICES",
+      "coverage": "Visible rows only: this retained capture has many duplicate timeline folders; full option inventory, scrolling, selection and save effects are not established."
+    },
+    {
+      "name": "retire",
+      "source": "build/native-options-input-20260930-073531/retire.json",
+      "sha256": "7e8e90a75aa41284c52176846cdd077af3f296e81f7a82e3139ae15747093441",
+      "rendered_rows": [
+        {
+          "y": 31,
+          "x": 45,
+          "text": "Really retire?  The world will be saved but"
+        },
+        {
+          "y": 32,
+          "x": 45,
+          "text": "you will need to unretire the fort to play"
+        },
+        {
+          "y": 33,
+          "x": 45,
+          "text": "here again."
+        },
+        {
+          "y": 36,
+          "x": 47,
+          "text": "Retire                                           Cancel"
+        }
+      ]
+    },
+    {
+      "name": "abandon",
+      "source": "build/native-options-input-20260930-073531/abandon.json",
+      "sha256": "d6265420dd3b5c3277087544c0ab507cd5ea1e7a9688b419bef5c6472f8ad292",
+      "rendered_rows": [
+        {
+          "y": 31,
+          "x": 45,
+          "text": "Really quit?  The fort will be saved but"
+        },
+        {
+          "y": 32,
+          "x": 45,
+          "text": "you will need to reclaim the fort to play"
+        },
+        {
+          "y": 33,
+          "x": 45,
+          "text": "here again."
+        },
+        {
+          "y": 36,
+          "x": 47,
+          "text": "Abandon                                          Cancel"
+        }
+      ]
+    },
+    {
+      "name": "quit",
+      "source": "build/native-options-input-20260930-073531/quit.json",
+      "sha256": "63a82ca448441b083e1db876c1ff36aba1a150e585f28d2aebd54b2e0f41dc20",
+      "rendered_rows": [
+        {
+          "y": 31,
+          "x": 45,
+          "text": "Really quit without saving?"
+        },
+        {
+          "y": 32,
+          "x": 45,
+          "text": "All of your progress since the last"
+        },
+        {
+          "y": 33,
+          "x": 45,
+          "text": "save will be lost."
+        },
+        {
+          "y": 36,
+          "x": 47,
+          "text": "Quit                                             Cancel"
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "source": "build/native-options-input-20260930-073531/settings.json",
+      "sha256": "13c973cbcf992ca34215529e44e199cdd83a98149459097724068977be0e81b1"
+    }
+  ],
+  "omissions": [
+    "No confirm action invoked; save/retire/abandon/quit effects remain unimplemented/unaccepted.",
+    "No native physical Escape or right-click in child prompts captured.",
+    "Only 1200x800, paused MAIN_DWARF.",
+    "Injected pointer hover did not alter tile buffers; physical hover remains unverified.",
+    "Settings only opened and closed; controls and changes not exercised."
+  ]
+}

@@ -60,6 +60,8 @@ func _initialize() -> void:
 	check(world.calls == 1, "shared discrete ceiling coverage queried once")
 	check(storage.apply(mm, patch, counters) and mm.instance_count == 8, "first resident allocation")
 	check(counters.transforms_written == 5 and counters.custom_written == 5, "complete initial payload")
+	check(patch.group.bounds.end.y > world.roof and mm.custom_aabb.end.y <= world.roof + .0001,
+		"render bounds exclude shader-discarded volume while dependency coverage retains the roof")
 	check(prep.prepare(record, pos, sizes, thickness, colors, ground, mm.mesh.get_aabb(), "a", deps, world, counters) == null, "unchanged group skipped")
 	record.base_revision = 1;record.revision = 2;record.changed_indices = PackedInt32Array([0])
 	thickness[0] = 0.06
@@ -91,6 +93,20 @@ func _initialize() -> void:
 	patch=prep.prepare(record,pos,sizes,thickness,colors,ground,mm.mesh.get_aabb(),"a",deps,world,counters)
 	storage.apply(mm,patch,counters)
 	check(mm.get_instance_custom_data(0).r == 4, "local source token refreshes clipping without source or global context changes")
+	check(mm.custom_aabb.end.y <= 4.0001 and mm.custom_aabb.end.y > 3.0,
+		"raising a roof expands render bounds without an item membership change")
+	var source_bounds: AABB = patch.group.bounds
+	world.roof=2;world.terrain+=1
+	check(prep.refresh_clipping(world,true), "lowered roof invalidates clipping")
+	patch=prep.prepare(record,pos,sizes,thickness,colors,ground,mm.mesh.get_aabb(),"a",deps,world,counters)
+	storage.apply(mm,patch,counters)
+	check(mm.custom_aabb.end.y <= 2.0001 and patch.group.bounds == source_bounds,
+		"lowered roof shrinks only render bounds")
+	world.roof=1000000;world.terrain+=1
+	check(prep.refresh_clipping(world,true), "removed roof remains within dependency coverage")
+	patch=prep.prepare(record,pos,sizes,thickness,colors,ground,mm.mesh.get_aabb(),"a",deps,world,counters)
+	storage.apply(mm,patch,counters)
+	check(mm.custom_aabb == source_bounds, "roof removal restores the complete conservative envelope")
 	deps[0]=0
 	patch=prep.prepare(record,pos,sizes,thickness,colors,ground,mm.mesh.get_aabb(),"a",deps,world,counters)
 	storage.apply(mm,patch,counters)

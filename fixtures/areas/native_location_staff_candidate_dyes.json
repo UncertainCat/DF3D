@@ -1,0 +1,344 @@
+{
+  "source": "build/location-staff-selector-dyes-20260930-025925",
+  "source_sha256": "907ea9209e6f69f5fd25ef3b2bd7669b945a053447dea401b6348244d615fa88",
+  "scope": "Native fortress staff selector; 16 units, dyes on/off/restored; no artwork retained. Runtime setting-transition acceptance and corpse/adventure behavior remain unverified.",
+  "original_dyes": true,
+  "observations": [
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 6832,
+      "profession": 55,
+      "visible_rgba_sha256": "50c032eb4b3301f0c81001e2b9779ee83a5317471ba68070a95247d17922fe78"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 2571,
+      "profession": 114,
+      "visible_rgba_sha256": "351a0a5b7967db1b78cd21bc707ab45518b467b813d8d7454d2baf3e26ad9e4d"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 4338,
+      "profession": 113,
+      "visible_rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 6969,
+      "profession": 1,
+      "visible_rgba_sha256": "484b84acb1c9f3dadc48c6203a33344f37f901b14eec7083a39cfc190817a272"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 2346,
+      "profession": 114,
+      "visible_rgba_sha256": "e872d9b1f6d60c1f21076719c6723c14ee1a4d2fe5a4db4d77ab31cf833e64d2"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 7124,
+      "profession": 71,
+      "visible_rgba_sha256": "9cc16549f3cf19c0d1cb15ef2d1ca6f0368028586a36575a4de09c61a4ae0803"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 7125,
+      "profession": 64,
+      "visible_rgba_sha256": "9aeefadc297662b0c1b4d11b50fa9ad241c4db2130b62da4730f4f2ad7d4957e"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 7268,
+      "profession": 1,
+      "visible_rgba_sha256": "9993e6e42a9e2694eef92f19e23f0c9e5dc385504d99a6df309707bd1a70eb54"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 6592,
+      "profession": 50,
+      "visible_rgba_sha256": "0c166ee20c860a811d3322b078bb1b66d603fd1f2d778f3c2ae55e310bfaacea"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 6134,
+      "profession": 50,
+      "visible_rgba_sha256": "9015c7fbb6c98552a0a732ffa4c94e77440bb4f156b02b99e7140cd16d69d5af"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 6811,
+      "profession": 84,
+      "visible_rgba_sha256": "68423cf93c019aad4d57638ebdca3840468a14cee6327b4d6029507afe5e7435"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 6814,
+      "profession": 38,
+      "visible_rgba_sha256": "333ce23478ea0e498b5f2f73c4b732b692b46c9a5853759bf4b99bde8a5ba791"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 7126,
+      "profession": 14,
+      "visible_rgba_sha256": "1afe2c73bc67ee861a253639b2edc2d75a0cd2c03b6e9495c94e01393651430b"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 7202,
+      "profession": 55,
+      "visible_rgba_sha256": "c58ce8ac72dde4ec08887b2b6dcd5026fbe56f8a1e80fffcbe92d95fdcf21b51"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 7271,
+      "profession": 48,
+      "visible_rgba_sha256": "f161c6e8cc04484b70ccf8758e3092eff91b2bcb13b41eec5cfd927c523a86d7"
+    },
+    {
+      "case": "on",
+      "dyes": true,
+      "unit_id": 2345,
+      "profession": 114,
+      "visible_rgba_sha256": "72bf1304658b4ff6357c3ab3be47d5094352da31e0398fa4a144521b0434f6ab"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 6832,
+      "profession": 55,
+      "visible_rgba_sha256": "ab04e4a0306af5d835aa426c6a950b1c838fd030e1216deeee4f03cb54841b8f"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 2571,
+      "profession": 114,
+      "visible_rgba_sha256": "351a0a5b7967db1b78cd21bc707ab45518b467b813d8d7454d2baf3e26ad9e4d"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 4338,
+      "profession": 113,
+      "visible_rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 6969,
+      "profession": 1,
+      "visible_rgba_sha256": "434793051d9ad49b9d13c0de054aa7dcfc257bb3450f85f5c860d49a0acae28e"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 2346,
+      "profession": 114,
+      "visible_rgba_sha256": "e872d9b1f6d60c1f21076719c6723c14ee1a4d2fe5a4db4d77ab31cf833e64d2"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 7124,
+      "profession": 71,
+      "visible_rgba_sha256": "9cc16549f3cf19c0d1cb15ef2d1ca6f0368028586a36575a4de09c61a4ae0803"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 7125,
+      "profession": 64,
+      "visible_rgba_sha256": "aed5c0e554bc761d61ee60f3db06ffc9ced8a5ae847b5b4168761c9c99ae5e07"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 7268,
+      "profession": 1,
+      "visible_rgba_sha256": "f6d73938c84e5d40bb6b40eabb0791bf0ffdb5f700499ec3e570160e64570f23"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 6592,
+      "profession": 50,
+      "visible_rgba_sha256": "70f9b96487160bacf9e3bd21164089bb5038ed3b552b61d49aa90f8e0c0a9839"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 6134,
+      "profession": 50,
+      "visible_rgba_sha256": "4bb2fbab3c39bc3c476fcec9128c82b020d34760e319967ca69de88668c93b10"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 6811,
+      "profession": 84,
+      "visible_rgba_sha256": "68423cf93c019aad4d57638ebdca3840468a14cee6327b4d6029507afe5e7435"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 6814,
+      "profession": 38,
+      "visible_rgba_sha256": "43d7569dec894dc4aaac388c94cf7c880ba127aab663af77ea89919fc7c24d65"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 7126,
+      "profession": 14,
+      "visible_rgba_sha256": "0953911e56e0d0cda4484172c654e7ca4de368aa877bde0fff211f411c80161a"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 7202,
+      "profession": 55,
+      "visible_rgba_sha256": "3cf4072e11a4aed9424d5233ca7f2f6fd56699ab63232fce54bd976a21bdc155"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 7271,
+      "profession": 48,
+      "visible_rgba_sha256": "13682e2d13667babd4e193434ec2b962fc4e793a0fb87d9974a2dfe11ee52a81"
+    },
+    {
+      "case": "off",
+      "dyes": false,
+      "unit_id": 2345,
+      "profession": 114,
+      "visible_rgba_sha256": "72bf1304658b4ff6357c3ab3be47d5094352da31e0398fa4a144521b0434f6ab"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 6832,
+      "profession": 55,
+      "visible_rgba_sha256": "50c032eb4b3301f0c81001e2b9779ee83a5317471ba68070a95247d17922fe78"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 2571,
+      "profession": 114,
+      "visible_rgba_sha256": "351a0a5b7967db1b78cd21bc707ab45518b467b813d8d7454d2baf3e26ad9e4d"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 4338,
+      "profession": 113,
+      "visible_rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 6969,
+      "profession": 1,
+      "visible_rgba_sha256": "484b84acb1c9f3dadc48c6203a33344f37f901b14eec7083a39cfc190817a272"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 2346,
+      "profession": 114,
+      "visible_rgba_sha256": "e872d9b1f6d60c1f21076719c6723c14ee1a4d2fe5a4db4d77ab31cf833e64d2"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 7124,
+      "profession": 71,
+      "visible_rgba_sha256": "9cc16549f3cf19c0d1cb15ef2d1ca6f0368028586a36575a4de09c61a4ae0803"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 7125,
+      "profession": 64,
+      "visible_rgba_sha256": "9aeefadc297662b0c1b4d11b50fa9ad241c4db2130b62da4730f4f2ad7d4957e"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 7268,
+      "profession": 1,
+      "visible_rgba_sha256": "9993e6e42a9e2694eef92f19e23f0c9e5dc385504d99a6df309707bd1a70eb54"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 6592,
+      "profession": 50,
+      "visible_rgba_sha256": "0c166ee20c860a811d3322b078bb1b66d603fd1f2d778f3c2ae55e310bfaacea"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 6134,
+      "profession": 50,
+      "visible_rgba_sha256": "9015c7fbb6c98552a0a732ffa4c94e77440bb4f156b02b99e7140cd16d69d5af"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 6811,
+      "profession": 84,
+      "visible_rgba_sha256": "68423cf93c019aad4d57638ebdca3840468a14cee6327b4d6029507afe5e7435"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 6814,
+      "profession": 38,
+      "visible_rgba_sha256": "333ce23478ea0e498b5f2f73c4b732b692b46c9a5853759bf4b99bde8a5ba791"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 7126,
+      "profession": 14,
+      "visible_rgba_sha256": "1afe2c73bc67ee861a253639b2edc2d75a0cd2c03b6e9495c94e01393651430b"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 7202,
+      "profession": 55,
+      "visible_rgba_sha256": "c58ce8ac72dde4ec08887b2b6dcd5026fbe56f8a1e80fffcbe92d95fdcf21b51"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 7271,
+      "profession": 48,
+      "visible_rgba_sha256": "f161c6e8cc04484b70ccf8758e3092eff91b2bcb13b41eec5cfd927c523a86d7"
+    },
+    {
+      "case": "restored",
+      "dyes": true,
+      "unit_id": 2345,
+      "profession": 114,
+      "visible_rgba_sha256": "72bf1304658b4ff6357c3ab3be47d5094352da31e0398fa4a144521b0434f6ab"
+    }
+  ]
+}

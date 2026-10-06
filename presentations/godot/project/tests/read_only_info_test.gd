@@ -23,6 +23,8 @@ func check(value, message):
 	if not value: failures += 1; push_error(message)
 func _initialize(): call_deferred("run")
 func run():
+	# This controller fixture intentionally provides no installed art.
+	preload("res://scripts/original_ui.gd")._warned_assets_unavailable = true
 	var controls := Controls.new(); root.add_child(controls); controls.add_child(controls.panel)
 	var world := World.new()
 	var view = load("res://scripts/read_only_info.gd").new()

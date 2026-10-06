@@ -5,10 +5,22 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from catalog import load_catalog, validate_catalog, ordered_checks
-from verify import check_environment, command_for, optional_readiness
+from verify import check_environment, command_for, optional_readiness, recorded_location_catalog_ready
 
 
 class CatalogTests(unittest.TestCase):
+    def test_windows_powershell_does_not_inherit_pwsh_modules(self):
+        env = {"PATH": "runtime", "PSModulePath": "PowerShell7/Modules", "KEEP": "value"}
+        with patch("verify.powershell_executable", return_value="C:/Windows/powershell.exe"):
+            self.assertEqual(check_environment({"kind": "powershell"}, env),
+                             {"PATH": "runtime", "KEEP": "value"})
+            self.assertNotIn("PSMODULEPATH", check_environment(
+                {"kind": "powershell"}, {"PSMODULEPATH": "PowerShell7/Modules"}))
+        with patch("verify.powershell_executable", return_value="C:/Program Files/PowerShell/pwsh.exe"):
+            self.assertEqual(check_environment({"kind": "powershell"}, env), env)
+        self.assertEqual(check_environment({"kind": "godot"}, env), env)
+        self.assertEqual(env["PSModulePath"], "PowerShell7/Modules")
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
@@ -118,6 +130,21 @@ class CatalogTests(unittest.TestCase):
         with patch("verify.subprocess.run", side_effect=OSError("missing interpreter")):
             ready = optional_readiness("missing", "missing", {"PATH": ""})
         self.assertFalse(ready["python_lupa"])
+
+    def test_location_capture_requires_both_recordings_and_provenance(self):
+        directory = self.root / "build/notes/pm/location-render-source"
+        directory.mkdir(parents=True)
+        names = ("location-transport-comparison.json", "native-location-metadata.json",
+                 "native-location-scroll.json", "native-location-scroll-art.json", "native-location-scroll-states.json", "native-list-scroll.json", "provenance.txt")
+        with patch("verify.ROOT", self.root):
+            self.assertFalse(recorded_location_catalog_ready())
+            for name in names:
+                (directory / name).write_text("fixture")
+            self.assertTrue(recorded_location_catalog_ready())
+            for name in names:
+                (directory / name).unlink()
+                self.assertFalse(recorded_location_catalog_ready())
+                (directory / name).write_text("fixture")
 
     def test_registered_profiling_matrix_uses_supported_modes_and_private_outputs(self):
         rows = [row for row in load_catalog()["checks"]

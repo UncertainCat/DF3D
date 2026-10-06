@@ -42,7 +42,7 @@ func _ready() -> void:
 	box.add_child(row)
 	checkpoint_name = LineEdit.new()
 	checkpoint_name.custom_minimum_size.x = 235
-	checkpoint_name.max_length = 80
+	checkpoint_name.max_length = 40
 	checkpoint_name.placeholder_text = "New checkpoint name"
 	checkpoint_name.text = fresh_checkpoint_name()
 	checkpoint_name.tooltip_text = "New manual checkpoint; existing names are never overwritten"
@@ -70,14 +70,14 @@ func update_session(state: Dictionary, entered: bool) -> void:
 	latest = state
 	visible = entered
 	var valid: bool = state.get("fortress_valid", false)
-	var busy: bool = state.get("phase", 4) == 6 or state.get("request_status", 0) == 1
+	var busy: bool = state.get("phase", 4) in [6,7] or state.get("request_status", 0) == 1
 	status.text = "%s · %s · %s" % [state.get("fort_name", "Fortress"), calendar(state.get("year", 0), state.get("year_tick", 0)), "Paused" if state.get("paused", false) else "Running"] if valid else "Fortress status unavailable"
 	if busy: status.text += " · Saving" if state.get("phase", 4) == 6 else " · Working"
-	if pending_seq != 0 and state.get("request_seq", 0) == pending_seq and state.get("request_status", 0) in [2, 3]:
+	if pending_seq != 0 and state.get("request_seq", 0) == pending_seq and state.get("request_status", 0) in [2, 3, 4]:
 		pending_seq = 0
 		if state.request_status == 2 and state.get("request_action", 0) == 1:
 			checkpoint_name.text = fresh_checkpoint_name()
-		if audio != null: audio.cue("accepted" if state.request_status == 2 else "rejected")
+		if audio != null and state.request_status != 4: audio.cue("accepted" if state.request_status == 2 else "rejected")
 	if state.get("phase", 4) == 4:
 		pending_seq = 0
 		feedback.text = "Connection lost. Save completion is unverified."
@@ -104,4 +104,4 @@ func request_save(return_to_menu: bool) -> void:
 		if audio != null: audio.cue("click")
 
 func blocks_commands() -> bool:
-	return pending_seq != 0 or latest.get("phase", 4) == 6
+	return pending_seq != 0 or latest.get("phase", 4) in [6,7]

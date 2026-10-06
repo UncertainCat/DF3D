@@ -148,6 +148,7 @@ constexpr const char* kBuildingKindNames[] = {
     "Bookcase",
     "DisplayFurniture",
     "OfferingPlace",
+    "Construction",
 };
 
 constexpr const char* kItemKindNames[] = {

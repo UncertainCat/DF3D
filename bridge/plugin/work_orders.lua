@@ -511,7 +511,8 @@ local function inspect(o)
   local row=conditions[#conditions];local estimate=queue_estimate(o,i,rev)
   if estimate.done then
    row.satisfaction=2;row.estimate_count=estimate.count;row.satisfied=estimate.satisfied
-   row.description=row.description..'; DF3D estimate: '..estimate.count..' matching (rule '..(estimate.satisfied and 'met' or 'not met')..')'
+   -- Estimates are semantic metadata, not a source of native display copy.
+   -- Do not append an authored disclaimer to the condition description.
   end
  end
  for i,c in ipairs(o.order_conditions)do

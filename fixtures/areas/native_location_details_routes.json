@@ -1,0 +1,174 @@
+{
+  "cases": [
+    {
+      "bottom": 3,
+      "chooser_open": true,
+      "chooser_scroll": 0,
+      "context": -1,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom",
+        "dwarfmode/LocationSelector/Default"
+      ],
+      "label": "chooser",
+      "location": -1,
+      "selected": -1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": true,
+      "chooser_scroll": 0,
+      "context": 1,
+      "details_open": true,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom",
+        "dwarfmode/LocationSelector/Default",
+        "dwarfmode/LocationDetails"
+      ],
+      "label": "chooser_details",
+      "location": -1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": true,
+      "chooser_scroll": 0,
+      "context": 1,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom",
+        "dwarfmode/LocationSelector/Default"
+      ],
+      "label": "chooser_right_back",
+      "location": -1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": true,
+      "chooser_scroll": 0,
+      "context": 1,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom",
+        "dwarfmode/LocationSelector/Default"
+      ],
+      "label": "chooser_leave_back",
+      "location": -1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": false,
+      "chooser_scroll": 0,
+      "context": 1,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom"
+      ],
+      "label": "assigned_zone",
+      "location": 1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": false,
+      "chooser_scroll": 0,
+      "context": 0,
+      "details_open": true,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom",
+        "dwarfmode/LocationDetails"
+      ],
+      "label": "assigned_details",
+      "location": 1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": false,
+      "chooser_scroll": 0,
+      "context": 0,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom"
+      ],
+      "label": "assigned_right_back",
+      "location": 1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": false,
+      "chooser_scroll": 0,
+      "context": 0,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom"
+      ],
+      "label": "assigned_leave_back",
+      "location": 1,
+      "selected": 1,
+      "zone": 23
+    },
+    {
+      "bottom": 3,
+      "chooser_open": false,
+      "chooser_scroll": 0,
+      "context": 0,
+      "details_open": false,
+      "focus": [
+        "dwarfmode/Zone/Some/Bedroom"
+      ],
+      "label": "assigned_escape_bindings",
+      "location": 1,
+      "selected": 1,
+      "zone": 23
+    }
+  ],
+  "frame": 0,
+  "provenance": {
+    "source": "build/location-details-routes-20260930-063720/native-details-routes.json",
+    "sha256": "03a2169ce5648e6448631696296d76c2255852f26fbebe06f51e9947500f69f5",
+    "method": "Protected owned paused clone. Native chooser and assigned-zone Details entry, right-click/LEAVESCREEN Back, combined LEAVESCREEN+OPTIONS input. Assignment fixture remains in never-saved clone; source/clone saves unchanged."
+  },
+  "validation": {
+    "source": "build/areas-acceptance-20260930-064429",
+    "status": "passed_with_known_issues",
+    "chooser_entries": 6,
+    "assigned_zone_entries": 14,
+    "checks": [
+      "actual main fortress scene; viewport clicks on both native Details icons",
+      "site/location identity from semantic observations",
+      "chooser Back restores retained list/scroll and does not assign zone",
+      "assigned-zone Back restores parent with membership intact",
+      "seven location creation/removal/reassignment scenarios",
+      "existing access, candidate ordering/filter/portrait/native transport checks repeated",
+      "final pause, cleanup/preferences and both unchanged save manifests"
+    ],
+    "diagnostics": "known Godot thread notice only; no unclassified diagnostics",
+    "images": {
+      "scene_details_route_0.png": "bc56ed6d8388937de14dff7d9de1afc3df0a12df8375dd66488fb131f80e5bcc",
+      "scene_details_route_1.png": "54d31d85fba1c95dbe72499ef31e2fefbb59b2733533283de5ca9537fb2161d6",
+      "scene_details_route_2.png": "d9c5dd3854e36509e454675d7289399622a5caa46b037e17ee9f9c1931560a22",
+      "scene_details_route_3.png": "4c3556087affbf4a1fb0d9549ded85406313bb4d9dff28ef32f2eff417148ee1",
+      "scene_details_route_4.png": "30f1e691cb0643d8381ec7166d8122562c9c94966e4f8d845ba394a40c2367c3",
+      "scene_details_route_5.png": "0fcf43633fba6091485801f99ee6d2920e08ba064e7f4d2e3e2041c326690746"
+    }
+  },
+  "omissions": [
+    "Full screen still unfinished; Areas launcher remains hidden.",
+    "Windows Escape outer dispatch differs from simulated LEAVESCREEN+OPTIONS; do not infer full physical Escape behavior from this capture.",
+    "Keyboard parent focus/shortcuts, direct lifecycle zone switching and overlay input require further acceptance; parent pointer blocking is separately verified.",
+    "Full route staff mutation/keyboard acceptance, live disconnect/epoch/late replies, pending-entry cancellation.",
+    "Desired supplies/copies, rename, religious appointments, recognition and specialization controls."
+  ],
+  "parent_input_reference": "fixtures/areas/native_location_details_parent_input.json"
+}

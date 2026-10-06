@@ -22,7 +22,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
     if(!typed("action",Variant::INT,true))return false;
     for(auto key:integers)if(!typed(key,Variant::INT))return false;
     for(auto key:{"definition","query","recipe","name"})if(!typed(key,Variant::STRING))return false;
-    for(auto key:{"give","unlink","cancel","remove_condition","pending_only","announcements_only","retracting"})
+    for(auto key:{"give","unlink","cancel","remove_condition","pending_only","announcements_only","retracting","from_end","refresh","alert_button"})
         if(!typed(key,Variant::BOOL))return false;
     if(!typed("origin",Variant::VECTOR3I)||!typed("items",Variant::ARRAY))return false;
     if(data.has("items")) {
@@ -51,7 +51,7 @@ inline bool managementDictionaryTypes(const godot::Dictionary& data,
 inline bool managementRequiredFields(const godot::Dictionary& data, godot::String& error) {
     using A=wm::ManagementAction;
     const int64_t raw=data["action"];
-    if(raw<0 || raw>static_cast<int64_t>(A::CitizenWorkScope))return true; // domain range guard follows
+    if(raw<0 || raw>static_cast<int64_t>(A::DismissAlert))return true; // domain range guard follows
     const auto action=static_cast<A>(raw);
     auto require=[&](const char* key) {
         if(data.has(key))return true;
@@ -61,10 +61,32 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
     case A::ConstructionMaterials: return require("definition") && require("filter") && require("origin");
     case A::Preview: case A::Place:
         return require("definition") && require("origin");
-    case A::InspectAtTile: case A::RemoveConstruction: case A::AreaInspectAtTile: case A::AreaCreate:
+    case A::AreaCreate:
+        if(data.has("operation") && data["operation"].get_type()!=godot::Variant::INT) {
+            error="Wrong management field type: operation";return false;
+        }
+        return (int64_t(data.get("operation",0))!=0 &&
+                int64_t(data.get("operation",0))!=int64_t(wm::AreaOperation::MultiCreate)) || require("origin");
+    case A::InspectAtTile: case A::RemoveConstruction: case A::AreaInspectAtTile:
         return require("origin");
     case A::Inspect: case A::Remove: return require("building_id");
-    case A::AreaInspect: case A::AreaUpdate: case A::AreaDelete: case A::AreaLink: return require("id");
+    case A::AreaUpdate:
+        if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
+            int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationStaffEdit))return require("unit_id");
+        if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
+            (int64_t(data["operation"])==int64_t(wm::AreaOperation::MultiUndo) ||
+             int64_t(data["operation"])==int64_t(wm::AreaOperation::MultiFinish) ||
+             int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationOpen) ||
+             int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationAccess)))return true;
+        return require("id");
+    case A::AreaInspect:
+        if(data.has("operation") && data["operation"].get_type()==godot::Variant::INT &&
+            (int64_t(data["operation"])==int64_t(wm::AreaOperation::PaintCounts) ||
+             int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationChoices) ||
+             int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationDetails) ||
+             int64_t(data["operation"])==int64_t(wm::AreaOperation::LocationStaffCandidates)))return true;
+        return require("id");
+    case A::AreaDelete: case A::AreaLink: return require("id");
     case A::ProductionInspect: return require("building_id");
     case A::ProductionQueue: return require("building_id") && require("recipe");
     case A::ProductionJobEdit: return require("building_id") && require("job_id");
@@ -83,7 +105,8 @@ inline bool managementRequiredFields(const godot::Dictionary& data, godot::Strin
         return require("detail_index") && require("expected_revision") && require("unit_id") && require("member");
     case A::WorkDetailMode:
         return require("detail_index") && require("expected_revision") && require("mode");
-    case A::ReportInspect: case A::AgreementInspect: return require("id");
+    case A::ReportInspect: return int64_t(data.get("view",0))==int64_t(wm::ReportView::Entries) || require("id");
+    case A::AgreementInspect: return require("id");
     case A::TradeInspect: case A::TradeUpdate: case A::TradeGoods: case A::TradeBring:
         return require("depot_id");
     default: return true; // other domain identities retain their typed model/schema validation

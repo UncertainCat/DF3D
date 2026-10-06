@@ -86,6 +86,12 @@ ReportState decodeReport(const m::ReportState* r) {
   auto& n = out;
   n.nextBeforeId = r->next_before_id();
   n.announcementsOnly = r->announcements_only();
+  n.view=ReportView(r->view()); n.tab=ReportTab(r->tab()); n.afterId=r->after_id(); n.fromEnd=r->from_end();
+  n.total=r->total(); n.nextAfterId=r->next_after_id(); n.trimmedThrough=r->trimmed_through(); n.gap=r->gap();
+  if(r->tab_counts())for(auto count:*r->tab_counts())n.tabCounts.push_back(count);
+  if(r->missing_ids())for(auto id:*r->missing_ids())n.missingIds.push_back(id);
+  n.unitId=r->unit_id();n.unitCategory=r->unit_category();n.cursor=r->cursor();n.nextCursor=r->next_cursor();n.listRevision=r->list_revision();n.notificationCategory=r->notification_category();n.alertButton=r->alert_button();
+  if(r->units())for(const auto* v:*r->units())n.units.push_back({v->unit_id(),v->category(),v->profession()?v->profession()->str():"",v->name()?v->name()->str():"",v->dead(),v->log_count(),v->error()?v->error()->str():""});
   if (r->detail())
     n.detail = r->detail()->str();
   if (r->reports())
@@ -107,6 +113,9 @@ ReportState decodeReport(const m::ReportState* r) {
       p.z2 = v->z2();
       p.positionVisible = v->position_visible();
       p.position2Visible = v->position2_visible();
+      p.tab=ReportTab(v->tab());p.color=v->color();p.bright=v->bright();
+      p.zoomType=ReportZoom(v->zoom_type());p.zoomType2=ReportZoom(v->zoom_type2());
+      p.positionHidden=v->position_hidden();p.position2Hidden=v->position2_hidden();p.speakerId=v->speaker_id();
       n.reports.push_back(std::move(p));
     }
 
@@ -132,6 +141,7 @@ flatbuffers::Offset<m::AlertRequest> encodeAlert(flatbuffers::FlatBufferBuilder&
 flatbuffers::Offset<m::ReportRequest> encodeReport(flatbuffers::FlatBufferBuilder& b,
                                                    const ReportRequest& value) {
   const auto& p = value;
-  return m::CreateReportRequest(b, p.id, p.beforeId, b.CreateString(p.query), p.announcementsOnly);
+  std::vector<flatbuffers::Offset<m::UnitReportReference>> units;for(auto ref:p.units)units.push_back(m::CreateUnitReportReference(b,ref.unitId,m::UnitReportCategory(ref.category)));
+  return m::CreateReportRequest(b, p.id, p.beforeId, b.CreateString(p.query), p.announcementsOnly, m::ReportView(p.view), m::ReportTab(p.tab), p.afterId, p.fromEnd, p.unitId, p.unitCategory, p.cursor, p.expectedListRevision, b.CreateVector(p.ids), b.CreateVector(units), p.refresh, p.notificationCategory, p.alertButton);
 }
 }  // namespace wm::detail::management

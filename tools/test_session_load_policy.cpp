@@ -1,5 +1,52 @@
 #include "doctest.h"
 #include "../bridge/plugin/session_load_policy.h"
+#include "../bridge/plugin/session_save_file.h"
+#include <algorithm>
+#include <cstdint>
+#include <fstream>
+
+TEST_CASE("overwrite completion requires changed nonempty destination file evidence") {
+    namespace fs=std::filesystem;
+    const auto root=fs::temp_directory_path()/("df3d-save-stamp-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
+    REQUIRE(fs::create_directory(root));
+    struct Cleanup {fs::path root;~Cleanup(){std::error_code e;fs::remove(root/"world.sav",e);fs::remove(root,e);}} cleanup{root};
+    CHECK_FALSE(df3d_session::savedWorldStamp(root));
+    {std::ofstream out(root/"world.sav",std::ios::binary);out<<"first snapshot";}
+    auto before=df3d_session::savedWorldStamp(root);REQUIRE(before);
+    CHECK_FALSE(df3d_session::savedWorldChanged(before,df3d_session::savedWorldStamp(root)));
+    // Rewriting the same-length payload still needs observable write evidence.
+    fs::last_write_time(root/"world.sav",before->modified+std::chrono::seconds(2));
+    CHECK(df3d_session::savedWorldChanged(before,df3d_session::savedWorldStamp(root)));
+    {std::ofstream out(root/"world.sav",std::ios::binary|std::ios::trunc);out<<"different-length snapshot";}
+    fs::last_write_time(root/"world.sav",before->modified);
+    CHECK(df3d_session::savedWorldChanged(before,df3d_session::savedWorldStamp(root)));
+    {std::ofstream out(root/"world.sav",std::ios::binary|std::ios::trunc);}
+    CHECK_FALSE(df3d_session::savedWorldChanged(before,df3d_session::savedWorldStamp(root)));
+    fs::remove(root/"world.sav");fs::create_directory(root/"world.sav");
+    CHECK_FALSE(df3d_session::savedWorldStamp(root));
+    CHECK_FALSE(df3d_session::savedWorldChanged(std::nullopt,before));
+}
+
+TEST_CASE("load selects requested timeline among groups sharing world identity") {
+    struct Header { uint32_t id1, id2; std::string timeline_name, manual_name; };
+    const Header target{2004778519,1401278833,"df3d.timeline-20260930103712xxxxxxxxxxxx",""};
+    const std::vector<Header> groups{
+        {target.id1,target.id2,"",""},
+        {target.id1,target.id2,target.timeline_name,""},
+        {target.id1+1,target.id2,target.timeline_name,""},
+    };
+    auto selected=std::find_if(groups.begin(),groups.end(),[&](const auto& header){
+        return df3d_session::sameSaveTimeline(header,target);
+    });
+    REQUIRE(selected!=groups.end());
+    CHECK(selected-groups.begin()==1);
+    auto checkpoint=target;checkpoint.manual_name="different manual checkpoint";
+    CHECK(df3d_session::sameSaveTimeline(checkpoint,target));
+    auto different=target;different.id2++;
+    CHECK_FALSE(df3d_session::sameSaveTimeline(different,target));
+    different=target;different.timeline_name="DF3D.timeline-20260930103712xxxxxxxxxxxx";
+    CHECK_FALSE(df3d_session::sameSaveTimeline(different,target));
+}
 
 using namespace df3d_session;
 using namespace std::chrono_literals;

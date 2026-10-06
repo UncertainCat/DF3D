@@ -68,7 +68,8 @@ func run() -> void:
 	assert(sequence>0)
 	state = await receipt(sequence)
 	assert(not state.is_empty())
-	sequence = world.area_request({"action":A.AreaUpdate,"id":2147483000,"kind":Contract.AreaKind.Zone})
+
+	sequence = world.area_request({"action":A.AreaUpdate,"id":2147483000,"kind":Contract.AreaKind.Zone,"expected_revision":9007199254740993})
 	assert(sequence>0)
 	state = await receipt(sequence)
 	assert(not state.is_empty())
@@ -282,18 +283,25 @@ func run() -> void:
 	# Exact local refusals must not consume host requests.
 	reject_report({"action":35}, "Missing management field: id")
 	reject_report({"action":35,"id":-1}, "invalid report inspection")
-	for key in ["id", "before_id"]:
+	for key in ["id", "before_id", "notification_category"]:
 		for bad in [1.5, "1", true]:
 			var invalid := {"action":34}
 			invalid[key] = bad
 			reject_report(invalid, "Wrong management field type: " + key)
-	for pair in [["query", 1], ["announcements_only", 1]]:
+	for pair in [["query", 1], ["announcements_only", 1], ["alert_button", 1]]:
 		var invalid := {"action":34}
 		invalid[pair[0]] = pair[1]
 		reject_report(invalid, "Wrong management field type: " + pair[0])
 	for invalid in [{"action":34,"query":"x".repeat(129)}, {"action":34,"query":String.chr(233).repeat(65)},
 		{"action":34,"id":5}, {"action":35,"id":0,"before_id":3}, {"action":35,"id":0,"query":"x"},
 		{"action":34,"id":-2}, {"action":34,"before_id":-2}, {"action":35,"id":2147483648}, {"action":34,"before_id":2147483648}]:
+		reject_report(invalid, "Invalid bounded report request")
+	for invalid in [{"action":34,"view":6}, {"action":34,"view":6,"notification_category":37},
+		{"action":34,"view":6,"notification_category":20,"alert_button":true},
+		{"action":34,"view":6,"notification_category":20,"cursor":1},
+		{"action":35,"view":5,"id":1,"notification_category":20},
+		{"action":35,"view":5,"id":1,"notification_category":20,"expected_list_revision":1,"tab":1},
+		{"action":35,"view":5,"id":1,"notification_category":20,"expected_list_revision":1,"unit_id":17,"unit_category":1}]:
 		reject_report(invalid, "Invalid bounded report request")
 	var report_requests := [{"action":34}, {"action":34,"before_id":1084},
 		{"action":34,"id":-1,"before_id":-1,"query":"","announcements_only":false},
@@ -324,6 +332,22 @@ func run() -> void:
 		for index in ids.size(): assert_report_row(report.reports[index], ids[index])
 	await test_agreements()
 	await test_work_detail_edits()
+	await test_area_operations()
+	assert(Contract.is_mutation(A.DismissAlert) and not Contract.is_mutation(A.PrepareAlertDismissal))
+	for request in [{"action":A.DismissAlert},{"action":A.DismissAlert,"expected_list_revision":0},
+		{"action":A.PrepareAlertDismissal,"expected_list_revision":1},
+		{"action":A.DismissAlert,"expected_list_revision":1.0},
+		{"action":A.DismissAlert,"expected_list_revision":1,"alert_button":true}]:
+		assert(world.management_request("reports",request)==0)
+	sequence=world.management_request("reports",{"action":A.PrepareAlertDismissal})
+	assert(sequence>0)
+	state=await receipt(sequence)
+	assert(state.report.list_revision==9007199254740993 and state.report.total==4)
+	sequence=world.management_request("reports",{"action":A.DismissAlert,"expected_list_revision":state.report.list_revision})
+	assert(sequence>0)
+	state=await receipt(sequence)
+	assert(state.report.list_revision==9007199254740993 and state.report.total==4)
+
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -606,3 +630,144 @@ func agreement_row(id: int, inspect: bool) -> Dictionary:
 		"parties":[{"id":0,"name":"Urist Lorbamoth" if partial else "The Bejeweled Creed" if temple else "The Whiskered Guild",
 			"entity_ids":[] if partial else [2210] if temple else [780],"histfig_ids":[5120] if partial else []},
 			{"id":1,"name":"The Iron Realm","entity_ids":[483],"histfig_ids":[]}]}
+
+func test_area_operations() -> void:
+	# Codec boundary fixtures; these do not establish native mutation effects.
+	for operation in [Contract.AreaOperation.MultiCreate, Contract.AreaOperation.MultiUndo, Contract.AreaOperation.MultiFinish]:
+		var request := {"action":A.AreaCreate if operation == Contract.AreaOperation.MultiCreate else A.AreaUpdate,
+			"operation":operation,"kind":1,"interaction_id":9223372036854775807}
+		if operation == Contract.AreaOperation.MultiCreate:
+			assert(world.area_request(request) == 0)
+			assert(world.last_error() == "Missing management field: origin")
+			request.merge({"origin":Vector3i(0,0,32767),"width":32768,"height":32768,"room_furniture":1})
+		if operation == Contract.AreaOperation.MultiUndo: request.undo_token = 9223372036854775807
+		var sequence: int = world.area_request(request)
+		assert(sequence > 0)
+		var state: Dictionary = await receipt(sequence)
+		assert(not state.is_empty())
+		var area: Dictionary = state.area
+		assert(area.operation == operation and area.interaction_id == 9223372036854775807)
+		assert(area.room_outcome == Contract.AreaRoomOutcome.Completed and area.areas.is_empty())
+		assert(area.rooms_created == (129 if operation == Contract.AreaOperation.MultiCreate else 0))
+		assert(area.rooms_removed == (129 if operation == Contract.AreaOperation.MultiUndo else 0))
+		assert(area.undo_token == (9223372036854775807 if operation == Contract.AreaOperation.MultiCreate else 0))
+		assert(area.rooms_in_use == (1000 if operation == Contract.AreaOperation.MultiCreate else 0))
+		assert(area.rooms_unenclosed == (2000 if operation == Contract.AreaOperation.MultiCreate else 0))
+		assert(area.rooms_dormitories == (7 if operation == Contract.AreaOperation.MultiCreate else 0))
+	for key in ["operation","expected_revision","expected_list_revision","scope","value","preset","paint_mode","paint_z",
+		"location_id","location_kind","profession","deity_kind","deity_id","unit_id","assign","squad_id","squad_use","organic","inorganic","candidate_kind","sort",
+		"room_furniture","interaction_id","undo_token","count_generation","location_site_id","occupation_id"]:
+		for bad in [1.5,"1",true]:
+			var request := {"action":A.AreaInspect,"id":7}
+			request[key] = bad
+			assert(world.area_request(request) == 0)
+			assert(world.last_error() == "Wrong management field type: " + key)
+	for pair in [["list_key",1],["row_key",1],["sort_descending",1],["spans",{}],["zone_settings",[]]]:
+		var request := {"action":A.AreaInspect,"id":7}
+		request[pair[0]] = pair[1]
+		assert(world.area_request(request) == 0)
+		assert(world.last_error() == "Wrong area field type: " + pair[0])
+	for spans in [[1],[{"x":1,"y":2}],[{"x":1.0,"y":2,"length":1}],
+		[{"x":32767,"y":0,"length":2}],[{"x":0,"y":0,"length":32769}]]:
+		assert(world.area_request({"action":A.AreaCreate,"operation":5,"paint_mode":1,"paint_z":0,"spans":spans}) == 0)
+	for key in ["pond_mode","facing","tomb_citizens","tomb_pets","gather_trees","gather_shrubs"]:
+		for bad in [1.5,"1",true]:
+			assert(world.area_request({"action":A.AreaUpdate,"id":7,"kind":1,"operation":9,"zone_settings":{key:bad}}) == 0)
+			assert(world.last_error() == "Wrong area field type: " + key)
+	assert(world.area_request({"action":A.AreaInspect,"id":7,"operation":1,"origin":Vector3i()}) == 0)
+	assert(world.last_error() == "Legacy area fields cannot be combined with an operation")
+	assert(world.area_request({"action":A.AreaInspect,"id":7,"operation":1,"expected_revision":-1}) == 0)
+	var actions := [9,11,11,11,10,9,11,11,11,9,11,11,11,14,13]
+	for operation in range(1,16):
+		var kind := 2 if operation == 15 else 1 if operation in [6,7,8,9,11,12,14] else 0
+		var request := {"action":actions[operation-1],"id":7,"kind":kind,"operation":operation,
+			"expected_revision":9223372036854775807,"query":"native","cursor":17}
+		if operation in [1,6,10,14]: request.expected_list_revision = 9223372036854775807
+		if operation in [1,2]: request.list_key = "food/meat"
+		if operation == 2: request.merge({"row_key":"material:4","scope":1,"value":2})
+		if operation == 3: request.preset = 19
+		if operation == 4: request.name = "Native name"
+		if operation == 5:
+			request.merge({"paint_mode":1,"paint_z":17,"zone_type":1,
+				"spans":[{"y":14,"x":15,"length":128},{"y":15,"x":15,"length":256}]})
+		if operation == 7: request.location_id = -1
+		if operation == 8: request.merge({"location_kind":2,"deity_kind":3,"deity_id":900})
+		if operation == 9: request.zone_settings = {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0}
+		if operation == 11: request.merge({"unit_id":0,"assign":0})
+		if operation == 12: request.merge({"squad_id":0,"squad_use":0})
+		if operation == 13: request.merge({"organic":0,"inorganic":1})
+		if operation == 14: request.merge({"candidate_kind":3,"sort":3,"sort_descending":true})
+		if operation == 15: request.merge({"link_id":8,"give":false,"unlink":true})
+		var sequence: int = world.area_request(request)
+		assert(sequence > 0)
+		var state: Dictionary = await receipt(sequence)
+		assert(not state.is_empty())
+		var area: Dictionary = state.area
+		assert(area.operation == operation and area.area_id == 7 and area.list_key == "food/meat")
+		assert(area.query == "native" and area.list_revision == 9223372036854775807)
+		assert(area.captured_tick == 9876543210 and area.omitted == 2 and area.next_cursor == 128)
+		assert(area.build_phase == 0 and area.build_done == 0 and area.build_total == 0)
+		assert(area.areas == state.areas and area.choices == state.area_choices)
+		var row: Dictionary = area.areas[0]
+		assert(row.revision == 9223372036854775807 and row.zone_label == "observed")
+		assert(row.location_id == 99 and row.location_name == "observed" and row.religion == "observed")
+		assert(row.organic == 0 and row.inorganic == 1 and row.tile_count == 1 and row.assigned_count == 4)
+		assert(row.zone_settings == {"pond_mode":2,"facing":4,"tomb_citizens":0,"tomb_pets":1,"gather_trees":1,"gather_shrubs":0})
+		if operation == 1: assert(area.settings == [{"key":"food/meat","index":5,"label":"observed","kind":4,"state":3,"estimated":true}])
+		if operation == 6: assert(area.locations == [{"id":99,"name":"observed","location_kind":2,"religion":"observed","guild_profession":-1,"location_tier":-1,"site_id":-1}])
+		if operation == 10: assert(area.links == [{"id":9,"kind":2,"direction":2,"name":"observed"}])
+		if operation == 14:
+			assert(area.candidate_kind == 3 and area.sort == 3 and area.sort_descending)
+			assert(area.candidates == [{"id":8,"name":"observed","profession":"observed","sex":1,"mood":7,"grazer":true,"assigned":true,"squad_use":15}])
+	for variant in 3:
+		var request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.PaintCounts,
+			"zone_type":92,"paint_z":32767,"count_generation":9223372036854775807 - variant}
+		if variant > 0:
+			request.spans = [{"x":11,"y":12,"length":2},{"x":11,"y":13,"length":2}]
+			request.paint_preview = {"x":11,"y":12,"width":4,"height":3}
+		for bad in [[],{}, {"x":1,"y":1,"width":0,"height":1}, {"x":1.5,"y":1,"width":1,"height":1}]:
+			var invalid := request.duplicate(true)
+			invalid.paint_preview = bad
+			assert(world.area_request(invalid) == 0)
+		var sequence: int = world.area_request(request)
+		assert(sequence > 0)
+		var state: Dictionary = await receipt(sequence)
+		assert(not state.is_empty())
+		var area: Dictionary = state.area
+		assert(area.operation == Contract.AreaOperation.PaintCounts and area.count_generation == request.count_generation)
+		assert(area.painted_count == [0,4,-1][variant] and area.preview_count == [0,8,2][variant])
+		assert(area.captured_tick == 9876543210 and area.interaction_id == 0 and area.undo_token == 0)
+		assert(area.areas.is_empty() and area.room_outcome == Contract.AreaRoomOutcome.None)
+	var staff_request := {"action":A.AreaInspect,"kind":1,"operation":Contract.AreaOperation.LocationStaffCandidates,
+		"location_site_id":651,"location_id":0,"occupation_id":87,"cursor":128,"expected_list_revision":9223372036854775807}
+	for key in ["location_site_id","location_id","occupation_id","expected_list_revision"]:
+		var invalid := staff_request.duplicate()
+		invalid.erase(key)
+		assert(world.area_request(invalid) == 0)
+	var staff_sequence: int = world.area_request(staff_request)
+	assert(staff_sequence > 0)
+	var staff_state: Dictionary = await receipt(staff_sequence)
+	assert(not staff_state.is_empty())
+	var staff: Dictionary = staff_state.area.location_staff_candidates
+	assert(staff.site_id == 651 and staff.location_id == 0 and staff.occupation_id == 87 and staff.role == 8)
+	assert(staff.revision == 9223372036854775807 and staff.cursor == 128 and staff.next_cursor == 0 and staff.total == 129)
+	assert(staff.rows == [{"unit_id":100,"histfig_id":900,"name":"Synthetic candidate","base_name":"Synthetic","profession_name":"candidate","profession_color":13,"legendary":true,"score":3,
+		"source_index":128,"profession_order":809,"status_order":100000,"name_sort_key":PackedByteArray([97,255]),"profession_sort_key":PackedByteArray([128,0]),
+		"skills":[{"id":58,"rating":3,"experience":2000000,"weight":1}]}])
+
+	var edit_request := {"action":A.AreaUpdate,"kind":1,"operation":Contract.AreaOperation.LocationStaffEdit,
+		"location_site_id":651,"location_id":0,"occupation_id":87,"unit_id":-1,
+		"expected_revision":9007199254740993,"expected_list_revision":9223372036854775807}
+	for key in ["location_site_id","location_id","occupation_id","unit_id","expected_revision","expected_list_revision"]:
+		var invalid := edit_request.duplicate()
+		invalid.erase(key)
+		assert(world.area_request(invalid) == 0)
+	for unit_id in [-1,2147483647]:
+		edit_request.unit_id = unit_id
+		var sequence: int = world.area_request(edit_request)
+		assert(sequence > 0)
+		var edited: Dictionary = await receipt(sequence)
+		assert(edited.area.operation == Contract.AreaOperation.LocationStaffEdit)
+		assert(edited.area.location_edit_outcome == Contract.LocationEditOutcome.Completed)
+		assert(edited.area.location_details.revision == 9223372036854775807)
+		assert(edited.area.location_details.site_id == 651 and edited.area.location_details.id == 0)

@@ -1,0 +1,665 @@
+{
+  "scope": "Native capture-only age controls for human4338. Texture hashes and semantic inputs, no pixels. Retains34 original/BLACK-white controls plus40 COPPER/BLACK FADE/ROOT controls and3 restoration records. All paused; saves unchanged. Supports the implemented integer percentage >50 boundary for observed ranges. Arbitrary overlapping or malformed raw schedules and corpse aging remain unverified.",
+  "runs": [
+    {
+      "provenance": {
+        "source": "build/location-staff-selector-aging-controls-20260930-022107/native-aging-controls.json",
+        "sha256": "d84f078406564eb3172eb7b786033284bfad27d151324fd8debece0d406f4999",
+        "save_manifests_unchanged": 2
+      },
+      "replacement_control": "original patterns",
+      "unit_id": 4338,
+      "current_year": 106,
+      "current_tick": 157249,
+      "observations": [
+        {
+          "birth_time": 157249,
+          "birth_year": 86,
+          "label": "20",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 67,
+          "label": "39",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 66,
+          "label": "40",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 65,
+          "label": "41",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 56,
+          "label": "50",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 52,
+          "label": "54",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 161281,
+          "birth_year": 51,
+          "label": "54.99",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 51,
+          "label": "55",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 153217,
+          "birth_year": 51,
+          "label": "55.01",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 50,
+          "label": "56",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 161282,
+          "birth_year": 36,
+          "label": "69.99",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 36,
+          "label": "70",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 35,
+          "label": "71",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 161282,
+          "birth_year": 26,
+          "label": "79.99",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 26,
+          "label": "80",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 153217,
+          "birth_year": 26,
+          "label": "80.01",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 161281,
+          "birth_year": 16,
+          "label": "89.99",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 16,
+          "label": "90",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 6,
+          "label": "100",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 360713,
+          "birth_year": 50,
+          "label": "restored",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        }
+      ]
+    },
+    {
+      "provenance": {
+        "source": "build/location-staff-selector-aging-boundaries-20260930-022304/native-aging-controls.json",
+        "sha256": "f4f75ef1d9538a65236e39260e1f33f992fa59ff7cfb1fff53700254dec29875",
+        "save_manifests_unchanged": 2
+      },
+      "replacement_control": "white pattern temporarily BLACK",
+      "unit_id": 4338,
+      "current_year": 106,
+      "current_tick": 157249,
+      "observations": [
+        {
+          "birth_time": 116929,
+          "birth_year": 51,
+          "label": "55.1",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 76609,
+          "birth_year": 51,
+          "label": "55.2",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 56449,
+          "birth_year": 51,
+          "label": "55.25",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 40321,
+          "birth_year": 51,
+          "label": "55.29",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 36289,
+          "birth_year": 51,
+          "label": "55.3",
+          "refresh": false,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "birth_time": 32257,
+          "birth_year": 51,
+          "label": "55.31",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 399169,
+          "birth_year": 50,
+          "label": "55.4",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 50,
+          "label": "56",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 26,
+          "label": "80",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 116930,
+          "birth_year": 26,
+          "label": "80.1",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        },
+        {
+          "birth_time": 76609,
+          "birth_year": 26,
+          "label": "80.2",
+          "refresh": false,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "birth_time": 72578,
+          "birth_year": 26,
+          "label": "80.21",
+          "refresh": false,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 25,
+          "label": "81",
+          "refresh": false,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 16,
+          "label": "90",
+          "refresh": false,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "birth_time": 157249,
+          "birth_year": 6,
+          "label": "100",
+          "refresh": false,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "birth_time": 360713,
+          "birth_year": 50,
+          "label": "restored",
+          "refresh": false,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        }
+      ]
+    },
+    {
+      "provenance": {
+        "source": "build/location-staff-selector-aging-color-weight-20260930-022657/native-aging-controls.json",
+        "sha256": "f8ca6397a65e30453e22d336a40f16f9b764e42c854c1bfb3ecd10df99b19598",
+        "save_manifests_unchanged": 2
+      },
+      "replacement_control": "COPPER/BLACK base and replacement swapped; FADE and ROOT; all restored",
+      "unit_id": 4338,
+      "current_year": 106,
+      "current_tick": 157249,
+      "observations": [
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 86,
+          "label": "COPPER_BLACK_0_20",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 66,
+          "label": "COPPER_BLACK_0_40",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 161281,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_0_54.99",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_0_55",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 153217,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_0_55.01",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 36289,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_0_55.3",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 32257,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_0_55.31",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 50,
+          "label": "COPPER_BLACK_0_56",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 36,
+          "label": "COPPER_BLACK_0_70",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 31,
+          "label": "COPPER_BLACK_0_75",
+          "replacement_method": 0,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 86,
+          "label": "COPPER_BLACK_1_20",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 66,
+          "label": "COPPER_BLACK_1_40",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 161281,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_1_54.99",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_1_55",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 153217,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_1_55.01",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 36289,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_1_55.3",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 32257,
+          "birth_year": 51,
+          "label": "COPPER_BLACK_1_55.31",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 50,
+          "label": "COPPER_BLACK_1_56",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 36,
+          "label": "COPPER_BLACK_1_70",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 157249,
+          "birth_year": 31,
+          "label": "COPPER_BLACK_1_75",
+          "replacement_method": 1,
+          "replacement_pattern": 8,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 86,
+          "label": "BLACK_COPPER_0_20",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 66,
+          "label": "BLACK_COPPER_0_40",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 161281,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_0_54.99",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_0_55",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 153217,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_0_55.01",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 36289,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_0_55.3",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 32257,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_0_55.31",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 50,
+          "label": "BLACK_COPPER_0_56",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 36,
+          "label": "BLACK_COPPER_0_70",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 31,
+          "label": "BLACK_COPPER_0_75",
+          "replacement_method": 0,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 86,
+          "label": "BLACK_COPPER_1_20",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 66,
+          "label": "BLACK_COPPER_1_40",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 161281,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_1_54.99",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_1_55",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 153217,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_1_55.01",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 36289,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_1_55.3",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "ce42a27369ba54c18fa0c4168bf1bb85feb5387e5ebf4cb7222f770d6931e16c"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 32257,
+          "birth_year": 51,
+          "label": "BLACK_COPPER_1_55.31",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 50,
+          "label": "BLACK_COPPER_1_56",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 36,
+          "label": "BLACK_COPPER_1_70",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 8,
+          "birth_time": 157249,
+          "birth_year": 31,
+          "label": "BLACK_COPPER_1_75",
+          "replacement_method": 1,
+          "replacement_pattern": 26,
+          "rgba_sha256": "8c87c2c51c3dc53751e993ddd424f5fc96c4da85fa1b7bcec9d3031e58f682e3"
+        },
+        {
+          "base_pattern": 26,
+          "birth_time": 360713,
+          "birth_year": 50,
+          "label": "restored",
+          "replacement_method": 1,
+          "replacement_pattern": 49,
+          "rgba_sha256": "af211918d536edc4741b6bcc9e757bc11d29522c4703a2d22e5896c905cc7429"
+        }
+      ]
+    }
+  ]
+}

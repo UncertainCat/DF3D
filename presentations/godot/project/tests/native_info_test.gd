@@ -22,7 +22,8 @@ func run():
 			check(border.texture.get_image().get_data()==assets.ui_texture("HOVER_RECTANGLE").get_image().get_data(),"Native border retains installed pixels")
 			check(frame.main_tabs.get_child_count()==8,"Native main-tab count")
 			check(frame.subtabs.visible==(page!="Work orders"),"Native submenu hierarchy")
-			check(not frame.buttons["Tasks"].visible and not frame.buttons["Places"].visible,"Unavailable destinations hidden")
+			check(not frame.buttons["Tasks"].visible,"Unavailable Tasks destination stays hidden")
+			check(frame.buttons["Places"].visible and frame.destination("Places") == "Zones","Places routes to the registered zone editor")
 			var selected:Button=frame.buttons["Creatures" if page=="Residents" else ("Labor" if page=="Work Details" else page)]
 			var style:StyleBoxTexture=selected.get_theme_stylebox("normal")
 			check(style.texture.get_image().get_data()==assets.ui_texture("SHORT_TAB_SELECTED").get_image().get_data(),"Selected main tab retains installed pixels")

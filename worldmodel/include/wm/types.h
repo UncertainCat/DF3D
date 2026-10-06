@@ -238,13 +238,18 @@ struct TileState {
   uint8_t track = 0;
   uint8_t traffic = 0;
   uint8_t warnings = 0;
-  bool trackClearanceBlocked : 1 = false;
-  bool trackHorizontalBlocked : 1 = false;
-  bool trackSupport : 1 = false;
-  bool trackOpen : 1 = false;
+  uint8_t subterranean : 1 = false;
+  uint8_t brookTop : 1 = false;
+  uint8_t root : 1 = false; // native root tissue, distinct from trunk wood
+  uint8_t buildingOccupancy : 3 = 0; // native occupancy, independent of room extents
+  uint8_t trackClearanceBlocked : 1 = false;
+  uint8_t trackHorizontalBlocked : 1 = false;
+  uint8_t trackSupport : 1 = false;
+  uint8_t trackOpen : 1 = false;
+  uint8_t completedTrack : 4 = 0; // finished tile connections, independent of track designation
   friend bool operator==(const TileState&, const TileState&) = default;
 };
-static_assert(sizeof(TileState) == 14);
+static_assert(sizeof(TileState) == 16);
 
 // Terrain is stored at DF map-block granularity: 16x16 tiles at one z.
 inline constexpr int32_t kBlockSize = 16;
@@ -369,6 +374,7 @@ enum class BuildingKind : uint8_t {
   Bookcase,
   DisplayFurniture,
   OfferingPlace,
+  Construction,
 };
 
 enum class BuildingStage : uint8_t { Planned = 0, InProgress, Complete };

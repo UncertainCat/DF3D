@@ -9,6 +9,41 @@
   },
   "checks": [
     {
+      "id": "location_details_format_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_details_format_test.gd",
+      "completion": "LOCATION_DETAILS_FORMAT_PASS",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "fortress_restart_test",
+      "lane": "core",
+      "kind": "powershell",
+      "script": "tools/smoke/fortress_restart_test.ps1",
+      "completion": "fortress restart PASS",
+      "timeout": 300,
+      "prerequisites": []
+    },
+    {
+      "id": "reload_lane_test",
+      "lane": "live",
+      "kind": "powershell",
+      "script": "tools/smoke/reload_lane_test.ps1",
+      "completion": "RELOAD_LANE_PASS",
+      "timeout": 1800,
+      "prerequisites": [
+        "root_build",
+        "extension_build",
+        "df_assets",
+        "protected_live",
+        "bridge_attested"
+      ]
+    },
+    {
       "id": "quality_harness",
       "lane": "core",
       "kind": "python",
@@ -162,6 +197,17 @@
       ]
     },
     {
+      "id": "native_options_session_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/native_options_session_test.gd",
+      "completion": "NATIVE_OPTIONS_SESSION_TEST\\ failures=0",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
       "id": "session_controls_test",
       "lane": "assets",
       "kind": "godot",
@@ -223,6 +269,18 @@
       ]
     },
     {
+      "id": "building_removal_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/building_removal_test.gd",
+      "completion": "BUILDING_REMOVAL_TEST\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
       "id": "release_close_test",
       "lane": "assets",
       "kind": "godot",
@@ -271,6 +329,100 @@
       ]
     },
     {
+      "id": "build_menu_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/build_menu_test.gd",
+      "completion": "BUILD_MENU_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "build_menu_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/build_menu_capture.gd",
+      "completion": "BUILD_MENU_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "construction_material_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_material_test.gd",
+      "completion": "CONSTRUCTION_MATERIAL\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "construction_item_icon_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_item_icon_test.gd",
+      "completion": "CONSTRUCTION_ITEM_ICON\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "construction_track_draft_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_track_draft_test.gd",
+      "completion": "CONSTRUCTION_TRACK_DRAFT\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "construction_exact_selection_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_exact_selection_test.gd",
+      "completion": "CONSTRUCTION_EXACT_SELECTION\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "construction_draft_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_draft_test.gd",
+      "completion": "CONSTRUCTION_DRAFT\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "construction_closest_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/construction_closest_test.gd",
+      "completion": "CONSTRUCTION_CLOSEST\\ PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
       "id": "construction_test",
       "lane": "assets",
       "kind": "godot",
@@ -292,6 +444,140 @@
       "prerequisites": [
         "extension_build",
         "df_assets"
+      ]
+    },
+    {
+      "id": "area_menu_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_menu_test.gd",
+      "completion": "AREA_MENU PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "area_settings_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_settings_test.gd",
+      "completion": "AREA_SETTINGS PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "area_settings_controller_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_settings_controller_test.gd",
+      "completion": "AREA_SETTINGS_CONTROLLER PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "area_portraits_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_portraits_test.gd",
+      "completion": "AREA_PORTRAITS_PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "area_candidates_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_candidates_test.gd",
+      "completion": "AREA_CANDIDATES PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "area_paint_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_paint_test.gd",
+      "completion": "AREA_PAINT PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "area_multi_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/area_multi_test.gd",
+      "completion": "^AREA_MULTI PASS$",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "area_zone_paint_session_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/area_zone_paint_session_test.gd",
+      "completion": "^AREA_ZONE_PAINT_SESSION PASS$",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "area_links_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_links_test.gd",
+      "completion": "AREA_LINKS PASS",
+      "timeout": 50,
+      "prerequisites": [
+        "extension_build",
+        "df_assets"
+      ]
+    },
+    {
+      "id": "area_menus_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/area_menus_capture.gd",
+      "completion": "AREA_MENUS_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "area_location_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/area_location_capture.gd",
+      "completion": "AREA_LOCATION_CAPTURE_PASS",
+      "timeout": 60,
+      "environment": {
+        "DF3D_LOCATION_REFERENCE": "{root}/build/notes/pm/location-render-source"
+      },
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer",
+        "recorded_location_catalog"
       ]
     },
     {
@@ -483,7 +769,12 @@
       "script": "tools/smoke/install_connection_smoke.ps1",
       "completion": "INSTALL_CONNECTION_PASS",
       "timeout": 240,
-      "prerequisites": ["extension_build", "df_assets", "protected_live", "bridge_attested"],
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "protected_live",
+        "bridge_attested"
+      ],
       "notes": "Title-screen bridge and headless viewer asset startup with system-only PATH; no fortress load or save."
     },
     {
@@ -726,6 +1017,58 @@
       ]
     },
     {
+      "id": "test_construction_track_commit",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_construction_track_commit.py"
+      ],
+      "completion": "^CONSTRUCTION_TRACK_COMMIT_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_construction_track_placement_plan",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_construction_track_placement_plan.py"
+      ],
+      "completion": "^CONSTRUCTION_TRACK_PLACEMENT_PLAN_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_construction_material_candidate_gate",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_construction_material_candidate_gate.py"
+      ],
+      "completion": "^CONSTRUCTION_MATERIAL_CANDIDATE_GATE_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_construction_material_terrain",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_construction_material_terrain.py"
+      ],
+      "completion": "^CONSTRUCTION_MATERIAL_TERRAIN_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
       "id": "test_lua_embedding",
       "kind": "python",
       "lane": "core",
@@ -736,6 +1079,198 @@
       "timeout": 45,
       "prerequisites": [
         "cmake_tool"
+      ]
+    },
+    {
+      "id": "alert_text_layout_test",
+      "kind": "godot",
+      "lane": "core",
+      "script": "res://tests/alert_text_layout_test.gd",
+      "completion": "ALERT_TEXT_LAYOUT_PASS",
+      "timeout": 45,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "alert_popup_capture",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/alert_popup_capture.gd",
+      "completion": "ALERT_POPUP_FRAME_PASS",
+      "timeout": 45,
+      "environment": {
+        "DF3D_ALERT_FRAMES": "{output}",
+        "DF3D_ALERT_FIXTURE": "{root}/fixtures/reports/alert_entries.json",
+        "DF3D_ALERT_UNITS": "{root}/fixtures/reports/unit_rows.json"
+      },
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "alert_popup_panel_test",
+      "kind": "godot",
+      "lane": "core",
+      "script": "res://tests/alert_popup_panel_test.gd",
+      "completion": "ALERT_POPUP_PANEL_PASS",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "alert_entries_test",
+      "kind": "godot",
+      "lane": "core",
+      "script": "res://tests/alert_entries_test.gd",
+      "completion": "ALERT_ENTRIES_PASS",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "test_report_entries",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_entries.py"
+      ],
+      "completion": "^REPORT_ENTRIES_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "red_alert_dismiss_test",
+      "kind": "godot",
+      "lane": "core",
+      "script": "res://tests/red_alert_dismiss_test.gd",
+      "completion": "^RED_ALERT_DISMISS_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "test_report_alert_dismiss",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_alert_dismiss.py"
+      ],
+      "completion": "^REPORT_ALERT_DISMISS_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_group_snapshot",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_group_snapshot.py"
+      ],
+      "completion": "^REPORT_GROUP_SNAPSHOT_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_unit_snapshot",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_unit_snapshot.py"
+      ],
+      "completion": "^REPORT_UNIT_SNAPSHOT_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_unit_log",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_unit_log.py"
+      ],
+      "completion": "^REPORT_UNIT_LOG_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_unit_page",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_unit_page.py"
+      ],
+      "completion": "^REPORT_UNIT_PAGE_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_text_snapshot",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_text_snapshot.py"
+      ],
+      "completion": "^REPORT_TEXT_SNAPSHOT_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_tab_snapshot",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_tab_snapshot.py"
+      ],
+      "completion": "^REPORT_TAB_SNAPSHOT_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_tab_page",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_tab_page.py"
+      ],
+      "completion": "^REPORT_TAB_PAGE_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
+      ]
+    },
+    {
+      "id": "test_report_tabs",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/test_report_tabs.py"
+      ],
+      "completion": "^REPORT_TABS_CLASSIFICATION_PASS$",
+      "timeout": 45,
+      "prerequisites": [
+        "python_lupa"
       ]
     },
     {
@@ -1709,6 +2244,21 @@
       ]
     },
     {
+      "id": "scene_reconnect_gpu",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/scene_reconnect_gpu.gd",
+      "completion": "^SCENE_RECONNECT_PASS$",
+      "timeout": 180,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "recorded_mature_fixture",
+        "effect_events_fixture",
+        "real_renderer"
+      ]
+    },
+    {
       "id": "resource_lifetime_scene_gpu",
       "lane": "gpu",
       "kind": "godot",
@@ -1721,9 +2271,347 @@
         "resource_lifetime_fixture",
         "real_renderer"
       ]
+    },
+    {
+      "id": "location_staff_candidates_format_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_staff_candidates_format_test.gd",
+      "completion": "LOCATION_STAFF_CANDIDATES_FORMAT_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "location_staff_candidates_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_staff_candidates_state_test.gd",
+      "completion": "LOCATION_STAFF_CANDIDATES_STATE_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "reports_panel_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/reports_panel_test.gd",
+      "completion": "REPORTS_PANEL_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "reports_controller_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/reports_controller_test.gd",
+      "completion": "REPORTS_CONTROLLER_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "reports_wrap_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/reports_wrap_test.gd",
+      "completion": "REPORTS_WRAP_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "reports_text_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/reports_text_test.gd",
+      "completion": "REPORTS_TEXT_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "reports_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/reports_state_test.gd",
+      "completion": "REPORTS_STATE_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "location_details_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_details_state_test.gd",
+      "completion": "LOCATION_DETAILS_STATE_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "native_options_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/native_options_view_capture.gd",
+      "completion": "NATIVE_OPTIONS_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_details_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_details_view_capture.gd",
+      "completion": "LOCATION_DETAILS_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_value_view_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_value_view_test.gd",
+      "completion": "LOCATION_VALUE_VIEW_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "location_value_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_value_view_capture.gd",
+      "completion": "LOCATION_VALUE_VIEW_CAPTURE_PASS",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_details_heading_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_details_heading_test.gd",
+      "completion": "LOCATION_DETAILS_HEADING_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "location_details_heading_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_details_heading_capture.gd",
+      "completion": "LOCATION_DETAILS_HEADING_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_details_body_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_details_body_test.gd",
+      "completion": "LOCATION_DETAILS_BODY_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "location_details_body_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_details_body_capture.gd",
+      "completion": "LOCATION_DETAILS_BODY_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_access_view_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_access_view_test.gd",
+      "completion": "LOCATION_ACCESS_VIEW_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "location_access_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_access_view_capture.gd",
+      "completion": "LOCATION_ACCESS_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "native_hover_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/native_hover_state_test.gd",
+      "completion": "NATIVE_HOVER_STATE_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "native_hover_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/native_hover_view_capture.gd",
+      "completion": "NATIVE_HOVER_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_staff_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_staff_view_capture.gd",
+      "completion": "LOCATION_STAFF_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_staff_candidates_frame_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_staff_candidates_frame_capture.gd",
+      "completion": "LOCATION_STAFF_CANDIDATES_FRAME_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_staff_candidates_rows_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_staff_candidates_rows_capture.gd",
+      "completion": "LOCATION_STAFF_CANDIDATES_ROWS_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_staff_scroll_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/location_staff_scroll_capture.gd",
+      "completion": "LOCATION_STAFF_SCROLL_CAPTURE_PASS",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "location_staff_workflow_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/location_staff_workflow_test.gd",
+      "completion": "LOCATION_STAFF_WORKFLOW_PASS",
+      "timeout": 40,
+      "prerequisites": [
+        "extension_build"
+      ]
+    },
+    {
+      "id": "construction_pause_guard_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/construction_pause_guard_test.gd",
+      "completion": "CONSTRUCTION_PAUSE_GUARD_PASS",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
     }
   ],
   "exclusions": [
+    {
+      "path": "presentations/godot/project/tests/connected_track_preview_live.gd",
+      "status": "manual",
+      "reason": "Protected owned no-save Track Preview acceptance. Requires Df3dLane, a verified disposable clone, native oracle preview-cases.json and DF3D_TRACK_PREVIEW_ACCEPTANCE. Compares ordered native paths through the real Godot and bridge transport; never attach to a user game."
+    },
+    {
+      "path": "presentations/godot/project/tests/native_options_quit_live.gd",
+      "status": "manual",
+      "reason": "Protected owned no-save Quit acceptance. Runner verifies the exact disposable source manifest, installs a reversible in-memory marker, confirms native title transition and reloads the unchanged source. Requires DF3D_NATIVE_SAVE_ACCEPTANCE; never run against an attached user game."
+    },
+    {
+      "path": "presentations/godot/project/tests/session_producer_loss_live.gd",
+      "status": "manual",
+      "reason": "Protected producer-loss acceptance. Requires owned Df3dLane, verified save backups, held native safe point before queuing an explicit existing-destination save, controlled bridge stop and owned process restart. Runner must prove no native writer and final preservation; never run against an attached user game."
+    },
+    {
+      "path": "presentations/godot/project/tests/session_destination_guards_live.gd",
+      "status": "manual",
+      "reason": "Protected destination rejection acceptance: requires owned Df3dLane, verified save backups including the current existing target, and runner-controlled temporary native timeline metadata via DF3D_NATIVE_SAVE_ACCEPTANCE. Verifies competing-client and changed-catalog rejection, restores metadata and checks preservation; never run against an attached user game."
+    },
+    {
+      "path": "presentations/godot/project/tests/native_options_return_live.gd",
+      "status": "manual",
+      "reason": "Protected SaveReturn writer: requires owned Df3dLane, verified all-root backup, owned source manifest and explicit new-folder or existing-destination configuration via DF3D_NATIVE_SAVE_ACCEPTANCE. Existing targets require their own verified backup. Runner verifies native destination/timeline, reload and preservation; never run against an attached user game."
+    },
+    {
+      "path": "presentations/godot/project/tests/native_options_save_live.gd",
+      "status": "manual",
+      "reason": "Protected save-effect acceptance: requires an owned Df3dLane, verified all-root backup, loaded disposable source and absent exact destination supplied via DF3D_NATIVE_SAVE_ACCEPTANCE/godot-config.json. Current runner and provenance are recorded in ENGINEERING.md and build/notes/pm; never run against an attached user game."
+    },
     {
       "path": "presentations/godot/project/tests/building_cutout_probe.gd",
       "status": "helper",
@@ -1765,9 +2653,89 @@
       "reason": "Protected live workflow; launched by tools/smoke/construction_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_CONSTRUCTION_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/construction_controller_live.gd",
+      "status": "manual",
+      "reason": "Protected connected-controller workflow; construction_acceptance.ps1 -Controller on a never-saved owned clone. Headless: not mouse/GPU acceptance."
+    },
+    {
+      "path": "presentations/godot/project/tests/construction_controller_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected main-scene GPU construction workflow; construction_acceptance.ps1 -ControllerScene on a never-saved owned clone. Broad callback cases plus viewport-pointer Wall flow; screenshots require inspection."
+    },
+    {
       "path": "presentations/godot/project/tests/work_details_acceptance_live.gd",
       "status": "manual",
       "reason": "Protected live workflow; launched by tools/smoke/work_details_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_WORK_DETAILS_ACCEPTANCE."
+    },
+    {
+      "path": "presentations/godot/project/tests/reload_lane_live.gd",
+      "status": "manual",
+      "reason": "Protected live restarts through tools/smoke/reload_lane_test.ps1; prepared input DF3D_RELOAD_LANE."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_acceptance_live.gd",
+      "status": "manual",
+      "reason": "Protected live workflow; launched by tools/smoke/areas_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_AREAS_ACCEPTANCE."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_paint_counts_live.gd",
+      "status": "manual",
+      "reason": "Protected v24 PaintCounts protocol/controller workflow; areas_acceptance.ps1 -PaintCountsOnly on a never-saved region5 clone. Recorded native count references and paused external terrain refresh; headless, not GPU or physical-pointer acceptance."
+    },
+    {
+      "path": "presentations/godot/project/tests/location_staff_edit_live.gd",
+      "status": "manual",
+      "reason": "Protected owned clone only: tools/smoke/areas_acceptance.ps1 -StaffOnly for semantic/unknown controls or -StaffScene to add rendered viewport clicks through the production Details/staff selector components; not full fortress-route acceptance."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_location_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected full fortress scene location creation/Back/removal via viewport input and native readback; areas_acceptance.ps1 -LocationScene on an owned never-saved clone."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_multi_live.gd",
+      "status": "manual",
+      "reason": "Protected semantic Multi workflow; areas_acceptance.ps1 -MultiOnly on a never-saved region5 clone. Actual v23 creation/Undo receipts and independent native readbacks. Does not establish rendered or full Areas parity."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_multi_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected Multi viewport workflow; areas_acceptance.ps1 -MultiOnly -ControllerScene on a never-saved region5 clone. Actual scene input, captures and native creation/Undo readbacks; broader parity remains separately assessed."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_multi_controller_live.gd",
+      "status": "manual",
+      "reason": "Protected Multi controller reconnect workflow; areas_acceptance.ps1 -MultiOnly -Controller on a never-saved region5 clone. Real action-service generation invalidation and native readbacks; headless, not rendered parity or producer replacement acceptance."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_multi_restart_live.gd",
+      "status": "manual",
+      "reason": "Protected Multi producer replacement; areas_acceptance.ps1 -MultiOnly -ControllerRestart on a never-saved region5 clone. Real controller/service epoch invalidation, old-token refusal and explicit reopening; headless, not rendered parity."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_controller_live.gd",
+      "status": "manual",
+      "reason": "Protected connected-controller workflow; areas_acceptance.ps1 -Controller on a never-saved owned clone. Headless: not pointer/GPU acceptance."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_controller_restart_live.gd",
+      "status": "manual",
+      "reason": "Protected connected-controller workflow; areas_acceptance.ps1 -ControllerRestart on a never-saved owned clone. Real producer restart, pending-read outcome and fresh explicit reopening; headless."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_controller_scene_restart_live.gd",
+      "status": "manual",
+      "reason": "Protected main-scene GPU workflow; areas_acceptance.ps1 -ControllerScene -ControllerRestart. Pointer draft, producer replacement, retired UI, explicit pointer reopen/edit and native readback."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_controller_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected main-scene GPU workflow; areas_acceptance.ps1 -ControllerScene on a never-saved owned clone. Viewport input, rendered captures and native readbacks for stockpile/zone painting."
+    },
+    {
+      "path": "presentations/godot/project/tests/areas_controller_scene_boundary_live.gd",
+      "status": "manual",
+      "reason": "Protected focused geometry workflow; areas_acceptance.ps1 -ControllerScene -BoundaryOnly on a never-saved owned clone. Native extents for mixed floor/wall, wall-only, fortification and repaint cases. This is not full Areas acceptance."
     },
     {
       "path": "presentations/godot/project/tests/work_orders_acceptance_live.gd",
@@ -1865,9 +2833,24 @@
       "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test ui_availability_live. Product exposure test on an owned paused fort. No gameplay edits."
     },
     {
+      "path": "presentations/godot/project/tests/hud_resource_live.gd",
+      "status": "manual",
+      "reason": "Protected owned-clone native count/precision comparison through the actual session bridge and HUD. Run tools/smoke/hud_resource_acceptance.ps1 with a new df3d-areas-* SaveId. No GPU parity claim."
+    },
+    {
+      "path": "presentations/godot/project/tests/reports_frame_capture.gd",
+      "status": "manual",
+      "reason": "Reports component GPU capture with DF3D_DF_PATH, DF3D_REPORTS_UNITS pointing to fixtures/reports/unit_rows.json, DF3D_REPORTS_LIST pointing to fixtures/reports/list_rendering.json and DF3D_REPORTS_FRAME pointing to a new output directory. Requires external native e7 pixel comparison and diagnostic classification; full screen unfinished."
+    },
+    {
       "path": "presentations/godot/project/tests/ui_test_support.gd",
       "status": "helper",
       "reason": "Shared assertion and UI fixture setup loaded by executable UI checks; no standalone SceneTree runner."
+    },
+    {
+      "path": "presentations/godot/project/tests/location_staff_candidates_input_helpers.gd",
+      "status": "helper",
+      "reason": "Native input replay shared by location_staff_candidates_rows_capture and the protected areas_location_scene_live driver; no standalone SceneTree runner."
     },
     {
       "path": "presentations/godot/project/tests/visibility_profile_live.gd",
@@ -1878,6 +2861,16 @@
       "path": "presentations/godot/project/tests/world_markers_live.gd",
       "status": "manual",
       "reason": "Protected live workflow; launched by tools/smoke/floor_profile.ps1 -Test world_markers_live."
+    },
+    {
+      "path": "tools/test_track_shape_callback.py",
+      "status": "manual",
+      "reason": "Offline replay of 36 retained native terrain cases through the real Lua reader requires the separately built MSVC DFHack target df3d_track_callback_test (EXCLUDE_FROM_ALL). Run python tools/test_track_shape_callback.py <path-to-df3d_track_callback_test.exe>. Not covered by the ordinary MinGW core build."
+    },
+    {
+      "path": "presentations/godot/project/tests/recorded_fixture.gd",
+      "status": "helper",
+      "reason": "Shared recorded-fixture camera and clock metadata for scene regressions."
     }
   ]
 }

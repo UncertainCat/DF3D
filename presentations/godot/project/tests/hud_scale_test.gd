@@ -54,7 +54,7 @@ func run():
 	hud.style_picker.item_selected.emit(1)
 	check(Preferences.visual_style == "billboard" and style_events == ["billboard"], "settings toggle updates graphics preference and emits once")
 	var state := {"fortress_valid": true, "fort_name": "Chantmansion", "year":104, "year_tick":225600, "paused":true,
-		"fortress_summary":{"available":true,"population":177,"stress_available":true,"stress_counts":[8,8,21,38,27,18,57],"elevation_offset":-129,"level_count":256,"resources_available":true,"resource_counts":[852,135,310,206,14,453,247]}}
+		"fortress_summary":{"available":true,"population":177,"stress_available":true,"stress_counts":[8,8,21,38,27,18,57],"elevation_offset":-129,"level_count":256,"resources_available":true,"bookkeeper_precision":0,"resource_counts":[852,135,310,206,14,453,247]}}
 	var canvas := CanvasLayer.new()
 	canvas.layer = 2
 	root.add_child(canvas)

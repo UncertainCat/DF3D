@@ -35,6 +35,7 @@ func sample(label: String) -> Dictionary:
 		check(writes[key] == 0, label + " camera-only " + key + " must be zero (got " + str(writes[key]) + ")")
 	return {"phase": label, "frames": frames.size(), "median_ms": frames[60], "p95_ms": frames[114], "max_ms": frames.back(), "instance_cache": writes, "instance_submissions": delta(submissions, scene.engine_submission_stats()), "native_submissions": delta(native, scene.world.engine_submission_stats())}
 func run():
+	preload("res://tests/recorded_fixture.gd").configure_scene()
 	root.size = Vector2i(1280, 900)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	scene = load("res://scenes/main.tscn").instantiate()
@@ -47,15 +48,15 @@ func run():
 	check(scene.world.terrain_loaded() and not scene.world.is_live(), "Offline fixture loads")
 	if not failures.is_empty(): quit(1); return
 	scene.world.set_replay_speed(0)
-	scene.world.set_fixed_render_tick(1000)
-	scene.world.set_top_z(127)
+	scene.world.set_fixed_render_tick(preload("res://tests/recorded_fixture.gd").tick())
+	scene.world.set_top_z(preload("res://tests/recorded_fixture.gd").top_z())
 	scene.camera_rig.set_mode("free")
-	scene.camera_rig.focus_on(Vector3(96, 128, 94), 30)
+	scene.camera_rig.focus_on(preload("res://tests/recorded_fixture.gd").focus(), 30)
 	scene._sprite_presentation.set_style(OS.get_environment("DF3D_MOTION_STYLE") if OS.has_environment("DF3D_MOTION_STYLE") else "billboard")
 	for frame in 240: await process_frame
 	scene._unit_demand.enabled = true
 	check(not scene._sprite_layers.is_empty() and not scene._item_layers.is_empty(), "Fixture exercises item and unit sprites")
-	var result := {"fixture": OS.get_environment("DF3D_FIXTURE").get_file(), "tick":1000, "style":OS.get_environment("DF3D_MOTION_STYLE"), "phases": []}
+	var result := {"fixture": OS.get_environment("DF3D_FIXTURE").get_file(), "tick":preload("res://tests/recorded_fixture.gd").tick(), "style":OS.get_environment("DF3D_MOTION_STYLE"), "phases": []}
 	for phase in ["idle", "rotate", "pan"]: result.phases.append(await sample(phase))
 	result.failures = failures
 	var path := OS.get_environment("DF3D_BILLBOARD_OUT")

@@ -1016,3 +1016,80 @@ TEST_CASE("interface layout selectors preserve each original widget cell across 
   REQUIRE(cached.layout("BUTTON_RECTANGLE_SELECTED"));
   CHECK(cached.layout("BUTTON_RECTANGLE_SELECTED")->tile(-1,0,0)->x == 6);
 }
+
+TEST_CASE("custom workshop list icons keep raw identity and block scope across cache") {
+  AssetIndex index;
+  index.buildId = "synthetic-custom-workshop-icons";
+  ingestRawText(index, "[OBJECT:TILE_PAGE][TILE_PAGE:ICONS][FILE:icons.png][TILE_DIM:32:32][PAGE_DIM_PIXELS:256:416]", "/test", "page", nullptr);
+  ingestRawText(index,
+      "[OBJECT:GRAPHICS]"
+      "[CUSTOM_WORKSHOP_GRAPHICS:PRESS][LIST_ICON:ICONS:1:12]"
+      "[CUSTOM_WORKSHOP_GRAPHICS:SOAP][LIST_ICON:ICONS:2:12]"
+      "[CUSTOM_WORKSHOP_GRAPHICS:PRESS][LIST_ICON:ICONS:7:0]"
+      "[OTHER_GRAPHICS:X][LIST_ICON:ICONS:6:0]"
+      "[CUSTOM_WORKSHOP_GRAPHICS][LIST_ICON:ICONS:5:0]",
+      "/test", "custom-icons", nullptr);
+  finalizeIndex(index);
+  const auto* press = index.tile("CUSTOM_WORKSHOP_LIST_ICON:PRESS");
+  const auto* soap = index.tile("CUSTOM_WORKSHOP_LIST_ICON:SOAP");
+  REQUIRE(press);
+  REQUIRE(soap);
+  CHECK(press->x == 1);
+  CHECK(press->y == 12);
+  CHECK(soap->x == 2);
+  CHECK(index.tile("CUSTOM_WORKSHOP_LIST_ICON:X") == nullptr);
+  CHECK(index.tile("CUSTOM_WORKSHOP_LIST_ICON:") == nullptr);
+  AssetIndex cached;
+  std::string error;
+  REQUIRE(deserializeIndex(serializeIndex(index), cached, error));
+  REQUIRE(cached.tile("CUSTOM_WORKSHOP_LIST_ICON:PRESS"));
+  CHECK(*cached.tile("CUSTOM_WORKSHOP_LIST_ICON:PRESS") == *press);
+  CHECK(*cached.tile("CUSTOM_WORKSHOP_LIST_ICON:SOAP") == *soap);
+}
+
+TEST_CASE("completed floor Track keeps native backing independent from rail palette") {
+  auto idx = synthIndex();
+  ingestRawText(idx, "[OBJECT:GRAPHICS]\n[TILE_GRAPHICS:TRACK_TEST:3:1:TRACK_CONSTRUCTED_STONE_SW]\n[TILE_GRAPHICS:TRACK_TEST:1:2:TRACK_CONSTRUCTED_WOOD_WE]\n[TILE_GRAPHICS:TRACK_TEST:10:0:TRACK_CARVED_NSWE]\n[TILE_GRAPHICS:TRACK_TEST:10:1:TRACK_CONSTRUCTED_STONE_NSWE]\n[TILE_GRAPHICS:TRACK_TEST:10:2:TRACK_CONSTRUCTED_WOOD_NSWE]\n", "/g", "tracks", nullptr);
+  auto query = q(wm::TileShape::Floor, wm::MaterialKind::Constructed, "INORGANIC:IRON");
+  query.completedTrack = 10;
+  auto backing = resolveTerrain(idx, query);
+  REQUIRE(backing.found);
+  CHECK(backing.sprite == *idx.tile("STONE_FLOOR_5"));
+  CHECK(backing.paletteRow == -1);
+  CHECK_FALSE(backing.fill);
+  CHECK_FALSE(backing.tinted);
+  query.part = FaceKind::Feature;
+  auto rails = resolveTerrain(idx, query);
+  REQUIRE(rails.found);
+  CHECK(rails.sprite == *idx.tile("TRACK_CONSTRUCTED_STONE_SW"));
+  CHECK(rails.paletteRow == idx.paletteRow(idx.materialColorName(query.material)));
+  CHECK_FALSE(rails.fill);
+  CHECK(rails.cutout);
+  query.completedTrack = 15;
+  CHECK(resolveTerrain(idx,query).sprite == *idx.tile("TRACK_CONSTRUCTED_WOOD_NSWE"));
+  query.material = "PLANT:OAK:WOOD"; query.completedTrack = 12;
+  CHECK(resolveTerrain(idx,query).sprite == *idx.tile("TRACK_CONSTRUCTED_WOOD_WE"));
+  query.kind = wm::MaterialKind::Stone; query.completedTrack = 15;
+  CHECK(resolveTerrain(idx,query).sprite == *idx.tile("TRACK_CARVED_NSWE"));
+  const auto carved = resolveTerrain(idx,query);
+  CHECK(carved.paletteRow == -1);
+  CHECK_FALSE(carved.fill);
+  CHECK_FALSE(carved.tinted);
+  query.part = FaceKind::Terrain;
+  query.flags = wm::kTileSmooth;
+  CHECK(resolveTerrain(idx,query).sprite == *idx.tile("STONE_FLOOR_5"));
+  CHECK(resolveTerrain(idx,query).paletteRow == -1);
+  query.part = FaceKind::Feature;
+  query.shape = wm::TileShape::Ramp;
+  query.side = FaceSide::Slope;
+  CHECK(resolveTerrain(idx,query).sprite == *idx.tile("TRACK_CARVED_NSWE"));
+  CHECK(resolveTerrain(idx,query).paletteRow == -1);
+  query.part = FaceKind::Terrain;
+  query.slope = SlopeDir::North;
+  CHECK(std::string(resolveTerrain(idx,query).rule) != "floor.track.backing");
+  query.part = FaceKind::Feature;
+  query.shape = wm::TileShape::Floor;
+  query.side = FaceSide::Top;
+  query.completedTrack = 0;
+  CHECK(std::string(resolveTerrain(idx,query).rule) != "floor.track.rails");
+}

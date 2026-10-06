@@ -100,7 +100,7 @@ assets::FaceKind partOf(mesher::FacePart p) {
 
 // Resolver inputs packed for memoisation.
 uint64_t lookKey(const mesher::FaceTag& t) {
-    return (static_cast<uint64_t>(t.slopeHigh) << 56) | (static_cast<uint64_t>(t.walls) << 48) |
+    return (static_cast<uint64_t>(t.completedTrack) << 60) | (static_cast<uint64_t>(t.slopeHigh) << 56) | (static_cast<uint64_t>(t.walls) << 48) |
            (static_cast<uint64_t>(t.material) << 32) |
            (static_cast<uint64_t>(t.shape) << 24) | (static_cast<uint64_t>(t.materialKind) << 16) |
            (static_cast<uint64_t>(t.flags) << 8) | (static_cast<uint64_t>(t.dir) << 4) |
@@ -109,6 +109,12 @@ uint64_t lookKey(const mesher::FaceTag& t) {
 }
 String Df3dWorld::assets_root() const {
     return assets_ ? String(assets_->install.root.c_str()) : String();
+}
+
+Color Df3dWorld::ui_palette_color(int index) const {
+    if (!assets_ || index < 0 || index >= 16) return Color(0, 0, 0, 0);
+    const auto& color = assets_->classicPalette.colors[static_cast<size_t>(index)];
+    return Color(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, 1.0f);
 }
 
 bool Df3dWorld::load_assets(const String& override_path) {
@@ -539,6 +545,7 @@ const Df3dWorld::FaceLook& Df3dWorld::lookFor(const mesher::FaceTag& tag) {
         const std::string_view name = source_.model().materialName(tag.material);
         q.material = name;
         q.flags = tag.flags;
+        q.completedTrack = tag.completedTrack;
         q.side = sideOf(tag.dir);
         q.part = partOf(tag.part);
         q.liquid = tag.liquid;
@@ -788,7 +795,8 @@ const Df3dWorld::CompositeSlot* Df3dWorld::compositeFor(
         slot.cutoutScale = Vector2(r.image.width / bodyW, r.image.height / bodyH);
         slot.cutoutOffset = Vector2((r.originX + r.image.width * 0.5f) / bodyW - 0.5f,
                                    (r.originY + r.image.height * 0.5f) / bodyH - 0.5f);
-        img->fix_alpha_edges();
+        // Preserve native semi-transparent pixels: fix_alpha_edges also
+        // recolors low-alpha shadow pixels, not just invisible padding.
         img->generate_mipmaps();
         slot.texture = submission::texture(img, submission::TextureSite::Composite,true);
         cs.slot = spriteResources_.slots.add(std::move(slot));

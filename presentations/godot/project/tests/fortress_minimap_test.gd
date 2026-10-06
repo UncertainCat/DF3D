@@ -45,6 +45,7 @@ func run():
  overview.position = Vector2(50,50)
  overview.size = Vector2(200,200)
  root.add_child(overview)
+ assert(overview.tooltip_text.is_empty(), "No authored replacement for an unmapped native tooltip")
  overview.set_allowed(true)
  overview.refresh()
  await process_frame
@@ -55,6 +56,20 @@ func run():
  root.push_input(click)
  assert(rig.position.is_equal_approx(Vector3(20,8,5)))
  assert(interaction.cancelled == 1 and interaction.tool == 1)
+ var pressed_position: Vector3 = rig.position
+ for point in [Vector2(180,100), Vector2(-20,100), Vector2(120,100)]:
+  var motion := InputEventMouseMotion.new()
+  motion.position = overview.position + point
+  motion.button_mask = MOUSE_BUTTON_MASK_LEFT
+  root.push_input(motion)
+  assert(rig.position == pressed_position, "Native minimap held movement does not pan")
+ assert(interaction.cancelled == 1, "Held motion must not issue another navigation")
+ click.pressed = false
+ root.push_input(click)
+ click.pressed = true
+ click.position = overview.position + Vector2(180,100)
+ root.push_input(click)
+ assert(rig.position.is_equal_approx(Vector3(36,8,5)), "A fresh press still navigates")
  click.pressed = false
  root.push_input(click)
  var before: Vector3 = rig.position

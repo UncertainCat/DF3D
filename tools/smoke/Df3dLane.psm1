@@ -127,6 +127,7 @@ $script:Port = 5010
 $script:DfProc = $null
 $script:StagedFiles = @()
 $script:AttachOnly = $false
+$script:DfVisible = $false
 
 function Enter-Df3dLane {
     <#
@@ -298,6 +299,7 @@ function Start-Df3d {
     #>
     param([string]$DfPath, [switch]$Visible)
     if ($script:AttachOnly) { throw "Attach lanes cannot launch or own DF" }
+    $script:DfVisible = [bool]$Visible
     $exe = Join-Path $DfPath "Dwarf Fortress.exe"
     $env:DFHACK_DISABLE_CONSOLE = "1"
     $env:DFHACK_PORT = "$($script:Port)"
@@ -323,7 +325,11 @@ function Start-ContainedProcess {
     if ($Arguments -eq "") { Write-Host "[lane] note: launching $([System.IO.Path]::GetFileName($Exe)) with no arguments" }
     $desktop = if ($Visible) { $null } else { "df3d_hidden" }
     $p = [Df3dLaneNative]::Launch($Exe, $Arguments, $WorkingDir, $desktop)
-    return (Get-Process -Id $p)
+    $process = Get-Process -Id $p
+    # Get-Process alone can lose ExitCode after HasExited/Refresh on PowerShell
+    # 5.1. Keep a handle while the child lives so terminal status stays readable.
+    $null = $process.Handle
+    return $process
 }
 
 function ConvertTo-Win32Argument([string]$a) {
@@ -443,7 +449,8 @@ function Get-DfSavePhase {
     "df3d status" through dfhack-run is the fallback: a healthy answer is
     treated as idle, exactly what teardown assumed before this check.
     #>
-    $client = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) "build\tools\session_client.exe"
+    param([string]$SessionClient = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'build\tools\session_client.exe'))
+    $client = $SessionClient
     if (Test-Path -LiteralPath $client) {
         try {
             $psi = New-Object System.Diagnostics.ProcessStartInfo
@@ -482,7 +489,8 @@ function Wait-DfSaveIdle {
     running" is not an option; the only safe move is to keep waiting and
     keep saying so.
     #>
-    param([System.Diagnostics.Process]$Proc, [int]$UnknownTimeoutSec = 120)
+    param([System.Diagnostics.Process]$Proc, [int]$UnknownTimeoutSec = 120,
+        [string]$SessionClient = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'build\tools\session_client.exe'))
     $started = Get-Date
     $unknownDeadline = $started.AddSeconds($UnknownTimeoutSec)
     $announced = $false
@@ -490,7 +498,7 @@ function Wait-DfSaveIdle {
     while ($true) {
         try { $Proc.Refresh() } catch {}
         if ($Proc.HasExited) { return }
-        $phase = Get-DfSavePhase
+        $phase = Get-DfSavePhase -SessionClient $SessionClient
         if ($phase -eq 'idle') { return }
         $now = Get-Date
         if ($phase -eq 'saving') {
@@ -524,13 +532,14 @@ function Stop-Df3d {
     save, so skipping DF's shutdown loses nothing. -Orderly uses DF's own
     QUIT path (exercises plugin_shutdown; expect the crash at the end).
     #>
-    param([int]$GracefulTimeoutMs = 30000, [switch]$Orderly)
+    param([int]$GracefulTimeoutMs = 30000, [switch]$Orderly,
+        [string]$SessionClient = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'build\tools\session_client.exe'))
     $proc = $script:DfProc
     if (-not $proc) { return }
     $script:DfProc = $null
     try { $proc.Refresh() } catch {}
     if ($proc.HasExited) { return }
-    Wait-DfSaveIdle -Proc $proc
+    Wait-DfSaveIdle -Proc $proc -SessionClient $SessionClient
     try { $proc.Refresh() } catch {}
     if ($proc.HasExited) { return }
     if ($Orderly) {
@@ -541,10 +550,182 @@ function Stop-Df3d {
     } else {
         Write-Host "[lane] stopping DF (pid $($proc.Id)) via dfhack die"
     }
-    Invoke-Dfhack @("die") -Retries 1 -Quiet | Out-Null
+    Invoke-Dfhack @("die") -Retries 1 -Quiet -TimeoutSec ([Math]::Max(1, [Math]::Ceiling($GracefulTimeoutMs / 1000))) | Out-Null
     if ($proc.WaitForExit(10000)) { return }
     Write-Host "[lane] terminating DF pid $($proc.Id)"
     Stop-Process -Id $proc.Id -Force -Confirm:$false -ErrorAction SilentlyContinue
 }
 
-Export-ModuleMember -Function Enter-Df3dLane, Exit-Df3dLane, Set-DfPrefs, Restore-DfPrefs, Install-DfSmokeScript, Install-DfMenuStartup, Start-Df3d, Start-ContainedProcess, Invoke-Dfhack, Invoke-DfhackRaw, Wait-DfFort, Stop-Df3d
+function ConvertFrom-Df3dSessionStatus {
+    param([string]$Text)
+    # Epoch must be last: messages, names and save paths can contain spaces.
+    $pattern = '(?m)^SESSION phase=(\d+) seq=\d+ result=\d+ paused=([01]) year=-?\d+ year_tick=-?\d+ fort=.*? id=(.*?) message=(.*?) epoch=(\d+)\r?$'
+    if ($Text -notmatch $pattern) { return $null }
+    $epoch = [uint64]0
+    if (-not [uint64]::TryParse($Matches[5], [ref]$epoch)) { return $null }
+    return @{ Phase=[int]$Matches[1]; Paused=($Matches[2] -eq '1'); SaveId=$Matches[3]; Message=$Matches[4]; Epoch=$epoch }
+}
+
+function Test-Df3dReloadIdentity {
+    param($State, [string]$SaveId, [int]$ProcessId)
+    return ($null -ne $State -and $State.Phase -eq 3 -and $State.Paused -and
+        $State.SaveId -ceq $SaveId -and $State.Epoch -ne 0 -and
+        ([uint64]$State.Epoch -shr 32) -eq [uint64]$ProcessId)
+}
+
+function Invoke-DfSessionClient {
+    param([string]$SessionClient, [string[]]$Arguments, [int]$TimeoutMs, [System.Diagnostics.Process]$Owner)
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $SessionClient
+    $psi.Arguments = ($Arguments | ForEach-Object { ConvertTo-Win32Argument $_ }) -join ' '
+    $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true
+    $psi.RedirectStandardOutput = $true; $psi.RedirectStandardError = $true
+    $p = [System.Diagnostics.Process]::Start($psi)
+    try {
+        $stdout = $p.StandardOutput.ReadToEndAsync(); $stderr = $p.StandardError.ReadToEndAsync()
+        $timer = [Diagnostics.Stopwatch]::StartNew()
+        while (-not $p.WaitForExit([Math]::Min(100, [Math]::Max(1, $TimeoutMs - [int]$timer.ElapsedMilliseconds)))) {
+            if ($Owner) { $Owner.Refresh() }
+            if (($Owner -and $Owner.HasExited) -or $timer.ElapsedMilliseconds -ge $TimeoutMs) {
+                $p.Kill(); $p.WaitForExit()
+                return @{ ExitCode=124; Output=$stdout.Result; Error=$stderr.Result; OwnerExited=($Owner -and $Owner.HasExited) }
+            }
+        }
+        return @{ ExitCode=$p.ExitCode; Output=$stdout.Result; Error=$stderr.Result; OwnerExited=$false }
+    } finally {
+        if (-not $p.HasExited) { $p.Kill(); $p.WaitForExit() }
+        $p.Dispose()
+    }
+}
+
+function Restart-Df3dFortress {
+    <# Restart only the owned process, preserving the lane mutex and staging.
+    No save command is sent. Bound excluding hashing and an honored in-progress
+    save: status 5s + stop 15s/unknown phase 120s + load TimeoutSec + verify 30s
+    + 10s overhead = TimeoutSec + 180s. Hashing is included in ElapsedSec.
+    A timeout kills the client child only; teardown still owns the DF process.
+    Route inprocess uses semantic Quit once and verifies Menu/epoch0 before load,
+    retaining the owned process and DLL. Its bound excluding hashing is
+    2 * TimeoutSec + 40s (unload, load, status verification); no restart fallback.
+    #>
+    param([Parameter(Mandatory)][ValidateNotNullOrEmpty()][string]$SaveId,
+        [ValidateSet('restart','inprocess')][string]$Route = 'restart',
+        [ValidateRange(1,7200)][int]$TimeoutSec = 420,
+        [string]$SessionClient = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'build\tools\session_client.exe'),
+        [string[]]$SaveRoots = @(), [Parameter(Mandatory)][string]$EvidenceDir)
+    $timer = [Diagnostics.Stopwatch]::StartNew()
+    $result = @{ Status='failed'; Reason='Restart did not complete'; Route=$Route; PreviousPid=0; Pid=0;
+        PreviousEpoch=[uint64]0; Epoch=[uint64]0; SaveId=$SaveId; ElapsedSec=0.0 }
+    $manifest = $null
+    try {
+        if ($script:AttachOnly -or -not $script:DfProc -or -not $script:LaneMutex) {
+            $result.Reason='Restart requires an owned process and held lane mutex'; return $result
+        }
+        $proc = $script:DfProc; $proc.Refresh(); $result.PreviousPid=$proc.Id
+        if ($proc.HasExited) { $result.Reason='Owned process already exited'; return $result }
+        $menu = Join-Path $script:DfPath 'dfhack-config\init\dfhackzzz_df3d_menu.init'
+        $smoke = Join-Path $script:DfPath 'dfhack-config\init\dfhackzzz_df3d_smoke.init'
+        if ($script:StagedFiles.Count -ne 1 -or $script:StagedFiles[0] -ne $menu -or
+            -not (Test-Path -LiteralPath $menu) -or (Get-Content -LiteralPath $menu -Raw).Trim() -ne 'enable df3d' -or
+            (Test-Path -LiteralPath $smoke)) {
+            $result.Status='incomplete'; $result.Reason='Restart requires only the enable-only menu startup file'; return $result
+        }
+        $before = Invoke-DfSessionClient -SessionClient $SessionClient -Arguments @('status') -TimeoutMs 5000 -Owner $proc
+        $state = ConvertFrom-Df3dSessionStatus $before.Output
+        if ($before.ExitCode -ne 0 -or -not $state) {
+            $result.Status='incomplete'; $result.Reason="Pre-restart status unavailable (exit $($before.ExitCode))"; return $result
+        }
+        $result.PreviousEpoch=$state.Epoch
+        if ($state.Phase -eq 6) { $result.Reason='DF is saving; restart refused'; return $result }
+        if ($state.Phase -ne 3 -or $state.SaveId -cne $SaveId -or
+            ([uint64]$state.Epoch -shr 32) -ne [uint64]$proc.Id) {
+            $result.Reason='Pre-restart fortress identity does not match the owned process'; return $result
+        }
+        New-Item -ItemType Directory -Force -Path $EvidenceDir | Out-Null
+        if (-not $SaveRoots.Count) {
+            $SaveRoots=@((Join-Path $script:DfPath 'save'), (Join-Path $env:APPDATA 'Bay 12 Games/Dwarf Fortress/save'))
+        }
+        $roots=@($SaveRoots | ForEach-Object { [IO.Path]::GetFullPath($_).TrimEnd('\','/') })
+        Write-Host '[lane] hashing save roots before restart'
+        $files=[System.Collections.Generic.List[object]]::new()
+        for ($i=0; $i -lt $roots.Count; $i++) {
+            if (-not (Test-Path -LiteralPath $roots[$i])) { continue }
+            foreach ($file in Get-ChildItem -LiteralPath $roots[$i] -Recurse -File) {
+                $files.Add([pscustomobject]@{Root=$i; Path=$file.FullName.Substring($roots[$i].Length).TrimStart('\','/');
+                    Hash=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash})
+            }
+        }
+        $manifest=[pscustomobject]@{Roots=$roots; Backup=$EvidenceDir; AllowedDirectories=@('current'); Files=$files.ToArray()}
+        Write-Host "[lane] recorded $($files.Count) save-file hashes"
+        $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $EvidenceDir 'manifest.json') -Encoding UTF8
+        if ($Route -eq 'inprocess') {
+            # One semantic submission. An uncertain unload must never cause a
+            # replay, process restart, or load into an unverified native state.
+            $quit = Invoke-DfSessionClient -SessionClient $SessionClient -Arguments @('quit-without-saving') -TimeoutMs ($TimeoutSec*1000) -Owner $proc
+            $quit | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $EvidenceDir 'quit.json') -Encoding UTF8
+            $proc.Refresh()
+            if ($quit.ExitCode -ne 0 -or $proc.HasExited) {
+                $result.Status='incomplete'; $result.Reason="Native unload unverified (exit $($quit.ExitCode), process exited=$($proc.HasExited)); no retry"; return $result
+            }
+            $title = Invoke-DfSessionClient -SessionClient $SessionClient -Arguments @('status') -TimeoutMs 5000 -Owner $proc
+            $title | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $EvidenceDir 'title.json') -Encoding UTF8
+            $titleState = ConvertFrom-Df3dSessionStatus $title.Output
+            if ($title.ExitCode -ne 0 -or -not $titleState -or $titleState.Phase -ne 1 -or $titleState.Epoch -ne 0) {
+                $result.Reason='Native unload did not establish Menu with epoch zero'; return $result
+            }
+            $next=$proc
+        } else {
+        $visible=$script:DfVisible
+        Stop-Df3d -SessionClient $SessionClient -GracefulTimeoutMs 5000
+        $proc.Refresh()
+        if (-not $proc.HasExited) { $result.Reason='Owned process did not exit'; return $result }
+        if (@(Get-Process -Name 'Dwarf Fortress' -ErrorAction SilentlyContinue).Count) {
+            $result.Status='incomplete'; $result.Reason='Foreign DF appeared after stop; left running'; return $result
+        }
+        try { $next = Start-Df3d -DfPath $script:DfPath -Visible:$visible }
+        catch { $result.Status='incomplete'; $result.Reason='Restart launch failed: '+$_.Exception.Message; return $result }
+        }
+        $result.Pid=$next.Id
+        $loaded = Invoke-DfSessionClient -SessionClient $SessionClient -Arguments @('load',$SaveId) -TimeoutMs ($TimeoutSec*1000) -Owner $next
+        $loaded | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $EvidenceDir 'load.json') -Encoding UTF8
+        $next.Refresh()
+        if ($loaded.ExitCode -ne 0 -or $next.HasExited) {
+            $result.Status='incomplete'; $result.Reason="Restart load failed (exit $($loaded.ExitCode), process exited=$($next.HasExited))"; return $result
+        }
+        $verify = [Diagnostics.Stopwatch]::StartNew()
+        while ($verify.ElapsedMilliseconds -lt 30000) {
+            $reply = Invoke-DfSessionClient -SessionClient $SessionClient -Arguments @('status') -TimeoutMs ([Math]::Min(5000,30000-[int]$verify.ElapsedMilliseconds)) -Owner $next
+            $state = ConvertFrom-Df3dSessionStatus $reply.Output
+            if ($reply.ExitCode -eq 0 -and (Test-Df3dReloadIdentity $state $SaveId $next.Id) -and
+                $state.Epoch -ne $result.PreviousEpoch) {
+                $result.Epoch=$state.Epoch; $result.Status='ready'; $result.Reason=''; break
+            }
+            if ($reply.OwnerExited) { $result.Status='incomplete'; $result.Reason='Restarted DF exited during status verification'; return $result }
+            # A ready reply with the wrong identity is conclusive; do not wait it out.
+            if ($state -and $state.Phase -eq 3) { break }
+            Start-Sleep -Milliseconds 100
+        }
+        if ($result.Status -ne 'ready') { $result.Reason='Restart identity verification failed (phase, pause, save id or epoch)' }
+        return $result
+    } catch {
+        $result.Status='failed'; $result.Reason=$_.Exception.Message; return $result
+    } finally {
+        if ($manifest) {
+            try {
+                # Missing roots are equivalent to empty roots until DF creates them.
+                foreach ($root in $manifest.Roots) { if (-not (Test-Path -LiteralPath $root)) { New-Item -ItemType Directory -Path $root | Out-Null } }
+                # Force-reloading here removes the caller's exported hash command.
+                # Reuse the loaded module so its outer-lane verification survives.
+                Import-Module (Join-Path $PSScriptRoot 'SaveIsolation.psm1')
+                Write-Host '[lane] verifying save hashes after restart'
+                Assert-DfSaveBackupUnchanged -Manifest $manifest | Out-Null
+            } catch { $result.Status='failed'; $result.Reason='Save integrity check failed: '+$_.Exception.Message }
+        }
+        $result.ElapsedSec=$timer.Elapsed.TotalSeconds
+        if (Test-Path -LiteralPath $EvidenceDir) {
+            $result | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $EvidenceDir 'restart.json') -Encoding UTF8
+        }
+    }
+}
+
+Export-ModuleMember -Function Enter-Df3dLane, Exit-Df3dLane, Set-DfPrefs, Restore-DfPrefs, Install-DfSmokeScript, Install-DfMenuStartup, Start-Df3d, Start-ContainedProcess, Invoke-Dfhack, Invoke-DfhackRaw, Wait-DfFort, Stop-Df3d, Restart-Df3dFortress, ConvertFrom-Df3dSessionStatus, Test-Df3dReloadIdentity

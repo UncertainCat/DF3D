@@ -1,0 +1,2236 @@
+{
+  "provenance": {
+    "source": "build/location-staff-layout-20260929-221753/native-location-staff-layout.json",
+    "sha256": "1202a445056f1c1b039762007c424c53308dd249f985829626859219ec9f909d",
+    "cases": 62,
+    "method": "Protected paused owned clone; controlled capture-only native UI vector lengths1..16. No runtime native UI dependency. Original rows/cells restored on all six locations; final pause and both save manifests verified.",
+    "scope": "1200x800; width/visible capacity and glyph clipping. Pointer scrolling, portraits, long position-title clipping and assignment actions remain unverified."
+  },
+  "rows": [
+    {
+      "kind": 2,
+      "count": 1,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 4,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 5,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 6,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 8,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 9,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vudt..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 10,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 11,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 12,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 16,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        },
+        {
+          "name": "Stukos Vudtharkûbuk, Performer",
+          "displayed": "Stukos Vu..."
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 1,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 4,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 5,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 6,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 8,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 9,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 10,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 14,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 11,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 12,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 12,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 12,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 1,
+      "count": 16,
+      "first_y": 26,
+      "capacity": 10,
+      "width": 12,
+      "visible_y": [
+        26,
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 119725,
+      "holders": [
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        },
+        {
+          "name": "",
+          "displayed": ""
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 1,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 14,
+      "visible_y": [
+        41
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 4,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 14,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 5,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 14,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulusl..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 6,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 8,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 9,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 10,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 11,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 12,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 5,
+      "count": 16,
+      "first_y": 41,
+      "capacity": 5,
+      "width": 12,
+      "visible_y": [
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        },
+        {
+          "name": "Rith Suluslogem, chief medical dwarf",
+          "displayed": "Rith Sulu..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 1,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 4,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 5,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 6,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 8,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 9,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulban..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 10,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 11,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 12,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        }
+      ]
+    },
+    {
+      "kind": 2,
+      "count": 16,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        },
+        {
+          "name": "Uzol Zulbanromlam, Performer",
+          "displayed": "Uzol Zulb..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 1,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 4,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 5,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 6,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 8,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 9,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 14,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zugla..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 10,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 11,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 12,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        }
+      ]
+    },
+    {
+      "kind": 3,
+      "count": 16,
+      "first_y": 29,
+      "capacity": 9,
+      "width": 12,
+      "visible_y": [
+        29,
+        32,
+        35,
+        38,
+        41,
+        44,
+        47,
+        50,
+        53
+      ],
+      "right_edge_tile": 127238,
+      "holders": [
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        },
+        {
+          "name": "Ineth Zuglariseth, Scholar",
+          "displayed": "Ineth Zug..."
+        }
+      ]
+    }
+  ]
+}

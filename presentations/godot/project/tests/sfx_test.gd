@@ -53,5 +53,7 @@ func run():
 	player.queue_free()
 	await process_frame
 	await process_frame
+	# Node deletion queues playback retirement on the audio mixer.
+	await create_timer(0.1).timeout
 	print("SFX_TEST_PASS" if failures == 0 else "SFX_TEST_FAIL")
 	quit(0 if failures == 0 else 1)

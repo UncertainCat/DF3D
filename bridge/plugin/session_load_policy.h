@@ -4,6 +4,15 @@
 #include <vector>
 
 namespace df3d_session {
+// Native title groups distinguish timelines within the same world. World IDs
+// alone select the first timeline and can hide the requested save at the next
+// navigation step. Names are native identity bytes, not case-folded UI labels.
+template<class Header>
+bool sameSaveTimeline(const Header& candidate, const Header& target) {
+    return candidate.id1 == target.id1 && candidate.id2 == target.id2 &&
+           candidate.timeline_name == target.timeline_name;
+}
+
 enum class LoadStep { Loading, Navigate, VerifyLoaded, NeedsAttention, TimedOut };
 
 // Called for an issued, pending LoadFortress request. Time is injected so the

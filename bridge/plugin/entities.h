@@ -77,6 +77,12 @@ void resetStatsMax();
 // Drops every shadow (map load / unload).
 void reset();
 
+// Compares only the authoritative building pointer sequence; no extraction.
+// Native building additions/removals can occur without advancing a paused tick.
+bool buildingSequenceChanged();
+// Changes to existing pending construction jobs do not necessarily alter that list.
+bool pendingConstructionChanged(void (*hintTerrain)(int32_t x, int32_t y, int32_t z));
+
 // One update's worth of change detection. `fullPass` walks everything
 // (first update after load, or a Full is about to be served).
 void scan(int32_t frame, bool fullPass, GridMaterialFn gridMaterial);

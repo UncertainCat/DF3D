@@ -72,6 +72,7 @@ struct FaceTag {
   FaceDir slopeHigh = FaceDir::PosZ;
   // Same-z cube neighbours (kWall* bits) for every face; map edges and unobserved blocks count as open.
   uint8_t walls = 0;
+  uint8_t completedTrack = 0;
   uint8_t lx = 0, ly = 0;  // tile within the block (z is the block's z)
 };
 

@@ -31,7 +31,7 @@ func _process(delta: float):
 	if elapsed >= 0.25:
 		elapsed = 0
 		data = world.elevation_overview(floori(camera_rig.position.x), floori(camera_rig.position.z))
-		tooltip_text = "Elevation %d · click or drag to change level\nSurface at camera position; unexplored terrain is not shown" % (world.get_top_z() + int(hud.summary.get("elevation_offset", 0)))
+		# Native hover copy is not mapped for this control; do not synthesize prose.
 	queue_redraw()
 
 func strip(key: String, rect: Rect2):
@@ -63,7 +63,7 @@ func _draw():
 		strip("SCROLLBAR_CENTER_SCROLLER", Rect2(0, clampf(selected_y - 6, 12, size.y - 24), size.x, 12))
 
 func navigate(point_y: float):
-	if not hud.minimap.allowed: return
+	if not navigation_allowed(): return
 	var count := int(data.get("level_count", 0))
 	if count <= 0: return
 	var level := level_at(point_y, size.y, count)
@@ -71,11 +71,14 @@ func navigate(point_y: float):
 	elif point_y >= size.y - 12: level = maxi(0, world.get_top_z() - 1)
 	level_requested.emit(level)
 
+func navigation_allowed() -> bool:
+	return hud.enabled and hud.elevation_available() and not hud.blocks_camera()
+
 func _gui_input(event: InputEvent):
 	if event is InputEventMouseButton:
 		accept_event()
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			dragging = event.pressed and hud.minimap.allowed
+			dragging = event.pressed and navigation_allowed()
 			if dragging: navigate(event.position.y)
 		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			navigate(0 if event.button_index == MOUSE_BUTTON_WHEEL_UP else size.y)

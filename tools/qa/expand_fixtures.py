@@ -10,6 +10,8 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import re
+import struct
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -38,6 +40,7 @@ def tracked_archives(root):
 
 
 def expand_one(archive, log=print):
+    archive = Path(archive).resolve()
     manifest = json.loads(manifest_for(archive).read_text(encoding="utf-8"))
     expected = manifest["files"][archive.name]
     target = archive.with_name(archive.name.removesuffix(".gz"))
@@ -55,6 +58,53 @@ def expand_one(archive, log=print):
     partial.replace(target)
     log(f"FIXTURE_EXPANDED {target.relative_to(ROOT).as_posix()} bytes={expected['uncompressed_bytes']}")
     return target
+
+
+def validate_schema(path, expected):
+    """Check every snapshot's schema before scheduling engine tests.
+
+    This bounded header check is not a replacement for the consumer's full
+    FlatBuffers and semantic validation.
+    """
+    path = Path(path)
+    end = path.stat().st_size
+    count = 0
+    with path.open("rb") as stream:
+        if stream.read(8) != b"DF3DFIX1":
+            raise ValueError("invalid fixture magic")
+        offset = 8
+        while offset < end:
+            def read(fmt, position, low, high):
+                size = struct.calcsize(fmt)
+                if position < low or position + size > high:
+                    raise ValueError("truncated or invalid fixture header")
+                stream.seek(position)
+                return struct.unpack(fmt, stream.read(size))[0]
+            length = read("<I", offset, offset, end)
+            start, stop = offset + 4, offset + 4 + length
+            if stop > end:
+                raise ValueError("truncated fixture snapshot")
+            table = start + read("<I", start, start, stop)
+            vtable = table - read("<i", table, start, stop)
+            vsize = read("<H", vtable, start, stop)
+            if vsize < 4 or vtable + vsize > stop:
+                raise ValueError("invalid fixture vtable")
+            field = read("<H", vtable + 4, start, stop) if vsize >= 6 else 0
+            version = read("<I", table + field, start, stop) if field else 0
+            if version != expected:
+                raise ValueError(f"snapshot {count}: schema {version}, expected {expected}; recapture with the current bridge")
+            count += 1
+            offset = stop
+    if not count:
+        raise ValueError("fixture contains no snapshots")
+
+
+def current_schema(root=ROOT):
+    source = (Path(root) / "schema/mirror.fbs").read_text(encoding="utf-8")
+    match = re.search(r"enum SchemaVersion\s*:\s*uint32\s*\{\s*Current\s*=\s*(\d+)", source)
+    if not match:
+        raise ValueError("snapshot schema version unavailable")
+    return int(match[1])
 
 
 def expand_all(root=ROOT, archives=None, log=print):

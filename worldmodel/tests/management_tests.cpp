@@ -395,14 +395,14 @@ TEST_CASE("management validators reject malformed input identity and inspection 
 TEST_CASE("area edits preserve requested fields and share construction ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest edit;edit.action=wm::ManagementAction::AreaUpdate;
-  edit.area.id=31;edit.area.categories=4;edit.area.changedCategories=12;
+  edit.area.id=31;edit.area.expectedRevision=9007199254740993LL;edit.area.categories=4;edit.area.changedCategories=12;
   edit.area.bins=3;
   CHECK(c->send(edit)==0);
   auto seq=c->send({});const auto id=p.pop()->client_id();
   p.publish(2,id,seq);REQUIRE(c->poll());
   seq=c->send(edit);REQUIRE(seq>0);auto* r=p.pop();REQUIRE(r->area());
   CHECK(r->action()==mm::ManagementAction::AreaUpdate);
-  CHECK(r->area()->id()==31);CHECK(r->area()->categories()==4);
+  CHECK(r->area()->id()==31);CHECK(r->area()->expected_revision()==9007199254740993ULL);CHECK(r->area()->categories()==4);
   CHECK(r->area()->changed_categories()==12);CHECK(r->area()->bins()==3);
   CHECK(r->area()->barrels()==-1);CHECK(r->area()->owner_id()==-2);
   CHECK(r->area()->active()==-1);CHECK(r->world_epoch()==7);
@@ -419,7 +419,7 @@ TEST_CASE("area request rejects invalid masks identities and destructive self li
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   auto [seq,id]=claim(p,*c);
   for(int which=0;which<9;++which) {
-    wm::ManagementRequest r;r.action=wm::ManagementAction::AreaUpdate;r.area.id=12;
+    wm::ManagementRequest r;r.action=wm::ManagementAction::AreaUpdate;r.area.id=12;r.area.expectedRevision=1;
     if(which==0)r.area.changedCategories=0x20000;
     if(which==1)r.area.categories=0x20000;
     if(which==2)r.area.id=-1;
@@ -431,7 +431,7 @@ TEST_CASE("area request rejects invalid masks identities and destructive self li
     if(which==8)r.area.x=-1;
     CHECK(c->send(r)==0);CHECK_FALSE(c->lastError().empty());
   }
-  wm::ManagementRequest valid;valid.action=wm::ManagementAction::AreaUpdate;valid.area.id=12;
+  wm::ManagementRequest valid;valid.action=wm::ManagementAction::AreaUpdate;valid.area.id=12;valid.area.expectedRevision=1;
   valid.area.ownerId=-1;CHECK(c->send(valid)>seq);CHECK(p.pop()->area()->owner_id()==-1);
 }
 TEST_CASE("area response keeps overlapping identities extents links and later candidates") {
@@ -452,9 +452,7 @@ TEST_CASE("area response keeps overlapping identities extents links and later ca
   second.add_width(2);second.add_height(2);second.add_extents(extents);
   second.add_categories(3);second.add_gives(links);second.add_bins(2);
   auto pile=second.Finish();
-  auto choice=mm::CreateAreaChoice(b,4096,b.CreateString("Later citizen"));
-  auto area=mm::CreateAreaState(b,b.CreateVector(std::vector<flatbuffers::Offset<mm::AreaInfo>>{zone,pile}),
-    b.CreateVector(std::vector<flatbuffers::Offset<mm::AreaChoice>>{choice}),4097,true);
+  auto area=mm::CreateAreaState(b,b.CreateVector(std::vector<flatbuffers::Offset<mm::AreaInfo>>{zone,pile}));
   mm::ManagementStateBuilder result(b);result.add_schema_version(mm::kManagementVersion);
   result.add_revision(3);result.add_world_epoch(7);result.add_client_id(id);result.add_request_seq(seq);
   result.add_action(mm::ManagementAction::AreaInspectAtTile);result.add_status(mm::ManagementStatus::Ok);
@@ -467,9 +465,22 @@ TEST_CASE("area response keeps overlapping identities extents links and later ca
   CHECK(a.areas[0].x==40);CHECK(a.areas[0].y==50);CHECK(a.areas[0].z==9);
   CHECK(a.areas[0].extents==std::vector<uint8_t>{1,0,1,1});
   CHECK(a.areas[1].gives==std::vector<int32_t>{300,900});CHECK(a.areas[1].bins==2);
-  REQUIRE(a.choices.size()==1);CHECK(a.choices[0].id==4096);CHECK(a.nextCursor==4097);CHECK(a.truncated);
+  CHECK(a.choices.empty());
+  wm::ManagementRequest candidates;candidates.action=wm::ManagementAction::AreaCandidates;
+  seq=c->send(candidates);REQUIRE(seq>0);p.pop();
+  flatbuffers::FlatBufferBuilder page;
+  const auto choice=mm::CreateAreaChoice(page,4096,page.CreateString("Later citizen"));
+  const auto choices=page.CreateVector(std::vector{choice});
+  const auto candidateArea=mm::CreateAreaState(page,0,choices,4097,true);
+  mm::ManagementStateBuilder candidateReply(page);candidateReply.add_revision(4);candidateReply.add_world_epoch(7);
+  candidateReply.add_client_id(id);candidateReply.add_request_seq(seq);candidateReply.add_action(mm::ManagementAction::AreaCandidates);
+  candidateReply.add_status(mm::ManagementStatus::Ok);candidateReply.add_area(candidateArea);page.Finish(candidateReply.Finish());
+  REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(page.GetBufferPointer())).has_value());
+  REQUIRE(p.write(page.GetBufferPointer(),page.GetSize()));REQUIRE(c->poll());
+  CHECK(c->state().area.areas.empty());REQUIRE(c->state().area.choices.size()==1);
+  CHECK(c->state().area.choices[0].id==4096);CHECK(c->state().area.nextCursor==4097);CHECK(c->state().area.truncated);
   // A later non-area response must not retain stale selection data.
-  seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,id,seq);REQUIRE(c->poll());
+  seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(5,id,seq);REQUIRE(c->poll());
   CHECK(c->state().area.areas.empty());CHECK(c->state().area.choices.empty());
 }
 TEST_CASE("area response rejects corrupt footprints and ambiguous identities") {
@@ -844,6 +855,23 @@ TEST_CASE("citizen validator rejects ambiguous membership and misaligned labor l
     CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value());
   }
 }
+TEST_CASE("red alert dismissal semantic request codec") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);auto [seq,client]=claim(p,*c);
+  wm::ManagementRequest r;r.action=wm::ManagementAction::PrepareAlertDismissal;
+  seq=c->send(r);REQUIRE(seq>0);auto* wire=p.pop();REQUIRE(wire->report());
+  CHECK(wire->action()==mm::ManagementAction::PrepareAlertDismissal);
+  CHECK_FALSE(mm::validateConstructionRequest(*wire).has_value());
+  p.publish(3,client,seq,7,mm::ManagementAction::PrepareAlertDismissal,mm::ManagementStatus::Rejected);REQUIRE(c->poll());
+  r.action=wm::ManagementAction::DismissAlert;CHECK(c->send(r)==0);
+  r.report.expectedListRevision=9007199254740993ull;
+  seq=c->send(r);REQUIRE(seq>0);wire=p.pop();
+  CHECK(wire->report()->expected_list_revision()==9007199254740993ull);
+  CHECK_FALSE(mm::validateConstructionRequest(*wire).has_value());
+  p.publish(4,client,seq,7,mm::ManagementAction::DismissAlert,mm::ManagementStatus::Rejected);REQUIRE(c->poll());
+  r.report.alertButton=true;CHECK(c->send(r)==0);
+  r.report.alertButton=false;r.report.view=wm::ReportView::Group;CHECK(c->send(r)==0);
+}
+
 TEST_CASE("report requests preserve native ID zero pagination and management ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest inspect;inspect.action=wm::ManagementAction::ReportInspect;inspect.report.id=0;
@@ -902,7 +930,7 @@ TEST_CASE("report response preserves every list field and both focus positions")
   }
   seq=c->send({});REQUIRE(seq>0);p.pop();p.publish(4,client,seq);REQUIRE(c->poll());CHECK(c->state().report.reports.empty());
 }
-TEST_CASE("report inspection preserves ID zero false source and hidden second position") {
+TEST_CASE("report inspection preserves ID zero false source and absent second position") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);auto [seq,client]=claim(p,*c);
   wm::ManagementRequest request;request.action=wm::ManagementAction::ReportInspect;request.report.id=0;request.report.announcementsOnly=false;
   seq=c->send(request);REQUIRE(seq>0);p.pop();
@@ -922,7 +950,7 @@ TEST_CASE("report inspection preserves ID zero false source and hidden second po
   CHECK(v.positionVisible);CHECK(v.x==2);CHECK(v.y==3);CHECK(v.z==4);
   CHECK_FALSE(v.position2Visible);CHECK(v.x2==-1);CHECK(v.y2==-1);CHECK(v.z2==-1);
 }
-TEST_CASE("report validation bounds total text and rejects hidden or malformed focus coordinates") {
+TEST_CASE("report validation bounds total text and rejects absent or malformed focus coordinates") {
   // Intentional malformed-wire fixtures exercise rejection beyond reports.lua output.
   for(int which=0;which<6;++which){
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<mm::ReportInfo>> rows;
@@ -931,7 +959,7 @@ TEST_CASE("report validation bounds total text and rejects hidden or malformed f
       auto category=b.CreateString("CANCEL_JOB"),text=b.CreateString(which==0?std::string(16384,'x'):"Native text");
       mm::ReportInfoBuilder row(b);row.add_id(which==1?0:i);row.add_category(category);row.add_text(text);
       if(which==2)row.add_x(1);
-      if(which==3)row.add_position_visible(true);
+      if(which==3){row.add_position_visible(true);row.add_x(-30000);}
       if(which==4)row.add_repeat_count(-1);
       if(which==5)row.add_year_tick(403200);
       rows.push_back(row.Finish());
@@ -943,6 +971,23 @@ TEST_CASE("report validation bounds total text and rejects hidden or malformed f
     const auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
     REQUIRE(error.has_value());
     CHECK(*error==(which==0?"report text budget exceeded":which==2 || which==3?"invalid report location":"invalid report row"));
+  }
+}
+TEST_CASE("report targets preserve negative coordinates and native coordinate limits") {
+  for(int coordinate:{-32769,-32768,-30000,-1,0,5000,32767,32768}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto category=b.CreateString("MIGRANT_ARRIVAL"),text=b.CreateString("Fixture report");
+    mm::ReportInfoBuilder row(b);row.add_id(0);row.add_category(category);row.add_text(text);
+    row.add_x(coordinate);row.add_y(50);row.add_z(165);row.add_position_visible(true);
+    row.add_x2(-1);row.add_y2(50);row.add_z2(165);row.add_position2_visible(true);
+    auto record=row.Finish();auto reports=mm::CreateReportState(b,b.CreateVector(std::vector{record}));
+    mm::ManagementStateBuilder state(b);state.add_schema_version(mm::kManagementVersion);
+    state.add_revision(1);state.add_world_epoch(7);state.add_action(mm::ManagementAction::ReportInspect);
+    state.add_status(mm::ManagementStatus::Ok);state.add_report(reports);b.Finish(state.Finish());
+    const auto error=mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer()));
+    const bool invalid=coordinate<INT16_MIN||coordinate>INT16_MAX||coordinate==-30000;
+    CHECK(error.has_value()==invalid);
+    if(invalid) CHECK(*error=="invalid report location");
   }
 }
 TEST_CASE("report wire bounds accept limits and reject over limits with exact reasons") {

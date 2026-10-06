@@ -80,6 +80,68 @@ func inspect(id: int) -> Dictionary:
 	if not check(page.orders.size() == 1, "inspect must return one order"): return {}
 	return page.orders[0]
 
+func reload_fortress() -> void:
+	var before := await native("status")
+	if stopped: return
+	var previous: Dictionary = world.poll_session()
+	var previous_epoch := int(previous.get("fortress_epoch", 0))
+	# Send one read-only materials intent. Its outcome may be terminal or unknown;
+	# the handshake never sends it again, including after producer replacement.
+	var seq: int = world.work_order_request({"action":26, "candidate_kind":4})
+	if not check(seq > 0, "pre-reload materials request not sent"): return
+	handshake += 1
+	write_json("request-%d.json" % handshake, {"op":"reload"})
+	var file := FileAccess.open(directory + "/verify.tmp", FileAccess.WRITE)
+	file.store_string(str(handshake)); file.close()
+	if not check(DirAccess.rename_absolute(directory + "/verify.tmp", directory + "/verify.txt") == OK, "reload handshake rename failed"): return
+	var deadline := Time.get_ticks_msec() + 960000
+	var ack: Dictionary = {}
+	var outcome := "unknown"
+	while ack.is_empty():
+		world.poll(); world.poll_session()
+		var observed: Dictionary = world.poll_management()
+		if int(observed.get("world_epoch", 0)) == previous_epoch and int(observed.get("request_seq", 0)) == seq and int(observed.get("status", S.Idle)) in [S.Ok, S.Rejected]: outcome = "terminal"
+		for state in ["failed", "incomplete", "ack"]:
+			var path := directory + "/%s-%d" % [state, handshake]
+			if not FileAccess.file_exists(path): continue
+			var reply: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
+			if state == "failed": check(false, "reload: " + str(reply.reason)); return
+			if state == "incomplete": incomplete("reload: " + str(reply.reason), true); return
+			ack = reply
+		if Time.get_ticks_msec() >= deadline: incomplete("reload handshake timeout; no replay", true); return
+		await create_timer(0.02).timeout
+	var epoch := int(str(ack.epoch))
+	if not check(epoch != previous_epoch and (epoch >> 32) == int(ack.pid), "reload epoch/process identity"): return
+	var inprocess: bool = ack.get("route", "restart") == "inprocess"
+	if not check(((previous_epoch >> 32) == int(ack.pid)) == inprocess, "reload route/process mismatch"): return
+	deadline = Time.get_ticks_msec() + 60000
+	var ready := false
+	while Time.get_ticks_msec() < deadline:
+		world.poll()
+		var session: Dictionary = world.poll_session()
+		var state: Dictionary = world.poll_management()
+		if int(state.get("world_epoch", 0)) == epoch:
+			if not check(int(state.get("request_seq", 0)) != seq, "old sequence survived restart"): return
+			if int(session.get("fortress_epoch", 0)) == epoch and session.get("paused", false): ready = true; break
+		await create_timer(0.02).timeout
+	if not ready: incomplete("reload: presentation did not reattach", true); return
+	print("RELOAD_TICKET_OUTCOME ", outcome)
+	await seed_catalog()
+	if stopped: return
+	var first := await request({"action":26, "candidate_kind":4})
+	if stopped: return
+	if not check(int(first.build_phase) == 1 and int(first.build_done) == 0, "materials did not restart from 0/total"): return
+	var status := await native("status")
+	if stopped: return
+	if inprocess:
+		if not check(int(before.holding) > 0, "retained-DLL check requires retired native objects"): return
+		check(int(status.holding) == int(before.holding), "epoch reset changed DLL-lifetime holding count")
+		print("RELOAD_INPROCESS holding=", status.holding, " materials restarted at 0/total")
+		print("RELOAD_DISCLOSURE exact World changed/refreshed-catalog refusal remains offline-only")
+	else:
+		check(int(status.holding) == 0, "holding array survived restart")
+		print("RELOAD_DISCLOSURE in-process reset, World changed/refreshed-catalog refusal and holding-still-N remain offline-only")
+
 func edit(action: int, id: int, fields: Dictionary) -> Dictionary:
 	var order := await inspect(id)
 	if stopped: return {}
@@ -336,9 +398,6 @@ func exercise() -> void:
 		if edited: break
 	if not edited: incomplete("no editable native order with inputs")
 	if stopped: return
-	step = "8"
-	await native("status")
-	incomplete(FileAccess.get_file_as_string(directory + "/reload.txt"))
 	step = "9"
 	if has_jobs:
 		# Re-check: all operations since the wait were performed paused.
@@ -365,6 +424,9 @@ func exercise() -> void:
 	await native("guard_before")
 	await request(stale, "Work order changed; inspect again before editing")
 	await native("guard_after")
+	if stopped: return
+	step = "8"
+	await reload_fortress()
 	if stopped: return
 	step = "11"
 	# Page again so the export is itself evidence of the model catalog transport.

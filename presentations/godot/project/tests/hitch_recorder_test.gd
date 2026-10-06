@@ -123,6 +123,8 @@ func _initialize() -> void:
 	check(owned.configure_output(path) == OK, "owned writer starts")
 	owned.begin_frame(1)
 	owned.begin_frame(100001)
+	# This case deliberately violates queue ownership; verify refusal and retention.
+	owned._take_refused_warned = true
 	check(owned.take_reports().is_empty() and owned.take_reports().is_empty() and owned.hitches == 1, "take_reports refuses while the session file writer owns the queue")
 	owned.shutdown()
 	file = FileAccess.open(path, FileAccess.READ)

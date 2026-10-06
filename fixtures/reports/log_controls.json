@@ -1,0 +1,312 @@
+{
+  "source": "build/reports-log-controls-native-20261001-072431",
+  "method": "Protected paused clone, four synthetic reports in unit2905 sparring log. Synthetic text is fixture-only. Native screenshot verifies control layout.",
+  "rows": [
+    {
+      "id": 78822,
+      "text": "Synthetic log control 1",
+      "position": [
+        125,
+        50,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "speaker_id": -1,
+      "color": 7,
+      "bright": false
+    },
+    {
+      "id": 78823,
+      "text": "Synthetic log control 2",
+      "position": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position2": [
+        140,
+        80,
+        165
+      ],
+      "position_visible": false,
+      "position2_visible": true,
+      "speaker_id": -1,
+      "color": 7,
+      "bright": false
+    },
+    {
+      "id": 78824,
+      "text": "Synthetic log control 3",
+      "position": [
+        125,
+        50,
+        165
+      ],
+      "position2": [
+        140,
+        80,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "speaker_id": -1,
+      "color": 7,
+      "bright": false
+    },
+    {
+      "id": 78825,
+      "text": "Synthetic log control 4",
+      "position": [
+        125,
+        50,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "speaker_id": 2905,
+      "color": 7,
+      "bright": false
+    },
+    {
+      "id": 78826,
+      "text": "Synthetic log control 5",
+      "position": [
+        125,
+        50,
+        165
+      ],
+      "position2": [
+        140,
+        80,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "speaker_id": 2905,
+      "color": 7,
+      "bright": false
+    },
+    {
+      "id": 78827,
+      "text": "Synthetic log control 6",
+      "position": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": false,
+      "position2_visible": false,
+      "speaker_id": 2905,
+      "color": 7,
+      "bright": false
+    }
+  ],
+  "limits": [
+    "Full creature-sheet visual/content parity is a separate acceptance scope from Reports navigation",
+    "Speaker hover probe produced no tooltip evidence; do not invent wording",
+    "Complete report controls and target highlights remain unaccepted",
+    "Ordinary main-scene Reports promotion remains open"
+  ],
+  "interaction_source": "build/reports-log-controls-native-20261001-072115",
+  "secondary_click": {
+    "focus": [
+      "dwarfmode/Default"
+    ],
+    "window": [
+      128,
+      72,
+      165
+    ]
+  },
+  "gpu_verification": {
+    "source": "build/reports-log-controls-gpu",
+    "rectangle": [
+      888,
+      112,
+      936,
+      220
+    ],
+    "different_pixels": 0,
+    "pointer_target": [
+      140,
+      80,
+      165
+    ],
+    "diagnostics": "passed_with_known_issues"
+  },
+  "preservation": {
+    "owned_df_pid": 54208,
+    "frame": 0,
+    "save_unchanged": true,
+    "owned_df_closed": true
+  },
+  "speaker_navigation": {
+    "baseline": {
+      "focus": [
+        "dwarfmode/Announcements"
+      ],
+      "speaker_position": [
+        132,
+        70,
+        165
+      ],
+      "window": [
+        98,
+        60,
+        165
+      ]
+    },
+    "after-speaker": {
+      "focus": [
+        "dwarfmode/ViewSheets/UNIT/Overview"
+      ],
+      "speaker_position": [
+        132,
+        70,
+        165
+      ],
+      "window": [
+        120,
+        62,
+        165
+      ]
+    },
+    "after-back": {
+      "focus": [
+        "dwarfmode/Default"
+      ],
+      "speaker_position": [
+        132,
+        70,
+        165
+      ],
+      "window": [
+        120,
+        62,
+        165
+      ]
+    }
+  },
+  "speaker_gpu_verification": {
+    "source": "build/reports-speaker-gpu",
+    "rectangle": [
+      864,
+      112,
+      936,
+      328
+    ],
+    "different_pixels": 0,
+    "speaker_pointer_emitted": 2905,
+    "diagnostics": "passed_with_known_issues"
+  },
+  "speaker_routing_verification": "build/qa/reports-speaker-missing",
+  "speaker_live_verification": {
+    "source": "build/reports-speaker-live-20261001-073355",
+    "observations": [
+      {
+        "camera": [
+          132.5,
+          166.0,
+          70.5
+        ],
+        "display_keys": [
+          "detail",
+          "stale",
+          "error"
+        ],
+        "tile": [
+          132,
+          70,
+          165
+        ],
+        "unit_id": 2905,
+        "view": "SpeakerOverview",
+        "detail_summary": {
+          "unit_id": 2905,
+          "complete": true,
+          "sections": 25,
+          "name": "Ronu Samosan \"Handlelions\", Human Swordsmaster"
+        }
+      },
+      {
+        "host_released": true,
+        "inspector_open": false,
+        "reports_open": false,
+        "view": "Back"
+      },
+      {
+        "inspector_open": false,
+        "reports_open": true,
+        "speaker_id": 2000000000,
+        "view": "MissingSpeaker"
+      }
+    ],
+    "owned_df_pid": 52600,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "diagnostics": "passed_with_known_issues",
+    "scope": "Real bridge/model/service, actual Reports viewport click, factory, camera and existing inspector, complete creature data then Escape. Injected host interaction adapter; main-scene loading is not covered.",
+    "prior_attempts": [
+      {
+        "source": "build/reports-speaker-live-20261001-072815",
+        "scope": "Routing only; captured loading shell, not populated Overview"
+      },
+      {
+        "source": "build/reports-speaker-live-20261001-072906",
+        "status": "failed",
+        "reason": "Harness omitted resident-info pump"
+      },
+      {
+        "source": "build/reports-speaker-live-20261001-073028",
+        "status": "failed",
+        "reason": "Harness omitted session epoch pump"
+      }
+    ]
+  },
+  "missing_speaker_native": {
+    "source": "build/reports-missing-speaker-native-20261001-073209",
+    "speaker_id": 2000000000,
+    "button_visible": true,
+    "after_click_focus": [
+      "dwarfmode/Announcements"
+    ],
+    "owned_df_pid": 35268,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true
+  },
+  "tooltip_probe": {
+    "sources": [
+      "build/reports-tooltip-native-20261001-074101",
+      "build/reports-tooltip-native-20261001-074251"
+    ],
+    "result": "inconclusive",
+    "method": "Pointer coordinates and native feed/render on primary Generic, secondary Item, Unit, speaker and pause controls; second run additionally enables enabler mouse focus/tracking. Legacy current_hover remained NONE. No matching visible tooltip established.",
+    "finding": "widget tooltip is a std::variant<string,function> on widget (df.g_src.ViewBase.xml), distinct from main_interface.hover_instruction. Legacy caption table is not evidence that a Reports widget uses that caption.",
+    "owned_df_pids": [
+      9872,
+      44920
+    ],
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "next": "Capture widget-owned tooltip through actual native hover delivery; do not infer wording from the legacy caption table or absence in these probes."
+  }
+}

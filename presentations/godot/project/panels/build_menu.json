@@ -1,0 +1,641 @@
+{
+  "entries": [
+    {
+      "label": "Workshops",
+      "icon": "BUILDING_ICON_WORKSHOPS",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Clothing and leather",
+          "icon": "BUILDING_ICON_WORKSHOPS_CLOTHING",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png",
+          "children": [
+            {
+              "label": "Leather",
+              "catalog_key": "Workshop:Leatherworks",
+              "icon": "BUILDING_ICON_WORKSHOP_LEATHER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_clothing_leather.png"
+            },
+            {
+              "label": "Loom",
+              "catalog_key": "Workshop:Loom",
+              "icon": "BUILDING_ICON_WORKSHOP_LOOM",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_clothing_leather.png"
+            },
+            {
+              "label": "Clothes",
+              "catalog_key": "Workshop:Clothiers",
+              "icon": "BUILDING_ICON_WORKSHOP_CLOTHES",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_clothing_leather.png"
+            },
+            {
+              "label": "Dyer",
+              "catalog_key": "Workshop:Dyers",
+              "icon": "BUILDING_ICON_WORKSHOP_DYER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_clothing_leather.png"
+            }
+          ]
+        },
+        {
+          "label": "Farming",
+          "icon": "BUILDING_ICON_WORKSHOPS_FARMING",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png",
+          "children": [
+            {
+              "label": "Farm plot",
+              "catalog_key": "FarmPlot",
+              "icon": "BUILDING_ICON_FARM_PLOT",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Still",
+              "catalog_key": "Workshop:Still",
+              "icon": "BUILDING_ICON_WORKSHOP_STILL",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Butcher",
+              "catalog_key": "Workshop:Butchers",
+              "icon": "BUILDING_ICON_WORKSHOP_BUTCHER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Tanner",
+              "catalog_key": "Workshop:Tanners",
+              "icon": "BUILDING_ICON_WORKSHOP_TANNER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Fishery",
+              "catalog_key": "Workshop:Fishery",
+              "icon": "BUILDING_ICON_WORKSHOP_FISHERY",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Kitchen",
+              "catalog_key": "Workshop:Kitchen",
+              "icon": "BUILDING_ICON_WORKSHOP_KITCHEN",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Farmer",
+              "catalog_key": "Workshop:Farmers",
+              "icon": "BUILDING_ICON_WORKSHOP_FARMER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Quern",
+              "catalog_key": "Workshop:Quern",
+              "icon": "BUILDING_ICON_WORKSHOP_QUERN",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Vermin Catcher's Shop",
+              "catalog_key": "Workshop:Kennels",
+              "icon": "BUILDING_ICON_WORKSHOP_KENNEL",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Nest box",
+              "catalog_key": "NestBox",
+              "icon": "BUILDING_ICON_NEST_BOX",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            },
+            {
+              "label": "Hive",
+              "catalog_key": "Hive",
+              "icon": "BUILDING_ICON_HIVE",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_farming.png"
+            }
+          ]
+        },
+        {
+          "label": "Furnaces",
+          "icon": "BUILDING_ICON_WORKSHOPS_FURNACES",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png",
+          "children": [
+            {
+              "label": "Glass furnace",
+              "catalog_key": "Furnace:GlassFurnace",
+              "icon": "BUILDING_ICON_FURNACE_GLASS",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            },
+            {
+              "label": "Kiln",
+              "catalog_key": "Furnace:Kiln",
+              "icon": "BUILDING_ICON_FURNACE_KILN",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            },
+            {
+              "label": "Magma glass furnace",
+              "catalog_key": "Furnace:MagmaGlassFurnace",
+              "icon": "BUILDING_ICON_FURNACE_GLASS",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            },
+            {
+              "label": "Magma kiln",
+              "catalog_key": "Furnace:MagmaKiln",
+              "icon": "BUILDING_ICON_FURNACE_KILN",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            },
+            {
+              "label": "Magma smelter",
+              "catalog_key": "Furnace:MagmaSmelter",
+              "icon": "BUILDING_ICON_FURNACE_SMELTER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            },
+            {
+              "label": "Smelter",
+              "catalog_key": "Furnace:Smelter",
+              "icon": "BUILDING_ICON_FURNACE_SMELTER",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            },
+            {
+              "label": "Wood furnace",
+              "catalog_key": "Furnace:WoodFurnace",
+              "icon": "BUILDING_ICON_FURNACE_WOOD",
+              "evidence": "build/evidence/native/e2/build_menu_workshops_furnaces.png"
+            }
+          ]
+        },
+        {
+          "label": "Ashery",
+          "catalog_key": "Workshop:Ashery",
+          "icon": "BUILDING_ICON_WORKSHOP_ASHERY",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Bowyer",
+          "catalog_key": "Workshop:Bowyers",
+          "icon": "BUILDING_ICON_WORKSHOP_BOWYER",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Carpenter",
+          "catalog_key": "Workshop:Carpenters",
+          "icon": "BUILDING_ICON_WORKSHOP_CARPENTER",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Crafts",
+          "catalog_key": "Workshop:Craftsdwarfs",
+          "icon": "BUILDING_ICON_WORKSHOP_CRAFTS",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Jeweler",
+          "catalog_key": "Workshop:Jewelers",
+          "icon": "BUILDING_ICON_WORKSHOP_JEWELER",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Magma forge",
+          "catalog_key": "Workshop:MagmaForge",
+          "icon": "BUILDING_ICON_WORKSHOP_METALSMITH",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Mechanic",
+          "catalog_key": "Workshop:Mechanics",
+          "icon": "BUILDING_ICON_WORKSHOP_MECHANIC",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Metalsmith",
+          "catalog_key": "Workshop:MetalsmithsForge",
+          "icon": "BUILDING_ICON_WORKSHOP_METALSMITH",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Screw Press",
+          "catalog_key": "Workshop:Custom:SCREW_PRESS",
+          "icon": "",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png",
+          "custom_icon": "SCREW_PRESS"
+        },
+        {
+          "label": "Siege",
+          "catalog_key": "Workshop:Siege",
+          "icon": "BUILDING_ICON_WORKSHOP_SIEGE",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        },
+        {
+          "label": "Soap Maker's Workshop",
+          "catalog_key": "Workshop:Custom:SOAP_MAKER",
+          "icon": "",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png",
+          "custom_icon": "SOAP_MAKER"
+        },
+        {
+          "label": "Stoneworker",
+          "catalog_key": "Workshop:Masons",
+          "icon": "BUILDING_ICON_WORKSHOP_MASON",
+          "evidence": "build/evidence/native/e2/build_menu_workshops.png"
+        }
+      ]
+    },
+    {
+      "label": "Furniture",
+      "icon": "BUILDING_ICON_FURNITURE",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Bed",
+          "catalog_key": "Bed",
+          "icon": "BUILDING_ICON_BED",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Chair",
+          "catalog_key": "Chair",
+          "icon": "BUILDING_ICON_CHAIR",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Table",
+          "catalog_key": "Table",
+          "icon": "BUILDING_ICON_TABLE",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Chest",
+          "catalog_key": "Box",
+          "icon": "BUILDING_ICON_BOX",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Cabinet",
+          "catalog_key": "Cabinet",
+          "icon": "BUILDING_ICON_CABINET",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Burial",
+          "catalog_key": "Coffin",
+          "icon": "BUILDING_ICON_COFFIN",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Slab",
+          "catalog_key": "Slab",
+          "icon": "BUILDING_ICON_SLAB",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Statue",
+          "catalog_key": "Statue",
+          "icon": "BUILDING_ICON_STATUE",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Traction bench",
+          "catalog_key": "TractionBench",
+          "icon": "BUILDING_ICON_TRACTION_BENCH",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Bookcase",
+          "catalog_key": "Bookcase",
+          "icon": "BUILDING_ICON_BOOKCASE",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Display",
+          "catalog_key": "DisplayFurniture",
+          "icon": "BUILDING_ICON_DISPLAY_FURNITURE",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Offering place",
+          "catalog_key": "OfferingPlace",
+          "icon": "BUILDING_ICON_OFFERING_PLACE",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        },
+        {
+          "label": "Instrument",
+          "catalog_key": "Instrument",
+          "icon": "BUILDING_ICON_INSTRUMENT",
+          "evidence": "build/evidence/native/e2/build_menu_furniture.png"
+        }
+      ]
+    },
+    {
+      "label": "Doors/hatches",
+      "icon": "BUILDING_ICON_DOORS_HATCHES",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Door",
+          "catalog_key": "Door",
+          "icon": "BUILDING_ICON_DOOR",
+          "evidence": "build/evidence/native/e2/build_menu_doors_hatches.png"
+        },
+        {
+          "label": "Hatch",
+          "catalog_key": "Hatch",
+          "icon": "BUILDING_ICON_HATCH",
+          "evidence": "build/evidence/native/e2/build_menu_doors_hatches.png"
+        }
+      ]
+    },
+    {
+      "label": "Constructions",
+      "icon": "BUILDING_ICON_WALLS_FLOORS",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Wall",
+          "catalog_key": "Construction:Wall",
+          "icon": "BUILDING_ICON_WALL",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Reinforced Wall",
+          "catalog_key": "Construction:ReinforcedWall",
+          "icon": "BUILDING_ICON_REINFORCED_WALL",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Floor",
+          "catalog_key": "Construction:Floor",
+          "icon": "BUILDING_ICON_FLOOR",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Ramp",
+          "catalog_key": "Construction:Ramp",
+          "icon": "BUILDING_ICON_RAMP",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Stairs",
+          "catalog_key": "Construction:Stairs",
+          "icon": "BUILDING_ICON_STAIRS",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Bridge",
+          "catalog_key": "Bridge",
+          "icon": "BUILDING_ICON_BRIDGE",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Paved road",
+          "catalog_key": "RoadPaved",
+          "icon": "BUILDING_ICON_ROAD_PAVED",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Dirt road",
+          "catalog_key": "RoadDirt",
+          "icon": "BUILDING_ICON_ROAD_DIRT",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Fortification",
+          "catalog_key": "Construction:Fortification",
+          "icon": "BUILDING_ICON_FORTIFICATION",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Wall grate",
+          "catalog_key": "GrateWall",
+          "icon": "BUILDING_ICON_GRATE_WALL",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Floor grate",
+          "catalog_key": "GrateFloor",
+          "icon": "BUILDING_ICON_GRATE_FLOOR",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Vertical bars",
+          "catalog_key": "BarsVertical",
+          "icon": "BUILDING_ICON_BARS_VERTICAL",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Floor bars",
+          "catalog_key": "BarsFloor",
+          "icon": "BUILDING_ICON_BARS_FLOORS",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Glass window",
+          "catalog_key": "WindowGlass",
+          "icon": "BUILDING_ICON_WINDOW_GLASS",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Gem window",
+          "catalog_key": "WindowGem",
+          "icon": "BUILDING_ICON_WINDOW_GEM",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Support",
+          "catalog_key": "Support",
+          "icon": "BUILDING_ICON_SUPPORT",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Track",
+          "catalog_key": "Construction:Track",
+          "icon": "BUILDING_ICON_TRACK",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        },
+        {
+          "label": "Track stop",
+          "catalog_key": "Trap:TrackStop",
+          "icon": "BUILDING_ICON_TRACK_STOP",
+          "evidence": "build/evidence/native/e2/build_menu_constructions.png"
+        }
+      ]
+    },
+    {
+      "label": "Machines/fluids",
+      "icon": "BUILDING_ICON_MACHINES_FLUIDS",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Lever",
+          "catalog_key": "Trap:Lever",
+          "icon": "BUILDING_ICON_LEVER",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Well",
+          "catalog_key": "Well",
+          "icon": "BUILDING_ICON_WELL",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Floodgate",
+          "catalog_key": "Floodgate",
+          "icon": "BUILDING_ICON_FLOODGATE",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Screw pump",
+          "catalog_key": "ScrewPump",
+          "icon": "BUILDING_ICON_SCREW_PUMP",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Water wheel",
+          "catalog_key": "WaterWheel",
+          "icon": "BUILDING_ICON_WATER_WHEEL",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Windmill",
+          "catalog_key": "Windmill",
+          "icon": "BUILDING_ICON_WINDMILL",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Gear assembly",
+          "catalog_key": "GearAssembly",
+          "icon": "BUILDING_ICON_GEAR_ASSEMBLY",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Horizontal axle",
+          "catalog_key": "AxleHorizontal",
+          "icon": "BUILDING_ICON_AXLE_HORIZONTAL",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Vertical axle",
+          "catalog_key": "AxleVertical",
+          "icon": "BUILDING_ICON_AXLE_VERTICAL",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Millstone",
+          "catalog_key": "Workshop:Millstone",
+          "icon": "BUILDING_ICON_WORKSHOP_MILLSTONE",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        },
+        {
+          "label": "Rollers",
+          "catalog_key": "Rollers",
+          "icon": "BUILDING_ICON_ROLLERS",
+          "evidence": "build/evidence/native/e2/build_menu_machines_fluids.png"
+        }
+      ]
+    },
+    {
+      "label": "Cages/restraints",
+      "icon": "BUILDING_ICON_CAGES_RESTRAINT",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Rope/chain",
+          "catalog_key": "Chain",
+          "icon": "BUILDING_ICON_RESTRAINT",
+          "evidence": "build/evidence/native/e2/build_menu_cages_restraints.png"
+        },
+        {
+          "label": "Cage",
+          "catalog_key": "Cage",
+          "icon": "BUILDING_ICON_CAGE",
+          "evidence": "build/evidence/native/e2/build_menu_cages_restraints.png"
+        },
+        {
+          "label": "Animal trap",
+          "catalog_key": "AnimalTrap",
+          "icon": "BUILDING_ICON_ANIMAL_TRAP",
+          "evidence": "build/evidence/native/e2/build_menu_cages_restraints.png"
+        }
+      ]
+    },
+    {
+      "label": "Traps",
+      "icon": "BUILDING_ICON_TRAPS",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Pressure plate",
+          "catalog_key": "Trap:PressurePlate",
+          "icon": "BUILDING_ICON_PRESSURE_PLATE",
+          "evidence": "build/evidence/native/e2/build_menu_traps.png"
+        },
+        {
+          "label": "Stone-fall",
+          "catalog_key": "Trap:StoneFallTrap",
+          "icon": "BUILDING_ICON_TRAP_STONE",
+          "evidence": "build/evidence/native/e2/build_menu_traps.png"
+        },
+        {
+          "label": "Weapon",
+          "catalog_key": "Trap:WeaponTrap",
+          "icon": "BUILDING_ICON_TRAP_WEAPON",
+          "evidence": "build/evidence/native/e2/build_menu_traps.png"
+        },
+        {
+          "label": "Cage",
+          "catalog_key": "Trap:CageTrap",
+          "icon": "BUILDING_ICON_TRAP_CAGE",
+          "evidence": "build/evidence/native/e2/build_menu_traps.png"
+        },
+        {
+          "label": "Upright weapon/spike",
+          "catalog_key": "Weapon",
+          "icon": "BUILDING_ICON_WEAPON",
+          "evidence": "build/evidence/native/e2/build_menu_traps.png"
+        }
+      ]
+    },
+    {
+      "label": "Military",
+      "icon": "BUILDING_ICON_MILITARY",
+      "evidence": "build/evidence/native/e2/build_menu_top.png",
+      "children": [
+        {
+          "label": "Archery target",
+          "catalog_key": "ArcheryTarget",
+          "icon": "BUILDING_ICON_ARCHERY_TARGET",
+          "evidence": "build/evidence/native/e2/build_menu_military.png"
+        },
+        {
+          "label": "Weapon rack",
+          "catalog_key": "Weaponrack",
+          "icon": "BUILDING_ICON_WEAPON_RACK",
+          "evidence": "build/evidence/native/e2/build_menu_military.png"
+        },
+        {
+          "label": "Armor stand",
+          "catalog_key": "Armorstand",
+          "icon": "BUILDING_ICON_ARMOR_STAND",
+          "evidence": "build/evidence/native/e2/build_menu_military.png"
+        },
+        {
+          "label": "Ballista",
+          "catalog_key": "SiegeEngine:Ballista",
+          "icon": "BUILDING_ICON_BALLISTA",
+          "evidence": "build/evidence/native/e2/build_menu_military.png"
+        },
+        {
+          "label": "Catapult",
+          "catalog_key": "SiegeEngine:Catapult",
+          "icon": "BUILDING_ICON_CATAPULT",
+          "evidence": "build/evidence/native/e2/build_menu_military.png"
+        },
+        {
+          "label": "Bolt thrower",
+          "catalog_key": "SiegeEngine:BoltThrower",
+          "icon": "BUILDING_ICON_BOLT_THROWER",
+          "evidence": "build/evidence/native/e2/build_menu_military.png"
+        }
+      ]
+    },
+    {
+      "label": "Trade depot",
+      "catalog_key": "TradeDepot",
+      "icon": "BUILDING_ICON_TRADE_DEPOT",
+      "evidence": "build/evidence/native/e2/build_menu_top.png"
+    }
+  ]
+}

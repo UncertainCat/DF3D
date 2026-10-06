@@ -394,11 +394,13 @@ def main():
     assert edit(25, 0, condition_index=0, item_type=3, item_subtype=0, mat_type=0, mat_index=0, compare=0, threshold=2, traits=lua.table_from([]))["ok"]
     assert len(observed(0)["conditions"][1]["traits"]) == 0
     lua.execute("df.global.world.items.other[df.items_other_id.WEAPON]=vec{sample_item({},true,2),sample_item({forbid=true},true),sample_item({dump=true},true),sample_item({in_job=true},true),sample_item({owned=true},true),sample_item({},false),sample_item({removed=true},true,11),sample_item({garbage_collect=true},true,13)}")
+    description_before_estimate = observed(0)["conditions"][1]["description"]
     advanced = helper(lua.table_from({"step":2048}))
     assert advanced["steps"] == 8 and advanced["active_kinds"] == 0
     row = observed(0)["conditions"][1]
     assert row["satisfaction"] == 2 and row["estimated"] and row["estimate_count"] == 2 and row["satisfied"]
-    assert "DF3D estimate: 2 matching (rule met)" in row["description"]
+    assert row["description"] == description_before_estimate
+    assert "DF3D estimate" not in row["description"]
     # The same condition through IN_PLAY sees exactly the live subset.
     lua.execute("df.items_other_id.WEAPON=nil;df.global.world.items.other[df.items_other_id.IN_PLAY]=vec{sample_item({},true,2)}")
     assert edit(25, 0, condition_index=0, item_type=3, item_subtype=0, mat_type=0, mat_index=0, compare=0, threshold=2)["ok"]

@@ -1,4 +1,6 @@
 extends Node3D
+signal command_results_received(results: Array)
+signal pause_requested(paused: bool)
 var frame_diagnostics # Optional recorder, injected only for explicit boundary probes.
 # Layer-4 interaction controller. Every query/command goes through Df3dWorld.
 const Selection = preload("res://scripts/interaction_state.gd")
@@ -299,6 +301,7 @@ func _process_view(delta: float) -> void:
 				_end = _start + Vector3i(maxi(1, int(parts[2])) - 1, maxi(1, int(parts[3])) - 1, 0)
 				_update_preview()
 	var results: Array = world.drain_command_results()
+	command_results_received.emit(results)
 	for outcome in state.receive(results):
 		_cue("accepted" if outcome == 0 else "rejected")
 	state.expire(Time.get_ticks_msec())
@@ -601,6 +604,7 @@ func _building_flags(forbidden: bool) -> void:
 
 func _pause(paused: bool) -> void:
 	if _can_send():
+		pause_requested.emit(paused)
 		_submit(world.send_set_pause(paused), "Pause" if paused else "Resume")
 
 var _marker_revision := -1

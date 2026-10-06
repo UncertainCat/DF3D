@@ -129,10 +129,36 @@ func run():
 	check(world.load_fixture(path), "fixture loads")
 	world.poll()
 	world.set_top_z(2)
+	check(world.get_window_depth() == 3, "default terrain depth follows loaded map")
+	check(world.get_sprite_depth() == 12, "default sprite range is twelve levels")
 	world.set_window_depth(2)
 	world.poll()
 	validate(7)
 	var initial_cursor := delta_revision
+	var initial_layout := {}
+	for i in world.item_ids().size():
+		initial_layout[str(world.item_ids()[i])+":"+str(world.item_stack_ordinals()[i])] = world.item_positions()[i]
+	# A sprite range is independent of terrain residency and follows the selected
+	# level. Exercise both edges and restoration without advancing the replay.
+	world.set_sprite_depth(1)
+	world.poll()
+	validate(1)
+	check(world.item_ids()[0] == 500, "range includes selected level and excludes level below")
+	check(world.get_window_depth() == 2, "sprite range preserves terrain depth")
+	world.set_top_z(1)
+	world.poll()
+	validate(6)
+	check(not 500 in world.item_ids(), "range follows selected level and excludes level above")
+	world.set_top_z(2)
+	world.set_sprite_depth(2)
+	world.poll()
+	validate(7)
+	world.set_sprite_depth(0)
+	world.poll()
+	validate(7)
+	check(world.get_sprite_depth() == 0, "zero restores terrain-inherited range")
+	for i in world.item_ids().size():
+		check(initial_layout.get(str(world.item_ids()[i])+":"+str(world.item_stack_ordinals()[i])) == world.item_positions()[i], "restoring range preserves item stack positions and ordinals")
 	var before := world.presentation_perf_stats()
 	advance(1)
 	validate(7)

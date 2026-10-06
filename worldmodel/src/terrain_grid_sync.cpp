@@ -19,6 +19,10 @@ inline TileState fromGridTile(const shm::TerrainTile& t) {
   o.designation = static_cast<DesignationKind>(shm::terrainOperation(t.designation));
   o.designationPriority = shm::terrainPriority(t.designation);
   o.designationMarker = shm::terrainMarker(t.designation);
+  o.subterranean=(t.environment_flags&1)!=0; o.brookTop=(t.environment_flags&2)!=0;
+  o.root=(t.environment_flags&4)!=0;
+  o.buildingOccupancy=t.building_occupancy;
+  o.completedTrack=t.track_blockers>>4;
   o.track=t.track; o.traffic=t.traffic; o.warnings=t.warnings;
   o.trackClearanceBlocked=(t.track_blockers&1)!=0;
   o.trackHorizontalBlocked=(t.track_blockers&2)!=0;
@@ -68,6 +72,9 @@ bool synthesizeFullFromGrid(const shm::TerrainHeader* h, GridScratch& scratch, S
   data.tileStorage.resize(nBlocks * kTilesPerBlock);
   for (size_t i = 0, n = data.tileStorage.size(); i < n; ++i) {
     const shm::TerrainTile& raw = scratch.tiles[i];
+    if(raw.environment_flags>7 || raw.building_occupancy>7) {
+      error="invalid tile environment"; return false;
+    }
     // Same range checks as the ring validator (schema/cpp/validate.cpp).
     const auto fault = df3d::mirror::checkTileValues(df3d::mirror::RawTileValues{
         raw.shape, raw.material_kind, raw.liquid_level, raw.liquid_kind, raw.flags,

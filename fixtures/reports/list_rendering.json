@@ -1,0 +1,1023 @@
+{
+  "source": "build/evidence/native/e7/00_initial_state.txt and r01_all_initial.png",
+  "native_version": "DF53.16 Steam / DFHack53.16-r1",
+  "method": "Verbatim semantic row transcription from captured native report metadata; first15 rows match All screenshot. This announcement sample does not define general All membership.",
+  "rows": [
+    {
+      "id": 75857,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 139435,
+      "repeat_count": 2,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        111,
+        77,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Doren Thosbutalåth, Dwarven Child cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 76329,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 140835,
+      "repeat_count": 1,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        122,
+        52,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Adil Lolorgemsit, Dwarven Child cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 76508,
+      "category": "STRANGE_MOOD",
+      "year": 106,
+      "year_tick": 141200,
+      "repeat_count": 0,
+      "color": 7,
+      "bright": true,
+      "position": [
+        146,
+        91,
+        164
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Urist Kodzas, Clothier is taken by a fey mood!",
+      "text_complete": true
+    },
+    {
+      "id": 76550,
+      "category": "MOOD_BUILDING_CLAIMED",
+      "year": 106,
+      "year_tick": 141729,
+      "repeat_count": 0,
+      "color": 7,
+      "bright": true,
+      "position": [
+        110,
+        120,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Urist Kodzas has claimed a Clothier's Shop.",
+      "text_complete": true
+    },
+    {
+      "id": 76829,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 143035,
+      "repeat_count": 1,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        128,
+        80,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Rigòth Shinatír, sacred call cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77051,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 143935,
+      "repeat_count": 0,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        137,
+        100,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Uzol Zulbanromlam, Performer cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77094,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 144135,
+      "repeat_count": 0,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        128,
+        79,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Stukos Vudtharkûbuk, Performer cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77209,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 144535,
+      "repeat_count": 3,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        120,
+        53,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Zon Mistêmrovod, Carpenter cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77310,
+      "category": "ARTIFACT_BEGUN",
+      "year": 106,
+      "year_tick": 145083,
+      "repeat_count": 0,
+      "color": 7,
+      "bright": true,
+      "position": [
+        110,
+        120,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Urist Kodzas has begun a mysterious construction!",
+      "text_complete": true
+    },
+    {
+      "id": 77311,
+      "category": "SOMEBODY_GROWS_UP",
+      "year": 106,
+      "year_tick": 146135,
+      "repeat_count": 0,
+      "color": 2,
+      "bright": true,
+      "position": [
+        137,
+        99,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "èrith Loloklitast has grown to become a Nanny Goat.",
+      "text_complete": true
+    },
+    {
+      "id": 77312,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 146135,
+      "repeat_count": 1,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        124,
+        65,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Olon Arzesnil, Miner cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77313,
+      "category": "STRESSED_CITIZEN",
+      "year": 106,
+      "year_tick": 147202,
+      "repeat_count": 0,
+      "color": 6,
+      "bright": false,
+      "position": [
+        134,
+        74,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Doren Thosbutalåth, Dwarven Child has slipped into depression...",
+      "text_complete": true
+    },
+    {
+      "id": 77314,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 147202,
+      "repeat_count": 0,
+      "color": 4,
+      "bright": true,
+      "position": [
+        134,
+        74,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Doren Thosbutalåth, Dwarven Child cancels Store item in stockpile: Too depressed.",
+      "text_complete": true
+    },
+    {
+      "id": 77315,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 147435,
+      "repeat_count": 1,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        129,
+        50,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Unib Rakustazin, king cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77316,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 148235,
+      "repeat_count": 4,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        133,
+        91,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Dôbar Gébarunib, Farmer cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77682,
+      "category": "MADE_ARTIFACT",
+      "year": 106,
+      "year_tick": 150594,
+      "repeat_count": 0,
+      "color": 6,
+      "bright": true,
+      "position": [
+        110,
+        120,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Urist Kodzas, Clothier has created Koresis, a bell-shaped cave spider silk skirt!  He offers it to The Rough Crystal.",
+      "text_complete": true
+    },
+    {
+      "id": 77770,
+      "category": "CANCEL_JOB",
+      "year": 106,
+      "year_tick": 150935,
+      "repeat_count": 2,
+      "color": 4,
+      "bright": true,
+      "position": [
+        101,
+        71,
+        164
+      ],
+      "position2": [
+        129,
+        50,
+        165
+      ],
+      "position_visible": true,
+      "position2_visible": true,
+      "text": "Uzol Bardumtekkud, Miner cancels Store item in stockpile: Item inaccessible.",
+      "text_complete": true
+    },
+    {
+      "id": 77854,
+      "category": "SOMEBODY_GROWS_UP",
+      "year": 106,
+      "year_tick": 153377,
+      "repeat_count": 0,
+      "color": 2,
+      "bright": true,
+      "position": [
+        150,
+        76,
+        164
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Tulon Udibatham has grown to become a Nanny Goat.",
+      "text_complete": true
+    },
+    {
+      "id": 78598,
+      "category": "D_MIGRANTS_ARRIVAL",
+      "year": 106,
+      "year_tick": 156680,
+      "repeat_count": 0,
+      "color": 7,
+      "bright": false,
+      "position": [
+        191,
+        180,
+        175
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Some migrants have arrived.",
+      "text_complete": true
+    },
+    {
+      "id": 78821,
+      "category": "NEW_MANDATE",
+      "year": 106,
+      "year_tick": 157080,
+      "repeat_count": 0,
+      "color": 6,
+      "bright": true,
+      "position": [
+        137,
+        98,
+        165
+      ],
+      "position2": [
+        -30000,
+        -30000,
+        -30000
+      ],
+      "position_visible": true,
+      "position2_visible": false,
+      "text": "Unib Rakustazin, king has mandated the construction of certain goods.",
+      "text_complete": true
+    }
+  ],
+  "wrapping": {
+    "source": "build/evidence/native/e7/q5_long_and_repeat.txt and r29_arrivals_long_and_repeat.png",
+    "test_copy_only": true,
+    "rows": [
+      {
+        "id": 78598,
+        "category": "D_MIGRANTS_ARRIVAL",
+        "year": 106,
+        "year_tick": 156680,
+        "repeat_count": 0,
+        "color": 7,
+        "bright": false,
+        "position": [
+          191,
+          180,
+          175
+        ],
+        "position2": [
+          -30000,
+          -30000,
+          -30000
+        ],
+        "position_visible": true,
+        "position2_visible": false,
+        "text": "Some migrants have arrived.",
+        "text_complete": true
+      },
+      {
+        "id": 78822,
+        "year": 106,
+        "year_tick": 157249,
+        "color": 11,
+        "bright": true,
+        "text": "DF3D evidence test: this is a deliberately long synthetic announcement used to observe how the native Reports screen wraps or continues text that is wider than the list column, ending here.",
+        "position_visible": true,
+        "position": [
+          131,
+          74,
+          165
+        ],
+        "position2_visible": false,
+        "position2": [
+          -30000,
+          -30000,
+          -30000
+        ]
+      },
+      {
+        "id": 78823,
+        "year": 106,
+        "year_tick": 157249,
+        "color": 10,
+        "bright": true,
+        "text": "DF3D evidence test: repeated short report.",
+        "position_visible": true,
+        "position": [
+          131,
+          74,
+          165
+        ],
+        "position2_visible": false,
+        "position2": [
+          -30000,
+          -30000,
+          -30000
+        ]
+      }
+    ]
+  },
+  "unit_log": {
+    "source": "build/evidence/native/e7/q3_sparring_unit_2905_log.txt and r12_sparring_unit_log.png",
+    "unit_id": 2905,
+    "category": 1,
+    "rows": [
+      {
+        "id": 78265,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the left foot with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78266,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster punches the human Swordmaster in the left eye with his left hand, lightly tapping the target!"
+      },
+      {
+        "id": 78267,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is blocked!"
+      },
+      {
+        "id": 78268,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the upper body with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78269,
+        "color": 6,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster charges at the human Swordmaster!"
+      },
+      {
+        "id": 78270,
+        "color": 6,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster collides with the human Swordmaster!"
+      },
+      {
+        "id": 78271,
+        "color": 6,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster is knocked over!"
+      },
+      {
+        "id": 78272,
+        "color": 7,
+        "bright": false,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster stands up."
+      },
+      {
+        "id": 78273,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster punches the human Swordmaster in the head with his left hand, lightly tapping the target!"
+      },
+      {
+        "id": 78274,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is blocked with the *steel shield*!"
+      },
+      {
+        "id": 78275,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the left foot with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78276,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the left cheek with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78277,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is blocked with the *steel shield*!"
+      },
+      {
+        "id": 78278,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the right lower arm with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78279,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the upper body with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78280,
+        "color": 6,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster charges at the human Swordmaster!"
+      },
+      {
+        "id": 78281,
+        "color": 5,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster looks surprised by the ferocity of The Spearmaster's onslaught!"
+      },
+      {
+        "id": 78282,
+        "color": 6,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster collides with the human Swordmaster!"
+      },
+      {
+        "id": 78283,
+        "color": 6,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster is knocked over!"
+      },
+      {
+        "id": 78284,
+        "color": 7,
+        "bright": false,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster stands up."
+      },
+      {
+        "id": 78285,
+        "color": 3,
+        "bright": true,
+        "position": [
+          130,
+          72,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is deftly parried by the (bronze spear)!"
+      },
+      {
+        "id": 78286,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster punches the human Swordmaster in the right foot with his left hand, lightly tapping the target!"
+      },
+      {
+        "id": 78287,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is deftly parried by the (bronze spear)!"
+      },
+      {
+        "id": 78288,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the left lower arm with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78289,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster strikes at the human Swordmaster but the shot is blocked with the ☼steel shield☼!"
+      },
+      {
+        "id": 78290,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster attacks the Spearmaster but He jumps away!"
+      },
+      {
+        "id": 78291,
+        "color": 7,
+        "bright": false,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster stands up."
+      },
+      {
+        "id": 78292,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster bashes the human Swordmaster in the lower left back teeth with the shaft of his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78293,
+        "color": 3,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster misses the Spearmaster!"
+      },
+      {
+        "id": 78294,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster scratches the human Swordmaster in the right lower arm, lightly tapping the target!"
+      },
+      {
+        "id": 78295,
+        "color": 3,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is blocked with the *steel shield*!"
+      },
+      {
+        "id": 78296,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster strikes at the human Swordmaster but the shot is blocked with the ☼steel shield☼!"
+      },
+      {
+        "id": 78297,
+        "color": 3,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster strikes at the Spearmaster but the shot is blocked with the *steel shield*!"
+      },
+      {
+        "id": 78298,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster bashes the human Swordmaster in the neck with the shaft of his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78299,
+        "color": 3,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster misses the Spearmaster!"
+      },
+      {
+        "id": 78300,
+        "color": 3,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The Spearmaster stabs the human Swordmaster in the upper body with his (bronze spear), lightly tapping the target!"
+      },
+      {
+        "id": 78301,
+        "color": 6,
+        "bright": true,
+        "position": [
+          131,
+          71,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster charges at the Spearmaster!"
+      },
+      {
+        "id": 78302,
+        "color": 6,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster collides with the Spearmaster!"
+      },
+      {
+        "id": 78303,
+        "color": 6,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "They tangle together and fall over!"
+      },
+      {
+        "id": 78305,
+        "color": 3,
+        "bright": true,
+        "position": [
+          132,
+          70,
+          165
+        ],
+        "position_visible": true,
+        "text": "The human Swordmaster is no longer stunned."
+      }
+    ]
+  }
+}

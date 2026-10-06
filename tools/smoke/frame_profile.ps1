@@ -3,10 +3,11 @@ param([string]$OutputName = 'perf-current', [Alias('Profile')][ValidateSet('off'
 $ErrorActionPreference = 'Stop'
 if ($OutputName -notmatch '^[A-Za-z0-9_-]+$') { throw 'OutputName must be a simple filename' }
 $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+$view = (Get-Content "$repo/fixtures/recorded/mature_fort_pause_53.16.manifest.json" -Raw | ConvertFrom-Json).view
 $profileEnv = @{
  DF3D_FIXTURE = "$repo/fixtures/recorded/mature_fort_pause_53.16.df3dfix"
- DF3D_FIXTURE_TICK = '1000'; DF3D_TOP_Z = '127'; DF3D_WINDOW = '24'
- DF3D_CAM_FOCUS = '96,94,127'; DF3D_CAM_DIST = '60'; DF3D_AUDIO_SILENT = '1'
+ DF3D_FIXTURE_TICK = [string]$view.tick; DF3D_TOP_Z = [string]$view.top_z; DF3D_WINDOW = '24'
+ DF3D_CAM_FOCUS = "$($view.x),$($view.y),$($view.top_z)"; DF3D_CAM_DIST = [string]$view.distance; DF3D_AUDIO_SILENT = '1'
  DF3D_PERF_OUT = "$repo/build/$OutputName"
  DF3D_PROFILE = $Profiling; DF3D_PROFILE_OUT = "$repo/build/$OutputName"
  DF3D_PERF_NO_RENDER_READBACK = '1'

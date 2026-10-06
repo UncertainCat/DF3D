@@ -1,0 +1,1676 @@
+{
+  "provenance": {
+    "capture": "build\\location-access-visual-20260929-201709",
+    "sha256": "90930fa00e6716716e9ad03bf009d5937d845e1b336547f31f2d3c9d1add4d02",
+    "method": "Protected paused owned clone; native render before/after168 native permission clicks;48 distinct masks,21 immediate hover contexts. All flags restored, final paused, both saves unchanged.",
+    "scope": "Text, color indices, cell positions and selected graphic rectangles. Immediate hover only; delayed tooltip behavior is not established. Tile IDs are capture metadata, never runtime state.",
+    "art_definitions": "data/vanilla/vanilla_interface/graphics/graphics_interface.txt: LOCATION_PERMISSION_OFF/ON rectangles",
+    "colors": "Supported data/init/colors.txt: LGREEN,WHITE,YELLOW"
+  },
+  "cases": [
+    {
+      "id": 0,
+      "mask": 0,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": false,
+        "members": false
+      },
+      "label": "Citizens only",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        225,
+        17
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_ON_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 1,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": false,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 2,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": true,
+        "members": false
+      },
+      "label": "Citizens and long-term residents only",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_ON_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 3,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": true,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 4,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 5,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 6,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 0,
+      "mask": 7,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 0,
+      "details": {
+        "kind": 1,
+        "visitors": false,
+        "residents": false,
+        "members": false
+      },
+      "label": "Citizens only",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        225,
+        17
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_ON_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 1,
+      "details": {
+        "kind": 1,
+        "visitors": true,
+        "residents": false,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 2,
+      "details": {
+        "kind": 1,
+        "visitors": false,
+        "residents": true,
+        "members": false
+      },
+      "label": "Citizens and long-term residents only",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_ON_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 3,
+      "details": {
+        "kind": 1,
+        "visitors": true,
+        "residents": true,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 4,
+      "details": {
+        "kind": 1,
+        "visitors": false,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 5,
+      "details": {
+        "kind": 1,
+        "visitors": true,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 6,
+      "details": {
+        "kind": 1,
+        "visitors": false,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 1,
+      "mask": 7,
+      "details": {
+        "kind": 1,
+        "visitors": true,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 0,
+      "details": {
+        "kind": 5,
+        "visitors": false,
+        "residents": false,
+        "members": false
+      },
+      "label": "Citizens only",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        225,
+        17
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_ON_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 1,
+      "details": {
+        "kind": 5,
+        "visitors": true,
+        "residents": false,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 2,
+      "details": {
+        "kind": 5,
+        "visitors": false,
+        "residents": true,
+        "members": false
+      },
+      "label": "Citizens and long-term residents only",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_ON_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 3,
+      "details": {
+        "kind": 5,
+        "visitors": true,
+        "residents": true,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 4,
+      "details": {
+        "kind": 5,
+        "visitors": false,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 5,
+      "details": {
+        "kind": 5,
+        "visitors": true,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 6,
+      "details": {
+        "kind": 5,
+        "visitors": false,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 2,
+      "mask": 7,
+      "details": {
+        "kind": 5,
+        "visitors": true,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 0,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": false,
+        "members": false
+      },
+      "label": "Citizens only",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        225,
+        17
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_ON_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 1,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": false,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 2,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": true,
+        "members": false
+      },
+      "label": "Citizens and long-term residents only",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_ON_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 3,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": true,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 4,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 5,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 6,
+      "details": {
+        "kind": 2,
+        "visitors": false,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 3,
+      "mask": 7,
+      "details": {
+        "kind": 2,
+        "visitors": true,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 0,
+      "details": {
+        "kind": 3,
+        "visitors": false,
+        "residents": false,
+        "members": false
+      },
+      "label": "Citizens only",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        225,
+        17
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_ON_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 1,
+      "details": {
+        "kind": 3,
+        "visitors": true,
+        "residents": false,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 2,
+      "details": {
+        "kind": 3,
+        "visitors": false,
+        "residents": true,
+        "members": false
+      },
+      "label": "Citizens and long-term residents only",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_ON_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 3,
+      "details": {
+        "kind": 3,
+        "visitors": true,
+        "residents": true,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 4,
+      "details": {
+        "kind": 3,
+        "visitors": false,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 5,
+      "details": {
+        "kind": 3,
+        "visitors": true,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 6,
+      "details": {
+        "kind": 3,
+        "visitors": false,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 4,
+      "mask": 7,
+      "details": {
+        "kind": 3,
+        "visitors": true,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit",
+      "label_cell": {
+        "x": 62,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 0,
+      "details": {
+        "kind": 4,
+        "visitors": false,
+        "residents": false,
+        "members": false
+      },
+      "label": "Citizens only",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        225,
+        17
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_ON_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 1,
+      "details": {
+        "kind": 4,
+        "visitors": true,
+        "residents": false,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 2,
+      "details": {
+        "kind": 4,
+        "visitors": false,
+        "residents": true,
+        "members": false
+      },
+      "label": "Citizens and long-term residents only",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_ON_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 3,
+      "details": {
+        "kind": 4,
+        "visitors": true,
+        "residents": true,
+        "members": false
+      },
+      "label": "All visitors welcome",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_ON_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_OFF_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 4,
+      "details": {
+        "kind": 4,
+        "visitors": false,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit (if guild established)",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 5,
+      "details": {
+        "kind": 4,
+        "visitors": true,
+        "residents": false,
+        "members": true
+      },
+      "label": "Only members can visit (if guild established)",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 6,
+      "details": {
+        "kind": 4,
+        "visitors": false,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit (if guild established)",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    },
+    {
+      "id": 5,
+      "mask": 7,
+      "details": {
+        "kind": 4,
+        "visitors": true,
+        "residents": true,
+        "members": true
+      },
+      "label": "Only members can visit (if guild established)",
+      "label_cell": {
+        "x": 66,
+        "y": 10
+      },
+      "rgb": [
+        19,
+        253,
+        101
+      ],
+      "icons": [
+        "LOCATION_PERMISSION_OFF_VISITORS",
+        "LOCATION_PERMISSION_OFF_RESIDENTS",
+        "LOCATION_PERMISSION_OFF_CITIZENS",
+        "LOCATION_PERMISSION_ON_MEMBERS"
+      ]
+    }
+  ],
+  "hovers": [
+    {
+      "id": 0,
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "immediate_changed_lines": []
+    },
+    {
+      "id": 0,
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "immediate_changed_lines": []
+    },
+    {
+      "id": 0,
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "immediate_changed_lines": []
+    },
+    {
+      "id": 0,
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "immediate_changed_lines": []
+    },
+    {
+      "id": 1,
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   visitors from outside",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to fortress",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              citizens.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   long-term residents of",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   visitors from outside",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to fortress",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              citizens.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   long-term residents of",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   visitors from outside",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to members.",
+          "y": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to fortress",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              citizens.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   long-term residents of",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   visitors from outside",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to fortress",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              citizens.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   long-term residents of",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   visitors from outside",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to members.",
+          "y": 2
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option indicates",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   that the location is",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     only open to fortress",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              citizens.",
+          "y": 3
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "immediate_changed_lines": [
+        {
+          "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite               This option allows",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer                   long-term residents of",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106                     the fortress to enter",
+          "y": 2
+        },
+        {
+          "text": "                                                                                                                              this location.",
+          "y": 3
+        }
+      ]
+    }
+  ],
+  "hover_text": [
+    {
+      "action": "LOCATION_DETAILS_VISITORS_ALLOWED",
+      "x": 126,
+      "y": 0,
+      "lines": [
+        "This option allows",
+        "visitors from outside",
+        "the fortress to enter",
+        "this location."
+      ]
+    },
+    {
+      "action": "LOCATION_DETAILS_CITIZENS_ONLY",
+      "x": 126,
+      "y": 0,
+      "lines": [
+        "This option indicates",
+        "that the location is",
+        "only open to fortress",
+        "citizens."
+      ]
+    },
+    {
+      "action": "LOCATION_DETAILS_RESIDENTS_ALLOWED",
+      "x": 126,
+      "y": 0,
+      "lines": [
+        "This option allows",
+        "long-term residents of",
+        "the fortress to enter",
+        "this location."
+      ]
+    },
+    {
+      "action": "LOCATION_DETAILS_MEMBERS_ONLY",
+      "x": 126,
+      "y": 0,
+      "lines": [
+        "This option indicates",
+        "that the location is",
+        "only open to members."
+      ]
+    }
+  ],
+  "acceptance": {
+    "capture": "build\\areas-acceptance-20260929-202600",
+    "native_log_sha256": "b703fa281fe7cc41333fcd94dde900e7cb977bbdc91940344a9cbb20b7b74010",
+    "viewport_edits": 21,
+    "stale_refusals": 6,
+    "scope": "Production permission bar in main scene test scaffold; pointer routing, native effects and settled installed-sprite opaque pixel checks. Full Details layout and native top-right hover display remain pending. Both saves unchanged; only known Godot thread notice."
+  }
+}

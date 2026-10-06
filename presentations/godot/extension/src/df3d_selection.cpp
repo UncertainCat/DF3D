@@ -8,6 +8,33 @@
 using namespace godot;
 namespace df3d_godot {
 
+Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& appearance) {
+    if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::Branch) || appearance.size()!=5)return {};
+    for(const auto* field:{"material_token","subtype_raw","color_token"})
+        if(!appearance.has(field) || appearance[field].get_type()!=Variant::STRING)return {};
+    for(const auto* field:{"stack","flags"})
+        if(!appearance.has(field) || appearance[field].get_type()!=Variant::INT)return {};
+    const String material=appearance["material_token"],subtype=appearance["subtype_raw"],color=appearance["color_token"];
+    const int64_t stack=appearance["stack"],flags=appearance["flags"];
+    if(material.is_empty() || material.utf8().length()>256 || subtype.utf8().length()>128 ||
+       color.utf8().length()>128 || stack<1 || stack>INT32_MAX || flags<0 || (flags & ~int64_t(96)))return {};
+    // Candidate snapshots own these facts independently of terrain residency.
+    // No native texture, UI state or item pointer is consulted here.
+    const std::string materialToken=material.utf8().get_data(),subtypeRaw=subtype.utf8().get_data(),colorToken=color.utf8().get_data();
+    df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
+    query.subtypeRaw=subtypeRaw;query.stack=uint32_t(stack);query.flags=uint8_t(flags);
+    const auto resolved=df3d::assets::resolveItem(assets_->index,query);
+    if(!resolved.found)return {};
+    const int palette=colorToken.empty()?resolved.paletteRow:assets_->index.paletteRow(colorToken);
+    if(!colorToken.empty() && palette<0)return {};
+    const int slot=slotFor(resolved.sprite.page,palette,false);
+    const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
+    if(!texture || texture->texture.is_null())return {};
+    const auto pixels=assets_->index.pixels(resolved.sprite);
+    Ref<AtlasTexture> icon;icon.instantiate();icon->set_atlas(texture->texture);
+    icon->set_region(Rect2(pixels.px,pixels.py,pixels.pw,pixels.ph));return icon;
+}
+
 Ref<Texture2D> Df3dWorld::creature_portrait(int64_t id) {
     if(id<0 || id>INT32_MAX || !assets_)return {};
     const auto snapshot=creatureInfo_.snapshot(int32_t(id));
@@ -51,12 +78,12 @@ Ref<Texture2D> Df3dWorld::composite_appearance_texture(const wm::SelectionAppear
     return submission::texture(portrait, submission::TextureSite::Portrait);
 }
 
-Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id) {
+Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id,bool body_cell) {
     if (id<0 || id>UINT32_MAX || !source_.model().hasData()) return {};
     int slot=-1;
     Color region;
     if (kind==1) {
-        for (int64_t i=0;i<ids_.size();++i) if (ids_[i]==id) {
+        for (int64_t i=0;!body_cell && i<ids_.size();++i) if (ids_[i]==id) {
             slot=spriteSlots_[i];region=spriteRegions_[i];break;
         }
         // Roster thumbnails consume resident actor appearance even when the
@@ -141,7 +168,21 @@ Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id) {
     if (!found || found->texture.is_null()) return {};
     const auto& texture=*found;
     Ref<AtlasTexture> icon;icon.instantiate();icon->set_atlas(texture.texture);
-    icon->set_region(Rect2(region.r*texture.width,region.g*texture.height,region.b*texture.width,region.a*texture.height));
+    Rect2 pixels(region.r*texture.width,region.g*texture.height,region.b*texture.width,region.a*texture.height);
+    // Native staff selectors use the logical body cell, excluding wieldable
+    // overflow. Preserve the compositor's origin instead of shrinking the full
+    // canvas or assuming that its body always occupies the bottom-right corner.
+    if(kind==1 && body_cell) {
+        const auto* appearance=source_.model().unitAppearance(wm::UnitId(id));
+        if(appearance) {
+            const auto entry=spriteResources_.appearances.find(appearance->version);
+            const auto* composite=spriteResources_.composites.find(appearance->version);
+            if(entry!=spriteResources_.appearances.end() && entry->second.slot==slot && composite && composite->ok)
+                pixels=Rect2(-composite->originX,-composite->originY,
+                    composite->cellsX*composite->tileW,composite->cellsY*composite->tileH);
+        }
+    }
+    icon->set_region(pixels);
     return icon;
 }
 } // namespace df3d_godot

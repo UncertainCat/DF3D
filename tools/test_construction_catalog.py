@@ -77,6 +77,7 @@ def main():
                 }
             end,
         }
+        df.game_mode={DWARF=0};df.global={gamemode=0,plotinfo={race_id=-1},world={raws={creatures={all={}},buildings={all={}}}}}
         dfhack = {buildings={}}
         dfhack.buildings.getCorrectSize=function(w,h,t)
             return false, t==df.building_type.Workshop and 3 or 1,
@@ -117,7 +118,7 @@ def main():
         end
         df.job_item_vector_id={IN_PLAY=0,attrs={[0]={other=0}}}
         df.tool_uses={NONE=-1};df.item_type={TOOL=99,BAR=98};df.general_ref_type={CONTAINS_ITEM=0}
-        df.tiletype_shape={[0]='FLOOR'};df.tiletype={attrs={[0]={shape=0}}}
+        df.tiletype_shape={[0]='FLOOR'};df.tiletype={attrs={[0]={shape=0}}};df.tile_liquid={Magma=1}
         dfhack.maps={isValidTilePos=function() return true end,
             getTileFlags=function() return {flow_size=0},{building=0} end,
             getTileType=function() return 0 end,getWalkableGroup=walkable_group}
@@ -126,18 +127,19 @@ def main():
         for i=1,3 do
             stock[i]={id=i,pos={x=0,y=0,z=0},flags={on_ground=true},isAssignedToStockpile=function() return false end,
                 getType=function() return i==3 and 1 or 0 end,getSubtype=function() return -1 end,
+                getColorWhetherDyedOrNot=function()return -1 end,getStackSize=function()return 1 end,
                 getMaterial=function() return 0 end,getMaterialIndex=function() return i==2 and 1 or 0 end}
         end
         local all={[0]=stock[1],stock[2],stock[3]}
         setmetatable(all,{__len=function() return 3 end})
-        df.global={cur_year=1,cur_year_tick=0,world={raws={buildings={all={}}},items={other={[0]=all}},units={active=vector{{pos={x=0,y=0,z=0}}}}}}
+        df.global={gamemode=0,plotinfo={race_id=-1},cur_year=1,cur_year_tick=0,world={raws={buildings={all={}},creatures={all={}}},items={other={[0]=all}},units={active=vector{{pos={x=0,y=0,z=0}}}}}}
         df.item={find=function(id) reads=reads+1;return stock[id] end}
-        dfhack.items={getContainer=function() end,getPosition=position,
+        dfhack.items={getContainer=function() end,getPosition=position,getSubtypeDef=function()end,
             getGeneralRef=function() end}
         dfhack.units={isDead=function() return false end,isActive=function() return true end,
             isCitizen=function() return true end,getPosition=position}
         dfhack.job={isSuitableItem=function() return true end,isSuitableMaterial=function() return true end}
-        dfhack.matinfo={decode=function() return {toString=function() return 'stone' end} end}
+        dfhack.matinfo={decode=function() return {getToken=function()return 'INORGANIC:GRANITE'end,toString=function() return 'stone' end} end}
         dfhack.df2utf=function(v) return v end
         dfhack.with_finalize=finalize
         df.delete=function() end
@@ -147,9 +149,22 @@ def main():
         dfhack.buildings.constructBuilding=function(v) created=created+1;assert(#v.items==3);return {id=created} end
         created=0;reads=0
     """)
-    place_adapter = lua.execute(source.read_text(encoding="utf-8"))
+    def load_place_adapter():
+        lua.execute("""
+            df.global.world.raws.descriptors={colors={}}
+            dfhack.maps.getTileSize=function()return 192,192,193 end
+            dfhack.maps.getTileBlock=function(p)return {walkable=setmetatable({},{__index=function()return setmetatable({},{__index=function()return walkable_group(p)end})end})}end
+            material_search=function(reader,seeds,targets)
+                local rows={};for _,p in ipairs(targets)do rows[#rows+1]={reachable=true,distance=p.x}end
+                return {status=0,distances=rows}
+            end
+        """)
+        order=lua.execute((source.parent/'construction_material_order.lua').read_text(encoding='utf-8'))
+        names=lua.eval("function(group,id)if id then return 'fixture item '..id end end")
+        return lua.execute(source.read_text(encoding='utf-8'),None,lua.eval('function()end'),None,order,None,None,names)
+    place_adapter = load_place_adapter()
     def call(**fields):
-        base = dict(action=63, definition="Chair", epoch=7, filter=0, cursor=0, x=0, y=0, z=0)
+        base = dict(action=63, definition="Chair", epoch=7, filter=0, cursor=0, x=0, y=0, z=0, material_distances=lua.globals().material_search)
         base.update(fields)
         return place_adapter(lua.table_from(base, recursive=True))
     revisions = []
@@ -220,6 +235,7 @@ def main():
             stock[i]={id=i,flags={on_ground=true},pos={x=i,y=0,z=0},
                 isAssignedToStockpile=function() return false end,
                 getType=function() return ty end,getSubtype=function() return -1 end,
+                getColorWhetherDyedOrNot=function()return -1 end,getStackSize=function()return 1 end,
                 getMaterial=function() return 0 end,getMaterialIndex=function() return 0 end}
             all[i-1]=stock[i]
         end
@@ -233,7 +249,7 @@ def main():
         end
         created=0
     """)
-    place_adapter = lua.execute(source.read_text(encoding="utf-8"))
+    place_adapter = load_place_adapter()
     def finish(**args):
         nonlocal seq
         seq += 1
@@ -245,7 +261,8 @@ def main():
     def page(**args):
         result = call(**args)
         for _ in range(100):
-            if not result['ok'] or result['build_phase'] == 0:
+            assert result['ok'], dict(result)
+            if result['build_phase'] == 0:
                 return result
             call(step=2048)
             result = call(**args)
@@ -260,17 +277,17 @@ def main():
         result = finish(action=1, definition='Construction:Stairs', depth=depth)
         assert result['ok'] and list(result['pieces'].values()) == expected
         assert result['required'] == depth
-    rev = page()['list_revision']
+    rev = page(definition='Construction:Stairs',depth=2)['list_revision']
     result = finish(action=2, definition='Construction:Stairs', depth=2,
                     selections=[selection(rev, 2)])
-    assert result['ok'] and result['message'] == 'Painted 2 of 2'
+    assert result['ok'] and result['message'] == 'Painted 2 of 2', dict(result)
     assert lua.globals().last_build['subtype'] == lua.globals().df.construction_type.DownStair
     # Eight siege footprints/facings reach constructBuilding unchanged.
     cat = {r['key']: r for r in call(action=0)['catalog'].values()}
     assert cat['SiegeEngine:Ballista']['orientations'] == 255
     assert len(cat['SiegeEngine:Ballista']['footprints']) == 8
     for direction in range(8):
-        rev = page()['list_revision']
+        rev = page(definition='SiegeEngine:Ballista')['list_revision']
         result = finish(action=2, definition='SiegeEngine:Ballista', direction=direction,
                         selections=[selection(rev)])
         assert result['ok'], result['message']
@@ -307,7 +324,7 @@ def main():
         assert finish(action=2, definition=definition, selections=rows)['ok']
     # Fail after reservation, so the initial site check succeeds.
     for definition in ('Chair', 'Bridge'):
-        rev = page()['list_revision']
+        rev = page(definition=definition)['list_revision']
         args = dict(action=2, definition=definition, seq=seq + 1,
                     selections=[selection(rev)], step_budget=1)
         seq += 1
@@ -323,7 +340,7 @@ def main():
         assert result['placed'] == 0 and result['skipped'] == 1
         lua.execute('dfhack.maps.getTileFlags=function() return {flow_size=0},{building=0} end')
         lua.execute('dfhack.buildings.constructBuilding=function(info) return nil,"cannot place at this position" end')
-        rev = page()['list_revision']
+        rev = page(definition=definition)['list_revision']
         result = finish(action=2, definition=definition, selections=[selection(rev)])
         assert not result['ok'] and result['message'] == 'Native construction rejected'
         assert result['placed'] == 0 and result['skipped'] == 1
@@ -332,15 +349,15 @@ def main():
         dfhack.maps.getTileFlags=function(p) return {flow_size=0},{building=p.x==1 and 1 or 0} end
         dfhack.buildings.constructBuilding=function(v) return {id=1} end
     """)
-    rev = page()['list_revision']
     preview = finish(action=1, definition='Construction:Wall', width=4, height=2)
+    rev = page(definition='Construction:Wall',width=4,height=2)['list_revision']
     assert preview['required'] == 6
     result = finish(action=2, definition='Construction:Wall', width=4, height=2,
                     selections=[selection(rev, 6)])
     assert result['ok'] and result['message'] == 'Painted 6 of 8'
     assert result['placed'] == 6 and result['skipped'] == 2
     lua.execute('dfhack.buildings.constructBuilding=function(info) return nil,"cannot place at this position" end')
-    rev = page()['list_revision']
+    rev = page(definition='Construction:Wall')['list_revision']
     result = finish(action=2, definition='Construction:Wall', selections=[selection(rev)])
     assert not result['ok'] and result['message'] == 'Native construction rejected'
     assert result['placed'] == 0 and result['skipped'] == 1
@@ -386,7 +403,7 @@ def main():
             return false,t==df.building_type.SiegeEngine and 0 or 1,1,0,0
         end
         df.building_def_furnacest={is_instance=function() return false end}
-        df.global.plotinfo={civ_id=1}
+        df.global.plotinfo={civ_id=1,race_id=-1}
         df.historical_entity={find=function() return {entity_raw={workshops={permitted_building_id={1}}}} end}
         df.global.world.raws.buildings.all={{id=1,code='LONG',name=string.rep('é',65)}}
     """)
@@ -418,7 +435,7 @@ def catalog_runtime():
       'FarmPlot','RoadDirt','RoadPaved','Windmill','Stockpile','Civzone','Weapon',
       'AnimalTrap','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox','Hive',
       'Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels','TradeDepot','GrateWall','BarsVertical','Floodgate'},
-      workshop_type=enum{'Carpenters','Tool','Custom'},furnace_type=enum{'WoodFurnace','MagmaSmelter','Custom'},
+      workshop_type=enum{'Carpenters','Tool','MagmaForge','Custom'},furnace_type=enum{'WoodFurnace','MagmaSmelter','MagmaGlassFurnace','MagmaKiln','Custom'},
       trap_type=enum{'Lever','CageTrap','StoneFallTrap','WeaponTrap','PressurePlate','TrackStop'},
       siegeengine_type=enum{'Ballista','Catapult'},
       construction_type=enum{'Wall','Floor','Ramp','UpStair','DownStair','UpDownStair','Fortification'},
@@ -431,7 +448,7 @@ def catalog_runtime():
       {id=13,code='LOCKED',name='',class='workshop'},
       {id=14,code='HOT',name='',class='furnace',needs_magma=true}}
     permitted_ids={11,12,14}
-    df.global={cur_year=1,cur_year_tick=0,plotinfo={civ_id=1},world={raws={buildings={all=customs}}}}
+    df.game_mode={DWARF=0};df.global={gamemode=0,cur_year=1,cur_year_tick=0,plotinfo={civ_id=1,race_id=-1},world={raws={buildings={all=customs},creatures={all=vec{}}}}}
     df.building_def_furnacest={is_instance=function(_,v)return v.class=='furnace'end}
     df.building_def_workshopst={is_instance=function(_,v)return v.class=='workshop'end}
     df.building_def={find=function(id)for _,v in ipairs(customs)do if v.id==id then return v end end end}
@@ -442,7 +459,7 @@ def catalog_runtime():
       assign=function(self,v)for k,x in pairs(v)do self[k]=x end end,delete=function()end}end}
     dfhack={df2utf=function(s)return s end,buildings={}}
     dfhack.buildings.getCorrectSize=function(w,h,t,st,custom,dir)
-      if t==df.building_type.Workshop or t==df.building_type.SiegeEngine then return false,3,3,1,1 end
+      if t==df.building_type.Workshop or (t==df.building_type.Furnace and df.furnace_type[st]:find("Magma")) or t==df.building_type.SiegeEngine or t==df.building_type.Windmill then return false,3,3,1,1 end
       return false,w,h,0,0
     end
     recipes={}
@@ -470,20 +487,22 @@ def extended_catalog():
         assert parent not in rows
     assert not any(k.startswith('Construction:Track') and k != 'Construction:Track' for k in rows)
     for key in ('Chair','Workshop:Carpenters','Trap:Lever','Construction:Stairs',
-                'Furnace:WoodFurnace','Trap:CageTrap','SiegeEngine:Catapult'):
+                'Furnace:WoodFurnace','Trap:CageTrap','SiegeEngine:Catapult','Windmill'):
         assert rows[key]['supported'], key
     reasons = {'Workshop:Tool':'Building has no recipe',
         'Workshop:Custom:LOCKED':'Not permitted for this civilization',
         'Furnace:Custom:HOT':'Magma placement rule not captured',
-        'Furnace:MagmaSmelter':'Magma placement rule not captured',
-        'Construction:Track':'Track piece selection not captured',
-        'Windmill':'Windmill placement rule not captured',
-        'Trap:PressurePlate':'Pressure plate options not captured',
-        'Trap:TrackStop':'Track stop options not captured',
+        'Construction:Track':'Track semantic services unavailable',
         'Stockpile':'Placed from the stockpile and zone menus',
         'Civzone':'Placed from the stockpile and zone menus'}
     for key, reason in reasons.items():
         assert not rows[key]['supported'] and rows[key]['reason'] == reason
+    service = lua.eval('function()end')
+    installed = page(lua.execute(source,service,service,service,service,service,service,service))
+    track = next(row for row in installed['catalog'].values() if row['key']=='Construction:Track')
+    assert track['supported'] and track['reason']==''
+    assert rows['Trap:TrackStop']['supported']
+    assert rows['Trap:PressurePlate']['supported']
     for key, family, code, name in [('Workshop:Custom:PRESS','Workshop','PRESS','Press'),
                                    ('Furnace:Custom:KILN','Furnace','KILN','Kiln')]:
         row=rows[key]

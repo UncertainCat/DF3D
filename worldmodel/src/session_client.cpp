@@ -41,10 +41,21 @@ bool SessionClient::poll() {
     impl_ = std::move(fresh->impl_); state_ = SessionState{}; seq_ = pendingSeq_ = 0;
   }
   if (!impl_->channel->alive()) {
+    // A stopped or replaced producer cannot deliver a late receipt. Preserve
+    // the submitted identity: a lost read supplies no catalog, while a save's
+    // effect remains unknown. Neither request is automatically replayed.
+    const auto lostSeq=pendingSeq_,lostEpoch=state_.requestFortressEpoch;
+    const auto lostAction=state_.requestAction;
     const auto name = impl_->name;
     impl_.reset(new Impl); impl_->name = name;
     state_ = SessionState{}; state_.phase = SessionPhase::Unavailable;
     pendingSeq_ = 0;
+    const bool lostEffect=lostAction==SessionAction::SaveContinue || lostAction==SessionAction::SaveReturn || lostAction==SessionAction::QuitWithoutSaving;
+    if(lostSeq && (lostEffect || lostAction==SessionAction::ReadSaveDestinations)) {
+      state_.requestSeq=lostSeq;state_.requestFortressEpoch=lostEpoch;
+      state_.requestAction=lostAction;
+      state_.requestStatus=lostEffect?LoadRequestStatus::UnknownOutcome:LoadRequestStatus::Rejected;
+    }
     state_.message = error_ = "Dwarf Fortress has closed"; return true;
   }
   auto& im = *impl_;
@@ -75,6 +86,8 @@ bool SessionClient::poll() {
   next.canSave = s->can_save(); next.canSaveReturn = s->can_save_return();
   next.fortressEpoch=s->fortress_epoch();
   next.activeNotificationsComplete=s->active_notifications_complete();
+  next.alertButtonReportCount=s->alert_button_report_count();next.alertButtonComplete=s->alert_button_complete();
+  if(s->alert_button_report_ids())for(auto id:*s->alert_button_report_ids())next.alertButtonReportIds.push_back(id);
   if(const auto* groups=s->active_notifications()) for(const auto* group:*groups) {
     ActiveNotificationGroup n;n.category=static_cast<NotificationCategory>(group->category());
     n.reportIds.assign(group->report_ids()->begin(),group->report_ids()->end());
@@ -87,6 +100,7 @@ bool SessionClient::poll() {
     n.elevationOffset=f->elevation_offset();n.levelCount=f->level_count();n.stressAvailable=f->stress_available();
     n.stressCounts.assign(f->stress_counts()->begin(),f->stress_counts()->end());
     n.resourcesAvailable=f->resources_available();
+    n.bookkeeperPrecision=f->bookkeeper_precision();
     if(n.resourcesAvailable)n.resourceCounts.assign(f->resource_counts()->begin(),f->resource_counts()->end());
   }
   if(const auto* i=s->interruption()) {
@@ -103,6 +117,10 @@ bool SessionClient::poll() {
     }
   }
   if (s->fort_name()) next.fortName = s->fort_name()->str();
+  if (s->fort_original_name()) next.fortOriginalName = s->fort_original_name()->str();
+  next.fortressRank = s->fortress_rank();
+  next.fortressCapital = s->fortress_capital();
+  next.moonPhase = s->moon_phase();
   if (s->active_save_id()) next.activeSaveId = s->active_save_id()->str();
   if (s->saved_save_id()) next.savedSaveId = s->saved_save_id()->str();
   if (s->message()) next.message = s->message()->str();
@@ -111,17 +129,27 @@ bool SessionClient::poll() {
   // Global simulation state and this client's durable request receipt advance
   // independently. Never inherit another client's status, sequence or save ID.
   next.requestSeq=receipt?receipt->request_seq():0;
-  next.requestFortressEpoch=receipt?receipt->fortress_epoch():0;
+  next.requestFortressEpoch=receipt?receipt->request_fortress_epoch():0;
   next.requestStatus=receipt?static_cast<LoadRequestStatus>(receipt->request_status()):LoadRequestStatus::None;
   next.requestAction=receipt?static_cast<SessionAction>(receipt->request_action()):SessionAction::LoadFortress;
   next.savedSaveId=receipt && receipt->saved_save_id()?receipt->saved_save_id()->str():"";
   if(receipt && receipt->message())next.message=receipt->message()->str();
+  // Only our private successful read can authorize a destination choice.
+  if(receipt && receipt->save_destinations()) {
+    const auto* catalog=receipt->save_destinations();
+    next.saveDestinations.receipt=catalog->receipt();
+    next.saveDestinations.fortressEpoch=catalog->fortress_epoch();
+    for(const auto* destination:*catalog->destinations())
+      next.saveDestinations.destinations.push_back({destination->id()->str(),destination->folder()->str()});
+  }
   // A status publication made just before the producer drains our request
   // must not reopen the command gate. Keep local ownership until observed.
   if (pendingSeq_ && next.requestSeq < pendingSeq_) {
     next.requestSeq = pendingSeq_; next.requestStatus = LoadRequestStatus::Pending;
+    next.requestFortressEpoch=state_.requestFortressEpoch;
     next.requestAction = state_.requestAction; next.canSave = next.canSaveReturn = false;
     next.savedSaveId.clear();
+    next.saveDestinations={};
   } else if (pendingSeq_ && next.requestStatus != LoadRequestStatus::Pending) pendingSeq_ = 0;
   state_ = std::move(next); seq_ = std::max(seq_, state_.requestSeq); error_.clear(); return true;
 #else
@@ -142,6 +170,7 @@ uint64_t SessionClient::sendLoadSave(const std::string& id) {
 #endif
 }
 uint64_t SessionClient::sendSave(bool returnToMenu, const std::string& checkpointName) {
+  if(returnToMenu) { error_="Explicit save destination required";return 0; }
   if ((!returnToMenu && !m::validCheckpointName(checkpointName)) || (returnToMenu && !checkpointName.empty())) {
     error_ = "Use a new checkpoint name with letters, numbers, spaces, hyphens or underscores"; return 0;
   }
@@ -150,6 +179,34 @@ uint64_t SessionClient::sendSave(bool returnToMenu, const std::string& checkpoin
     error_ = "DF is not ready for this save operation"; return 0;
   }
   return send(returnToMenu ? SessionAction::SaveReturn : SessionAction::SaveContinue, {}, checkpointName, state_.fortressEpoch);
+}
+uint64_t SessionClient::sendReadSaveDestinations(uint64_t epoch) {
+  if(state_.phase!=SessionPhase::Ready || state_.requestStatus==LoadRequestStatus::Pending ||
+     !state_.fortressValid || !state_.canSaveReturn || !epoch || epoch!=state_.fortressEpoch) {
+    error_="DF is not ready to inspect save destinations";return 0;
+  }
+  return send(SessionAction::ReadSaveDestinations,{},{},epoch);
+}
+uint64_t SessionClient::sendQuitWithoutSaving(uint64_t epoch) {
+  if(state_.phase!=SessionPhase::Ready || state_.requestStatus==LoadRequestStatus::Pending ||
+     !state_.fortressValid || !state_.canSaveReturn || !epoch || epoch!=state_.fortressEpoch) {
+    error_="DF is not ready for this session operation";return 0;
+  }
+  return send(SessionAction::QuitWithoutSaving,{},{},epoch);
+}
+uint64_t SessionClient::sendSaveReturn(uint64_t epoch,uint64_t catalogReceipt,SaveReturnMode mode,
+                                     const std::string& destinationId,const std::vector<uint8_t>& timelineName) {
+  const auto& catalog=state_.saveDestinations;
+  if(state_.phase!=SessionPhase::Ready || state_.requestStatus==LoadRequestStatus::Pending ||
+     !state_.fortressValid || !state_.canSaveReturn || !epoch || epoch!=state_.fortressEpoch ||
+     epoch!=catalog.fortressEpoch || !catalogReceipt || catalogReceipt!=catalog.receipt) {
+    error_="Save destination catalog changed or is unavailable";return 0;
+  }
+  if(mode==SaveReturnMode::ExistingDestination &&
+     std::none_of(catalog.destinations.begin(),catalog.destinations.end(),[&](const SaveDestination& d){return d.id==destinationId;})) {
+    error_="Save destination is not in this catalog";return 0;
+  }
+  return send(SessionAction::SaveReturn,{},{},epoch,0,-1,0,catalogReceipt,mode,destinationId,timelineName);
 }
 uint64_t SessionClient::sendAcknowledgeAnnouncement(uint64_t fortressEpoch,uint64_t receipt) {
   if(state_.phase!=SessionPhase::Ready || state_.requestStatus==LoadRequestStatus::Pending || !state_.interruption.canAcknowledge || !fortressEpoch || fortressEpoch!=state_.fortressEpoch || !receipt || receipt!=state_.interruption.receipt || receipt>INT64_MAX) {
@@ -169,16 +226,20 @@ uint64_t SessionClient::sendClosePetition(uint64_t epoch,int32_t id,uint64_t rec
   if(state_.phase!=SessionPhase::Ready || state_.requestStatus==LoadRequestStatus::Pending || !state_.fortressValid || !epoch || epoch!=state_.fortressEpoch || id< -1 || id!=state_.petition.id || !receipt || receipt>INT64_MAX || receipt!=state_.petition.receipt || !state_.petition.canClose){error_="That native petition review changed";return 0;}
   return send(SessionAction::ClosePetition,{},{},epoch,0,id,receipt);
 }
-uint64_t SessionClient::send(SessionAction action, const std::string& id, const std::string& checkpointName,uint64_t fortressEpoch,uint64_t receipt,int32_t petitionId,uint64_t petitionReceipt) {
+uint64_t SessionClient::send(SessionAction action, const std::string& id, const std::string& checkpointName,uint64_t fortressEpoch,uint64_t receipt,int32_t petitionId,uint64_t petitionReceipt,
+                             uint64_t catalogReceipt,SaveReturnMode mode,const std::string& destinationId,const std::vector<uint8_t>& timelineName) {
 #ifdef _WIN32
   if (!impl_->channel || !impl_->channel->alive()) {
     error_ = "DF session is no longer available"; return 0;
   }
   flatbuffers::FlatBufferBuilder b;
-  auto c = m::CreateSessionCommand(b, m::kSessionVersion, seq_ + 1, b.CreateString(id), static_cast<m::SessionAction>(action), b.CreateString(checkpointName),fortressEpoch,receipt,petitionId,petitionReceipt,impl_->channel->clientId()); b.Finish(c);
+  auto c = m::CreateSessionCommand(b, m::kSessionVersion, seq_ + 1, b.CreateString(id), static_cast<m::SessionAction>(action), b.CreateString(checkpointName),fortressEpoch,receipt,petitionId,petitionReceipt,impl_->channel->clientId(),catalogReceipt,static_cast<m::SaveReturnMode>(mode),b.CreateString(destinationId),b.CreateVector(timelineName)); b.Finish(c);
+  if(auto error=m::validateSessionCommand(*flatbuffers::GetRoot<m::SessionCommand>(b.GetBufferPointer()))) {error_=*error;return 0;}
   if (!impl_->channel->push(b.GetBufferPointer(), b.GetSize())) { error_ = "Session command queue is full"; return 0; }
   error_.clear(); state_.requestStatus = LoadRequestStatus::Pending;
   state_.savedSaveId.clear();
+  state_.saveDestinations={};
+  state_.requestFortressEpoch=fortressEpoch;
   state_.requestAction = action; state_.requestSeq = pendingSeq_ = ++seq_; return seq_;
 #else
   return 0;

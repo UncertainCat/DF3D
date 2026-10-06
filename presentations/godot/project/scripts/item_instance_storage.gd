@@ -13,7 +13,7 @@ func apply(mm: MultiMesh, patch, counters: Dictionary) -> bool:
 	# prepared. Its old ordinal list cannot describe that newer payload.
 	var full: bool = allocated or patch.force or patch.target_version != group.version or resident.get("owner") != group or resident.get("version", -1) != patch.base_version
 	_kernel.write(mm, group, patch, full, counters)
-	if mm.custom_aabb != group.bounds: mm.custom_aabb = group.bounds
+	if mm.custom_aabb != group.render_bounds: mm.custom_aabb = group.render_bounds
 	_resident[id] = {"owner": group, "version": group.version}
 	return allocated
 

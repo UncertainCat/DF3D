@@ -28,6 +28,7 @@ struct TerrainQuery {
   // Which of the tile's eight same-z neighbours are cubes (kWall* bits
   // below); selects the wall family member for a wall's top face.
   uint8_t walls = 0;
+  uint8_t completedTrack = 0; // native completed N=1,S=2,E=4,W=8
 };
 
 // TerrainQuery::walls bits (mirrors df3d::mesher::kWall*; DF compass,

@@ -1,0 +1,392 @@
+{
+  "native_version": "DF53.16 build24557528",
+  "source": "build/track-stop-native-20260930-134626",
+  "status": "passed",
+  "prompt_lines": [
+    "Set the friction and auto-dump direction.",
+    "Auto-dumping is not required."
+  ],
+  "default": {
+    "dump_direction": "none",
+    "friction": 50000
+  },
+  "dump_buttons": [
+    {
+      "direction": "north",
+      "vector": [
+        0,
+        -1
+      ],
+      "top_left_cell": [
+        82,
+        9
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "direction": "west",
+      "vector": [
+        -1,
+        0
+      ],
+      "top_left_cell": [
+        78,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "direction": "none",
+      "vector": [
+        0,
+        0
+      ],
+      "top_left_cell": [
+        82,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "direction": "east",
+      "vector": [
+        1,
+        0
+      ],
+      "top_left_cell": [
+        86,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "direction": "south",
+      "vector": [
+        0,
+        1
+      ],
+      "top_left_cell": [
+        82,
+        15
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    }
+  ],
+  "friction_buttons": [
+    {
+      "friction": 10,
+      "top_left_cell": [
+        95,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "friction": 50,
+      "top_left_cell": [
+        100,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "friction": 500,
+      "top_left_cell": [
+        105,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "friction": 10000,
+      "top_left_cell": [
+        110,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    },
+    {
+      "friction": 50000,
+      "top_left_cell": [
+        115,
+        12
+      ],
+      "size_cells": [
+        4,
+        3
+      ]
+    }
+  ],
+  "lifecycle": {
+    "before_cancel": {
+      "building_type": "Trap",
+      "dx": -1,
+      "dy": 0,
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "friction": 10,
+      "subtype": 5,
+      "use_dump": true
+    },
+    "reopened": {
+      "building_type": "Trap",
+      "dx": 0,
+      "dy": 0,
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "friction": 50000,
+      "subtype": 5,
+      "use_dump": false
+    },
+    "repeat_direction": {
+      "building_type": "Trap",
+      "dx": -1,
+      "dy": 0,
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "friction": 10,
+      "subtype": 5,
+      "use_dump": true
+    },
+    "repeat_friction": {
+      "building_type": "Trap",
+      "dx": -1,
+      "dy": 0,
+      "focus": [
+        "dwarfmode/Building/Placement"
+      ],
+      "friction": 10,
+      "subtype": 5,
+      "use_dump": true
+    }
+  },
+  "verified_combinations": 30,
+  "source_files_unchanged": true,
+  "sha256": {
+    "controls.json": "8be29437a94cb90116639fa03320dfbb48e3462b267d29be50276dd6b7440184",
+    "choices.json": "f6e083ac2796667c18dae6013adc41651d5c4afb5d9b9aa630bc768a42bfa096",
+    "lifecycle.json": "8a928559486dd804a73015d42969fcb204a5543fdbaa3a6a37b11d6371b0fafc",
+    "result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+    "capture-inputs.json": "ad60f716ad6b6234531ea2be99ecb9480cb06d681fc37d97b00535acb226d4f6",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509"
+  },
+  "omissions": [
+    "Pressure Plate, connected Track and remaining Construction parity/exposure gaps are separate unfinished work.",
+    "This effect driver uses semantic requests; one end-to-end live Godot pointer-to-placement sequence remains unverified.",
+    "Option persistence after native Keep building placement and material-selector cancellation has not been captured."
+  ],
+  "protocol_version": 32,
+  "semantic_effect_source": "build/construction-acceptance-20260930-140006",
+  "semantic_status": "passed_with_known_issues",
+  "semantic_profiles": [
+    {
+      "friction": 10,
+      "dump_direction": 0,
+      "building_id": 1502
+    },
+    {
+      "friction": 50,
+      "dump_direction": 0,
+      "building_id": 1503
+    },
+    {
+      "friction": 500,
+      "dump_direction": 0,
+      "building_id": 1504
+    },
+    {
+      "friction": 10000,
+      "dump_direction": 0,
+      "building_id": 1505
+    },
+    {
+      "friction": 50000,
+      "dump_direction": 0,
+      "building_id": 1506
+    },
+    {
+      "friction": 10,
+      "dump_direction": 1,
+      "building_id": 1507
+    },
+    {
+      "friction": 50,
+      "dump_direction": 1,
+      "building_id": 1508
+    },
+    {
+      "friction": 500,
+      "dump_direction": 1,
+      "building_id": 1509
+    },
+    {
+      "friction": 10000,
+      "dump_direction": 1,
+      "building_id": 1510
+    },
+    {
+      "friction": 50000,
+      "dump_direction": 1,
+      "building_id": 1511
+    },
+    {
+      "friction": 10,
+      "dump_direction": 2,
+      "building_id": 1512
+    },
+    {
+      "friction": 50,
+      "dump_direction": 2,
+      "building_id": 1513
+    },
+    {
+      "friction": 500,
+      "dump_direction": 2,
+      "building_id": 1514
+    },
+    {
+      "friction": 10000,
+      "dump_direction": 2,
+      "building_id": 1515
+    },
+    {
+      "friction": 50000,
+      "dump_direction": 2,
+      "building_id": 1516
+    },
+    {
+      "friction": 10,
+      "dump_direction": 3,
+      "building_id": 1517
+    },
+    {
+      "friction": 50,
+      "dump_direction": 3,
+      "building_id": 1518
+    },
+    {
+      "friction": 500,
+      "dump_direction": 3,
+      "building_id": 1519
+    },
+    {
+      "friction": 10000,
+      "dump_direction": 3,
+      "building_id": 1520
+    },
+    {
+      "friction": 50000,
+      "dump_direction": 3,
+      "building_id": 1521
+    },
+    {
+      "friction": 10,
+      "dump_direction": 4,
+      "building_id": 1522
+    },
+    {
+      "friction": 50,
+      "dump_direction": 4,
+      "building_id": 1523
+    },
+    {
+      "friction": 500,
+      "dump_direction": 4,
+      "building_id": 1524
+    },
+    {
+      "friction": 10000,
+      "dump_direction": 4,
+      "building_id": 1525
+    },
+    {
+      "friction": 50000,
+      "dump_direction": 4,
+      "building_id": 1526
+    }
+  ],
+  "semantic_sha256": {
+    "godot.log": "eea85bad44302d540ea946c83625becd39086226b2effff32bc149ee70dcecf7",
+    "native.log": "55f42e17e5894641a3855662380a2915452fdde859855e8fbc3ee3307686047b",
+    "binaries.log": "b4bdb8d36402a94798e4a5ea253c55609cd8c5ca1ca89d60d9ba7262650c7aef",
+    "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "summary.txt": "697f43fb947ee8bdc0d83c4c383baa4744222d8ef3e452761025ae1c24754670",
+    "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+    "save-preservation.txt": "bc6bedf0566f142d04c8700376a92441c7518515ca98b6385f03f7a31264435a",
+    "godot-diagnostics.json": "092e002ad67a4835b07eea6dd9076d4ca4e2dc4504c7dc4f0952f9bad0fa4b90"
+  },
+  "gpu_source": "build/qa/construction-diagnostic-copy-20260930",
+  "gpu_status": "passed_with_known_issues",
+  "gpu_sha256": {
+    "summary.json": "3df555c8f2ca64ac7ddd739eeeab844e556a51452ae03727ec0e0cd33607de4a",
+    "build_menu_capture.log": "d32445642d5d64cc5d836d14ec0d5dcbb323935d69bed20c58d216478fe65f39"
+  },
+  "gpu_screenshots": {
+    "controller_track_stop_0_10.png": "62189124fcecddaa4c7d12613745b83960016394a31ccd05ff72715d447e4d19",
+    "controller_track_stop_0_50.png": "8c47c21db5e055fd75f8dd35c9c213b4cc308b108ef86c6ce359dd4438ebe207",
+    "controller_track_stop_0_500.png": "6b66e2b50fb706736a6d0985ecee65d2c0844ca838762e8a8f79b3318d4d64b4",
+    "controller_track_stop_0_10000.png": "d308cbc8913526a3d580696671ba42511c909f236ec1a031d1b648d1205b07bc",
+    "controller_track_stop_0_50000.png": "7b00c0c102e78dd187932c5347b0284375a8cb454e115045e9881fcf69da99b2",
+    "controller_track_stop_1_10.png": "7a2932ab1cd6a938351deee270b851d07c29da709f7f7418903a924d38d8750c",
+    "controller_track_stop_1_50.png": "c5193b988d87438f5819b12b4d4a61cd0bebf463ebd531d0674b209efffc8f9f",
+    "controller_track_stop_1_500.png": "dbaba1f1a1575260311a2190135b2ad5d611fb8bef03acc1acbceefdf75d2f29",
+    "controller_track_stop_1_10000.png": "61b05adf7abcf2b3368db2867d4835ebe89f211caed89d834e44264c087150e9",
+    "controller_track_stop_1_50000.png": "feeb06dddc2dac07eb059751f8a4a7cfb0ac53581dd3a9190f6191b23971a43c",
+    "controller_track_stop_2_10.png": "8a10975a9aed1ee785c4134617a031b60d9179679fc7bf97bcc011c986452ac9",
+    "controller_track_stop_2_50.png": "f4540398d2a1e8c30a4d3f2b1b306b92e7dc914529935af3a87cb4a0daefcfb1",
+    "controller_track_stop_2_500.png": "cebe75c81a34ade95b33019a4c82430ff6a5fc30e7ad1dea73af3eb8d53ac2b7",
+    "controller_track_stop_2_10000.png": "3cd1fe69cc6ad350522f576065b4ba8427bfa70e961cd89d4f8a1b42374d8489",
+    "controller_track_stop_2_50000.png": "fb8760648073c0fe8af0043fbf493fe3553e861a5019f6619efe296f7c4297d9",
+    "controller_track_stop_3_10.png": "3a055dda6272fa685e05ad473557c46479618fdd470e74199475c91f719974e4",
+    "controller_track_stop_3_50.png": "a0f60b10cf0cd94fedc84895407b3bae101240a2bc7993d17fc2a12c109f0658",
+    "controller_track_stop_3_500.png": "c5fd6b6d72618d2fe44f2525981f3c129ba6b2d8b4e8051d4ed95ebad2ebf86f",
+    "controller_track_stop_3_10000.png": "b93381d5d3cd68dd08762ff2f21bdd05c256d564b96bc21c66b3b3cc9fc55e09",
+    "controller_track_stop_3_50000.png": "e0f89a98231ef5c7b34846cf3ab59b2f237771fb82e19014b17d0188a29beab2",
+    "controller_track_stop_4_10.png": "f89b783d405b95195dc2cbce0d5aeed3f2725080485abc8b991d10f9da2ab8f0",
+    "controller_track_stop_4_50.png": "55fec2d7292ee65f84d761ed52f71b979619c92bc1464439094f59f7f8debb09",
+    "controller_track_stop_4_500.png": "57c30a13f14080742d35d40cbbf5ba4fdac47567503ad32e7cb7ef32def363df",
+    "controller_track_stop_4_10000.png": "f99a4235b45b2d1efec255a5dfa5eea5196744592287cc7286e19c4ea75678c9",
+    "controller_track_stop_4_50000.png": "4bfd6ab363e1c9a670701c765271fff348d8d9bb5df58ddd3fa45cd66c01aa29"
+  },
+  "verified": [
+    "All25 semantic profiles read back from actual native building fields, including dump enable and x/y offsets.",
+    "All25 Godot direction/friction pairs selected through viewport mouse events.",
+    "Native option sizes and relative positions reproduced with native active/inactive artwork and exact prompt.",
+    "Source save unchanged; same-process reload and construction cache reset also passed."
+  ],
+  "layout_limits": [
+    "Godot control origin2px right of native; whole Construction panel parity remains unfinished."
+  ],
+  "gpu_screenshot_source": "build/qa/construction-diagnostic-copy-20260930/screenshots"
+}

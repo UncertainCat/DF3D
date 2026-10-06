@@ -1,0 +1,980 @@
+{
+  "provenance": [
+    {
+      "source": "build/location-staff-selector-abbreviation-20260930-013629/native-location-staff-selector-ui.json",
+      "sha256": "15917aa6ad9bba8bfd22d075b3e64a81d1c3d1f1a36f2fa2ea30df1b720c3dda",
+      "save_manifests_unchanged": 2
+    },
+    {
+      "source": "build/location-staff-selector-abbreviation-edges-20260930-013931/native-location-staff-selector-ui.json",
+      "sha256": "ecb72557c9cafc7a7bce4cf28f5e74dceeaa561bccaad03bb4a59ad98a221710",
+      "save_manifests_unchanged": 2
+    }
+  ],
+  "scope": "107 controlled native name/profession pairs in30-cell selector columns, with name and skill controls restored. Synthetic inputs are fixture data only. No pixels. Empty profession is not accepted by the formatter without evidence.",
+  "cases": [
+    {
+      "case": "name_0",
+      "name": "",
+      "profession": "Smith",
+      "lines": [
+        ", Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_0",
+      "name": "ab",
+      "profession": "Smith",
+      "lines": [
+        "Ab, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "name_1",
+      "name": "alpha beta",
+      "profession": "Smith",
+      "lines": [
+        "Alpha Beta, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_1",
+      "name": "ab",
+      "profession": "alpha beta",
+      "lines": [
+        "Ab, alpha beta",
+        ""
+      ]
+    },
+    {
+      "case": "name_2",
+      "name": "alpha beta gamma delta epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Alpha Beta Gamma Delt Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_2",
+      "name": "ab",
+      "profession": "alpha beta gamma delta epsilon zeta",
+      "lines": [
+        "Ab",
+        "alpha beta gamma delt epsln zt"
+      ]
+    },
+    {
+      "case": "name_3",
+      "name": "alpha BETA gamma DELTA epsilon ZETA",
+      "profession": "Smith",
+      "lines": [
+        "Alpha BETA Gamma DELT Epsln ZT",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_3",
+      "name": "ab",
+      "profession": "alpha BETA gamma DELTA epsilon ZETA",
+      "lines": [
+        "Ab",
+        "alpha BETA gamma DELT epsln ZT"
+      ]
+    },
+    {
+      "case": "name_4",
+      "name": "bcdfg hjklm npqrs tvwxz bcdfg hjklm npqrs",
+      "profession": "Smith",
+      "lines": [
+        "Bcdfg Hjklm Npqrs Tvwxz Bcdfg",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_4",
+      "name": "ab",
+      "profession": "bcdfg hjklm npqrs tvwxz bcdfg hjklm npqrs",
+      "lines": [
+        "Ab",
+        "bcdfg hjklm npqrs tvwxz bcdfg"
+      ]
+    },
+    {
+      "case": "name_5",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aeiouy",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaaaaa Ay",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_5",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aeiouy",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaa ay"
+      ]
+    },
+    {
+      "case": "name_6",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa aeiouy",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Aeioy",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_6",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa aeiouy",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa aeioy"
+      ]
+    },
+    {
+      "case": "name_7",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa AEIOUY",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa AEIOY",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_7",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa AEIOUY",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa AEIOY"
+      ]
+    },
+    {
+      "case": "name_8",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa bAEIOUY",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa BAEIY",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_8",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa bAEIOUY",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa bAEIY"
+      ]
+    },
+    {
+      "case": "name_9",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa baeiouy",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Baeiy",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_9",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa baeiouy",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa baeiy"
+      ]
+    },
+    {
+      "case": "name_10",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa byyyyyy",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaa Byyyyyy",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_10",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa byyyyyy",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaa byyyyyy"
+      ]
+    },
+    {
+      "case": "name_11",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa bbaaa",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Bbaaa",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_11",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa bbaaa",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa bbaaa"
+      ]
+    },
+    {
+      "case": "name_12",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa aaaaa",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Aaaaa",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_12",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa aaaaa",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa aaaaa"
+      ]
+    },
+    {
+      "case": "name_13",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa bbbb",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Bbbb",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_13",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa bbbb",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa bbbb"
+      ]
+    },
+    {
+      "case": "name_14",
+      "name": "aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaa Aaaaa Aaaaa Aaaaa Aa A A",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_14",
+      "name": "ab",
+      "profession": "aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa",
+      "lines": [
+        "Ab",
+        "aaaaa aaaaa aaaaa aaaaa aa a a"
+      ]
+    },
+    {
+      "case": "name_15",
+      "name": "aaaaa bbbbb ccccc ddddd eeeee fffff ggggg",
+      "profession": "Smith",
+      "lines": [
+        "A Bbbbb Ccccc Ddddd E Fffff Gg",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_15",
+      "name": "ab",
+      "profession": "aaaaa bbbbb ccccc ddddd eeeee fffff ggggg",
+      "lines": [
+        "Ab",
+        "a bbbbb ccccc ddddd e fffff gg"
+      ]
+    },
+    {
+      "case": "name_16",
+      "name": "alpha  beta   gamma    delta epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Alph  Bt   Gmm    Dlt Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_16",
+      "name": "ab",
+      "profession": "alpha  beta   gamma    delta epsilon zeta",
+      "lines": [
+        "Ab",
+        "alph  bt   gmm    dlt epsln zt"
+      ]
+    },
+    {
+      "case": "name_17",
+      "name": "alpha 'beta' gamma",
+      "profession": "Smith",
+      "lines": [
+        "Alpha 'Beta' Gamma, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_17",
+      "name": "ab",
+      "profession": "alpha 'beta' gamma",
+      "lines": [
+        "Ab, alpha 'beta' gamma",
+        ""
+      ]
+    },
+    {
+      "case": "name_18",
+      "name": "alpha \"beta\" gamma",
+      "profession": "Smith",
+      "lines": [
+        "Alpha \"Beta\" Gamma, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_18",
+      "name": "ab",
+      "profession": "alpha \"beta\" gamma",
+      "lines": [
+        "Ab, alpha \"beta\" gamma",
+        ""
+      ]
+    },
+    {
+      "case": "name_19",
+      "name": "alpha,beta 'gamma' d'elta",
+      "profession": "Smith",
+      "lines": [
+        "Alpha,beta 'Gamma' D'elta",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_19",
+      "name": "ab",
+      "profession": "alpha,beta 'gamma' d'elta",
+      "lines": [
+        "Ab, alpha,beta 'gamma' d'elta",
+        ""
+      ]
+    },
+    {
+      "case": "name_20",
+      "name": "alpha [beta gamma] delta",
+      "profession": "Smith",
+      "lines": [
+        "Alpha [beta gamma] Delta",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_20",
+      "name": "ab",
+      "profession": "alpha [beta gamma] delta",
+      "lines": [
+        "Ab, alpha [beta gamma] delta",
+        ""
+      ]
+    },
+    {
+      "case": "name_21",
+      "name": "alpha [beta [gamma] delta] epsilon",
+      "profession": "Smith",
+      "lines": [
+        "Alpha [beta [gamma] dlt] Epsln",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_21",
+      "name": "ab",
+      "profession": "alpha [beta [gamma] delta] epsilon",
+      "lines": [
+        "Ab",
+        "alpha [beta [gamma] dlt] epsln"
+      ]
+    },
+    {
+      "case": "name_22",
+      "name": "alpha-beta gamma_delta",
+      "profession": "Smith",
+      "lines": [
+        "Alpha-beta Gamma_delta, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_22",
+      "name": "ab",
+      "profession": "alpha-beta gamma_delta",
+      "lines": [
+        "Ab, alpha-beta gamma_delta",
+        ""
+      ]
+    },
+    {
+      "case": "name_23",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaa alpha beta gamma",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaa Alph Bt Gmm",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_23",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaaa alpha beta gamma",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaa alph bt gmm"
+      ]
+    },
+    {
+      "case": "name_24",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bcdfg hjklm",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaa Bcdfg Hjklm",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_24",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bcdfg hjklm",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaa bcdfg hjklm"
+      ]
+    },
+    {
+      "case": "name_25",
+      "name": "bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg ",
+      "profession": "Smith",
+      "lines": [
+        "Bcdfg Bcdfg Bcdfg Bcdfg Bcdfg",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_25",
+      "name": "ab",
+      "profession": "bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg bcdfg ",
+      "lines": [
+        "Ab",
+        "bcdfg bcdfg bcdfg bcdfg bcdfg"
+      ]
+    },
+    {
+      "case": "boundary_20",
+      "name": "aaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaa Epsiln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_21",
+      "name": "aaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_22",
+      "name": "aaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_23",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_24",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_25",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_26",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_27",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_28",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_29",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_30",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_31",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_32",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_33",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_34",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_35",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_36",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_37",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_38",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_39",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "boundary_40",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa epsilon zeta",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaa Epsln Zt",
+        "Smith"
+      ]
+    },
+    {
+      "case": "name_0",
+      "name": "abecidofugahijokulamenopiqorustavyz",
+      "profession": "Smith",
+      "lines": [
+        "Abecidofugahijokulamenpqrstvyz",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_0",
+      "name": "ab",
+      "profession": "abecidofugahijokulamenopiqorustavyz",
+      "lines": [
+        "Ab",
+        "abecidofugahijokulamenpqrstvyz"
+      ]
+    },
+    {
+      "case": "name_1",
+      "name": "AEIOUabcdefghijklmnopqrstuvwxyzAEIOU",
+      "profession": "Smith",
+      "lines": [
+        "AEIOUabcdefghijklmnopqrstvwxyz",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_1",
+      "name": "ab",
+      "profession": "AEIOUabcdefghijklmnopqrstuvwxyzAEIOU",
+      "lines": [
+        "Ab",
+        "AEIOUabcdefghijklmnopqrstvwxyz"
+      ]
+    },
+    {
+      "case": "name_2",
+      "name": "bcdfghjklmnpqrstvwxyzbcdfghjklmnpqrstvwxyz",
+      "profession": "Smith",
+      "lines": [
+        "Bcdfghjklmnpqrstvwxyzbcdfghjkl",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_2",
+      "name": "ab",
+      "profession": "bcdfghjklmnpqrstvwxyzbcdfghjklmnpqrstvwxyz",
+      "lines": [
+        "Ab",
+        "bcdfghjklmnpqrstvwxyzbcdfghjkl"
+      ]
+    },
+    {
+      "case": "name_3",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa beiiou",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Beiio",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_3",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa beiiou",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa beiio"
+      ]
+    },
+    {
+      "case": "name_4",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa béíóú",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Béíóú",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_4",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa béíóú",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa béíóú"
+      ]
+    },
+    {
+      "case": "name_5",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa eéíóú",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa Eéíóú",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_5",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa eéíóú",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa eéíóú"
+      ]
+    },
+    {
+      "case": "name_6",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa 'aeiou'",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa 'Aei'",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_6",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa 'aeiou'",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa 'aei'"
+      ]
+    },
+    {
+      "case": "name_7",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa \"aeiou\"",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa \"Aei\"",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_7",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa \"aeiou\"",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa \"aei\""
+      ]
+    },
+    {
+      "case": "name_8",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa [aeiou]",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa [aei]",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_8",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa [aeiou]",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa [aei]"
+      ]
+    },
+    {
+      "case": "name_9",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa-aeiou",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa-aeiou",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_9",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa-aeiou",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa-aeiou"
+      ]
+    },
+    {
+      "case": "name_10",
+      "name": "aaaaaaaaaaaaaaaaaaaaaaaa_aeiou",
+      "profession": "Smith",
+      "lines": [
+        "Aaaaaaaaaaaaaaaaaaaaaaaa_aeiou",
+        "Smith"
+      ]
+    },
+    {
+      "case": "profession_10",
+      "name": "ab",
+      "profession": "aaaaaaaaaaaaaaaaaaaaaaaa_aeiou",
+      "lines": [
+        "Ab",
+        "aaaaaaaaaaaaaaaaaaaaaaaa_aeiou"
+      ]
+    },
+    {
+      "case": "name_11",
+      "name": "'alpha beta",
+      "profession": "Smith",
+      "lines": [
+        "'alpha Beta, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_11",
+      "name": "ab",
+      "profession": "'alpha beta",
+      "lines": [
+        "Ab, 'alpha beta",
+        ""
+      ]
+    },
+    {
+      "case": "name_12",
+      "name": "\"alpha beta",
+      "profession": "Smith",
+      "lines": [
+        "\"Alpha Beta, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_12",
+      "name": "ab",
+      "profession": "\"alpha beta",
+      "lines": [
+        "Ab, \"alpha beta",
+        ""
+      ]
+    },
+    {
+      "case": "name_13",
+      "name": "[alpha] beta",
+      "profession": "Smith",
+      "lines": [
+        "[alpha] Beta, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_13",
+      "name": "ab",
+      "profession": "[alpha] beta",
+      "lines": [
+        "Ab, [alpha] beta",
+        ""
+      ]
+    },
+    {
+      "case": "name_14",
+      "name": "  alpha beta",
+      "profession": "Smith",
+      "lines": [
+        "  Alpha Beta, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_14",
+      "name": "ab",
+      "profession": "  alpha beta",
+      "lines": [
+        "Ab,   alpha beta",
+        ""
+      ]
+    },
+    {
+      "case": "name_15",
+      "name": "alpha,'beta gamma",
+      "profession": "Smith",
+      "lines": [
+        "Alpha,'Beta Gamma, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_15",
+      "name": "ab",
+      "profession": "alpha,'beta gamma",
+      "lines": [
+        "Ab, alpha,'beta gamma",
+        ""
+      ]
+    },
+    {
+      "case": "name_16",
+      "name": "alpha?'beta gamma",
+      "profession": "Smith",
+      "lines": [
+        "Alpha?'beta Gamma, Smith",
+        ""
+      ]
+    },
+    {
+      "case": "profession_16",
+      "name": "ab",
+      "profession": "alpha?'beta gamma",
+      "lines": [
+        "Ab, alpha?'beta gamma",
+        ""
+      ]
+    }
+  ]
+}

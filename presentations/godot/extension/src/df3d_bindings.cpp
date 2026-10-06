@@ -4,6 +4,7 @@ namespace df3d_godot {
 using namespace godot;
 void Df3dWorld::_bind_methods() {
     using godot::ClassDB;
+    ClassDB::bind_method(D_METHOD("construction_item_icon", "item_type", "appearance"), &Df3dWorld::construction_item_icon);
     ClassDB::bind_method(D_METHOD("spatter_revision"), &Df3dWorld::spatter_revision);
     ClassDB::bind_method(D_METHOD("tile_spatters", "tile"), &Df3dWorld::tile_spatters);
     ClassDB::bind_method(D_METHOD("set_mesh_batching_enabled", "enabled"), &Df3dWorld::set_mesh_batching_enabled);
@@ -12,6 +13,7 @@ void Df3dWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("assets_loaded"), &Df3dWorld::assets_loaded);
     ClassDB::bind_method(D_METHOD("assets_error"), &Df3dWorld::assets_error);
     ClassDB::bind_method(D_METHOD("assets_root"), &Df3dWorld::assets_root);
+    ClassDB::bind_method(D_METHOD("ui_palette_color", "index"), &Df3dWorld::ui_palette_color);
     ClassDB::bind_method(D_METHOD("assets_summary"), &Df3dWorld::assets_summary);
     ClassDB::bind_method(D_METHOD("unresolved_face_count"), &Df3dWorld::unresolved_face_count);
     ClassDB::bind_method(D_METHOD("textured_face_count"), &Df3dWorld::textured_face_count);
@@ -58,6 +60,8 @@ void Df3dWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("live_synchronized"), &Df3dWorld::live_synchronized);
     ClassDB::bind_method(D_METHOD("poll_session"), &Df3dWorld::poll_session);
     ClassDB::bind_method(D_METHOD("poll_management"), &Df3dWorld::poll_management);
+    ClassDB::bind_method(D_METHOD("poll_management_header"), &Df3dWorld::poll_management_header);
+    ClassDB::bind_method(D_METHOD("management_payload", "epoch", "revision", "sequence"), &Df3dWorld::management_payload);
     ClassDB::bind_method(D_METHOD("update_resident_info"), &Df3dWorld::update_resident_info);
     ClassDB::bind_method(D_METHOD("demand_resident_info", "demand"), &Df3dWorld::demand_resident_info);
     ClassDB::bind_method(D_METHOD("refresh_resident_info"), &Df3dWorld::refresh_resident_info);
@@ -66,7 +70,7 @@ void Df3dWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("creature_info_state", "id"), &Df3dWorld::creature_info_state);
     ClassDB::bind_method(D_METHOD("creature_portrait", "id"), &Df3dWorld::creature_portrait);
     ClassDB::bind_method(D_METHOD("resident_icon", "id"), &Df3dWorld::resident_icon);
-    ClassDB::bind_method(D_METHOD("selection_icon", "kind", "id"), &Df3dWorld::selection_icon);
+    ClassDB::bind_method(D_METHOD("selection_icon", "kind", "id", "body_cell"), &Df3dWorld::selection_icon, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("management_request", "domain", "request"), &Df3dWorld::management_request);
     ClassDB::bind_method(D_METHOD("report_request", "data"), &Df3dWorld::report_request);
     ClassDB::bind_method(D_METHOD("work_order_request", "data"), &Df3dWorld::work_order_request);
@@ -75,6 +79,10 @@ void Df3dWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("reconnect_management"), &Df3dWorld::reconnect_management);
     ClassDB::bind_method(D_METHOD("load_fortress", "id"), &Df3dWorld::load_fortress);
     ClassDB::bind_method(D_METHOD("save_fortress", "return_to_menu", "checkpoint_name"), &Df3dWorld::save_fortress, DEFVAL(""));
+    ClassDB::bind_method(D_METHOD("save_fortress_bytes", "checkpoint_name"), &Df3dWorld::save_fortress_bytes);
+    ClassDB::bind_method(D_METHOD("read_save_destinations", "epoch"), &Df3dWorld::read_save_destinations);
+    ClassDB::bind_method(D_METHOD("quit_without_saving", "epoch"), &Df3dWorld::quit_without_saving);
+    ClassDB::bind_method(D_METHOD("save_return_explicit", "epoch", "catalog_receipt", "mode", "destination_id", "timeline_name"), &Df3dWorld::save_return_explicit);
     ClassDB::bind_method(D_METHOD("load_fixture", "path"), &Df3dWorld::load_fixture);
     ClassDB::bind_method(D_METHOD("set_replay_speed", "speed"), &Df3dWorld::set_replay_speed);
     ClassDB::bind_method(D_METHOD("set_replay_elapsed", "seconds"), &Df3dWorld::set_replay_elapsed);
@@ -208,6 +216,8 @@ void Df3dWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_top_z"), &Df3dWorld::get_top_z);
     ClassDB::bind_method(D_METHOD("set_window_depth", "levels"), &Df3dWorld::set_window_depth);
     ClassDB::bind_method(D_METHOD("get_window_depth"), &Df3dWorld::get_window_depth);
+    ClassDB::bind_method(D_METHOD("set_sprite_depth", "levels"), &Df3dWorld::set_sprite_depth);
+    ClassDB::bind_method(D_METHOD("get_sprite_depth"), &Df3dWorld::get_sprite_depth);
     ClassDB::bind_method(D_METHOD("set_reveal_hidden", "reveal"), &Df3dWorld::set_reveal_hidden);
     ClassDB::bind_method(D_METHOD("get_reveal_hidden"), &Df3dWorld::get_reveal_hidden);
     ClassDB::bind_method(D_METHOD("set_slice_units", "enabled"), &Df3dWorld::set_slice_units);

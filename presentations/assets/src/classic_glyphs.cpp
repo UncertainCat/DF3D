@@ -479,7 +479,7 @@ const char* buildingKindToken(BuildingKind kind) {
       "Hatch",       "GrateWall",    "GrateFloor",    "BarsVertical",  "BarsFloor",
       "GearAssembly", "AxleHorizontal", "AxleVertical", "WaterWheel",  "Windmill",
       "TractionBench", "Slab",       "Nest",          "NestBox",       "Hive",
-      "Rollers",     "Instrument",   "Bookcase",      "DisplayFurniture", "OfferingPlace"};
+      "Rollers",     "Instrument",   "Bookcase",      "DisplayFurniture", "OfferingPlace", "Construction"};
   const auto i = static_cast<size_t>(kind);
   return i < sizeof(kNames) / sizeof(kNames[0]) ? kNames[i] : "?";
 }

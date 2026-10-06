@@ -11,6 +11,8 @@ func check(value: bool, message: String) -> void:
 func _initialize() -> void:
 	call_deferred("run")
 func run() -> void:
+	# Exercise the intentional missing-art fallback without emitting its user warning.
+	UI._warned_border_missing = true
 	var missing := UI.new()
 	missing.configure(MissingArt.new())
 	check(missing.theme.get_stylebox("panel","PanelContainer") is StyleBoxFlat, "missing art preserves readable error panel")

@@ -34,6 +34,7 @@ func run():
 	for view in [first,second,inspector]: root.add_child(view);host.register(view)
 	first.open_panel()
 	assert(first.panel.visible and host.active==first and interaction.construction_active)
+	assert(not host.allows_minimap_input(),"Ordinary modal panels do not opt into minimap navigation")
 	var cancellations:=interaction.cancelled
 	second.open_panel()
 	assert(not first.panel.visible and second.panel.visible and host.active==second and first.closes==1)
@@ -43,6 +44,7 @@ func run():
 	inspector.open_panel()
 	assert(not second.panel.visible and inspector.panel.visible and not interaction.construction_active,"Inspector preserves map inspection input")
 	host.set_overlay_blocked(true)
+	assert(not host.allows_minimap_input())
 	first.open_panel()
 	assert(host.active==inspector and interaction.shell_blocked,"Overlay denies panel activation and blocks map")
 	host.set_overlay_blocked(false)

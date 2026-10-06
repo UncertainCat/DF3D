@@ -12,6 +12,9 @@ class Group:
 	var custom := PackedColorArray()
 	var colors := PackedColorArray()
 	var bounds := AABB()
+	# Keep source-query coverage independent of the shader-clipped render bounds:
+	# removing a roof must still invalidate clipping and expand visibility again.
+	var render_bounds := AABB()
 	var clip_floor_z := 0
 	var clip_source_revision := -1
 	var radii: Dictionary = {}

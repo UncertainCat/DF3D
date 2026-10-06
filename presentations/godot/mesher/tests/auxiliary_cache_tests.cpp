@@ -30,17 +30,17 @@ TEST_CASE("selected-level cache ignores unrelated z but detects every relevant b
     snapshot.blocks = {{{0,0,1},selected.data()}}; snapshot.tick++;
     model.ingest(snapshot,2);
     CHECK(cache.update(model,1));
-    const int water = minimapPalette(model.tileAt({0,0,1}));
+    const int water = minimapColor(model.tileAt({0,0,1}));
     selected[0].liquidLevel = 7; snapshot.tick++;
     model.ingest(snapshot,3);
     CHECK(cache.update(model,1));
-    CHECK(minimapPalette(model.tileAt({0,0,1})) == water);
+    CHECK(minimapColor(model.tileAt({0,0,1})) == water);
     // Order changes on hidden cells still invalidate; minimap remains hidden.
     selected[1].flags = wm::kTileHidden | wm::kTileDigDesignated;
     selected[1].designation = wm::DesignationKind::Dig;
     snapshot.tick++; model.ingest(snapshot,4);
     CHECK(cache.update(model,1));
-    CHECK(minimapPalette(model.tileAt({1,0,1})) == -1);
+    CHECK(minimapColor(model.tileAt({1,0,1})) == -1);
     selected[1].flags = wm::kTileHidden | wm::kTileSmoothDesignated;
     selected[1].designation = wm::DesignationKind::Smooth;
     snapshot.tick++; model.ingest(snapshot,5);
@@ -77,4 +77,27 @@ TEST_CASE("selected-level cache ignores unrelated z but detects every relevant b
     snapshot.blocks = {{{0,0,1},selected.data()}};
     model.ingest(snapshot,9);
     CHECK(cache.update(model,1)); CHECK(cache.versions.size() == 1);
+}
+
+TEST_CASE("minimap refreshes lower liquid and selected occupancy without sampling unrelated levels") {
+ wm::WorldModel model;
+ std::array<wm::TileState,256> selected{},lower{},other{};
+ wm::SnapshotData snap;snap.mapSize={16,16,3};snap.tick=1;snap.terrainScope=wm::TerrainScope::Full;
+ snap.blocks={{{0,0,0},lower.data()},{{0,0,1},selected.data()},{{0,0,2},other.data()}};
+ model.ingest(snap,0);MinimapRevision cache;
+ CHECK(cache.update(model,1));CHECK_FALSE(cache.update(model,1));
+ snap.terrainScope=wm::TerrainScope::Delta;snap.tick++;
+ lower[0].liquidLevel=7;lower[0].liquidKind=wm::LiquidKind::Water;
+ snap.blocks={{{0,0,0},lower.data()}};model.ingest(snap,1);
+ CHECK(cache.update(model,1));
+ CHECK(minimapColor(model.tileAt({0,0,1}),model.tileAt({0,0,0}))==0x0018c0);
+ selected[0].buildingOccupancy=2;snap.tick++;snap.blocks={{{0,0,1},selected.data()}};model.ingest(snap,2);
+ CHECK(cache.update(model,1));
+ CHECK(minimapColor(model.tileAt({0,0,1}),model.tileAt({0,0,0}))==0xc88c00);
+ other[0].buildingOccupancy=2;snap.tick++;snap.blocks={{{0,0,2},other.data()}};model.ingest(snap,3);
+ CHECK_FALSE(cache.update(model,1));
+ selected[0].buildingOccupancy=0;snap.tick++;snap.blocks={{{0,0,1},selected.data()}};model.ingest(snap,4);
+ CHECK(cache.update(model,1));
+ CHECK(minimapColor(model.tileAt({0,0,1}),model.tileAt({0,0,0}))==0x0018c0);
+ model.resetSession();CHECK(cache.update(model,1));
 }

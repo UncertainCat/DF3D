@@ -1,5 +1,6 @@
 extends "res://tests/frame_profile.gd"
 func run():
+	preload("res://tests/recorded_fixture.gd").configure_scene()
 	scene = load("res://scenes/main.tscn").instantiate()
 	root.add_child(scene)
 	var deadline = Time.get_ticks_msec() + 60000

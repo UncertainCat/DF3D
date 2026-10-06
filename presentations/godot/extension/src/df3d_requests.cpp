@@ -25,17 +25,31 @@ Dictionary Df3dWorld::poll_session() {
     result["year"] = state.year;
     result["year_tick"] = state.yearTick;
     result["fort_name"] = String::utf8(state.fortName.c_str());
+    result["fort_original_name"] = String::utf8(state.fortOriginalName.c_str());
+    result["fortress_rank"] = state.fortressRank;
+    result["fortress_capital"] = state.fortressCapital;
+    result["moon_phase"] = state.moonPhase;
     result["active_save_id"] = String::utf8(state.activeSaveId.c_str());
     result["saved_save_id"] = String::utf8(state.savedSaveId.c_str());
     result["can_save"] = state.canSave;
     result["can_save_return"] = state.canSaveReturn;
     result["fortress_epoch"]=int64_t(state.fortressEpoch);
     result["request_fortress_epoch"]=int64_t(state.requestFortressEpoch);
+    if(state.saveDestinations.receipt) {
+        Dictionary catalog;Array destinations;
+        catalog["receipt"]=int64_t(state.saveDestinations.receipt);
+        catalog["fortress_epoch"]=int64_t(state.saveDestinations.fortressEpoch);
+        for(const auto& destination:state.saveDestinations.destinations) {
+            Dictionary row;row["id"]=String::utf8(destination.id.c_str());row["folder"]=String::utf8(destination.folder.c_str());destinations.push_back(row);
+        }
+        catalog["destinations"]=destinations;result["save_destinations"]=catalog;
+    }
     Dictionary summary;const auto& f=state.fortressSummary;
     summary["available"]=f.available;summary["population"]=f.population;summary["stress_available"]=f.stressAvailable;
     summary["elevation_offset"]=f.elevationOffset;summary["level_count"]=int64_t(f.levelCount);
     Array stress;for(auto value:f.stressCounts)stress.push_back(int64_t(value));summary["stress_counts"]=stress;
     summary["resources_available"]=f.resourcesAvailable;
+    summary["bookkeeper_precision"]=f.bookkeeperPrecision;
     Array resources;for(auto value:f.resourceCounts)resources.push_back(int64_t(value));summary["resource_counts"]=resources;
     result["fortress_summary"]=summary;
     Array notificationGroups;
@@ -49,6 +63,8 @@ Dictionary Df3dWorld::poll_session() {
     }
     result["active_notifications"]=notificationGroups;
     result["active_notifications_complete"]=state.activeNotificationsComplete;
+    Array alertIds;for(auto id:state.alertButtonReportIds)alertIds.push_back(id);result["alert_button_report_ids"]=alertIds;
+    result["alert_button_report_count"]=int64_t(state.alertButtonReportCount);result["alert_button_complete"]=state.alertButtonComplete;
     const auto& interruption=state.interruption;
     Dictionary notice;notice["kind"]=int(interruption.kind);notice["receipt"]=int64_t(interruption.receipt);notice["text"]=String::utf8(interruption.text.c_str());notice["reason"]=String::utf8(interruption.reason.c_str());notice["popup_count"]=int64_t(interruption.popupCount);notice["can_acknowledge"]=interruption.canAcknowledge;result["interruption"]=notice;
     const auto& p=state.petition;Dictionary petition;
@@ -77,11 +93,26 @@ int64_t Df3dWorld::load_fortress(const String& id) {
     return sessionClient_ ? int64_t(sessionClient_->sendLoadSave(id.utf8().get_data())) : 0;
 }
 
-Dictionary Df3dWorld::poll_management() {
+Dictionary Df3dWorld::poll_management() { return pollManagement(true); }
+Dictionary Df3dWorld::poll_management_header() { return pollManagement(false); }
+
+Dictionary Df3dWorld::management_payload(int64_t epoch, int64_t revision, int64_t sequence) const {
+    if (!managementClient_ || !managementClient_->transportAlive()) return {};
+    const auto& state = managementClient_->state();
+    if (epoch <= 0 || revision <= 0 || sequence <= 0 ||
+        uint64_t(epoch) != state.worldEpoch || uint64_t(revision) != state.revision ||
+        uint64_t(sequence) != state.requestSeq) return {};
+    // The main-thread service requests the payload only for the matching terminal
+    // receipt. Do not poll again between identity validation and conversion.
+    return managementState(true);
+}
+
+Dictionary Df3dWorld::pollManagement(bool includePayload) {
+    PerfScope profile("management.poll", nullptr, df3d::profiling::detailed());
     Dictionary result; std::string error;
     if (!managementClient_) managementClient_=wm::ManagementClient::open(error);
     if (!managementClient_) {result["transport_alive"]=false;result["status"]=int(wm::ManagementStatus::Rejected);result["message"]=String::utf8(error.c_str());return result;}
-    managementClient_->poll();
+    { PerfScope profile("management.transport_poll", nullptr, df3d::profiling::detailed()); managementClient_->poll(); }
     if (!managementClient_->transportAlive()) {
         result["transport_alive"]=false;
         result["status"]=int(wm::ManagementStatus::Rejected);
@@ -91,12 +122,18 @@ Dictionary Df3dWorld::poll_management() {
         managementClient_.reset();
         return result;
     }
+    return managementState(includePayload);
+}
+
+Dictionary Df3dWorld::managementState(bool includePayload) const {
+    Dictionary result;
     const auto& s=managementClient_->state();
     result["transport_alive"]=true;
     result["revision"]=int64_t(s.revision);result["world_epoch"]=int64_t(s.worldEpoch);
     result["request_seq"]=int64_t(s.requestSeq);result["action"]=int(s.action);result["status"]=int(s.status);
     result["message"]=String::utf8(s.message.c_str());result["error"]=String::utf8(managementClient_->lastError().c_str());
-    management::writeConstruction(result, s);
+    if (!includePayload) return result;
+    { PerfScope profile("management.convert_construction", nullptr, df3d::profiling::detailed()); management::writeConstruction(result, s); }
     management::writeArea(result, s.area);
     management::writeProduction(result, s.production);
     management::writeWorkOrder(result, s.workOrder);
@@ -132,7 +169,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CitizenWorkScope)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DismissAlert)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);
@@ -160,6 +197,36 @@ int64_t Df3dWorld::save_fortress(bool return_to_menu, const String& checkpoint_n
     if (!sessionClient_) { lastError_ = "DF session is unavailable"; return 0; }
     const auto seq = sessionClient_->sendSave(return_to_menu, checkpoint_name.utf8().get_data());
     if (!seq) lastError_ = String::utf8(sessionClient_->lastError().c_str());
+    return int64_t(seq);
+}
+
+int64_t Df3dWorld::read_save_destinations(int64_t epoch) {
+    if(!sessionClient_ || epoch<=0)return 0;
+    const auto seq=sessionClient_->sendReadSaveDestinations(uint64_t(epoch));
+    lastError_=seq?String():String::utf8(sessionClient_->lastError().c_str());return int64_t(seq);
+}
+int64_t Df3dWorld::quit_without_saving(int64_t epoch) {
+    if(!sessionClient_ || epoch<=0)return 0;
+    const auto seq=sessionClient_->sendQuitWithoutSaving(uint64_t(epoch));
+    lastError_=seq?String():String::utf8(sessionClient_->lastError().c_str());return int64_t(seq);
+}
+int64_t Df3dWorld::save_return_explicit(int64_t epoch,int64_t receipt,int mode,const String& id,const PackedByteArray& name) {
+    if(!sessionClient_ || epoch<=0 || receipt<=0 || mode<1 || mode>3)return 0;
+    std::vector<uint8_t> bytes;
+    if(!name.is_empty())bytes.assign(name.ptr(),name.ptr()+name.size());
+    const auto seq=sessionClient_->sendSaveReturn(uint64_t(epoch),uint64_t(receipt),wm::SaveReturnMode(mode),id.utf8().get_data(),bytes);
+    lastError_=seq?String():String::utf8(sessionClient_->lastError().c_str());return int64_t(seq);
+}
+int64_t Df3dWorld::save_fortress_bytes(const PackedByteArray& checkpoint_name) {
+    if (!sessionClient_) { lastError_ = "DF session is unavailable"; return 0; }
+    // Native text editing is byte-oriented and can leave incomplete UTF-8.
+    // Preserve the bytes through validation instead of substituting characters.
+    std::string name;
+    if (!checkpoint_name.is_empty())
+        name.assign(reinterpret_cast<const char*>(checkpoint_name.ptr()), checkpoint_name.size());
+    const auto seq = sessionClient_->sendSave(false, name);
+    if (!seq) lastError_ = String::utf8(sessionClient_->lastError().c_str());
+    else lastError_ = String();
     return int64_t(seq);
 }
 

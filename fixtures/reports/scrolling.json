@@ -1,0 +1,966 @@
+{
+  "native_version": "DF53.16 Steam / DFHack53.16-r1",
+  "source": "build/reports-scroll-native-20261001-060838",
+  "method": "Protected paused clone; native Combat tab, pointer in list, simulated bound native actions and widget/rendered row observation. Native widgets oracle only. Installed prefs/interface.txt maps unmodified wheel to CONTEXT_SCROLL, Shift wheel to CONTEXT_SCROLL_PAGE.",
+  "owned_df_pid": 54624,
+  "frame": 0,
+  "save_unchanged": true,
+  "observations": [
+    {
+      "input": "initial",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    },
+    {
+      "input": "STANDARDSCROLL_DOWN",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    },
+    {
+      "input": "STANDARDSCROLL_UP",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    },
+    {
+      "input": "STANDARDSCROLL_PAGEDOWN",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    },
+    {
+      "input": "STANDARDSCROLL_PAGEUP",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    },
+    {
+      "input": "CONTEXT_SCROLL_DOWN",
+      "scroll": 1,
+      "visible": 15,
+      "first_text": "The Blacksmith Rîsen Bomrekód is fighting!"
+    },
+    {
+      "input": "CONTEXT_SCROLL_UP",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    },
+    {
+      "input": "CONTEXT_SCROLL_PAGEDOWN",
+      "scroll": 15,
+      "visible": 15,
+      "first_text": "The Stoneworker Kol Asobstettad is fighting!"
+    },
+    {
+      "input": "CONTEXT_SCROLL_PAGEUP",
+      "scroll": 0,
+      "visible": 15,
+      "first_text": "The Dwarven child Vabôk Odgúblòr is fighting!"
+    }
+  ],
+  "limitations": [
+    "Pointer outside list, drag, arrows, track, resize and held repetition not yet accepted."
+  ],
+  "thumb_capture": {
+    "source": "build/reports-scroll-native-20261001-062551",
+    "owned_df_pid": 44860,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "total": 97,
+    "page": 15,
+    "samples": [
+      {
+        "first": 0,
+        "native_bar": {
+          "page_size": 15,
+          "print_ey": 57,
+          "print_sy": 13,
+          "scroller_ey": 19,
+          "scroller_sy": 13,
+          "sel": 0,
+          "sel_max": 96,
+          "sel_min": 0
+        }
+      },
+      {
+        "first": 1,
+        "native_bar": {
+          "page_size": 15,
+          "print_ey": 57,
+          "print_sy": 13,
+          "scroller_ey": 20,
+          "scroller_sy": 14,
+          "sel": 1,
+          "sel_max": 96,
+          "sel_min": 0
+        }
+      },
+      {
+        "first": 15,
+        "native_bar": {
+          "page_size": 15,
+          "print_ey": 57,
+          "print_sy": 13,
+          "scroller_ey": 25,
+          "scroller_sy": 19,
+          "sel": 15,
+          "sel_max": 96,
+          "sel_min": 0
+        }
+      },
+      {
+        "first": 40,
+        "native_bar": {
+          "page_size": 15,
+          "print_ey": 57,
+          "print_sy": 13,
+          "scroller_ey": 37,
+          "scroller_sy": 31,
+          "sel": 40,
+          "sel_max": 96,
+          "sel_min": 0
+        }
+      },
+      {
+        "first": 81,
+        "native_bar": {
+          "page_size": 15,
+          "print_ey": 57,
+          "print_sy": 13,
+          "scroller_ey": 56,
+          "scroller_sy": 50,
+          "sel": 81,
+          "sel_max": 96,
+          "sel_min": 0
+        }
+      },
+      {
+        "first": 82,
+        "native_bar": {
+          "page_size": 15,
+          "print_ey": 57,
+          "print_sy": 13,
+          "scroller_ey": 57,
+          "scroller_sy": 51,
+          "sel": 82,
+          "sel_max": 96,
+          "sel_min": 0
+        }
+      }
+    ],
+    "limitations": [
+      "Pointer click probe made no changes; it does not establish arrow/track behavior.",
+      "Drag, hover artwork and Reports scrollbar pixel composition not accepted."
+    ]
+  },
+  "pointer_capture": {
+    "source": "build/reports-scroll-native-20261001-062806",
+    "owned_df_pid": 57188,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "observations": [
+      {
+        "input": "click-y-154",
+        "first": 0
+      },
+      {
+        "input": "click-y-166",
+        "first": 0
+      },
+      {
+        "input": "click-y-202",
+        "first": 0
+      },
+      {
+        "input": "click-y-238",
+        "first": 0
+      },
+      {
+        "input": "click-y-250",
+        "first": 15
+      },
+      {
+        "input": "click-y-400",
+        "first": 15
+      },
+      {
+        "input": "click-y-694",
+        "first": 15
+      },
+      {
+        "input": "click-y-706",
+        "first": 1
+      },
+      {
+        "input": "drag-y-140",
+        "first": 0
+      },
+      {
+        "input": "drag-y-166",
+        "first": 0
+      },
+      {
+        "input": "drag-y-202",
+        "first": 5
+      },
+      {
+        "input": "drag-y-250",
+        "first": 12
+      },
+      {
+        "input": "drag-y-400",
+        "first": 36
+      },
+      {
+        "input": "drag-y-550",
+        "first": 58
+      },
+      {
+        "input": "drag-y-694",
+        "first": 82
+      },
+      {
+        "input": "drag-y-718",
+        "first": 82
+      }
+    ],
+    "correction": "Viewport inset means pixel968 maps to native mouse_x120, not121. Earlier no-op probes do not establish input behavior.",
+    "limitations": [
+      "Sampled inputs only; hold-repeat, hover palette and resize need coverage."
+    ]
+  },
+  "pagination_capture": {
+    "source": "build\\reports-controller-live-20261001-063244",
+    "method": "Actual Reports controller/service/live API; after first64 Combat rows, scroll_to82 retains requested last-page anchor and automatically requests remaining33. Full97 native identities/text checked. Sparring11 and697 logIDs also rechecked.",
+    "owned_df_pid": 42596,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "status": "passed_with_known_issues",
+    "limitations": [
+      "Drag visual sequence during pending request not captured live",
+      "Unit-log viewport anchoring remains unfinished"
+    ]
+  },
+  "unit_log_geometry": {
+    "source": "build/reports-log-scroll-native-20261001-064044",
+    "owned_df_pid": 50792,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "initial": {
+      "bar": {
+        "page_size": 17,
+        "print_ey": 60,
+        "print_sy": 10,
+        "scroller_ey": 60,
+        "scroller_sy": 59,
+        "sel": 680,
+        "sel_max": 696,
+        "sel_min": 0
+      },
+      "name": "",
+      "num_visible": 17,
+      "scroll": 680,
+      "type": "<type: widget_scroll_rows>"
+    },
+    "method": "Open native Sparring unit log, return to DF event loop, then read popup-owned scroll_rows oracle. shared_ptr pointee read is capture-only.",
+    "limitations": [
+      "Immediate probes before event-loop return were stale.",
+      "Wheel probes did not move the log; input behavior not accepted.",
+      "Actual count697/page17/first680 and native thumb bounds observed."
+    ]
+  },
+  "unit_log_input": {
+    "sources": [
+      "build/reports-log-scroll-native-20261001-064225",
+      "build/reports-log-scroll-native-20261001-064343",
+      "build/reports-log-scroll-native-20261001-064456"
+    ],
+    "method": "Two-stage open then input; observations after DF event-loop return. Viewscreen input only; widgets oracle-only.",
+    "observations": {
+      "initial": 680,
+      "context_up_inside": 680,
+      "context_page_up_inside": 680,
+      "standard_up": 680,
+      "standard_page_up": 680,
+      "second_up": 680,
+      "second_page_up": 680,
+      "context_up_over_bar": 680,
+      "arrow_up": 679,
+      "track_y400_from680": 663,
+      "drag_y724_to400_from680": 306
+    },
+    "owned_df_pids": [
+      12656,
+      45656,
+      20872
+    ],
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "limits": [
+      "Sampled directions/positions only",
+      "Held repeat and resize not accepted"
+    ]
+  },
+  "unit_log_live_window": {
+    "source": "build\\reports-controller-live-20261001-064827",
+    "prior_controller_run": "build/reports-controller-live-20261001-064720",
+    "observations": [
+      {
+        "first": 306,
+        "id": 77070,
+        "loaded": 448,
+        "loaded_start": 249,
+        "view": "LogScroll"
+      },
+      {
+        "first": 0,
+        "id": 76758,
+        "loaded": 697,
+        "loaded_start": 0,
+        "view": "LogScroll"
+      },
+      {
+        "first": 680,
+        "id": 78288,
+        "loaded": 697,
+        "loaded_start": 0,
+        "view": "LogScroll"
+      }
+    ],
+    "method": "Actual Reports panel, ui_host, controller and semantic service, real Df3dWorld data and installed art. Scroll-to306 then0 automatically pages from_end history, return680, compare every697IDs with native oracle.",
+    "native_pixel_comparison": {
+      "header": 0,
+      "rows": 0,
+      "scrollbar": 0
+    },
+    "owned_df_pids": [
+      45792,
+      29092
+    ],
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "status": "passed_with_known_issues",
+    "limits": [
+      "Native pause toggle still absent",
+      "Speaker and full camera effects not accepted",
+      "Test host uses injected world-input adapter; ordinary launcher remains hidden"
+    ]
+  },
+  "ordinary_report_tab_input": {
+    "source": "build/reports-tab-scroll-native-20261001-073631",
+    "observations": {
+      "bar_CONTEXT_SCROLL_DOWN": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "bar_CONTEXT_SCROLL_PAGEDOWN": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "bar_CONTEXT_SCROLL_PAGEUP": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "bar_CONTEXT_SCROLL_UP": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "baseline": {
+        "after": 0,
+        "before": 0,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "CONTEXT_SCROLL_DOWN": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "CONTEXT_SCROLL_PAGEDOWN": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "CONTEXT_SCROLL_PAGEUP": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "CONTEXT_SCROLL_UP": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "STANDARDSCROLL_DOWN": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "STANDARDSCROLL_PAGEDOWN": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "STANDARDSCROLL_PAGEUP": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      },
+      "STANDARDSCROLL_UP": {
+        "after": 2,
+        "before": 2,
+        "count": 20,
+        "frame": 0,
+        "page": 15
+      }
+    },
+    "method": "Native All tab with20 rows,15 visible, reset to row2 before each input. Installed interface.txt maps arrows/PageUp/PageDown to STANDARDSCROLL and wheel/Shift-wheel to CONTEXT_SCROLL. Pointer in body then scrollbar.",
+    "owned_df_pid": 34432,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "gpu_verification": "build/reports-tab-input-gpu-verified",
+    "diagnostics": "passed_with_known_issues",
+    "limits": [
+      "Only All tab captured here; individual named report tabs and held-input timing remain outside this sample"
+    ],
+    "failed_gpu_attempt": "build/reports-tab-input-gpu failed subsequent recenter after synthetic input sequence; corrected key/wheel releases and pointer movement, then passed rerun."
+  },
+  "ordinary_tab_snapshot": {
+    "source": "build/reports-tab-refresh-native-20261001-074957",
+    "observations": {
+      "baseline": {
+        "scroll": 2,
+        "count": 20,
+        "probe_present": false
+      },
+      "afterappend": {
+        "scroll": 2,
+        "count": 20,
+        "probe_present": false
+      },
+      "aftertabs": {
+        "scroll": 2,
+        "count": 20,
+        "probe_present": false
+      },
+      "afterreopen": {
+        "scroll": 0,
+        "count": 21,
+        "probe_present": true
+      },
+      "afterremove": {
+        "scroll": 0,
+        "count": 21,
+        "probe_present": true
+      }
+    },
+    "owned_df_pid": 16400,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "viewer_verification": [
+      "build/qa/reports-tab-retention",
+      "build/qa/reports-tab-retention-owner",
+      "build/qa/reports-snapshot-final",
+      "build/qa/reports-snapshot-envelope"
+    ],
+    "limits": [
+      "Snapshot capture/paging are semantic bridge reads; no native widget or camera input",
+      "Live acceptance uses the real model/service/controller in a scratch harness, not the ordinary main-scene launcher",
+      "Running simulation and broader Reports requirements remain separately incomplete"
+    ],
+    "live_viewer_snapshot": {
+      "evidence": "build/reports-snapshot-live-20261001-081012",
+      "status": "passed_with_known_issues",
+      "management_protocol": 44,
+      "initial_total": 170,
+      "retained_revision": 1,
+      "reopened_revision": 2,
+      "assertions": [
+        "Unloaded pages retain removed IDs and exclude appended IDs",
+        "Never-visited Job failures retains original text after a UnitList read",
+        "Reopening includes changed text and appended ID, excludes removed ID"
+      ],
+      "owned_df_pid": 30244,
+      "owned_df_closed": true,
+      "frame": 0,
+      "save_unchanged": true
+    }
+  },
+  "ordinary_long_text_overdraw": {
+    "source": "build/reports-long-row-live-20261001-092109",
+    "discovery": "build/reports-long-row-live-20261001-091724",
+    "game": "DF53.16 / DFHack53.16-r1",
+    "fixture_bytes": 40628,
+    "fixture_copy": "Synthetic length probe only, not product copy",
+    "method": "Protected paused owned clone; append long CANCEL_JOB, open native Reports/Job failures, set native widget scroll only as oracle, click long prose, capture. Live service/controller/view reads semantic reports and scrolls to last page.",
+    "facts": [
+      "112-column word wrapping",
+      "No two-line clipping: text overdraws subsequent rows and panel border",
+      "Date overlays beginning of second text line",
+      "Text glyphs overdraw bottom border; text background preserves border artwork",
+      "Click on report prose leaves Announcements open and panel unchanged"
+    ],
+    "panel_rectangle": [
+      32,
+      52,
+      944,
+      708
+    ],
+    "different_pixels": 0,
+    "owned_df_pid": 51932,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "prior_attempts": [
+      "091724 old clipping differs38861pixels",
+      "091832 unclipped110-column differs41545pixels",
+      "091952 corrected112-column differs3357border pixels; corrected background in092109"
+    ],
+    "qa": "build/qa/reports-long-overdraw: Reports state/controller/panel passed; popup renderer passed_with_known_issues",
+    "limits": [
+      "Zero-pixel acceptance covers panel rectangle; below-panel background differs from absent world in harness",
+      "Visible ASCII prefix fits16KiB; snapshot-safe full text for larger viewports/Unicode remains incomplete",
+      "Unit-log long-text clipping and wrapping need their own native capture",
+      "Resizing and multiple overlapping long rows not accepted"
+    ]
+  },
+  "unit_log_long_text_overdraw": {
+    "source": "build/reports-long-log-live-20261001-092727",
+    "discovery": "build/reports-long-log-live-20261001-092343",
+    "native_version": "DF53.16 Steam / DFHack53.16-r1",
+    "setup": "Synthetic40628byte report appended to unit998 Combat log in owned paused clone. Native Combat first-row magnifier and semantic Reports controller select same unit.",
+    "facts": [
+      "108-column report text wrapping, independently of110-column header wrapping",
+      "No three-line cutoff; glyphs overdraw later rows and bottom border",
+      "Background fill stops at panel interior; border artwork remains between glyphs"
+    ],
+    "pause_fixture": {
+      "native_initial": true,
+      "native_after_actual_toggle": false,
+      "viewer_local_state": false,
+      "note": "Known-state rendering comparison only. Native initial preference and persistence remain unresolved; no runtime widget reads."
+    },
+    "panel_rectangle": [
+      32,
+      64,
+      944,
+      696
+    ],
+    "different_pixels": 0,
+    "owned_df_pid": 49992,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "qa": "build/qa/reports-long-log-final: state/controller/panel passed; protected renderer known3diagnostics only",
+    "prior_attempts": [
+      "092436 removed clipping but110-column wrapping differed92919pixels",
+      "092604 at108columns text matches;644remaining pixels were native pause preference true vs viewer false"
+    ],
+    "limits": [
+      "Captured ASCII visible portion fits mapped16KiB prefix; arbitrary viewport/Unicode full-text delivery not accepted",
+      "Single retained report; overlap of multiple long rows needs capture",
+      "Outside-panel background differs in isolated renderer harness",
+      "Running auto-pause and default/persistence remain open"
+    ]
+  },
+  "ordinary_tab_full_text": {
+    "source": "build/reports-retained-text-live-20261001-093932",
+    "management_version": 46,
+    "session_version": 10,
+    "method": "Protected paused clone. Capture Tab1, retrieve first Text page using its revision, edit native report text/repeats through oracle fixture, retrieve remaining pages, recapture tab and reject superseded text revision.",
+    "observations": {
+      "fresh_revision": 2,
+      "fresh_text": "MUTATED SOURCE",
+      "retained_bytes": 40628,
+      "revision": 1,
+      "stale_rejected": true
+    },
+    "retained_repeat_count": 2,
+    "fresh_repeat_count": 9,
+    "owned_df_pid": 56960,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only",
+    "offline": "build/qa/reports-retained-text46:19CTest,Godotmanagementcontract,Textsnapshot,Tab snapshot,adapter allpassed",
+    "limits": [
+      "Client assembly now covered by client_assembly; protected source mutation covered at protocol layer.",
+      "Unit-log full-text retention/opening coherence remains separate",
+      "Aggregate retained tab payload bounded at32MiB including fulltext; reject cannot be presented as native truncation"
+    ],
+    "client_assembly": {
+      "source": "build/reports-text-assembly-live-20261001-094442",
+      "method": "Actual Reports service/controller/state reads retained Tab pages, resolves incomplete rows with tab-owned Text requests, publishes complete page, switches to Job failures and scrolls to final row before installed-asset render.",
+      "bytes": 40628,
+      "complete": true,
+      "tab_revision": 1,
+      "panel_rectangle": [
+        32,
+        52,
+        944,
+        708
+      ],
+      "different_pixels": 0,
+      "owned_df_pid": 37076,
+      "owned_df_closed": true,
+      "frame": 0,
+      "save_unchanged": true,
+      "offline": "build/qa/reports-text-assembly-fixed: textassembly/state/controller/panel allpassed",
+      "diagnostics": "Protected renderer only known3diagnostics; offline checks clean",
+      "scope": "Ordinary retained-tab full-text delivery. Unit-log full-text snapshot, large Unicode/resized rendering and maximum aggregate-memory acceptance remain separate."
+    }
+  },
+  "wrapping_work": {
+    "profile_before": "build/notes/pm/report-wrap-before.json",
+    "profile_after": "build/notes/pm/report-wrap-after.json",
+    "observations_before": [
+      {
+        "characters": 40628,
+        "elapsed_us": 1977,
+        "lines": 370
+      },
+      {
+        "characters": 262144,
+        "elapsed_us": 200832,
+        "lines": 2384
+      },
+      {
+        "characters": 1048576,
+        "elapsed_us": 11459560,
+        "lines": 9533
+      }
+    ],
+    "observations_after": [
+      {
+        "characters": 40628,
+        "elapsed_us": 160,
+        "lines": 370
+      },
+      {
+        "characters": 262144,
+        "elapsed_us": 801,
+        "lines": 2384
+      },
+      {
+        "characters": 1048576,
+        "elapsed_us": 3879,
+        "lines": 9533
+      }
+    ],
+    "timing_policy": "Isolated measurements only, not portable timing thresholds.",
+    "regression": "reports_wrap_test compares historical output on bounded randomized Unicode/space/word samples, verifies full popup wrapping, and measures identical scanned/copied characters for55lines regardless of unread suffix size.",
+    "viewport_work": {
+      "columns": 112,
+      "lines": 55,
+      "scanned_characters": 6160,
+      "copied_characters_upper_bound": 12320
+    },
+    "ordinary_capture": "build/reports-text-assembly-live-20261001-095026",
+    "unit_capture": "build/reports-long-log-live-20261001-095104",
+    "different_pixels": {
+      "ordinary_panel": 0,
+      "unit_log_panel": 0
+    },
+    "owned_df_pids": [
+      49244,
+      33596
+    ],
+    "owned_df_closed": true,
+    "frame": 0,
+    "saves_unchanged": true,
+    "qa": [
+      "build/qa/report-wrap-lifecycle-fixed",
+      "build/qa/report-wrap-work-counts"
+    ],
+    "limits": [
+      "Does not establish total popup/log memory acceptance at maximum source sizes",
+      "Single long-row captures; multiple overlapping rows and resized native layout remain separate",
+      "Unit-log full-text transport still incomplete"
+    ]
+  },
+  "unit_log_retained_transport": {
+    "source": "build/reports-unit-retained-live-20261001-100551",
+    "management_version": 47,
+    "session_version": 10,
+    "method": "Protected paused clone. Capture unit998 Combat, start unit-scoped Text, mutate native text/repeat count and append another report. Finish old text, explicitly refresh, verify old text unchanged, recapture and reject superseded revision.",
+    "observations": {
+      "fresh_revision": 2,
+      "fresh_text": "MUTATED SOURCE",
+      "refresh_appended_id": 78823.0,
+      "refresh_retained_original": true,
+      "retained_bytes": 40628,
+      "revision": 1,
+      "stale_rejected": true
+    },
+    "owned_df_pid": 37308,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only",
+    "offline": "build/qa/report-unit-protocol47:19CTest,Godot contract,unit snapshot,tab snapshot,adapter allpassed",
+    "limits": [
+      "Direct-wire, long-text client and multi-page history acceptance are recorded separately in this entry.",
+      "Main-scene lifecycle, maximum memory, running pause and wider input/resize remain open."
+    ],
+    "client_assembly": {
+      "reports": {
+        "source": "build/unit-log-client-reports-20261001-101434",
+        "observations": {
+          "client": "reports",
+          "native_mutation_during_text": true,
+          "popup_back": false,
+          "refresh_appended": true,
+          "retained_bytes": 40628,
+          "retained_count": 1,
+          "revision": 1
+        },
+        "owned_df_pid": 54468,
+        "owned_df_closed": true,
+        "frame": 0,
+        "save_unchanged": true,
+        "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only"
+      },
+      "popup": {
+        "source": "build/unit-log-client-popup-20261001-101507",
+        "observations": {
+          "client": "popup",
+          "native_mutation_during_text": true,
+          "popup_back": true,
+          "refresh_appended": false,
+          "retained_bytes": 40628,
+          "retained_count": 1,
+          "revision": 1
+        },
+        "owned_df_pid": 46936,
+        "owned_df_closed": true,
+        "frame": 0,
+        "save_unchanged": true,
+        "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only"
+      },
+      "render": {
+        "source": "build/reports-long-log-live-20261001-101554",
+        "owned_df_pid": 40752,
+        "owned_df_closed": true,
+        "frame": 0,
+        "save_unchanged": true,
+        "comparison": {
+          "panel": [
+            32,
+            64,
+            944,
+            696
+          ],
+          "differing_pixels": 0,
+          "scope": "Retained full 40628-byte unit-log row; pause-on-new explicitly false in native oracle."
+        },
+        "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only"
+      },
+      "offline": [
+        "build/qa/unit-log-clients: six targeted state/controller/panel/text checks passed",
+        "build/qa/unit-log-popup-owner-boundary: foreign history revision and independent text owner rejected; complete unit text and Back passed"
+      ],
+      "limits": [
+        "Controlled source mutation during long-text assembly for one report; not full multi-page history expiration acceptance.",
+        "Popup unit-log automatic refresh, aggregate memory, main-scene lifecycle, broader input/resize and Unicode rendering remain incomplete."
+      ]
+    },
+    "history_mutation_clients": {
+      "reports": {
+        "source": "build/unit-log-history-reports-20261001-101942",
+        "observations": {
+          "client": "reports",
+          "edited_rows": 2,
+          "expired_report": 78931.0,
+          "fresh_revision": 2,
+          "initial_retained_count": 150,
+          "long_history_bytes": 43218,
+          "original_unloaded_history_preserved": true,
+          "refresh_retained_count": 153,
+          "removed_reference": 78841.0,
+          "reopened_count": 151,
+          "revision": 1
+        },
+        "owned_df_pid": 49780,
+        "owned_df_closed": true,
+        "frame": 0,
+        "save_unchanged": true,
+        "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only"
+      },
+      "popup": {
+        "source": "build/unit-log-history-popup-20261001-102025",
+        "observations": {
+          "client": "popup",
+          "edited_rows": 2,
+          "expired_report": 78931.0,
+          "fresh_revision": 2,
+          "initial_retained_count": 150,
+          "long_history_bytes": 43218,
+          "original_unloaded_history_preserved": true,
+          "refresh_retained_count": 150,
+          "removed_reference": 78841.0,
+          "reopened_count": 151,
+          "revision": 1
+        },
+        "owned_df_pid": 47756,
+        "owned_df_closed": true,
+        "frame": 0,
+        "save_unchanged": true,
+        "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only"
+      },
+      "method": "Seed 150 reports, capture initial client page, edit two source texts, remove a log reference, erase another report from the native report vector, append three. Fetch unloaded retained pages including a43218-byte row; compare all150 original rows; Reports explicitly refreshes to153; reopening both clients yields151 current rows and both edits.",
+      "limits": [
+        "Controlled in-memory expiration at frame0, not naturally timed running expiration.",
+        "Data/controller acceptance, not new multi-row rendering or main-scene lifecycle acceptance."
+      ]
+    }
+  },
+  "initial_unit_log_read_recovery": {
+    "source": "build/reports-initial-recovery-live-20261001-105801",
+    "method": "Actual Reports controller/service with a test transport wrapper injecting an invalid retained revision once for initial UnitLog and once for its later Text continuation. Real bridge rejects both. Production state/controller recover without mutation replay; native panel comparison after complete recovery. Fault wrapper is scratch acceptance code only.",
+    "observations": {
+      "complete_text_bytes": 40628,
+      "initial_rejection": true,
+      "recovered": true,
+      "revision": 1,
+      "text_rejection": true,
+      "unit_log_requests": [
+        {
+          "action": 34,
+          "from_end": true,
+          "unit_category": 0,
+          "unit_id": 998,
+          "view": 3
+        },
+        {
+          "action": 34,
+          "expected_list_revision": 0,
+          "from_end": true,
+          "unit_category": 0,
+          "unit_id": 998,
+          "view": 3
+        },
+        {
+          "action": 34,
+          "expected_list_revision": 1,
+          "from_end": true,
+          "unit_category": 0,
+          "unit_id": 998,
+          "view": 3
+        }
+      ],
+      "no_mutation_replayed": true,
+      "request_count": 14,
+      "panel_differing_pixels": 0
+    },
+    "owned_df_pid": 33456,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only",
+    "offline": "build/qa/reports-initial-read-recovery: state/text/controller/panel passed",
+    "failed_predecessor": {
+      "source": "build/reports-initial-recovery-live-20261001-105655",
+      "cause": "Harness injected Text rejection into ordinary Tab before reaching unit log; corrected selector to target unit998. This also confirms ordinary-tab read recovery remains a separate gap.",
+      "owned_df_pid": 53832,
+      "owned_df_closed": true,
+      "save_unchanged": true
+    },
+    "limits": [
+      "Initial unit-log demand only; ordinary Tab/UnitList, later history-page and alert Group read recovery remain separate.",
+      "No claim that a permanently invalid/retired snapshot can be recovered without reopening.",
+      "No running-simulation pause timing acceptance."
+    ]
+  },
+  "read_failure_recovery": {
+    "source": "build/reports-read-recovery-live-20261001-110438",
+    "scope": "Real bridge rejections during ordinary Tab Text, initial UnitLog, and UnitLog Text; complete retained report recovered.",
+    "observations": {
+      "complete_text_bytes": 40628,
+      "initial_rejection": true,
+      "ordinary_rejection": true,
+      "recovered": true,
+      "revision": 1,
+      "text_rejection": true,
+      "request_count": 17,
+      "pixel_comparisons": [
+        {
+          "native": "open.png",
+          "viewer": "viewer-open.png",
+          "differing_pixels": 0
+        }
+      ],
+      "unclassified_diagnostics": [],
+      "save_preservation": "Owned source unchanged"
+    },
+    "owned_df_pid": 53416,
+    "owned_df_closed": true,
+    "frame": 0,
+    "save_unchanged": true,
+    "diagnostics": "passed_with_known_issues: documented renderer notice/device finalize/two-object shutdown only",
+    "offline": "build/qa/report-read-recovery-covered: Reports state/text/controller/panel and alert entries/panel checks passed",
+    "semantics": [
+      "Retry only unsatisfied reads at 0.5-second cadence; preserve captured revision and original navigation demand.",
+      "Close, epoch changes and superseding navigation cancel demand; mutation/pause intents are not replayed.",
+      "Healthy ordinary tabs and alert popups do not acquire automatic refresh polling."
+    ],
+    "limits": [
+      "UnitList and later-history recovery have offline regression coverage, not fault-injected live acceptance in this capture.",
+      "Permanently retired snapshots remain invalid; recovery must not silently recapture a different value.",
+      "Main-scene disconnect/reconnect, running pause timing, arbitrary viewport and maximum aggregate heap remain separate acceptance work."
+    ],
+    "navigation_followup": {
+      "offline": "build/qa/reports-recovery-navigation: Reports state/text/controller checks passed",
+      "defect": "An initial Tab or its Text failure could be cached as an empty tab on switching away; scrolling could discard its unsatisfied initial read.",
+      "correction": "Do not cache rejected initial reads. Preserve initial demand across scrolling; switching back requests the same retained tab revision. Successfully committed tabs still restore from cache.",
+      "limits": "Deterministic navigation regression; no additional native or live capture claimed."
+    },
+    "controller_lifecycle": {
+      "offline": "build/qa/reports-recovery-lifecycle: Reports controller, alert entries and semantic action service checks passed",
+      "verified": [
+        "A timed-out read queues retry but cannot send it before draining the original receipt.",
+        "The late original reply does not publish content; only the retry reply commits.",
+        "Transport loss, world epoch change and model generation change cancel queued retries and close the owner.",
+        "Old successful receipts after invalidation cannot revive rows; reconnect may submit only the existing catalog claim."
+      ],
+      "limits": "Injected model receipts exercise production controller/service integration; not real disconnect or full main-scene acceptance."
+    }
+  }
+}

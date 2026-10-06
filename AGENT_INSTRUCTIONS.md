@@ -34,15 +34,71 @@ are never committed or shipped. Persist a document only when its ongoing value j
 it, say why in the change description, and prefer updating an existing reference over adding one;
 remove stale material instead of archiving it (Git keeps history).
 
+Write durable docs and comments around current behavior, invariants, ownership and
+limitations. Update the owning section instead of appending an iteration log.
+Remove superseded plans and references that require conversation or experiment
+history to interpret. Keep dated evidence when it establishes provenance, a supported
+release's behavior or an unresolved defect; scope its claims to that build/run.
+
+### Current release cut (maintainer direction, 2026-10-01)
+
+Work toward a release candidate using useful verified subsets. If a candidate
+expands materially, defer or narrow it for this cut and record why in the release
+scope at the top of build/notes/pm/TRACKER.md. A release exclusion does not remove
+project requirements, grant native-parity acceptance, or mark a hidden feature
+complete. Preserve deferred work and its evidence for later releases. Included
+behavior still follows the native-copy, ownership and verification rules below.
+
+Subsequent maintainer clarification, 2026-10-01: the next feature-release targets
+are Reports/alerts AND full construction. The maintainer explicitly rejected a
+furniture-only construction release. For construction, the earlier scope-cut
+permission does not authorize silently dropping tracks, machinery, traps,
+variable-size placement or native material-selection modes. Small workflows may
+be implementation milestones; the delivered target remains the realized native
+construction feature. Track current evidence and gaps in the release tracker.
+
+Maintainer clarification, 2026-10-02: fix the Reports "Pause on new"
+initialization issue for this release if feasible; some bugs are acceptable for
+this cut. Record retained defects and their practical impact explicitly. This
+does not remove project requirements or authorize invented visible copy.
+
+Subsequent maintainer decision, 2026-10-02: "don't fuss it, whatever's simpler.
+Player can pause." Pause on new may start off per fortress session and remember
+explicit toggles within that session. This specific simplification is accepted;
+do not reopen native initialization matching as an RC2 blocker. Explicit toggle
+behavior remains supported. Other native-parity and visible-copy rules still apply.
+
+Maintainer request, 2026-10-03: show a visible busy indication while construction
+material lookup/placement is pending. A text-free indeterminate animation is
+authorized for this asynchronous wait; it does not authorize authored status
+copy, fabricated progress percentages or broader native-UI departures.
+
 ## 2. Architecture and runtime ownership
 
 - Preserve bridge -> pointer-free mirror -> engine-independent world model ->
   presentation boundaries. Presentations use the model API, never mirror memory.
 - Use game semantics below the presentation layer. No renderer/atlas/mesh concepts
   in mirror/model contracts; no raw pointers cross process boundaries.
-- Bridge work runs at safe points and must not block the simulation. Maintain
-  incremental state and bounded work; target every simulation tick. Pause, load,
-  slowdown and rewind are normal cases, not permission to assume a fixed clock.
+- Bridge work runs at safe points. Prioritize smooth ordinary gameplay. Routine
+  streaming and automatic refreshes should be economical; brief simulation slowdowns
+  from opening or using panels are generally acceptable. Use judgment about caching,
+  batching, incremental processing or synchronous work, favoring simplicity unless
+  there is evidence of a performance problem. Existing streaming implementations can
+  stay where useful.
+- Maintainer authorization, 2026-10-03: prefer verified native DF APIs over
+  recreating DF rules. Native material calculations may run synchronously at a
+  safe point with independently owned inputs and scratch restoration. Godot
+  frame responsiveness takes priority over simulation throughput during these
+  interactive actions. Keep Godot asynchronous and validate native behavior
+  before release. Do not drive or borrow the global native build-menu state.
+- Maintainer clarification, 2026-10-03: prioritize prompt responses to explicit
+  gameplay actions over simulation throughput during those actions. Larger safe-point
+  batches are allowed when measurements justify them; keep the viewer responsive.
+- Performance policies do not impose universal step ceilings or require blanket
+  rewrites. Correctness, safe-point execution, ownership,
+  stale-target checks and unknown-outcome handling remain separate requirements.
+  Memory, payload, geometry and retirement-storage limits retain their independent
+  justification. Pause, load, slowdown and rewind remain normal lifecycle cases.
 - Commands are validated semantic intents with stable IDs and current epochs.
   Sent is not succeeded. Unknown outcomes must not be automatically replayed.
 - Panels own local tabs, selection, scrolling and drafts. Native viewscreens,
@@ -66,6 +122,22 @@ remove stale material instead of archiving it (Git keeps history).
 - Preserve native hierarchy, labels, grouping and actions; original artwork on an invented layout is
   not parity, though small documented spacing/wrapping differences are acceptable. Use sourced prose
   or factual values; missing descriptions stay blank rather than being fabricated.
+- Maintainer clarification, 2026-09-28: agents and generated specs must not author substitute
+  visible copy. Map native copy or reproduce it verbatim, with traceable native evidence.
+  Bot-authored specs, review approvals and documented departures do not override native DF
+  behavior or appearance. Treat conflicting requirements as defects to resolve, not permission
+  to ship compromises. Audit labels, tooltips, status/error text and unsupported-state copy;
+  flag text without a native source rather than inventing a replacement.
+  Synthetic copy in test fixtures is acceptable, but is not evidence for product copy
+  and must not become visible runtime text or a native-parity acceptance expectation.
+- Specs are implementation guidance, not the product authority. Every worker and reviewer
+  must compare its task against the primary objective: native DF behavior and appearance.
+  A spec requirement or documented departure that conflicts with native parity is a defect
+  in the spec, even if Fable, Astra, or another worker/reviewer approved it. Identify the conflict, correct the
+  spec and implementation within the authorized scope, and update tests to verify native
+  evidence rather than preserve the compromise. Do not claim completion from compliance
+  with a conflicting checklist. Only an explicit maintainer-authorized product departure
+  can override the native target; agent/PM acceptance is not that authorization.
 - Hidden/disabled screens are unfinished, not complete. Unknown routes stay hidden; no native-screen
   fallback. `ui_availability.gd` defines current exposure.
 - Compare rendered output and exercise actual game effects, including cancellation, stale targets,

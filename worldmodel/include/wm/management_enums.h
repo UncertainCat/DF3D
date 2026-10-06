@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class ConstructionOutcome : uint8_t {
+  None = 0,
+  Complete = 1,
+  Rejected = 2,
+  Partial = 3,
+  Unknown = 4,
+};
 enum class ManagementAction : uint8_t {
   Catalog = 0,
   Preview = 1,
@@ -71,6 +78,8 @@ enum class ManagementAction : uint8_t {
   WorkDetailDelete = 65,
   WorkDetailEdit = 66,
   CitizenWorkScope = 67,
+  PrepareAlertDismissal = 68,
+  DismissAlert = 69,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -100,6 +109,37 @@ enum class AreaOperation : uint8_t {
   Toggles = 13,
   CandidateList = 14,
   WorkshopLink = 15,
+  MultiCreate = 16,
+  MultiUndo = 17,
+  MultiFinish = 18,
+  PaintCounts = 19,
+  LocationChoices = 20,
+  LocationDetails = 21,
+  LocationOpen = 22,
+  LocationAccess = 23,
+  LocationStaffCandidates = 24,
+  LocationStaffEdit = 25,
+};
+enum class AreaRoomOutcome : uint8_t {
+  None = 0,
+  Completed = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class LocationEntryOutcome : uint8_t {
+  None = 0,
+  Completed = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class LocationEditOutcome : uint8_t {
+  None = 0,
+  Completed = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
 };
 enum class AlertOperation : uint8_t {
   OpenCategory = 0,
@@ -177,6 +217,50 @@ enum class CreatureSectionKind : uint8_t {
   Locations = 23,
   WorkAnimals = 24,
 };
+enum class ReportView : uint8_t {
+  Flat = 0,
+  Tab = 1,
+  UnitList = 2,
+  UnitLog = 3,
+  Entries = 4,
+  Text = 5,
+  Group = 6,
+};
+enum class ReportTab : uint8_t {
+  Unknown = 0,
+  All = 1,
+  General = 2,
+  World = 3,
+  Environment = 4,
+  Arrivals = 5,
+  Attacks = 6,
+  Trade = 7,
+  Nobles = 8,
+  Animal = 9,
+  LifeChanges = 10,
+  StrangeMoods = 11,
+  ProfessionChanges = 12,
+  Military = 13,
+  MentalState = 14,
+  Masterpieces = 15,
+  JobFailures = 16,
+  Death = 17,
+  Ghosts = 18,
+  Wildlife = 19,
+  Labor = 20,
+  Crime = 21,
+  Curses = 22,
+  Combat = 23,
+  Sparring = 24,
+  Hunting = 25,
+};
+enum class ReportZoom : uint8_t {
+  Unknown = 0,
+  None = 1,
+  Generic = 2,
+  Item = 3,
+  Unit = 4,
+};
 constexpr bool isRuntimeAction(ManagementAction action) {
   switch (action) {
   case ManagementAction::Catalog: return true;
@@ -228,6 +312,8 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::WorkDetailDelete: return true;
   case ManagementAction::WorkDetailEdit: return true;
   case ManagementAction::CitizenWorkScope: return true;
+  case ManagementAction::PrepareAlertDismissal: return true;
+  case ManagementAction::DismissAlert: return true;
   default: return false;
   }
 }
@@ -274,6 +360,8 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::CitizenWorkScope: return "citizens";
   case ManagementAction::ReportList: return "reports";
   case ManagementAction::ReportInspect: return "reports";
+  case ManagementAction::PrepareAlertDismissal: return "reports";
+  case ManagementAction::DismissAlert: return "reports";
   case ManagementAction::AgreementList: return "agreements";
   case ManagementAction::AgreementInspect: return "agreements";
   case ManagementAction::TradeList: return "trade";

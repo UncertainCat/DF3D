@@ -1,11 +1,19 @@
 #pragma once
 #include <tuple>
+#include <optional>
 #include "session_util.h"
+#include "location_catalog_util.h"
+#include "location_details_util.h"
+#include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 20;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v20";
+inline constexpr uint32_t kManagementVersion = 53;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v53";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
-inline constexpr uint32_t kManagementCommandCapacity = 4096;
+// 192 KiB maximum path payload leaves room for the rest of the reply envelope.
+inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
+// v39: Track may select one distinct material group per tile (16,384 total).
+// The maximum encoded request is tested against this bound; older peers use a separate region.
+inline constexpr uint32_t kManagementCommandCapacity = 2 * 1024 * 1024;
 inline bool areaZoneSettingsPresent(const AreaZoneSettings* z) {
   return z && (z->pond_mode() || z->facing() || z->tomb_citizens()!=-1 ||
       z->tomb_pets()!=-1 || z->gather_trees()!=-1 || z->gather_shrubs()!=-1);
@@ -22,32 +30,42 @@ inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
 // ownership, new-field ownership/requirements, identities, then bounded sizes.
 inline std::optional<std::string> validateAreaOperation(ManagementAction action, const AreaRequest& a) {
   const auto op=static_cast<uint8_t>(a.operation());
-  if(op>15) return "Unsupported area operation";
+  if(op>25) return "Unsupported area operation";
+  const bool multi=op>=16 && op<=18;
+  const bool counts=op==19;
+  const bool locationChoices=op==20;
+  const bool staffCandidates=op==24;
+  const bool staffEdit=op==25;
+  const bool locationOpen=op==22;
+  const bool locationAccess=op==23;
+  const bool locationDetails=op==21 || locationOpen || locationAccess || staffEdit;
   const bool inspect=action==ManagementAction::AreaInspect;
   const bool create=action==ManagementAction::AreaCreate;
   const bool update=action==ManagementAction::AreaUpdate;
   bool allowed=op==0;
   switch(a.operation()) {
-    case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links:
+    case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links: case AreaOperation::PaintCounts: case AreaOperation::LocationChoices: case AreaOperation::LocationDetails: case AreaOperation::LocationStaffCandidates:
       allowed=inspect; break;
     case AreaOperation::SettingsSet: case AreaOperation::Preset: case AreaOperation::Rename:
     case AreaOperation::LocationSet: case AreaOperation::LocationCreate: case AreaOperation::ZoneSettings:
-    case AreaOperation::AssignUnits: case AreaOperation::SquadUse: case AreaOperation::Toggles:
+    case AreaOperation::AssignUnits: case AreaOperation::SquadUse: case AreaOperation::Toggles: case AreaOperation::LocationOpen: case AreaOperation::LocationAccess: case AreaOperation::LocationStaffEdit:
       allowed=update; break;
     case AreaOperation::Paint: allowed=create || update; break;
     case AreaOperation::CandidateList: allowed=action==ManagementAction::AreaCandidates; break;
     case AreaOperation::WorkshopLink: allowed=action==ManagementAction::AreaLink; break;
+    case AreaOperation::MultiCreate: allowed=create; break;
+    case AreaOperation::MultiUndo: case AreaOperation::MultiFinish: allowed=update; break;
     default: break;
   }
   if(!allowed) return "Area operation is not valid for this action";
   if(a.kind()>AreaKind::Workshop || (a.kind()==AreaKind::Workshop)!=(op==15))
     return "Workshop kind is only valid for workshop links";
   const bool stock=op==1 || op==2 || op==3 || op==10 || op==13;
-  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14;
+  const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates;
   if((stock && a.kind()!=AreaKind::Stockpile) || (zone && a.kind()!=AreaKind::Zone))
     return "Area kind is not valid for this operation";
-  if(op && (a.origin() || a.width()!=1 || a.height()!=1 ||
-      (a.zone_type()!=-1 && !(op==5 && create)) || a.categories() || a.changed_categories() ||
+  if(op && ((op!=16 && (a.origin() || a.width()!=1 || a.height()!=1)) ||
+      (a.zone_type()!=-1 && !(op==5 && create) && !counts) || a.categories() || a.changed_categories() ||
       a.barrels()!=-1 || a.bins()!=-1 || a.wheelbarrows()!=-1 || a.links_only()!=-1 ||
       a.active()!=-1 || a.owner_id()!=-2 ||
       (op!=15 && (a.link_id()!=-1 || !a.give() || a.unlink()))))
@@ -68,28 +86,36 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   const auto present=[](const auto* p){return p && p->size()!=0;};
   // Ordered like the appended schema fields, so malformed requests have stable errors.
   const std::pair<bool,const char*> foreign[]{
-    {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14), "expected_list_revision"},
+    {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14 || locationChoices || staffCandidates || staffEdit), "expected_list_revision"},
     {present(a.list_key()) && op!=1 && op!=2, "list_key"},
     {present(a.row_key()) && op!=2, "row_key"},
-    {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2, "value"},
+    {a.scope()!=0 && op!=2, "scope"}, {a.value()!=0 && op!=2 && !locationAccess, "value"},
     {a.preset()!=0 && op!=3, "preset"}, {present(a.name()) && op!=4, "name"},
-    {present(a.spans()) && op!=5, "spans"}, {a.paint_mode()!=0 && op!=5, "paint_mode"},
-    {a.paint_z()!=-1 && op!=5, "paint_z"}, {a.location_id()!=-2 && op!=7, "location_id"},
-    {a.location_kind()!=0 && op!=8, "location_kind"}, {a.profession()!=-1 && op!=8, "profession"},
+    {present(a.spans()) && op!=5 && !counts, "spans"}, {a.paint_mode()!=0 && op!=5, "paint_mode"},
+    {a.paint_z()!=-1 && op!=5 && !counts, "paint_z"}, {a.location_id()!=-2 && op!=7 && !locationDetails && !staffCandidates, "location_id"},
+    {a.location_kind()!=0 && op!=8 && !locationChoices, "location_kind"}, {a.profession()!=-1 && op!=8, "profession"},
     {a.deity_kind()!=-1 && op!=8, "deity_kind"}, {a.deity_id()!=-1 && op!=8, "deity_id"},
     {areaZoneSettingsPresent(a.zone_settings()) && op!=9, "zone_settings"},
-    {a.unit_id()!=-1 && op!=11, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
+    {a.unit_id()!=-1 && op!=11 && !staffEdit, "unit_id"}, {a.assign()!=-1 && op!=11, "assign"},
     {a.squad_id()!=-1 && op!=12, "squad_id"}, {a.squad_use()!=-1 && op!=12, "squad_use"},
     {a.organic()!=-1 && op!=13, "organic"}, {a.inorganic()!=-1 && op!=13, "inorganic"},
     {a.candidate_kind()!=0 && op!=14, "candidate_kind"}, {a.sort()!=0 && op!=14, "sort"},
     {a.sort_descending() && op!=14, "sort_descending"},
+    {a.room_furniture()!=0 && op!=16, "room_furniture"},
+    {a.interaction_id()!=0 && !multi, "interaction_id"},
+    {a.undo_token()!=0 && op!=17, "undo_token"},
+    {a.count_generation()!=0 && !counts, "count_generation"},
+    {a.paint_preview()!=nullptr && !counts, "paint_preview"},
+    {a.occupation_id()!=-1 && !staffCandidates && !staffEdit, "occupation_id"},
+    {a.location_site_id()!=-1 && !locationDetails && !staffCandidates, "location_site_id"},
   };
   for(const auto& field:foreign) if(field.first)
     return std::string("Field ")+field.second+" does not belong to this operation";
   if(op==2 && (a.scope()<1 || a.scope()>4 || a.value()<1 || a.value()>2 ||
       present(a.row_key())!=(a.scope()==1))) return "invalid area settings edit";
   if(op==3 && (a.preset()<1 || a.preset()>19)) return "invalid area preset";
-  if(op==5 && (a.paint_mode()<1 || a.paint_mode()>2 || (create && a.paint_mode()!=1) ||
+  if(locationAccess && a.value()>3)return "invalid location access mode";
+  if(op==5 && (a.paint_mode()<1 || a.paint_mode()>3 || (create && a.paint_mode()!=1) ||
       !present(a.spans()))) return "invalid area paint";
   if(op==7 && a.location_id()<-1) return "area location required";
   if(op==8 && (a.location_kind()<1 || a.location_kind()>5 ||
@@ -105,9 +131,38 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       a.inorganic()<-1 || a.inorganic()>1)) return "invalid area toggles";
   if(op==14 && (a.candidate_kind()<1 || a.candidate_kind()>3 || a.sort()>3))
     return "invalid area candidate selector";
+  if(multi) {
+    if(!a.interaction_id() || a.interaction_id()>INT64_MAX || a.undo_token()>INT64_MAX ||
+        (op==17 && !a.undo_token()))return "invalid room interaction identity";
+    if(a.id()!=-1 || a.expected_revision() || present(a.query()) || a.cursor())
+      return "unrelated area fields in room operation";
+    if(op==16 && (!a.origin() || a.origin()->x()<0 || a.origin()->y()<0 || a.origin()->z()<0 ||
+        a.origin()->x()>32767 || a.origin()->y()>32767 || a.origin()->z()>32767 ||
+        !a.width() || !a.height() || uint64_t(a.origin()->x())+a.width()>32768 ||
+        uint64_t(a.origin()->y())+a.height()>32768 || a.room_furniture()<1 || a.room_furniture()>4))
+      return "invalid room selection";
+  }
   if(a.id()<-1 || a.unit_id()<-1 || a.squad_id()<-1 || a.deity_id()<-1 ||
       a.location_id()<-2 || a.paint_z()<-1) return "invalid area identity";
-  if(op && !(op==5 && create) && a.id()<0) return "area id required";
+  if(counts) {
+    if(!a.count_generation() || a.count_generation()>INT64_MAX || a.paint_z()<0 ||
+        a.zone_type()<0 || a.zone_type()>255 || a.id()!=-1 || a.expected_revision() ||
+        present(a.query()) || a.cursor())return "invalid paint count identity";
+    if(const auto* p=a.paint_preview()) {
+      if(p->x()<0 || p->y()<0 || !p->width() || !p->height() || p->width()>256 || p->height()>256 ||
+          uint32_t(p->width())*p->height()>32768 || uint32_t(p->x())+p->width()>32768 ||
+          uint32_t(p->y())+p->height()>32768)return "invalid paint preview";
+    }
+  }
+  if(locationChoices && ((a.location_kind()!=2 && a.location_kind()!=4) || a.id()!=-1 || a.expected_revision() ||
+      present(a.query()) || a.cursor()%128 || (a.cursor() && !a.expected_list_revision())))return "invalid location catalog request";
+  if(staffCandidates && (a.location_site_id()<0 || a.location_id()<0 || a.occupation_id()<0 ||
+      a.id()!=-1 || a.expected_revision() || present(a.query()) || a.cursor()%128 ||
+      (a.cursor() && !a.expected_list_revision())))return "invalid staff candidates request";
+  if(staffEdit && (a.occupation_id()<0 || !a.expected_list_revision()))return "invalid staff edit request";
+  if(locationDetails && (a.location_site_id()<0 || a.location_id()<0 || a.id()!=-1 || ((locationOpen || locationAccess || staffEdit)?!a.expected_revision():a.expected_revision()!=0) ||
+      present(a.query()) || a.cursor()))return "invalid location details request";
+  if(op && !multi && !counts && !locationChoices && !locationDetails && !staffCandidates && !(op==5 && create) && a.id()<0) return "area id required";
   if(op==5 && create && a.paint_z()<0) return "area paint z required";
   if(op==15 && (a.link_id()<0 || a.link_id()==a.id())) return "invalid area link";
   if(op==5 && create && (a.zone_type()<-1 || a.zone_type()>255)) return "invalid area edit";
@@ -117,15 +172,28 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(a.query() && a.query()->size()>128) return "invalid area edit";
   if(a.expected_revision()>INT64_MAX || a.expected_list_revision()>INT64_MAX) return "invalid area revision";
   if(present(a.spans())) {
-    if(a.spans()->size()>128) return "too many area spans";
+    if(a.spans()->size()>32768) return "too many area spans";
     uint32_t total=0;
     for(const auto* span:*a.spans()) {
       if(span->x()<0 || span->y()<0 || !span->length() ||
           uint32_t(span->x())+span->length()-1>32767) return "invalid area span";
       total+=span->length();
     }
-    if(total>384) return "too many painted area tiles";
+    if(total>32768) return "too many painted area tiles";
+    if(counts) {
+      int32_t lastY=-1,lastEnd=-1,left=32768,top=32768,right=-1,bottom=-1;
+      for(const auto* s:*a.spans()) {
+        if(s->y()<lastY || (s->y()==lastY && s->x()<lastEnd))return "noncanonical paint count spans";
+        lastY=s->y();lastEnd=int32_t(s->x())+s->length();
+        left=std::min(left,int32_t(s->x()));top=std::min(top,int32_t(s->y()));
+        right=std::max(right,lastEnd-1);bottom=std::max(bottom,lastY);
+      }
+      if(right-left+1>256 || bottom-top+1>256 || int64_t(right-left+1)*(bottom-top+1)>32768)
+        return "paint count footprint too large";
+    }
   }
+  if(!multi && (update || action==ManagementAction::AreaDelete || action==ManagementAction::AreaLink) && !a.expected_revision())
+    return "area revision required";
   return std::nullopt;
 }
 // Catalog discovers the current epoch, so it does not require a matching
@@ -138,7 +206,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::CitizenWorkScope &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::DismissAlert &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -147,8 +215,54 @@ inline constexpr bool runtimeManagementAction(ManagementAction action) {
 }
 inline std::optional<std::string> validateConstructionRequest(const ConstructionRequest& r) {
   if (r.schema_version() != kManagementVersion) return "management version mismatch";
+  if (r.cancel_removal() && r.action()!=ManagementAction::Remove) return "cancellation requires building removal intent";
+  const bool connectedTrack=(r.action()==ManagementAction::Preview || r.action()==ManagementAction::Place ||
+      r.action()==ManagementAction::ConstructionMaterials) && r.definition() && r.definition()->str()=="Construction:Track";
+  if (const auto* track=r.connected_track()) {
+    const auto* end=track->destination();
+    if (!connectedTrack || !r.origin() || !end || end->x()<0 || end->y()<0 || end->z()<0 ||
+        r.width()!=1 || r.height()!=1 || r.depth()!=1 || r.direction()!=0 || r.retracting())
+      return "invalid connected track intent";
+  } else if (connectedTrack) return "connected track destination required";
+  const bool terrainMaterials=(r.action()==ManagementAction::Preview || r.action()==ManagementAction::Place ||
+      r.action()==ManagementAction::ConstructionMaterials) && r.definition() &&
+      (r.definition()->str()=="Construction:Wall" || r.definition()->str()=="Construction:Floor" ||
+       r.definition()->str()=="Construction:Ramp" || r.definition()->str()=="Construction:Fortification" ||
+       r.definition()->str()=="Construction:Stairs" || r.definition()->str()=="Construction:ReinforcedWall");
+  if (const auto* anchor=r.material_anchor()) {
+    const auto* origin=r.origin();
+    const auto corner=[](int32_t v,int32_t low,uint16_t extent) {
+      return v>=0 && (int64_t(v)==low || int64_t(v)==int64_t(low)+extent-1);
+    };
+    if (!terrainMaterials || !origin || !corner(anchor->x(),origin->x(),r.width()) ||
+        !corner(anchor->y(),origin->y(),r.height()) || !corner(anchor->z(),origin->z(),r.depth()))
+      return "invalid construction material anchor";
+  }
+  const bool trackPlacement=(r.action()==ManagementAction::Preview || r.action()==ManagementAction::Place) &&
+      r.definition() && r.definition()->str()=="Trap:TrackStop";
+  if (const auto* t=r.track_stop()) {
+    if (!trackPlacement || t->dump_direction()>4 ||
+        (t->friction()!=10 && t->friction()!=50 && t->friction()!=500 && t->friction()!=10000 && t->friction()!=50000))
+      return "invalid track stop intent";
+  } else if (trackPlacement) return "track stop options required";
+  const bool pressurePlacement=(r.action()==ManagementAction::Preview || r.action()==ManagementAction::Place) &&
+      r.definition() && r.definition()->str()=="Trap:PressurePlate";
+  if (const auto* p=r.pressure_plate()) {
+    const auto weight=[](int32_t v){return v==1 || (v>=50 && v<=2000 && v%50==0);};
+    if (!pressurePlacement || p->unit_min()<1000 || p->unit_min()>200000 || p->unit_min()%1000 ||
+        p->unit_max()<p->unit_min() || p->unit_max()>200999 ||
+        (p->unit_max()!=200000 && p->unit_max()%1000!=999) ||
+        p->water_min()<0 || p->water_max()>7 || p->water_min()>p->water_max() ||
+        p->magma_min()<0 || p->magma_max()>7 || p->magma_min()>p->magma_max() ||
+        !weight(p->track_min()) || !weight(p->track_max()) || p->track_min()>p->track_max())
+      return "invalid pressure plate intent";
+  } else if (pressurePlacement) return "pressure plate options required";
+  if (r.roller_speed() &&
+      ((r.action()!=ManagementAction::Preview && r.action()!=ManagementAction::Place) ||
+       !r.definition() || r.definition()->str()!="Rollers" ||
+       r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CitizenWorkScope)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::DismissAlert)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if(r.action()==ManagementAction::CreatureInspect) {
@@ -276,11 +390,64 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(c->expected_list_revision() && r.action()!=ManagementAction::WorkDetailList)
       return "unexpected work detail list revision";
   } else if(r.citizen()) return "unexpected citizen payload";
-  if(r.action()>=ManagementAction::ReportList && r.action()<=ManagementAction::ReportInspect) {
+  if(r.action()==ManagementAction::PrepareAlertDismissal || r.action()==ManagementAction::DismissAlert) {
     const auto* p=r.report();
-    if(!p || p->id() < -1 || p->before_id() < -1 || (p->query() && p->query()->size()>128))return "invalid report request";
-    if(r.action()==ManagementAction::ReportInspect && (p->id()<0 || p->before_id()!=-1 || (p->query() && p->query()->size())))return "invalid report inspection";
-    if(r.action()==ManagementAction::ReportList && p->id()!=-1)return "unexpected report identity";
+    if(!p || p->view()!=ReportView::Flat || p->id()!=-1 || p->before_id()!=-1 || p->after_id()!=-1 ||
+       p->tab()!=ReportTab::Unknown || p->unit_id()!=-1 || p->unit_category()!=-1 || p->cursor() ||
+       p->from_end() || p->refresh() || !p->announcements_only() || p->notification_category()!=-1 || p->alert_button() ||
+       (p->query() && p->query()->size()) || (p->ids() && p->ids()->size()) || (p->units() && p->units()->size()) ||
+       p->expected_list_revision()>INT64_MAX ||
+       (r.action()==ManagementAction::PrepareAlertDismissal ? p->expected_list_revision()!=0 : p->expected_list_revision()==0))
+      return "invalid red alert dismissal request";
+  } else if(r.action()>=ManagementAction::ReportList && r.action()<=ManagementAction::ReportInspect) {
+    const auto* p=r.report();
+    if(!p || p->id() < -1 || p->before_id() < -1 || p->after_id() < -1 || (p->query() && p->query()->size()>128))return "invalid report request";
+    if(p->view()>ReportView::Group)return "Unsupported report view";
+    const bool groupOwner=p->notification_category()>=0 || p->alert_button();
+    if(p->notification_category()< -1 || p->notification_category()>36 || (p->alert_button() && p->notification_category()!=-1) ||
+       (groupOwner && p->view()!=ReportView::Group && p->view()!=ReportView::Text))return "invalid alert group selector";
+    if(p->refresh() && (p->view()!=ReportView::UnitLog || !p->expected_list_revision() || p->before_id()!=-1 || p->from_end()))return "invalid unit log refresh";
+    if(p->unit_id()< -1 || p->unit_category()< -1 || p->unit_category()>2 || p->expected_list_revision()>INT64_MAX)return "invalid report unit request";
+    if(p->view()<ReportView::UnitList && (p->unit_id()!=-1 || p->unit_category()!=-1 || p->cursor() || (p->view()==ReportView::Flat && p->expected_list_revision())))return "unexpected report unit fields";
+    const size_t entryIds=p->ids()?p->ids()->size():0,entryUnits=p->units()?p->units()->size():0;
+    if(entryIds>64 || entryUnits>64)return "Too many report entries";
+    if(p->view()!=ReportView::Entries && (entryIds || entryUnits))return "unexpected report entries";
+    if(p->ids())for(auto id:*p->ids())if(id<0)return "invalid report entry identity";
+    if(p->units())for(const auto* u:*p->units())if(!u || u->unit_id()<0 || u->category()>UnitReportCategory::Hunting)return "invalid unit report reference";
+    if(p->view()==ReportView::Flat) {
+      if(p->tab()!=ReportTab::Unknown || p->after_id()!=-1 || p->from_end())return "unexpected report tab fields";
+      if(r.action()==ManagementAction::ReportInspect && (p->id()<0 || p->before_id()!=-1 || (p->query() && p->query()->size())))return "invalid report inspection";
+      if(r.action()==ManagementAction::ReportList && p->id()!=-1)return "unexpected report identity";
+    } else if(p->view()==ReportView::Group) {
+      if(r.action()!=ManagementAction::ReportList || !groupOwner || p->id()!=-1 || p->before_id()!=-1 || p->after_id()!=-1 ||
+         p->from_end() || p->tab()!=ReportTab::Unknown || p->unit_id()!=-1 || p->unit_category()!=-1 ||
+         p->cursor()>65536 || (p->cursor() && !p->expected_list_revision()) ||
+         (p->query() && p->query()->size()) || !p->announcements_only())return "invalid alert group request";
+    } else if(p->view()==ReportView::Text) {
+      if(groupOwner && (p->tab()!=ReportTab::Unknown || p->unit_id()!=-1 || p->unit_category()!=-1 || !p->expected_list_revision()))return "invalid alert text selector";
+      if(r.action()!=ManagementAction::ReportInspect || p->id()<0 || p->before_id()!=-1 || p->after_id()!=-1 ||
+         p->from_end() || p->tab()>ReportTab::Curses || (p->tab()!=ReportTab::Unknown && !p->expected_list_revision()) ||
+         (p->unit_id()<0 ? p->unit_category()!=-1 : (p->unit_category()<0 || p->tab()!=ReportTab::Unknown || !p->expected_list_revision())) ||
+         p->cursor()>33554432 || (p->cursor() && !p->expected_list_revision()) ||
+         (p->query() && p->query()->size()) || !p->announcements_only())return "invalid report text request";
+    } else if(p->view()==ReportView::Entries) {
+      if(r.action()!=ManagementAction::ReportInspect)return "Report view is not valid for this action";
+      if(!entryIds && !entryUnits)return "No report entries requested";
+      if(p->id()!=-1 || p->before_id()!=-1 || p->after_id()!=-1 || p->from_end() || p->tab()!=ReportTab::Unknown ||
+         p->unit_id()!=-1 || p->unit_category()!=-1 || p->cursor() || p->expected_list_revision() ||
+         (p->query() && p->query()->size()) || !p->announcements_only())return "unexpected report entries fields";
+    } else {
+      if(r.action()!=ManagementAction::ReportList)return "Report view is not valid for this action";
+      if(p->id()!=-1 || (p->query() && p->query()->size()) || !p->announcements_only())return "unexpected flat report fields";
+      if(p->view()==ReportView::Tab) {
+        if(p->tab()<ReportTab::All || p->tab()>ReportTab::Curses)return "Unsupported report tab";
+      } else {
+        if(p->tab()!=ReportTab::Unknown || p->unit_category()<0)return "invalid report unit selector";
+        if(p->view()==ReportView::UnitList && (p->after_id()!=-1 || p->before_id()!=-1 || p->from_end()))return "unexpected unit list cursor";
+        if(p->view()==ReportView::UnitLog && (p->unit_id()<0 || p->cursor()))return "invalid unit log request";
+      }
+      if(int(p->after_id()>=0)+int(p->before_id()>=0)+int(p->from_end())>1)return "Only one report cursor may be set";
+    }
   } else if(r.report())return "unexpected report payload";
   if(r.action()>=ManagementAction::AgreementList && r.action()<=ManagementAction::AgreementInspect) {
     const auto* a=r.agreement();
@@ -343,7 +510,8 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if (r.expected_list_revision() > INT64_MAX) return "invalid construction list revision";
   if (r.retracting() && r.direction() != 0) return "invalid retracting orientation";
   if (r.action() != ManagementAction::Preview && r.action() != ManagementAction::Place &&
-      (r.depth() != 1 || r.retracting())) return "unexpected construction placement fields";
+      ((r.depth() != 1 && !(terrainMaterials && r.action()==ManagementAction::ConstructionMaterials &&
+         r.definition()->str()=="Construction:Stairs")) || r.retracting())) return "unexpected construction placement fields";
   if (r.filter() < -1 || r.filter() > 7) return "invalid construction filter";
   if (r.filter() >= 0 && r.action() != ManagementAction::ConstructionMaterials)
     return "unexpected construction filter";
@@ -354,15 +522,28 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       r.action() != ManagementAction::Place && r.action() != ManagementAction::ConstructionMaterials)
     return "unexpected construction list revision";
   if (r.selections() && r.selections()->size()) {
-    if (r.selections()->size() > 16) return "too many construction selections";
+    if (r.selections()->size() > (connectedTrack ? kConnectedTrackMaxTiles : 16)) return "too many construction selections";
     if (r.action() != ManagementAction::Place) return "unexpected construction selections";
-    std::set<std::tuple<int16_t,int16_t,int16_t,int16_t,int32_t>> keys;
+    std::set<std::tuple<int16_t,int16_t,int16_t,int16_t,int32_t,int32_t>> keys;
+    std::set<int32_t> selectedIds;
+    size_t selectedCount=0;
     for (const auto* v : *r.selections()) {
       if (v && v->expected_list_revision() < -1) return "invalid construction selection list revision";
       if (!v || v->filter() < 0 || v->filter() > 7 || !v->count() ||
           v->item_type() < -1 || v->item_subtype() < -1 || v->mat_type() < -1 || v->mat_index() < -1 ||
-          !keys.emplace(v->filter(),v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()).second)
+          !keys.emplace(v->filter(),v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index(),v->individual_id()).second)
         return "invalid or duplicate construction selection";
+      if (v->individual_id() < -1 || (v->individual_id() >= 0 &&
+          (v->count()!=1 || !v->item_ids() || v->item_ids()->size()!=1 || v->item_ids()->Get(0)!=v->individual_id())))
+        return "invalid individual construction selection";
+      if (const auto* ids=v->item_ids()) {
+        if (v->expected_list_revision()<=0) return "exact construction selection requires snapshot revision";
+        if (ids->size()!=v->count()) return "exact construction selection count mismatch";
+        selectedCount+=ids->size();
+        if (selectedCount>16384) return "too many exact construction items";
+        for (int32_t id:*ids)
+          if(id<0 || !selectedIds.insert(id).second) return "invalid or duplicate exact construction item";
+      }
     }
   }
   if(r.action()==ManagementAction::Place && r.definition() &&
@@ -389,7 +570,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CitizenWorkScope ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::DismissAlert ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -430,6 +611,23 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   auto constructionTextOk = [](const flatbuffers::String* v, size_t cap) {
     return !v || v->size() <= cap;
   };
+  auto constructionTokenOk = [](const flatbuffers::String* v,size_t cap) {
+    if(!v)return true;
+    if(v->size()>cap)return false;
+    for(size_t i=0;i<v->size();) {
+      const uint8_t lead=uint8_t(v->Get(i++));
+      if(lead<128) { if(lead<32 || lead==127)return false;continue; }
+      const unsigned count=lead>=0xc2 && lead<=0xdf?1:lead>=0xe0 && lead<=0xef?2:lead>=0xf0 && lead<=0xf4?3:0;
+      if(!count || i+count>v->size())return false;
+      uint32_t point=lead & (count==1?0x1f:count==2?0x0f:0x07);
+      for(unsigned j=0;j<count;++j) {
+        const uint8_t next=uint8_t(v->Get(i++));if((next&0xc0)!=0x80)return false;
+        point=(point<<6)|(next&0x3f);
+      }
+      if(point<(count==1?0x80u:count==2?0x800u:0x10000u) || point>0x10ffff || (point>=0xd800 && point<=0xdfff))return false;
+    }
+    return true;
+  };
   auto constructionFiltersOk = [&](const auto* values) {
     if (!values) return true;
     if (values->size() > 8) return false;
@@ -445,6 +643,44 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         v->center_x() >= -1 && v->center_x() < v->width() && v->center_y() >= -1 && v->center_y() < v->height());
   };
   if (const auto* c = s.construction()) {
+    if(c->outcome()>ConstructionOutcome::Unknown || c->updated()>16384 || c->failed_index() < -1 ||
+       c->failed_index()==0 || c->failed_index()>16384) return "invalid construction outcome";
+    if(c->outcome()==ConstructionOutcome::None) {
+      if(c->updated() || c->failed_index()!=-1)return "unexpected construction outcome details";
+    } else {
+      if(s.action()!=ManagementAction::Place)return "unexpected construction outcome";
+      if(c->outcome()==ConstructionOutcome::Complete) {
+        if(s.status()!=ManagementStatus::Ok || c->failed_index()!=-1)return "invalid completed construction outcome";
+      } else if(s.status()!=ManagementStatus::Rejected)return "invalid unsuccessful construction outcome";
+      if(c->outcome()==ConstructionOutcome::Rejected && (c->placed() || c->updated()))return "rejected construction has confirmed effects";
+      if(c->outcome()==ConstructionOutcome::Partial && !(c->placed() || c->updated()))return "partial construction has no confirmed effects";
+    }
+    if(const auto* track=c->connected_track()) {
+      if(s.action()!=ManagementAction::Preview || !c->building_key() || c->building_key()->str()!="Construction:Track" ||
+         track->status()>ConnectedTrackStatus::PayloadLimit) return "invalid connected track preview";
+      const auto count=track->path()?track->path()->size():0;
+      if(count>kConnectedTrackMaxTiles || (track->status()==ConnectedTrackStatus::Found ? count<2 : count!=0))
+        return "invalid connected track path size";
+      std::set<std::tuple<int32_t,int32_t,int32_t>> seen;
+      const TilePos* prior=nullptr;
+      if(track->path())for(const auto* p:*track->path()) {
+        if(p->x()<0 || p->y()<0 || p->z()<0 || !seen.emplace(p->x(),p->y(),p->z()).second) return "invalid connected track tile";
+        if(prior) {
+          const auto dx=int64_t(p->x())-prior->x(),dy=int64_t(p->y())-prior->y(),dz=int64_t(p->z())-prior->z();
+          if(std::abs(dx)+std::abs(dy)!=1 || std::abs(dz)>1) return "invalid connected track step";
+        }
+        prior=p;
+      }
+    }
+    if (const auto* rows=c->pressure_creatures(); rows && rows->size()) {
+      if(s.action()!=ManagementAction::Catalog || rows->size()!=200) return "invalid pressure creature examples";
+      int32_t expected=1000;
+      for(const auto* row:*rows) {
+        if(!row || row->size()!=expected || row->race_id() < -1 || !constructionTextOk(row->name(),128) ||
+           (row->race_id()==-1 && row->name() && row->name()->size())) return "invalid pressure creature examples";
+        expected+=1000;
+      }
+    }
     if (c->filter() < -1 || c->filter() > 7 || c->first_building() < -1 || c->build_phase() > 3 ||
         c->build_done() > c->build_total() || c->list_revision() > INT64_MAX ||
         uint64_t(c->placed()) + c->skipped() > 1024 ||
@@ -460,12 +696,37 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if (c->materials()) {
       if (c->materials()->size() > 128) return "construction materials page too large";
-      std::set<std::tuple<int16_t,int16_t,int16_t,int32_t>> materialKeys;
-      for (const auto* v : *c->materials())
+      std::set<std::tuple<int16_t,int16_t,int16_t,int32_t,int32_t>> materialKeys;
+      size_t candidateCount=0;std::set<int32_t> candidateIds;
+      for (const auto* v : *c->materials()) {
         if (!v || v->item_type() < -1 || v->item_subtype() < -1 || v->mat_type() < -1 ||
             v->mat_index() < -1 || !v->count() || !constructionTextOk(v->name(),128) ||
-            !constructionTextOk(v->caption(),64) ||
-            !materialKeys.emplace(v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()).second) return "invalid construction material";
+            !constructionTextOk(v->caption(),64) || !constructionTextOk(v->last_name(),128) ||
+            !materialKeys.emplace(v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index(),v->individual_id()).second) return "invalid construction material";
+        if (v->individual_id() < -1 || (v->individual_id() >= 0 &&
+            (v->count()!=1 || !v->candidates() || v->candidates()->size()!=1 || !v->candidates()->Get(0) || v->candidates()->Get(0)->id()!=v->individual_id())))
+          return "invalid individual construction material";
+        if (v->candidates()) {
+          candidateCount+=v->candidates()->size();
+          if(candidateCount>16384 || v->candidates()->size()!=v->count()) return "incomplete or excessive construction candidates";
+          std::optional<std::pair<uint32_t,int32_t>> previous;
+          for(const auto* item:*v->candidates()) {
+            if(!item || item->id()<0 || !item->name() || !item->name()->size() ||
+                !constructionTextOk(item->name(),128) || !candidateIds.insert(item->id()).second)
+              return "invalid construction candidate";
+            if(const auto* a=item->appearance()) {
+              if(!a->material_token() || !a->material_token()->size() ||
+                 !constructionTokenOk(a->material_token(),256) || !constructionTokenOk(a->subtype_raw(),128) ||
+                 !constructionTokenOk(a->color_token(),128) || !a->stack() || a->stack()>INT32_MAX ||
+                 (a->flags() & ~uint8_t(96)) || v->item_type()<0)
+                return "invalid construction item appearance";
+            }
+            const auto key=std::pair{item->distance(),item->id()};
+            if(previous && key<=*previous)return "unordered construction candidates";
+            previous=key;
+          }
+        }
+      }
     }
   }
   if (s.catalog()) {
@@ -501,18 +762,98 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
     const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
-    if(a->operation()>AreaOperation::WorkshopLink || a->area_id()<-1 ||
+    if(a->operation()>AreaOperation::LocationStaffEdit || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
         a->candidate_kind()>3 || a->sort()>3 || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
       return "invalid area response header";
+    const bool multi=a->operation()>=AreaOperation::MultiCreate && a->operation()<=AreaOperation::MultiFinish;
+    const bool counts=a->operation()==AreaOperation::PaintCounts;
+    const bool locationChoices=a->operation()==AreaOperation::LocationChoices;
+    const bool staffCandidates=a->operation()==AreaOperation::LocationStaffCandidates;
+    const bool locationOpen=a->operation()==AreaOperation::LocationOpen;
+    const bool locationAccess=a->operation()==AreaOperation::LocationAccess;
+    const bool staffEdit=a->operation()==AreaOperation::LocationStaffEdit;
+    const bool locationEdit=locationAccess || staffEdit;
+    const bool locationDetails=a->operation()==AreaOperation::LocationDetails || locationOpen || locationEdit;
+    if(a->location_staff_candidates() && !staffCandidates)return "staff candidates without operation";
+    if(staffCandidates) {
+      if(s.action()!=ManagementAction::AreaInspect)return "staff candidates action mismatch";
+      if(a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() ||
+          a->sort_descending() || a->list_revision() || a->build_phase() || a->build_done() || a->build_total() || a->omitted())
+        return "mixed staff candidates reply";
+      if((s.status()==ManagementStatus::Ok)!=(a->location_staff_candidates()!=nullptr))return "invalid staff candidates presence";
+      if(a->location_staff_candidates())if(auto error=validateLocationStaffCandidates(*a->location_staff_candidates()))return error;
+    }
+    if(!locationOpen && a->location_entry_outcome()!=LocationEntryOutcome::None)return "entry outcome without entry operation";
+    if(!locationEdit && a->location_edit_outcome()!=LocationEditOutcome::None)return "edit outcome without edit operation";
+    if(a->location_details() && !locationDetails)return "location details without operation";
+    if(locationDetails) {
+      if(s.action()!=((locationOpen || locationEdit)?ManagementAction::AreaUpdate:ManagementAction::AreaInspect))return "location details action mismatch";
+      if(locationEdit && (a->location_edit_outcome()==LocationEditOutcome::None || a->location_edit_outcome()>LocationEditOutcome::Unknown ||
+          ((a->location_edit_outcome()==LocationEditOutcome::Completed)!=(s.status()==ManagementStatus::Ok))))return "invalid location edit outcome";
+      if(locationOpen && (a->location_entry_outcome()==LocationEntryOutcome::None || a->location_entry_outcome()>LocationEntryOutcome::Unknown ||
+          ((a->location_entry_outcome()==LocationEntryOutcome::Completed)!=(s.status()==ManagementStatus::Ok))))return "invalid location entry outcome";
+      if(a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() ||
+          a->sort_descending() || a->list_revision() || a->build_phase() || a->build_done() || a->build_total() || a->omitted())
+        return "mixed location details reply";
+      if((s.status()==ManagementStatus::Ok)!=(a->location_details()!=nullptr))return "invalid location details presence";
+      if(a->location_details())if(auto error=validateLocationDetails(*a->location_details()))return error;
+    }
+    if(a->location_catalog() && !locationChoices)return "location catalog without operation";
+    if(locationChoices) {
+      if(a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() ||
+          a->sort_descending() || a->list_revision() || a->build_phase() || a->build_done() || a->build_total() || a->omitted())
+        return "mixed location catalog reply";
+      if(s.status()==ManagementStatus::Ok && !a->location_catalog())return "missing location catalog";
+      if(s.status()!=ManagementStatus::Ok && a->location_catalog())return "catalog on failed read";
+      if(a->location_catalog())if(auto error=validateLocationCatalog(*a->location_catalog()))return error;
+    }
+    if(!counts && (a->count_generation() || a->painted_count()!=-1 || a->preview_count()!=-1))
+      return "paint counts without count operation";
+    if(counts && (!a->count_generation() || a->count_generation()>INT64_MAX ||
+        a->painted_count()<-1 || a->painted_count()>32768 || a->preview_count()<-1 || a->preview_count()>32768 ||
+        a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+        count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+        textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() ||
+        a->sort_descending() || a->list_revision() || a->build_phase() || a->build_done() ||
+        a->build_total() || a->omitted()))return "invalid paint count response";
+    const bool roomFields=a->interaction_id() || a->undo_token() || a->room_outcome()!=AreaRoomOutcome::None ||
+        a->rooms_created() || a->rooms_in_use() || a->rooms_unenclosed() || a->rooms_removed() || a->rooms_dormitories();
+    if(!multi && roomFields)return "room result without room operation";
+    if(multi) {
+      if(!a->interaction_id() || a->interaction_id()>INT64_MAX || a->undo_token()>INT64_MAX ||
+          a->room_outcome()==AreaRoomOutcome::None || a->room_outcome()>AreaRoomOutcome::Unknown ||
+          a->area_id()!=-1 || a->next_cursor() || a->truncated() || count(a->areas()) || count(a->choices()) ||
+          count(a->settings()) || count(a->locations()) || count(a->candidates()) || count(a->links()) ||
+          textSize(a->list_key()) || textSize(a->query()) || a->candidate_kind() || a->sort() ||
+          a->sort_descending() || a->list_revision() || a->build_phase() || a->build_done() ||
+          a->build_total() || a->omitted())return "invalid room response";
+      if(a->rooms_dormitories()>a->rooms_created())return "invalid room type counts";
+      if(a->operation()==AreaOperation::MultiCreate) {
+        if(a->rooms_removed() ||
+            (a->room_outcome()==AreaRoomOutcome::Completed ?
+              (bool(a->rooms_created())!=bool(a->undo_token())) : (a->undo_token()!=0)))
+          return "invalid room creation result";
+      } else if(a->rooms_created() || a->rooms_in_use() || a->rooms_unenclosed() || a->undo_token())
+        return "invalid room undo result";
+      if(a->operation()==AreaOperation::MultiFinish && (a->rooms_removed() || a->room_outcome()!=AreaRoomOutcome::Completed))
+        return "invalid room finish result";
+      if(a->operation()==AreaOperation::MultiUndo &&
+          (a->room_outcome()==AreaRoomOutcome::Rejected || a->room_outcome()==AreaRoomOutcome::Stale) && a->rooms_removed())
+        return "invalid room undo result";
+    }
     if(count(a->settings())>128 || count(a->locations())>128 ||
         count(a->candidates())>128 || count(a->links())>128) return "area response too large";
     const unsigned families=(count(a->settings())!=0)+(count(a->locations())!=0)+
         (count(a->candidates())!=0)+(count(a->links())!=0);
-    // Legacy areas + choices remains accepted for schema-only migration.
-    // Its tightening accompanies area consumers in 04-B implementation B.
-    if(families>1 || (count(a->choices()) && families) ||
+    if(families>1 || (count(a->choices()) && (count(a->areas()) || families)) ||
         (families && count(a->areas())>1)) return "area response mixes list families";
     // Sum variable payloads across the entire reply, not just each page's
     // per-row bounds. Scalar/table overhead still fits the 512 KiB channel.
@@ -530,11 +871,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           (v->gives() && v->gives()->size()>1024) || (v->takes() && v->takes()->size()>1024) ||
           v->revision()>INT64_MAX || textSize(v->zone_label())>512 ||
           textSize(v->location_name())>512 || textSize(v->religion())>512 ||
-          v->location_id()<-1 || v->organic()<-1 || v->organic()>1 ||
+          v->location_id()<-1 || v->location_site_id()<-1 || v->organic()<-1 || v->organic()>1 ||
           v->inorganic()<-1 || v->inorganic()>1 || !validAreaZoneSettings(v->zone_settings()) ||
-          v->tile_count()<-1 || v->assigned_count()<-1) return "invalid area state";
-      payload+=textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
-          textSize(v->location_name())+textSize(v->religion());
+          v->tile_count()<-1 || v->assigned_count()<-1 || v->location_kind()>5 ||
+          v->owner_sex()<-1 || v->owner_sex()>1 || textSize(v->owner_profession())>512) return "invalid area state";
+      payload+=4+textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
+          textSize(v->location_name())+textSize(v->religion())+textSize(v->owner_profession());
       for (auto extent:*v->extents()) if(extent>1) return "invalid area extent";
       extentTotal+=v->extents()->size();
       for(auto* links:{v->gives(),v->takes()}) if(links){
@@ -559,9 +901,9 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       payload+=7+textSize(row->key())+textSize(row->label());
     }
     if(a->locations()) for(const auto* row:*a->locations()) {
-      if(!row || row->id()<-1 || row->location_kind()>5 ||
+      if(!row || row->id()<-1 || row->location_kind()>5 || row->guild_profession()<-1 || row->guild_profession()>511 || row->location_tier()<-1 || row->site_id()<-1 ||
           textSize(row->name())>512 || textSize(row->religion())>512) return "invalid area location row";
-      payload+=5+textSize(row->name())+textSize(row->religion());
+      payload+=15+textSize(row->name())+textSize(row->religion());
     }
     if(a->candidates()) for(const auto* row:*a->candidates()) {
       if(!row || row->id()<-1 || textSize(row->name())>512 || textSize(row->profession())>512 ||
@@ -688,7 +1030,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
     }
     if(conditionCount>128 || jobCount>2048 || traitCount>2048 || inputCount>128)return "work order aggregate limit exceeded";
-    ids.clear();if(w->choices())for(const auto* c:*w->choices())if(!c || c->id()<0 || !ids.insert(c->id()).second || !textOk(c->name(),512))return "invalid work order choice";
+    ids.clear();if(w->choices())for(const auto* c:*w->choices())if(!c || c->id()<0 || !ids.insert(c->id()).second || (!textOk(c->name(),512) || (c->label() && c->label()->size())))return "invalid work order choice";
     ids.clear();if(w->managers())for(const auto* m:*w->managers()){
       if(!m || m->unit_id()<0 || !ids.insert(m->unit_id()).second || !textOk(m->name(),512) || !textOk(m->position(),512) || !textOk(m->job(),512) || (m->offices() && m->offices()->size()>64))return "invalid manager role";
       std::set<int32_t> offices;if(m->offices())for(auto id:*m->offices())if(id<0 || !offices.insert(id).second)return "invalid manager office";
@@ -750,16 +1092,78 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       int32_t prior=-1;for(auto id:*d->assigned_units()){if(id<0 || id<=prior)return "invalid work detail membership";prior=id;}
     }
   }
+  if((s.action()==ManagementAction::PrepareAlertDismissal || s.action()==ManagementAction::DismissAlert) && s.status()==ManagementStatus::Ok) {
+    const auto* r=s.report();
+    if(!r || !r->list_revision() || r->list_revision()>INT64_MAX || r->total()>65536 ||
+       r->view()!=ReportView::Flat || r->tab()!=ReportTab::Unknown || r->notification_category()!=-1 || r->alert_button() ||
+       r->cursor() || r->next_cursor() || r->unit_id()!=-1 || r->unit_category()!=-1 ||
+       (r->reports() && r->reports()->size()) || (r->units() && r->units()->size()))
+      return "invalid alert dismissal state";
+  }
   if(const auto* r=s.report()) {
-    if(r->next_before_id() < -1 || (r->detail() && r->detail()->size()>2048) || (r->reports() && r->reports()->size()>16))return "invalid report state";
+    if(r->view()>ReportView::Group || r->tab()>ReportTab::Hunting || r->after_id() < -1 || r->next_after_id() < -1 || r->trimmed_through() < -1 ||
+       r->next_before_id() < -1 || (r->detail() && r->detail()->size()>2048) ||
+       (r->reports() && r->reports()->size()>(r->view()==ReportView::Flat?16u:64u)) ||
+       (r->tab_counts() && r->tab_counts()->size()!=0 && r->tab_counts()->size()!=25))return "invalid report state";
+    const bool groupOwner=r->notification_category()>=0 || r->alert_button();
+    if(r->notification_category()< -1 || r->notification_category()>36 || (r->alert_button() && r->notification_category()!=-1) ||
+       (groupOwner && r->view()!=ReportView::Group && r->view()!=ReportView::Text))return "invalid alert group state selector";
+    if(groupOwner && (r->tab()!=ReportTab::Unknown || r->unit_id()!=-1 || r->unit_category()!=-1))return "mixed report state owners";
+    if(r->view()==ReportView::Group) {
+      const size_t count=(r->reports()?r->reports()->size():0)+(r->units()?r->units()->size():0);
+      if(!groupOwner || !r->list_revision() || r->total()>65536 || r->cursor()>r->total() || count>64 ||
+         count>r->total()-r->cursor() || (r->total() && !count) ||
+         r->next_cursor()!=(r->cursor()+count<r->total()?r->cursor()+count:0) ||
+         r->after_id()!=-1 || r->next_after_id()!=-1 || r->next_before_id()!=-1 || r->from_end() ||
+         r->trimmed_through()!=-1 || r->gap() || (r->tab_counts() && r->tab_counts()->size()))return "invalid alert group state";
+    }
+    if(r->view()==ReportView::Tab && (!r->list_revision() || r->tab()<ReportTab::All || r->tab()>ReportTab::Curses || !r->tab_counts() ||
+       r->tab_counts()->size()!=25 || r->total()!=r->tab_counts()->Get(uint8_t(r->tab())-1) ||
+       (r->reports() && r->reports()->size()>r->total())))return "invalid report tab state";
+    if(r->unit_id()< -1 || r->unit_category()< -1 || r->unit_category()>2 || r->list_revision()>INT64_MAX ||
+       (r->units() && r->units()->size()>64))return "invalid report unit state";
+    if(r->view()==ReportView::UnitList && (r->unit_category()<0 || !r->list_revision() || r->cursor()>r->total() ||
+       r->next_cursor()>r->total() || (r->next_cursor() && r->next_cursor()<=r->cursor()) ||
+       (r->reports() && r->reports()->size())))return "invalid unit list state";
+    if(r->view()==ReportView::UnitLog && (r->unit_id()<0 || r->unit_category()<0 || !r->list_revision()))return "invalid unit log state";
+    if(r->view()!=ReportView::UnitList && r->view()!=ReportView::Entries && r->view()!=ReportView::Group && r->units() && r->units()->size())return "unexpected report unit rows";
+    if(r->view()==ReportView::UnitList && r->units() && r->units()->size()>r->total()-r->cursor())return "unit page exceeds remaining rows";
+    std::set<std::pair<int32_t,int8_t>> unitIds;
+    if(r->units())for(const auto* u:*r->units()) {
+      if(!u || u->unit_id()<0 || u->category()<0 || u->category()>2 || (r->view()!=ReportView::Entries && r->view()!=ReportView::Group && !unitIds.insert({u->unit_id(),u->category()}).second) ||
+         !u->name() || u->name()->size()>512 || !u->profession() || u->profession()->size()>512 || !u->error() || u->error()->size()>256 ||
+         (r->view()==ReportView::UnitList && u->category()!=r->unit_category()))return "invalid report unit row";
+    }
+    if(r->missing_ids()) {
+      if(r->missing_ids()->size()>64 || (r->view()!=ReportView::Entries && r->missing_ids()->size()))return "invalid missing report identities";
+      for(auto id:*r->missing_ids())if(id<0)return "invalid missing report identity";
+    }
     size_t bytes=0;std::set<int32_t> ids;
     if(r->reports())for(const auto* v:*r->reports()) {
-      if(!v || v->id()<0 || !ids.insert(v->id()).second || v->year()<0 || v->year_tick()<0 || v->year_tick()>=403200 || v->repeat_count()<0 || !v->text() || v->text()->size()>16384 || !v->category() || v->category()->size()>128)return "invalid report row";
-      auto pos=[](bool visible,int x,int y,int z){return visible?(x>=0&&y>=0&&z>=0):(x==-1&&y==-1&&z==-1);};
+      if(!v || v->id()<0 || (r->view()!=ReportView::Entries && r->view()!=ReportView::Group && !ids.insert(v->id()).second) || v->year()<0 || v->year_tick()<0 || v->year_tick()>=403200 || v->repeat_count()<0 || !v->text() || v->text()->size()>16384 || !v->category() || v->category()->size()>128)return "invalid report row";
+      // Native report coordinates are signed 16-bit. Negative/off-map targets
+      // are valid; presence is independent of reveal state and wire -1 defaults.
+      auto pos=[](bool present,int x,int y,int z){
+        return present ? (x>=INT16_MIN&&x<=INT16_MAX&&x!=-30000&&
+                          y>=INT16_MIN&&y<=INT16_MAX&&z>=INT16_MIN&&z<=INT16_MAX)
+                       : (x==-1&&y==-1&&z==-1);
+      };
       if(!pos(v->position_visible(),v->x(),v->y(),v->z()) || !pos(v->position2_visible(),v->x2(),v->y2(),v->z2()))return "invalid report location";
+      if(v->tab()>ReportTab::Hunting || v->color() < -1 || v->color()>15 || v->zoom_type()>ReportZoom::Unit ||
+         v->zoom_type2()>ReportZoom::Unit || v->speaker_id() < -1 ||
+         (v->position_hidden()&&!v->position_visible()) || (v->position2_hidden()&&!v->position2_visible()))return "invalid report metadata";
       bytes+=v->text()->size();
     }
     if(bytes>131072)return "report text budget exceeded";
+    if(r->view()==ReportView::Text) {
+      if(!r->list_revision() || r->total()>33554432 || r->cursor()>r->total() ||
+         !r->reports() || r->reports()->size()!=1 || bytes>r->total()-r->cursor() ||
+         (r->total() && !bytes) || r->next_cursor()!=(r->cursor()+bytes<r->total()?r->cursor()+bytes:0) ||
+         r->reports()->Get(0)->text_complete()!=(r->cursor()==0 && bytes==r->total()) ||
+         r->tab()>ReportTab::Curses || (r->unit_id()<0 ? r->unit_category()!=-1 : (r->unit_category()<0 || r->tab()!=ReportTab::Unknown)) ||
+         r->after_id()!=-1 || r->next_after_id()!=-1 || r->next_before_id()!=-1 || r->from_end() ||
+         r->trimmed_through()!=-1 || r->gap() || (r->tab_counts() && r->tab_counts()->size()))return "invalid report text state";
+    }
   }
   if(const auto* a=s.agreement()) {
     if(a->next_before_id() < -1 || (a->detail() && a->detail()->size()>2048) || (a->agreements() && a->agreements()->size()>16))return "invalid agreement state";

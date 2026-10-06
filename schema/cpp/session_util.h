@@ -11,28 +11,36 @@ struct SessionOwner { volatile uint64_t pid; volatile uint64_t created; volatile
 inline SessionOwner* sessionOwner(df3d::shm::RegionHeader* r) {
   return reinterpret_cast<SessionOwner*>(r->reserved);
 }
-inline constexpr uint32_t kSessionVersion = 8;
-inline constexpr const char* kSessionRegionName = "Local\\df3d_session_v8";
+inline constexpr uint32_t kSessionVersion = 12;
+inline constexpr const char* kSessionRegionName = "Local\\df3d_session_v12";
 inline constexpr uint32_t kSessionCapacity = 1024 * 1024;
 inline constexpr uint32_t kSessionCommandCapacity = 16384;
 inline constexpr uint32_t kMaxNotificationGroups = 64;
 inline constexpr uint32_t kMaxNotificationReferences = 256;
+inline constexpr uint32_t kMaxSaveDestinations = 2048;
 // Retired native panel endpoints remain in the wire vocabulary for explicit
 // unsupported responses; validation does not authorize runtime execution.
 inline bool sessionEpochMatches(uint64_t requested, uint64_t current) { return requestEpochMatches(requested,current); }
 inline bool runtimeSessionAction(SessionAction action) {
-  return action>=SessionAction::LoadFortress && action<=SessionAction::SaveReturn;
+  return (action>=SessionAction::LoadFortress && action<=SessionAction::SaveReturn) || action==SessionAction::ReadSaveDestinations || action==SessionAction::QuitWithoutSaving;
 }
 inline bool validSaveId(const std::string& id) {
   return !id.empty() && id.size() <= 2048 && id.find('\0') == std::string::npos;
 }
 inline bool validCheckpointName(const std::string& name) {
-  if (name.empty() || name.size() > 80 || name.front() == ' ' || name.back() == ' ' ||
+  // Native save-name capture080355 bounds the field to 40 bytes; effect081415
+  // commits an internal period. Other native character/path cases still need
+  // effect evidence before relaxing the remaining filename protections.
+  if (name.empty() || name.size() > 40 || name.front() == ' ' || name.back() == ' ' ||
+      name.front() == '.' || name.back() == '.' ||
       name == "." || name == "..") return false;
   for (unsigned char c : name) if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
-      (c >= '0' && c <= '9') || c == ' ' || c == '-' || c == '_')) return false;
+      (c >= '0' && c <= '9') || c == ' ' || c == '-' || c == '_' || c == '.')) return false;
   std::string upper = name;
   for (char& c : upper) if (c >= 'a' && c <= 'z') c -= 'a' - 'A';
+  // A dot suffix must not bypass the existing reserved-device-name guard.
+  upper = upper.substr(0, upper.find('.'));
+  while (!upper.empty() && upper.back() == ' ') upper.pop_back();
   if (upper == "CON" || upper == "PRN" || upper == "AUX" || upper == "NUL" ||
       (upper.size() == 4 && (upper.substr(0, 3) == "COM" || upper.substr(0, 3) == "LPT") &&
        upper[3] >= '1' && upper[3] <= '9')) return false;
@@ -42,14 +50,14 @@ inline std::optional<std::string> validateSessionCommand(const SessionCommand& c
   if (c.schema_version() != kSessionVersion) return "session schema version mismatch";
   if (!c.client_id()) return "session client identity required";
   if (!c.seq()) return "load request seq must be nonzero";
-  if (c.action() < SessionAction::LoadFortress || c.action() > SessionAction::ClosePetition) return "invalid session action";
-  if(c.action()>=SessionAction::ReviewPetition) {
+  if (c.action() < SessionAction::LoadFortress || c.action() > SessionAction::QuitWithoutSaving) return "invalid session action";
+  if(c.action()>=SessionAction::ReviewPetition && c.action()<=SessionAction::ClosePetition) {
     if(!c.fortress_epoch() || c.fortress_epoch()>INT64_MAX || c.interruption_receipt() || c.petition_id() < -1 || c.petition_receipt()>INT64_MAX)return "invalid petition command";
     if(c.action()==SessionAction::ReviewPetition ? (c.petition_id()<0 || c.petition_receipt()!=0) : (!c.petition_receipt() || (c.action()!=SessionAction::ClosePetition && c.petition_id()<0)))return "invalid petition receipt";
   } else if(c.petition_id()!=-1 || c.petition_receipt())return "unexpected petition identity";
   if(c.action()==SessionAction::AcknowledgeAnnouncement) {
     if(!c.fortress_epoch() || c.fortress_epoch()>INT64_MAX || !c.interruption_receipt() || c.interruption_receipt()>INT64_MAX) return "invalid interruption receipt";
-  } else if(c.action()==SessionAction::SaveContinue || c.action()==SessionAction::SaveReturn) {
+  } else if(c.action()==SessionAction::SaveContinue || c.action()==SessionAction::SaveReturn || c.action()==SessionAction::ReadSaveDestinations || c.action()==SessionAction::QuitWithoutSaving) {
     if(!c.fortress_epoch() || c.fortress_epoch()>INT64_MAX || c.interruption_receipt()) return "save fortress epoch required";
   } else if(c.action()<SessionAction::ReviewPetition && (c.fortress_epoch() || c.interruption_receipt())) return "unexpected interruption receipt";
   if (c.action() == SessionAction::LoadFortress) {
@@ -58,15 +66,55 @@ inline std::optional<std::string> validateSessionCommand(const SessionCommand& c
   if (c.action() == SessionAction::SaveContinue) {
     if (!c.checkpoint_name() || !validCheckpointName(c.checkpoint_name()->str())) return "invalid checkpoint name";
   } else if (c.checkpoint_name() && c.checkpoint_name()->size()) return "unexpected checkpoint name";
+  if(c.action()==SessionAction::SaveReturn) {
+    if(!c.save_catalog_receipt() || c.save_catalog_receipt()>INT64_MAX ||
+       c.save_return_mode()<SaveReturnMode::ExistingDestination || c.save_return_mode()>SaveReturnMode::NewTimeline)
+      return "explicit save destination required";
+    const bool hasId=c.save_destination_id() && c.save_destination_id()->size();
+    if(c.save_return_mode()==SaveReturnMode::ExistingDestination) {
+      if(!hasId || !validSaveId(c.save_destination_id()->str()))return "invalid destination identity";
+    } else if(hasId)return "unexpected destination identity";
+    if(c.save_return_mode()==SaveReturnMode::NewTimeline) {
+      if(!c.timeline_name() || c.timeline_name()->size()>40)return "invalid timeline name bytes";
+      for(auto byte:*c.timeline_name())if(byte<32 || byte==127)return "invalid timeline control byte";
+    } else if(c.timeline_name() && c.timeline_name()->size())return "unexpected timeline name";
+  } else if(c.save_catalog_receipt() || c.save_return_mode()!=SaveReturnMode::None ||
+      (c.save_destination_id() && c.save_destination_id()->size()) || (c.timeline_name() && c.timeline_name()->size()))
+    return "unexpected save destination fields";
   return std::nullopt;
 }
 inline std::optional<std::string> validateSessionState(const SessionState& s) {
   if (s.schema_version() != kSessionVersion) return "session schema version mismatch";
   if (!s.revision()) return "session revision must be nonzero";
-  if (s.phase() < SessionPhase::Starting || s.phase() > SessionPhase::Saving ||
-      s.request_status() < LoadRequestStatus::None || s.request_status() > LoadRequestStatus::Rejected)
+  if (s.phase() < SessionPhase::Starting || s.phase() > SessionPhase::Unloading ||
+      s.request_status() < LoadRequestStatus::None || s.request_status() > LoadRequestStatus::UnknownOutcome)
     return "invalid session enum";
-  if (s.request_action() < SessionAction::LoadFortress || s.request_action() > SessionAction::ClosePetition) return "invalid session action";
+  if (s.request_action() < SessionAction::LoadFortress || s.request_action() > SessionAction::QuitWithoutSaving) return "invalid session action";
+  if(s.request_fortress_epoch()>INT64_MAX)return "invalid request fortress epoch";
+  if(s.request_status()==LoadRequestStatus::UnknownOutcome &&
+     ((s.request_action()!=SessionAction::SaveContinue && s.request_action()!=SessionAction::SaveReturn && s.request_action()!=SessionAction::QuitWithoutSaving) || !s.request_fortress_epoch()))
+    return "unknown outcome requires originating lifecycle request";
+  if(const auto* catalog=s.save_destinations()) {
+    if(!catalog->receipt() || catalog->receipt()>INT64_MAX || !catalog->fortress_epoch() ||
+       catalog->fortress_epoch()>INT64_MAX || !catalog->destinations() || catalog->destinations()->size()>kMaxSaveDestinations ||
+       s.request_action()!=SessionAction::ReadSaveDestinations || s.request_status()!=LoadRequestStatus::Ok ||
+       catalog->fortress_epoch()!=s.request_fortress_epoch())return "invalid save destination catalog";
+    std::set<std::string> ids;
+    size_t bytes=0;
+    for(const auto* destination:*catalog->destinations()) {
+      if(!destination || !destination->id() || !validSaveId(destination->id()->str()) ||
+         !ids.insert(destination->id()->str()).second || !destination->folder() ||
+         !validSaveId(destination->folder()->str()))return "invalid save destination";
+      bytes+=destination->id()->size()+destination->folder()->size();
+    }
+    if(bytes>kSessionCapacity/4)return "save destination catalog too large";
+  }
+  const auto* alertIds=s.alert_button_report_ids();
+  const size_t alertSize=alertIds?alertIds->size():0;
+  if(alertSize>kMaxNotificationReferences || alertSize>s.alert_button_report_count() ||
+     (s.alert_button_complete() && alertSize!=s.alert_button_report_count()) ||
+     (s.alert_button_report_count() && (!s.fortress_valid() || !s.fortress_epoch())))return "invalid alert button references";
+  if(alertIds)for(auto id:*alertIds)if(id<0)return "invalid alert button report identity";
   if (const auto* groups=s.active_notifications()) {
     if (groups->size()>kMaxNotificationGroups || (groups->size() && (!s.fortress_valid() || !s.fortress_epoch()))) return "invalid active notification groups";
     for (const auto* group:*groups) {
@@ -84,6 +132,7 @@ inline std::optional<std::string> validateSessionState(const SessionState& s) {
       return "invalid fortress summary";
     if (!f->stress_counts() || f->stress_counts()->size()!=7) return "invalid stress categories";
     const auto* resources=f->resource_counts();
+    if(f->bookkeeper_precision() < -1) return "invalid bookkeeper precision";
     if (f->resources_available()) {
       if (!resources || resources->size()!=7) return "invalid resource categories";
       for (auto count:*resources) if(count<0) return "negative resource count";
@@ -117,7 +166,13 @@ inline std::optional<std::string> validateSessionState(const SessionState& s) {
     }
   }
   if (s.year() < 0 || s.year_tick() < 0 || s.year_tick() >= 403200 ||
-      (s.fort_name() && s.fort_name()->size() > 4096)) return "invalid fortress status";
+      (s.fort_name() && s.fort_name()->size() > 4096) ||
+      (s.fort_original_name() && s.fort_original_name()->size() > 4096) ||
+      s.fortress_rank() < -1 || s.fortress_rank() > 5 ||
+      s.moon_phase() < -1 || s.moon_phase() > 27 ||
+      (!s.fortress_valid() && s.moon_phase() != -1) ||
+      (!s.fortress_valid() && (s.fortress_rank() != -1 || s.fortress_capital() ||
+       (s.fort_original_name() && s.fort_original_name()->size())))) return "invalid fortress status";
   if ((s.can_save() || s.can_save_return()) && (!s.fortress_valid() || s.phase() != SessionPhase::Ready)) return "invalid save availability";
   if ((s.request_seq() == 0) != (s.request_status() == LoadRequestStatus::None)) return "inconsistent load result";
   if (s.message() && s.message()->size() > 8192) return "session message too long";

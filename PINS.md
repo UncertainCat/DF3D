@@ -20,6 +20,56 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 | dfhooks | upstream + C4455 fix (`2a43bca84ccfbe3ad6605eb47a5afcdd348cd673`, branch `df3d/fixes`), fork: github.com/UncertainCat/dfhooks |
 | Working tree | `external/dfhack` (pinned submodule; its own repository) |
 
+## Wire compatibility
+
+Snapshot schema **11** and resident terrain grid **6** preserve root tissue
+separately from trunk wood, in addition to the schema10/grid5 semantic tile
+subterranean status, brook-surface identity and native building occupancy.
+The fixed snapshot TileState remains eight bytes; environment facts use a
+sparse per-block vector. Resident tiles are fourteen bytes. Rebuild/reinstall
+bridge and viewer together; older schema/grid readers reject the new layouts.
+Management is **53**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
+the original fortress name, rank and capital status from session11. Rebuild/reinstall bridge and viewer together; the v12 session
+region rejects older peers. Missing old identity facts must remain unavailable,
+not be inferred from the translated name. Snapshot/grid versions are unchanged.
+
+Management protocol **53** adds explicit `cancel_removal` intent for building
+removal. Rebuild/install bridge and viewer together: v53 isolates older peers
+so an old bridge cannot interpret cancellation as a new deconstruction request.
+
+Management protocol **52** adds an explicit native Last-material name to each
+construction material row. Standalone decorated/artifact display names and
+singular generic names cannot establish that copy. Missing old-recording data
+leaves history unavailable; do not infer it by stripping decoration or pluralizing.
+Rebuild/install bridge and viewer together; v52 isolates older peers.
+
+Management protocol **51** distinguishes standalone construction item rows from
+same-material generic groups using individual_id (-1 for a group). Standalone
+rows and selections require exactly that item and cannot substitute another.
+Rebuild/install bridge and viewer together; v51 isolates older peers. Old
+aggregate recordings cannot establish standalone identity and must not infer it
+from a decorated name. Snapshot/grid/session versions are unchanged.
+
+Management protocol **50** carries the last selected construction corner as a
+semantic material anchor and permits the complete stair volume in Materials
+queries. Cache identity and Place validation preserve both. Rebuild/install
+bridge and viewer together; v50 isolates older peers. Older normalized requests
+do not establish the missing gesture endpoint or multi-level admission.
+
+Management protocol **49** adds semantic PrepareAlertDismissal and DismissAlert
+commands (68/69) with client/fortress-bound source receipts. The v49 shared-memory
+region isolates older peers. Report payload fields retain their representation;
+for these actions, expected_list_revision/list_revision carry the dismissal
+receipt and total carries the captured/cleared reference count. No migration
+fabricates receipts. Native UI Alert and interruption acknowledgment stay retired.
+
+Protocol **48** adds complete retained alert Group reads and group-owned
+Text, selected by notification category or the distinct red ALERT source. Rebuild
+bridge and viewer together; v47 lacks these selectors. Tab, unit-log, group and
+independent Text owners remain separate. Do not invent missing references or text
+when migrating older summaries. Session is now **12**; dependency/game pins are
+unchanged.
+
 ## Viewer host
 
 | What | Value |

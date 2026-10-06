@@ -369,7 +369,7 @@ TEST_CASE("validator rejects malformed terrain (one row per rule)") {
          fort.snapshot(1);
          return validateStream(mustParse(fort));
        },
-       {"schema version mismatch: snapshot has 1, consumer expects 7"}},
+       {"schema version mismatch: snapshot has 1, consumer expects 11"}},
   });
   expectAcceptance({
       {"material index 1 of 2",

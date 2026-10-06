@@ -70,11 +70,11 @@ TEST_CASE("sparse map indicators validate known direction and warning bits") {
     fbb.FinishSizePrefixed(snap,SnapshotIdentifier());
     return assembleFixture({std::vector<uint8_t>(fbb.GetBufferPointer(),fbb.GetBufferPointer()+fbb.GetSize())});
   };
-  for(auto list:std::vector<std::vector<MapIndicator>>{{},{MapIndicator(50,15,3,3)}}) {
+  for(auto list:std::vector<std::vector<MapIndicator>>{{},{MapIndicator(50,15,3,3,15)}}) {
     FixtureStream fs;std::string error; REQUIRE(parseFixture(fixture(list),fs,error)); CHECK_FALSE(validateStream(fs));
   }
-  for(auto list:std::vector<std::vector<MapIndicator>>{{MapIndicator(256,0,0,0)},{MapIndicator(0,16,0,0)},
-      {MapIndicator(0,0,4,0)},{MapIndicator(0,0,0,4)},{MapIndicator(0,1,0,0),MapIndicator(0,2,0,0)}}) {
+  for(auto list:std::vector<std::vector<MapIndicator>>{{MapIndicator(0,0,0,0,16)},{MapIndicator(256,0,0,0,0)},{MapIndicator(0,16,0,0,0)},
+      {MapIndicator(0,0,4,0,0)},{MapIndicator(0,0,0,4,0)},{MapIndicator(0,1,0,0,0),MapIndicator(0,2,0,0,0)}}) {
     FixtureStream fs;std::string error; REQUIRE(parseFixture(fixture(list),fs,error)); CHECK(validateStream(fs).has_value());
   }
 }

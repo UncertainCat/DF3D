@@ -484,7 +484,7 @@ inline size_t popCommand(RegionHeader* h, uint8_t* out, size_t outCap) {
 // ---- terrain grid ----
 
 inline constexpr char kTerrainMagic[8] = {'D', 'F', '3', 'D', 'T', 'E', 'R', '1'};
-inline constexpr uint32_t kTerrainLayoutVersion = 3;
+inline constexpr uint32_t kTerrainLayoutVersion = 6;
 inline constexpr uint32_t kDefaultTerrainMaterialsCapacity = 1u * 1024 * 1024;
 inline constexpr uint32_t kTerrainTilesPerBlock = 256;
 inline constexpr uint16_t kTerrainNoMaterial = 0xFFFF;
@@ -500,12 +500,14 @@ struct TerrainTile {
   uint8_t track;
   uint8_t traffic;
   uint8_t warnings;
-  uint8_t track_blockers; // bits0/1 blocked clearance/horizontal; bit2 ramp support; bit3 open ramp clearance
+  uint8_t environment_flags; // subterranean=1, brook top=2, root tissue=4
+  uint8_t building_occupancy; // native occupancy class, 0..7
+  uint8_t track_blockers; // bits0/1 blocked clearance/horizontal; bit2 ramp support; bit3 open ramp clearance; high nibble completed Track N/S/E/W
 };
-static_assert(sizeof(TerrainTile) == 12, "Terrain v3 indicators");
+static_assert(sizeof(TerrainTile) == 14, "Terrain v6 environment");
 
 // Packing is private to the resident grid. FlatBuffers and world-model fields
-// remain explicit semantics, and terrain layout v3 rejects older readers.
+// remain explicit semantics, and terrain layout v6 rejects older readers.
 inline uint8_t terrainOperation(uint8_t value) { return value & 15; }
 inline uint8_t terrainPriority(uint8_t value) { return (value >> 4) & 7; }
 inline bool terrainMarker(uint8_t value) { return (value & 128) != 0; }

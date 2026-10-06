@@ -17,7 +17,7 @@ namespace df3d.mirror;
 
 file_identifier "DF3S";
 
-enum SchemaVersion : uint32 { Current = 7 }
+enum SchemaVersion : uint32 { Current = 11 }
 
 /// Semantic activity of a unit. Grows as bridge coverage grows; values are
 /// append-only (never renumber).
@@ -173,6 +173,14 @@ struct MapIndicator {
   track:uint8; // N=1, S=2, E=4, W=8; pending carve-track occupancy
   traffic:uint8; // DF Normal=0, Low=1, High=2, Restricted=3
   warnings:uint8; // damp=1, warm=2; known mining warning facts
+  completed_track:uint8; // N=1,S=2,E=4,W=8 from finished native TRACK tiletype; independent of pending carve
+}
+
+/// Native tile environment, independent of presentation or building room extents.
+struct TileEnvironment {
+  tile_index:uint16;
+  flags:uint8; // subterranean=1, walkable brook surface=2, root tissue=4; no other bits
+  building_occupancy:uint8; // native tile occupancy class, 0..7
 }
 
 table MapBlock {
@@ -186,6 +194,7 @@ table MapBlock {
   track_horizontal_blocked:[uint16]; // occupancy blocks candidate tile traversal
   track_support:[uint16]; // native wall/fortification supports ramps, independent of render shape
   track_open:[uint16]; // native OpenSpace/Chasm/EeriePit above ascending ramps
+  environment:[TileEnvironment];
 }
 
 /// What `Snapshot.blocks` covers. Consumers apply blocks by upserting on
@@ -269,8 +278,8 @@ enum ChangeScope : uint8 {
 }
 
 /// Mirrors DF's `building_type` (df-structures), same order, offset by one
-/// so 0 is Unknown. `Construction` is deliberately absent: constructions
-/// are terrain (TileShape / MaterialKind::Constructed), never buildings.
+/// so 0 is Unknown, with pending Construction appended to preserve existing values.
+/// Completed constructions remain terrain; pending jobs are building entities.
 enum BuildingKind : uint8 {
   Unknown = 0,
   Chair,           // building_chairst
@@ -327,6 +336,7 @@ enum BuildingKind : uint8 {
   Bookcase,        // building_bookcasest
   DisplayFurniture,// building_display_furniturest
   OfferingPlace,   // building_offering_placest
+  Construction,   // pending building_constructionst; subtype = construction_type
 }
 
 /// Construction state of a building.
@@ -352,7 +362,8 @@ table Building {
   kind: BuildingKind = Unknown;
   /// DF per-kind subtype index: `workshop_type` for Workshop, `furnace_type`
   /// for Furnace, `trap_type` for Trap, `siegeengine_type` for SiegeEngine,
-  /// `shop_type` for Shop, `civzone_type` for Civzone; 0xFFFF for kinds
+  /// `shop_type` for Shop, `civzone_type` for Civzone, `construction_type` for
+  /// pending Construction; 0xFFFF for kinds
   /// without one (`kNoSubtype`).
   subtype: uint16 = 65535;
   /// Raw id of a custom workshop / furnace (`building_def.code`, e.g.
@@ -1003,12 +1014,16 @@ table CommandResult {
   message: string;
 }
 
-enum SessionPhase : uint8 { Starting, Menu, Loading, Ready, Unavailable, Error, Saving }
-enum SessionAction : uint8 { LoadFortress, SaveContinue, SaveReturn, AcknowledgeAnnouncement, ReviewPetition, ApprovePetition, DenyPetition, ClosePetition }
+enum SessionPhase : uint8 { Starting, Menu, Loading, Ready, Unavailable, Error, Saving, Unloading }
+enum SessionAction : uint8 { LoadFortress, SaveContinue, SaveReturn, AcknowledgeAnnouncement, ReviewPetition, ApprovePetition, DenyPetition, ClosePetition, ReadSaveDestinations, QuitWithoutSaving }
+enum SaveReturnMode : uint8 { None, ExistingDestination, NewFolder, NewTimeline }
+table SaveDestination { id:string (required); folder:string (required); }
+// A complete, request-scoped catalog. Absence is unavailable, not zero choices.
+table SaveDestinationCatalog { receipt:uint64; fortress_epoch:uint64; destinations:[SaveDestination] (required); }
 enum InterruptionKind : uint8 { None, ManualPause, PassiveAnnouncement, AnnouncementViewer, Diplomacy, Petition, Trade, OtherDecision }
 table InterruptionState { kind:InterruptionKind; receipt:uint64; text:string; reason:string; popup_count:uint32; can_acknowledge:bool; }
 table PetitionReviewState { id:int32 = -1; receipt:uint64; can_review:bool; can_respond:bool; can_close:bool; reason:string; agreement:AgreementInfo; guildhall_value:int32; grand_guildhall_value:int32; }
-enum LoadRequestStatus : uint8 { None, Pending, Ok, Rejected }
+enum LoadRequestStatus : uint8 { None, Pending, Ok, Rejected, UnknownOutcome }
 table FortressSave { id:string (required); fort_name:string; world_name:string; year:int32; }
 // Fortress-wide values, independent of the subscribed map window.
 // Stress counts are ordered from highest stress to lowest (seven DF categories).
@@ -1021,6 +1036,9 @@ table FortressSummary {
   // Cached fortress resources: total food, drink, seeds, meat, fish, plant, other.
   resource_counts:[int32];
   resources_available:bool;
+  // Achieved native record precision, not the requested nobles setting.
+  // Older snapshots omit it; -1 is unknown and must not imply lowest precision.
+  bookkeeper_precision:int32 = -1;
 }
 // Active fortress notifications, in native presentation-independent group order.
 enum NotificationCategory : uint8 { General, EraChange, Underground, Migrant, Monster, Ambush, Trade, Noble, Animal, Birth, Mood, LaborChange, Military, Marriage, Berserk, MartialTrance, LoseEmotion, Stress, ArtDefacement, Masterpiece, JobFailed, Death, Ghost, UndeadAttack, Weather, Vermin, CuriousGuzzler, ResearchBreakthrough, GuestArrival, Holdings, Rumor, Agreement, Crime, DeityCurse, Combat, Sparring, Hunting }
@@ -1035,7 +1053,7 @@ table ActiveNotificationGroup {
   complete:bool = true;
 }
 table SessionState {
-  schema_version:uint32 = 8;
+  schema_version:uint32 = 12;
   revision:uint64;
   phase:SessionPhase;
   saves:[FortressSave];
@@ -1060,14 +1078,33 @@ table SessionState {
   active_notifications:[ActiveNotificationGroup];
   active_notifications_complete:bool = true;
   request_client_id:uint64;
+  request_fortress_epoch:uint64;
+  save_destinations:SaveDestinationCatalog;
+  alert_button_report_ids:[int32]; alert_button_report_count:uint32; alert_button_complete:bool = true;
+  fort_original_name:string;
+  fortress_rank:int16 = -1;
+  fortress_capital:bool;
+  moon_phase:int8 = -1;
 }
 // IDs are opaque handles from the current advertised list, never filesystem commands.
-table SessionCommand { schema_version:uint32 = 8; seq:uint64; save_id:string; action:SessionAction; checkpoint_name:string; fortress_epoch:uint64; interruption_receipt:uint64; petition_id:int32 = -1; petition_receipt:uint64; client_id:uint64; }
+table SessionCommand {
+  schema_version:uint32 = 12; seq:uint64; save_id:string; action:SessionAction;
+  checkpoint_name:string; fortress_epoch:uint64; interruption_receipt:uint64;
+  petition_id:int32 = -1; petition_receipt:uint64; client_id:uint64;
+  save_catalog_receipt:uint64;
+  save_return_mode:SaveReturnMode;
+  save_destination_id:string;
+  // Native metadata bytes, not a filesystem path or UTF-8-normalized caption.
+  timeline_name:[uint8];
+}
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmSetCrop, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
-enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink }
+enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit }
+enum LocationEntryOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
+enum LocationEditOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
+enum AreaRoomOutcome : uint8 { None, Completed, Rejected, Stale, Unknown }
 struct AreaSpan { y:int16; x:int16; length:uint16; }
 table AreaZoneSettings {
   pond_mode:uint8;
@@ -1078,9 +1115,10 @@ table AreaZoneSettings {
   gather_shrubs:int8 = -1;
 }
 table AreaSettingRow { key:string; index:int32 = -1; label:string; kind:uint8; state:uint8; estimated:bool; }
-table AreaLocationRow { id:int32 = -1; name:string; location_kind:uint8; religion:string; }
+table AreaLocationRow { id:int32 = -1; name:string; location_kind:uint8; religion:string; guild_profession:int16 = -1; location_tier:int32 = -1; site_id:int32 = -1; }
 table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; }
 table AreaLinkRow { id:int32 = -1; kind:AreaKind; direction:uint8; name:string; }
+table AreaPaintPreview { x:int16; y:int16; width:uint16; height:uint16; }
 table AreaRequest {
   kind:AreaKind;
   id:int32 = -1;
@@ -1107,6 +1145,7 @@ table AreaRequest {
   list_key:string;
   row_key:string;
   scope:uint8;
+  // SettingsSet uses1..2; LocationAccess uses0 Visitors,1 Residents,2 Citizens,3 Members.
   value:uint8;
   preset:uint8;
   name:string;
@@ -1128,6 +1167,19 @@ table AreaRequest {
   candidate_kind:uint8;
   sort:uint8;
   sort_descending:bool;
+  // Multi selection uses origin/width/height. No room-count limit is implied by
+  // the separately bounded AreaInfo reply page. 1 bed, 2 chair, 3 table, 4 coffin.
+  room_furniture:uint8;
+  interaction_id:uint64;
+  undo_token:uint64;
+  // PaintCounts reads local draft spans and an optional rectangle at paint_z.
+  // Count generation belongs to the presentation; it is echoed without rounding.
+  count_generation:uint64;
+  paint_preview:AreaPaintPreview;
+  location_site_id:int32 = -1;
+  // StaffEdit requires Details expected_revision and candidate expected_list_revision.
+  // unit_id >= 0 assigns; -1 removes. Replies carry LocationEditOutcome + refreshed Details.
+  occupation_id:int32 = -1;
 }
 table AreaInfo {
   id:int32;
@@ -1159,8 +1211,65 @@ table AreaInfo {
   zone_settings:AreaZoneSettings;
   tile_count:int32 = -1;
   assigned_count:int32 = -1;
+  location_kind:uint8; // 0 unknown; same semantic kinds as AreaLocationRow
+  owner_profession:string;
+  owner_sex:int8 = -1;
+  location_site_id:int32 = -1;
 }
 table AreaChoice { id:int32; name:string; label:string; }
+table LocationDeity { id:int32 = -1; name:string; spheres:[int32]; }
+table LocationReligion { kind:uint8; id:int32 = -1; name:string; worshippers:int32; has_temple:bool; deities:[LocationDeity]; }
+table LocationGuild { profession:int32 = -1; workers:int32; has_meeting_place:bool; guild_id:int32 = -1; guild_name:string; members:int32; }
+table LocationCatalog {
+  kind:uint8; revision:uint64; cursor:uint32; total:uint32; next_cursor:uint32;
+  religions:[LocationReligion]; guilds:[LocationGuild];
+}
+table LocationSupplyQuantity { kind:uint8; stored:int32; desired:int32; }
+// Verified core facts only. Raw value does not establish native UI visibility.
+table LocationFacilities { chests:int32; beds:int32; tables:int32; traction_benches:int32; bookcases:int32; chairs:int32; rooms:int32; rented_rooms:int32; }
+// Ordered native rows, including duplicate assignments. Absence means unobserved.
+table LocationStaffNames {
+  position_name:string; holder_name:string;
+  holder_kind:uint8; holder_id:int32 = -1;
+}
+table LocationStaffRow {
+  source:uint8; // 0 occupation, 1 religious position
+  occupation_id:int32 = -1; role:int32 = -1; histfig_id:int32 = -1; unit_id:int32 = -1;
+  location_id:int32 = -1; site_id:int32 = -1; group_id:int32 = -1;
+  entity_id:int32 = -1; position_id:int32 = -1; assignment_id:int32 = -1;
+  names:LocationStaffNames; // Legacy absence is unknown, not an empty holder.
+}
+table LocationStaffSnapshot { rows:[LocationStaffRow]; missing_roles:[int32]; }
+table LocationStaffSkill { id:int32 = -1; rating:int32; experience:int32; weight:int32; }
+table LocationStaffCandidate {
+  unit_id:int32 = -1; histfig_id:int32 = -1; name:string; score:int32; skills:[LocationStaffSkill];
+  base_name:string; profession_name:string; profession_color:int32 = -1; legendary:bool;
+  source_index:int32 = -1; profession_order:int32 = -1; status_order:int32 = -1;
+  // Semantic native CP437 comparison keys, not visible text or UI state.
+  name_sort_key:[uint8]; profession_sort_key:[uint8];
+}
+// Native default skill order. Receipt binds epoch, site, location, occupation and all rows.
+table LocationStaffCandidates {
+  site_id:int32 = -1; location_id:int32 = -1; occupation_id:int32 = -1; role:int32 = -1;
+  revision:uint64; cursor:uint32; next_cursor:uint32; total:uint32;
+  rows:[LocationStaffCandidate];
+}
+table LocationAffiliation {
+  kind:uint8; id:int32 = -1; name:string; count:int32; workers:int32 = -1;
+}
+table LocationDetails {
+  site_id:int32 = -1; id:int32 = -1; kind:uint8; name:string; revision:uint64;
+  access:uint8; visitors:bool; residents:bool; members:bool;
+  profession:int32 = -1; tier:int32 = -1; value:int32 = -1;
+  desired_copies:int32; recognized:bool;
+  supplies:[LocationSupplyQuantity]; zone_ids:[int32];
+  appraisal:int32 = -2; // -2 unobserved (legacy), -1 no broker, >=0 effective Appraisal.
+  facilities:LocationFacilities; // Absent in legacy records; unknown is not zero.
+  written_objects:int32 = -1; // Legacy unknown; count objects, not stack quantities.
+  dance_floor_x:int32 = -1; dance_floor_y:int32 = -1; // Both -1 unknown; both zero when absent.
+  staff:LocationStaffSnapshot;
+  affiliation:LocationAffiliation; // Absent in legacy records; not an empty affiliation.
+}
 table AreaState {
   areas:[AreaInfo]; choices:[AreaChoice]; next_cursor:uint32; truncated:bool;
   operation:AreaOperation;
@@ -1180,6 +1289,22 @@ table AreaState {
   build_total:uint32;
   omitted:uint32;
   captured_tick:int64 = -1;
+  interaction_id:uint64;
+  undo_token:uint64;
+  room_outcome:AreaRoomOutcome;
+  rooms_created:uint32;
+  rooms_in_use:uint32;
+  rooms_unenclosed:uint32;
+  rooms_removed:uint32;
+  rooms_dormitories:uint32; // subset of rooms_created for Bedroom Multi
+  count_generation:uint64;
+  painted_count:int32 = -1; // -1 unknown; never a partial count
+  preview_count:int32 = -1;
+  location_catalog:LocationCatalog;
+  location_details:LocationDetails;
+  location_entry_outcome:LocationEntryOutcome;
+  location_edit_outcome:LocationEditOutcome;
+  location_staff_candidates:LocationStaffCandidates;
 }
 // Production recipes are opaque semantic keys revalidated against the selected building.
 table ProductionRequest {
@@ -1380,15 +1505,39 @@ table AlertState {
  complete:bool = true;
  focus:TilePos;
 }
-table ReportRequest { id:int32 = -1; before_id:int32 = -1; query:string; announcements_only:bool = true; }
+enum ReportView : uint8 { Flat, Tab, UnitList, UnitLog, Entries, Text, Group }
+enum ReportTab : uint8 { Unknown, All, General, World, Environment, Arrivals, Attacks, Trade, Nobles, Animal, LifeChanges, StrangeMoods, ProfessionChanges, Military, MentalState, Masterpieces, JobFailures, Death, Ghosts, Wildlife, Labor, Crime, Curses, Combat, Sparring, Hunting }
+enum ReportZoom : uint8 { Unknown, None, Generic, Item, Unit }
+// Tab: revision zero captures all ordinary tabs; nonzero reads that retained snapshot.
+// UnitList and UnitLog revisions are independent. Epoch/bridge reset invalidates owners.
+// UnitLog refresh explicitly appends new identities while retaining existing rows.
+// PrepareAlertDismissal/DismissAlert use flat defaults and no read selectors.
+// expected_list_revision consumes a client/epoch-bound full red-vector receipt;
+// ReportState.list_revision echoes it and total is the captured/cleared count.
+table ReportRequest {
+  id:int32 = -1; before_id:int32 = -1; query:string; announcements_only:bool = true;
+  view:ReportView; tab:ReportTab; after_id:int32 = -1; from_end:bool;
+  unit_id:int32 = -1; unit_category:int8 = -1; cursor:uint32; expected_list_revision:uint64;
+  ids:[int32]; units:[UnitReportReference]; refresh:bool;
+  notification_category:int16 = -1; alert_button:bool;
+}
 table ReportInfo {
   id:int32; category:string; text:string; year:int32; year_tick:int32;
   repeat_count:int32; continuation:bool; text_complete:bool = true;
   x:int32 = -1; y:int32 = -1; z:int32 = -1;
   x2:int32 = -1; y2:int32 = -1; z2:int32 = -1;
   position_visible:bool; position2_visible:bool;
+  tab:ReportTab; color:int16 = -1; bright:bool; zoom_type:ReportZoom; zoom_type2:ReportZoom;
+  position_hidden:bool; position2_hidden:bool; speaker_id:int32 = -1;
 }
-table ReportState { reports:[ReportInfo]; next_before_id:int32 = -1; announcements_only:bool = true; detail:string; }
+table ReportUnitInfo { unit_id:int32 = -1; category:int8 = -1; profession:string; name:string; dead:bool; log_count:uint32; error:string; }
+table ReportState {
+  reports:[ReportInfo]; next_before_id:int32 = -1; announcements_only:bool = true; detail:string;
+  view:ReportView; tab:ReportTab; after_id:int32 = -1; from_end:bool;
+  tab_counts:[uint32]; total:uint32; next_after_id:int32 = -1; trimmed_through:int32 = -1; gap:bool;
+  unit_id:int32 = -1; unit_category:int8 = -1; cursor:uint32; next_cursor:uint32; list_revision:uint64; units:[ReportUnitInfo]; missing_ids:[int32];
+  notification_category:int16 = -1; alert_button:bool;
+}
 // Pending comes from plotinfo.petitions, never the cached native menu vector.
 enum AgreementStatus : uint8 { Pending, Accepted, Unapproved, Concluded }
 table AgreementRequest { id:int32 = -1; before_id:int32 = -1; query:string; pending_only:bool; }
@@ -1453,8 +1602,23 @@ table CreatureState {
 // list revision; moving origin requires a fresh Materials scan at the new origin.
 // A Materials "list exceeds cap" error stays failed across polls. Retry: request
 // Catalog with cursor=0 and expected_list_revision=0, then request Materials.
+// Dump direction:0 none,1 north,2 east,3 south,4 west. Native profile offsets
+// are derived by the bridge; no native widget state crosses the command boundary.
+table TrackStopOptions { friction:uint32 = 50000; dump_direction:uint8; }
+// Native trigger profile, independent of staged native building UI state.
+// Example-search buckets do not change these selected trigger endpoints.
+table PressurePlateOptions {
+  units:bool; water:bool; magma:bool; citizens:bool; resets:bool = true; track:bool;
+  unit_min:int32 = 5000; unit_max:int32 = 200000;
+  water_min:int8 = 1; water_max:int8 = 7;
+  magma_min:int8 = 1; magma_max:int8 = 7;
+  track_min:int32 = 1; track_max:int32 = 2000;
+}
+// Ordered connected Track intent: ConstructionRequest.origin is the first point.
+// Rectangle dimensions do not encode either endpoint or a client-chosen route.
+table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 20;
+  schema_version:uint32 = 53;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1485,9 +1649,18 @@ table ConstructionRequest {
   filter:int16 = -1;
   selections:[ConstructionSelection];
   expected_list_revision:uint64;
+  // Rollers Preview/Place: 10000..50000 in steps of10000; 0 uses native default.
+  roller_speed:uint32;
+  track_stop:TrackStopOptions;
+  pressure_plate:PressurePlateOptions;
+  connected_track:ConnectedTrackOptions;
+  // Last selected corner for construction material admission; bounds remain normalized.
+  material_anchor:TilePos;
+  // Remove only: cancel an existing native DestroyBuilding job; never toggle.
+  cancel_removal:bool;
 }
 table ManagementState {
-  schema_version:uint32 = 20;
+  schema_version:uint32 = 53;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -1534,19 +1707,45 @@ table ConstructionSelection {
   filter:int16 = -1; item_type:int16 = -1; item_subtype:int16 = -1;
   mat_type:int16 = -1; mat_index:int32 = -1; count:uint32;
   expected_list_revision:int64 = -1;
+  // Present means exact identities, never permission to substitute group members.
+  item_ids:[int32];
+  // A native standalone item row, distinct from a same-material generic group.
+  // Requires exactly this item ID; -1 denotes a generic group.
+  individual_id:int32 = -1;
 }
 table ConstructionFilter {
   index:int16 = -1; item_type:int16 = -1; item_subtype:int16 = -1;
   caption:string; requirement:string; quantity:int32 = -1;
 }
+// Complete ordinary item rows in native expanded order (distance, then ID).
+// Missing vector means legacy aggregate-only data, never an empty complete list.
+// Owned semantic item facts; no native texture IDs or screen state. Absence
+// means appearance is unavailable, not a default material or guessed icon.
+table ConstructionItemAppearance {
+  material_token:string; subtype_raw:string; color_token:string;
+  stack:uint32 = 1; flags:uint8;
+}
+table ConstructionMaterialCandidate { id:int32 = -1; name:string; distance:uint32; appearance:ConstructionItemAppearance; }
 table ConstructionMaterial {
   item_type:int16 = -1; item_subtype:int16 = -1; mat_type:int16 = -1;
   mat_index:int32 = -1; name:string; caption:string; count:uint32;
+  candidates:[ConstructionMaterialCandidate];
+  individual_id:int32 = -1;
+  // Native generic Last-material name, distinct from a standalone display name.
+  // Absence means no verified history copy; never strip decorations to infer it.
+  last_name:string;
 }
 table ConstructionFootprint {
   direction:uint8; width:uint16; height:uint16;
   center_x:int16 = -1; center_y:int16 = -1;
 }
+// Exactly 200 ordered size thresholds when present, on the first Catalog page.
+// race_id -1 means no example; the presentation uses the native numeric label.
+table PressureCreatureExample { size:int32; race_id:int32 = -1; name:string; }
+enum ConnectedTrackStatus:uint8 { Found, NoPath, InvalidInput, FrontierLimit, UnverifiedTerrain, PayloadLimit }
+// Complete ordered path only; non-Found outcomes carry no partial geometry.
+table ConnectedTrackPreview { status:ConnectedTrackStatus = UnverifiedTerrain; path:[TilePos]; }
+enum ConstructionOutcome:uint8 { None, Complete, Rejected, Partial, Unknown }
 table ConstructionState {
   building_key:string; filter:int16 = -1;
   filters:[ConstructionFilter]; materials:[ConstructionMaterial];
@@ -1559,6 +1758,11 @@ table ConstructionState {
   // 0 unknown, 1 UpStair, 2 DownStair, 3 UpDownStair.
   pieces:[ubyte];
   footprint:ConstructionFootprint;
+  pressure_creatures:[PressureCreatureExample];
+  connected_track:ConnectedTrackPreview;
+  outcome:ConstructionOutcome = None;
+  updated:uint32; // Confirmed existing-job updates, distinct from newly placed jobs.
+  failed_index:int32 = -1; // One-based plan index, or -1 when unavailable.
 }
 
 root_type Snapshot;

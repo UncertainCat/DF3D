@@ -6,8 +6,8 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("ManagementAction", "ManagementStatus", "AreaKind", "AreaOperation", "AlertOperation", "AlertView",
-         "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind")
+ENUMS = ("ConstructionOutcome", "ManagementAction", "ManagementStatus", "AreaKind", "AreaOperation", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "AlertOperation", "AlertView",
+         "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
     "construction": ("Catalog", "RemoveConstruction"),
@@ -52,7 +52,7 @@ def outputs():
     mutations=("Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmSetCrop","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
-        "WorkDetailEdit","CitizenWorkScope","TradeUpdate","TradeBring")
+        "WorkDetailEdit","CitizenWorkScope","DismissAlert","TradeUpdate","TradeBring")
     if not set(mutations) <= {n for n,v in values["ManagementAction"]}:
         raise SystemExit("Mutation policy contains an unknown ManagementAction")
     actions = dict(values["ManagementAction"])
@@ -62,6 +62,7 @@ def outputs():
     domains, retired = members(DOMAINS), members(RETIRED)
     domains["construction"].add("ConstructionMaterials")
     domains["citizens"].update({"WorkDetailCreate", "WorkDetailDelete", "WorkDetailEdit", "CitizenWorkScope"})
+    domains["reports"].update({"PrepareAlertDismissal", "DismissAlert"})
     partitions = [*domains.values(), *retired.values(), UNROUTED]
     if not all(sum(n in group for group in partitions) == 1 for n in actions):
         raise SystemExit("Every ManagementAction must belong to exactly one domain, retired range, or UNROUTED")

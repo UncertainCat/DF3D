@@ -101,10 +101,18 @@ std::optional<std::string> validateTerrain(const Snapshot& snap, const TilePos& 
         if (!detailTiles.insert(d->tile_index()).second) return btag + "duplicate designation detail tile";
       }
     }
+    if (const auto* env=b->environment()) {
+      std::unordered_set<uint16_t> indices;
+      for(const auto* e:*env) {
+        if(e->tile_index()>=kTilesPerBlock || e->flags()>7 || e->building_occupancy()>7)
+          return btag+"invalid tile environment";
+        if(!indices.insert(e->tile_index()).second) return btag+"duplicate tile environment";
+      }
+    }
     if (const auto* indicators=b->indicators()) {
       std::unordered_set<uint16_t> seenIndicators;
       for (const auto* d : *indicators) {
-        if(d->tile_index()>=kTilesPerBlock || d->track()>15 || d->traffic()>3 || d->warnings()>3) return btag+"invalid map indicator";
+        if(d->tile_index()>=kTilesPerBlock || d->track()>15 || d->completed_track()>15 || d->traffic()>3 || d->warnings()>3) return btag+"invalid map indicator";
         if(!seenIndicators.insert(d->tile_index()).second) return btag+"duplicate map indicator tile";
       }
     }

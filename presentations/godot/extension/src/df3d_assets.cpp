@@ -28,6 +28,7 @@
 #include "df3d_assets/resolver.h"
 #include "df3d_assets/terrain_fill.h"
 #include "df3d_assets/wall_top.h"
+#include "df3d_assets/wall_shadow.h"
 #include "df3d_mesher/block_mesher.h"
 #include "df3d_mesher/piece_policy.h"
 #include "df3d_mesher/unit_presentation.h"
@@ -134,6 +135,7 @@ bool Df3dWorld::load_assets(const String& override_path) {
     spriteResources_.clear();
     slotIndex_.clear();
     wallTopIndex_.clear();
+    floorShadowIndex_.clear();
     wallTopBitmaps_.clear();
     rockBackingReady_ = false;
     pageImages_.clear();
@@ -152,7 +154,7 @@ bool Df3dWorld::load_assets(const String& override_path) {
     glyphs_ = assets::GlyphRenderer();
     loadGlyphTileset();
     resetTerrain();
-    enqueueWindow();
+    enqueueTerrainMap();
     resetEntities();
     godot::UtilityFunctions::print("df3d assets: ", assets_summary());
     godot::UtilityFunctions::print("df3d glyphs: ", glyph_summary());
@@ -400,6 +402,37 @@ int Df3dWorld::wallTopSlotFor(const assets::TerrainSprite& wall, uint8_t neighbo
     return id;
 }
 
+int Df3dWorld::shadowedFloorSlotFor(const assets::TerrainSprite& floor, uint8_t neighbors) {
+    const auto key = std::make_tuple(floor.sprite.page, floor.sprite.x, floor.sprite.y, floor.paletteRow, neighbors);
+    if (auto it = floorShadowIndex_.find(key); it != floorShadowIndex_.end()) return it->second;
+    const int base = slotFor(floor.sprite.page, floor.paletteRow, floor.fill);
+    const auto found = spriteResources_.images.find(base);
+    if (base < 0 || found == spriteResources_.images.end() || found->second.is_null()) return -1;
+    const auto rect = assets_->index.pixels(floor.sprite);
+    Ref<Image> img = found->second->get_region(godot::Rect2i(rect.px,rect.py,rect.pw,rect.ph));
+    img->clear_mipmaps();
+    auto data = img->get_data();
+    assets::RgbaImage pixels = assets::RgbaImage::blank(rect.pw,rect.ph);
+    std::memcpy(pixels.pixels.data(),data.ptr(),pixels.pixels.size());
+    if (!assets::applyWallShadows(pixels,assets_->index,neighbors,
+            [this](const std::string& path){return rawImage(path);})) {
+        floorShadowIndex_[key] = -1;
+        return -1;
+    }
+    std::memcpy(data.ptrw(),pixels.pixels.data(),pixels.pixels.size());
+    img = Image::create_from_data(rect.pw,rect.ph,false,Image::FORMAT_RGBA8,data);
+    img->generate_mipmaps();
+    TextureSlot slot;
+    slot.page = floor.sprite.page; slot.paletteRow = floor.paletteRow; slot.fill = true;
+    slot.width = rect.pw; slot.height = rect.ph;
+    slot.texture = submission::texture(img,submission::TextureSite::Composite,true);
+    const int id = spriteResources_.slots.add(std::move(slot));
+    ERR_FAIL_COND_V_MSG(id < 0,-1,"sprite resource handle space exhausted");
+    spriteResources_.images[id] = img;
+    floorShadowIndex_[key] = id;
+    return id;
+}
+
 Ref<godot::ArrayMesh> Df3dWorld::sprite_cutout_mesh(int slot, Color region) {
     const TextureSlot* source=spriteResources_.slots.find(slot);
     if(!source || source->texture.is_null()) return {};
@@ -556,6 +589,11 @@ const Df3dWorld::FaceLook& Df3dWorld::lookFor(const mesher::FaceTag& tag) {
             if (r.layeredWall) {
                 look.slot = wallTopSlotFor(r, q.walls);
                 return faceLooks_.emplace(key, look).first->second;
+            }
+            if (q.walls && q.side == assets::FaceSide::Top && q.part == assets::FaceKind::Terrain &&
+                q.shape == wm::TileShape::Floor && !(q.flags & wm::kTileHidden)) {
+                look.slot = shadowedFloorSlotFor(r,q.walls);
+                if (look.slot >= 0) return faceLooks_.emplace(key,look).first->second;
             }
             const int slot = slotFor(r.sprite.page, r.paletteRow, r.fill);
             if (const TextureSlot* found = slot >= 0 ? spriteResources_.slots.find(slot) : nullptr) {
@@ -937,14 +975,14 @@ Ref<godot::Material> Df3dWorld::materialFor(const SurfaceKey& key) {
     auto it = materials_.find(key);
     if (it != materials_.end()) return it->second;
     // Terrain bodies and the undisclosed mass: the two-sided shader.
-    if (key.kind == kSurfOpaque || key.kind == kSurfCutout || key.kind == kSurfHidden) {
+    if (key.kind == kSurfOpaque || key.kind == kSurfCutout || key.kind == kSurfHidden || key.kind == kSurfDecal) {
         if (terrainShader_.is_null()) {
             terrainShader_ = godot::ResourceLoader::get_singleton()->load("res://shaders/terrain.gdshader");
             terrainCutoutShader_ = godot::ResourceLoader::get_singleton()->load("res://shaders/terrain_cutout.gdshader");
         }
         Ref<ShaderMaterial> sm;
         sm.instantiate();
-        sm->set_shader(key.kind == kSurfCutout ? terrainCutoutShader_ : terrainShader_);
+        sm->set_shader((key.kind == kSurfCutout || key.kind == kSurfDecal) ? terrainCutoutShader_ : terrainShader_);
         Dictionary parameters;
         if (const TextureSlot* spatter = key.spatterSlot >= 0 ? spriteResources_.slots.find(key.spatterSlot) : nullptr) {
             ERR_FAIL_COND_V_MSG(spatter->texture.is_null(), sm, "spatter slot without texture");
@@ -966,45 +1004,21 @@ Ref<godot::Material> Df3dWorld::materialFor(const SurfaceKey& key) {
         materials_[key] = sm;
         return sm;
     }
-    // Everything else (liquids, building decals) stays a StandardMaterial3D,
-    // unshaded: DF's art is pre-shaded and there is no scene light.
-    Ref<StandardMaterial3D> m;
+    // Transparent world surfaces share the encoded-RGB compositor contract.
+    Ref<ShaderMaterial> m;
     m.instantiate();
-    m->set_flag(StandardMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-    m->set_shading_mode(StandardMaterial3D::SHADING_MODE_UNSHADED);
-    m->set_roughness(1.0f);
-    m->set_specular(0.1f);
+    m->set_shader(godot::ResourceLoader::get_singleton()->load(
+        key.kind == kSurfGhost ? "res://shaders/world_surface_ghost.gdshader" : "res://shaders/world_surface.gdshader"));
+    Dictionary parameters;
     if (const TextureSlot* albedo = key.slot >= 0 ? spriteResources_.slots.find(key.slot) : nullptr) {
-        m->set_texture(StandardMaterial3D::TEXTURE_ALBEDO, albedo->texture);
-        m->set_texture_filter(StandardMaterial3D::TEXTURE_FILTER_NEAREST_WITH_MIPMAPS);
+        parameters["albedo_tex"] = albedo->texture;
+        parameters["textured"] = true;
     }
-    switch (key.kind) {
-        case kSurfOpaque:
-        case kSurfCutout:
-        case kSurfHidden: break;
-        case kSurfWater:
-            m->set_transparency(StandardMaterial3D::TRANSPARENCY_ALPHA);
-            m->set_roughness(0.2f);
-            m->set_specular(0.6f);
-            break;
-        case kSurfMagma:
-            m->set_transparency(StandardMaterial3D::TRANSPARENCY_ALPHA);
-            m->set_feature(StandardMaterial3D::FEATURE_EMISSION, true);
-            m->set_emission(Color(1.0f, 0.35f, 0.05f));
-            m->set_emission_energy_multiplier(key.slot >= 0 ? 0.8f : 1.5f);
-            m->set_roughness(0.6f);
-            break;
-        case kSurfDecal:
-            // Building tiles lie flat on the slab; DF's art is pre-shaded,
-            // and a lit top face gets the same 1.0 shade as terrain tops.
-            m->set_transparency(StandardMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
-            m->set_alpha_scissor_threshold(0.5f);
-            break;
-        case kSurfGhost:
-            m->set_transparency(StandardMaterial3D::TRANSPARENCY_ALPHA);
-            m->set_cull_mode(StandardMaterial3D::CULL_DISABLED);
-            break;
+    if (key.kind == kSurfMagma) {
+        parameters["emission_color"] = Color(1.0f,0.35f,0.05f);
+        parameters["emission_energy"] = key.slot >= 0 ? 0.8f : 1.5f;
     }
+    configureImmutableMaterial(m,parameters);
     materials_[key] = m;
     return m;
 }

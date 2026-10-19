@@ -12,6 +12,8 @@ const PROMPTS := {
 var art=preload("res://scripts/original_ui.gd").new()
 var token:=""
 var input_allowed:Callable
+# Optional owner gate: keep Cancel available while confirmation is unsafe.
+var confirm_allowed:Callable
 func configure(source) -> void:
 	art.configure(source);theme=art.theme
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
@@ -32,6 +34,9 @@ func layout_reference() -> void:
 	size=Vector2(504,120)
 func accepts_input() -> bool:
 	return is_visible_in_tree() and not token.is_empty() and (not input_allowed.is_valid() or input_allowed.call())
+func accepts_confirmation() -> bool:
+	return accepts_input() and (not confirm_allowed.is_valid() or confirm_allowed.call())
+
 func _input(event:InputEvent) -> void:
 	if not accepts_input():return
 	# Protected physical Windows captures074713/074822/080920: neither Escape nor
@@ -44,7 +49,9 @@ func _gui_input(event:InputEvent) -> void:
 	if not accepts_input():return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		var width:int=(PROMPTS[token][0].length()+4)*8
-		if Rect2(16,72,width,36).has_point(event.position):accept_event();confirmed.emit(token)
+		if Rect2(16,72,width,36).has_point(event.position):
+			accept_event()
+			if accepts_confirmation(): confirmed.emit(token)
 		elif Rect2(408,72,80,36).has_point(event.position):accept_event();cancelled.emit()
 func patch(name:String,origin:Vector2i,columns:int,rows:int) -> void:
 	var texture:Texture2D=art.texture(name)
@@ -60,5 +67,5 @@ func _draw() -> void:
 	if theme.default_font==null:return
 	var font:Font=theme.default_font
 	for line in PROMPTS[token][1].size():font.draw_string(get_canvas_item(),Vector2(16,(3+line)*12),PROMPTS[token][1][line],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
-	font.draw_string(get_canvas_item(),Vector2(32,96),PROMPTS[token][0],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
+	font.draw_string(get_canvas_item(),Vector2(32,96),PROMPTS[token][0],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE if not confirm_allowed.is_valid() or confirm_allowed.call() else Color(0.4,0.4,0.4))
 	font.draw_string(get_canvas_item(),Vector2(424,96),"Cancel",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)

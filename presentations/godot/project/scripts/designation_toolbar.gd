@@ -80,8 +80,8 @@ func refresh() -> void:
 
 func _group() -> HBoxContainer:
 	var panel := PanelContainer.new()
-	var style = hud.ui.compact_panel() if hud.world.has_method("ui_texture") else StyleBoxEmpty.new()
-	for side in [SIDE_LEFT,SIDE_RIGHT,SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side, 0)
+	panel.set_meta("native_toolbar_group",true)
+	var style = hud.ui.toolbar_panel() if hud.world.has_method("ui_texture") else StyleBoxEmpty.new()
 	panel.add_theme_stylebox_override("panel",style)
 	add_child(panel)
 	var row := HBoxContainer.new()

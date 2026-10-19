@@ -1,6 +1,7 @@
 #include "df3d_world.h"
 #include "entity_color.h"
 #include "df3d_assets/classic_glyphs.h"
+#include "submission_uploads.h"
 #include "df3d_mesher/item_stack.h"
 #include "df3d_mesher/piece_policy.h"
 #include <cstdio>
@@ -12,7 +13,6 @@ namespace mesher=df3d::mesher;
 using godot::Color;
 using godot::Vector2;
 using godot::Vector3;
-constexpr float kItemScale=0.7f;
 const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
     // Coins change sprite by stack bucket; everything else ignores stack.
     int bucket = 0;
@@ -28,7 +28,9 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
                   it.subtypeRaw.c_str(), static_cast<unsigned>(it.material),
                   (it.flags & (wm::kItemArtifact | wm::kItemWeb)) ? static_cast<int>(it.flags & (wm::kItemArtifact | wm::kItemWeb)) : 0,
                   bucket, static_cast<unsigned>(it.corpseFlags), variant);
-    auto found = itemLooks_.find(key);
+    const std::string lookKey = std::string(key) + "|" + std::to_string(it.containedCount==UINT32_MAX ? 0 : it.containedCount==0 ? 1 : 2) +
+        "|" + std::to_string(static_cast<int>(it.containedKind)) + "|" + std::to_string(it.containedMaterial) + "|" + it.containedSubtypeRaw + "|" + it.containedColor;
+    auto found = itemLooks_.find(lookKey);
     if (found != itemLooks_.end()) return found->second;
     PerfScope profile("items.look_miss", nullptr, df3d::profiling::detailed());
     ItemLook look;
@@ -41,6 +43,11 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
         q.stack = it.stack;
         q.corpseFlags = it.corpseFlags;
         q.id = variant;  // the id only selects variants; keep the memo shared
+        q.containedCount = it.containedCount;
+        q.containedKind = it.containedKind;
+        q.containedMaterial = source_.model().materialName(it.containedMaterial);
+        q.containedSubtypeRaw = it.containedSubtypeRaw;
+        q.containedColor = it.containedColor;
         const assets::ItemSprite r = assets::resolveItem(assets_->index, q);
         look.rule = r.rule;
         if (r.found) {
@@ -56,12 +63,36 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
                 look.size = Vector2(static_cast<float>(r.sprite.w), static_cast<float>(r.sprite.h));
                 look.kind = r.bodyPart ? 3 : web ? 5 : 1;
             }
+            if (look.slot >= 0 && !r.overlays.empty()) {
+                const auto retained = spriteResources_.items.find(lookKey);
+                if (retained != spriteResources_.items.end()) look.slot = retained->second;
+                else {
+                    const auto rect = assets_->index.pixels(r.sprite);
+                    auto canvas = spriteResources_.images.at(look.slot)->get_region(godot::Rect2i(rect.px,rect.py,rect.pw,rect.ph));
+                    canvas->clear_mipmaps();
+                    for (const auto& overlay : r.overlays) {
+                        const int layer = slotFor(overlay.sprite.page,overlay.paletteRow,false);
+                        if (layer < 0) continue;
+                        const auto px = assets_->index.pixels(overlay.sprite);
+                        canvas->blend_rect(spriteResources_.images.at(layer),godot::Rect2i(px.px,px.py,px.pw,px.ph),godot::Vector2i());
+                    }
+                    canvas->generate_mipmaps();
+                    TextureSlot composite;
+                    composite.page=r.sprite.page; composite.width=rect.pw; composite.height=rect.ph;
+                    composite.texture=submission::texture(canvas,submission::TextureSite::Composite,true);
+                    look.slot=spriteResources_.slots.add(std::move(composite));
+                    ERR_FAIL_COND_V_MSG(look.slot<0,itemLooks_.emplace(lookKey,ItemLook{}).first->second,"sprite resource handle space exhausted");
+                    spriteResources_.images[look.slot]=canvas;
+                    spriteResources_.items[lookKey]=look.slot;
+                }
+                look.region=Color(0,0,1,1);
+            }
         }
         if (look.slot < 0) {
             ItemGlyphDependency dependency{it.material, it.kind, it.subtypeRaw, {}};
             dependency.observed = dependency.read(source_.model());
             look.glyphDependency = std::move(dependency);
-            look.glyphCacheKey = key;
+            look.glyphCacheKey = lookKey;
         }
         if (look.slot < 0 && glyphsReady() && source_.model().glyphsKnown()) {
             // No art in the raws: the classic glyph.
@@ -84,7 +115,7 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
             }
         }
     }
-    return itemLooks_.emplace(key, look).first->second;
+    return itemLooks_.emplace(lookKey, look).first->second;
 }
 
 
@@ -412,8 +443,9 @@ void Df3dWorld::updateItems() {
         }
         if (pending) {pendingItemComposites_[id]=wanted;itemCompositePending_+=wanted;}
         PerfScope instancesProfile("items.instances_slow", nullptr, df3d::profiling::detailed(), 100);
-        const float scale=look.kind==2 || look.kind==3?1.0f:kItemScale;
-        const Vector2 size=look.size*scale;
+        // Native art already encodes the item's footprint within its tile.
+        // Applying a second blanket scale shrinks containers and furniture.
+        const Vector2 size=look.size;
         const Color color=look.slot>=0?Color(1,1,1,1):entityKindColor(wm::itemKindName(item->kind));
         const uint8_t ground=mesher::itemLiesOnGround(item->kind) ? 1 : 0;
         auto& indices=itemInstanceIndices_[id];

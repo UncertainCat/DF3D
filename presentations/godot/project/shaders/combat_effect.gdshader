@@ -2,7 +2,7 @@ shader_type spatial;
 render_mode unshaded, cull_disabled, shadows_disabled, depth_draw_never, skip_vertex_transform;
 global uniform float actor_animation_time;
 #include "res://shaders/world_sampling.gdshaderinc"
-uniform sampler2D atlas : source_color, filter_linear_mipmap, repeat_disable;
+uniform sampler2D atlas : filter_linear_mipmap, repeat_disable;
 uniform vec2 atlas_tiles = vec2(4.0, 32.0);
 uniform bool upright = false;
 instance uniform float start_time = 0.0;
@@ -36,6 +36,6 @@ void fragment() {
 	vec2 uv = (vec2(frame, resolved_row) + clamp(UV, vec2(0.002), vec2(0.998))) / atlas_tiles;
 	vec4 color = sample_world_region(atlas, uv, vec4(vec2(frame, resolved_row) / atlas_tiles, vec2(1.0) / atlas_tiles));
 	if (color.a < 0.1) discard;
-	ALBEDO = color.rgb;
+	ALBEDO = world_output(color.rgb);
 	ALPHA = color.a;
 }

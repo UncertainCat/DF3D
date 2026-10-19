@@ -1,11 +1,13 @@
 extends CanvasLayer
 signal panel_requested(title: String)
+signal exit_requested
 var ui_host
 signal level_step_requested(delta: int)
 signal notification_requested(group: Dictionary)
 signal notification_dismissal_requested(group: Dictionary)
 signal notification_dismissed(group: Dictionary)
 signal visual_style_changed(style: String)
+signal native_world_rendering_changed(value: bool)
 signal recovery_requested
 signal info_requested(destination: String)
 # Presentation-only navigation. Existing controllers retain command ownership.
@@ -20,13 +22,14 @@ var interaction
 var camera_rig
 var session_controls
 var native_options
+var exit_controller
 var audio_panel
 var ui
 var enabled := false
 var entered := false
 var session: Dictionary = {}
 var navigation: Dictionary = {}
-var moon: TextureRect
+var moon: Sprite2D
 var top: Control
 var actions: HBoxContainer
 var information: HBoxContainer
@@ -49,6 +52,7 @@ var level_up: Button
 var tools: HBoxContainer
 var labor_menu: PanelContainer
 var settings: PanelContainer
+var settings_tabs: TabContainer
 var heading: Label
 var date: Label
 var population: Label
@@ -66,6 +70,8 @@ var level: Label
 var pause: Button
 var camera_picker: OptionButton
 var style_picker: OptionButton
+var native_world_toggle: CheckButton
+var texture_smoothing_toggle: CheckButton
 var game_menu: PanelContainer
 var help_panel: PanelContainer
 var free_help: Label
@@ -80,10 +86,16 @@ var layout_count := 0
 var _state_key: Array = []
 var state_pass_count := 0
 var scale_picker: SpinBox
+var auto_scale_toggle: CheckButton
 var scale_note: Label
 var grid_toggle: CheckButton
 var speed_picker: SpinBox
 var utility_buttons: Array[Button] = []
+var map_tools: Control
+var military: HBoxContainer
+# Visible native slots do not promote unfinished semantic routes.
+const DISPLAY_ONLY_SLOTS = ["Stocks", "Tasks", "Places", "Nobles and administrators", "Objects", "Justice", "Stockpiles", "Zones"]
+
 
 func _ready():
 	Preferences.load_preferences()
@@ -129,7 +141,7 @@ func _ready():
 		mood_counts.append(count)
 	add_launcher(top, "Stocks", "")
 	navigation["Stocks"].size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	navigation["Stocks"].custom_minimum_size = Vector2(72, 32)
+	navigation["Stocks"].custom_minimum_size = Vector2(64, 36)
 	resources = HBoxContainer.new()
 	resources.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	resources.add_theme_constant_override("separation", 16)
@@ -158,11 +170,11 @@ func _ready():
 	top.add_child(summary_spacer)
 	date = Label.new()
 	top.add_child(date)
-	moon = TextureRect.new()
-	moon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	moon.custom_minimum_size = Vector2(32, 32)
+	# Sprite2D preserves physical-pixel alignment under a fractional canvas scale;
+	# Control snapping would round the local position before that scale.
+	moon = Sprite2D.new()
+	moon.centered = false
 	moon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	moon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	top.add_child(moon)
 	playback = HBoxContainer.new()
 	root_control.add_child(playback)
@@ -172,13 +184,13 @@ func _ready():
 	for button in [pause, play_button]:
 		button.custom_minimum_size = Vector2(16, 24)
 		button.tooltip_text = ""
-	# Reserve native gear/help slots; their native destinations remain unfinished.
-	var routes_pending := Control.new()
-	routes_pending.custom_minimum_size = Vector2(32, 24)
-	playback.add_child(routes_pending)
+	settings_button = icon_button(playback,"Settings","BUTTON_SETTINGS",toggle_settings)
+	settings_button.custom_minimum_size = Vector2(16,24)
+	var help_button := display_button(playback, "BUTTON_HELP")
+	help_button.custom_minimum_size = Vector2(16,24)
 	information = HBoxContainer.new()
 	root_control.add_child(information)
-	information.add_theme_constant_override("separation", 4)
+	information.add_theme_constant_override("separation", 0)
 	for entry in INFO_SLOTS:
 		var caption: String = entry[0]
 		var icon := "BUTTON_INFO_" + str(entry[1])
@@ -187,7 +199,7 @@ func _ready():
 		else:
 			navigation[caption] = icon_button(information, caption, icon, func(): info_requested.emit(caption))
 	for caption in INFO_SLOTS:
-		navigation[caption[0]].visible = Availability.allows_launcher(caption[0])
+		navigation[caption[0]].visible = true
 	labor_menu = PanelContainer.new()
 	root_control.add_child(labor_menu)
 	var labor_tabs = HBoxContainer.new()
@@ -219,17 +231,37 @@ func _ready():
 	notification_rail.group_dismissed.connect(func(group): notification_dismissed.emit(group))
 	actions = HBoxContainer.new()
 	root_control.add_child(actions)
+	actions.add_theme_constant_override("separation",0)
+	var designation_actions := action_group(true,false)
 	# A launcher selects its family's first tool (TOOL_FAMILIES order) and toggles back to inspect.
 	for entry in [["Dig", "BUTTON_DIG_DIG_INACTIVE"], ["Chop trees", "BUTTON_DES_CHOP_INACTIVE"], ["Gather plants", "BUTTON_DES_GATHER_INACTIVE"], ["Smooth", "BUTTON_DES_SMOOTH_INACTIVE"], ["Remove", "BUTTON_DES_ERASE"]]:
 		var family: String = entry[0]
 		var index: int = Interaction.TOOL_FAMILIES[family][0]
-		var b = icon_button(actions, family, entry[1], func():
+		var b = icon_button(designation_actions, family, entry[1], func():
 			var current: int = interaction.tool_picker.selected
 			choose_tool(Interaction.Tool.INSPECT_ITEMS if current in Interaction.TOOL_FAMILIES[family] or (current in Interaction.BLUEPRINT_TOOLS and tools.family == family) else index))
 		navigation[entry[0]] = b
-	add_launcher(actions,"Build / construction","BUTTON_BUILDING_INACTIVE")
-	add_launcher(actions,"Stockpiles","BUTTON_STOCKPILE_INACTIVE")
-	add_launcher(actions,"Zones","BUTTON_ZONE_INACTIVE")
+	var construction_actions := action_group(false,false)
+	add_launcher(construction_actions,"Build / construction","BUTTON_BUILDING_INACTIVE")
+	add_launcher(construction_actions,"Stockpiles","BUTTON_STOCKPILE_INACTIVE")
+	add_launcher(construction_actions,"Zones","BUTTON_ZONE_INACTIVE")
+	var logistics := action_group(false,false)
+	for art in ["BUTTON_BURROW_INACTIVE","BUTTON_HAULING_INACTIVE","BUTTON_DES_TRAFFIC"]:
+		display_button(logistics,art)
+	display_button(action_group(false,true),"BUTTON_DES_ITEM_BUILDING")
+	military = HBoxContainer.new()
+	military.add_theme_constant_override("separation",0)
+	root_control.add_child(military)
+	for art in ["BUTTON_SQUADS","BUTTON_WORLD"]: display_button(military,art)
+	map_tools = Control.new()
+	root_control.add_child(map_tools)
+	for index in 3:
+		var button := display_button(map_tools,["RECENTER_HOTKEYS","RECENTER_SURFACE","RECENTER_DEEPEST"][index])
+		button.position = Vector2(0,index*36)
+	for index in 4:
+		var button := display_button(map_tools,["ZOOM_IN_ON","LIQUID_NUMBERS_OFF","ZOOM_OUT_ON","RAMP_ARROWS_OFF"][index])
+		button.custom_minimum_size = Vector2(16,24)
+		button.position = Vector2((index%2)*16,108+(index/2)*24)
 	tools = preload("res://scripts/designation_toolbar.gd").new()
 	tools.hud = self
 	root_control.add_child(tools)
@@ -279,20 +311,34 @@ func _ready():
 	command_feedback.custom_minimum_size.x = 280
 	command_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root_control.add_child(command_feedback)
-	settings_button = icon_button(root_control, "DF3D", "BUTTON_SETTINGS", toggle_settings)
-	settings_button.hide() # Custom settings are not the native gear destination.
+	settings_button.tooltip_text = "Display, camera and audio preferences for the 3D viewer (Esc)"
 	settings = PanelContainer.new()
 	root_control.add_child(settings)
-	var menu_scroll := ScrollContainer.new()
-	menu_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	settings.add_child(menu_scroll)
-	var box = VBoxContainer.new()
-	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	box.add_theme_constant_override("separation", 8)
-	menu_scroll.add_child(box)
-	section_title(box, "DF3D settings")
-	icon_button(box, "Close", "", toggle_settings)
-	section_title(box, "Display")
+	var menu := VBoxContainer.new()
+	menu.add_theme_constant_override("separation", 12)
+	settings.add_child(menu)
+	var heading_row := HBoxContainer.new()
+	menu.add_child(heading_row)
+	var settings_title := Label.new()
+	settings_title.text = "Settings"
+	settings_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading_row.add_child(settings_title)
+	icon_button(heading_row, "Close", "", toggle_settings)
+	settings_tabs = TabContainer.new()
+	settings_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	menu.add_child(settings_tabs)
+	var box := settings_page("Display")
+	box.add_child(preload("res://scripts/window_settings.gd").new())
+	auto_scale_toggle = CheckButton.new()
+	auto_scale_toggle.text = "Automatic interface scale"
+	auto_scale_toggle.button_pressed = Preferences.ui_auto_scale
+	auto_scale_toggle.toggled.connect(func(value):
+		Preferences.ui_auto_scale = value
+		apply_ui_scale()
+		_layout_key.clear()
+		layout(logical_view_size())
+		save_preferences())
+	box.add_child(auto_scale_toggle)
 	var scale_row := HBoxContainer.new()
 	box.add_child(scale_row)
 	var scale_label := Label.new()
@@ -301,11 +347,14 @@ func _ready():
 	scale_picker = SpinBox.new()
 	scale_picker.custom_minimum_size.x = 112
 	scale_picker.min_value = 75
-	scale_picker.max_value = 200
+	scale_picker.max_value = 400
 	scale_picker.step = 5
 	scale_picker.suffix = "%"
 	scale_picker.value = Preferences.ui_scale * 100.0
-	scale_picker.value_changed.connect(set_ui_scale_percent)
+	scale_picker.value_changed.connect(func(value):
+		# A disabled SpinBox can still emit on focus/text synchronization.
+		# Only the explicit auto-scale switch selects manual mode.
+		if not Preferences.ui_auto_scale: set_ui_scale_percent(value))
 	scale_row.add_child(scale_picker)
 	scale_note = Label.new()
 	box.add_child(scale_note)
@@ -325,6 +374,25 @@ func _ready():
 		save_preferences()
 		visual_style_changed.emit(Preferences.visual_style))
 	labeled_control(box, "Visual style", style_picker)
+	native_world_toggle = CheckButton.new()
+	native_world_toggle.text = "Native-style world rendering"
+	native_world_toggle.tooltip_text = "Use Dwarf Fortress color blending and pixel reconstruction. Turn off for standard 3D color blending."
+	native_world_toggle.button_pressed = Preferences.native_world_rendering
+	native_world_toggle.toggled.connect(func(value):
+		Preferences.native_world_rendering = value
+		save_preferences()
+		native_world_rendering_changed.emit(value))
+	box.add_child(native_world_toggle)
+	texture_smoothing_toggle = CheckButton.new()
+	texture_smoothing_toggle.text = "Texture smoothing"
+	texture_smoothing_toggle.tooltip_text = "Blend neighboring pixels in close-up 3D views. Off preserves crisp pixels. Distant surfaces keep mipmaps; native rendering keeps its aligned-view reconstruction."
+	texture_smoothing_toggle.button_pressed = Preferences.texture_smoothing
+	RenderingServer.global_shader_parameter_set("world_texture_smoothing", Preferences.texture_smoothing)
+	texture_smoothing_toggle.toggled.connect(func(value):
+		Preferences.texture_smoothing = value
+		RenderingServer.global_shader_parameter_set("world_texture_smoothing", value)
+		save_preferences())
+	box.add_child(texture_smoothing_toggle)
 	RenderingServer.global_shader_parameter_set("actor_animation_strength", Preferences.animation_strength)
 	scale_toggle = CheckButton.new()
 	scale_toggle.text = "Truescale"
@@ -343,9 +411,9 @@ func _ready():
 		Preferences.combat_effects = value
 		save_preferences())
 	box.add_child(combat_toggle)
-	section_title(box, "Camera")
+	box = settings_page("Camera")
 	camera_picker = OptionButton.new()
-	camera_picker.tooltip_text = "F4 cycles DF / Isometric / Free. F5 enters or leaves Walk near the current focus."
+	camera_picker.tooltip_text = "F4 cycles DF / Isometric / Free. F5 enters or leaves Walk at the current camera position."
 	for title in ["DF", "Isometric", "Free", "Walk"]: camera_picker.add_item(title)
 	camera_picker.item_selected.connect(func(index):
 		if enabled:
@@ -368,18 +436,11 @@ func _ready():
 		camera_rig.move_speed = value
 		save_preferences())
 	speed_row.add_child(speed_picker)
-	section_title(box, "Audio")
-	if audio_panel != null: audio_panel.embed_settings(box)
-	else: section_title(box, "Audio unavailable")
-	var troubleshooting := VBoxContainer.new()
-	var expand := CheckButton.new()
-	expand.text = "Troubleshooting"
-	expand.toggled.connect(func(value): troubleshooting.visible = value)
-	box.add_child(expand)
-	box.add_child(troubleshooting)
-	icon_button(troubleshooting, "Close interface panels (F10)", "", func(): recovery_requested.emit())
-
-	troubleshooting.hide()
+	if audio_panel != null:
+		box = settings_page("Audio")
+		audio_panel.embed_settings(box)
+	var exit_button := icon_button(menu, "Exit game", "", func(): exit_requested.emit())
+	exit_button.tooltip_text = "Exit the viewer and its Dwarf Fortress session"
 	settings.hide()
 	# Session/gameplay actions are deliberately separate from Godot settings.
 	game_menu = PanelContainer.new()
@@ -411,12 +472,23 @@ func _ready():
 	section_title(help_box, "F4 cycle camera · F10 recover interface")
 	help_panel.hide()
 	ui.apply(self)
+	ui.install_hud_filter(self)
+	style_settings_toggles(settings)
 	# Native header uses the installed8x12 cells; inherited16px text clips
 	# identity/calendar and forces the count rows below the48px header.
 	for label in [heading,population,date]+mood_counts+resource_counts:
 		label.add_theme_font_size_override("font_size",12)
 		label.add_theme_constant_override("line_spacing",0)
 		label.add_theme_color_override("font_color",Color.WHITE)
+	var stocks_button: Button = navigation["Stocks"]
+	stocks_button.add_theme_font_size_override("font_size",12)
+	stocks_button.add_theme_color_override("font_disabled_color",Color.WHITE)
+	for state in ["normal","hover","pressed","disabled"]:
+		var style = ui.make_style("HORIZONTAL_OPTION_ACTIVE",8)
+		style.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_texture_margin(side,12)
+		for side in [SIDE_LEFT,SIDE_RIGHT,SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,4)
+		stocks_button.add_theme_stylebox_override(state,style)
 	for column in resources.get_children():
 		column.get_child(0).add_theme_font_size_override("font_size",12)
 	minimap_panel.configure(ui)
@@ -438,6 +510,7 @@ func _ready():
 	settings.add_theme_stylebox_override("panel", frame.duplicate())
 	game_menu.add_theme_stylebox_override("panel", frame.duplicate())
 	help_panel.add_theme_stylebox_override("panel", frame.duplicate())
+	camera_rig.configure_walk_help(ui, frame)
 	status_panel.configure(ui)
 
 	camera_rig.move_speed = Preferences.move_speed
@@ -445,13 +518,9 @@ func _ready():
 		camera_rig.set_mode(Preferences.camera_mode)
 	camera_rig.mode_changed.connect(func():
 		if camera_rig.get_mode() == "walk":
-			Preferences.visual_style = "billboard"
-			style_picker.select(1)
-			visual_style_changed.emit("billboard")
-			scale_toggle.button_pressed = true
 			interaction.cancel_selection()
 		refresh_camera()
-		# Walk needs a chosen, loaded floor; do not resume it before terrain loads.
+		# Gravity is opt-in per visit; do not resume Walk on fortress load.
 		if camera_rig.get_mode() != "walk": Preferences.camera_mode = camera_rig.get_mode()
 		save_preferences())
 	refresh_camera()
@@ -478,8 +547,27 @@ func icon_button(parent: Node, title: String, art: String, callback: Callable) -
 			b.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		b.mouse_entered.connect(func(): b.modulate = Color(1.2, 1.2, 1.2))
 		b.mouse_exited.connect(func(): b.modulate = Color.WHITE)
+	b.add_theme_color_override("icon_normal_color",Color.WHITE)
+	b.add_theme_color_override("icon_disabled_color",Color.WHITE)
 	b.custom_minimum_size = Vector2(32, 36)
 	return b
+
+func display_button(parent: Node, art: String) -> Button:
+	var button := icon_button(parent,art,art,func(): pass)
+	button.tooltip_text = ""
+	button.text = ""
+	button.disabled = true
+	return button
+
+func action_group(outer_left: bool, outer_right: bool) -> HBoxContainer:
+	var panel := PanelContainer.new()
+	panel.set_meta("native_toolbar_group",true)
+	panel.add_theme_stylebox_override("panel",ui.toolbar_panel(outer_left,outer_right))
+	actions.add_child(panel)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation",0)
+	panel.add_child(row)
+	return row
 
 func add_launcher(parent: Node, title: String, art: String):
 	navigation[title] = icon_button(parent, title, art, func(): launch(title))
@@ -539,7 +627,7 @@ func elevation_available() -> bool:
 	return not interaction.construction_active or (ui_host != null and ui_host.allows_elevation_input())
 
 func toggle_settings():
-	if not entered: return
+	if not entered or (native_options != null and native_options.visible): return
 	game_menu.hide()
 	help_panel.hide()
 	settings.visible = not settings.visible
@@ -548,10 +636,8 @@ func toggle_settings():
 
 func refresh_camera():
 	var df: bool = camera_rig.is_df_mode()
-	style_picker.disabled = camera_rig.get_mode() == "walk"
-	scale_toggle.disabled = camera_rig.get_mode() == "walk"
 	camera_picker.select(["df", "isometric", "free", "walk"].find(camera_rig.get_mode()))
-	free_help.text = "Walk: click map to look · WASD move · Shift faster\nSpace jump · Walk off edges to drop · Q descend stairs · Esc release · F4 return" if camera_rig.get_mode() == "walk" else "RMB orbit (Free) · MMB pan · wheel zoom\nWASD move · QE height · F4 cycle camera"
+	free_help.text = "Walk: click map to look · WASD move · Shift faster\nSpace jump / hold to climb stairs · Walk off edges to drop · Hold Q descend stairs · Esc release · F4 return" if camera_rig.get_mode() == "walk" else "RMB orbit (Free) · MMB pan · wheel zoom\nWASD move · QE height · F4 cycle camera"
 	free_help.visible = not df
 
 # Native rendered Food/Drink controls: protected captures 20260929-145258/145456.
@@ -621,7 +707,7 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 	var state_key := [play, in_fort, interaction.construction_active, elevation_available(), interaction.tool_picker.selected,
 		interaction.shell_context_visible(), menu_open(), labor_menu.visible, world.get_top_z(), world.is_live(),
 		_feedback_text(), session_controls != null and session_controls.blocks_commands(), view,
-		Preferences.effective_scale(view), Preferences.ui_scale, active_launcher, ui_host.allows_minimap_input() if ui_host!=null else false,
+		Preferences.effective_scale_vector(view), Preferences.ui_scale, active_launcher, ui_host.allows_minimap_input() if ui_host!=null else false,
 		interaction.priority.value, interaction.marker_only, interaction.mining_mode, tools.advanced, tools.family]
 	# The caller mutates one session dictionary in place; keep a copy for the comparison.
 	if state_key == _state_key and state == session:
@@ -660,9 +746,9 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 	if not interaction.construction_active: active_launcher = ""
 	for key in navigation:
 		var b = navigation[key]
-		b.visible = Availability.allows_launcher(key)
+		b.visible = Availability.allows_launcher(key) or key in DISPLAY_ONLY_SLOTS
 		if key == "Petitions": b.visible = b.visible and bool(state.get("petition", {}).get("can_review", false))
-		b.disabled = bool(b.get_meta("unsupported", false)) or ((not enabled or interaction.construction_active) if b.get_meta("utility", false) else blocked)
+		b.disabled = not Availability.allows_launcher(key) or bool(b.get_meta("unsupported", false)) or ((not enabled or interaction.construction_active) if b.get_meta("utility", false) else blocked)
 		if key == active_launcher: b.disabled = not enabled or menu_open() or labor_menu.visible
 		set_icon_active(b, (key == "Labor" and labor_menu.visible) or key == active_launcher or (not interaction.construction_active and interaction.tool_picker.selected in Interaction.TOOL_FAMILIES.get(key, [])))
 		if key == active_launcher:
@@ -673,7 +759,7 @@ func update_state(play: bool, in_fort: bool, state: Dictionary):
 			if lower != null: b.icon = lower
 	pause.disabled = blocked or not world.is_live()
 	play_button.disabled = pause.disabled
-	settings_button.disabled = not entered
+	settings_button.disabled = not entered or (native_options != null and native_options.visible)
 	level_down.disabled = not enabled or not elevation_available()
 	level_up.disabled = not enabled or not elevation_available()
 	heading.text = fortress_identity(state) if state.get("fortress_valid", false) else ""
@@ -732,8 +818,11 @@ func layout(view: Vector2):
 	_layout_key = key
 	layout_count += 1
 	var columns := int(view.x / 8)
-	var x_remainder := floori(fposmod(view.x, 8) / 2)
-	status_panel.position = Vector2(128 + x_remainder, floori(fposmod(view.y,12)/2))
+	var factor := ui_scale_vector()
+	var x_remainder := floorf(fposmod(roundf(view.x*factor.x),8*factor.x)/2)/factor.x
+	var y_remainder := floorf(fposmod(roundf(view.y*factor.y),12*factor.y)/2)/factor.y
+	# Top chrome stays flush; text-grid rounding must not expose world above it.
+	status_panel.position = Vector2(128 + x_remainder, 0)
 	status_panel.size = Vector2(maxf(0, (columns - 53) * 8), 48)
 	# Native DF53.16 text-cell anchors; width fixtures cover columns114..200.
 	heading.position = Vector2(16, 0)
@@ -745,7 +834,7 @@ func layout(view: Vector2):
 	population.size = Vector2(24, 36)
 	moods.position = Vector2(208, 0)
 	resources.position = Vector2(464, 0)
-	navigation["Stocks"].position = Vector2((mini(66, columns - 68) - 17) * 8, 6)
+	navigation["Stocks"].position = Vector2((mini(66, columns - 68) - 17) * 8, 0)
 	date.position = Vector2((columns - 69) * 8, 0)
 	date.size = Vector2(128, 36)
 	var groups := native_header_groups(columns)
@@ -753,37 +842,38 @@ func layout(view: Vector2):
 	for index in 7: resources.get_child(index).visible = index < groups.resources
 	resources.reset_size()
 	date.visible = columns >= 114
-	moon.position = date.position + Vector2(-40, 2)
-	moon.size = Vector2(32, 32)
+	moon.position = ((date.position + Vector2(-40, 2)) * factor).floor() / factor
 	moon.visible = date.visible and moon.texture != null
 	moods.visible = groups.moods and summary.get("stress_available", false)
 	moods.reset_size()
-	information.position = Vector2(4, view.y - information.size.y - 4)
+	information.position = Vector2(x_remainder, view.y - information.size.y - y_remainder)
 	labor_menu.position = Vector2(4, information.position.y - labor_menu.size.y - 8)
 	command_feedback.position = Vector2(8, information.position.y - command_feedback.size.y - 8)
 	command_feedback.size.x = minf(300, view.x * 0.3)
-	red_alert.position = Vector2(int(int(view.x)%8/2),72+int(int(view.y)%12/2))
+	red_alert.position = Vector2(x_remainder,72+y_remainder)
 	alerts.position = Layout.notification_rect(view).position
 	navigation["Reports"].position = Vector2.ZERO
 	navigation["Petitions"].position = Vector2(40, 88)
 	notification_rail.custom_minimum_size = Vector2(40, maxf(80, Layout.notification_rect(view).size.y))
-	var action_y := information.position.y - actions.size.y - 8 if view.x < 800 else view.y - actions.size.y - 8
-	actions.position = Vector2(maxf(8, (view.x - actions.size.x) / 2), action_y)
+	var action_y := information.position.y - actions.size.y - 8 if view.x < 800 else view.y - actions.size.y
+	actions.position = Vector2(maxf(8, (floorf(columns / 2.0) - floorf(actions.size.x / 16.0)) * 8 + x_remainder), action_y)
 	var tool_anchor: float = actions.position.x
-	if navigation.has(tools.family): tool_anchor += navigation[tools.family].position.x
+	if navigation.has(tools.family): tool_anchor = navigation[tools.family].get_global_rect().position.x - 8
 	var tool_scale: float = minf(1.0, (view.x - 16) / maxf(1.0, tools.size.x))
 	tools.scale = Vector2.ONE * tool_scale
-	tools.position = Vector2(clampf(tool_anchor, 8, maxf(8, view.x - tools.size.x * tool_scale - 8)), actions.position.y - tools.size.y * tool_scale - 2)
+	tools.position = Vector2(clampf(tool_anchor, 8, maxf(8, view.x - tools.size.x * tool_scale - 8)), actions.position.y - tools.size.y * tool_scale)
 	minimap.visible = Layout.has_minimap(view)
 	var overview_width := Layout.minimap_width(view)
 	minimap.custom_minimum_size = Vector2(overview_width, overview_width)
 	minimap.size=minimap.custom_minimum_size
 	minimap_panel.reset_size()
-	minimap_panel.position = Vector2(view.x - 200, floori(fposmod(view.y,12)/2))
+	minimap_panel.position = Vector2(view.x - 200, 0)
 	minimap.position=minimap_panel.position+Vector2(8,0)
-	playback.position = Vector2((columns - 33) * 8 + x_remainder, floori(fposmod(view.y,12)/2))
-	settings.size = Vector2(minf(420, view.x - 32), minf(520, view.y - 88))
-	settings.position = Vector2(maxf(8, view.x - settings.size.x - 24), 76)
+	playback.position = Vector2((columns - 33) * 8 + x_remainder, 0)
+	map_tools.position = Vector2((columns-29)*8+x_remainder,24)
+	military.position = Vector2(view.x-64-x_remainder,view.y-36-y_remainder)
+	settings.size = Vector2(minf(420, view.x - 32), minf(340, view.y - 32))
+	settings.position = (view - settings.size) / 2.0
 	game_menu.position = Vector2(maxf(8, view.x - game_menu.size.x - 24), 76)
 	help_panel.position = Vector2(maxf(8, view.x - help_panel.size.x - 24), 76)
 
@@ -805,10 +895,13 @@ func native_frame() -> StyleBox:
 	return result
 
 func logical_view_size() -> Vector2:
-	return get_viewport().get_visible_rect().size / ui_scale_value()
+	return get_viewport().get_visible_rect().size / ui_scale_vector()
 
 func ui_scale_value() -> float:
 	return Preferences.effective_scale(get_viewport().get_visible_rect().size)
+
+func ui_scale_vector() -> Vector2:
+	return Preferences.effective_scale_vector(get_viewport().get_visible_rect().size)
 
 func notification_rect() -> Rect2:
 	return Layout.notification_rect(logical_view_size())
@@ -817,15 +910,18 @@ func elevation_rect() -> Rect2:
 	return Layout.elevation_rect(logical_view_size(), minimap_panel.get_rect().end.y)
 
 func apply_ui_scale():
-	var factor := ui_scale_value()
-	scale = Vector2(factor, factor)
+	var factor := ui_scale_vector()
+	scale = factor
 	minimap_layer.scale=scale
 	root_control.size = logical_view_size()
-	scale_note.text = "" if is_equal_approx(factor, Preferences.ui_scale) else "Fits this window at %d%%" % roundi(factor * 100)
+	auto_scale_toggle.set_pressed_no_signal(Preferences.ui_auto_scale)
+	scale_picker.editable = not Preferences.ui_auto_scale
+	scale_note.text = "" if Preferences.ui_auto_scale or is_equal_approx(factor.x, Preferences.ui_scale) else "Fits this window at %d%%" % roundi(factor.x * 100)
 	scale_note.visible = not scale_note.text.is_empty()
 
 func set_ui_scale_percent(value: float):
-	Preferences.ui_scale = clampf(value / 100.0, 0.75, 2.0)
+	Preferences.ui_auto_scale = false
+	Preferences.ui_scale = clampf(value / 100.0, 0.75, 4.0)
 	scale_picker.set_value_no_signal(Preferences.ui_scale * 100.0)
 	apply_ui_scale()
 	_layout_key.clear()
@@ -835,6 +931,25 @@ func set_ui_scale_percent(value: float):
 func save_preferences():
 	var result := Preferences.save_preferences()
 	if result != OK: scale_note.text = "Could not save presentation settings"
+
+# The switch alone indicates on/off. Row highlighting follows hover in either state.
+func style_settings_toggles(node: Node) -> void:
+	if node is CheckButton:
+		node.add_theme_stylebox_override("pressed", node.get_theme_stylebox("normal"))
+		node.add_theme_stylebox_override("hover_pressed", node.get_theme_stylebox("hover"))
+	for child in node.get_children(): style_settings_toggles(child)
+
+# Each page scrolls independently; title, Close and tabs remain reachable.
+func settings_page(title: String) -> VBoxContainer:
+	var scroll := ScrollContainer.new()
+	scroll.name = title
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	settings_tabs.add_child(scroll)
+	var column := VBoxContainer.new()
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	column.add_theme_constant_override("separation", 8)
+	scroll.add_child(column)
+	return column
 
 func section_title(parent: Node, title: String):
 	var label := Label.new()
@@ -849,7 +964,7 @@ func labeled_control(parent: Node, title: String, control: Control):
 	row.add_child(control)
 
 func menu_open() -> bool:
-	return settings.visible or game_menu.visible or help_panel.visible or (native_options != null and native_options.visible)
+	return settings.visible or game_menu.visible or help_panel.visible or (native_options != null and native_options.visible) or (exit_controller != null and exit_controller.confirmation.visible)
 
 func toggle_game_menu():
 	if not entered: return
@@ -878,6 +993,18 @@ func sync_menu_gate():
 	else: interaction.cancel_selection()
 
 func _input(event: InputEvent):
-	if visible and (settings.visible or game_menu.visible or help_panel.visible) and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+	if not visible or not entered or not event is InputEventKey: return
+	if not event.pressed or event.echo or event.keycode != KEY_ESCAPE: return
+	if exit_controller != null and exit_controller.confirmation.visible: return
+	if settings.visible or game_menu.visible or help_panel.visible or labor_menu.visible:
 		close_menus()
 		get_viewport().set_input_as_handled()
+		return
+	# Escape backs out of the current activity before opening viewer preferences.
+	if menu_open() or native_help.visible or interaction.construction_active: return
+	if ui_host != null and is_instance_valid(ui_host.active): return
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED: return
+	if interaction.tool_picker.selected not in Interaction.INSPECT_TOOLS: return
+	if "_preview" in interaction and interaction._preview.has_area(): return
+	toggle_settings()
+	get_viewport().set_input_as_handled()

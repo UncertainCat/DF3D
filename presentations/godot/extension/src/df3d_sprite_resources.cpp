@@ -43,6 +43,12 @@ godot::Dictionary Df3dWorld::sprite_resource_stats() const {
     out["composite_bytes"]=int64_t(spriteResources_.composites.imageBytes());
     out["images"]=int64_t(spriteResources_.images.size());
     out["meshes"]=int64_t(spriteResources_.meshes.size());
+    // Cache references may share a mesh with a scene instance. Report resource
+    // identities so a residency census can deduplicate the two owners.
+    godot::Dictionary meshSurfaces;
+    for(const auto& [key,mesh]:spriteResources_.meshes)
+        if(mesh.is_valid())meshSurfaces[int64_t(mesh->get_instance_id())]=mesh->get_surface_count();
+    out["mesh_surfaces_by_id"]=meshSurfaces;
     out["metrics"]=int64_t(spriteResources_.metrics.size());
     out["collections"]=int64_t(spriteResources_.collections);
     return out;

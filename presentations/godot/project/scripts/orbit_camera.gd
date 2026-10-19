@@ -16,16 +16,16 @@ var _mode := "free"
 var walk_world
 var _ground = preload("res://scripts/walk_controller.gd").new()
 var _walk_return: Dictionary = {}
-var _walk_help: Label
-var _notice_until := 0
-const ViewScale = preload("res://scripts/actor_view_scale.gd")
-const WALK_EYE := ViewScale.WALK_EYE
+var _walk_panel: PanelContainer
+var _walk_pointer_key: Label
+var _walk_pointer_action: Label
+const WALK_EYE := 0.54
 
 func is_walk_mode() -> bool:
 	return _mode == "walk"
 
 func exit_walk() -> void:
-	if is_walk_mode(): set_mode(str(_walk_return.get("mode", "free")))
+	if is_walk_mode(): set_mode("free")
 
 func _input(event: InputEvent) -> void:
 	if not is_walk_mode(): return
@@ -58,14 +58,13 @@ func _input(event: InputEvent) -> void:
 
 func _walk_window(force := false) -> void:
 	var level := floori(position.y)
-	# A jump must not rebuild the cutaway every time the eye crosses a tile.
+	# Hysteresis keeps the visible ceiling stable during small jumps.
 	var current: int = walk_world.get_top_z()
 	if not force and current>=mini(level+2,walk_world.map_size().y-1) and current<=level+6: return
-	var ceiling := mini(level + 4, walk_world.map_size().y - 1)
+	var ceiling := clampi(level + 4, 0, walk_world.map_size().y - 1)
 	if walk_world.get_top_z() != ceiling: walk_world.set_top_z(ceiling)
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_EXIT_TREE and is_walk_mode(): ViewScale.set_walk(false)
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_EXIT_TREE:
 		if is_walk_mode(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 const ISO_YAW := PI / 4.0
@@ -84,22 +83,57 @@ func _ready() -> void:
 	var overlay := CanvasLayer.new()
 	overlay.layer = 5
 	add_child(overlay)
-	_walk_help = Label.new()
-	_walk_help.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_walk_help.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_walk_help.add_theme_color_override("font_shadow_color", Color.BLACK)
-	_walk_help.add_theme_constant_override("shadow_offset_x", 2)
-	_walk_help.add_theme_constant_override("shadow_offset_y", 2)
-	overlay.add_child(_walk_help)
-	_walk_help.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_walk_help.offset_top = -82
-	_walk_help.offset_bottom = -46
-	_walk_help.hide()
+	_walk_panel = PanelContainer.new()
+	_walk_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_walk_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	overlay.add_child(_walk_panel)
+	var groups := HBoxContainer.new()
+	groups.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	groups.add_theme_constant_override("separation", 24)
+	_walk_panel.add_child(groups)
+	# Group movement, vertical traversal and mouse/mode ownership separately.
+	_add_walk_bindings(groups, [["WASD", "Move"], ["Shift", "Faster"]])
+	_add_walk_bindings(groups, [["Space", "Jump"], ["Hold Space", "Stairs up"], ["Hold Q", "Stairs down"]])
+	var session := _add_walk_bindings(groups, [["Click", "Look around"], ["F5", "Exit walk"]])
+	_walk_pointer_key = session.get_child(0)
+	_walk_pointer_action = session.get_child(1)
+	_walk_panel.hide()
 	get_viewport().size_changed.connect(_viewport_resized)
 	_update_transform()
 
 func _viewport_resized() -> void:
 	if _df_mode: _update_transform()
+	_layout_walk_help()
+
+func configure_walk_help(ui, frame: StyleBox) -> void:
+	ui.apply(_walk_panel)
+	ui.install_hud_filter(_walk_panel)
+	_walk_panel.add_theme_stylebox_override("panel", frame.duplicate())
+	_layout_walk_help()
+
+func _add_walk_bindings(parent: Control, bindings: Array) -> GridContainer:
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	grid.add_theme_constant_override("h_separation", 8)
+	grid.add_theme_constant_override("v_separation", 4)
+	parent.add_child(grid)
+	for binding in bindings:
+		for index in 2:
+			var label := Label.new()
+			label.text = binding[index]
+			label.add_theme_font_size_override("font_size", 12)
+			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			if index == 0: label.add_theme_color_override("font_color", Color.YELLOW)
+			grid.add_child(label)
+	return grid
+
+func _layout_walk_help() -> void:
+	var view := get_viewport().get_visible_rect().size
+	_walk_panel.scale = preload("res://scripts/presentation_settings.gd").effective_scale_vector(view)
+	_walk_panel.size = _walk_panel.get_combined_minimum_size()
+	var extent := _walk_panel.size * _walk_panel.scale
+	_walk_panel.position = Vector2((view.x - extent.x) / 2.0, view.y - extent.y - 18)
 
 func is_df_mode() -> bool:
 	return _df_mode
@@ -112,33 +146,25 @@ func set_mode(value: String) -> void:
 	if value == "walk":
 		if walk_world == null or not walk_world.terrain_loaded(): return
 		_ground.world = walk_world
-		var start: Vector3 = _ground.spawn_near(position, walk_world.get_top_z())
-		if not start.is_finite():
-			_walk_help.text = "Walk: center the view on a known floor on this level, then try again."
-			_notice_until = Time.get_ticks_msec() + 6000
-			_walk_help.show()
-			return
-		_walk_return = {"mode":_mode,"position":position,"yaw":_yaw,"pitch":_pitch,"top":walk_world.get_top_z(),"near":_camera.near,"fov":_camera.fov}
-		_ground.reset(start)
-		position = _ground.feet
-		_pitch = 0.0
+		# The orbit node is a focus point; transfer the actual camera pose.
+		var eye := _camera.global_position
+		var angles := _camera.global_basis.get_euler()
+		_walk_return = {"near":_camera.near}
+		_ground.reset(eye - Vector3.UP * WALK_EYE, false)
+		global_position = _ground.feet
+		_pitch = angles.x
+		_yaw = angles.y
 		_camera.near = 0.025
-		_camera.fov = 75.0
 		_walk_window(true)
 	elif is_walk_mode():
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		position = _walk_return.position
-		_yaw = _walk_return.yaw
-		_pitch = _walk_return.pitch
+		var eye := _camera.global_position
+		# Free orbit reconstructs its focus from the current eye and direction.
+		global_position = eye - _offset()
 		_camera.near = _walk_return.near
-		_camera.fov = _walk_return.fov
-		walk_world.set_top_z(_walk_return.top)
-		_top_z = _walk_return.top
 	_mode = value
-	ViewScale.set_walk(is_walk_mode())
-	_notice_until = 0
-	_walk_help.visible = is_walk_mode()
-	if is_walk_mode(): _walk_help.text = "Walk · Truescale · Click map to look · WASD move · Shift faster\nSpace jump · Walk off edges to drop · Q descend stairs · Esc release · F4 return"
+	_walk_panel.visible = is_walk_mode()
+	if is_walk_mode(): _refresh_walk_help()
 	_df_mode = value == "df"
 	if value in ["df", "isometric"] and _top_z >= 0: position.y = float(_top_z) + 1.0 + level_focus_offset
 	_update_transform()
@@ -186,7 +212,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var motion := event as InputEventMouseMotion
 		if motion.button_mask & MOUSE_BUTTON_MASK_RIGHT and _mode == "free":
 			_yaw -= motion.relative.x * orbit_sensitivity
-			_pitch = clampf(_pitch - motion.relative.y * orbit_sensitivity, -1.55, -0.05)
+			_pitch = clampf(_pitch - motion.relative.y * orbit_sensitivity, -PI / 2.0, PI / 2.0)
 			_update_transform()
 		elif motion.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			var right := _camera.global_transform.basis.x
@@ -204,14 +230,24 @@ func _unhandled_input(event: InputEvent) -> void:
 			else: _distance = clampf(_distance * factor, min_distance, max_distance)
 			_update_transform()
 
+func _refresh_walk_help() -> void:
+	var captured := Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+	_walk_pointer_key.text = "Esc" if captured else "Click"
+	_walk_pointer_action.text = "Release mouse" if captured else "Look around"
+	_layout_walk_help()
+
 func _process(delta: float) -> void:
-	if _notice_until > 0 and Time.get_ticks_msec() >= _notice_until:
-		_notice_until = 0
-		_walk_help.hide()
-	if controls_blocked():
+	var blocked := controls_blocked()
+	_walk_panel.visible = is_walk_mode() and not blocked
+	if _walk_panel.visible: _refresh_walk_help()
+	if blocked:
 		if is_walk_mode(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		return
-	if is_walk_mode() and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED: return
+	if is_walk_mode() and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		global_position = _ground.advance(delta, Vector3.ZERO)
+		_walk_window()
+		_update_transform()
+		return
 	var dir := Vector3.ZERO
 	var forward := _horizontal_forward()
 	var right := forward.cross(Vector3.UP)
@@ -223,7 +259,7 @@ func _process(delta: float) -> void:
 		if Input.is_key_pressed(KEY_E): dir += Vector3.UP
 		if Input.is_key_pressed(KEY_Q): dir -= Vector3.UP
 	if is_walk_mode():
-		position = _ground.advance(delta,dir,Input.is_key_pressed(KEY_SHIFT),Input.is_key_pressed(KEY_SPACE),Input.is_key_pressed(KEY_Q))
+		global_position = _ground.advance(delta,dir,Input.is_key_pressed(KEY_SHIFT),Input.is_key_pressed(KEY_SPACE),Input.is_key_pressed(KEY_Q))
 		_walk_window()
 		_update_transform()
 		return

@@ -65,11 +65,9 @@ func validate_groups(w) -> Array:
 	check(groups == w.item_render_groups(), "unchanged native revision returns stable manifest")
 	return groups
 
-func advance_groups(w, started: int, index: int) -> void:
-	var elapsed := float(Time.get_ticks_usec() - started) / 1000000.0
-	w.set_replay_speed((10.0 * index + 5.0) / elapsed)
+func advance_groups(w, index: int) -> void:
+	w.set_replay_elapsed(10.0 * index + 5.0)
 	w.poll()
-	w.set_replay_speed(0)
 	check(w.bridge_tick() == 100 + index, "exact replay frame")
 
 func run_render_groups() -> void:
@@ -78,7 +76,6 @@ func run_render_groups() -> void:
 	w.set_replay_speed(0)
 	var fixture := ProjectSettings.globalize_path("res://../../../build/depth-cache.df3dfix")
 	check(w.load_fixture(fixture), "fixture loads")
-	var started := Time.get_ticks_usec()
 	w.poll()
 	w.set_top_z(1)
 	w.set_window_depth(1)
@@ -88,8 +85,7 @@ func run_render_groups() -> void:
 	var revision: int = first[0].revision
 	var key: int = first[0].key
 	var height: float = w.item_physical_layout().positions[0].y
-	await create_timer(0.1).timeout
-	advance_groups(w, started, 1)
+	advance_groups(w, 1)
 	var expanded := validate_groups(w)
 	check(w.item_physical_layout().positions[0].y > height, "fixture changes item support height")
 	check(expanded[0].revision == revision and expanded[0].key == key, "shared support change preserves resident item group revision")
@@ -230,6 +226,18 @@ func run():
 	check(world.load_fixture(path), "fixture reloads")
 	world.poll()
 	validate(7)
+	# Retained semantic layouts must observe terrain visibility changes while
+	# their level is outside the render window, then restore current ordinals.
+	world.set_top_z(0); world.set_window_depth(1); world.poll()
+	advance(8)
+	world.set_top_z(1); world.poll()
+	check(not 200 in world.item_ids(), "off-window hide survives level reentry")
+	check(world.layout_matches_reference(), "off-window hide updates retained layout")
+	world.set_top_z(0); world.poll()
+	advance(9)
+	world.set_top_z(1); world.poll()
+	check(world.item_ids().count(200) == 2, "off-window reveal restores both quantity pieces")
+	check(world.layout_matches_reference(), "off-window reveal updates retained layout")
 	world.free()
 	print("ITEM_UPDATES_PASS" if failures.is_empty() else "ITEM_UPDATES_FAIL")
 	quit(0 if failures.is_empty() else 1)

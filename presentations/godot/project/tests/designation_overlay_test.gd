@@ -23,11 +23,11 @@ func run():
 		var material := overlay.material_for(name)
 		check(material != null, "native operation selector resolves: %s" % name)
 		if material == null: continue
-		check(material.albedo_texture.get_size() == Vector2(32,32), "native operation retains full 32px cell")
-		check(material.albedo_color == Color.WHITE and material.no_depth_test, "source sprite remains untinted and cannot z-fight")
-		check(material.albedo_texture.get_image().get_data() == world.ui_texture(name).get_image().get_data(), "unmodified installed sprite pixels")
-	check(overlay.material_for("DESIGNATION_DIG_STANDARD:auto").albedo_color == Color(0,1,0,1), "automining uses green source glyph")
-	check(overlay.material_for("DESIGNATION_DIG_STANDARD:marker").albedo_color == Color(0,0.5,1,1), "blueprint uses blue source glyph")
+		check(material.get_shader_parameter("albedo_tex").get_size() == Vector2(32,32), "native operation retains full 32px cell")
+		check(material.get_shader_parameter("albedo_color") == Color.WHITE and material.shader.code.contains("depth_test_disabled"), "source sprite remains untinted and cannot z-fight")
+		check(material.get_shader_parameter("albedo_tex").get_image().get_data() == world.ui_texture(name).get_image().get_data(), "unmodified installed sprite pixels")
+	check(overlay.material_for("DESIGNATION_DIG_STANDARD:auto").get_shader_parameter("albedo_color") == Color(0,1,0,1), "automining uses green source glyph")
+	check(overlay.material_for("DESIGNATION_DIG_STANDARD:marker").get_shader_parameter("albedo_color") == Color(0,0.5,1,1), "blueprint uses blue source glyph")
 	var pickaxes: MeshInstance3D = overlay.get_node("DESIGNATION_DIG_STANDARD")
 	var vertices: PackedVector3Array = pickaxes.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	check(vertices.size() == 12, "two accepted cells produce two full-tile quads")
@@ -64,7 +64,7 @@ func run():
 	var number: MeshInstance3D = overlay.get_node("DESIGNATION_PRIORITY_2")
 	check(number != null and number.visible, "priority atlas batch appears alongside pickaxes")
 	var number_material := overlay.material_for("DESIGNATION_PRIORITY_2")
-	check(number_material.albedo_texture.get_image().get_data() == world.ui_texture("DESIGNATION_PRIORITY",1).get_image().get_data(), "priority digits retain source placement and colors")
+	check(number_material.get_shader_parameter("albedo_tex").get_image().get_data() == world.ui_texture("DESIGNATION_PRIORITY",1).get_image().get_data(), "priority digits retain source placement and colors")
 	check(number_material.render_priority > overlay.material_for("DESIGNATION_DIG_STANDARD").render_priority, "numerals composite above designation artwork")
 	var retained = number.mesh
 	overlay.update_markers(markers,1,true)
@@ -74,8 +74,8 @@ func run():
 	for value in range(1,8):
 		check(overlay.material_for("DESIGNATION_PRIORITY_%d" % value) != null, "all seven native priority variants resolve")
 	var marker_material := overlay.material_for("DESIGNATION_DIG_STANDARD:marker")
-	check(marker_material.albedo_color == Color(0,0.5,1,1), "native marker-only sprite blue modulation")
-	check(marker_material.albedo_texture == overlay.material_for("DESIGNATION_DIG_STANDARD").albedo_texture, "marker mode retains original source artwork")
+	check(marker_material.get_shader_parameter("albedo_color") == Color(0,0.5,1,1), "native marker-only sprite blue modulation")
+	check(marker_material.get_shader_parameter("albedo_tex") == overlay.material_for("DESIGNATION_DIG_STANDARD").get_shader_parameter("albedo_tex"), "marker mode retains original source artwork")
 	# Every direction combination has original art; traffic is a local display choice.
 	for mask in range(1,16):
 		check(overlay.material_for(Overlay.track_selector(mask)) != null, "track combination has native artwork")
@@ -99,9 +99,9 @@ func run():
 	var grid_arrays: Array = grid.mesh.surface_get_arrays(0)
 	check(grid_arrays[Mesh.ARRAY_VERTEX].size() == 6, "map grid costs one quad regardless of map size")
 	check(grid_arrays[Mesh.ARRAY_TEX_UV][2] == Vector2(192,192), "grid repeats exactly once per DF tile")
-	var grid_material := grid.mesh.surface_get_material(0) as StandardMaterial3D
-	check(grid_material.texture_repeat and grid_material.no_depth_test and grid_material.render_priority < 10, "grid repeats below order and cursor overlays without depth fighting")
-	check(grid_material.albedo_texture.get_image().get_data() == world.ui_texture("VIEWPORT_GRID").get_image().get_data(), "grid uses unchanged installed sprite pixels")
+	var grid_material := grid.mesh.surface_get_material(0) as ShaderMaterial
+	check(grid_material.shader.code.contains("repeat_enable") and grid_material.shader.code.contains("depth_test_disabled") and grid_material.render_priority < 10, "grid repeats below order and cursor overlays without depth fighting")
+	check(grid_material.get_shader_parameter("albedo_tex").get_image().get_data() == world.ui_texture("VIEWPORT_GRID").get_image().get_data(), "grid uses unchanged installed sprite pixels")
 	var grid_mesh = grid.mesh
 	overlay.update_grid(Vector3(192,145,192), 143, true)
 	check(grid.mesh == grid_mesh, "unchanged grid is not rebuilt every frame")

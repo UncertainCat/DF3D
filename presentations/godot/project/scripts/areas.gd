@@ -859,9 +859,7 @@ func _sync_paint_counts() -> void:
 
 func draw_paint_preview(tile: Vector3i) -> void:
 	var mesh := ImmediateMesh.new()
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.vertex_color_use_as_albedo = true; material.no_depth_test = true
+	var material := preload("res://scripts/world_material.gd").create(Color.WHITE,true,true)
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES,material)
 	mesh.surface_set_color(Color(0.95,0.75,0.15))
 	var left := mini(drag_start.x,tile.x); var right := maxi(drag_start.x,tile.x)+1
@@ -1633,10 +1631,7 @@ func draw_outline() -> void:
 		return
 	outline.visible = mode != "paint" or paint_state.z == int(world.get_top_z())
 	var mesh := ImmediateMesh.new()
-	var mat := StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.vertex_color_use_as_albedo = true
-	mat.no_depth_test = true
+	var mat := preload("res://scripts/world_material.gd").create(Color.WHITE,true,true)
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES, mat)
 	mesh.surface_set_color(Color(0.95, 0.75, 0.15))
 	if mode == "paint" and paint_state.z >= 0:

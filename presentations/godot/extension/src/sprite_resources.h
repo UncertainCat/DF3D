@@ -32,6 +32,7 @@ public:
     df3d::assets::CompositeCache composites;
     std::unordered_map<uint32_t, CompositeSlot> appearances;
     std::map<std::string,int> buildings;
+    std::map<std::string,int> items;
     std::map<int,godot::Ref<godot::Image>> images;
     std::map<std::string,godot::Ref<godot::ArrayMesh>> meshes;
     std::map<std::tuple<int,int,int,int,int>,godot::Vector2> metrics;
@@ -59,12 +60,13 @@ public:
     void resetSession() {
         for (const auto& [version, appearance]:appearances) retire(appearance.slot);
         for (const auto& [key, slot]:buildings) retire(slot);
-        appearances.clear(); buildings.clear(); composites.clear();
+        for (const auto& [key, slot]:items) retire(slot);
+        appearances.clear(); buildings.clear(); items.clear(); composites.clear();
         collectionPending=true;
         ++revision;
     }
     void clear() {
-        slots.clear(); composites.clear(); appearances.clear(); buildings.clear();
+        slots.clear(); composites.clear(); appearances.clear(); buildings.clear(); items.clear();
         images.clear(); meshes.clear(); metrics.clear(); ++revision;
         collectionPending=true;
     }

@@ -8,9 +8,10 @@ func run():
  var deadline = Time.get_ticks_msec()+120000
  while not ready_scene() and Time.get_ticks_msec()<deadline: await process_frame
  if not ready_scene(): push_error("Thread fixture did not settle"); quit(1); return
+ if not root.unresizable: push_error("Border resizing must be disabled"); quit(1); return
  for cycle in 2:
   for mode in ["df","free","billboard"]:
-   root.size = Vector2i(1280,720) if cycle == 0 else Vector2i(1920,1080)
+   await preload("res://scripts/presentation_settings.gd").apply_window_values(root,"windowed",Vector2i(1280,720) if cycle == 0 else Vector2i(1920,1080))
    scene.camera_rig.set_df_mode(mode=="df")
    scene._sprite_presentation.set_style("billboard" if mode=="billboard" else "classic")
    for frame in 120: await process_frame

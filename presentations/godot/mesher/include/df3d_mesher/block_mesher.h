@@ -3,6 +3,7 @@
 
 #include <array>
 #include <cstdint>
+#include <compare>
 #include <limits>
 #include <optional>
 #include <vector>
@@ -14,7 +15,7 @@ namespace df3d::mesher {
 
 struct Vec3 {
   float x = 0, y = 0, z = 0;
-  friend bool operator==(const Vec3&, const Vec3&) = default;
+  auto operator<=>(const Vec3&) const = default;
 };
 
 // Height of a floor slab above the tile bottom; units stand on it.
@@ -60,6 +61,7 @@ inline constexpr uint8_t kWallSW = 1u << 6;
 inline constexpr uint8_t kWallSE = 1u << 7;
 
 struct FaceTag {
+  auto operator<=>(const FaceTag&) const = default;
   wm::TileShape shape = wm::TileShape::Empty;
   wm::MaterialKind materialKind = wm::MaterialKind::None;
   wm::MaterialId material = wm::kNoMaterial;
@@ -77,6 +79,7 @@ struct FaceTag {
 };
 
 struct Face {
+  auto operator<=>(const Face&) const = default;
   std::array<Vec3, 4> v;  // CCW seen from the normal side (see header note)
   Vec3 normal;
   FaceTag tag;
@@ -117,6 +120,16 @@ class WorldModelSource final : public BlockSource {
 
 // Meshes one block culling against neighbours; unknown block = empty mesh, version 0; hidden caps merged last.
 BlockMesh meshBlock(const BlockSource& src, wm::BlockPos pos, const MeshOptions& options = {});
+
+// Persistent alternatives for a block: common + covered below the cut;
+// common + cut at the selected level. Their union exactly reproduces meshBlock
+// with an unbounded or block-level topZ, including hidden caps and liquids.
+// Neighbour/source changes invalidate all three together; view changes do not.
+struct BlockLayers {
+  BlockMesh common, covered, cut;
+};
+BlockLayers meshBlockLayers(const BlockSource& src, wm::BlockPos pos, bool revealHidden = false);
+
 
 struct TerrainManifest {
   int32_t topZ = 0, bottomZ = 0;

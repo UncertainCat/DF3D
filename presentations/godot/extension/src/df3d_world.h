@@ -10,6 +10,8 @@
 #include "df3d_mesher/cutout.h"
 #include "glyph_dependencies.h"
 #include "terrain_visibility_dependencies.h"
+#include "terrain_occluders.h"
+#include "batch_texture_pool.h"
 #include "profiling.h"
 #include "df3d_assets/bitmap_slots.h"
 
@@ -286,8 +288,8 @@ public:
     bool terrain_loaded() const { return source_.model().hasTerrain(); }
     int64_t known_block_count() const { return static_cast<int64_t>(source_.model().knownBlockCount()); }
     int64_t map_block_count() const { return static_cast<int64_t>(source_.model().mapBlockCount()); }
-    // Blocks currently carrying a mesh node / blocks waiting to be (re)built.
-    int built_block_count() const { return meshCount_; }
+    // Prepared logical blocks (including empty blocks) / queued geometry work.
+    int built_block_count() const { return static_cast<int>(built_.size()); }
     int pending_block_count() const { return static_cast<int>(queue_.size() - queueHead_) + terrainBatches_.pending(); }
     int64_t face_count() const { return faceCount_; }
     double last_build_ms() const { return lastBuildMs_; }
@@ -391,9 +393,12 @@ private:
 
     struct Built {
         godot::MeshInstance3D* node = nullptr;  // null when the block meshed to nothing
-        uint64_t version = 0;
-        int32_t topZ = 0;  // top_z the mesh was built against
         int64_t unresolved = 0, textured = 0, hidden = 0;
+    };
+
+    struct BuiltTerrain {
+        uint64_t version = 0;
+        std::array<Built,3> layers; // Common, covered-only, cut-only.
     };
 
     // A loaded (page, palette row, fill) texture variant.
@@ -442,12 +447,13 @@ private:
         }
     };
 
-    MeshBatches terrainBatches_{0,"terrain"};
+    MeshBatches terrainBatches_{0,"terrain",true,true};
     MeshBatches buildingBatches_{30,"building"};
     std::map<SurfaceKey, godot::Ref<godot::ShaderMaterial>> buildingPieceMaterials_;
     double nowSeconds() const;
     int slotFor(int page, int paletteRow, bool fill);
     int wallTopSlotFor(const df3d::assets::TerrainSprite& wall, uint8_t neighbors);
+    int shadowedFloorSlotFor(const df3d::assets::TerrainSprite& floor, uint8_t neighbors);
     godot::Ref<godot::Image> pageImage(int page);
     const FaceLook& lookFor(const df3d::mesher::FaceTag& tag);
     FaceLook spatterLookFor(wm::TilePos pos);
@@ -467,9 +473,12 @@ private:
     void updateTerrain();
     void resetTerrain();
     void enqueue(wm::BlockPos p);
-    void enqueueWindow();
+    void enqueueTerrainMap();
     void buildBlock(wm::BlockPos p);
-    void freeBlock(Built& b);
+    void freeBlock(Built& b, bool keepNode = false);
+    void buildTerrainLayer(const df3d::mesher::BlockMesh& mesh, Built& target, int layer);
+    godot::Node3D* terrainLayerRoot(int z, int layer);
+    void updateTerrainVisibility();
     void ensureMaterials();
     // Black plane under the z window so a camera inside rock never sees sky through culled bottoms.
     void updateBackdrop();
@@ -517,7 +526,10 @@ private:
     void resetEntities();
     std::map<wm::BuildingId,uint32_t> buildingSubmissionReasons_;
     void enqueueBuilding(wm::BuildingId id, uint32_t reason = 0);
-    void enqueueBuildingWindow();
+    void enqueueBuildings();
+    godot::Node3D* buildingLayerRoot(int z);
+    void updateBuildingVisibility();
+    void clearBuildingLayers();
     void buildBuilding(wm::BuildingId id, uint32_t reason = 0);
     void freeBuilding(BuiltBuilding& b);
     bool tileVisible(wm::TilePos p) const;
@@ -615,6 +627,7 @@ private:
     bool zInSpriteWindow(int32_t z) const { return z <= topZ_ && z > topZ_ - spriteWindowDepth(); }
 
     godot::Node3D* buildingRoot_ = nullptr;
+    std::map<int,godot::Node3D*> buildingLayers_;
     bool zoneOverlaysVisible_ = false;
     bool ownBuildingRoot_ = false;
     std::unordered_map<wm::BuildingId, BuiltBuilding> builtBuildings_;
@@ -717,6 +730,8 @@ private:
     std::map<std::tuple<int, int, bool>, int> slotIndex_;
     std::map<std::tuple<int, int, int, int, uint8_t>, int> wallTopIndex_;
     df3d::assets::BitmapSlots wallTopBitmaps_;
+    // Asset-owned immutable floor composites, keyed after palette selection.
+    std::map<std::tuple<int, int, int, int, uint8_t>, int> floorShadowIndex_;
     godot::Color rockBackingColor_{64.0f / 255.0f, 64.0f / 255.0f, 64.0f / 255.0f, 1.0f};
     bool rockBackingReady_ = false;
     std::unordered_map<int, godot::Ref<godot::Image>> pageImages_;
@@ -788,7 +803,6 @@ private:
     godot::Node3D* terrainRoot_ = nullptr;
     bool ownRoot_ = false;
     godot::MeshInstance3D* backdrop_ = nullptr;
-    int32_t backdropTopZ_ = -1, backdropDepth_ = 0;
     int32_t topZ_ = -1;
     int32_t windowDepth_ = 0; // Full map depth; positive overrides are for diagnostics/tests.
     int32_t spriteDepth_ = 12; // Selected level plus eleven below; items and units only.
@@ -796,11 +810,17 @@ private:
     bool sliceUnits_ = true;
     int buildBudget_ = 256;
     wm::TilePos builtMapSize_;
-    std::unordered_map<uint64_t, Built> built_;
+    // Resident geometry is source-owned, never evicted by the selected cut.
+    std::unordered_map<uint64_t, BuiltTerrain> built_;
+    std::map<int,std::array<godot::Node3D*,3>> terrainLayers_;
+    TerrainOccluders terrainOccluders_;
+    BatchTexturePool terrainTextures_; // Source surfaces share banks before GPU allocation.
+    bool preparingTerrain_ = true;
+    uint64_t terrainGeometryBuilds_ = 0;
+    uint64_t terrainSurfaceInputs_ = 0, terrainSurfaceUploads_ = 0;
     std::vector<wm::BlockPos> queue_;
     size_t queueHead_ = 0;
     std::unordered_set<uint64_t> queued_;
-    int meshCount_ = 0;
     int64_t faceCount_ = 0;
     double lastBuildMs_ = 0.0;
     double totalBuildMs_ = 0.0;

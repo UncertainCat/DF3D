@@ -66,7 +66,7 @@ static func pieces(world, camera: Camera3D, screen: Vector2, top_z: int) -> Arra
 				ground = world.unit_ground_support(i) if unit else world.ground_support(Vector3(positions[i].x,tile.z,positions[i].z))
 			if piece_upright and slots[i]>=0: ground = Vector3.ZERO
 			if unit and slots[i] >= 0:
-				footprint *= preload("res://scripts/actor_view_scale.gd").effective(scales[i].r if i < scales.size() else 1.0, truescale)
+				footprint *= (scales[i].r if truescale and i < scales.size() else 1.0)
 			var bounds := Rect2(camera.unproject_position(positions[i]),Vector2.ZERO)
 			for x in [-0.5,0.5]:
 				for z in [-0.5,0.5]:

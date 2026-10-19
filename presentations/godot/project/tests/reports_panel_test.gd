@@ -70,11 +70,11 @@ func run():
    world.set_top_z(0);rig.follow_level(0);rig.set_mode(mode);rig.focus_on(Vector3(3.5,1.0,3.5),80.0)
    var zoom:float=camera.size
    if walking:
-    rig.set_mode("walk");assert(rig.is_walk_mode() and world.top==4)
+    rig.set_mode("walk");assert(rig.is_walk_mode())
    owner.open_panel();owner.controller.state.rows=[{"id":9,"position_visible":true,"position":Vector3i(125,50,165)}]
    assert(owner.controller.state.recenter(9))
-   assert(rig.get_mode()==mode and world.top==165 and rig.position==Vector3(125.5,166.0,50.5))
-   assert(is_equal_approx(rig.current_distance(),80.0) and is_equal_approx(camera.size,zoom))
+   assert(rig.get_mode()==("free" if walking else mode) and world.top==165 and rig.position==Vector3(125.5,166.0,50.5))
+   assert(is_equal_approx(rig.current_distance(),80.0) and (walking or is_equal_approx(camera.size,zoom)))
  var registry=preload("res://scripts/ui_availability.gd")
  assert(registry.PANEL_ROUTES.Reports=="reports" and registry.allows_launcher("Reports"))
  var inspector:=Inspector.new();composition.controllers.inspector=inspector;composition.controllers.reports=owner;composition.host=host

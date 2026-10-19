@@ -1,5 +1,4 @@
 extends SceneTree
-const Ground = preload("res://scripts/walk_ground.gd")
 const Rig = preload("res://scripts/orbit_camera.gd")
 var failures := 0
 class Map extends RefCounted:
@@ -24,13 +23,9 @@ func _initialize(): call_deferred("run")
 func run():
 	var map := Map.new()
 	for x in range(8):
-		for y in range(8): map.put(x,y,0,"Floor")
-	var ground := Ground.new()
-	ground.world = map
-	check(ground.spawn_near(Vector3(3,0,3),0).is_equal_approx(Vector3(3.5,.1,3.5)), "spawn at known floor center")
-	map.occupants[Vector3i(3,3,0)] = [{"kind":1}]
-	check(ground.spawn_near(Vector3(3,0,3),0) != Vector3(3.5,.1,3.5), "entry avoids standing inside a dwarf")
-	map.occupants.clear()
+		for y in range(8):
+			map.put(x,y,0,"Floor")
+			for z in range(1,16): map.put(x,y,z,"Empty")
 	var rig := Rig.new()
 	var camera := Camera3D.new()
 	camera.name = "Camera3D"
@@ -38,54 +33,63 @@ func run():
 	root.add_child(rig)
 	rig.set_process(false)
 	rig.walk_world = map
-	rig.focus_on(Vector3(3.5,1,3.5), 12)
-	var old_position := rig.position
-	var old_eye := camera.position
+	var preferences = preload("res://scripts/presentation_settings.gd")
+	for mode in ["free","df","isometric"]:
+		rig.set_mode(mode)
+		rig.focus_on(Vector3(3.5,1,3.5), 60)
+		if mode == "free": rig.place_eye(Vector3(3.5,20,3.5),20)
+		var eye := camera.global_position
+		var direction := -camera.global_basis.z
+		var before := map.queries
+		var truescale: bool = preferences.truescale
+		var style: String = preferences.visual_style
+		rig.set_mode("walk")
+		check(camera.global_position.is_equal_approx(eye), "entry preserves actual eye from " + mode)
+		check((-camera.global_basis.z).is_equal_approx(direction), "entry preserves direction from " + mode)
+		check(map.queries == before, "entry does not search terrain")
+		check(preferences.truescale == truescale and preferences.visual_style == style, "entry preserves appearance preferences")
+		check(is_equal_approx(camera.near,.025), "close clipping in Walk")
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		for i in range(12): rig._process(1.0/60)
+		check(camera.global_position.y < eye.y-.1, "gravity continues above map with cursor released")
+		eye = camera.global_position
+		direction = -camera.global_basis.z
+		var top := map.top
+		rig.exit_walk()
+		check(rig.get_mode() == "free", "exit resumes free controls")
+		check(camera.global_position.is_equal_approx(eye), "exit preserves eye")
+		check((-camera.global_basis.z).is_equal_approx(direction), "exit preserves direction")
+		check(map.top == top, "exit keeps current cutaway")
+		before = map.queries
+		for i in range(10): rig._process(1.0/60)
+		check(map.queries == before, "normal camera has no collision queries")
+	rig.set_orbit_pose(.2,-.3,12)
+	rig.place_eye(Vector3(3.5,5,3.5),12)
 	rig.set_mode("walk")
-	check(rig.get_mode() == "walk" and map.top == 4, "walk keeps overhead levels visible")
-	check(is_equal_approx(camera.global_position.y,.64) and is_equal_approx(camera.near,.025), "75 percent dwarf eye height and close clipping")
-	var scale = preload("res://scripts/actor_view_scale.gd")
-	check(is_equal_approx(scale.current,.75) and is_equal_approx(scale.effective(2.0,true),1.5), "Walk applies view multiplier without changing species ratios")
+	for i in range(180): rig._process(1.0/60)
+	check(absf(camera.global_position.y-(.1+rig.WALK_EYE))<.002,"gravity lands on floor without teleporting")
+	var feet := rig.position
 	rig.follow_level(4)
-	check(is_equal_approx(rig.position.y,.1), "cutaway tracking cannot lift visitor")
-	rig.position.y = 1.3
-	rig._walk_window()
-	check(map.top==4,"jump crossing a level does not churn cutaway scope")
-	rig.position.y = .1
+	check(rig.position == feet,"level tracking cannot lift visitor")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	var look := InputEventMouseMotion.new()
 	look.relative = Vector2(10,-200)
 	rig._input(look)
-	# Headless DisplayServer does not capture the mouse; also run on the hidden
-	# render desktop to exercise real capture and these input assertions.
 	if DisplayServer.get_name() != "headless":
-		check(camera.rotation.x > 0.0 and camera.rotation.y < 0.0, "walk can look up and turn")
+		check(camera.rotation.x > 0.0, "walk can look up")
 		var space := InputEventKey.new()
 		space.keycode = KEY_SPACE
 		space.pressed = true
 		rig._input(space)
-		check(rig._ground._jump_buffer>0.0,"Space queues a physics jump, not a ledge path")
+		check(rig._ground._jump_buffer>0.0,"Space queues a jump")
 	var escape := InputEventKey.new()
-	escape.keycode = KEY_ESCAPE; escape.pressed = true
+	escape.keycode = KEY_ESCAPE
+	escape.pressed = true
 	rig._input(escape)
-	check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and rig.get_mode() == "walk", "escape releases cursor without leaving walk")
+	check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and rig.is_walk_mode(),"escape only releases cursor")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	rig._notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
-	check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE, "focus loss releases captured mouse")
-	rig.exit_walk()
-	check(is_equal_approx(scale.current,1.0) and is_equal_approx(scale.effective(2.0,true),2.0), "leaving Walk restores unmodified Truescale")
-	check(rig.get_mode() == "free" and rig.position == old_position and camera.position.is_equal_approx(old_eye) and map.top == 0, "exit restores previous view and cutaway")
-	var queries_before := map.queries
-	for i in range(10): rig._process(1.0/60)
-	check(map.queries==queries_before,"normal camera runs no visitor collision queries")
-	for mode in ["df","isometric","free"]:
-		rig.set_mode(mode)
-		rig.set_mode("walk")
-		check(is_equal_approx(scale.current,.75), "each normal mode enters reduced FPS scale")
-		rig.exit_walk()
-		check(rig.get_mode()==mode and is_equal_approx(scale.current,1.0), "each normal mode regains full scale")
-	rig.set_mode("walk")
+	check(Input.mouse_mode == Input.MOUSE_MODE_VISIBLE,"focus loss releases cursor")
 	rig.free()
-	check(is_equal_approx(scale.current,1.0), "closing Walk scene cannot leak scale to next scene")
 	print("walk_camera_test: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(1 if failures else 0)

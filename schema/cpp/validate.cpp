@@ -260,8 +260,21 @@ std::optional<std::string> checkRemoved(const flatbuffers::Vector<uint32_t>* rem
   return std::nullopt;
 }
 
+std::optional<std::string> validateStatue(const StatueFacts* s, bool statue) {
+  if (!s) return std::nullopt;
+  if (!statue) return "statue facts on a non-statue";
+  if (s->quality() < -1 || s->quality() > 6) return "invalid statue quality";
+  if (s->subject() < ArtSubject::MIN || s->subject() > ArtSubject::MAX ||
+      s->event() < ArtEvent::MIN || s->event() > ArtEvent::MAX) return "invalid statue subject/event";
+  if (s->event()!=ArtEvent::Unknown && s->subject()!=ArtSubject::Event) return "statue event without event subject";
+  if ((s->subject_raw() && s->subject_raw()->size()>4096) ||
+      (s->caste_raw() && s->caste_raw()->size()>4096)) return "statue raw token too long";
+  return std::nullopt;
+}
+
 std::optional<std::string> validateBuilding(const Building& b, const TilePos& dims,
                                             uint32_t materialCount) {
+  if (auto error=validateStatue(b.statue(),b.kind()==BuildingKind::Statue)) return error;
   if (b.kind() < BuildingKind::MIN || b.kind() > BuildingKind::MAX) {
     return "invalid kind value " + std::to_string(static_cast<uint8_t>(b.kind()));
   }
@@ -328,6 +341,7 @@ std::optional<std::string> validateBuildings(const Snapshot& snap, const TilePos
 
 std::optional<std::string> validateItem(const MapItem& it, const TilePos& dims,
                                         uint32_t materialCount) {
+  if (auto error=validateStatue(it.statue(),it.kind()==ItemKind::Statue)) return error;
   if (it.kind() < ItemKind::MIN || it.kind() > ItemKind::MAX) {
     return "invalid kind value " + std::to_string(static_cast<uint8_t>(it.kind()));
   }
@@ -335,6 +349,19 @@ std::optional<std::string> validateItem(const MapItem& it, const TilePos& dims,
     return "unknown flag bits in " + std::to_string(static_cast<uint8_t>(it.flags()));
   }
   const uint16_t cf = static_cast<uint16_t>(it.corpse_flags());
+  if (it.contained_kind() < ItemKind::MIN || it.contained_kind() > ItemKind::MAX)
+    return "invalid contained item kind";
+  if (it.contained_material() != kNoMaterial && it.contained_material() >= materialCount)
+    return "contained material index out of range";
+  if (it.contained_subtype_raw() && it.contained_subtype_raw()->size() > 4096)
+    return "contained itemdef token too long";
+  if (it.contained_color() && it.contained_color()->size() > 4096)
+    return "contained color token too long";
+  if ((it.contained_count() == UINT32_MAX || it.contained_count() == 0) &&
+      (it.contained_kind() != ItemKind::Unknown || it.contained_material() != kNoMaterial ||
+       (it.contained_subtype_raw() && it.contained_subtype_raw()->size()) ||
+       (it.contained_color() && it.contained_color()->size())))
+    return "contained item facts without observed contents";
   if ((cf & ~static_cast<uint16_t>(CorpseFlags::ANY)) != 0) {
     return "unknown corpse flag bits in " + std::to_string(cf);
   }

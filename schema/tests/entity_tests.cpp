@@ -365,6 +365,45 @@ TEST_CASE("validator: accepts a well-formed building and item stream") {
   CHECK(!validateStream(mustParse(fort)));
 }
 
+TEST_CASE("container facts preserve unknown and validate observed contents") {
+  SyntheticFort::ItemSpec item;
+  item.kind=ItemKind::Bin;
+  CHECK_FALSE(validateItemSpec(item));
+  item.containedCount=0;
+  CHECK_FALSE(validateItemSpec(item));
+  item.containedKind=ItemKind::Bar;
+  CHECK(validateItemSpec(item).has_value());
+  item.containedCount=3; item.containedMaterial=0;
+  CHECK_FALSE(validateItemSpec(item));
+  item.containedColor="MIDNIGHT_BLUE";
+  CHECK_FALSE(validateItemSpec(item));
+  item.containedColor=std::string(4097,'X');
+  CHECK(validateItemSpec(item).has_value());
+  item.containedColor.clear();
+  item.containedMaterial=100;
+  CHECK(validateItemSpec(item).has_value());
+  item.containedMaterial=0; item.containedKind=static_cast<ItemKind>(255);
+  CHECK(validateItemSpec(item).has_value());
+  item.containedKind=ItemKind::Bar; item.containedCount=UINT32_MAX;
+  CHECK(validateItemSpec(item).has_value());
+}
+
+TEST_CASE("statue facts round trip without inventing subjects in old records") {
+  SyntheticFort fort(20,20,3);
+  SyntheticFort::BuildingSpec b; b.kind=BuildingKind::Statue;
+  b.statue.quality=4; b.statue.subject=ArtSubject::Creature;
+  b.statue.subjectRaw="DWARF"; b.statue.casteRaw="FEMALE";
+  fort.placeBuilding(1,b); fort.snapshot(1);
+  const auto fixture=mustParse(fort);
+  REQUIRE_FALSE(validateStream(fixture));
+  const auto* facts=fixture.snapshots[0]->buildings()->Get(0)->statue();
+  REQUIRE(facts); CHECK(facts->quality()==4); CHECK(facts->subject_raw()->str()=="DWARF");
+  b.statue.quality=7; CHECK(validateBuildingSpec(b).has_value());
+  b.statue.quality=0; b.statue.event=ArtEvent::Duel;
+  CHECK(validateBuildingSpec(b).has_value());
+  b.statue={}; CHECK_FALSE(validateBuildingSpec(b));
+}
+
 namespace {
 struct RejectCase {
   const char* name;

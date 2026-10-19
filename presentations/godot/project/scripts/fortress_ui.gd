@@ -58,6 +58,12 @@ func setup(owner, audio_panel, original_ui) -> void:
 		hud.native_options = native_options
 		native_options.visibility_changed.connect(hud.sync_menu_gate)
 		host.views_reset.connect(native_options.close)
+	hud.exit_controller = view._release_close
+	if hud.exit_controller != null:
+		hud.exit_controller.confirmation.visibility_changed.connect(hud.sync_menu_gate)
+	hud.exit_requested.connect(func():
+		if view._release_close != null: view._release_close.request_close()
+		else: view.get_tree().quit())
 	hud.panel_requested.connect(open_destination)
 	hud.notification_requested.connect(open_notification)
 	hud.notification_dismissal_requested.connect(dismiss_notification)
@@ -155,8 +161,8 @@ func is_open() -> bool:
 	return controllers.has("inspector") and controllers.inspector.is_open()
 
 func focus_tile(tile: Vector3i) -> void:
-	# Leaving Walk restores its previous cutaway. Do that before selecting the
-	# report/entity destination, then synchronize the rig before it clamps focus.
+	# Leave gravity controls before selecting the report/entity destination,
+	# then synchronize the rig before it clamps focus.
 	view.camera_rig.exit_walk()
 	world.set_top_z(tile.z)
 	view.camera_rig.follow_level(world.get_top_z())
@@ -170,6 +176,7 @@ func update_session(delta: float) -> bool:
 		session_timer = 0.25
 		view._session_state = world.poll_session()
 	view._loader.update_session(view._session_state, view._fort_ready(), world.last_error())
+	view._loader.update_progress(world.known_block_count(), world.map_block_count())
 	view._session_controls.update_session(view._session_state, view._loader.entered)
 	if native_options_session != null:
 		native_options_session.update_session(view._session_state)

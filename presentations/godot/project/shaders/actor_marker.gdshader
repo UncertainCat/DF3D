@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "res://shaders/world_color.gdshaderinc"
 render_mode unshaded;
 #include "res://shaders/actor_motion.gdshaderinc"
 #include "res://shaders/shared_stack.gdshaderinc"
@@ -14,4 +15,4 @@ void vertex() {
         POSITION = PROJECTION_MATRIX * VIEW_MATRIX * vec4(point, 1.0);
     }
 }
-void fragment() { ALBEDO = COLOR.rgb; }
+void fragment() { ALBEDO = world_output(COLOR.rgb); }

@@ -117,3 +117,12 @@ set_target_properties(df3d_godot PROPERTIES
   PREFIX ""
   OUTPUT_NAME "df3d_godot"
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../project/bin")
+
+# Explicit engine regression harness; never part of the production DLL/build.
+add_library(df3d_mesh_batches_test SHARED EXCLUDE_FROM_ALL
+  src/mesh_batches.cpp tests/mesh_batches_lifecycle_tests.cpp)
+target_include_directories(df3d_mesh_batches_test PRIVATE src)
+target_link_libraries(df3d_mesh_batches_test PRIVATE godot-cpp)
+df3d_godot_warnings(df3d_mesh_batches_test)
+set_target_properties(df3d_mesh_batches_test PROPERTIES PREFIX ""
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/mesh-batches-test")

@@ -4,6 +4,18 @@ extends RefCounted
 var world
 var theme := Theme.new()
 var textures: Dictionary = {}
+var hud_material: ShaderMaterial
+
+func install_hud_filter(node: Node) -> void:
+	if hud_material == null:
+		hud_material = ShaderMaterial.new()
+		hud_material.shader = preload("res://shaders/native_hud.gdshader")
+	if node is CanvasItem and node.material == null: node.material = hud_material
+	# Rebuilt designation rows and arriving notifications use the same source filter.
+	if not node.child_entered_tree.is_connected(install_hud_filter):
+		node.child_entered_tree.connect(install_hud_filter)
+	for child in node.get_children(): install_hud_filter(child)
+
 # Warnings are per-process: every panel instantiates its own theme.
 static var _warned_assets_unavailable := false
 static var _warned_border_missing := false
@@ -121,7 +133,7 @@ func apply(root: Node) -> void:
 	if root is Control:
 		root.theme = theme
 		root.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	if root is PanelContainer:
+	if root is PanelContainer and not root.has_meta("native_toolbar_group"):
 		root.remove_theme_stylebox_override("panel")
 	if root is Button and BUTTON_ART.has(root.text):
 		root.icon = texture(BUTTON_ART[root.text])
@@ -169,6 +181,34 @@ func compact_panel() -> StyleBox:
 	for side in [SIDE_LEFT, SIDE_RIGHT, SIDE_TOP, SIDE_BOTTOM]: style.set_content_margin(side, 8)
 	return style
 
+func toolbar_panel(outer_left := true, outer_right := true) -> StyleBox:
+	# Native bottom action groups use these six cells, not dialog corners.
+	var image := Image.create(24 if outer_right else 16,24,false,Image.FORMAT_RGBA8)
+	var interior := texture("BOTTOM_BUTTON_BORDER_INTERIOR")
+	var north := texture("BOTTOM_BUTTON_BORDER_N")
+	if interior == null or north == null: return StyleBoxEmpty.new()
+	image.fill(interior.get_image().get_pixel(0,0))
+	# INTERIOR is the narrow divider between groups, not a background tile.
+	for x in range(8,16):
+		image.blit_rect(north.get_image(),Rect2i(0,0,1,12),Vector2i(x,0))
+	for y in 2:
+		for x in ([0,2] if outer_right else [0]):
+			var selector: String = ([["NW","N","NE"],["W","INTERIOR","E"]][y][x] if outer_left or x!=0 else ["N","INTERIOR"][y])
+			var part := texture("BOTTOM_BUTTON_BORDER_"+selector)
+			if part == null: return StyleBoxEmpty.new()
+			image.blit_rect(part.get_image(),Rect2i(0,0,8,12),Vector2i(x*8,y*12))
+	var style := StyleBoxTexture.new()
+	style.texture = ImageTexture.create_from_image(image)
+	style.set_texture_margin(SIDE_LEFT,8)
+	style.set_texture_margin(SIDE_RIGHT,8 if outer_right else 0)
+	style.set_texture_margin(SIDE_TOP,12)
+	style.set_texture_margin(SIDE_BOTTOM,0)
+	style.set_content_margin(SIDE_LEFT,8)
+	style.set_content_margin(SIDE_RIGHT,8 if outer_right else 0)
+	style.set_content_margin(SIDE_TOP,0)
+	style.set_content_margin(SIDE_BOTTOM,0)
+	return style
+
 func native_message_panel() -> StyleBox:
 	# Native shortage frame013136 matches the installed HOVER_RECTANGLE pixels.
 	var style := make_style("HOVER_RECTANGLE",8)
@@ -187,7 +227,7 @@ static func bitmap_font(path: String) -> FontFile:
 		for x in image.get_width():
 			var pixel := image.get_pixel(x, y)
 			var keyed := pixel.r > 0.99 and pixel.b > 0.99 and pixel.g < 0.01
-			image.set_pixel(x, y, Color(1, 1, 1, 0.0 if keyed else maxf(pixel.r, maxf(pixel.g, pixel.b)) * pixel.a))
+			image.set_pixel(x, y, Color(0, 0, 0, 0) if keyed else Color(1, 1, 1, maxf(pixel.r, maxf(pixel.g, pixel.b)) * pixel.a))
 	var font := FontFile.new()
 	font.font_name = "Dwarf Fortress installed bitmap"
 	font.fixed_size = cell.y

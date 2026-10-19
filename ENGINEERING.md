@@ -675,6 +675,59 @@ Work orders panels; build, stockpile and zone editors exist but are hidden, and 
 screens are not implemented. Windows x64 packages bundle the viewer and a bridge setup launcher;
 source builds are also supported. Both require the pinned Steam release of Dwarf Fortress.
 
+## Viewer preferences
+
+The upper-right gear opens the viewer preferences. Escape opens
+this menu from normal play and closes it again; active panels, designation tools,
+and captured Walk input retain their back/cancel behavior first. Holding Escape
+does not repeatedly toggle the menu.
+
+Display contains saved Windowed and desktop Borderless fullscreen modes, with
+standard windowed resolution presets. Apply previews the choice; Keep changes
+persists it. Revert, closing Settings or a 15-second timeout restores the previous
+actual window mode, size and position. Borderless fullscreen uses desktop resolution;
+windowed sizes are clamped to the current screen work area. Startup restores them
+only after an explicit display selection. Automatic interface scaling (the default), manual interface scale,
+targeting grid, visual style, creature scaling
+and combat effects are independent. Disabled manual scale controls cannot change
+the automatic preference through value-change signals. Camera contains view mode and movement speed. Audio contains
+mute and the existing four volume controls. Tabs keep the menu compact, with
+independently scrolling contents and a fixed Close button. Preferences continue
+to use the existing presentation/audio configuration stores. This viewer-owned
+surface is an explicit exception to native gameplay UI parity; it does not expose
+unfinished native Options routes. F10 remains the interface recovery shortcut.
+
+Automatic scaling uses the native default 190x64 target grid with whole-pixel
+8x12-derived cells, independently of world zoom. Manual sizing supports 75-400%
+and fits small windows. Existing non-default manual sizes remain manual; legacy
+default-size preferences gain automatic sizing. The HUD, minimap, information,
+construction, hover and inspection canvases share both scale axes. Captured native
+geometry is recorded in `fixtures/hud/automatic_scale.json`; `hud_scale_test`
+checks those sizes, manual input coordinates and preference persistence.
+
+The main HUD retains native visible slots independently of route availability:
+all eight information icons, Stocks, the four bottom action groups, map controls,
+and military/world buttons keep their native footprint. Unfinished routes remain
+inert, per the maintainer's visual-parity direction. The upper-right gear opens
+DF3D Settings; the separate bottom-right Settings text button is removed. Help
+remains unwired. DFHack logo/Sitemap adornments are omitted at the maintainer's
+request. No extracted artwork is packaged.
+
+`native_hud.gdshader` reconstructs each installed 8x12 UI cell independently with
+bounded, byte-rounded Lanczos3 at fractional scales and nearest at integer scales.
+The bitmap font keys magenta to transparent black, preserving native straight-alpha
+filtering; neighboring glyphs cannot bleed into one another. Text tint is applied
+before reconstruction so native colored-edge overshoot is preserved. The moon
+uses a Sprite2D at physical-pixel coordinates to avoid Control rounding before
+canvas scaling. One shared material
+also covers arriving notifications and rebuilt tool rows. This canvas path is
+independent of world color postprocessing. Protected DF53.16 evidence in
+`build/notes/visual-polish/native-20261013-114704/w1920h1080.png` establishes the
+1920x1080 anchors and source filtering. `build/notes/hud-fidelity/` contains the
+GPU comparison and full-scene replay. The replay transcribes native header values
+only in its ignored harness; product labels remain driven by session data.
+
+
 ## Windows package
 
 Run `DF3D-0.1.0-windows-x64.exe`, select your installed Dwarf Fortress, and use **Set up bridge**
@@ -685,10 +738,24 @@ Setup verifies file hashes and backs up replaced files under `%LOCALAPPDATA%/DF3
 **Restore bridge files** reverses setup, refusing to overwrite files changed afterward.
 Extracted application files and logs are under `%LOCALAPPDATA%/DF3D`.
 
-The release launcher leaves the native game window available. Closing the packaged viewer
-does not terminate DF. The 0.1.0-rc.1 cut excludes save-and-close; viewer exit sends
-no save command. DF remains running with its simulation and save ownership intact.
-This differs from the temporary owned session started by the source `Play.cmd` launcher below.
+The release launcher starts DF and the viewer inside one Windows kill-on-close
+job. It refuses to attach to an existing DF instance. Either child exiting ends
+the owned session; launcher failure and partial-startup errors also clean it up.
+The Settings menu includes **Exit game**, and the window close button uses the
+same native DF quit-without-saving confirmation (installed frame, bitmap font and
+Quit/Cancel artwork). Unsaved progress is discarded only after explicit confirmation;
+known pending saves/operations disable confirmation until they settle. Exit does
+not initiate a save. Abrupt process failures still terminate the owned session.
+The native DF window remains available during play. Explicit developer `-Attach`
+sessions retain their separate contract and never terminate an unrelated game.
+Existing packaged RC5 binaries are unchanged until a new package is built.
+
+Run `python tools/release/test_lifecycle.py` to compile and test Windows process
+ownership using stand-ins: normal cleanup, failed startup, owner crash, duplicate
+cleanup and unrelated-process preservation. `release_close_test` covers exit
+confirmation/cancellation, pending saves and duplicate requests; `fortress_hud_test`
+covers Settings. These checks do not exercise a real fortress save or certify a
+new packaged release.
 
 ## Build from source
 
@@ -1399,8 +1466,9 @@ Using the actual rendered background reduces encoded-RGB blend error to 0.53–0
 RGB bytes per tile across 2,419 uniform foreground samples; linear blending gives
 13.54–16.20. This isolates most of the earlier native residual to the background
 comparison. Filtering/rounding outliers remain, so this is evidence for the blend
-model, not exact pixel acceptance. Production compositing correction remains open,
-including transparent underlays and sorting. Native screenshots were inspected;
+model, not exact pixel acceptance. These captures establish the native blend model. The world color pipeline
+described below now applies encoded-RGB blending to ordinary 3D layers; this is
+not a fresh live acceptance of every Track workflow or sort order. Native screenshots were inspected;
 DF49752 ended at frame zero with the clone manifest unchanged and no classified
 or unclassified errors in captured logs. See `blend_analysis.matched_native_baseline`.
 Protected `build/track-controller-production-20261001-000209` exercises the actual
@@ -4177,6 +4245,15 @@ skips unrelated general Areas fixture objects. Named reference cases temporarily
 change room-use types or a wall tile to reproduce the captured native setup,
 then verify restoration. Exact existing-zone snapshots, including collision flags,
 and furniture links must survive each scenario's cleanup.
+The loader switches from the save chooser to a dedicated loading panel immediately
+after a load command is submitted. Its title artwork, font, border and named
+`SKILL_PROGRESS_BAR_*` segments resolve from the installed DF assets; no game
+art is shipped. Native save loading has no percentage in the session protocol,
+so the bar animates indeterminately. During map transfer it displays actual
+known/total block counts, then animates during final presentation preparation.
+Only the existing readiness gate exposes play; errors return to the chooser.
+These are stage indicators, not an estimated overall load percentage.
+
 The loading screen conceals the world with the camera layer mask while keeping
 render owners active; hiding the root during replacement triggers uninitialized
 RID errors in the supported renderer. The original mask is restored on entry.
@@ -4354,14 +4431,65 @@ Results and logs go in `build/qa/`; missing prerequisites are reported as incomp
 [test manifest](tools/qa/checks.json) lists what each group covers. Known Godot engine warnings
 are reported as `passed_with_known_issues` (rules in [tools/qa/diagnostics.py](tools/qa/diagnostics.py));
 they are recognized only by the Steam build's version string, so the official Godot download
-runs the viewer but fails those checks. The D3D12 separate-renderer shutdown can also leak two plain engine Objects: this
-was reproduced on 2026-09-28 in an empty project with no DF3D scripts or extension.
+runs the viewer but fails those checks. The separate-renderer shutdown can also leak two plain
+engine Objects. Empty projects with no DF3D scripts or extension reproduced this on
+D3D12 (2026-09-28) and Vulkan (2026-10-07), using the pinned engine.
 The classifier recognizes exactly that pair only with the same pinned process's
-D3D12 renderer, startup notice and known finalize callsite; extra objects, other
-renderers, changed callsites and isolated leak warnings still fail. Local reproduction
-and raw trace are in `build/notes/pm/leak-isolation/`. This remains a known engine
+D3D12 or Vulkan renderer, startup notice and known finalize callsite; extra objects,
+other renderers, changed callsites and isolated leak warnings still fail. Raw traces
+are in `build/notes/pm/leak-isolation/` and
+`build/notes/vulkan-acceptance/empty-vulkan.log`. This remains a known engine
 issue, not a clean pass. One known failure: the GPU combat test reports a
 misaligned billboard hit effect.
+
+### Windows rendering backend
+
+Border-drag resizing is disabled in project settings because horizontal drag
+jiggling still caused Vulkan device loss with the attempted native resize guard.
+That guard and its Windows subclass are removed. Window resolution and display
+mode are changed through Settings, with Keep/Revert and timeout rollback.
+Explicit Apply/Revert pauses frame submission and drains rendering around the
+bounded window change. Separate rendering remains enabled during normal play;
+there is no native window hook or per-frame synchronization.
+
+Vulkan is the Windows default; launch with `--rendering-driver d3d12` for the
+D3D12 fallback. The pinned Godot D3D12 path allocates separate vertex, attribute
+and index resources per material surface. Small resources incur substantial
+allocation padding; logical Godot buffer counters do not include that padding.
+Vulkan avoids the observed memory amplification without changing terrain encoding.
+
+Acceptance on Godot 4.7.2 Steam / RTX 3080 Ti (2026-10-07) exercised two Warmbeers
+fixture loads, each with 20 maximize/restore transitions while terrain assembly
+was pending. Both completed, with camera modes, level changes, FPS entry/exit,
+post-load resizing and nonempty viewport capture. Interaction, camera mode, walk
+camera, cutout picking and terrain occlusion suites passed with known engine
+diagnostics. The prior maximize-during-loading swapchain failure did not recur.
+Scripts, logs, captures and the scene-reachable surface census are in
+`build/notes/vulkan-acceptance/`. This establishes recorded-fixture acceptance on
+that GPU/driver; live save loading and other graphics adapters are not covered.
+
+### First-person camera ownership
+
+Walk groups movement, jump/stairs and mouse/mode controls inside the existing
+DF HOVER_RECTANGLE frame, using the shared runtime DF font at its native 12px
+size and HUD scale. Yellow keys align beside their actions; hold bindings are
+explicit. The mouse row switches between Click/Look around and Esc/Release mouse.
+F5 is the displayed exit binding. Full instructions remain in Help, including
+the alternate F4 exit. Camera-blocking menus hide the hint.
+
+Walk (F5) transfers the actual camera eye and direction into the local gravity
+controller, without choosing terrain, moving to a floor, or changing Truescale,
+visual style, or creature size. Entry requires loaded terrain. Space above and
+beside the map is air; unknown interior tiles remain collision barriers. Cursor
+release stops movement input but gravity continues; modal input blocking pauses
+movement. Leaving Walk resumes Free controls at the current eye and direction,
+retaining the current cutaway. Explicit map/entity focus can then reposition it.
+Connected up/down stair tiles support continuous movement at two levels per
+second: hold Space to climb and Q to descend. Space remains jump elsewhere.
+Climbing stops at the end of the connection without auto-jumping; releasing the
+control restores gravity. Stair motion uses the full body collision sweep, so
+adjacent ceilings/walls still require clearance. No lateral centering or camera
+snap is applied. The controller never sends simulation commands to DF.
 
 ### Installation and shipping checks
 
@@ -4492,6 +4620,63 @@ holds profiling and debugging lanes; see each script's header.
 
 ### Rendering depth and sprite visibility
 
+Floor shadows use the installed `WALL_SHADOW_*` artwork and the mesher's eight
+wall-neighbor bits. They are composited into palette-resolved floor tiles,
+cached by source tile, palette and neighbor mask, and retired on asset replacement.
+`wall_shadows_53_16.txt` records all 256 masks from an owned native comparison;
+the compositor tests cover alpha and rotation. This applies to visible floor
+tiles, not an invented scene-wide lighting filter. Natural stone engravings use
+the native non-palette engraving artwork (DF 53.16's dolomite sample matches its
+installed RGBA image byte-for-byte).
+
+Container contents and statue depictions are semantic observations. The additive
+`MapItem` contents fields distinguish unknown (`UINT32_MAX`) from observed empty
+and describe the first direct contained item in native reference order. Nested
+contents are not flattened. The optional color descriptor comes from native
+`getColorWhetherDyedOrNot`, so dyed cloth uses its observed dye color instead of
+the undyed material palette. Unknown colors retain the material fallback.
+The bridge refreshes them on ordinary item visits,
+so a stationary container can change appearance. Palette-resolved content layers
+are owned by the item sprite resource cache; asset/session replacement retires
+them. `container_contents_test` verifies pixel changes on fill/replacement/empty,
+stable placement, dye-only recoloring, resource reuse and retirement.
+
+Optional `StatueFacts` describe quality, subject/caste raw identifiers and event
+kind. The bridge decodes native semantic art flags, never viewport texture IDs.
+Installed statues combine their quality pedestal and installed subject artwork;
+loose statues use the wrapped transport image. Northward figure fragments use a
+shader-only foreground lift in straight-down views above same-level walls and
+below the next floor. Angled views retain the shared physical pedestal band,
+without becoming support for moving items/creatures or rebuilding on camera
+movement.
+Unknown subjects retain the native generic figure. These are additive table
+fields with explicit unknown defaults: the mirror schema version remains
+compatible and old recordings do not acquire fabricated contents/depiction facts.
+The graphics cache format is bumped because statue creature definitions are now
+indexed. Rebuild bridge and viewer to observe the new facts in live sessions.
+
+Native acceptance on DF 53.16 used a verified, owned save clone without saving:
+400 container counts/first kinds and 10 installed statue quality/subject records
+matched independent native observations. Evidence is in ignored
+`build/notes/visual-polish/native-20261013-111306`; the 256-shadow oracle is in
+`native-20261013-103947`. These comparisons cover the captured scene, not all
+possible content, artifact or depiction variants. Bed bedding and directional
+bridge artwork remain separate unimplemented visual semantics; this polish pass
+does not claim those features.
+
+Terrain atlas sampling uses per-face cell centers in CUSTOM2 (terrain in xy,
+ground spatter in zw); furniture fragments also retain their atlas center in xy.
+MSAA edge fragments can extrapolate UVs beyond their
+primitive, so interpolated UVs must not select the atlas cell. Pooling, spatial
+batching and restored source meshes preserve this stream. `terrain_seams_test`
+checks fractional camera offsets/zooms across ordinary, array, spatter, cutout,
+furniture and planned-furniture
+sampling; `mesh_batches_test` verifies the corresponding vertex attributes.
+Furniture uses native texture alpha as well as contour geometry: the 128-alpha
+outline/shadow pixels must blend over the floor instead of becoming opaque gray
+bands. A depth prepass retains opaque furniture occlusion. The seam check also
+verifies half-transparent furniture/planned art against a colored background.
+
 Billboard visibility bounds follow the fragment shader's ceiling clip. Item preparation
 retains separate source-query `bounds` and renderer `render_bounds`; never use the clipped
 box to track roof dependencies, since removing a roof must expand visibility again.
@@ -4502,10 +4687,83 @@ bounds or rewrite sprite payloads. `item_preparation_gpu` covers roof lowering, 
 removal and style transitions; `sprite_ceiling_revision_test` covers source invalidation.
 
 Terrain and buildings render through the full map depth below the selected level.
+Their geometry stays resident across level and depth changes. Each terrain block
+has common faces plus covered-only and cut-only alternatives. Opaque terrain uses
+32x32x16 batches (two DF blocks square, sixteen levels high). Source meshes and
+occluders retain per-level parents for semantic visibility; merged batches live
+under the terrain root. Their CUSTOM1 stream records source level and alternative.
+Bulk faces and cut-only caps have separate batches within each spatial region;
+only the slab containing the top level submits cap batches. Shared batch materials
+select the active depth range and cut alternative in the
+vertex shader, clipping excluded triangles before rasterization. Entire slabs
+outside the depth range are hidden. Slice changes update material state and slab
+visibility without remeshing or buffer uploads. Source materials stay independent
+so disabling batching restores the same per-level rendering. Buildings retain
+their per-level batching; fluid/ghost-containing terrain sources stay independent.
+Frustum and occlusion culling still control submission of resident geometry.
+
+Terrain consolidates compatible texture surfaces before their first GPU upload,
+using immutable texture-array banks. Spatial batches preserve those per-vertex
+texture layers. Hiding an original mesh after batching does not release its GPU
+buffers, so consolidating only the final batches leaves texture-rich maps exposed
+to renderer resource-pool exhaustion. Publishing a terrain batch releases its
+duplicate source GPU surfaces while retaining CPU arrays, materials and bounds.
+An edit retains its published batch until the complete replacement is ready.
+Rebuilding reads retained CPU arrays and materials without restoring unchanged
+source GPU meshes. Publication attaches the replacement before releasing the old
+batch. Removed terrain may remain visible until that publication; semantic picking
+and cutaways continue to read current sources. Leaving a group, disabling batching,
+or clearing with restoration restores source drawing; unsupported replacement input
+falls back to current sources instead of retaining an obsolete batch indefinitely.
+Changing height retains the published buffers. Terrain teardown clears
+batches without restoring sources that are about to be destroyed. Building meshes
+retain their existing source-buffer ownership for presentation transformations.
+`terrain_surface_inputs` and `terrain_surface_uploads` count pre-consolidation and
+initially uploaded source surfaces. Batch statistics expose `source_surfaces` and
+`retired_source_meshes`; settled terrain should have no duplicate source surfaces.
+`mesh_batches_test` checks this ownership, restores source drawing when batching is
+disabled, and compares material/vertex data at the GPU's color/normal precision.
+`mesh_batches_lifecycle_test` builds an optional, separate test extension and checks
+retired-source gathering, cancellation, deletion, fallback, teardown and edit
+priority with deterministic steps. It does not add test bindings to the viewer.
+`terrain_slabs_gpu` compares batched and source-rendered pixels across slab
+boundaries, cut alternatives and shallow depth windows. `mesh_batches_test` also
+compares the selected vertex/material streams and asserts no slice-driven rebuilds.
+
+Initial preparation covers the entire map, including levels above the selected cut.
+This trades loading time and resident memory for predictable vertical travel.
+Terrain preparation and batch flushing each use an 8 ms soft budget during loading
+and a 2 ms soft budget afterward. Published groups dirtied by edits take priority
+over new groups and receive at least a 4 ms batch-flush budget to shorten stale
+visuals; one indivisible job can exceed its budget, and this is not a frame-count
+guarantee.
+Source edits reevaluate the changed block and already resident neighbors in its
+3-by-3-by-3 dependency neighborhood, including hidden levels and late block arrivals.
+Exact CPU surface/material comparison preserves unchanged layer meshes and batches;
+only changed payloads are uploaded again. Spatial instances and unchanged opaque
+occlusion shapes survive mesh replacements. Occluder replacement/removal retains
+the old resource until its instance rebind/detach has been submitted, so the render
+thread cannot receive a resource free before the corresponding instance update.
+Session, map-size, asset and reveal changes reset the appropriate geometry owners.
+Occluder instances share immutable block-local shapes through a geometry-only cache
+bounded to 4096 entries; that cache can survive session replacement. Eviction drops
+the cache reference without invalidating instances still using the shape.
+`built_block_count` counts prepared logical blocks, including empty blocks;
+face counters describe resident geometry, including inactive cut alternatives.
+`mesh_batches_test` asserts zero terrain/building rebuilds and batch invalidations
+during level/depth changes. `terrain_occluder_test` compares retained geometry after
+hidden source edits against fresh builds; the pure mesher tests verify both face
+alternatives exactly against the original cut mesher.
+
 Items and creatures render on the selected level and eleven levels below it.
 This range follows the selected level; descending brings nearby sprites back.
 The range check precedes appearance preparation, and cutout picking uses the same
 filtered render arrays. Terrain residency and semantic source data are independent.
+The shared stack/support atlas has stable map-wide addressing. Level and depth
+changes refresh visible sprite membership without reallocating the atlas or
+re-evaluating unchanged terrain support. Session, map-size, asset and reveal
+changes still reset its owning layout cache. Terrain and item changes outside the
+render window update retained membership so returning levels use current data.
 The backdrop stays below the lowest map/window layer, rather than blocking deep pits.
 Projectiles and transient effects retain their existing visibility rules.
 
@@ -4750,8 +5008,8 @@ surface. See fixtures/reports/pause_on_new.json. Reports remains hidden.
 Reports recenter integration (2026-10-01): fortress_ui constructs Reports through
 a staged route and connects its focus signal to the shared focus_tile camera path.
 Reports and its notification rail remain hidden via allows_launcher. The focus
-path exits Walk before selecting the new elevation (Walk restores its prior
-cutaway), then synchronizes the rig level before focus. Report coordinates use
+path exits Walk before selecting the new elevation, then synchronizes the rig
+level before focus. Report coordinates use
 DF x,y,z while Df3dWorld.map_size uses render x,elevation,y; off-map clamping
 accounts for that mapping.
 
@@ -5870,7 +6128,7 @@ outside the captured gesture sample.
 Header inherited16px font vs native installed8x12 cells and used64px frame,
 forcing count/calendar content beneath the alert popup. Applied12px/zero-line-gap
 white value labels, removed extra mood/resource column separation, and used48px
-frame with native viewport y remainder. Heading/calendar/population fit actual
+frame anchored flush to the viewport top (including non-cell-aligned window heights). Heading/calendar/population fit actual
 main-scene143101 at960x600; frame593x48 at8,0. Screenshot viewer-unit.png inspected:
 all current header text readable above popup. QA hud-native-header-metrics passes.
 Full main-scene input/resize/Back/detach/reconnect/fresh-open checks also pass;
@@ -5958,8 +6216,9 @@ Core19/bridge compilation and corrected HUD/extension checks pass. Protected mai
 scene152504 verified all28 phase changes and zero differences across28672 native
 moon pixels, then popup/input/reconnect checks; paused clone unchanged, known3
 Godot diagnostics only. Harness waits for both bridge and HUD phase before capture.
-Native header integration remains incomplete: gear/help, Stocks, automatic scaling
-and wider geometry/overflow coverage are outstanding.
+Native HUD appearance/scaling now follows the viewer-settings section above.
+Native options/help and Stocks actions remain unfinished; visible slots are inert
+except the gear, which opens DF3D Settings.
 
 ### Wide native header groups (2026-10-01)
 
@@ -5967,7 +6226,9 @@ Mood icons/counts and resource labels now use captured native alignment/colors,
 including gray None counts. Protected152950 matches entire mood/resource groups
 pixel-for-pixel at1200x800,1400x800,1600x900; HUD QA passes. Paused clone unchanged,
 known main-scene diagnostics only. Current count lengths are covered; automatic
-scaling at1920x1080, overflow, Stocks and native options/help remain unfinished.
+scaling and visible Stocks geometry are now covered by the main-HUD pass above.
+Native Stocks/options/help actions remain unfinished; long-value overflow has
+not received full native acceptance.
 
 ### Native Options viewport layout (2026-10-01)
 
@@ -6161,3 +6422,131 @@ The effect runner failed a compound assertion before recording final completion
 fields; this remains explicit incomplete evidence, not a fully passing native flow.
 Semantic overwrite confirmation is still absent. Record completion fields before
 asserting them in future captures, and retain separate effect and UI acceptance.
+
+## Native pixel reference renderer
+
+`project/shaders/native_tile_composite.gdshader` is a controlled top-down
+reference path, exercised by `native_pixel_parity_test`. It is not connected to
+ordinary fortress rendering. Two independently supplied tile layers are sampled
+with native NEAREST positioning, blended in encoded RGB, rounded to an 8-bit
+result, then decoded for Godot's linear output pipeline. The opaque background
+and one foreground layer are explicit inputs; this does not use a screen-texture
+feedback approximation or claim to solve general transparent depth sorting.
+
+Run `python tools/qa/verify.py --check native_pixel_parity_test`. The GPU check
+creates synthetic color, alpha-gradient and high-frequency atlas tiles and
+compares complete RGBA output hashes against native DF 53.16 build 24557528 at
+32, 48 and 64 destination pixels per 32-pixel source tile. Camera scale changes
+reuse resident geometry. Its fixture contains hashes/provenance, no game art.
+
+Native nearest sampling selects from each destination pixel's leading edge;
+ordinary center-based GPU nearest sampling disagrees at fractional scales.
+Rounding the encoded blend before conversion is also required: HDR precision
+otherwise changes near-half values by one byte. Both details are covered by
+zero-tolerance whole-image comparisons (237,568 pixels across the three sizes).
+
+Protected native captures `build/notes/pixel-parity/native-20261013-124823`
+(synthetic) and `native-20261013-125804` (installed artwork) used a paused,
+verified save clone and temporary renderer overlays, then exited without saving.
+The artwork run repeats the 32-cell scene with statues, bins, barrels and floor
+textures, with zero differing pixels at all three NEAREST scales. Diagnostic
+native texture exports stay ignored; they are not runtime asset inputs. This
+establishes the compositor/sampler for identical input layers, not independent
+semantic asset selection or full-fortress parity.
+
+The reference shader intentionally retains its exact NEAREST scope. Main-world
+AUTO filtering and color blending now use the production path below. Native's
+precise AUTO transition thresholds and every Lanczos rounding operation are not
+claimed identical; the maintainer accepted nearly identical output adapted to 3D.
+
+## Native-like world color and AUTO filtering
+
+Native-style world rendering is off by default in every camera mode. The saved
+Display toggle in DF3D Settings enables it immediately without rebuilding meshes
+or materials. Off restores standard linear-light blending. The separate saved
+Texture smoothing toggle defaults off: magnified 3D textures use nearest texels,
+while minified surfaces retain bounded mip/anisotropic filtering. Enabling
+smoothing restores linear magnification. Native aligned-view reconstruction takes
+precedence when native rendering is enabled. The HUD filter and sprite
+correctness fixes remain unchanged.
+
+When enabled, the main world camera installs `world_color_pipeline.gd`. All world materials
+output encoded RGB into the world target so hardware transparency and MSAA
+resolve blend consistently, including overlapping transparent layers. A single
+`world_color_effect.gd` compute pass decodes the resolved result after transparent
+draws, before tonemapping and the separate canvas/HUD pass. It does not sample a
+stale opaque screen copy. This contract applies to the current unshaded world;
+new world shaders/materials must use `world_output`, and additional world cameras
+must install the matching compositor. Do not enable linear-light post effects
+inside the encoded world pass without explicitly accounting for this contract.
+
+`world_view` duplicates its Environment before installing the pass. The owner
+restores clear color/compositor and releases the global mode on teardown. Compute
+resources are created and freed on the render thread; cached uniform sets follow
+render-target lifetimes. Headless rendering does not enable the pass. Standard
+world overlays, designations, liquids and construction ghosts now use matching
+shader materials; UI textures and HUD colors retain their existing canvas path.
+
+World texture sampling reads encoded source bytes before filtering. At aligned
+magnification, AUTO uses nearest within 0.025 of an integer scale and radius-three
+Lanczos elsewhere, rounding/clamping the horizontal intermediate and final
+sample. Those are viewer policy thresholds, not a claim to have recovered all
+native AUTO thresholds. Oblique and minified surfaces use mip filtering, with
+anisotropic sampling for isolated textures and bounded LOD/footprints for atlas
+cells. Stable per-face atlas centers remain mandatory. Array batches and ordinary
+textures implement the same kernels; camera changes do not rebuild geometry.
+
+Immutable world artwork clears RGB only where source alpha is zero before
+publication. Existing mipmaps are regenerated when this cleanup changes the
+base level. Palette/composite preparation therefore precedes normalization;
+partially transparent shadows and opaque colors are preserved. Native artwork
+uses transparent black, while installed PNGs can contain invisible white and
+edge-dilated composites can retain hidden gray. Filtering those hidden colors
+washed out the statue outline even after transparency ordering was corrected.
+
+Furniture with artwork extending beyond its building footprint retains an
+individual draw instead of joining material-sorted building batches. Its
+`furniture_order.gd` uses bounds-centered camera depth in angled views. In the
+straight-down view it includes the same native foreground lift as the shader,
+with a camera-relative south-over-north row tie-break. Camera changes update
+only instance sorting offsets, never geometry or material resources. Other
+buildings retain their spatial batches. This is object-level transparency
+sorting, not a general solution for intersecting transparent geometry.
+
+`furniture_order_test` checks overlapping half-alpha surfaces where native lift
+reverses physical depth, four angled directions, return to top-down, MSAA off/on,
+and stable mesh/material identities. Pure asset tests check hidden-RGB cleanup
+and preservation of partial alpha; recorded statue checks cover uploaded RGB
+and picking. The matched native crop in `build/notes/alpha-integration` has mean
+RGB byte error 0.055 and maximum 2 after both corrections, compared with mean
+2.073 before them. This is scoped visual evidence, not full-fortress pixel parity.
+
+Furniture tops use a full source-tile alpha surface above the existing opaque
+silhouette sides/bottom. Trimming that surface to the 50%-alpha contour clips
+partial-alpha outlines and the filter's reconstruction fringe into hard steps.
+The transparent material determines visible coverage; no additional framebuffer
+is needed. Opaque actor meshes retain contour caps. Building picking uses retained
+CPU vertex/UV streams and source alpha, so the added transparent area cannot
+intercept selection. Physical footprint/depth allocation still uses the original
+opaque mask. The mesher regression covers cap coverage, unchanged sides/bottom,
+partial-only images and empty images; the recorded depth-cache check exercises
+both transparent-padding rejection and opaque statue picks.
+
+`world_color_pipeline_test` renders actual terrain/furniture layers through the
+production shaders and compositor, using synthetic native capture references at
+32 and 48 pixels per tile. Ordinary/array paths with MSAA off/on have mean RGB
+byte errors 0.034 and 0.066 respectively, maximum errors 1 and 3. It also checks
+three overlapping layers (maximum error 0.535), unchanged clear/HUD colors and
+idempotent teardown. The exact single-quad NEAREST regression remains separate.
+
+Evidence: `build/notes/native-auto/final-qa` passes construction/designation,
+combat-anchor, status-depth, production-color and resource-lifetime checks with
+only documented Godot diagnostics. The earlier `qa` run also passes depth-cache,
+mesh batching, world sampling, seam and exact-reference checks; its failures were
+the subsequently corrected overlay-test material API and render-thread resource
+cleanup. Fresh `verified-*` captures cover straight-down, isometric, distant and
+perspective views and have empty stderr. The matched pedestal crop's mean RGB
+byte error fell from 6.67 to 2.48. On the local RTX 3080 Ti at 1920x1080, sampled
+median GPU times were 5.11 ms straight-down, 4.96 ms close isometric, 1.98 ms distant
+and 4.62 ms perspective. These are scene-specific observations, not universal
+frame-rate guarantees or a controlled before/after performance benchmark.

@@ -31,6 +31,14 @@ inline DepthInterval buildingDepth(int originY,int drawY,bool furniture=true) {
     const float north=float(std::max(0,originY-drawY));
     return {kBuildingBottom,kBuildingThickness+kBuildingSpillBias*north/(north+1)};
 }
+// Statue figures extend north of their physical pedestal. Native draws this
+// foreground artwork over same-level walls. This is a top-down view priority,
+// applied by the furniture shader; resident geometry uses buildingDepth so
+// angled views keep both artwork rows connected. It never supports occupants.
+inline DepthInterval statueFigureDepth(int originY,int drawY) {
+    return drawY<originY ? DepthInterval{1.0f-kFloorHeight+.005f,kFloorHeight-.015f}
+                        : buildingDepth(originY,drawY);
+}
 using DepthTile = std::tuple<int,int,int>;
 struct DepthTileHash {
     size_t operator()(const DepthTile& tile) const noexcept {

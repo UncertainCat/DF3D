@@ -133,7 +133,10 @@ Pick floorPick(const AssetIndex& idx, const TerrainQuery& q, std::string_view ra
     case MaterialKind::Stone:
     case MaterialKind::Mineral:
     case MaterialKind::Gem:
-      if (engraved) return {"FLOOR_STONE_ENGRAVED_PALETTE", "floor.stone.engraved"};
+      // Natural stone engravings retain the native neutral artwork. The
+      // palette version incorrectly turns the entire engraving into its rock
+      // color (notably pink dolomite). Verified against DF 53.16's RGBA tile.
+      if (engraved) return {"FLOOR_STONE_ENGRAVED_NON_PALETTE", "floor.stone.engraved"};
       if (smooth) return {"SMOOTH_FLOOR", "floor.stone.smooth"};
       return {"STONE_FLOOR_5", "floor.stone"};
     case MaterialKind::Magma:

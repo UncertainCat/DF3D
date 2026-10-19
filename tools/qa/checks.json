@@ -9,6 +9,18 @@
   },
   "checks": [
     {
+      "id": "release_lifecycle_test",
+      "lane": "core",
+      "kind": "python",
+      "command": [
+        "tools/release/test_lifecycle.py"
+      ],
+      "completion": "LIFECYCLE_TEST_PASS",
+      "timeout": 60,
+      "prerequisites": [],
+      "notes": "Windows stand-ins only; checks owned child cleanup without launching DF."
+    },
+    {
       "id": "location_details_format_test",
       "lane": "core",
       "kind": "godot",
@@ -1567,7 +1579,7 @@
       "kind": "godot",
       "script": "res://tests/depth_footprint_cache_test.gd",
       "completion": "^DEPTH_FOOTPRINT_CACHE_TEST_PASS",
-      "timeout": 60,
+      "timeout": 180,
       "prerequisites": [
         "extension_build",
         "df_assets",
@@ -1775,6 +1787,15 @@
       "notes": "Also replays build/depth-cache.df3dfix for render-group revision/slice/ID-reuse checks (merged item_render_groups_test)."
     },
     {
+      "id": "container_contents_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/container_contents_test.gd",
+      "completion": "^CONTAINER_CONTENTS_PASS",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "item_updates_fixture"]
+    },
+    {
       "id": "item_upload_probe_test",
       "lane": "core",
       "kind": "godot",
@@ -1784,6 +1805,26 @@
       "prerequisites": [
         "extension_build"
       ]
+    },
+    {
+      "id": "mesh_batches_lifecycle_test",
+      "lane": "core",
+      "kind": "python",
+      "command": [
+        "presentations/godot/extension/tests/run_mesh_batches_lifecycle.py",
+        "--godot",
+        "{godot}",
+        "--build-dir",
+        "{root}/build/godot-ext",
+        "--output",
+        "{output}/mesh-batches-lifecycle"
+      ],
+      "completion": "^MESH_BATCHES_LIFECYCLE failures=0",
+      "timeout": 360,
+      "prerequisites": [
+        "extension_build"
+      ],
+      "notes": "Builds a separate optional GDExtension harness; production registration/DLL contain no test API. Deterministic source retirement, publication, cancellation, fallback and edit priority checks."
     },
     {
       "id": "mesh_batches_test",
@@ -2231,6 +2272,48 @@
       ]
     },
     {
+      "id": "world_color_pipeline_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/world_color_pipeline_test.gd",
+      "completion": "^WORLD_COLOR_PIPELINE_PASS$",
+      "timeout": 90,
+      "prerequisites": ["extension_build", "real_renderer"]
+    },
+      {
+        "id": "furniture_order_test",
+        "lane": "gpu",
+        "kind": "godot",
+        "script": "res://tests/furniture_order_test.gd",
+        "completion": "^FURNITURE_ORDER_PASS$",
+        "timeout": 90,
+        "prerequisites": ["extension_build", "real_renderer"]
+      },
+    {
+      "id": "native_pixel_parity_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/native_pixel_parity_test.gd",
+      "completion": "^NATIVE_PIXEL_PARITY_PASS$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "terrain_seams_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/terrain_seams_test.gd",
+      "completion": "^TERRAIN_SEAMS_PASS$",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
+    },
+    {
       "id": "resource_lifetime_scene_test",
       "lane": "assets",
       "kind": "godot",
@@ -2241,6 +2324,19 @@
         "extension_build",
         "df_assets",
         "resource_lifetime_fixture"
+      ]
+    },
+    {
+      "id": "terrain_occluder_gpu",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/terrain_occluder_test.gd",
+      "completion": "^TERRAIN_OCCLUDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "render_cache_fixture",
+        "real_renderer"
       ]
     },
     {
@@ -2579,6 +2675,23 @@
       "prerequisites": [
         "extension_build"
       ]
+    },
+    {
+      "id": "terrain_slabs_gpu",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/terrain_slabs_gpu.gd",
+      "completion": "TERRAIN_SLABS_PASS",
+      "timeout": 300,
+      "environment": {
+        "DF3D_SLAB_CAPTURE": "{output}"
+      },
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "recorded_mature_fixture",
+        "real_renderer"
+      ]
     }
   ],
   "exclusions": [
@@ -2871,6 +2984,11 @@
       "path": "presentations/godot/project/tests/recorded_fixture.gd",
       "status": "helper",
       "reason": "Shared recorded-fixture camera and clock metadata for scene regressions."
+    },
+    {
+      "path": "presentations/godot/project/tests/source_mesh.gd",
+      "status": "helper",
+      "reason": "Inspect retained CPU source surfaces and active GPU surfaces in terrain rendering regressions."
     }
   ]
 }

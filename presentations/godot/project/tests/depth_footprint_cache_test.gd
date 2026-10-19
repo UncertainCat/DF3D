@@ -6,7 +6,7 @@ func check(value: bool, message: String):
 func _initialize(): call_deferred("run")
 
 func settle(world):
-	for frame in 2400:
+	for frame in 12000:
 		world.poll()
 		if world.pending_block_count() == 0 and world.building_pending_count() == 0 and world.composite_pending_count() == 0 and world.item_composite_pending_count() == 0:
 			world.poll()
@@ -23,7 +23,8 @@ func geometry(world) -> Dictionary:
 	var thicknesses = world.item_physical_layout().thicknesses
 	for i in ids.size(): out.items.append([ids[i],positions[i],thicknesses[i]])
 	out.items.sort_custom(func(a,b): return a[0]<b[0] if a[0]!=b[0] else a[1].y<b[1].y)
-	for node in world.get_building_root().get_children():
+	for node in world.get_building_root().find_children("*", "MeshInstance3D", true, false):
+		if not node.is_visible_in_tree(): continue
 		if node.get_meta("df3d_render_batch", false): continue # Compare semantic geometry, independent of submission grouping.
 		var surfaces: Array = []
 		for index in node.mesh.get_surface_count(): surfaces.append(node.mesh.surface_get_arrays(index))
@@ -41,6 +42,37 @@ func run():
 	world.set_window_depth(24)
 	await settle(world)
 	var cached := geometry(world)
+	# Furniture's filter surface extends into transparent image pixels, but
+	# ray selection must retain the opaque silhouette, including north spills.
+	var padding_checks := 0
+	var opaque_hits := 0
+	for node in world.get_building_root().find_children("*", "MeshInstance3D", true, false):
+		if node.get_meta("df3d_building_kind", "") != "Statue": continue
+		var id := str(node.name).trim_prefix("building_").to_int()
+		var slots: PackedInt32Array = node.mesh.get_meta("df3d_pick_slots", PackedInt32Array())
+		var surfaces: Array = node.mesh.get_meta("df3d_batch_arrays", [])
+		for surface in surfaces.size():
+			if slots[surface] < 0: continue
+			var image: Image = world.sprite_texture(slots[surface]).get_image()
+			var arrays: Array = surfaces[surface]
+			var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+			var uvs: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
+			var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
+			for i in range(0, indices.size(), 3):
+				var a := indices[i]; var b := indices[i+1]; var c := indices[i+2]
+				if (vertices[b]-vertices[a]).cross(vertices[c]-vertices[a]).y >= -0.00001: continue
+				for weights in [Vector3(.7,.2,.1), Vector3(.2,.7,.1), Vector3(.2,.1,.7), Vector3(.34,.33,.33)]:
+					var uv: Vector2 = uvs[a]*weights.x+uvs[b]*weights.y+uvs[c]*weights.z
+					var point: Vector3 = vertices[a]*weights.x+vertices[b]*weights.y+vertices[c]*weights.z
+					var alpha := image.get_pixel(clampi(int(uv.x*image.get_width()),0,image.get_width()-1),clampi(int(uv.y*image.get_height()),0,image.get_height()-1)).a
+					var hit: Dictionary = world.pick_building(point+Vector3.UP*2,Vector3.DOWN,world.get_top_z())
+					if alpha == 0:
+						var clear_pixel := image.get_pixel(clampi(int(uv.x*image.get_width()),0,image.get_width()-1),clampi(int(uv.y*image.get_height()),0,image.get_height()-1))
+						check(clear_pixel.r==0 and clear_pixel.g==0 and clear_pixel.b==0, "uploaded furniture clears hidden RGB before filtering")
+						padding_checks += 1
+						check(hit.get("id",-1) != id, "transparent furniture padding is not selectable")
+					elif alpha >= .5 and hit.get("id",-1) == id: opaque_hits += 1
+	check(padding_checks > 0 and opaque_hits > 0, "recorded statues exercise transparent padding and opaque picking")
 	check(world.layout_matches_reference(), "independent layout oracle matches original mature scene depth exactly")
 	check(cached.buildings.size() > 100 and cached.items.size() > 100, "comparison contains substantial real fortress geometry")
 	world.clear_layout_cache()
@@ -49,13 +81,14 @@ func run():
 	world.clear_layout_cache()
 	await settle(world)
 	var before: Dictionary = world.presentation_perf_stats()
-	# Force fresh physical allocation without changing any source building.
+	# View depth changes retain semantic layout and source footprints.
 	world.set_window_depth(25)
 	await settle(world)
 	world.set_window_depth(24)
 	await settle(world)
 	var after: Dictionary = world.presentation_perf_stats()
-	check(after.footprint_cache_hits > before.footprint_cache_hits, "window changes reuse existing source footprints")
+	check(after.footprint_cache_misses == before.footprint_cache_misses, "window changes do not resolve unchanged source footprints")
+	check(after.stack_atlas_revision == before.stack_atlas_revision, "window changes retain physical layout storage")
 	check(geometry(world) == cached, "returning slice restores exactly the same cached geometry")
 	before = after
 	world.set_reveal_hidden(true)

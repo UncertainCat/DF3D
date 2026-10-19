@@ -78,6 +78,13 @@ class SyntheticFort {
   void requestFullTerrain();
   bool terrainEnabled() const { return terrainEnabled_; }
 
+  struct StatueSpec {
+    int8_t quality = -1;
+    ArtSubject subject = ArtSubject::Unknown;
+    std::string subjectRaw, casteRaw;
+    ArtEvent event = ArtEvent::Unknown;
+    friend bool operator==(const StatueSpec&,const StatueSpec&) = default;
+  };
   // --- buildings (v4) ---
   // A building as authored. The builder does not validate specs (validator
   // tests author invalid ones on purpose); the validators do.
@@ -92,6 +99,7 @@ class SyntheticFort {
     uint16_t material = kNoMaterial;
     BuildingStage stage = BuildingStage::Complete;
     BuildingFlags flags = BuildingFlags::NONE;
+    StatueSpec statue;
     friend bool operator==(const BuildingSpec&, const BuildingSpec&) = default;
   };
   // Adds or replaces a building; the next snapshot carries it if it
@@ -122,6 +130,12 @@ class SyntheticFort {
     uint32_t stack = 1;
     ItemFlags flags = ItemFlags::NONE;
     int32_t corpseUnitId = -1;
+    uint32_t containedCount = UINT32_MAX;
+    ItemKind containedKind = ItemKind::Unknown;
+    uint16_t containedMaterial = kNoMaterial;
+    std::string containedSubtypeRaw;
+  std::string containedColor;
+    StatueSpec statue;
     CorpseFlags corpseFlags = CorpseFlags::NONE;  // v5, Corpse / CorpsePiece only
     friend bool operator==(const ItemSpec&, const ItemSpec&) = default;
   };

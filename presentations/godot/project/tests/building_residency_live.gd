@@ -17,7 +17,8 @@ func run():
 	if visual_result.failures != 0:
 		push_error("Building cutout invariants failed"); quit(1); return
 	var focus := Vector3.ZERO
-	for node in scene.world.get_building_root().get_children():
+	for node in scene.world.get_building_root().find_children("*", "MeshInstance3D", true, false):
+		if not node.is_visible_in_tree(): continue
 		if node.get_meta("df3d_building_kind", "") not in ["Workshop", "TradeDepot"]: continue
 		var fragments: Array = node.get_meta("df3d_draw_fragments", [])
 		if fragments.is_empty(): continue
@@ -66,7 +67,8 @@ func run():
 
 func building_mesh_ids() -> Dictionary:
 	var ids := {}
-	for node in scene.world.get_building_root().get_children():
+	for node in scene.world.get_building_root().find_children("*", "MeshInstance3D", true, false):
+		if not node.is_visible_in_tree(): continue
 		if node is MeshInstance3D and node.mesh != null and node.get_meta("df3d_building_kind", "") in ["Workshop", "Furnace", "TradeDepot", "Table", "Chair", "Bed"]:
 			ids[str(node.name)] = node.mesh.get_instance_id()
 	return ids

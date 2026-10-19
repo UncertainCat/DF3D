@@ -40,7 +40,7 @@ public:
         const Dictionary parameters=material->get_meta("df3d_batch_parameters");
         const String shader=material->get_shader()->get_path();
         const bool terrain=shader=="res://shaders/terrain.gdshader" || shader=="res://shaders/terrain_cutout.gdshader";
-        const bool building=shader=="res://shaders/unit_sprite.gdshader";
+        const bool building=shader=="res://shaders/unit_sprite.gdshader" || shader=="res://shaders/furniture_sprite.gdshader";
         if(!terrain && !building)return {source};
         if(building && bool(parameters.get("actor_animated",false)))return {source};
         const StringName parameter=terrain?"albedo_tex":"sprite_tex";
@@ -97,6 +97,12 @@ public:
             for(int i=0;i<names.size();++i)merged->set_shader_parameter(names[i],parameters[names[i]]);
             merged->set_shader_parameter("batch_texture_enabled",true);
             merged->set_shader_parameter("batch_texture",banks_[entry.bank].texture);
+            // Retain explicitly authored uniforms for batch variants. Resource
+            // duplication enumerates shader defaults and synchronizes the renderer.
+            Dictionary uniforms=parameters.duplicate();
+            uniforms["batch_texture_enabled"]=true;
+            uniforms["batch_texture"]=banks_[entry.bank].texture;
+            merged->set_meta("df3d_batch_uniforms",uniforms);
         }
         PackedInt64Array provenance=merged->get_meta("df3d_batch_source_materials",PackedInt64Array());
         if(provenance.size()<=entry.layer)provenance.resize(entry.layer+1);

@@ -8,6 +8,7 @@ render_mode cull_disabled, unshaded;
 #include "res://shaders/shared_stack.gdshaderinc"
 #include "res://shaders/actor_ground.gdshaderinc"
 void vertex() {
+    sprite_tile_center = CUSTOM2.xy;
     batch_layer = CUSTOM0.x;
     float address = COLOR.a;
     bool moving_actor = actor_animated && actor_motion_enabled && address > 0.0;

@@ -1,12 +1,13 @@
 extends "res://scripts/walk_ground.gd"
 # Local kinematic visitor. Fixed steps, real velocity, gravity and swept tile
-# collisions; no chosen landing, cardinal snapping, or ledge traversal paths.
+# collisions; no camera snapping or ledge traversal paths.
 const HEIGHT := 0.62
 const TICK := 1.0 / 120.0
 const GRAVITY := 20.0
 const JUMP_SPEED := 7.2 # A little over one tile of clearance in open space.
 const WALK_SPEED := 3.2
 const SPRINT_SPEED := 5.2
+const STAIR_SPEED := 2.0
 const STEP_HEIGHT := 0.20
 const SKIN := 0.0001
 var feet := Vector3.ZERO
@@ -16,12 +17,13 @@ var grounded := false
 var _accumulator := 0.0
 var _coyote := 0.0
 var _jump_buffer := 0.0
+var _stair_ascent := false
 
-func reset(point: Vector3) -> void:
+func reset(point: Vector3, adjust_support := true) -> void:
 	feet = point
 	begin_step()
 	# A ramp's high footprint edge supports the body, not its center sample.
-	if world != null and collides(feet) and not collides(feet+Vector3.UP*STEP_HEIGHT):
+	if adjust_support and world != null and collides(feet) and not collides(feet+Vector3.UP*STEP_HEIGHT):
 		feet += Vector3.UP*STEP_HEIGHT
 		_sweep(Vector3.DOWN*STEP_HEIGHT)
 	previous = feet
@@ -30,6 +32,7 @@ func reset(point: Vector3) -> void:
 	_accumulator = 0.0
 	_coyote = 0.0
 	_jump_buffer = 0.0
+	_stair_ascent = false
 
 func jump() -> void:
 	_jump_buffer = 0.12
@@ -39,6 +42,10 @@ func collides(point: Vector3, through_stairs := false) -> bool:
 	for x in range(floori(point.x-RADIUS+SKIN),floori(point.x+RADIUS-SKIN)+1):
 		for y in range(floori(point.z-RADIUS+SKIN),floori(point.z+RADIUS-SKIN)+1):
 			for z in range(floori(point.y+SKIN),floori(head-SKIN)+1):
+				# Space above and beside the map is air; unknown interior tiles
+				# remain solid until their terrain is available.
+				var size: Vector3i = world.map_size()
+				if z >= size.y or x < 0 or y < 0 or x >= size.x or y >= size.z: continue
 				var tile := Vector3i(x,y,z)
 				var kind := shape(tile)
 				if kind in ["Unknown","Wall","Fortification","TreeTrunk"]: return true
@@ -85,15 +92,33 @@ func _horizontal(delta: Vector3, can_step: bool) -> void:
 		return
 	feet = stopped
 
+# A stair connection is directional: an up stair below a down stair.
+# Use landing heights rather than integer feet levels so the floor thickness
+# cannot change which connection owns the first/last few centimeters.
+func _stair_landing(direction: int) -> float:
+	var lower := floori(feet.y-FLOOR+SKIN) if direction > 0 else ceili(feet.y-FLOOR-SKIN)-1
+	var tile := Vector3i(floori(feet.x),floori(feet.z),lower)
+	if shape(tile) not in ["StairUp","StairUpDown"]: return NAN
+	if shape(tile+Vector3i(0,0,1)) not in ["StairDown","StairUpDown"]: return NAN
+	for step in [tile,tile+Vector3i(0,0,1)]:
+		if int(info(step).get("liquid_level",0)) >= 4: return NAN
+	return float(lower + (1 if direction > 0 else 0)) + FLOOR
+
 func _tick(wish: Vector3, sprint: bool, jump_held: bool, descend: bool) -> void:
 	previous = feet
-	var on_stairs := shape(Vector3i(floori(feet.x),floori(feet.z),floori(feet.y))) in ["StairDown","StairUpDown"]
-	var dropping := descend and on_stairs
+	if not jump_held: _stair_ascent = false
+	var down_landing := _stair_landing(-1) if descend else NAN
+	var dropping := not is_nan(down_landing)
 	grounded = velocity.y<=0.0 and collides(feet+Vector3.DOWN*.012,dropping)
 	_coyote = 0.08 if grounded else maxf(0.0,_coyote-TICK)
 	_jump_buffer = maxf(0.0,_jump_buffer-TICK)
 	if jump_held: _jump_buffer = 0.12
-	var jumping := _jump_buffer>0.0 and _coyote>0.0 and not dropping
+	var up_landing := _stair_landing(1) if _jump_buffer>0.0 and not descend else NAN
+	var climbing := not is_nan(up_landing)
+	if climbing: _stair_ascent = true
+	# Holding climb at the top must not leave a buffered jump on release.
+	if _stair_ascent and not climbing: _jump_buffer = 0.0
+	var jumping := _jump_buffer>0.0 and _coyote>0.0 and not dropping and not climbing and not _stair_ascent
 	if jumping:
 		velocity.y = JUMP_SPEED
 		grounded = false
@@ -105,13 +130,23 @@ func _tick(wish: Vector3, sprint: bool, jump_held: bool, descend: bool) -> void:
 	velocity.z = move_toward(velocity.z,target.z,acceleration*TICK)
 	_horizontal(Vector3(velocity.x*TICK,0,0),grounded and not jumping)
 	_horizontal(Vector3(0,0,velocity.z*TICK),grounded and not jumping)
+	# Recheck after horizontal movement: walking off the opening returns to
+	# gravity immediately. Sweep the body normally against surrounding terrain.
+	var landing := _stair_landing(-1 if dropping else 1) if dropping or climbing else NAN
+	if not is_nan(landing):
+		var step := clampf(landing-feet.y,-STAIR_SPEED*TICK,STAIR_SPEED*TICK)
+		_sweep(Vector3(0,step,0),true)
+		velocity.y = 0.0
+		grounded = false
+		_coyote = 0.0
+		_jump_buffer = 0.0
+		return
 	if grounded and not jumping and not dropping:
 		var before := feet
 		if not _sweep(Vector3.DOWN*STEP_HEIGHT): feet = before
 	velocity.y = maxf(velocity.y-GRAVITY*TICK,-24.0)
-	if dropping: velocity.y = maxf(velocity.y,-3.0)
 	var descending := velocity.y<=0.0
-	if _sweep(Vector3(0,velocity.y*TICK,0),not descending or dropping):
+	if _sweep(Vector3(0,velocity.y*TICK,0),not descending):
 		velocity.y = 0.0
 		grounded = descending
 	else: grounded = false

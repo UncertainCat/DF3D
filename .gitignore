@@ -22,3 +22,7 @@ venv/
 presentations/godot/project/bin/
 presentations/godot/project/.godot/
 fixtures/recorded/*.df3dfix
+
+# Synthetic native-renderer test charts; contain no Dwarf Fortress artwork.
+!presentations/godot/project/tests/data/native_auto_32.png
+!presentations/godot/project/tests/data/native_auto_48.png

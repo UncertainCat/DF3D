@@ -86,6 +86,7 @@ struct BuildingObservation {
   uint16_t material = kNoMaterial;
   BuildingStage stage = BuildingStage::Complete;
   uint8_t flags = 0;  // kBuilding* bits
+  StatueFacts statue;
 };
 
 // One observed map item; `material` as for buildings.
@@ -100,6 +101,12 @@ struct ItemObservation {
   uint8_t flags = 0;         // kItem* bits
   uint16_t corpseFlags = 0;  // kCorpse* bits (v5)
   int32_t corpseUnitId = -1;
+  uint32_t containedCount = UINT32_MAX; // Unknown, not empty, in old recordings.
+  ItemKind containedKind = ItemKind::Unknown;
+  uint16_t containedMaterial = kNoMaterial;
+  std::string containedSubtypeRaw;
+  std::string containedColor;
+  StatueFacts statue;
 };
 
 // One corpse item's observed layer stack (v5); tables as for units.
@@ -260,6 +267,7 @@ struct Building {
   MaterialId material = kNoMaterial;
   BuildingStage stage = BuildingStage::Complete;
   uint8_t flags = 0;  // kBuilding* bits
+  StatueFacts statue;
   uint64_t version = 0;
   Tick tick = 0;
 
@@ -286,6 +294,12 @@ struct MapItem {
   uint32_t stack = 1;
   uint8_t flags = 0;         // kItem* bits
   int32_t corpseUnitId = -1;
+  uint32_t containedCount = UINT32_MAX; // Unknown, not empty, in old recordings.
+  ItemKind containedKind = ItemKind::Unknown;
+  uint16_t containedMaterial = kNoMaterial;
+  std::string containedSubtypeRaw;
+  std::string containedColor;
+  StatueFacts statue;
   uint16_t corpseFlags = 0;  // kCorpse* bits: what a corpse / body part counts as (v5)
   uint64_t version = 0;
   Tick tick = 0;

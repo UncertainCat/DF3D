@@ -61,8 +61,13 @@ struct QuadArrays {
     PackedColorArray colors;
     PackedVector2Array uvs;
     PackedInt32Array indices;
+    godot::PackedFloat32Array tileCenters;
+    void addCenter(float u,float v) {
+        tileCenters.push_back(u);tileCenters.push_back(v);
+        tileCenters.push_back(0);tileCenters.push_back(0);
+    }
     void addCutoutVertices(const std::vector<mesher::CutoutVertex>& vs,int x,int y,float h,float thickness,
-                          const Color& region,const Color& tint) {
+                          const Color& region,const Color& tint,float nativeLift=0.0f) {
         df3d::profiling::Scope profile("building.pack_vertices", nullptr, df3d::profiling::detailed());
         if (vs.empty()) return;
         const int base=vertices.size();
@@ -70,6 +75,7 @@ struct QuadArrays {
         const int count=int(vs.size());
         vertices.resize(base+count); normals.resize(base+count);
         uvs.resize(base+count); colors.resize(base+count); indices.resize(indexBase+count);
+        tileCenters.resize((base+count)*4);
         // One allocation/write handle per stream, not five engine calls per
         // vertex. Acquire handles only after all resizes; none outlive this job.
         auto* vertexOut=vertices.ptrw()+base;
@@ -77,22 +83,26 @@ struct QuadArrays {
         auto* uvOut=uvs.ptrw()+base;
         auto* colorOut=colors.ptrw()+base;
         auto* indexOut=indices.ptrw()+indexBase;
+        auto* centerOut=tileCenters.ptrw()+base*4;
         for(int i=0;i<int(vs.size());++i) {
             const auto& v=vs[i];
             vertexOut[i]=Vector3(x+.5f+v.x,h+ground.y+ground.x*v.x+ground.z*v.z+v.y*thickness/mesher::kCutoutThickness,y+.5f+v.z);
             uvOut[i]=Vector2(region.r+v.u*region.b,region.g+v.v*region.a);
             colorOut[i]=tint;normalOut[i]=Vector3(0,1,0);indexOut[i]=base+i;
+            centerOut[i*4]=region.r+region.b*.5f;centerOut[i*4+1]=region.g+region.a*.5f;
+            centerOut[i*4+2]=nativeLift;centerOut[i*4+3]=0;
         }
     }
     // A flat quad over DF tile (x, y) at Godot height h, textured with the
     // uv rectangle (u0, v0, u1, v1): image-down = DF south (+y), as the
     // terrain tops map their tiles. Clockwise seen from above = Godot's
     // front face.
-    void addCutout(const Ref<ArrayMesh>& mesh,int x,int y,float h,float thickness,const Color& tint) {
+    void addCutout(const Ref<ArrayMesh>& mesh,int x,int y,float h,float thickness,const Color& tint,const Color& region) {
         if(mesh.is_null() || mesh->get_surface_count()==0)return;
         Array a=mesh->surface_get_arrays(0);
         PackedVector3Array vs=a[Mesh::ARRAY_VERTEX]; PackedVector2Array ts=a[Mesh::ARRAY_TEX_UV]; PackedColorArray cs=a[Mesh::ARRAY_COLOR];
         const int base=vertices.size();
+        for(int i=0;i<vs.size();++i)addCenter(region.r+region.b*.5f,region.g+region.a*.5f);
         for(int i=0;i<vs.size();++i){vertices.push_back(Vector3(vs[i].x,ground.y+ground.x*vs[i].x+ground.z*vs[i].z+vs[i].y*thickness/mesher::kCutoutThickness,vs[i].z)+Vector3(x+.5f,h,y+.5f));uvs.push_back(ts[i]);colors.push_back(cs[i]*tint);normals.push_back(Vector3(0,1,0));indices.push_back(base+i);}
     }
     void add(int32_t x, int32_t y, float h, const Color& c, const float* uv, bool piece = false) {
@@ -108,6 +118,7 @@ struct QuadArrays {
             normals.push_back(Vector3(0, 1, 0));
             colors.push_back(c);
             uvs.push_back(t[i]);
+            addCenter((uv[0]+uv[2])*.5f,(uv[1]+uv[3])*.5f);
         }
         for (int32_t i : {0, 1, 2, 0, 2, 3}) indices.push_back(base + i);
     }
@@ -129,13 +140,14 @@ void Df3dWorld::set_building_root(Node3D* root) {
     if (root == buildingRoot_) return;
     for (auto& [id, b] : builtBuildings_) freeBuilding(b);
     builtBuildings_.clear();
+    clearBuildingLayers();
     if (ownBuildingRoot_ && buildingRoot_) {
         remove_child(buildingRoot_);
         godot::memdelete(buildingRoot_);
     }
     buildingRoot_ = root;
     ownBuildingRoot_ = false;
-    enqueueBuildingWindow();
+    enqueueBuildings();
 }
 
 Node3D* Df3dWorld::get_building_root() {
@@ -176,6 +188,7 @@ void Df3dWorld::resetEntities() {
     depthUnitContents_.clear();
     for (auto& [id, b] : builtBuildings_) freeBuilding(b);
     builtBuildings_.clear();
+    clearBuildingLayers();
     buildingQueue_.clear();
     buildingQueued_.clear();
     buildingQueueHead_ = 0;
@@ -186,7 +199,7 @@ void Df3dWorld::resetEntities() {
     itemLooks_.clear();
     unitGlyphLooks_.clear();
     itemsDirty_ = true;
-    enqueueBuildingWindow();
+    enqueueBuildings();
 }
 
 String Df3dWorld::entity_unresolved_summary() const {
@@ -214,20 +227,34 @@ void Df3dWorld::enqueueBuilding(wm::BuildingId id, uint32_t reason) {
     if (buildingQueued_.insert(id).second) buildingQueue_.push_back(id);
 }
 
-// Frees buildings that left the z window and queues those in it that
-// carry no mesh (or an outdated one). Cheap: the store is a flat vector.
-void Df3dWorld::enqueueBuildingWindow() {
-    if (!source_.model().buildingsKnown() || topZ_ < 0) return;
-    for (auto it = builtBuildings_.begin(); it != builtBuildings_.end();) {
-        if (!zInWindow(it->second.z)) {
-            freeBuilding(it->second);
-            it = builtBuildings_.erase(it);
-        } else {
-            ++it;
-        }
+Node3D* Df3dWorld::buildingLayerRoot(int z) {
+    auto& root=buildingLayers_[z];
+    if (!root) {
+        root=memnew(Node3D);
+        root->set_name(String("level_")+String::num_int64(z));
+        root->set_visible(zInWindow(z));
+        get_building_root()->add_child(root);
     }
+    return root;
+}
+
+void Df3dWorld::clearBuildingLayers() {
+    for(auto& [z,root]:buildingLayers_) {
+        root->get_parent()->remove_child(root);
+        godot::memdelete(root);
+    }
+    buildingLayers_.clear();
+}
+
+void Df3dWorld::updateBuildingVisibility() {
+    for(const auto& [z,root]:buildingLayers_)
+        if(root->is_visible()!=zInWindow(z))root->set_visible(zInWindow(z));
+}
+
+// Geometry follows source versions; level changes only switch parent visibility.
+void Df3dWorld::enqueueBuildings() {
+    if (!source_.model().buildingsKnown() || topZ_ < 0) return;
     source_.model().forEachBuilding([&](const wm::Building& b) {
-        if (!zInWindow(b.z)) return;
         auto it = builtBuildings_.find(b.id);
         if (it != builtBuildings_.end() && it->second.version == b.version) return;
         enqueueBuilding(b.id, submission::Window);
@@ -236,8 +263,8 @@ void Df3dWorld::enqueueBuildingWindow() {
 
 void Df3dWorld::freeBuilding(BuiltBuilding& b) {
     if (b.node) {
-        buildingBatches_.erase(b.id);
-        get_building_root()->remove_child(b.node);
+        buildingBatches_.erase(b.id, false);
+        b.node->get_parent()->remove_child(b.node);
         godot::memdelete(b.node);
         b.node = nullptr;
         --buildingsDrawn_;
@@ -265,13 +292,6 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     const wm::Building* b = source_.model().building(id);
     auto slot = builtBuildings_.find(id);
     if (!b) {
-        if (slot != builtBuildings_.end()) {
-            freeBuilding(slot->second);
-            builtBuildings_.erase(slot);
-        }
-        return;
-    }
-    if (!zInWindow(b->z)) {
         if (slot != builtBuildings_.end()) {
             freeBuilding(slot->second);
             builtBuildings_.erase(slot);
@@ -316,6 +336,8 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     };
     std::map<SurfaceKey, QuadArrays> surfaces;
     godot::Array drawRecords;
+    bool crossesFootprint=false;
+    float sortLift=0;
     int quads = 0;
     if (r.found) {
         using DrawCell=std::pair<int,int>;
@@ -344,7 +366,7 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
             const int ox=std::lround(region.r*iw),oy=std::lround(region.g*ih);
             const int w=std::lround(region.b*iw),h=std::lround(region.a*ih);
             auto alpha=buildingAlphaRegion(slot,ox,oy,w,h);
-            if(!alpha || !alpha->geometryOpaque)continue;
+            if(!alpha || std::none_of(alpha->pixels.begin(),alpha->pixels.end(),[](uint8_t a){return a!=0;}))continue;
             fragments.emplace(pos,Fragment{slot,w,h,region,depth,std::move(alpha)});
         }
         for(const auto& [pos,f]:fragments) {
@@ -357,6 +379,7 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
             record["foreground"]=false;record["bottom"]=depth.bottom;
             record["thickness"]=piece?depth.thickness:0.0f;
             record["north_spill"]=y<b->y1;
+            crossesFootprint |= x<b->x1 || x>b->x2 || y<b->y1 || y>b->y2;
             drawRecords.push_back(record);
             const float uv[4]={region.r,region.g,region.r+region.b,region.g+region.a};
             if(piece) {
@@ -386,9 +409,15 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
                 if(cached==cache.end()) {
                     PerfScope contourProfile("building.contour", nullptr, df3d::profiling::detailed());
                     if(cache.size()>=8)cache.clear();
-                    cached=cache.emplace(std::move(key),mesher::cutoutMesh(f.alpha->pixels,f.w,f.h,covers)).first;
+                    cached=cache.emplace(std::move(key),mesher::cutoutMesh(f.alpha->pixels,f.w,f.h,covers,true)).first;
                 }
-                surfaces[{slot,kind}].addCutoutVertices(cached->second,x,y,base,depth.thickness,region,tint);
+                // Native top-down foreground priority is view state, not a
+                // physical gap between the statue's two artwork rows.
+                const auto nativeDepth=b->kind==wm::BuildingKind::Statue
+                    ?mesher::statueFigureDepth(b->y1,y):depth;
+                const float nativeLift=nativeDepth.bottom+nativeDepth.thickness-depth.bottom-depth.thickness;
+                sortLift=std::max(sortLift,nativeLift);
+                surfaces[{slot,kind}].addCutoutVertices(cached->second,x,y,base,depth.thickness,region,tint,nativeLift);
             }
             else surfaces[{slot,kind}].add(x,y,base,tint,uv);
             ++quads;
@@ -419,7 +448,7 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
                 const float base=b->z+mesher::kFloorHeight+depth.bottom;
                 surfaces[SurfaceKey{glyphSlot,glyphSlot>=0?kind:kSurfOpaque}].ground=ground_support(Vector3(x+.5f,b->z,y+.5f));
                 if (glyphSlot >= 0)
-                    if(piece) surfaces[SurfaceKey{glyphSlot,kind}].addCutout(sprite_cutout_mesh(glyphSlot,Color(uv[0],uv[1],uv[2]-uv[0],uv[3]-uv[1])),x,y,base,depth.thickness,c);
+                    if(piece) surfaces[SurfaceKey{glyphSlot,kind}].addCutout(sprite_cutout_mesh(glyphSlot,Color(uv[0],uv[1],uv[2]-uv[0],uv[3]-uv[1])),x,y,base,depth.thickness,c,Color(uv[0],uv[1],uv[2]-uv[0],uv[3]-uv[1]));
                     else surfaces[SurfaceKey{glyphSlot, kind}].add(x, y, base, c, uv);
                 else
                     surfaces[SurfaceKey{-1, kSurfOpaque}].add(x, y, base, c, plain);
@@ -442,6 +471,7 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     // Retain copy-on-write CPU streams for spatial batching. Reading arrays
     // back from an uploaded mesh can otherwise synchronize with the GPU.
     Array batchArrays;
+    PackedInt32Array pickSlots;
     for (auto& [sk, arr] : surfaces) {
         PerfScope uploadProfile("building.upload_surface", nullptr, df3d::profiling::detailed());
         Array arrays;
@@ -451,18 +481,20 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
         arrays[Mesh::ARRAY_COLOR] = arr.colors;
         if (sk.slot >= 0) arrays[Mesh::ARRAY_TEX_UV] = arr.uvs;
         arrays[Mesh::ARRAY_INDEX] = arr.indices;
+        arrays[Mesh::ARRAY_CUSTOM2] = arr.tileCenters;
         batchArrays.push_back(arrays);
+        pickSlots.push_back(piece ? sk.slot : -1);
         detail.surface(arrays);
         const int surface = mesh->get_surface_count();
         if (piece && sk.slot >= 0) {
-            submission::meshSurface(mesh, arrays, submission::MeshSite::Building);
+            submission::meshSurface(mesh, arrays, submission::MeshSite::Building,uint64_t(Mesh::ARRAY_CUSTOM_RGBA_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM2_SHIFT);
             // Piece geometry already owns its tint and atlas UVs. The material
             // depends only on its texture slot and compositing mode, allowing
             // different furniture silhouettes to share a single batch surface.
             auto& mat = buildingPieceMaterials_[sk];
             if (mat.is_null()) {
                 mat.instantiate();
-                mat->set_shader(godot::ResourceLoader::get_singleton()->load(sk.kind == kSurfGhost ? "res://shaders/standee_ghost.gdshader" : "res://shaders/unit_sprite.gdshader"));
+                mat->set_shader(godot::ResourceLoader::get_singleton()->load(sk.kind == kSurfGhost ? "res://shaders/standee_ghost.gdshader" : "res://shaders/furniture_sprite.gdshader"));
                 godot::Dictionary parameters;
                 const TextureSlot* sprite=spriteResources_.slots.find(sk.slot);
                 ERR_CONTINUE_MSG(!sprite || sprite->texture.is_null(), "stale building piece slot " + godot::String::num_int64(sk.slot));
@@ -472,19 +504,26 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
             }
             mesh->surface_set_material(surface, mat);
         } else {
-            submission::meshSurface(mesh, arrays, submission::MeshSite::Building);
+            submission::meshSurface(mesh, arrays, submission::MeshSite::Building,uint64_t(Mesh::ARRAY_CUSTOM_RGBA_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM2_SHIFT);
             mesh->surface_set_material(surface, materialFor(sk));
         }
     }
     mesh->set_meta("df3d_batch_arrays", batchArrays);
+    mesh->set_meta("df3d_pick_slots", pickSlots);
     MeshInstance3D* node = memnew(MeshInstance3D);
     node->set_name(String("building_") + String::num_int64(id));
     if (b->kind == wm::BuildingKind::Civzone) node->set_visible(zoneOverlaysVisible_);
     node->set_mesh(mesh);
     node->set_meta("df3d_draw_fragments",drawRecords);
     node->set_meta("df3d_building_kind",String(wm::buildingKindName(b->kind)));
+    if(piece && crossesFootprint) {
+        node->set_meta("df3d_transparent_sort",true);
+        node->set_meta("df3d_sort_row",b->y1);
+        node->set_meta("df3d_sort_lift",sortLift);
+        node->set_script(godot::ResourceLoader::get_singleton()->load("res://scripts/furniture_order.gd"));
+    }
     if (piece) node->set_extra_cull_margin(1.1f);
-    get_building_root()->add_child(node);
+    buildingLayerRoot(b->z)->add_child(node);
     built.node = node;
     ++buildingsDrawn_;
     refresh_building_batches(id);
@@ -496,9 +535,10 @@ void Df3dWorld::refresh_building_batches(int64_t id) {
     const auto* building = source_.model().building(wm::BuildingId(id));
     auto* node = found->second.node;
     // Zone visibility and planned-building transparency have independent
-    // semantics. Keep their individual draws (including transparent sorting).
+    // semantics. Overhanging alpha art also needs its own camera-sorted draw;
+    // a material batch cannot order its filtered edges against neighbours.
     if (!building || building->kind == wm::BuildingKind::Civzone ||
-        building->stage == wm::BuildingStage::Planned) {
+        building->stage == wm::BuildingStage::Planned || node->has_meta("df3d_transparent_sort")) {
         buildingBatches_.erase(wm::BuildingId(id));
         return;
     }
@@ -506,7 +546,7 @@ void Df3dWorld::refresh_building_batches(int64_t id) {
     // their footprint. Cells bound batch culling; source meshes retain exact
     // per-building geometry for picking and presentation transformations.
     buildingBatches_.put(wm::BuildingId(id), node,
-        godot::Vector3i(building->x1 / 32, building->z / 4, building->y1 / 32));
+        godot::Vector3i(building->x1 / 32, building->z, building->y1 / 32));
 }
 
 // --- items ---
@@ -539,7 +579,8 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
         if(layer->get_width()!=w || layer->get_height()!=h)layer->resize(w,h,godot::Image::INTERPOLATE_NEAREST);
         image->blend_rect(layer,godot::Rect2i(0,0,w,h),godot::Vector2i(0,0));
     }
-    image->fix_alpha_edges();
+    // Upload preparation clears zero-alpha RGB. Do not dilate edge colors:
+    // native Lanczos reconstructs against transparent black, including here.
     image->generate_mipmaps();
     TextureSlot slot;slot.width=w;slot.height=h;slot.texture=submission::texture(image, submission::TextureSite::BuildingArt,true);
     const int id=spriteResources_.slots.add(std::move(slot));
@@ -604,6 +645,9 @@ godot::Dictionary Df3dWorld::presentation_perf_stats() const {
     out["tile_layout_contributors"]=int64_t(layout.contributorsVisited);
     out["stack_atlas_page_uploads"]=int64_t(stackAtlas_.uploads);
     out["stack_atlas_upload_bytes"]=int64_t(stackAtlas_.uploadedBytes);
+    out["terrain_geometry_builds"]=int64_t(terrainGeometryBuilds_);
+    out["terrain_surface_inputs"]=int64_t(terrainSurfaceInputs_);
+    out["terrain_surface_uploads"]=int64_t(terrainSurfaceUploads_);
     out["stack_atlas_revision"]=int64_t(stackAtlas_.revision);
     out["ramp_support_blocks_checked"]=int64_t(supportBlocksChecked_);
     out["ramp_support_blocks_skipped"]=int64_t(supportBlocksSkipped_);
@@ -685,6 +729,7 @@ Df3dWorld::BuildingDrawFootprint Df3dWorld::resolveBuildingFootprint(const wm::B
         q.kind=b.kind;q.subtype=b.subtype;q.custom=b.custom;q.stage=b.stage;
         q.width=b.width();q.height=b.height();q.flags=b.flags;
         q.material=source_.model().materialName(b.material);q.extents=&b.extents;
+        q.statue=b.statue;
         result.artwork=assets::resolveBuildingTiles(assets_->index,q);
         for(const auto& t:result.artwork.tiles) {
             const int slot=slotFor(t.sprite.page,result.artwork.paletteRow,false);

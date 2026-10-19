@@ -140,7 +140,7 @@ func run():
 	assert(hud.state_pass_count == passes + 1, "an in-place session change reruns the HUD state pass")
 	state["paused"] = true
 	hud.update_state(true, true, state)
-	for title in ["Stocks", "Petitions", "Trade", "Tasks", "Places", "Objects", "Justice"]:
+	for title in ["Petitions", "Trade"]:
 		assert(not hud.navigation[title].visible, "Hidden HUD entry: " + title)
 	assert(hud.navigation.Reports.visible and not hud.notification_rail.visible, "Reports is exposed; empty notification rail stays hidden")
 	i.state.submitted(42, "Dig")
@@ -156,9 +156,12 @@ func run():
 	for hidden in ["Stockpiles / zones", "Production / farms"]:
 		assert(not hud.navigation.has(hidden), "Intentionally hidden action absent from HUD")
 	assert(hud.navigation["Build / construction"].visible,"Construction is exposed for RC2")
-	assert(hud.navigation["Build / construction"].get_parent() == hud.actions and hud.navigation["Build / construction"].get_index() == hud.navigation.Remove.get_index()+1,"Build occupies native slot after Remove")
+	assert(hud.navigation.Dig.get_parent() == hud.navigation.Remove.get_parent(),"Designation controls share a native frame")
+	assert(hud.navigation["Build / construction"].get_parent() != hud.navigation.Remove.get_parent(),"Build starts the next native control group")
+	assert(hud.navigation["Build / construction"].get_parent().get_parent().get_parent() == hud.actions,"Construction group belongs to bottom actions")
 	assert(hud.navigation.Stockpiles.get_index() == hud.navigation["Build / construction"].get_index()+1 and hud.navigation.Zones.get_index() == hud.navigation.Stockpiles.get_index()+1,"Stockpile and Zone follow Build in native order")
-	assert(not hud.navigation.Stockpiles.visible and not hud.navigation.Zones.visible,"Areas launchers stay hidden pending acceptance")
+	for title in hud.DISPLAY_ONLY_SLOTS:
+		assert(hud.navigation[title].visible and hud.navigation[title].disabled,"Native slot remains visible without exposing unfinished route: " + title)
 	hud.navigation["Labor"].pressed.emit()
 	assert(not hud.labor_menu.visible, "Read-only Labor does not reopen the legacy editor")
 	var reachable: Array = [0, 14]
@@ -267,7 +270,7 @@ func run():
 		if hud.moods.visible: assert(hud.moods.position.x - hud.population.get_rect().end.x <= 12, "Mood counts stay next to population")
 		assert(hud.summary_spacer.get_index() > hud.moods.get_index() and hud.summary_spacer.get_index() < hud.date.get_index())
 		assert(hud.status_panel.get_rect().end.x <= hud.playback.position.x, "Header stays clear of playback controls at %s: %s vs %s" % [view, hud.status_panel.get_rect(), hud.playback.position])
-		assert(not hud.navigation["Stocks"].visible, "Unfinished Stocks stays hidden")
+		assert(hud.navigation["Stocks"].visible and hud.navigation["Stocks"].disabled, "Stocks retains native header footprint without dispatch")
 		assert(hud.navigation["Stocks"].get_index() > hud.moods.get_index() and hud.navigation["Stocks"].get_index() < hud.resources.get_index(), "Stocks follows native header grouping")
 		if hud.moods.visible: assert(hud.status_panel.get_global_rect().encloses(hud.moods.get_global_rect()), "All mood counts fit in the header at %s: %s / %s" % [view, hud.status_panel.get_global_rect(), hud.moods.get_global_rect()])
 		assert(not hud.level_steps.visible,"Unsourced stepper is not part of native minimap frame")
@@ -309,7 +312,8 @@ func run():
 	assert(hud.level_up.disabled and not hud.level_down.disabled, "Top level cannot step above the map")
 	hud.world.top_z = 12
 	hud.update_state(true, true, state)
-	hud.toggle_settings()
+	assert(hud.settings_button.is_visible_in_tree() and not hud.settings_button.disabled, "Viewer settings have a reachable launcher")
+	hud.settings_button.pressed.emit()
 	hud.update_state(true, true, state)
 	assert(not hud.level_down.disabled and not hud.level_up.disabled and hud.level_picker.editable, "Elevation controls remain on the HUD")
 	assert(i.shell_blocked and rig.controls_blocked(), "Settings block map commands and camera")
@@ -369,6 +373,42 @@ func run():
 	await process_frame
 	assert(presses.size()==1,"Closing overlay restores lower-layer GUI interaction")
 	host.close_active();below.free();lower.free()
+	# Check the restored menu across window sizes and preference scales.
+	hud.close_menus()
+	hud.settings_button.pressed.emit()
+	assert(hud.settings.visible)
+	assert(hud.settings_tabs.get_tab_count() == 3)
+	for window in [Vector2i(640,480), Vector2i(960,600), Vector2i(1280,720)]:
+		root.size = window
+		for percent in [100,200]:
+			hud.set_ui_scale_percent(percent)
+			for tab in 3:
+				hud.settings_tabs.current_tab = tab
+				for frame in 3:
+					hud.update_state(true,true,state)
+					await process_frame
+				var bounds := Rect2(Vector2.ZERO,hud.logical_view_size())
+				assert(bounds.encloses(hud.settings.get_rect()), "Settings fit the scaled window")
+				assert(bounds.encloses(hud.settings_button.get_rect()), "Launcher stays in the window")
+				assert(hud.blocks_camera() and i.shell_blocked, "Every settings tab blocks gameplay input")
+				var capture := OS.get_environment("DF3D_SETTINGS_CAPTURE")
+				if not capture.is_empty() and DisplayServer.get_name() != "headless":
+					await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(capture.path_join("settings-%dx%d-%d-%d.png" % [window.x,window.y,percent,tab]))
+	hud.set_ui_scale_percent(100)
+	var escape := InputEventKey.new(); escape.keycode=KEY_ESCAPE; escape.pressed=true
+	root.push_input(escape,true)
+	assert(not hud.settings.visible and not hud.blocks_camera() and not i.shell_blocked, "Escape restores gameplay input")
+	i.select_tool(1)
+	root.push_input(escape,true)
+	assert(not hud.settings.visible, "Escape leaves active designation cancellation to its owner")
+	i.select_tool(0)
+	root.push_input(escape,true)
+	assert(hud.settings.visible and i.shell_blocked, "Escape summons settings from normal play")
+	escape.echo=true; root.push_input(escape,true)
+	assert(hud.settings.visible, "Held Escape cannot toggle settings repeatedly")
+	escape.echo=false; root.push_input(escape,true)
+	assert(not hud.settings.visible and not i.shell_blocked)
 	hud.update_state(false, false, {})
 	assert(not hud.visible and not hud.settings.visible, "Loader hides fortress shell")
 	hud.free()

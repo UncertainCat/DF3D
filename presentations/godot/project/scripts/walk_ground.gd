@@ -30,36 +30,3 @@ func surface(point: Vector3, level: int) -> float:
 			if shape(tile + dirs[i]) in ["Wall", "Fortification", "TreeTrunk"]: return level + lerpf(FLOOR, 1.0, heights[i])
 		return level + 0.5
 	return NAN
-
-func support(point: Vector3) -> float:
-	var best := NAN
-	for level in range(floori(point.y)-1, floori(point.y)+2):
-		var height := surface(point, level)
-		if not is_nan(height) and absf(height-point.y) <= 0.30:
-			if is_nan(best) or absf(height-point.y) < absf(best-point.y): best = height
-	return best
-
-func can_stand(point: Vector3) -> bool:
-	for offset in [Vector2(-RADIUS,-RADIUS), Vector2(RADIUS,-RADIUS), Vector2(-RADIUS,RADIUS), Vector2(RADIUS,RADIUS)]:
-		var probe := point + Vector3(offset.x,0,offset.y)
-		if is_nan(support(probe)): return false
-		var tile := Vector3i(floori(probe.x), floori(probe.z), floori(point.y + preload("res://scripts/actor_view_scale.gd").WALK_EYE))
-		if shape(tile) in ["Unknown", "Wall", "Fortification", "TreeTrunk"]: return false
-	return true
-
-func spawn_near(point: Vector3, level: int) -> Vector3:
-	begin_step()
-	for radius in range(25):
-		for x in range(-radius, radius+1):
-			for y in range(-radius, radius+1):
-				if maxi(absi(x), absi(y)) != radius: continue
-				var next := Vector3(floorf(point.x)+x+0.5, 0, floorf(point.z)+y+0.5)
-				next.y = surface(next, level)
-				if is_nan(next.y) or not can_stand(next): continue
-				# Starting inside a dwarf or door fills the whole first-person view.
-				var occupied := false
-				if world.has_method("inspect_tile"):
-					for entity in world.inspect_tile(Vector3i(floori(next.x),floori(next.z),level)):
-						if int(entity.get("kind",0)) in [1,3]: occupied = true
-				if not occupied: return next
-	return Vector3(NAN,NAN,NAN)

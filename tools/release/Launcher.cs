@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +14,7 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-// Windows preview bootstrap. Never owns or terminates the DF process.
+// Windows preview bootstrap. Each play session owns its DF and viewer processes.
 namespace DF3D.Release {
  public class PayloadFile { public string path; public string sha256; public long size; }
  public class GameVersion { public string version; public string steamBuildId; public uint peTimestamp; }
@@ -158,6 +160,75 @@ namespace DF3D.Release {
    return found.Distinct(StringComparer.OrdinalIgnoreCase);
   }
  }
+ public sealed class OwnedSession : IDisposable {
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
+    struct STARTUPINFO {
+        public int cb; public string lpReserved; public string lpDesktop; public string lpTitle;
+        public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags;
+        public short wShowWindow, cbReserved2; public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError;
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    struct PROCESS_INFORMATION { public IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern bool CreateProcess(string app, string cmd, IntPtr pa, IntPtr ta, bool inherit, uint flags, IntPtr env, string cwd, ref STARTUPINFO si, out PROCESS_INFORMATION pi);
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern IntPtr CreateJobObject(IntPtr attrs, string name);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    static extern bool SetInformationJobObject(IntPtr job, int infoClass, IntPtr info, uint len);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    static extern uint ResumeThread(IntPtr thread);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    static extern bool TerminateProcess(IntPtr process, uint code);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    static extern bool CloseHandle(IntPtr h);
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct JOBOBJECT_BASIC_LIMIT_INFORMATION {
+        public long PerProcessUserTimeLimit, PerJobUserTimeLimit; public uint LimitFlags;
+        public UIntPtr MinimumWorkingSetSize, MaximumWorkingSetSize; public uint ActiveProcessLimit;
+        public UIntPtr Affinity; public uint PriorityClass, SchedulingClass;
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    struct IO_COUNTERS { public ulong a, b, c, d, e, f; }
+    [StructLayout(LayoutKind.Sequential)]
+    struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION {
+        public JOBOBJECT_BASIC_LIMIT_INFORMATION Basic; public IO_COUNTERS Io;
+        public UIntPtr ProcessMemoryLimit, JobMemoryLimit, PeakProcessMemoryUsed, PeakJobMemoryUsed;
+    }
+
+
+    IntPtr job;
+    public OwnedSession() {
+        job=CreateJobObject(IntPtr.Zero,null);
+        if(job==IntPtr.Zero)throw new Win32Exception(Marshal.GetLastWin32Error());
+        var limits=new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();limits.Basic.LimitFlags=0x2000;
+        int size=Marshal.SizeOf(limits);IntPtr buffer=Marshal.AllocHGlobal(size);
+        try {Marshal.StructureToPtr(limits,buffer,false);if(!SetInformationJobObject(job,9,buffer,(uint)size))throw new Win32Exception(Marshal.GetLastWin32Error());}
+        catch {Dispose();throw;}
+        finally {Marshal.FreeHGlobal(buffer);}
+    }
+    public Process Start(ProcessStartInfo start) {
+        if(job==IntPtr.Zero)throw new ObjectDisposedException("OwnedSession");
+        string env=string.Join("\0",start.EnvironmentVariables.Keys.Cast<string>().OrderBy(k=>k,StringComparer.OrdinalIgnoreCase).Select(k=>k+"="+start.EnvironmentVariables[k]))+"\0\0";
+        IntPtr environment=Marshal.StringToHGlobalUni(env);
+        var si=new STARTUPINFO();si.cb=Marshal.SizeOf(si);
+        PROCESS_INFORMATION pi;
+        try {if(!CreateProcess(start.FileName,"\""+start.FileName+"\" "+start.Arguments,IntPtr.Zero,IntPtr.Zero,false,0x404,environment,start.WorkingDirectory,ref si,out pi))throw new Win32Exception(Marshal.GetLastWin32Error());}
+        finally {Marshal.FreeHGlobal(environment);}
+        try {
+            if(!AssignProcessToJobObject(job,pi.hProcess))throw new Win32Exception(Marshal.GetLastWin32Error());
+            var process=Process.GetProcessById(pi.dwProcessId);
+            // Hold a handle to this exact process, independent of future PID reuse.
+            var handle=process.Handle;
+            if(ResumeThread(pi.hThread)==uint.MaxValue){process.Dispose();throw new Win32Exception(Marshal.GetLastWin32Error());}
+            return process;
+        } catch {TerminateProcess(pi.hProcess,1);throw;}
+        finally {CloseHandle(pi.hThread);CloseHandle(pi.hProcess);}
+    }
+    public void Dispose(){if(job!=IntPtr.Zero){CloseHandle(job);job=IntPtr.Zero;}}
+ }
  public sealed class Launcher : Form {
   TextBox path=new TextBox(), status=new TextBox(); Button play=new Button(), setup=new Button(); CheckBox acknowledge=new CheckBox();
   int commandPort=5000; string root; Manifest manifest; Process game,viewer; string lastJournal; bool busy;
@@ -180,8 +251,8 @@ namespace DF3D.Release {
    restore.Click+=async(s,e)=>await Run(async()=>{using(var picker=new OpenFileDialog {Title="Select installation backup",InitialDirectory=Path.Combine(Package.Home,"backups"),Filter="DF3D transaction|transaction.json"}){if(lastJournal!=null)picker.FileName=lastJournal;if(picker.ShowDialog()!=DialogResult.OK)return;string journal=picker.FileName;await Task.Run(()=>Package.Restore(journal));Say("Bridge files restored. Backups retained.");}});
    saves.Click+=(s,e)=>{string user=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"Bay 12 Games","Dwarf Fortress","save");if(Directory.Exists(user))Process.Start("explorer.exe",user);string local=Path.Combine(path.Text,"save");if(Directory.Exists(local))Process.Start("explorer.exe",local);Say("Copy your save folder somewhere safe while DF is closed. Setup does not modify saves.");};
    play.Click+=async(s,e)=>await Run(StartGame);
-   FormClosing+=(s,e)=>{if(busy){e.Cancel=true;Say("Wait for the current operation to finish.");}else if(viewer!=null&&!viewer.HasExited){e.Cancel=true;Say("Close DF3D first. Dwarf Fortress will remain running.");}};
-   Say("Back up saves before playing. Install the bridge once, then Play. Closing the viewer leaves Dwarf Fortress available for saving or recovery.");
+   FormClosing+=(s,e)=>{if(viewer!=null&&!viewer.HasExited){e.Cancel=true;viewer.CloseMainWindow();}else if(busy){e.Cancel=true;Say("Wait for the current operation to finish.");}};
+   Say("Back up saves before playing. Install the bridge once, then Play. Exit game ends both applications; save your progress before exiting.");
   }
   void Check(){if(!acknowledge.Checked)throw new IOException("Back up your saves and check the preview acknowledgement first.");}
   void SaveSettings(){Package.AtomicJson(settings,new Dictionary<string,string>{{"installation",Path.GetFullPath(path.Text)},{"journal",lastJournal}});}
@@ -200,18 +271,30 @@ namespace DF3D.Release {
    Check();Package.ValidateGame(path.Text,manifest);string installation=Path.GetFullPath(path.Text);
    foreach(var f in manifest.files.Where(x=>x.path.StartsWith(manifest.bridgeRoot+"/",StringComparison.Ordinal))){string installed=Package.Inside(installation,f.path.Substring(manifest.bridgeRoot.Length+1));if(!File.Exists(installed)||!Package.HashFile(installed).Equals(f.sha256,StringComparison.OrdinalIgnoreCase))throw new IOException("Bridge files differ from this preview. Close DF and run Set up bridge.");}
    if(viewer!=null&&!viewer.HasExited)throw new IOException("DF3D is already running.");
-   var running=Process.GetProcessesByName("Dwarf Fortress");if(running.Length>1)throw new IOException("Close extra DF instances before playing.");
+   Package.RequireClosed();
    commandPort=5000;
-   if(running.Length==1){string config=Path.Combine(installation,"dfhack-config","remote-server.json");if(File.Exists(config)){var remote=Package.Json.Deserialize<Dictionary<string,object>>(File.ReadAllText(config));if(remote.ContainsKey("port"))commandPort=Convert.ToInt32(remote["port"]);if(commandPort<1||commandPort>65535)throw new IOException("Invalid DFHack port");}game=running[0];if(!string.Equals(game.MainModule.FileName,Path.Combine(installation,"Dwarf Fortress.exe"),StringComparison.OrdinalIgnoreCase))throw new IOException("A different Dwarf Fortress installation is running.");}
-   else {var si=StartInfo(Path.Combine(installation,"Dwarf Fortress.exe"),"",installation);si.EnvironmentVariables["DFHACK_DISABLE_CONSOLE"]="1";si.EnvironmentVariables["DFHACK_PORT"]="5000";game=Process.Start(si);}
-   Say("Waiting for Dwarf Fortress. Its window remains available if the viewer fails.");
+   using(var session=new OwnedSession()) {
+   try {
+   var si=StartInfo(Path.Combine(installation,"Dwarf Fortress.exe"),"",installation);
+   si.EnvironmentVariables["DFHACK_DISABLE_CONSOLE"]="1";si.EnvironmentVariables["DFHACK_PORT"]="5000";
+   game=session.Start(si);
+   Say("Waiting for Dwarf Fortress.");
    string lastError="";bool ready=false;var deadline=DateTime.UtcNow.AddSeconds(120);while(DateTime.UtcNow<deadline){if(game.HasExited)throw new IOException("Dwarf Fortress exited before the bridge was ready.");try{await Command(installation,"enable df3d");string result=await Command(installation,"df3d status");if(Regex.IsMatch(result,@"mirroring enabled:\s+yes")){ready=true;break;}}catch(IOException ex){lastError=ex.Message;}await Task.Delay(500);}
-   if(!ready)throw new IOException("Bridge did not become ready. DF was left open; inspect its window and diagnostics. "+lastError);
+   if(!ready)throw new IOException("Bridge did not become ready. The session will be cleaned up. "+lastError);
    SaveSettings();string logs=Path.Combine(Package.Home,"logs");Directory.CreateDirectory(logs);
    var launch=StartInfo(Package.Inside(root,manifest.viewerExecutable),"--log-file \""+Path.Combine(logs,"viewer-"+DateTime.Now.ToString("yyyyMMdd-HHmmss")+".log")+"\"",Path.GetDirectoryName(Package.Inside(root,manifest.viewerExecutable)));
    foreach(string key in launch.EnvironmentVariables.Keys.Cast<string>().Where(x=>x.StartsWith("DF3D_")).ToArray())launch.EnvironmentVariables.Remove(key);
    launch.EnvironmentVariables["DF3D_DF_PATH"]=installation;launch.EnvironmentVariables["DF3D_PROFILE"]="off";launch.EnvironmentVariables["DF3D_RELEASE"]="1";
-   viewer=Process.Start(launch);await GuardAudio();Say("DF3D launched. There is no session time limit. Closing this launcher never terminates DF.");
+   viewer=session.Start(launch);await GuardAudio();Say("DF3D launched. Exit game closes the viewer and its Dwarf Fortress session.");
+   var sessionViewer=viewer;var sessionGame=game;
+   await Task.WhenAny(Task.Run(()=>sessionViewer.WaitForExit()),Task.Run(()=>sessionGame.WaitForExit()));
+   } finally {
+    session.Dispose();
+    if(viewer!=null){viewer.WaitForExit(5000);viewer.Dispose();viewer=null;}
+    if(game!=null){game.WaitForExit(5000);game.Dispose();game=null;}
+   }
+   }
+   Say("Session closed.");
   }
  }
  public static class Program {

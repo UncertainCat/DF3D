@@ -103,29 +103,49 @@ Dictionary Df3dWorld::pick_building(const Vector3& origin, const Vector3& direct
         if (built == builtBuildings_.end() || !built->second.node) continue;
         const auto mesh = built->second.node->get_mesh();
         if (mesh.is_null()) continue;
-        const auto faces = mesh->get_faces();
-        for (int i=0; i+2<faces.size(); i+=3) {
-            const Vector3 a=faces[i], edge1=faces[i+1]-a, edge2=faces[i+2]-a;
-            const Vector3 p=direction.cross(edge2);
-            const float det=edge1.dot(p);
-            if (std::abs(det)<0.000001f) continue;
-            const float inv=1.0f/det;
-            const Vector3 t=origin-a;
-            const float u=t.dot(p)*inv;
-            if(u<0 || u>1) continue;
-            const Vector3 q=t.cross(edge1);
-            const float v=direction.dot(q)*inv;
-            if(v<0 || u+v>1) continue;
-            const float distance=edge2.dot(q)*inv;
-            if(distance<0 || distance>nearest || (distance==nearest && b->id>=nearestId)) continue;
-            const Vector3 hit=origin+direction*distance;
-            const wm::TilePos tile{std::clamp(int(std::floor(hit.x)),b->x1,b->x2),std::clamp(int(std::floor(hit.z)),b->y1,b->y2),z};
-            const auto state=source_.model().tileAt(tile);
-            if(!state || (state->flags & wm::kTileHidden) || !b->occupies(tile.x,tile.y)) continue;
-            nearest=distance; nearestId=b->id;
-            out["id"]=int64_t(b->id);
-            out["depth"]=origin.distance_squared_to(hit);
-            out["tile"]=Vector3i(tile.x,tile.y,tile.z);
+        // Retained CPU streams avoid GPU readback. Filtered furniture caps
+        // cover the tile, but transparent padding must never become pickable.
+        const godot::Array surfaces=mesh->get_meta("df3d_batch_arrays",godot::Array());
+        const godot::PackedInt32Array slots=mesh->get_meta("df3d_pick_slots",godot::PackedInt32Array());
+        for(int surface=0;surface<surfaces.size();++surface) {
+            const godot::Array arrays=surfaces[surface];
+            const godot::PackedVector3Array vertices=arrays[godot::Mesh::ARRAY_VERTEX];
+            const godot::PackedInt32Array indices=arrays[godot::Mesh::ARRAY_INDEX];
+            godot::PackedVector2Array uvs;
+            if(arrays[godot::Mesh::ARRAY_TEX_UV].get_type()==Variant::PACKED_VECTOR2_ARRAY)
+                uvs=arrays[godot::Mesh::ARRAY_TEX_UV];
+            const auto image=surface<slots.size()?spriteResources_.images.find(slots[surface]):spriteResources_.images.end();
+            for (int i=0; i+2<indices.size(); i+=3) {
+                const int ia=indices[i],ib=indices[i+1],ic=indices[i+2];
+                const Vector3 a=vertices[ia], edge1=vertices[ib]-a, edge2=vertices[ic]-a;
+                const Vector3 p=direction.cross(edge2);
+                const float det=edge1.dot(p);
+                if (std::abs(det)<0.000001f) continue;
+                const float inv=1.0f/det;
+                const Vector3 t=origin-a;
+                const float u=t.dot(p)*inv;
+                if(u<0 || u>1) continue;
+                const Vector3 q=t.cross(edge1);
+                const float v=direction.dot(q)*inv;
+                if(v<0 || u+v>1) continue;
+                const float distance=edge2.dot(q)*inv;
+                if(distance<0 || distance>nearest || (distance==nearest && b->id>=nearestId)) continue;
+                if(image!=spriteResources_.images.end() && image->second.is_valid() && !uvs.is_empty()) {
+                    const auto uv=uvs[ia]*(1-u-v)+uvs[ib]*u+uvs[ic]*v;
+                    const auto& pixels=image->second;
+                    const int px=std::clamp(int(std::floor(uv.x*pixels->get_width())),0,pixels->get_width()-1);
+                    const int py=std::clamp(int(std::floor(uv.y*pixels->get_height())),0,pixels->get_height()-1);
+                    if(pixels->get_pixel(px,py).a<128.0f/255.0f)continue;
+                }
+                const Vector3 hit=origin+direction*distance;
+                const wm::TilePos tile{std::clamp(int(std::floor(hit.x)),b->x1,b->x2),std::clamp(int(std::floor(hit.z)),b->y1,b->y2),z};
+                const auto state=source_.model().tileAt(tile);
+                if(!state || (state->flags & wm::kTileHidden) || !b->occupies(tile.x,tile.y)) continue;
+                nearest=distance; nearestId=b->id;
+                out["id"]=int64_t(b->id);
+                out["depth"]=origin.distance_squared_to(hit);
+                out["tile"]=Vector3i(tile.x,tile.y,tile.z);
+            }
         }
     }
     return out;

@@ -86,7 +86,7 @@ class DiagnosticTests(unittest.TestCase):
         self.assertEqual(classify({"completion":"^PASS$"},0,text)[0],"passed_with_known_issues")
         self.assertEqual(classify({"completion":"^PASS$"},0,text.replace(":3518)",":9999)"))[0],"failed")
 
-    def test_shutdown_object_pair_requires_same_process_d3d12_baseline(self):
+    def test_shutdown_object_pair_requires_same_process_rd_baseline(self):
         notice = ("WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.\n"
                   " at: setup2 (main/main.cpp:3518)\n")
         finalize = ("ERROR: This function (finalize) can only be called from the render thread.\n"
@@ -95,7 +95,8 @@ class DiagnosticTests(unittest.TestCase):
                   " at: cleanup (core/object/object.cpp:2536)\n")
         prefix = BANNER + "D3D12 12_0 - Forward+ - Using Device #0: test\n" + notice + finalize
         self.assertEqual(error_summary(prefix + leaked)["unclassified"], [])
-        for text in (BANNER + leaked, prefix.replace("D3D12 ", "Vulkan ") + leaked,
+        self.assertEqual(error_summary(prefix.replace("D3D12 12_0", "Vulkan 1.4.351") + leaked)["unclassified"], [])
+        for text in (BANNER + leaked, prefix.replace("D3D12 ", "OpenGL ") + leaked,
                      prefix.replace(finalize, "") + leaked, prefix.replace(notice, "") + leaked,
                      prefix + BANNER + leaked, prefix + leaked * 2,
                      prefix + leaked.replace("2 ObjectDB", "3 ObjectDB"),

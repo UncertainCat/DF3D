@@ -14,7 +14,7 @@ func run():
 	shader.code = """shader_type spatial;
 render_mode unshaded, cull_disabled;
 #include "res://shaders/world_sampling.gdshaderinc"
-uniform sampler2D tex : source_color, filter_linear_mipmap, repeat_disable;
+uniform sampler2D tex : filter_linear_mipmap, repeat_disable;
 uniform float repetitions = 1.0;
 void fragment() {
     vec2 uv = fract(UV * repetitions) * vec2(.5, 1.0);

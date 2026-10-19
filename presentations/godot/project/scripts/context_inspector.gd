@@ -118,7 +118,7 @@ func cancel_gesture() -> void:
 
 func _process(delta: float):
 	if not is_open(): return
-	var size := get_viewport().get_visible_rect().size / Preferences.effective_scale(get_viewport().get_visible_rect().size)
+	var size := get_viewport().get_visible_rect().size / Preferences.effective_scale_vector(get_viewport().get_visible_rect().size)
 	if size != last_size:
 		last_size = size
 		redraw()
@@ -213,9 +213,9 @@ func icon_at(id: String):
 func redraw():
 	if selected.is_empty(): return
 	var view := get_viewport().get_visible_rect().size
-	var scale_factor: float = Preferences.effective_scale(view)
+	var scale_factor: Vector2 = Preferences.effective_scale_vector(view)
 	view /= scale_factor
-	panel.scale = Vector2.ONE * scale_factor
+	panel.scale = scale_factor
 	panel.position = Vector2(maxf(8,view.x-784),48) * scale_factor
 	panel.size = Vector2(minf(488,view.x-56),maxf(120,view.y-84))
 	body.position = Vector2(8,12)

@@ -1,4 +1,5 @@
 extends SceneTree
+const SourceMesh = preload("res://tests/source_mesh.gd")
 var failures := 0
 func check(ok: bool, reason: String) -> void:
 	if not ok:
@@ -36,13 +37,13 @@ func run() -> void:
 	var hidden_surfaces := 0
 	var merged_quads := 0
 	var backdrop := false
-	for child in world.get_terrain_root().get_children():
-		if not child is MeshInstance3D: continue
+	for child in world.get_terrain_root().find_children("*", "MeshInstance3D", true, false):
+		if not child is MeshInstance3D or not child.is_visible_in_tree(): continue
 		var mesh: Mesh = child.mesh
-		for surface in mesh.get_surface_count():
-			var material := mesh.surface_get_material(surface)
+		for surface in SourceMesh.count(mesh):
+			var material := SourceMesh.material(mesh,surface)
 			if not material is ShaderMaterial or not material.get_shader_parameter("rock_backing"): continue
-			var arrays := mesh.surface_get_arrays(surface)
+			var arrays := SourceMesh.arrays(mesh,surface)
 			var colors: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
 			if colors.is_empty(): continue
 			# A source_color uniform avoids UNorm8 quantization of dark linear

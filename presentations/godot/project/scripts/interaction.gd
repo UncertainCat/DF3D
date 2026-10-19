@@ -205,7 +205,7 @@ func _refresh_camera() -> void:
 	if camera_rig == null: return
 	camera_button.text = "Camera: %s (F4)" % {"df":"DF", "isometric":"Isometric", "free":"Free", "walk":"Walk"}[camera_rig.get_mode()]
 	camera_help.text = "LMB drag rectangle · Right click / Esc back · PgUp/PgDn level · F3 diagnostics\n" + ("North-up · MMB pan · wheel zoom · WASD/arrows pan · QE level" if camera_rig.get_mode() != "free" else "RMB drag orbit · MMB pan · wheel zoom · WASD/arrows move · QE height")
-	if camera_rig.get_mode() == "walk": camera_help.text = "Click map to look · WASD walk · Space jump · Walk off edges to drop · Q descend stairs · Esc release · F4/F5 return"
+	if camera_rig.get_mode() == "walk": camera_help.text = "Click map to look · WASD walk · Space jump / hold to climb stairs · Walk off edges to drop · Hold Q descend stairs · Esc release · F4/F5 return"
 
 func _add_button(row: Control, title: String, action: Callable, item := false) -> void:
 	var button := Button.new()
@@ -623,10 +623,7 @@ func set_show_traffic(value: bool) -> void:
 func _draw_overlay() -> void:
 	overlay_build_count += 1
 	var mesh := ImmediateMesh.new()
-	var mat := StandardMaterial3D.new()
-	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.vertex_color_use_as_albedo = true
-	mat.no_depth_test = true
+	var mat := preload("res://scripts/world_material.gd").create(Color.WHITE,true,true)
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES, mat)
 	if _order_sprites != null: _order_sprites.update_markers(_markers, _z, show_priorities, show_traffic, tool_picker.selected in TOOL_FAMILIES["Dig"] and not shell_blocked and not construction_active)
 	if _cursor_sprites != null:

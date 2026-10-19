@@ -477,7 +477,42 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
     case BuildingKind::Box: return member("ITEM_BOX", "", "furniture.box");
     case BuildingKind::Cabinet: return member("ITEM_CABINET", "", "furniture.cabinet");
     case BuildingKind::Coffin: return member("ITEM_COFFIN", "", "furniture.coffin");
-    case BuildingKind::Statue: return member("ITEM_STATUE", "", "furniture.statue");
+    case BuildingKind::Statue: {
+      std::string baseName;
+      const auto* base=classMember(idx,"ITEM_STATUE",cls,"",&baseName);
+      if (q.statue.quality==6) {
+        if (const auto* artifact=idx.tile("ITEM_STATUE_ARTIFACT")) base=artifact;
+      } else if (q.statue.quality>=0) {
+        if (const auto* quality=idx.tile(baseName,size_t(q.statue.quality))) base=quality;
+      }
+      fillTiles(q,base,r);
+      const SpriteRef* figure=nullptr;
+      if (q.statue.subject==wm::ArtSubject::Creature && !q.statue.subjectRaw.empty()) {
+        const auto key="STATUE_CREATURE:"+q.statue.subjectRaw;
+        if (!q.statue.casteRaw.empty()) figure=idx.tile(key+":"+q.statue.casteRaw);
+        if (!figure) figure=idx.tile(key);
+      }
+      if (figure) {
+        for (int y=0;y<figure->h;++y) for (int x=0;x<figure->w;++x) {
+          auto cell=*figure; cell.x+=x; cell.y+=y; cell.w=cell.h=1;
+          r.tiles.push_back({x,y-figure->h+1,cell});
+        }
+      } else {
+        std::string family="ITEM_DEFAULT_STATUE";
+        if (q.statue.subject==wm::ArtSubject::Shape) family="ITEM_STATUE_GENERIC_SHAPE";
+        else if (q.statue.subject==wm::ArtSubject::Tree) family="ITEM_STATUE_GENERIC_TREE";
+        else if (q.statue.subject==wm::ArtSubject::Plant) family="ITEM_STATUE_GENERIC_SHRUB";
+        else if (q.statue.subject==wm::ArtSubject::Event) {
+          static constexpr const char* names[]={"EVENT","EVENT","DUEL","TRIUMPH","CIVILIZED",
+              "STRIKE_DOWN","SHOT","ITEM_CREATION","BATTLE","SITE"};
+          const size_t event=static_cast<size_t>(q.statue.event);
+          family=std::string("ITEM_STATUE_GENERIC_")+names[event<std::size(names)?event:0];
+        }
+        if (const auto* top=idx.tile(family+"_TOP")) r.tiles.push_back({0,-1,*top});
+        if (const auto* bottom=idx.tile(family+"_BOTTOM")) r.tiles.push_back({0,0,*bottom});
+      }
+      return done("furniture.statue");
+    }
     case BuildingKind::Armorstand: return member("ITEM_ARMOR_STAND", "_EMPTY", "furniture.armorstand");
     case BuildingKind::Weaponrack: return member("ITEM_WEAPON_RACK", "_EMPTY", "furniture.weaponrack");
     case BuildingKind::Door: {
@@ -706,6 +741,38 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     return r;
   };
 
+  const bool occupied = q.containedCount != UINT32_MAX && q.containedCount > 0;
+  const bool liquid = q.containedKind == ItemKind::Drink || q.containedKind == ItemKind::LiquidMisc;
+  auto contentsOverlay = [&](const std::string& name, bool recolor = true) {
+    if (const auto* sprite = idx.tile(name))
+      r.overlays.push_back({*sprite,recolor ? idx.paletteRow(q.containedColor.empty() ? idx.materialColorName(q.containedMaterial,liquid) : q.containedColor) : -1});
+  };
+  auto binTop = [&]() -> const char* {
+    switch (q.containedKind) {
+      case ItemKind::Bar: return q.containedMaterial.find("COAL") != std::string_view::npos ? "COAL" : "BARS";
+      case ItemKind::Blocks: return "BLOCKS";
+      case ItemKind::SmallGem: case ItemKind::Gem: case ItemKind::Rough: return "GEMS";
+      case ItemKind::Armor: case ItemKind::Helm: case ItemKind::Gloves: case ItemKind::Shoes: case ItemKind::Pants:
+        return materialClassOf(idx,q.containedMaterial)==MaterialClass::Metal ? "ARMOR_METAL" :
+          q.containedMaterial.find(":LEATHER")!=std::string_view::npos ? "ARMOR_LEATHER" : "CLOTHING";
+      case ItemKind::Weapon: case ItemKind::Shield: return "WEAPONS";
+      case ItemKind::Ammo: return "AMMO";
+      case ItemKind::TrapComp: return "TRAP_COMPS";
+      case ItemKind::TrapParts: return "MECHANISMS";
+      case ItemKind::Cloth: return "CLOTH";
+      case ItemKind::SkinTanned: return "LEATHER";
+      case ItemKind::Chain: return materialClassOf(idx,q.containedMaterial)==MaterialClass::Metal ? "CHAINS" : "ROPES";
+      case ItemKind::PowderMisc: return "POWDERS";
+      case ItemKind::Bag: return "BAGS";
+      case ItemKind::Book: return "BOOKS";
+      case ItemKind::Sheet: return "SHEETS";
+      case ItemKind::Coin: return "COINS";
+      case ItemKind::Figurine: case ItemKind::Amulet: case ItemKind::Scepter: case ItemKind::Crown:
+      case ItemKind::Ring: case ItemKind::Earring: case ItemKind::Bracelet: case ItemKind::Totem: return "CRAFTS";
+      default: return "";
+    }
+  };
+
   switch (q.kind) {
     case ItemKind::Bar: {
       auto it = idx.barsGraphics.find(std::string(rawId));
@@ -739,7 +806,9 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Chair: return member("ITEM_CHAIR", "", "item.chair");
     case ItemKind::Table: return member("ITEM_TABLE", "", "item.table");
     case ItemKind::Coffin: return member("ITEM_COFFIN", "", "item.coffin");
-    case ItemKind::Statue: return member("ITEM_STATUE", "", "item.statue");
+    // Loose statues use the native wrapped transport artwork. The installed
+    // building draws its quality pedestal and depicted subject separately.
+    case ItemKind::Statue: return single("ITEM_STATUE", "item.statue");
     case ItemKind::Box: return member("ITEM_BOX", "", "item.box");
     case ItemKind::Cabinet: return member("ITEM_CABINET", "", "item.cabinet");
     case ItemKind::Armorstand: return member("ITEM_ARMOR_STAND", "_EMPTY", "item.armorstand");
@@ -758,10 +827,29 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Toy: return def("", "ITEM_TOY", "toy");
     case ItemKind::Window: return single("ITEM_WINDOW_GLASS", "window");
     case ItemKind::Cage: return member("ITEM_CAGE", "", "cage");
-    case ItemKind::Barrel:
-      return single(cls == MaterialClass::Metal ? "ITEM_BARREL_METAL_EMPTY" : "ITEM_BARREL_WOOD_EMPTY",
-                    "barrel");
-    case ItemKind::Bucket: return metalOrWood("ITEM_BUCKET", "bucket");
+    case ItemKind::Barrel: {
+      const std::string material=cls==MaterialClass::Metal ? "METAL" : "WOOD";
+      single(("ITEM_BARREL_"+material+(occupied ? (liquid ? "_LIQUID" : "_ITEM") : "_EMPTY")).c_str(),"barrel");
+      if (occupied && liquid) contentsOverlay("LIQUID_FOR_BARREL_"+material);
+      else if (occupied) {
+        const char* top="";
+        switch(q.containedKind) {
+          case ItemKind::Food: top="MEAL"; break;
+          case ItemKind::Cheese: top="CHEESE"; break;
+          case ItemKind::Meat: top="MEAT"; break;
+          case ItemKind::Fish: case ItemKind::FishRaw: top="FISH"; break;
+          case ItemKind::Bag: top="BAG"; break;
+          case ItemKind::Plant: case ItemKind::PlantGrowth: top="PLANT"; break;
+          default: break;
+        }
+        if (*top) contentsOverlay(std::string("ITEM_BARREL_TOP_")+top);
+      }
+      return r;
+    }
+    case ItemKind::Bucket:
+      metalOrWood("ITEM_BUCKET", "bucket");
+      if (occupied && liquid) contentsOverlay(cls==MaterialClass::Metal ? "LIQUID_FOR_BUCKET_METAL" : "LIQUID_FOR_BUCKET_WOOD");
+      return r;
     case ItemKind::AnimalTrap: return metalOrWood("ITEM_ANIMAL_TRAP", "animal-trap");
     case ItemKind::Corpse:
       // A whole corpse that has rotted to bone is DF's bone pile (the
@@ -809,9 +897,20 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Helm: return def("", "ITEM_HELM_HELM", "helm");
     case ItemKind::Gloves: return def("", "ITEM_GLOVES_GLOVES", "gloves");
     case ItemKind::Pants: return def("", "ITEM_PANTS_PANTS", "pants");
-    case ItemKind::Bag: return single("ITEM_BAG", "bag");
+    case ItemKind::Bag:
+      single(occupied ? "ITEM_BAG_IN_USE" : "ITEM_BAG_EMPTY","bag");
+      if (!r.found) single("ITEM_BAG","bag");
+      if (occupied) {
+        if (q.containedKind==ItemKind::Seeds) contentsOverlay("SEEDS_FOR_BAG");
+        else if (q.containedKind==ItemKind::PowderMisc) contentsOverlay("POWDER_FOR_BAG");
+        else if (q.containedKind==ItemKind::PlantGrowth) contentsOverlay("LEAVES_FOR_BAG");
+      }
+      return r;
     case ItemKind::Bin:
-      return single(cls == MaterialClass::Metal ? "ITEM_BIN_METAL_EMPTY" : "ITEM_BIN_WOOD_EMPTY", "bin");
+      single((std::string("ITEM_BIN_")+(cls==MaterialClass::Metal ? "METAL" : "WOOD")+
+          (occupied ? "_IN_USE" : "_EMPTY")).c_str(),"bin");
+      if (occupied && *binTop()) contentsOverlay(std::string("ITEM_BIN_TOP_")+binTop());
+      return r;
     case ItemKind::Figurine: return metalOrWood("ITEM_FIGURINE", "craft.figurine");
     case ItemKind::Amulet: return metalOrWood("ITEM_AMULET", "craft.amulet");
     case ItemKind::Scepter: return metalOrWood("ITEM_SCEPTER", "craft.scepter");

@@ -30,6 +30,21 @@ int main(int argc,char** argv) {
     fort.setTile(3,1,1,TileState(TileShape::Floor,MaterialKind::Stone,stone,3,LiquidKind::Water,TileFlags::NONE,DesignationKind::None));snap();
     fort.setTile(2,1,1,TileState(TileShape::Floor,MaterialKind::Stone,stone,0,LiquidKind::None,TileFlags::Hidden,DesignationKind::None));snap();
     fort.setTile(2,1,1,TileState(TileShape::Floor,MaterialKind::Stone,stone,0,LiquidKind::None,TileFlags::NONE,DesignationKind::None));snap();
+    // Contents-only revisions on a stationary container. Real raw tokens let
+    // the installed-asset check exercise the texture composition path.
+    SyntheticFort::ItemSpec bin;bin.kind=ItemKind::Bin;bin.material=fort.material("INORGANIC:GRANITE");
+    bin.x=7;bin.y=7;bin.z=1;bin.containedCount=0;fort.placeItem(600,bin);snap();
+    bin.containedCount=2;bin.containedKind=ItemKind::Bar;bin.containedMaterial=fort.material("INORGANIC:IRON");
+    fort.placeItem(600,bin);snap();
+    bin.containedKind=ItemKind::Blocks;bin.containedMaterial=fort.material("INORGANIC:COPPER");
+    fort.placeItem(600,bin);snap();
+    bin.containedCount=0;bin.containedKind=ItemKind::Unknown;bin.containedMaterial=UINT16_MAX;
+    fort.placeItem(600,bin);snap();
+    bin.containedCount=2;bin.containedKind=ItemKind::Cloth;bin.containedMaterial=stone;bin.containedColor="WHITE";
+    fort.placeItem(600,bin);snap();
+    bin.containedColor="MIDNIGHT_BLUE";fort.placeItem(600,bin);snap();
+    bin.containedCount=0;bin.containedKind=ItemKind::Unknown;bin.containedMaterial=UINT16_MAX;bin.containedColor.clear();
+    fort.placeItem(600,bin);snap();
     const auto bytes=fort.serialize();FixtureStream parsed;std::string error;
     if(!parseFixture(bytes,parsed,error))return 1;
     if(auto invalid=validateStream(parsed)){std::fprintf(stderr,"%s\n",invalid->c_str());return 1;}

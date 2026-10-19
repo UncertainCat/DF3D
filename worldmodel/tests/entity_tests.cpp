@@ -622,6 +622,50 @@ TEST_CASE("corpse identity remains semantic and participates in item revisions")
   CHECK(ItemObservation{}.corpseUnitId == -1);
 }
 
+TEST_CASE("stationary containers publish content replacement and empty transitions") {
+  WorldModel model;
+  SnapshotData snapshot; snapshot.tick=1; snapshot.mapSize={16,16,2};
+  snapshot.itemScope=ChangeScope::Full;
+  ItemObservation item; item.id=91; item.kind=ItemKind::Bin; item.pos={1,1,0};
+  snapshot.items.push_back(item); model.ingest(snapshot,1.0);
+  REQUIRE(model.item(91)); CHECK(model.item(91)->containedCount==UINT32_MAX);
+  model.drainItemEvents();
+  auto& observed=snapshot.items[0];
+  observed.containedCount=1; observed.containedKind=ItemKind::Bar;
+  snapshot.tick=2; model.ingest(snapshot,2.0);
+  CHECK(model.item(91)->containedKind==ItemKind::Bar);
+  REQUIRE(model.drainItemEvents().size()==1);
+  const auto before=model.item(91)->version;
+  observed.containedKind=ItemKind::Tool; observed.containedSubtypeRaw="ITEM_TOOL_BOOK";
+  snapshot.tick=3; model.ingest(snapshot,3.0);
+  CHECK(model.item(91)->version>before);
+  CHECK(model.item(91)->containedSubtypeRaw=="ITEM_TOOL_BOOK");
+  REQUIRE(model.drainItemEvents().size()==1);
+  observed.containedCount=0; observed.containedKind=ItemKind::Unknown; observed.containedSubtypeRaw.clear();
+  snapshot.tick=4; model.ingest(snapshot,4.0);
+  CHECK(model.item(91)->containedCount==0);
+  REQUIRE(model.drainItemEvents().size()==1);
+  snapshot.tick=5; model.ingest(snapshot,5.0);
+  CHECK(model.drainItemEvents().empty());
+}
+
+TEST_CASE("statue subject and quality participate in building revisions") {
+  WorldModel model;
+  SnapshotData snapshot; snapshot.tick=1; snapshot.mapSize={16,16,2};
+  snapshot.buildingScope=ChangeScope::Full;
+  BuildingObservation building; building.id=5; building.kind=BuildingKind::Statue;
+  snapshot.buildings.push_back(building); model.ingest(snapshot,1.0);
+  REQUIRE(model.building(5)); CHECK(model.building(5)->statue.quality==-1);
+  model.drainBuildingEvents();
+  auto& facts=snapshot.buildings[0].statue;
+  facts.quality=3; facts.subject=ArtSubject::Creature; facts.subjectRaw="DWARF";
+  snapshot.tick=2; model.ingest(snapshot,2.0);
+  CHECK(model.building(5)->statue==facts); REQUIRE(model.drainBuildingEvents().size()==1);
+  const auto before=model.building(5)->version;
+  facts.casteRaw="FEMALE"; snapshot.tick=3; model.ingest(snapshot,3.0);
+  CHECK(model.building(5)->version>before); REQUIRE(model.drainBuildingEvents().size()==1);
+}
+
 TEST_CASE("pending construction entity retains subtype and retires on removal or full refresh") {
   WorldModel model;
   auto full=snap(1,ChangeScope::Full,ChangeScope::Full);

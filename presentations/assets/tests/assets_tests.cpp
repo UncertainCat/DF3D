@@ -20,10 +20,35 @@
 #include "df3d_assets/provider.h"
 #include "df3d_assets/raw_tokens.h"
 #include "df3d_assets/resolver.h"
+#include "df3d_assets/wall_shadow.h"
 #include "df3d_assets/steam_install.h"
 
 using namespace df3d::assets;
 namespace fs = std::filesystem;
+
+TEST_CASE("wall shadows match all 256 recorded native neighbor combinations") {
+  std::ifstream input(std::string(DF3D_ASSETS_TEST_DIR) + "/data/wall_shadows_53_16.txt");
+  REQUIRE(input.good());
+  std::string line;
+  int cases=0;
+  while (std::getline(input,line)) {
+    if (line.empty() || line[0]=='#') continue;
+    std::istringstream row(line);
+    int mask; row >> mask;
+    std::vector<std::string> expected;
+    std::string name; while(row >> name) expected.push_back(name);
+    std::vector<std::string> actual;
+    for (const auto& layer : wallShadowLayers(uint8_t(mask))) {
+      name=layer.name;
+      if (name=="WALL_SHADOW_END_OF_WALL_W") name.back()="WNES"[layer.clockwise];
+      actual.push_back(name);
+    }
+    INFO(mask);
+    CHECK(actual == expected);
+    ++cases;
+  }
+  CHECK(cases==256);
+}
 
 namespace {
 
@@ -508,6 +533,11 @@ TEST_CASE("resolver: floors, grass species, ramps, stairs, features, liquids") {
   r = resolveTerrain(idx, q(S::Floor, M::Stone, "INORGANIC:LIMESTONE", FaceSide::Top,
                             FaceKind::Terrain, wm::kTileSmooth));
   CHECK(r.sprite == *idx.tile("SMOOTH_FLOOR"));
+  // DF 53.16 native dolomite engraving (130,79,165): runtime tile 22685
+  // matches floor_stone_engraved_non_palette.png byte-for-byte, all RGBA.
+  r = resolveTerrain(idx, q(S::Floor, M::Stone, "INORGANIC:DOLOMITE", FaceSide::Top,
+                            FaceKind::Terrain, wm::kTileSmooth | wm::kTileEngraved));
+  CHECK(r.sprite == *idx.tile("FLOOR_STONE_ENGRAVED_NON_PALETTE"));
   // Grass: the species' own GRASS_1 beats the generic floor tile.
   r = resolveTerrain(idx, q(S::Floor, M::Grass, "PLANT:MEADOW-GRASS:STRUCTURAL"));
   CHECK(r.sprite == idx.plants.at("MEADOW-GRASS").grass[0]);

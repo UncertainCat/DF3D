@@ -31,7 +31,6 @@ func update_grid(map_size: Vector3, level: int, enabled: bool) -> void:
 		add_child(_grid)
 	# One repeated source cell per map tile, one quad for the selected level.
 	# This is a DF-camera overlay, not thousands of per-tile scene nodes.
-	material.texture_repeat = true
 	material.render_priority = 5
 	var mesh := ImmediateMesh.new()
 	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, material)
@@ -43,7 +42,7 @@ func update_grid(map_size: Vector3, level: int, enabled: bool) -> void:
 	_grid.visible = true
 	_grid_key = key
 
-func material_for(selector: String) -> StandardMaterial3D:
+func material_for(selector: String) -> ShaderMaterial:
 	if selector.is_empty() or world == null or not world.has_method("ui_texture"): return null
 	if _materials.has(selector): return _materials[selector]
 	var marker_only := selector.ends_with(":marker")
@@ -52,15 +51,8 @@ func material_for(selector: String) -> StandardMaterial3D:
 	var is_priority := source.begins_with("DESIGNATION_PRIORITY_")
 	var texture: Texture2D = world.ui_texture("DESIGNATION_PRIORITY", int(source.trim_prefix("DESIGNATION_PRIORITY_")) - 1) if is_priority else world.ui_texture(source)
 	if texture == null: return null
-	var material := StandardMaterial3D.new()
-	material.albedo_texture = texture
-	if marker_only: material.albedo_color = Color(0,0.5,1,1)
-	elif automine: material.albedo_color = Color(0,1,0,1)
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
-	material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	material.no_depth_test = true
+	var color:=Color(0,0.5,1,1) if marker_only else Color(0,1,0,1) if automine else Color.WHITE
+	var material:=preload("res://scripts/world_material.gd").create(color,false,true,texture,true,source=="VIEWPORT_GRID")
 	material.render_priority = layer_priority + (2 if source.ends_with("_STONE_WARNING") else 1 if is_priority else -1 if source.begins_with("DESIGNATION_TRAFFIC_") else 0)
 	_materials[selector] = material
 	return material

@@ -1,4 +1,5 @@
 extends SceneTree
+const SourceMesh = preload("res://tests/source_mesh.gd")
 # Runtime assets on real terrain faces, frozen camera residency, and real state
 # cleanup. Run make_spatter_fixture first. No DF process or save modifications.
 var failures: Array[String] = []
@@ -13,17 +14,17 @@ func settle(world):
  check(false,"spatter meshes settle")
 func sources(world) -> Array:
  var ids: Array=[]
- for node in world.get_terrain_root().get_children():
+ for node in world.get_terrain_root().find_children("*", "MeshInstance3D", true, false):
   if node is MeshInstance3D: ids.append(node.mesh.get_instance_id())
  return ids
 func spattered(world) -> int:
  var count=0
- for node in world.get_terrain_root().get_children():
+ for node in world.get_terrain_root().find_children("*", "MeshInstance3D", true, false):
   if not node is MeshInstance3D or node.mesh==null: continue
-  for surface in node.mesh.get_surface_count():
-   var mat=node.mesh.surface_get_material(surface)
+  for surface in SourceMesh.count(node.mesh):
+   var mat=SourceMesh.material(node.mesh,surface)
    if mat is ShaderMaterial and mat.get_shader_parameter("spattered")==true:
-    var data=node.mesh.surface_get_arrays(surface)
+    var data=SourceMesh.arrays(node.mesh,surface)
     check(data[Mesh.ARRAY_TEX_UV2]!=null and data[Mesh.ARRAY_TEX_UV2].size()==data[Mesh.ARRAY_VERTEX].size(),"source and batch preserve spatter UV2")
     count+=1
  return count

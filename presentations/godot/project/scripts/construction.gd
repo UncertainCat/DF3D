@@ -813,8 +813,8 @@ func _process(delta: float) -> void:
 	var view := get_viewport().get_visible_rect().size
 	var anchor := Vector2(view.x * 0.48,view.y - 40)
 	if hud != null:
-		canvas.scale = Vector2.ONE * hud.ui_scale_value()
-		view /= hud.ui_scale_value()
+		canvas.scale = hud.ui_scale_vector()
+		view /= hud.ui_scale_vector()
 		var launcher: Rect2 = hud.navigation[launcher_destination].get_global_rect()
 		anchor = Vector2(launcher.get_center().x,launcher.position.y-2)
 	menu.layout(view,anchor); material_view.resize_to_view(view)
@@ -894,8 +894,7 @@ func draw_outline() -> void:
 	var visible_sites := visible_outline_sites()
 	var z := int(world.get_top_z())
 	if visible_sites.is_empty(): outline.mesh = null; return
-	var mesh := ImmediateMesh.new(); var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED; material.albedo_color = Color(0.8,0.65,0.15); material.no_depth_test = true
+	var mesh := ImmediateMesh.new(); var material := preload("res://scripts/world_material.gd").create(Color(0.8,0.65,0.15),false,true)
 	mesh.surface_begin(Mesh.PRIMITIVE_LINES,material)
 	for site in visible_sites:
 		var p: Vector3i = site.origin; var y := float(z) + float(world.floor_height()) + 0.02

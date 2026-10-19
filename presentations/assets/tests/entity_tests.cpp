@@ -14,6 +14,64 @@
 
 using namespace df3d::assets;
 
+TEST_CASE("container contents choose occupied art and independent material overlays") {
+  AssetIndex idx;
+  idx.pages.push_back({"CONTAINERS","","/containers",32,32,256,320});
+  idx.tileGraphics["ITEM_BIN_WOOD_EMPTY"]={{0,0,4,1,1}};
+  idx.tileGraphics["ITEM_BIN_WOOD_IN_USE"]={{0,1,4,1,1}};
+  idx.tileGraphics["ITEM_BIN_TOP_BARS"]={{0,5,5,1,1}};
+  idx.tileGraphics["ITEM_BIN_TOP_BLOCKS"]={{0,4,5,1,1}};
+  idx.tileGraphics["ITEM_BARREL_WOOD_LIQUID"]={{0,2,2,1,1}};
+  idx.tileGraphics["LIQUID_FOR_BARREL_WOOD"]={{0,6,2,1,1}};
+  ItemQuery q; q.kind=wm::ItemKind::Bin; q.material="PLANT:OAK:WOOD";
+  auto r=resolveItem(idx,q);
+  CHECK(r.sprite.x==0); CHECK(r.overlays.empty()); // unknown contents
+  q.containedCount=0;
+  CHECK(resolveItem(idx,q).sprite.x==0);
+  q.containedCount=5; q.containedKind=wm::ItemKind::Bar;
+  r=resolveItem(idx,q);
+  CHECK(r.sprite.x==1); REQUIRE(r.overlays.size()==1);
+  CHECK(r.overlays[0].sprite.x==5);
+  q.containedKind=wm::ItemKind::Blocks;
+  r=resolveItem(idx,q); REQUIRE(r.overlays.size()==1);
+  CHECK(r.overlays[0].sprite.x==4);
+  q.kind=wm::ItemKind::Barrel; q.containedKind=wm::ItemKind::Drink;
+  r=resolveItem(idx,q); CHECK(r.sprite.x==2); REQUIRE(r.overlays.size()==1);
+  CHECK(r.overlays[0].sprite.x==6);
+}
+
+TEST_CASE("installed statues combine quality pedestal and creature or event figure") {
+  AssetIndex idx;
+  ingestRawText(idx,R"([OBJECT:GRAPHICS]
+    [TILE_PAGE:STATUES][FILE:statues.png][TILE_DIM:32:32][PAGE_DIM:8:8]
+    [TILE_GRAPHICS:STATUES:0:0:ITEM_STATUE_STONE:1]
+    [TILE_GRAPHICS:STATUES:1:0:ITEM_STATUE_STONE:2]
+    [TILE_GRAPHICS:STATUES:2:0:ITEM_STATUE_ARTIFACT]
+    [TILE_GRAPHICS:STATUES:1:3:ITEM_DEFAULT_STATUE_TOP]
+    [TILE_GRAPHICS:STATUES:1:4:ITEM_DEFAULT_STATUE_BOTTOM]
+    [TILE_GRAPHICS:STATUES:2:3:ITEM_STATUE_GENERIC_DUEL_TOP]
+    [TILE_GRAPHICS:STATUES:2:4:ITEM_STATUE_GENERIC_DUEL_BOTTOM]
+    [STATUE_CREATURE_GRAPHICS:DWARF][DEFAULT:STATUES:0:6:0:7]
+    [STATUE_CREATURE_CASTE_GRAPHICS:TEST_BIRD:FEMALE][DEFAULT:STATUES:3:6:3:7]
+  )","/synthetic","statues",nullptr);
+  finalizeIndex(idx);
+  BuildingQuery q; q.kind=wm::BuildingKind::Statue; q.statue.quality=1;
+  q.statue.subject=wm::ArtSubject::Creature; q.statue.subjectRaw="DWARF";
+  auto r=resolveBuildingTiles(idx,q);
+  REQUIRE(r.tiles.size()==3);
+  CHECK(r.tiles[0].sprite.x==1);
+  CHECK(r.tiles[1].ly==-1); CHECK(r.tiles[1].sprite.y==6);
+  CHECK(r.tiles[2].ly==0); CHECK(r.tiles[2].sprite.y==7);
+  q.statue.subjectRaw="TEST_BIRD"; q.statue.casteRaw="FEMALE"; q.statue.quality=6;
+  r=resolveBuildingTiles(idx,q); REQUIRE(r.tiles.size()==3);
+  CHECK(r.tiles[0].sprite.x==2); CHECK(r.tiles[1].sprite.x==3);
+  q.statue.subject=wm::ArtSubject::Event; q.statue.event=wm::ArtEvent::Duel;
+  r=resolveBuildingTiles(idx,q); REQUIRE(r.tiles.size()==3);
+  CHECK(r.tiles[1].sprite.x==2); CHECK(r.tiles[1].sprite.y==3);
+  q.statue={}; r=resolveBuildingTiles(idx,q); REQUIRE(r.tiles.size()==3);
+  CHECK(r.tiles[0].sprite.x==0); CHECK(r.tiles[1].sprite.x==1);
+}
+
 namespace {
 
 std::string dataDir() { return std::string(DF3D_ASSETS_TEST_DIR) + "/data"; }
@@ -535,7 +593,7 @@ TEST_CASE("items: kind, itemdef raw, material and flags pick the sprite") {
   CHECK(resolveItem(idx, iq(wm::ItemKind::Door, "INORGANIC:GRANITE")).sprite ==
         at(idx, "ITEM_DOOR", 1, 1));
   CHECK(resolveItem(idx, iq(wm::ItemKind::Statue, "INORGANIC:GRANITE")).sprite ==
-        at(idx, "STATUES", 0, 0));
+        at(idx, "STATUES", 7, 0));
   CHECK(resolveItem(idx, iq(wm::ItemKind::Chair, "PLANT:OAK:WOOD")).sprite ==
         at(idx, "ITEM_CHAIR", 0, 0));
 

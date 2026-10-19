@@ -33,9 +33,7 @@ static func _bolt_mesh() -> ArrayMesh:
 	surface.append_from(shaft, 0, Transform3D(along_z, Vector3.ZERO))
 	surface.append_from(head, 0, Transform3D(along_z, Vector3(0, 0, .175)))
 	var mesh := surface.commit()
-	var material := StandardMaterial3D.new()
-	material.albedo_color = Color(.85, .79, .58)
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var material := preload("res://scripts/world_material.gd").create(Color(.85,.79,.58))
 	mesh.surface_set_material(0, material)
 	return mesh
 

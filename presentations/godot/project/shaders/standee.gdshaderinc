@@ -3,14 +3,21 @@
 #ifndef STANDEE_GHOST
 #include "res://shaders/batch_sampling.gdshaderinc"
 #endif
-uniform sampler2D sprite_tex : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+uniform sampler2D sprite_tex : filter_linear_mipmap_anisotropic, repeat_disable;
 uniform vec4 sprite_region = vec4(0.0, 0.0, 1.0, 1.0);
 uniform vec2 sprite_cell = vec2(0.0);
+varying flat vec2 sprite_tile_center;
 void fragment() {
+    vec2 tile_center = sprite_tile_center == vec2(0.0) ? UV : sprite_tile_center;
 #ifdef STANDEE_GHOST
-    ALBEDO = sample_world_grid(sprite_tex, UV, sprite_cell).rgb * COLOR.rgb;
-    ALPHA = COLOR.a;
+    vec4 texel = sample_world_grid_at(sprite_tex, UV, sprite_cell, tile_center);
+    ALBEDO = world_output(texel.rgb * COLOR.rgb);
+    ALPHA = texel.a * COLOR.a;
 #else
-    ALBEDO = (batch_texture_enabled ? sample_batch_grid(UV, sprite_cell) : sample_world_grid(sprite_tex, UV, sprite_cell)).rgb * COLOR.rgb;
+    vec4 texel = batch_texture_enabled ? sample_batch_grid_at(UV, sprite_cell, tile_center) : sample_world_grid_at(sprite_tex, UV, sprite_cell, tile_center);
+    ALBEDO = world_output(texel.rgb * COLOR.rgb);
+#ifdef FURNITURE_ALPHA
+    ALPHA = texel.a * COLOR.a;
+#endif
 #endif
 }

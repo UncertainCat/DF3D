@@ -46,8 +46,8 @@ func show_tile(tile: Vector3i):
 	description.text = describe(world.tile_hover_info(tile))
 	panel.visible = not description.text.is_empty()
 	if not panel.visible: return
-	var factor: float = hud.ui_scale_value() if hud.has_method("ui_scale_value") else 1.0
-	scale = Vector2(factor, factor)
+	var factor: Vector2 = hud.ui_scale_vector() if hud.has_method("ui_scale_vector") else Vector2.ONE
+	scale = factor
 	var view := get_viewport().get_visible_rect().size / factor
 	var right := minf(hud.status_panel.get_rect().end.x, hud.level_controls.get_global_rect().position.x - 8)
 	var width := minf(520, maxf(160, right - 12))

@@ -62,7 +62,7 @@ func run():
    await sample(mode+"_"+config.name,mode=="df",false,180,60)
    results.back()["sprite_batches"]=scene.sprite_batch_stats()
    var rectangles=0
-   for node in scene.get_node("Terrain").get_children(): rectangles+=int(node.get_meta("df3d_occluder_rects",0))
+   for node in scene.get_node("Terrain").find_children("*", "MeshInstance3D", true, false): rectangles+=int(node.get_meta("df3d_occluder_rects",0))
    results.back()["occluder_rectangles"]=rectangles
    if config.name in ["spatial_16x1","occlusion_16x1"]:
     await RenderingServer.frame_post_draw

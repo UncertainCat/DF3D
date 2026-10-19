@@ -1,0 +1,15 @@
+{
+  "native_version": "53.16",
+  "provenance": "build/notes/visual-polish/native-20261013-101901",
+  "capture_date": "2026-10-13",
+  "owned_save_unchanged": true,
+  "native_frame": 0,
+  "preferences": {"desired_grid": [190, 64], "maximum_interface_percentage": 100, "automatic": true},
+  "scope": "Header geometry at the captured window sizes. UI only; world zoom is independent. Cells and origins are correlated with the rendered screenshots, not solely the potentially lagging gps.dimx/dimy values read before capture.",
+  "cases": [
+    {"viewport": [1600, 900], "cell": [8, 12], "header_origin": [128, 0]},
+    {"viewport": [1920, 1080], "cell": [10, 15], "header_origin": [160, 0]},
+    {"viewport": [2560, 1440], "cell": [13, 19], "header_origin": [214, 7]},
+    {"viewport": [3833, 2064], "cell": [20, 30], "header_origin": [326, 12]}
+  ]
+}

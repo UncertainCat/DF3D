@@ -13,8 +13,14 @@
 #include "df/building_hatchst.h"
 #include "df/building_type.h"
 #include "df/item.h"
+#include "df/general_ref.h"
+#include "df/general_ref_type.h"
 #include "df/item_body_component.h"
 #include "df/item_type.h"
+#include "df/item_statue_graphics_flag.h"
+#include "df/descriptor_color.h"
+#include "df/creature_raw.h"
+#include "df/caste_raw.h"
 #include "df/itemdef.h"
 #include "df/job.h"
 #include "df/job_item_ref.h"
@@ -92,6 +98,45 @@ mir::ItemKind mapItemKind(df::item_type t) {
 
 // ---- shadows ----
 
+struct StatueRec {
+    int8_t quality=-1;
+    mir::ArtSubject subject=mir::ArtSubject::Unknown;
+    const std::string* raw=nullptr;
+    const std::string* caste=nullptr;
+    mir::ArtEvent event=mir::ArtEvent::Unknown;
+    friend bool operator==(const StatueRec&,const StatueRec&)=default;
+};
+
+StatueRec statueFacts(df::item* item) {
+    StatueRec result;
+    if (!item || item->getType()!=df::item_type::STATUE) return result;
+    result.quality=static_cast<int8_t>(item->flags.bits.artifact ? 6 : item->getQuality());
+    const auto* packed=item->get_art_graphics_type_ptr();
+    if (!packed) return result;
+    // The native item stores its semantic depiction as the low 31 bits of
+    // this documented union: subject, race/shape/event index and caste.
+    // Resolve IDs to raw tokens here; no texpos or native viewport is read.
+    const df::item_statue_graphics_flag depiction(static_cast<uint32_t>(*packed));
+    const int subject=static_cast<int>(depiction.bits.overall);
+    if (subject<0 || subject>5) return result;
+    result.subject=static_cast<mir::ArtSubject>(subject+1);
+    const int index=static_cast<int>(depiction.bits.index_1);
+    if (result.subject==mir::ArtSubject::Creature && index>=0 && size_t(index)<world->raws.creatures.all.size()) {
+        const auto* raw=world->raws.creatures.all[index];
+        result.raw=&raw->creature_id;
+        const int caste=static_cast<int>(depiction.bits.index_2);
+        if (caste>=0 && size_t(caste)<raw->caste.size()) result.caste=&raw->caste[caste]->caste_id;
+    } else if (result.subject==mir::ArtSubject::Event && index>=0 && index<=8)
+        result.event=static_cast<mir::ArtEvent>(index+1);
+    return result;
+}
+
+flatbuffers::Offset<mir::StatueFacts> writeStatue(flatbuffers::FlatBufferBuilder& fbb,const StatueRec& s) {
+    if (s.quality<0 && s.subject==mir::ArtSubject::Unknown) return 0;
+    return mir::CreateStatueFactsDirect(fbb,s.quality,s.subject,s.raw ? s.raw->c_str() : nullptr,
+        s.caste ? s.caste->c_str() : nullptr,s.event);
+}
+
 struct BuildingRec {
     uint8_t kind = 0;
     uint8_t stage = 0;
@@ -101,12 +146,13 @@ struct BuildingRec {
     int32_t x1 = 0, y1 = 0, x2 = 0, y2 = 0, z = 0, cx = 0, cy = 0;
     const std::string* custom = nullptr;  // building_def::code (DF memory, stable for the session)
     std::vector<uint8_t> extents;          // empty = whole rectangle
+    StatueRec statue;
 };
 
 bool sameRec(const BuildingRec& a, const BuildingRec& b) {
     return a.kind == b.kind && a.stage == b.stage && a.flags == b.flags && a.subtype == b.subtype &&
            a.material == b.material && a.x1 == b.x1 && a.y1 == b.y1 && a.x2 == b.x2 && a.y2 == b.y2 &&
-           a.z == b.z && a.cx == b.cx && a.cy == b.cy && a.custom == b.custom && a.extents == b.extents;
+           a.z == b.z && a.cx == b.cx && a.cy == b.cy && a.custom == b.custom && a.extents == b.extents && a.statue==b.statue;
 }
 
 struct BuildingShadow {
@@ -129,6 +175,12 @@ struct ItemShadow {
     uint16_t material = 0xFFFF;
     uint16_t corpseFlags = 0;
     int32_t corpseUnitId = -1;
+    uint32_t containedCount = UINT32_MAX;
+    mir::ItemKind containedKind = mir::ItemKind::Unknown;
+    uint16_t containedMaterial = 0xFFFF;
+    const std::string* containedSubtypeRaw = nullptr;
+    const std::string* containedColor = nullptr;
+    StatueRec statue;
     int16_t x = 0, y = 0, z = 0;
     uint32_t stack = 1;
     const std::string* subtypeRaw = nullptr;  // itemdef::id (DF memory)
@@ -257,6 +309,13 @@ bool extractBuilding(df::building* b, df::building_type type, BuildingRec& rec, 
     }
 
     rec.material = gm(b->mat_type, b->mat_index);
+    rec.statue={};
+    if (type==df::building_type::Statue) {
+        for (const auto* contained : static_cast<df::building_actual*>(b)->contained_items)
+            if (contained && contained->item && contained->item->getType()==df::item_type::STATUE) {
+                rec.statue=statueFacts(contained->item); break;
+            }
+    }
 
     if (b->flags.bits.exists) rec.stage = static_cast<uint8_t>(mir::BuildingStage::Complete);
     else if (b->getBuildStage() > 0) rec.stage = static_cast<uint8_t>(mir::BuildingStage::InProgress);
@@ -512,6 +571,31 @@ void removeItemAt(uint32_t idx, int32_t frame) {
     ++s.st.itemRemoves;
 }
 
+// Direct item contents are semantic facts. No native viewport or graphics
+// cache participates. Rechecking on ordinary visits catches fills/empties and
+// content replacements even while the container itself does not move.
+bool updateContents(df::item* it, ItemShadow& sh, GridMaterialFn gm) {
+    const auto type=it->getType();
+    if (type!=df::item_type::BIN && type!=df::item_type::BARREL && type!=df::item_type::BAG &&
+        type!=df::item_type::BUCKET && type!=df::item_type::TOOL) return false;
+    uint32_t count=0;
+    df::item* first=nullptr;
+    for (auto* ref : it->general_refs) if (ref && ref->getType()==df::general_ref_type::CONTAINS_ITEM) {
+        if (auto* child=ref->getItem()) { if (!first) first=child; ++count; }
+    }
+    const auto kind=first ? mapItemKind(first->getType()) : mir::ItemKind::Unknown;
+    const uint16_t material=first ? gm(first->getMaterial(),first->getMaterialIndex()) : 0xFFFF;
+    const df::itemdef* def=first ? Items::getSubtypeDef(first->getType(),first->getSubtype()) : nullptr;
+    const std::string* raw=def ? &def->id : nullptr;
+    const auto* descriptor=first ? df::descriptor_color::find(first->getColorWhetherDyedOrNot()) : nullptr;
+    const std::string* color=descriptor ? &descriptor->id : nullptr;
+    const bool changed=sh.containedColor!=color || sh.containedCount!=count || sh.containedKind!=kind ||
+        sh.containedMaterial!=material || sh.containedSubtypeRaw!=raw;
+    sh.containedColor=color;
+    sh.containedCount=count; sh.containedKind=kind; sh.containedMaterial=material; sh.containedSubtypeRaw=raw;
+    return changed;
+}
+
 // Checks one item against its shadow: add / update / remove as needed.
 // Field mapping: kind from getType(); subtype = getSubtype() only
 // when Items::getSubtypeDef resolves an itemdef (weapons, armour, ammo,
@@ -534,7 +618,9 @@ void visitItem(df::item* it, int32_t frame, int32_t mx, int32_t my, int32_t mz, 
     if (found != s.itemIndex.end()) {
         ItemShadow& sh = s.items[found->second];
         sh.lastPass = s.itemPass;
-        bool changed = false;
+        bool changed = updateContents(it,sh,gm);
+        const auto statue=statueFacts(it);
+        if (sh.statue!=statue) { sh.statue=statue; changed=true; }
         if (sh.corpse) {
             const int32_t owner = static_cast<const df::item_body_component*>(it)->unit_id;
             if (owner != sh.corpseUnitId) { sh.corpseUnitId = owner; changed = true; }
@@ -564,6 +650,8 @@ void visitItem(df::item* it, int32_t frame, int32_t mx, int32_t my, int32_t mz, 
     sh.lastPass = s.itemPass;
     const df::item_type type = it->getType();
     sh.kind = static_cast<uint8_t>(mapItemKind(type));
+    updateContents(it,sh,gm);
+    sh.statue=statueFacts(it);
     sh.corpse = isCorpseKind(type);
     if (sh.corpse) {
         sh.corpseFlags = corpseFlagsOf(it);
@@ -781,7 +869,7 @@ void build(flatbuffers::FlatBufferBuilder& fbb, int32_t frame, bool full, LocalM
         s.bOffsets.push_back(mir::CreateBuilding(
             fbb, static_cast<uint32_t>(sh.id), static_cast<mir::BuildingKind>(r.kind), r.subtype, custom,
             r.x1, r.y1, r.x2, r.y2, r.z, r.cx, r.cy, extents, mat, static_cast<mir::BuildingStage>(r.stage),
-            static_cast<mir::BuildingFlags>(r.flags)));
+            static_cast<mir::BuildingFlags>(r.flags),writeStatue(fbb,r.statue)));
         ++out.count;
         if (full && ring) sh.sendUntil = 0;
     }
@@ -816,7 +904,12 @@ void build(flatbuffers::FlatBufferBuilder& fbb, int32_t frame, bool full, LocalM
         s.iOffsets.push_back(mir::CreateMapItem(fbb, static_cast<uint32_t>(sh.id),
                                                 static_cast<mir::ItemKind>(sh.kind), sh.subtype, raw, mat,
                                                 &pos, sh.stack, static_cast<mir::ItemFlags>(sh.flags),
-                                                static_cast<mir::CorpseFlags>(sh.corpseFlags), sh.corpseUnitId));
+                                                static_cast<mir::CorpseFlags>(sh.corpseFlags), sh.corpseUnitId,
+                                                sh.containedCount, sh.containedKind,
+                                                sh.containedMaterial == 0xFFFF ? mir::kNoMaterial : localMaterial(fbb,sh.containedMaterial),
+                                                sh.containedSubtypeRaw ? fbb.CreateString(*sh.containedSubtypeRaw) : 0,
+                                                writeStatue(fbb,sh.statue),
+                                                sh.containedColor ? fbb.CreateString(*sh.containedColor) : 0));
         if (sh.corpse && g_hooks.encodeLayer) {
             s.layerBuf.clear();
             for (const app::Layer& l : sh.layers) s.layerBuf.push_back(g_hooks.encodeLayer(fbb, l));

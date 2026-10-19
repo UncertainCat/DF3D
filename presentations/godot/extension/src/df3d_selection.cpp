@@ -149,6 +149,7 @@ Ref<Texture2D> Df3dWorld::selection_icon(int kind,int64_t id,bool body_cell) {
         query.kind=building->kind;query.subtype=building->subtype;query.custom=building->custom;
         query.stage=building->stage;query.width=1;query.height=1;query.flags=building->flags;
         query.material=source_.model().materialName(building->material);query.extents=&building->extents;
+        query.statue=building->statue;
         const auto resolved=df3d::assets::resolveBuildingTiles(assets_->index,query);
         std::vector<std::pair<int,Color>> layers;
         for (const auto& tile:resolved.tiles) {

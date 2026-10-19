@@ -31,7 +31,7 @@ func run():
 	var positions: Array[Vector3] = []
 	for fps in [30,60,144]:
 		body = pawn(map)
-		for frame in range(fps*2): body.advance(1.0/fps,Vector3.RIGHT)
+		for frame in range(fps*3): body.advance(1.0/fps,Vector3.RIGHT)
 		positions.append(body.feet)
 	check(positions[0].distance_to(positions[1])<.04 and positions[0].distance_to(positions[2])<.04,"fixed-step speed independent of render FPS")
 	for x in range(4,9):
@@ -87,14 +87,49 @@ func run():
 	map.queries = 0
 	body.advance(1.0/60,Vector3.RIGHT)
 	check(map.queries<64,"collision reads only nearby tiles per frame")
+	# Enclosed, multi-level stairs include real surrounding floor slabs. The
+	# old empty-air fixture hid clearance and landing-boundary problems.
+	for fps in [30,60,144]:
+		for offset in [.21,.5,.79]:
+			map = make_map()
+			for z in range(5):
+				for x in range(1,4):
+					for y in range(1,4): map.put(x,y,z,"Floor")
+				map.put(2,2,z,"StairUp" if z==0 else ("StairDown" if z==4 else "StairUpDown"))
+			body = pawn(map,Vector3(2+offset,.1,2+offset))
+			for i in range(fps*3): body.advance(1.0/fps,Vector3.ZERO,false,true)
+			check(absf(body.feet.y-4.1)<.02,"continuous stair ascent at %s FPS offset %s" % [fps,offset])
+			for i in range(fps):
+				body.advance(1.0/fps,Vector3.ZERO)
+				check(absf(body.feet.y-4.1)<.02,"releasing climb at top does not trigger a buffered jump")
+			for i in range(fps*3): body.advance(1.0/fps,Vector3.ZERO,false,false,true)
+			check(absf(body.feet.y-.1)<.02,"continuous stair descent stops at bottom at %s FPS" % fps)
 	map = make_map()
 	map.put(2,2,0,"StairUp")
 	map.put(2,2,1,"StairDown")
 	body = pawn(map)
-	body.jump()
+	for i in range(24): body.advance(1.0/120,Vector3.ZERO,false,true)
+	check(body.feet.y>.45 and body.feet.y<.55,"stairs move continuously rather than jumping or snapping")
 	for i in range(120): body.advance(1.0/120,Vector3.ZERO)
-	check(absf(body.feet.y-1.1)<.003,"jump rises through native stair opening and lands upstairs")
-	for i in range(120): body.advance(1.0/120,Vector3.ZERO,false,false,true)
-	check(absf(body.feet.y-.1)<.003,"Q drops through stair landing without trapping body under slab")
+	check(absf(body.feet.y-.1)<.003,"release climb returns to gravity")
+	map.put(2,2,1,"Floor")
+	body = pawn(map)
+	for i in range(120): body.advance(1.0/120,Vector3.ZERO,false,true)
+	check(body.feet.y<=.381,"unconnected stair cannot pass through ceiling")
+	map.put(2,2,1,"StairDown")
+	map.put(1,2,1,"Floor")
+	body = pawn(map,Vector3(2.05,.1,2.5))
+	for i in range(120): body.advance(1.0/120,Vector3.ZERO,false,true)
+	check(body.feet.y<=.381,"stair ascent respects footprint overlapping surrounding ceiling")
+	for i in range(18): body.advance(1.0/120,Vector3.RIGHT,false,true)
+	for i in range(120): body.advance(1.0/120,Vector3.ZERO,false,true)
+	check(body.feet.y>=1.09,"moving clear of stair edge resumes ascent")
+	map = make_map()
+	map.put(2,2,0,"StairUp")
+	map.put(2,2,1,"StairDown")
+	map.tiles[Vector3i(2,2,1)]["liquid_level"] = 4
+	body = pawn(map)
+	for i in range(120): body.advance(1.0/120,Vector3.ZERO,false,true)
+	check(body.feet.y<=.381,"stair climb preserves the deep-liquid collision barrier")
 	print("walk_controller_test: %s" % ("PASS" if failures==0 else "FAIL"))
 	quit(0 if failures==0 else 1)

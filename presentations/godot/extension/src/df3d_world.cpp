@@ -14,6 +14,7 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -172,6 +173,7 @@ struct SurfaceArrays {
     PackedColorArray colors;
     PackedVector2Array uvs, spatterUvs;
     PackedInt32Array indices;
+    godot::PackedFloat32Array layers, tileCenters;
     bool textured = false;
     void add(const mesher::Face& f, const Color& color, const float* uvRect, const float* spatterRect = nullptr) {
         const int32_t base = static_cast<int32_t>(vertices.size());
@@ -191,6 +193,12 @@ struct SurfaceArrays {
             vertices.push_back(toGodot(v));
             normals.push_back(n);
             colors.push_back(color);
+            // Stable atlas-cell identity at MSAA edges, where interpolated UVs
+            // can extend outside this face. xy=terrain, zw=ground spatter.
+            tileCenters.push_back(uvRect ? (uvRect[0]+uvRect[2])*.5f : 0.f);
+            tileCenters.push_back(uvRect ? (uvRect[1]+uvRect[3])*.5f : 0.f);
+            tileCenters.push_back(spatterRect ? (spatterRect[0]+spatterRect[2])*.5f : 0.f);
+            tileCenters.push_back(spatterRect ? (spatterRect[1]+spatterRect[3])*.5f : 0.f);
             if (spatterRect) {
                 const Vector2 t = faceUv(f, v, minX, minY, minZ);
                 spatterUvs.push_back(Vector2(spatterRect[0] + (spatterRect[2]-spatterRect[0])*t.x,
@@ -644,7 +652,10 @@ void Df3dWorld::flushPresentationGeometry() {
     // Layout first, then geometry, then batch work last (a later geometry edit would cancel it).
     drainBuildingGeometry();
     PerfScope timer("batches.flush", &perfBatchFlushMs_);
-    terrainBatches_.flush(2.0);
+    // Initial residency is a loading phase. Subsequent source edits use the
+    // smaller interactive budget; camera travel never enqueues geometry.
+    terrainBatches_.flush(preparingTerrain_ ? 8.0 : 2.0);
+    if(queueHead_>=queue_.size() && terrainBatches_.pending()==0)preparingTerrain_=false;
     buildingBatches_.flush(2.0);
 }
 
@@ -694,7 +705,7 @@ void Df3dWorld::set_terrain_root(Node3D* root) {
     }
     terrainRoot_ = root;
     ownRoot_ = false;
-    enqueueWindow();
+    enqueueTerrainMap();
 }
 
 Node3D* Df3dWorld::get_terrain_root() {
@@ -715,23 +726,10 @@ void Df3dWorld::set_top_z(int z) {
     topZ_ = z;
     lastRenderedTick_ = UINT64_MAX;  // unit slice changed: re-evaluate even if paused
     itemsDirty_ = true;
-    layoutScopeDirty_ = true;
-    enqueueBuildingWindow();
+    layoutViewDirty_ = true; // Reapply retained ordinals to newly visible sprites.
+    updateBuildingVisibility();
     if (!source_.model().hasTerrain()) return;
-    // Blocks leaving the window go; the old and new top layers are re-cut
-    // (enqueueWindow compares the built top_z); blocks entering are built.
-    for (auto it = built_.begin(); it != built_.end();) {
-        const wm::BlockPos p{static_cast<int32_t>(it->first & 0xFFFFF),
-                             static_cast<int32_t>((it->first >> 20) & 0xFFFFF),
-                             static_cast<int32_t>(it->first >> 40)};
-        if (!inWindow(p)) {
-            freeBlock(it->second);
-            it = built_.erase(it);
-        } else {
-            ++it;
-        }
-    }
-    enqueueWindow();
+    updateTerrainVisibility();
 }
 
 void Df3dWorld::set_window_depth(int levels) {
@@ -740,21 +738,10 @@ void Df3dWorld::set_window_depth(int levels) {
     windowDepth_ = levels;
     lastRenderedTick_ = UINT64_MAX;
     itemsDirty_ = true;
-    layoutScopeDirty_ = true;
-    enqueueBuildingWindow();
+    layoutViewDirty_ = true; // Reapply retained ordinals to newly visible sprites.
+    updateBuildingVisibility();
     if (!source_.model().hasTerrain()) return;
-    for (auto it = built_.begin(); it != built_.end();) {
-        const wm::BlockPos p{static_cast<int32_t>(it->first & 0xFFFFF),
-                             static_cast<int32_t>((it->first >> 20) & 0xFFFFF),
-                             static_cast<int32_t>(it->first >> 40)};
-        if (!inWindow(p)) {
-            freeBlock(it->second);
-            it = built_.erase(it);
-        } else {
-            ++it;
-        }
-    }
-    enqueueWindow();
+    updateTerrainVisibility();
 }
 
 void Df3dWorld::set_sprite_depth(int levels) {
@@ -770,50 +757,77 @@ void Df3dWorld::set_reveal_hidden(bool reveal) {
     if (reveal == revealHidden_) return;
     revealHidden_ = reveal;
     resetTerrain();
-    enqueueWindow();
+    enqueueTerrainMap();
     resetEntities();
 }
 
 void Df3dWorld::enqueue(wm::BlockPos p) {
-    if (!inWindow(p) || !blockInMap(p)) return;
+    if (!blockInMap(p)) return;
     const uint64_t k = key(p);
     if (queued_.insert(k).second) queue_.push_back(p);
 }
 
-// Queues every block of the window that is not built against the current
-// top_z / version, top layer first so the visible surface appears first.
-void Df3dWorld::enqueueWindow() {
+// Prepare the selected level and deeper terrain first, then the upper map.
+// Both cut alternatives are source-owned and remain resident across view changes.
+void Df3dWorld::enqueueTerrainMap() {
     if (!source_.model().hasTerrain() || topZ_ < 0) return;
-    const wm::TilePos map = source_.model().mapSize();
-    const int32_t bxCount = (map.x + wm::kBlockSize - 1) / wm::kBlockSize;
-    const int32_t byCount = (map.y + wm::kBlockSize - 1) / wm::kBlockSize;
-    for (int32_t z = std::min(topZ_, map.z - 1); z > topZ_ - get_window_depth() && z >= 0; --z) {
-        for (int32_t by = 0; by < byCount; ++by)
-            for (int32_t bx = 0; bx < bxCount; ++bx) {
-                const wm::BlockPos p{bx, by, z};
-                // Only the top layer depends on the cut: a block built as
-                // the top layer (or becoming it) must be re-meshed.
-                auto it = built_.find(key(p));
-                if (it != built_.end() && it->second.version == source_.model().blockVersion(p) &&
-                    (it->second.topZ == topZ_ || (it->second.topZ != z && topZ_ != z))) {
-                    continue;
-                }
-                enqueue(p);
-            }
+    const auto map = source_.model().mapSize();
+    const auto level = [&](int z) {
+        for (int by=0; by<(map.y+15)/16; ++by) for (int bx=0; bx<(map.x+15)/16; ++bx) {
+            const wm::BlockPos p{bx,by,z};
+            const auto it=built_.find(key(p));
+            if (it==built_.end() || it->second.version!=source_.model().blockVersion(p)) enqueue(p);
+        }
+    };
+    for (int z=std::min(topZ_,map.z-1); z>=0; --z) level(z);
+    for (int z=topZ_+1; z<map.z; ++z) level(z);
+}
+
+Node3D* Df3dWorld::terrainLayerRoot(int z,int layer) {
+    auto& root=terrainLayers_[z][layer];
+    if (!root) {
+        root=memnew(Node3D);
+        root->set_name(String("level_")+String::num_int64(z)+"_"+String::num_int64(layer));
+        root->set_visible(zInWindow(z) && (layer==0 || (layer==1 ? z<topZ_ : z==topZ_)));
+        get_terrain_root()->add_child(root);
+    }
+    return root;
+}
+
+void Df3dWorld::updateTerrainVisibility() {
+    terrainBatches_.set_terrain_slice(topZ_,get_window_depth());
+    for (const auto& [z,layers]:terrainLayers_) for (int layer=0;layer<3;++layer) {
+        if (!layers[layer]) continue;
+        const bool visible=zInWindow(z) && (layer==0 || (layer==1 ? z<topZ_ : z==topZ_));
+        if (layers[layer]->is_visible()!=visible) layers[layer]->set_visible(visible);
     }
 }
 
-void Df3dWorld::freeBlock(Built& b) {
+void Df3dWorld::freeBlock(Built& b, bool keepNode) {
     PerfScope profile("terrain.free_block", nullptr, df3d::profiling::detailed());
     hiddenFaces_ -= b.hidden;
     b.hidden = 0;
     if (b.node) {
-        terrainBatches_.erase(b.node->get_instance_id());
+        terrainBatches_.erase(b.node->get_instance_id(), false);
         faceCount_ -= static_cast<int64_t>(b.node->get_meta("df3d_faces", 0));
-        terrainRoot_->remove_child(b.node);
-        godot::memdelete(b.node);
-        b.node = nullptr;
-        --meshCount_;
+        b.node->set_meta("df3d_faces",int64_t(0));
+        if(keepNode) {
+            // Mesh/material changes do not invalidate the spatial instance or
+            // its immutable occluder. Reconcile opaque geometry independently.
+            b.node->set_mesh(godot::Ref<godot::Mesh>());
+            b.node->set_layer_mask(1);
+        } else {
+            godot::Ref<godot::Occluder3D> retiringOccluder;
+            if (auto* occluder = godot::Object::cast_to<godot::OccluderInstance3D>(
+                    b.node->get_node_or_null(godot::NodePath("OpaqueOccluder")))) {
+                retiringOccluder=occluder->get_occluder();
+                occluder->hide();
+                occluder->set_occluder(godot::Ref<godot::Occluder3D>());
+            }
+            b.node->get_parent()->remove_child(b.node);
+            godot::memdelete(b.node);
+            b.node = nullptr;
+        }
     }
     unresolvedFaces_ -= b.unresolved;
     texturedFaces_ -= b.textured;
@@ -822,15 +836,21 @@ void Df3dWorld::freeBlock(Built& b) {
 }
 
 void Df3dWorld::resetTerrain() {
+    preparingTerrain_ = true;
     terrainVisibilityDependencies_.clear();
     spatterEdges_.clear();
-    terrainBatches_.clear();
-    for (auto& [k, b] : built_) freeBlock(b);
+    terrainBatches_.clear(false); // Sources are being destroyed; do not reupload them.
+    for (auto& [k, b] : built_) for (auto& layer:b.layers) freeBlock(layer);
     built_.clear();
+    for (auto& [z,layers]:terrainLayers_) for (auto* root:layers) if (root) {
+        root->get_parent()->remove_child(root);
+        godot::memdelete(root);
+    }
+    terrainLayers_.clear();
+    terrainTextures_.clear();
     queue_.clear();
     queued_.clear();
     queueHead_ = 0;
-    meshCount_ = 0;
     faceCount_ = 0;
     unresolvedFaces_ = 0;
     texturedFaces_ = 0;
@@ -839,21 +859,20 @@ void Df3dWorld::resetTerrain() {
         terrainRoot_->remove_child(backdrop_);
         godot::memdelete(backdrop_);
         backdrop_ = nullptr;
-        backdropTopZ_ = -1;
     }
 }
 
 void Df3dWorld::updateBackdrop() {
     if (!source_.model().hasTerrain() || topZ_ < 0) return;
-    if (backdrop_ && backdropTopZ_ == topZ_ && backdropDepth_ == get_window_depth()) return;
+    const float bottom = static_cast<float>(std::max(0, topZ_ - get_window_depth() + 1));
     if (backdrop_) {
-        terrainRoot_->remove_child(backdrop_);
-        godot::memdelete(backdrop_);
-        backdrop_ = nullptr;
+        const Vector3 position(0,bottom,0);
+        if(backdrop_->get_position()!=position)backdrop_->set_position(position);
+        return;
     }
     const wm::TilePos m = source_.model().mapSize();
     // Just under the lowest window layer's bottom faces, past the map edges.
-    const float y = static_cast<float>(std::max(0, topZ_ - get_window_depth() + 1)) - 0.05f;
+    const float y = -0.05f;
     const float pad = 8.0f;
     PackedVector3Array v;
     v.push_back(Vector3(-pad, y, -pad));
@@ -882,10 +901,9 @@ void Df3dWorld::updateBackdrop() {
     mesh->surface_set_material(0, materialFor(SurfaceKey{-1, kSurfHidden}));
     backdrop_ = memnew(MeshInstance3D);
     backdrop_->set_name("backdrop");
+    backdrop_->set_position(Vector3(0,bottom,0));
     backdrop_->set_mesh(mesh);
     get_terrain_root()->add_child(backdrop_);
-    backdropTopZ_ = topZ_;
-    backdropDepth_ = get_window_depth();
 }
 
 void Df3dWorld::ensureMaterials() {
@@ -894,27 +912,25 @@ void Df3dWorld::ensureMaterials() {
 
 void Df3dWorld::buildBlock(wm::BlockPos p) {
     PerfScope buildProfile("terrain.build_block", nullptr, df3d::profiling::detailed());
+    const mesher::WorldModelSource src(source_.model());
+    const auto layers = mesher::meshBlockLayers(src,p,revealHidden_);
+    auto& b=built_[key(p)];
+    b.version=layers.common.version;
+    ++terrainGeometryBuilds_;
+    buildTerrainLayer(layers.common,b.layers[0],0);
+    buildTerrainLayer(layers.covered,b.layers[1],1);
+    buildTerrainLayer(layers.cut,b.layers[2],2);
+}
+
+void Df3dWorld::buildTerrainLayer(const mesher::BlockMesh& bm,Built& b,int layer) {
+    const auto p=bm.pos;
     const char* occlusionOption = std::getenv("DF3D_OCCLUSION");
     const bool buildOcclusion = !occlusionOption || std::strcmp(occlusionOption,"0")!=0;
-    mesher::MeshOptions opts;
-    opts.topZ = topZ_;
-    opts.revealHidden = revealHidden_;
-    const mesher::WorldModelSource src(source_.model());
-    mesher::BlockMesh bm;
-    {
-        PerfScope profile("terrain.mesh_block", nullptr, df3d::profiling::detailed());
-        bm = mesher::meshBlock(src, p, opts);
-    }
-
-    ERR_FAIL_COND_MSG(!blockInMap(p), "block outside the map grid");
-    Built& b = built_[key(p)];
-    freeBlock(b);
-    b.version = bm.version;
-    b.topZ = topZ_;
-    if (bm.faces.empty()) return;
+    if (bm.faces.empty()) { freeBlock(b); return; }
 
     // One surface per (texture slot, surface kind); the untextured
     // placeholder surfaces (slot -1) carry the faces no tile resolved.
+    Built next;
     std::map<SurfaceKey, SurfaceArrays> surfaces;
     std::vector<mesher::Face> occluderFaces;
     {
@@ -925,7 +941,7 @@ void Df3dWorld::buildBlock(wm::BlockPos p) {
                 // No hidden tile material/shape is inspected to choose this color.
                 surfaces[SurfaceKey{-1, kSurfHidden}].add(f, Color(1, 1, 1, 1), nullptr);
                 if (buildOcclusion) occluderFaces.push_back(f);
-                ++b.hidden;
+                ++next.hidden;
                 continue;
             }
             const FaceLook& look = lookFor(f.tag);
@@ -947,53 +963,102 @@ void Df3dWorld::buildBlock(wm::BlockPos p) {
             if (look.slot >= 0) {
                 const float rect[4] = {look.u0, look.v0, look.u1, look.v1};
                 surfaces[SurfaceKey{look.slot, kind, spatter.slot}].add(f, texturedTint(f.tag), rect, stain);
-                ++b.textured;
+                ++next.textured;
             } else {
                 surfaces[SurfaceKey{-1, kind, spatter.slot}].add(
                     f, faceColor(f.tag), nullptr, stain);
-                ++b.unresolved;
+                ++next.unresolved;
             }
         }
 
     }
-    Ref<ArrayMesh> mesh;
-    mesh = submission::createMesh(submission::MeshSite::Terrain);
-    Array cpuSurfaces;
-    for (auto& [sk, arr] : surfaces) {
+    // Consolidate material-compatible artwork before creating GPU surfaces.
+    // Hiding source meshes after spatial batching does not free their buffers;
+    // one uploaded surface per tile texture can exhaust the renderer RID pools.
+    std::map<uint64_t,std::pair<Ref<godot::Material>,SurfaceArrays>> pooled;
+    terrainSurfaceInputs_+=surfaces.size();
+    for (const auto& [sk,arr]:surfaces) {
+        const auto binding=terrainTextures_.resolve(materialFor(sk));
+        auto& [material,dst]=pooled[binding.material->get_instance_id()];
+        material=binding.material;
+        const int base=dst.vertices.size();
+        dst.vertices.append_array(arr.vertices);dst.normals.append_array(arr.normals);
+        dst.colors.append_array(arr.colors);dst.uvs.append_array(arr.uvs);
+        dst.spatterUvs.append_array(arr.spatterUvs);
+        dst.tileCenters.append_array(arr.tileCenters);
+        for(int i:arr.indices)dst.indices.push_back(base+i);
+        if(binding.layer>=0) {
+            const int first=dst.layers.size();dst.layers.resize(first+arr.vertices.size());
+            std::fill(dst.layers.ptrw()+first,dst.layers.ptrw()+dst.layers.size(),binding.layer);
+        }
+    }
+    Array cpuSurfaces, surfaceMaterials;
+    for (auto& [id, entry] : pooled) {
+        auto& [material,arr]=entry;
         if (arr.vertices.is_empty()) continue;
-        PerfScope uploadProfile("terrain.upload_surface", nullptr, df3d::profiling::detailed());
         Array arrays;
         arrays.resize(Mesh::ARRAY_MAX);
         arrays[Mesh::ARRAY_VERTEX] = arr.vertices;
         arrays[Mesh::ARRAY_NORMAL] = arr.normals;
         arrays[Mesh::ARRAY_COLOR] = arr.colors;
-        if (sk.slot >= 0) arrays[Mesh::ARRAY_TEX_UV] = arr.uvs;
-        if (sk.spatterSlot >= 0) arrays[Mesh::ARRAY_TEX_UV2] = arr.spatterUvs;
+        if (!arr.uvs.is_empty()) arrays[Mesh::ARRAY_TEX_UV] = arr.uvs;
+        if (!arr.spatterUvs.is_empty()) arrays[Mesh::ARRAY_TEX_UV2] = arr.spatterUvs;
+        if (!arr.layers.is_empty()) arrays[Mesh::ARRAY_CUSTOM0] = arr.layers;
+        arrays[Mesh::ARRAY_CUSTOM2] = arr.tileCenters;
         arrays[Mesh::ARRAY_INDEX] = arr.indices;
-        const int surface = mesh->get_surface_count();
         cpuSurfaces.append(arrays);
-        submission::meshSurface(mesh, arrays, submission::MeshSite::Terrain);
-        mesh->surface_set_material(surface, materialFor(sk));
+        surfaceMaterials.append(material);
+    }
+    // Source revisions invalidate dependency checks, not necessarily the GPU
+    // geometry. Compare exact retained CPU payloads and material identities;
+    // this includes liquid heights, spatter UVs, colors and array-texture layers.
+    Ref<ArrayMesh> prior=b.node?b.node->get_mesh():Ref<godot::Mesh>();
+    if(prior.is_valid()) {
+        Array priorMaterials;
+        if(bool(prior->get_meta("df3d_source_surfaces_retired",false)))
+            priorMaterials=prior->get_meta("df3d_source_materials",Array());
+        else for(int i=0;i<prior->get_surface_count();++i)priorMaterials.append(prior->surface_get_material(i));
+        const Array priorArrays=prior->get_meta("df3d_batch_arrays",Array());
+        if(priorArrays==cpuSurfaces && priorMaterials==surfaceMaterials) {
+            faceCount_+=int64_t(bm.faces.size())-int64_t(b.node->get_meta("df3d_faces",0));
+            b.node->set_meta("df3d_faces",int64_t(bm.faces.size()));
+            hiddenFaces_+=next.hidden-b.hidden;unresolvedFaces_+=next.unresolved-b.unresolved;texturedFaces_+=next.textured-b.textured;
+            b.hidden=next.hidden;b.unresolved=next.unresolved;b.textured=next.textured;
+            if(buildOcclusion)terrainOccluders_.attach(b.node,occluderFaces,p);
+            return;
+        }
+    }
+    freeBlock(b,true);
+    b.hidden=next.hidden;b.unresolved=next.unresolved;b.textured=next.textured;
+    Ref<ArrayMesh> mesh=submission::createMesh(submission::MeshSite::Terrain);
+    for(int i=0;i<cpuSurfaces.size();++i) {
+        PerfScope uploadProfile("terrain.upload_surface", nullptr, df3d::profiling::detailed());
+        const Array arrays=cpuSurfaces[i];
+        submission::meshSurface(mesh,arrays,submission::MeshSite::Terrain,
+            (arrays[Mesh::ARRAY_CUSTOM0].get_type()==godot::Variant::NIL?0:uint64_t(Mesh::ARRAY_CUSTOM_R_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM0_SHIFT) |
+            (uint64_t(Mesh::ARRAY_CUSTOM_RGBA_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM2_SHIFT));
+        mesh->surface_set_material(i,surfaceMaterials[i]);
+        ++terrainSurfaceUploads_;
     }
 
     mesh->set_meta("df3d_batch_arrays", cpuSurfaces);
 
-    MeshInstance3D* node = memnew(MeshInstance3D);
+    MeshInstance3D* node = b.node ? b.node : memnew(MeshInstance3D);
     node->set_name(String("block_") + String::num_int64(p.bx) + "_" + String::num_int64(p.by) +
                    "_" + String::num_int64(p.bz));
     node->set_mesh(mesh);
+    node->set_meta("df3d_terrain_part",p.bz*3+layer);
     node->set_meta("df3d_faces", static_cast<int64_t>(bm.faces.size()));
-    get_terrain_root()->add_child(node);
+    if(!node->get_parent())terrainLayerRoot(p.bz,layer)->add_child(node);
     b.node = node;
     if (buildOcclusion) {
         PerfScope occluderProfile("terrain.occluder", nullptr, df3d::profiling::detailed());
-        attachTerrainOccluder(node,occluderFaces);
+        terrainOccluders_.attach(node,occluderFaces,p);
     }
     bool opaque = true;
     for (const auto& [sk, arr] : surfaces)
         if (sk.kind == kSurfWater || sk.kind == kSurfMagma || sk.kind == kSurfGhost) opaque = false;
-    if (opaque) terrainBatches_.put(node->get_instance_id(), node, Vector3i(p.bx / 2, p.bz / 4, p.by / 2));
-    ++meshCount_;
+    if (opaque) terrainBatches_.put(node->get_instance_id(), node, Vector3i(p.bx / 2, (p.bz / MeshBatches::terrainSlabLevels)*2+(layer==2?1:0), p.by / 2));
     faceCount_ += static_cast<int64_t>(bm.faces.size());
     unresolvedFaces_ += b.unresolved;
     texturedFaces_ += b.textured;
@@ -1006,13 +1071,15 @@ void Df3dWorld::updateTerrain() {
     if (!(source_.model().mapSize() == builtMapSize_)) {
         resetTerrain();
         builtMapSize_ = source_.model().mapSize();
+        layoutScopeDirty_ = true;
         topZ_ = -1;
     }
     if (topZ_ < 0) {
         topZ_ = suggest_top_z();
-        enqueueWindow();
+        updateTerrainVisibility();
+        enqueueTerrainMap();
         itemsDirty_ = true;
-        enqueueBuildingWindow();
+        enqueueBuildings();
     }
     // Source-only visual changes. Do not dirty unit/item layouts, roof queries,
     // semantic terrain versions or occluder dependencies for contamination.
@@ -1034,11 +1101,19 @@ void Df3dWorld::updateTerrain() {
     for (const wm::TerrainBlockEvent& ev : source_.model().drainTerrainEvents()) {
         if (!blockInMap(ev.pos)) continue;
         enqueue(ev.pos);
+        // Both alternatives sample the 27-block neighbourhood. This includes
+        // absent neighbours: a late block must replace formerly exposed faces.
+        for (int dz=-1;dz<=1;++dz) for (int dy=-1;dy<=1;++dy) for (int dx=-1;dx<=1;++dx) {
+            const wm::BlockPos adjacent{ev.pos.bx+dx,ev.pos.by+dy,ev.pos.bz+dz};
+            if (blockInMap(adjacent) && built_.contains(key(adjacent))) enqueue(adjacent);
+        }
         refreshTerrainSupport(ev.pos);
         const auto p=ev.pos;
         const auto block=source_.model().block(p);
         const auto visibility=terrainVisibilityDependencies_.observe(p,block?block->tiles:nullptr,revealHidden_);
-        if(!inWindow(p) || visibility.tiles.none())continue;
+        // Retained layout membership must observe hidden/visible changes even
+        // outside the current render window, before the camera returns.
+        if(visibility.tiles.none())continue;
         source_.model().forEachItemInBox({p.bx*16,p.by*16,p.bz},{p.bx*16+15,p.by*16+15,p.bz},[&](const auto& item) {
             if(!visibility.contains(item.pos.x,item.pos.y))return;
             itemUpdateIDs_.insert(item.id);layoutItemChanges_.insert(item.id);
@@ -1060,13 +1135,17 @@ void Df3dWorld::updateTerrain() {
 
     if (queueHead_ >= queue_.size()) return;
     const double profileStart = df3d::profiling::timestampUs();
+    const auto buildStart = std::chrono::steady_clock::now();
     int n = 0;
     while (queueHead_ < queue_.size() && n < buildBudget_) {
         const wm::BlockPos p = queue_[queueHead_++];
         queued_.erase(key(p));
         ++n;
-        if (!inWindow(p)) continue;  // window moved since it was queued
         buildBlock(p);
+        // Source changes and initial residency can queue many chunks. Allow progress,
+        // then yield between blocks; one indivisible block may exceed the budget.
+        if (std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - buildStart).count() >= (preparingTerrain_ ? 8.0 : 2.0)) break;
     }
     if (queueHead_ >= queue_.size()) {
         queue_.clear();

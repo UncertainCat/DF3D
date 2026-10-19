@@ -75,6 +75,13 @@ copy, fabricated progress percentages or broader native-UI departures.
 
 ## 2. Architecture and runtime ownership
 
+- Maintainer direction, 2026-10-13: normal product launches own native DF as a
+  child session. Exit game, viewer failure, launcher failure and partial startup
+  must clean up that session. Do not silently attach to an independently running
+  game. Explicit development attach lanes keep their separate ownership contract.
+  Exit uses confirmation for unsaved progress and waits out known pending saves;
+  it does not submit an implicit save. Viewer Settings/exit copy is authorized.
+
 - Preserve bridge -> pointer-free mirror -> engine-independent world model ->
   presentation boundaries. Presentations use the model API, never mirror memory.
 - Use game semantics below the presentation layer. No renderer/atlas/mesh concepts
@@ -110,6 +117,10 @@ copy, fabricated progress percentages or broader native-UI departures.
   epochs and retiring state are explicit ownership responsibilities.
 
 ## 3. Assets and native UI
+
+- Maintainer direction, 2026-10-12: expose a focused, viewer-owned 3D settings menu.
+  Display, camera and audio preferences may use custom labels and layout; native
+  gameplay/options surfaces retain the native-parity rules below.
 
 - Require the supported Steam DF installation and resolve art/graphics definitions from it; ship no
   DF-derived sprites, textures, fonts or audio. Missing/unrecognized installs fail clearly. Derived

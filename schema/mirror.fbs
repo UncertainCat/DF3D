@@ -355,6 +355,17 @@ enum BuildingFlags : uint8 (bit_flags) {
   RoomAssigned,    // DF: the building owns / belongs to an assigned room
 }
 
+// Semantic subject of an artwork, independent of the renderer's chosen sprite.
+enum ArtSubject : uint8 { Unknown, Shape, Item, Creature, Tree, Plant, Event }
+enum ArtEvent : uint8 { Unknown, Generic, Duel, Triumph, Civilized, StrikeDown, Shot, ItemCreation, Battle, Site }
+table StatueFacts {
+  quality: int8 = -1; // DF quality 0..5, 6 artifact; -1 unknown.
+  subject: ArtSubject = Unknown;
+  subject_raw: string;
+  caste_raw: string;
+  event: ArtEvent = Unknown;
+}
+
 /// One DF building: a rectangle at one z, optionally masked by `extents`.
 table Building {
   /// DF `building.id`.
@@ -387,6 +398,7 @@ table Building {
   material: uint16 = 65535;
   stage: BuildingStage = Complete;
   flags: BuildingFlags = 0;
+  statue: StatueFacts;
 }
 
 /// Mirrors DF's `item_type` (df-structures), same order, offset by one so
@@ -549,6 +561,16 @@ table MapItem {
   corpse_flags: CorpseFlags = 0;
   /// Native item_body_component.unit_id; -1 if unknown or not a body component.
   corpse_unit_id: int32 = -1;
+  /// Direct CONTAINS_ITEM references, in native order. UINT_MAX means unknown
+  /// (including older recordings); zero is an observed empty container.
+  contained_count: uint32 = 4294967295;
+  /// Kind/material/itemdef of the first valid directly contained item.
+  contained_kind: ItemKind = Unknown;
+  contained_material: uint16 = 65535;
+  contained_subtype_raw: string;
+  statue: StatueFacts;
+  /// Observed first-item color descriptor, including dye; absent = unknown.
+  contained_color: string;
 }
 
 

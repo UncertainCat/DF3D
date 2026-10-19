@@ -233,7 +233,7 @@ func _process(delta: float):
 	if panel == null or not panel.visible: return
 	var view: Vector2 = get_viewport().get_visible_rect().size
 	# Layout only reruns when its inputs change; icon loading stays incremental.
-	var key := [view, preload("res://scripts/presentation_settings.gd").effective_scale(view), page]
+	var key := [view, preload("res://scripts/presentation_settings.gd").effective_scale_vector(view), page]
 	if key != _layout_key:
 		_layout_key = key
 		info_frame.layout(view)

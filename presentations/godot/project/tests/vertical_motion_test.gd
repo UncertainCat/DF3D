@@ -65,6 +65,7 @@ func run():
 			check(final[201].cutout.y >= items[i].y + item_thickness[i], "arriving unit stands above supporting item pieces")
 	# Range changes must refresh arrays at the same fixed timestamp, before art
 	# preparation, including units at the bottom boundary and restored IDs.
+	var resident := world.presentation_perf_stats()
 	world.set_sprite_depth(1)
 	world.poll()
 	check(world.unit_ids() == PackedInt64Array([204]), "one-level sprite range retains selected-level unit")
@@ -86,6 +87,10 @@ func run():
 	world.set_window_depth(0)
 	world.poll()
 	check(world.get_window_depth() == 5 and sample(world) == final, "automatic depth restores full current map")
+	var traveled := world.presentation_perf_stats()
+	check(traveled.stack_atlas_revision == resident.stack_atlas_revision, "vertical travel retains stack atlas storage")
+	check(traveled.ramp_support_blocks_checked == resident.ramp_support_blocks_checked, "vertical travel does not revisit unchanged terrain support")
+	check(world.layout_matches_reference(), "returning to full depth preserves independent layout oracle")
 	world.free()
 	for failure in failures: push_error(failure)
 	print("VERTICAL_MOTION_TEST_PASS" if failures.is_empty() else "VERTICAL_MOTION_TEST_FAIL")

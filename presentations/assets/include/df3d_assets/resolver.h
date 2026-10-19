@@ -97,6 +97,7 @@ struct BuildingQuery {
   uint8_t flags = 0;          // wm::kBuilding* bits
   // Row-major width*height occupancy (wm::Building::extents); nullptr/empty = whole rectangle; edge decals read it.
   const std::vector<uint8_t>* extents = nullptr;
+  wm::StatueFacts statue;
 };
 
 // One sprite for building tile (lx, ly); a tile may carry several in draw order.
@@ -135,6 +136,16 @@ struct ItemQuery {
   // Corpse flags (wm::kCorpse* bits) and the item id, which picks deterministic variants.
   uint16_t corpseFlags = 0;
   uint32_t id = 0;
+  uint32_t containedCount = UINT32_MAX;
+  wm::ItemKind containedKind = wm::ItemKind::Unknown;
+  std::string_view containedMaterial;
+  std::string_view containedSubtypeRaw;
+  std::string_view containedColor;
+};
+
+struct ItemOverlay {
+  SpriteRef sprite;
+  int paletteRow = -1;
 };
 
 struct ItemSprite {
@@ -142,6 +153,7 @@ struct ItemSprite {
   SpriteRef sprite;
   std::string colorName;
   int paletteRow = -1;
+  std::vector<ItemOverlay> overlays;
   // The sprite is a body-part / bone-pile tile (BODYPART_*, GUTS_*,
   // SKELETON) chosen from the corpse flags rather than the creature's art.
   bool bodyPart = false;

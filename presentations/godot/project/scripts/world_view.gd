@@ -81,9 +81,11 @@ var _sprite_cell_z := 1
 var _items_drawn := 0
 var _sprite_shader: Shader = preload("res://shaders/unit_sprite.gdshader")
 
+var _world_color=preload("res://scripts/world_color_pipeline.gd").new()
+
 func _ready() -> void:
 	camera_rig.walk_world = world
-	if OS.get_environment("DF3D_RELEASE") == "1":
+	if _fixture.is_empty():
 		_release_close = preload("res://scripts/release_close.gd").new()
 		_release_close.world = world
 		_release_close.close_requested.connect(func(): get_tree().quit())
@@ -106,6 +108,10 @@ func _ready() -> void:
 		var process_tail = preload("res://scripts/hitch_process_tail.gd").new()
 		process_tail.recorder = _hitches
 		add_child(process_tail)
+	$Env.environment=$Env.environment.duplicate()
+	preload("res://scripts/presentation_settings.gd").load_preferences()
+	Preferences.apply_window_preferences(get_window())
+	_set_native_world_rendering(preload("res://scripts/presentation_settings.gd").native_world_rendering)
 	get_viewport().use_occlusion_culling = OS.get_environment("DF3D_OCCLUSION") != "0"
 	configure_unit_batches(OS.get_environment("DF3D_SPATIAL_SPRITES") == "1",
 		int(OS.get_environment("DF3D_SPRITE_CELL_XY")), int(OS.get_environment("DF3D_SPRITE_CELL_Z")))
@@ -187,6 +193,7 @@ func _ready() -> void:
 	$CameraRig/Camera3D.set_meta("actor_ceilings", _unit_clip)
 	_sprite_presentation.set_style(preload("res://scripts/presentation_settings.gd").visual_style)
 	_fortress_hud.visual_style_changed.connect(_sprite_presentation.set_style)
+	_fortress_hud.native_world_rendering_changed.connect(_set_native_world_rendering)
 	world.set_building_root(buildings)
 	var entity_budget_env := OS.get_environment("DF3D_ENTITY_BUDGET")
 	if entity_budget_env != "":
@@ -242,7 +249,12 @@ func _hitch_frame_boundary() -> void:
 		phase = "playing" if _focused and _loader != null and _loader.entered else "loading_or_menu"
 	_hitches.begin_frame(Time.get_ticks_usec(), phase)
 
+func _set_native_world_rendering(value: bool) -> void:
+	if value: _world_color.install(_camera,$Env.environment)
+	else: _world_color.release()
+
 func _exit_tree() -> void:
+	_world_color.release()
 	if RenderingServer.frame_pre_draw.is_connected(_hitch_pre_draw):
 		RenderingServer.frame_pre_draw.disconnect(_hitch_pre_draw)
 	if get_tree().process_frame.is_connected(_hitch_frame_boundary):

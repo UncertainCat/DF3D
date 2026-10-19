@@ -140,7 +140,7 @@ def command_for(spec, *, godot, df_path, output):
     if kind == "ctest":
         return ["ctest", "--test-dir", str(ROOT / "build"), "--output-on-failure", "--output-junit", str(output / "ctest.xml")]
     if kind == "python":
-        return [sys.executable] + [arg.replace("{root}", str(ROOT)).replace("{output}", str(output)) for arg in spec["command"]]
+        return [sys.executable] + [arg.replace("{root}", str(ROOT)).replace("{output}", str(output)).replace("{godot}", str(godot)) for arg in spec["command"]]
     if kind == "godot":
         # Headless checks use the dummy renderer, where the project's separate
         # render thread races RID creation (intermittent RID errors and

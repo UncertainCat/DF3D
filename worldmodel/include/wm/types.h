@@ -6,6 +6,16 @@
 
 namespace wm {
 
+enum class ArtSubject : uint8_t { Unknown, Shape, Item, Creature, Tree, Plant, Event };
+enum class ArtEvent : uint8_t { Unknown, Generic, Duel, Triumph, Civilized, StrikeDown, Shot, ItemCreation, Battle, Site };
+struct StatueFacts {
+  int8_t quality = -1;
+  ArtSubject subject = ArtSubject::Unknown;
+  std::string subjectRaw, casteRaw;
+  ArtEvent event = ArtEvent::Unknown;
+  friend bool operator==(const StatueFacts&,const StatueFacts&) = default;
+};
+
 using Tick = uint64_t;
 using UnitId = uint64_t;
 

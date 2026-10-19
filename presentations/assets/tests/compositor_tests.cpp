@@ -10,9 +10,34 @@
 #include "df3d_assets/compositor.h"
 #include "df3d_assets/terrain_fill.h"
 #include "df3d_assets/wall_top.h"
+#include "df3d_assets/wall_shadow.h"
 #include "df3d_assets/bitmap_slots.h"
 
 using namespace df3d::assets;
+
+TEST_CASE("native transparent RGB cleanup preserves alpha and partial colors") {
+  std::vector<uint8_t> pixels={255,255,255,0, 90,80,70,0, 255,240,230,1, 46,43,41,96, 80,90,100,255};
+  CHECK(clearTransparentRgb(pixels));
+  CHECK(pixels==std::vector<uint8_t>{0,0,0,0, 0,0,0,0, 255,240,230,1, 46,43,41,96, 80,90,100,255});
+  CHECK_FALSE(clearTransparentRgb(pixels));
+}
+
+TEST_CASE("wall-end rotations preserve alpha and shade the floor without palette recoloring") {
+  AssetIndex index;
+  index.pages.push_back({"SHADOW", "", "/shadow", 2, 2, 2, 2});
+  index.tileGraphics["WALL_SHADOW_END_OF_WALL_W"] = {SpriteRef{0,0,0,1,1}};
+  auto art=RgbaImage::blank(2,2);
+  art.set(0,0,{0,20,40,128});
+  const uint8_t masks[]={kWallW,kWallN,kWallE,kWallS};
+  const int xs[]={0,1,1,0}, ys[]={0,0,1,1};
+  for(int direction=0;direction<4;++direction) {
+    auto floor=RgbaImage::blank(2,2);
+    for(int y=0;y<2;++y) for(int x=0;x<2;++x) floor.set(x,y,{100,100,100,255});
+    REQUIRE(applyWallShadows(floor,index,masks[direction],[&](const std::string&){return &art;}));
+    CHECK(floor.get(xs[direction],ys[direction]) == Rgba{50,60,70,255});
+    CHECK(floor.get(1-xs[direction],1-ys[direction]) == Rgba{100,100,100,255});
+  }
+}
 
 TEST_CASE("bitmap slots require exact dimensions and bytes even on hash collision") {
   BitmapSlots slots(+[](const RgbaImage&) -> uint64_t { return 7; });

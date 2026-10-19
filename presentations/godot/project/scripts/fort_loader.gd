@@ -17,6 +17,15 @@ var heading: Label
 var message: Label
 var detail: Label
 var background: TextureRect
+var menu_margin: MarginContainer
+var loading_panel: PanelContainer
+var loading_message: Label
+var loading_count: Label
+var loading_bar: HBoxContainer
+var loading_cells: Array[TextureRect] = []
+var loading_art: Dictionary = {}
+var loading_fraction := -1.0
+var loading_clock := 0.0
 var logo: TextureRect
 
 func _ready() -> void:
@@ -36,6 +45,7 @@ func _ready() -> void:
 	root.add_child(wash)
 	wash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var margin := MarginContainer.new()
+	menu_margin = margin
 	root.add_child(margin)
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for edge in ["left", "right", "top", "bottom"]:
@@ -129,6 +139,75 @@ func _ready() -> void:
 		load_button.custom_minimum_size.y = 36 if compact else 48
 	root.resized.connect(resize_ui)
 	resize_ui.call_deferred()
+	loading_panel = PanelContainer.new()
+	root.add_child(loading_panel)
+	var loading_box := VBoxContainer.new()
+	loading_box.add_theme_constant_override("separation", 20)
+	loading_panel.add_child(loading_box)
+	var loading_logo := TextureRect.new()
+	loading_logo.name = "LoadingLogo"
+	loading_logo.custom_minimum_size.y = 120
+	loading_logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	loading_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	loading_box.add_child(loading_logo)
+	var loading_heading := Label.new()
+	loading_heading.text = "Loading your fortress"
+	loading_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	loading_box.add_child(loading_heading)
+	loading_message = Label.new()
+	loading_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	loading_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	loading_box.add_child(loading_message)
+	loading_bar = HBoxContainer.new()
+	loading_bar.add_theme_constant_override("separation", 0)
+	loading_box.add_child(loading_bar)
+	for i in 32:
+		var cell := TextureRect.new()
+		cell.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		cell.stretch_mode = TextureRect.STRETCH_SCALE
+		cell.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		cell.custom_minimum_size = Vector2(8,24)
+		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		loading_bar.add_child(cell)
+		loading_cells.append(cell)
+	loading_count = Label.new()
+	loading_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	loading_box.add_child(loading_count)
+	var place_loading := func():
+		var factor := clampf(root.size.y/1080.0,0.75,2.5)
+		loading_panel.scale = Vector2.ONE*factor
+		loading_panel.size = Vector2(minf(640, maxf(280,(root.size.x-48)/factor)),300)
+		loading_panel.position = (root.size-loading_panel.size*factor)/2
+	root.resized.connect(place_loading)
+	place_loading.call_deferred()
+	loading_panel.hide()
+
+func _process(delta: float) -> void:
+	if loading_panel == null or not loading_panel.visible: return
+	loading_clock = fmod(loading_clock + delta, 1.8)
+	_draw_progress()
+
+func _draw_progress() -> void:
+	for i in loading_cells.size():
+		var part := "LEFT" if i==0 else "RIGHT" if i==loading_cells.size()-1 else "MID"
+		var full := float(i)/loading_cells.size() < loading_fraction if loading_fraction>=0 else posmod(i-int(loading_clock/1.8*32),32)<6
+		loading_cells[i].texture = loading_art.get(part+("_FULL" if full else "_EMPTY"))
+
+func show_loading(value: bool) -> void:
+	menu_margin.visible = not value
+	loading_panel.visible = value
+	if value:
+		loading_message.text = message.text
+		_draw_progress()
+
+func update_progress(received: int, total: int) -> void:
+	loading_fraction = -1.0
+	loading_count.text = ""
+	if can_attach and total>0 and received<total:
+		loading_fraction = clampf(float(received)/total,0,1)
+		loading_count.text = "%d / %d map blocks" % [received,total]
+	_draw_progress()
+
 
 func load_art(install_root: String) -> void:
 	for pair in [[background, "title_background.png"], [logo, "df_logo.png"]]:
@@ -136,6 +215,14 @@ func load_art(install_root: String) -> void:
 		if not FileAccess.file_exists(path): continue
 		var image := Image.load_from_file(path)
 		if image != null: pair[0].texture = ImageTexture.create_from_image(image)
+	loading_panel.find_child("LoadingLogo",true,false).texture = logo.texture
+	if world.has_method("ui_texture"):
+		var original := preload("res://scripts/original_ui.gd").new()
+		original.world = world
+		loading_panel.add_theme_stylebox_override("panel",original.native_panel())
+		for part in ["LEFT","MID","RIGHT"]:
+			for fill in ["FULL","EMPTY"]:
+				loading_art[part+"_"+fill] = world.ui_texture("SKILL_PROGRESS_BAR_"+part+"_"+fill)
 
 func _select(index: int) -> void:
 	if index < 0 or index >= saves.size(): return
@@ -154,6 +241,9 @@ func request_load() -> void:
 		return
 	_result_message = ""
 	message.text = "Opening your fortress in Dwarf Fortress..."
+	loading_fraction = -1.0
+	loading_count.text = ""
+	show_loading(true)
 	load_button.disabled = true
 	list.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	list.focus_mode = Control.FOCUS_NONE
@@ -184,7 +274,9 @@ func update_session(state: Dictionary, terrain_ready: bool, preparation_error :=
 	can_attach = phase in [3, 6] and not load_rejected and pending_seq == 0
 	entered = can_attach and (entered or terrain_ready)
 	visible = not entered
-	if entered: return
+	if entered:
+		show_loading(false)
+		return
 	var incoming: Array = state.get("saves", [])
 	var signature := JSON.stringify(incoming)
 	if signature != _signature:
@@ -235,3 +327,5 @@ func update_session(state: Dictionary, terrain_ready: bool, preparation_error :=
 		if state.get("error", "") != "": message.text = state.error
 		if message.text == "": message.text = "Connecting to Dwarf Fortress..."
 		if phase == 4: message.text += "\nStart the game through the DF3D launcher, or run `enable df3d` in the DFHack console."
+
+	show_loading((busy or can_attach) and (not can_attach or preparation_error.is_empty()) and not (pending_seq == 0 and request_status == 3 and not newer_world))

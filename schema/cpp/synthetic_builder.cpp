@@ -434,6 +434,10 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
       materialsVec = fbb.CreateVector(mats);
     }
 
+    const auto statueFacts = [&](const StatueSpec& s) -> flatbuffers::Offset<StatueFacts> {
+      if (s.quality<0 && s.subject==ArtSubject::Unknown) return 0;
+      return CreateStatueFactsDirect(fbb,s.quality,s.subject,s.subjectRaw.c_str(),s.casteRaw.c_str(),s.event);
+    };
     // Buildings and items (v4).
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<Building>>> buildingsVec = 0;
     flatbuffers::Offset<flatbuffers::Vector<uint32_t>> removedBuildingsVec = 0;
@@ -445,7 +449,7 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
         list.push_back(CreateBuildingDirect(
             fbb, id, b.kind, b.subtype, b.custom.empty() ? nullptr : b.custom.c_str(), b.x1,
             b.y1, b.x2, b.y2, b.z, b.centerX, b.centerY, b.extents.empty() ? nullptr : &b.extents,
-            b.material, b.stage, b.flags));
+            b.material, b.stage, b.flags, statueFacts(b.statue)));
       }
       buildingsVec = fbb.CreateVector(list);
       removedBuildingsVec = fbb.CreateVector(rec.removedBuildings);
@@ -459,7 +463,8 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
         TilePos pos(it.x, it.y, it.z);
         list.push_back(CreateMapItemDirect(fbb, id, it.kind, it.subtype,
                                            it.subtypeRaw.empty() ? nullptr : it.subtypeRaw.c_str(),
-                                           it.material, &pos, it.stack, it.flags, it.corpseFlags, it.corpseUnitId));
+                                           it.material, &pos, it.stack, it.flags, it.corpseFlags, it.corpseUnitId, it.containedCount, it.containedKind,
+                                           it.containedMaterial, it.containedSubtypeRaw.c_str(), statueFacts(it.statue), it.containedColor.c_str()));
       }
       itemsVec = fbb.CreateVector(list);
       removedItemsVec = fbb.CreateVector(rec.removedItems);

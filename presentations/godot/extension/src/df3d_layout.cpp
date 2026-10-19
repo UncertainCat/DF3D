@@ -67,7 +67,7 @@ void Df3dWorld::syncLayoutBuilding(wm::BuildingId id) {
         }
         layoutBuildingBlocks_.erase(old);
     }
-    if(b && zInWindow(b->z)) {
+    if(b) {
         auto found=buildingFootprintCache_.find(id);
         if(found==buildingFootprintCache_.end() || found->second.version!=b->version) {
             PerfScope timer{"buildings.footprint", &perfFootprintMs_};
@@ -92,7 +92,7 @@ void Df3dWorld::syncLayoutBuilding(wm::BuildingId id) {
 void Df3dWorld::syncLayoutItem(wm::ItemId id) {
     const auto* item=source_.model().item(id);
     std::vector<mesher::DepthPiece> pieces;
-    if(item && zInWindow(item->pos.z) && tileVisible(item->pos)) {
+    if(item && tileVisible(item->pos)) {
         for(int quantity=0;quantity<(item->stack>1?2:1);++quantity) {
             mesher::DepthPiece piece;
             piece.id={2,id,uint64_t(quantity)};
@@ -110,15 +110,17 @@ void Df3dWorld::resetLayoutScope() {
     tileLayouts_.clear(source_.model().sessionGeneration());
     layoutUnitTiles_.clear();unitDepthById_.clear();unitStackOrdinalById_.clear();
     const auto size=source_.model().mapSize();
-    stackAtlas_.reset(size.x,size.y,std::max(0,topZ_-get_window_depth()+1),topZ_-std::max(0,topZ_-get_window_depth()+1)+1);
+    // Support and pile membership are map data, independent of the viewed slice.
+    // Stable atlas addressing lets vertical travel reuse unchanged resident pages.
+    stackAtlas_.reset(size.x,size.y,0,size.z);
     terrainSupportDependencies_.clear();
-    for(int z=std::max(0,topZ_-get_window_depth()+1);z<=topZ_;++z)
+    for(int z=0;z<size.z;++z)
         for(int y=0;y<size.y;y+=16)for(int x=0;x<size.x;x+=16)
             if(source_.model().block({x/16,y/16,z}))refreshTerrainSupport({x/16,y/16,z},false);
     layoutBuildingBlocks_.clear();layoutBuildingsByBlock_.clear();
     layoutBuildingChanges_.clear();layoutItemChanges_.clear();
-    source_.model().forEachBuilding([&](const auto& b){if(zInWindow(b.z))syncLayoutBuilding(b.id);});
-    source_.model().forEachItemInZRange(std::max(0,topZ_-get_window_depth()+1),topZ_,[&](const auto& item){syncLayoutItem(item.id);});
+    source_.model().forEachBuilding([&](const auto& b){syncLayoutBuilding(b.id);});
+    source_.model().forEachItemInZRange(0,size.z-1,[&](const auto& item){syncLayoutItem(item.id);});
     layoutScopeDirty_=false;
     layoutViewDirty_=true;
 }
@@ -130,7 +132,7 @@ godot::Vector3 Df3dWorld::ground_support(godot::Vector3 p) const {
 }
 
 void Df3dWorld::refreshTerrainSupport(wm::BlockPos block,bool invalidateBuildings) {
-    if(!zInWindow(block.bz))return;
+    if(!blockInMap(block))return;
     const auto view=source_.model().block(block);
     const auto changed=terrainSupportDependencies_.observe(block,view?view->tiles:nullptr,revealHidden_);
     ++supportBlocksChecked_;
@@ -220,7 +222,7 @@ void Df3dWorld::updatePresentationLayout() {
         if(probing)if(const auto* item=source_.model().item(id))
             layoutCausalProbe_.item({item->pos.z,item->pos.x,item->pos.y});
         syncLayoutItem(id);
-        if(const auto* item=source_.model().item(id);item && zInWindow(item->pos.z))
+        if(const auto* item=source_.model().item(id))
             requested.emplace(item->pos.z,item->pos.x,item->pos.y);
     }
     layoutItemChanges_.clear();
@@ -254,7 +256,7 @@ void Df3dWorld::updatePresentationLayout() {
         const auto size=source_.model().mapSize();
         const auto p=presentationRegionEnabled_?presentationRegion_.position:godot::Vector2i(0,0);
         const auto end=presentationRegionEnabled_?presentationRegion_.get_end():godot::Vector2i(size.x,size.y);
-        for(const auto tile:tileLayouts_.occupiedTiles({std::max(0,topZ_-get_window_depth()+1),p.x,p.y},
+        for(const auto tile:tileLayouts_.occupiedTiles({std::max(0,topZ_-spriteWindowDepth()+1),p.x,p.y},
                 {topZ_,end.x-1,end.y-1}))requested.insert(tile);
     }
     const bool forceItems=layoutViewDirty_;

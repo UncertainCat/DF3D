@@ -771,13 +771,15 @@ bool sameBuilding(const Building& a, const Building& b) {
   return a.kind == b.kind && a.subtype == b.subtype && a.custom == b.custom && a.x1 == b.x1 &&
          a.y1 == b.y1 && a.x2 == b.x2 && a.y2 == b.y2 && a.z == b.z && a.centerX == b.centerX &&
          a.centerY == b.centerY && a.extents == b.extents && a.material == b.material &&
-         a.stage == b.stage && a.flags == b.flags;
+         a.stage == b.stage && a.flags == b.flags && a.statue == b.statue;
 }
 
 bool sameItem(const MapItem& a, const MapItem& b) {
   return a.kind == b.kind && a.subtype == b.subtype && a.subtypeRaw == b.subtypeRaw &&
          a.material == b.material && a.pos == b.pos && a.stack == b.stack && a.flags == b.flags &&
-         a.corpseFlags == b.corpseFlags && a.corpseUnitId == b.corpseUnitId;
+         a.corpseFlags == b.corpseFlags && a.corpseUnitId == b.corpseUnitId &&
+         a.containedCount == b.containedCount && a.containedKind == b.containedKind &&
+         a.containedMaterial == b.containedMaterial && a.containedSubtypeRaw == b.containedSubtypeRaw && a.containedColor == b.containedColor && a.statue == b.statue;
 }
 
 Building toBuilding(const BuildingObservation& o, const std::vector<MaterialId>& remap) {
@@ -797,6 +799,7 @@ Building toBuilding(const BuildingObservation& o, const std::vector<MaterialId>&
   b.material = remapOne(o.material, remap);
   b.stage = o.stage;
   b.flags = o.flags;
+  b.statue = o.statue;
   return b;
 }
 
@@ -812,6 +815,12 @@ MapItem toItem(const ItemObservation& o, const std::vector<MaterialId>& remap) {
   it.flags = o.flags;
   it.corpseFlags = o.corpseFlags;
   it.corpseUnitId = o.corpseUnitId;
+  it.containedCount = o.containedCount;
+  it.containedKind = o.containedKind;
+  it.containedMaterial = remapOne(o.containedMaterial, remap);
+  it.containedSubtypeRaw = o.containedSubtypeRaw;
+  it.containedColor = o.containedColor;
+  it.statue = o.statue;
   return it;
 }
 

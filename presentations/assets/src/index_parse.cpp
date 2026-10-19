@@ -112,9 +112,9 @@ const MaterialDef* findMaterial(const AssetIndex& idx, std::string_view token) {
 
 }  // namespace
 
-std::string_view AssetIndex::materialColorName(std::string_view token) const {
+std::string_view AssetIndex::materialColorName(std::string_view token, bool liquid) const {
   const MaterialDef* m = findMaterial(*this, token);
-  return m ? std::string_view(m->solidColor) : std::string_view();
+  return m ? std::string_view(liquid && !m->liquidColor.empty() ? m->liquidColor : m->solidColor) : std::string_view();
 }
 
 std::string_view AssetIndex::materialSpatterFamily(std::string_view token, bool liquid) const {
@@ -398,11 +398,12 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
 
   if (object == "GRAPHICS") {
     index.stats.graphicsFiles += 1;
-    enum class Block { None, Plant, Creature, CustomWorkshop, Other };
+    enum class Block { None, Plant, Creature, Statue, CustomWorkshop, Other };
     Block block = Block::None;
     PlantGraphics* plant = nullptr;
     CreatureGraphics* creature = nullptr;
     std::string itemBlock;  // itemdef of the open *_GRAPHICS item block
+    std::string statueKey;
     std::string customWorkshop;
     for (const RawToken& t : tokens) {
       const std::string& n = t.name();
@@ -612,6 +613,21 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
           ++consumed;
           continue;
         }
+      }
+      if ((n == "STATUE_CREATURE_GRAPHICS" && t.argc() >= 2) ||
+          (n == "STATUE_CREATURE_CASTE_GRAPHICS" && t.argc() >= 3)) {
+        block=Block::Statue;
+        statueKey="STATUE_CREATURE:"+t.args[1];
+        if(t.argc()>=3) statueKey+=":"+t.args[2];
+        creature=nullptr; plant=nullptr; ++consumed;
+        continue;
+      }
+      if (block==Block::Statue && n=="DEFAULT") {
+        if (auto sprite=parseSpriteArgs(index,t.args,1,pending)) {
+          index.tileGraphics[statueKey].push_back(*sprite);
+          ++index.stats.tileGraphics; ++consumed;
+        }
+        continue;
       }
       // Any other top-level *_GRAPHICS block ends the current one.
       if (n.size() > 9 && n.compare(n.size() - 9, 9, "_GRAPHICS") == 0) {

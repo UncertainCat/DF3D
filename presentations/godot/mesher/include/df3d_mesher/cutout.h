@@ -44,17 +44,25 @@ inline IndexedCutoutMesh indexCutoutMesh(std::span<const CutoutVertex> input) {
 // side: north/east/south/west; pixel: x for N/S, y for E/W.
 struct CutoutEdgeCover { int side, pixel; float bottom, top; };
 // Merge horizontal opaque runs for top/bottom; emit only exposed pixel edges.
-// Image up is north (-Z), independent of view. Holes remain actual holes.
+// Image up is north (-Z), independent of view. Filtered tops retain holes
+// through material alpha; physical sides/bottom keep the opaque contour.
 inline std::vector<CutoutVertex> cutoutMesh(std::span<const uint8_t> alpha, int w, int h,
-                                         std::span<const CutoutEdgeCover> covers = {}) {
+                                         std::span<const CutoutEdgeCover> covers = {},
+                                         bool filteredTop = false) {
  std::vector<CutoutVertex> out;
  if(w<=0 || h<=0 || alpha.size()!=size_t(w)*h) return out;
  auto solid=[&](int x,int y){return x>=0&&y>=0&&x<w&&y<h&&alpha[y*w+x]>=128;};
  auto v=[&](float x,float z,float y,float shade){return CutoutVertex{x/w-.5f,y,z/h-.5f,x/w,z/h,shade};};
  auto quad=[&](CutoutVertex a,CutoutVertex b,CutoutVertex c,CutoutVertex d){for(auto q:{a,b,c,a,c,d})out.push_back(q);};
+ // A filtered alpha image needs raster coverage beyond its opaque contour.
+ // Keep the physical sides/bottom, but let the transparent material determine
+ // top coverage, including partial-alpha pixels and reconstruction fringes.
+ // This is opt-in: opaque actor materials still require silhouette caps.
+ if(filteredTop && std::any_of(alpha.begin(),alpha.end(),[](uint8_t a){return a!=0;}))
+  quad(v(0,0,kCutoutThickness,1),v(w,0,kCutoutThickness,1),v(w,h,kCutoutThickness,1),v(0,h,kCutoutThickness,1));
  for(int y=0;y<h;++y) for(int x=0;x<w;){
   if(!solid(x,y)){++x;continue;} int end=x+1;while(end<w&&solid(end,y))++end;
-  quad(v(x,y,kCutoutThickness,1),v(end,y,kCutoutThickness,1),v(end,y+1,kCutoutThickness,1),v(x,y+1,kCutoutThickness,1));
+  if(!filteredTop)quad(v(x,y,kCutoutThickness,1),v(end,y,kCutoutThickness,1),v(end,y+1,kCutoutThickness,1),v(x,y+1,kCutoutThickness,1));
   quad(v(x,y,0,1),v(x,y+1,0,1),v(end,y+1,0,1),v(end,y,0,1)); x=end;
  }
  for(int y=0;y<h;++y)for(int x=0;x<w;++x)if(solid(x,y)){

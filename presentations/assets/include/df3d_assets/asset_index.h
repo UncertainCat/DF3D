@@ -201,7 +201,7 @@ struct AssetIndex {
   // token (INORGANIC:GRANITE, PLANT:OAK:WOOD, PLANT:MEADOW-GRASS:STRUCTURAL,
   // ...); "" when the material is unknown or has none. CLEAR is a real
   // palette row in v50 and is returned as such.
-  std::string_view materialColorName(std::string_view token) const;
+  std::string_view materialColorName(std::string_view token, bool liquid = false) const;
   std::string_view materialSpatterFamily(std::string_view token, bool liquid = true) const;
   // Its descriptor RGB; nullopt when unknown or the colour has no RGB.
   std::optional<Rgb> materialColor(std::string_view token) const;

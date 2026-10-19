@@ -97,6 +97,16 @@ func run() -> void:
 	root.size = Vector2i(1280, 720)
 	await process_frame
 	check(is_equal_approx(720.0 / camera.size, user_scale), "Viewport resize preserves user DF tile pixel scale")
+	var preferences = preload("res://scripts/presentation_settings.gd")
+	preferences.ui_auto_scale = true
+	var small_hud_scale := preferences.effective_scale(Vector2(1920,1080))
+	for window_size in [Vector2i(1920,1080), Vector2i(3840,2160), Vector2i(1920,1080)]:
+		root.size = window_size
+		await process_frame
+		var actual_pixels := camera.unproject_position(rig.global_position + Vector3.RIGHT).distance_to(camera.unproject_position(rig.global_position))
+		check(absf(actual_pixels-user_scale)<0.01, "Window resize keeps world tile pixels at %s" % window_size)
+		if window_size.x == 3840:
+			check(preferences.effective_scale(Vector2(window_size))>small_hud_scale, "HUD grows independently of world sprites")
 	rig.set_df_mode(false)
 	check(camera.position.is_equal_approx(free_offset) and camera.basis.is_equal_approx(free_basis), "DF resize preserves Free pose and dolly")
 	root.size = Vector2i(960, 640)

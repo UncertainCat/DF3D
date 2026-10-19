@@ -18,7 +18,8 @@ func run(scene, world, outprefix: String) -> Dictionary:
 	var overhangs := 0
 	var foregrounds := 0
 	var focus := Vector3.ZERO
-	for node in world.get_building_root().get_children():
+	for node in world.get_building_root().find_children("*", "MeshInstance3D", true, false):
+		if not node.is_visible_in_tree(): continue
 		if not node is MeshInstance3D: continue
 		var kind: String = node.get_meta("df3d_building_kind", "")
 		if kind not in ["Workshop", "Furnace", "TradeDepot"]: continue

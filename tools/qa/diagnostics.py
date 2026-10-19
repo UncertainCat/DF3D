@@ -13,8 +13,8 @@ KNOWN = (
      r"ERROR: This function \(finalize\) can only be called from the render thread\.\s*",
      r"at: finalize \(servers/rendering/rendering_device\.cpp:8862\)"),
     # Reproduced in an empty project, without DF3D scripts or GDExtension.
-    # Only recognize this alongside this process's known D3D12 shutdown below.
-    ("godot-shutdown-objects", "Godot D3D12 shutdown object pair", "ENGINEERING.md#tests-and-known-problems",
+    # Only recognize this alongside this process's known D3D12/Vulkan shutdown below.
+    ("godot-shutdown-objects", "Godot separate-renderer shutdown object pair", "ENGINEERING.md#tests-and-known-problems",
      r"WARNING: 2 ObjectDB instances were leaked at exit \(run with `--verbose` for details\)\.",
      r"at: cleanup \(core/object/object\.cpp:2536\)"),
     ("godot-font-atlas", "Godot empty-image upload signature", "https://github.com/godotengine/godot/issues/122206",
@@ -34,14 +34,14 @@ def error_summary(output):
     unexpected = Counter()
     pinned = False
     process_known = set()
-    d3d12 = False
+    supported_rd = False
     for index, line in enumerate(lines):
         if line.startswith("Godot Engine v"):
             process_known.clear()
-            d3d12 = False
+            supported_rd = False
             pinned = bool(re.match(r"^Godot Engine v4\.7\.2\.stable\.steam\.ed1daf0bf(?:[ \t]|$)", line))
-        if line.startswith("D3D12 ") and "Using Device #" in line:
-            d3d12 = True
+        if line.startswith(("D3D12 ", "Vulkan ")) and "Using Device #" in line:
+            supported_rd = True
         if not re.match(r"^\s*(?:SCRIPT ERROR:|ERROR:|WARNING:|FAIL(?:\b|:))", line):
             continue
         # Engine callsites normally immediately follow. Permit one interleaved
@@ -54,7 +54,7 @@ def error_summary(output):
                       re.fullmatch(entry[3], line.strip()) and
                       any(re.fullmatch(entry[4], at) for at in context)), None)
         if match and match[0] == "godot-shutdown-objects":
-            if not (d3d12 and {"godot-separate-thread-notice", "godot-device-finalize"} <= process_known
+            if not (supported_rd and {"godot-separate-thread-notice", "godot-device-finalize"} <= process_known
                     and "godot-shutdown-objects" not in process_known):
                 match = None
         if match:

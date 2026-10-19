@@ -15,6 +15,19 @@
 
 namespace df3d::assets {
 
+// Native texture preparation clears invisible RGB. Reconstruction filters
+// still sample those bytes; hidden white otherwise washes out dark outlines.
+// Preserve every partially transparent pixel, including native cast shadows.
+inline bool clearTransparentRgb(std::span<uint8_t> rgba) {
+  bool changed=false;
+  for(size_t i=0;i+3<rgba.size();i+=4) {
+    if(rgba[i+3]==0 && (rgba[i]!=0 || rgba[i+1]!=0 || rgba[i+2]!=0)) {
+      rgba[i]=rgba[i+1]=rgba[i+2]=0;changed=true;
+    }
+  }
+  return changed;
+}
+
 struct Rgba {
   uint8_t r = 0, g = 0, b = 0, a = 0;
   friend bool operator==(const Rgba&, const Rgba&) = default;

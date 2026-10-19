@@ -105,8 +105,8 @@ func select(destination: String):
 	for caption in SUBTABS.get(primary, []): add_tab(subtabs, caption, caption == destination, true)
 
 func layout(view: Vector2):
-	var factor: float = preload("res://scripts/presentation_settings.gd").effective_scale(view)
-	panel.get_parent().scale = Vector2(factor, factor)
+	var factor: Vector2 = preload("res://scripts/presentation_settings.gd").effective_scale_vector(view)
+	panel.get_parent().scale = factor
 	var rect: Rect2 = preload("res://scripts/hud_layout.gd").info_rect(view / factor)
 	panel.position = rect.position
 	panel.size = rect.size

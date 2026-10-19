@@ -1,4 +1,5 @@
 shader_type spatial;
+#include "res://shaders/world_color.gdshaderinc"
 render_mode unshaded, cull_disabled, depth_test_disabled, depth_draw_never;
 uniform sampler2D status_texture : source_color, filter_nearest, repeat_disable;
 uniform sampler2D scene_depth : hint_depth_texture, filter_nearest, repeat_disable;
@@ -7,7 +8,6 @@ varying flat float state_visible;
 global uniform float unit_status_clock;
 uniform float capture_phase = -1.0;
 global uniform bool actor_truescale;
-global uniform float actor_view_scale;
 #include "res://shaders/actor_motion.gdshaderinc"
 #include "res://shaders/shared_stack.gdshaderinc"
 #include "res://shaders/actor_ground.gdshaderinc"
@@ -29,7 +29,7 @@ void vertex() {
     vec3 right = MAIN_CAM_INV_VIEW_MATRIX[0].xyz;
     vec3 up = MAIN_CAM_INV_VIEW_MATRIX[1].xyz;
     vec3 front = MAIN_CAM_INV_VIEW_MATRIX[2].xyz;
-    float scale = (actor_truescale ? INSTANCE_CUSTOM.g : 1.0) * actor_view_scale;
+    float scale = (actor_truescale ? INSTANCE_CUSTOM.g : 1.0);
     float padding = actor_truescale ? parameters.y : 0.0;
     float lift = parameters.z > 0.5
         ? parameters.x * scale * (0.5 + (0.5-padding)*clamp(up.y,0.0,1.0))
@@ -52,5 +52,5 @@ void fragment() {
     if (owner_screen.z > -scene_view.z/scene_view.w + 0.15) discard;
     vec4 pixel = texture(status_texture,UV);
     if (pixel.a < 0.5) discard;
-    ALBEDO = pixel.rgb;
+    ALBEDO = world_output(pixel.rgb);
 }

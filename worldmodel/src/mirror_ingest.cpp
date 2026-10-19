@@ -429,6 +429,13 @@ SnapshotData detail::toSnapshotData(const m::Snapshot& s, bool withTerrain) {
         obs.material = b->material();
         obs.stage = static_cast<BuildingStage>(static_cast<uint8_t>(b->stage()));
         obs.flags = static_cast<uint8_t>(b->flags());
+        if (const auto* statue=b->statue()) {
+          obs.statue.quality=statue->quality();
+          obs.statue.subject=static_cast<ArtSubject>(statue->subject());
+          obs.statue.event=static_cast<ArtEvent>(statue->event());
+          if (statue->subject_raw()) obs.statue.subjectRaw=statue->subject_raw()->str();
+          if (statue->caste_raw()) obs.statue.casteRaw=statue->caste_raw()->str();
+        }
         out.buildings.push_back(std::move(obs));
       }
     }
@@ -450,7 +457,19 @@ SnapshotData detail::toSnapshotData(const m::Snapshot& s, bool withTerrain) {
         if (const auto* p = it->pos()) obs.pos = TilePos{p->x(), p->y(), p->z()};
         obs.stack = it->stack();
         obs.flags = static_cast<uint8_t>(it->flags());
+        if (const auto* statue=it->statue()) {
+          obs.statue.quality=statue->quality();
+          obs.statue.subject=static_cast<ArtSubject>(statue->subject());
+          obs.statue.event=static_cast<ArtEvent>(statue->event());
+          if (statue->subject_raw()) obs.statue.subjectRaw=statue->subject_raw()->str();
+          if (statue->caste_raw()) obs.statue.casteRaw=statue->caste_raw()->str();
+        }
         obs.corpseUnitId = it->corpse_unit_id();
+        obs.containedCount = it->contained_count();
+        obs.containedKind = static_cast<ItemKind>(static_cast<uint8_t>(it->contained_kind()));
+        obs.containedMaterial = it->contained_material();
+        if (const auto* raw = it->contained_subtype_raw()) obs.containedSubtypeRaw.assign(raw->c_str(),raw->size());
+        if (const auto* color = it->contained_color()) obs.containedColor.assign(color->c_str(),color->size());
         obs.corpseFlags = static_cast<uint16_t>(it->corpse_flags());
         out.items.push_back(obs);
       }

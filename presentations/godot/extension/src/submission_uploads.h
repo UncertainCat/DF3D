@@ -1,6 +1,7 @@
 #pragma once
 #include "profiling.h"
 #include "submission_metrics.h"
+#include "df3d_assets/compositor.h"
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/image.hpp>
 #include <godot_cpp/classes/image_texture.hpp>
@@ -69,6 +70,18 @@ inline void meshSurface(const godot::Ref<godot::ArrayMesh>& mesh, const godot::A
     mesh->add_surface_from_arrays(godot::Mesh::PRIMITIVE_TRIANGLES, arrays, godot::Array(), godot::Dictionary(), flags);
 }
 inline godot::Ref<godot::ImageTexture> texture(const godot::Ref<godot::Image>& image, TextureSite site, bool immutable_art=false) {
+    // These are newly prepared, unpublished art images. Normalize their base
+    // level before publishing either the texture or its immutable CPU source.
+    if(immutable_art && image.is_valid() && image->get_format()==godot::Image::FORMAT_RGBA8) {
+        auto bytes=image->get_data();
+        const auto baseBytes=size_t(image->get_width())*image->get_height()*4;
+        if(df3d::assets::clearTransparentRgb(std::span<uint8_t>(bytes.ptrw(),baseBytes))) {
+            const bool mips=image->has_mipmaps();
+            bytes.resize(baseBytes);
+            image->set_data(image->get_width(),image->get_height(),false,godot::Image::FORMAT_RGBA8,bytes);
+            if(mips)image->generate_mipmaps();
+        }
+    }
     auto& stats = counters();
     if (stats.enabled()) stats.texture(site, image.is_valid() ? uint64_t(image->get_data_size()) : 0);
     auto texture=godot::ImageTexture::create_from_image(image);

@@ -995,6 +995,29 @@ TEST_CASE("cutout sides sample their opaque pixel centers without added outline"
  for(size_t i=12;i<m.size();++i){CHECK(m[i].u==doctest::Approx(.5f));CHECK(m[i].v==doctest::Approx(.5f));CHECK(m[i].shade==1.f);}
 }
 
+TEST_CASE("filtered furniture top preserves partial alpha and reconstruction coverage") {
+ const std::vector<uint8_t> alpha={0,32,0,0,255,0,0,96,0};
+ const auto opaque=cutoutMesh(alpha,3,3);
+ const auto filtered=cutoutMesh(alpha,3,3,{},true);
+ REQUIRE(filtered.size()==opaque.size());
+ // Exactly one full-image top; the physical bottom and four sides stay local
+ // to the opaque center. No overlapping contour caps double-blend the edge.
+ for(size_t i=0;i<6;++i) {
+  CHECK(filtered[i].y==kCutoutThickness);
+  CHECK((filtered[i].u==0.0f || filtered[i].u==1.0f));
+  CHECK((filtered[i].v==0.0f || filtered[i].v==1.0f));
+ }
+ for(size_t i=6;i<filtered.size();++i) {
+  CHECK(filtered[i].x==opaque[i].x);
+  CHECK(filtered[i].y==opaque[i].y);
+  CHECK(filtered[i].z==opaque[i].z);
+  CHECK(filtered[i].u==opaque[i].u);
+  CHECK(filtered[i].v==opaque[i].v);
+ }
+ CHECK(cutoutMesh(std::vector<uint8_t>{0,64},2,1,{},true).size()==6);
+ CHECK(cutoutMesh(std::vector<uint8_t>{0,0},2,1,{},true).empty());
+}
+
 TEST_CASE("indexed cutouts preserve every triangle attribute across alpha masks and edge covers") {
  // Exhaust all 3x3 masks, including empty images, holes and disconnected
  // islands. Expansion must recover exactly the original draw stream.
@@ -1085,6 +1108,11 @@ TEST_CASE("building art stays fixed under moving and crowded physical stacks") {
 }
 
 TEST_CASE("building spill priority is translation independent bounded and below moving pieces") {
+ const auto figure=statueFigureDepth(80,79);
+ CHECK(kFloorHeight+figure.bottom>1.0f);
+ CHECK(kFloorHeight+figure.bottom+figure.thickness<1.0f+kFloorHeight);
+ CHECK(statueFigureDepth(180,179).bottom==figure.bottom);
+ CHECK(statueFigureDepth(80,80).bottom==buildingDepth(80,80).bottom);
  const auto base=buildingDepth(80,80);
  const auto spill=buildingDepth(80,79), taller=buildingDepth(80,78);
  CHECK(spill.bottom==base.bottom);CHECK(taller.bottom==base.bottom);
@@ -1557,4 +1585,36 @@ TEST_CASE("native map boundary lightens exposed walls roots and fortifications a
  t.materialKind=MaterialKind::Stone;t.liquidLevel=7;t.liquidKind=LiquidKind::Magma;
  CHECK(minimapColor(t,std::nullopt,true)==0x801800);
  t.flags=wm::kTileHidden;CHECK(minimapColor(t,std::nullopt,true)==-1);
+}
+
+TEST_CASE("persistent terrain layers exactly reproduce every cut and covered mesh") {
+  MapSource map(32,16,4);
+  const TileShape shapes[] = {TileShape::Wall,TileShape::Floor,TileShape::Ramp,
+      TileShape::StairUp,TileShape::StairDown,TileShape::StairUpDown,
+      TileShape::Fortification,TileShape::TreeTrunk,TileShape::Boulder,TileShape::Empty};
+  for (int z=0;z<4;++z) for (int y=0;y<16;++y) for (int x=0;x<32;++x) {
+    auto t=tile(shapes[(x+3*y+7*z)%10],MaterialKind::Stone,
+        (x+y)%7==0?wm::kTileHidden:0,(x+y)%3);
+    if ((x+2*y+z)%5==0) t=liquid(t,LiquidKind::Water,7);
+    map.set(x,y,z,t);
+  }
+  // Neighbour edits cross block and level boundaries; hidden merging and liquid
+  // faces can differ by more than a simple added horizontal cap.
+  for (int edit=0;edit<3;++edit) {
+    if(edit) map.fill({15,0,1},{16,15,2},edit==1?kEmpty:kWall);
+    for(bool reveal:{false,true}) for(int z=0;z<4;++z) for(int bx=0;bx<2;++bx) {
+      const wm::BlockPos pos{bx,0,z};
+      const auto layers=meshBlockLayers(map,pos,reveal);
+      for(bool cut:{false,true}) {
+        auto actual=layers.common.faces;
+        const auto& alternative=cut?layers.cut.faces:layers.covered.faces;
+        actual.insert(actual.end(),alternative.begin(),alternative.end());
+        MeshOptions opts;opts.revealHidden=reveal;
+        if(cut)opts.topZ=z;
+        auto expected=meshBlock(map,pos,opts).faces;
+        std::sort(actual.begin(),actual.end());std::sort(expected.begin(),expected.end());
+        CHECK(actual==expected);
+      }
+    }
+  }
 }

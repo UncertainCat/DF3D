@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <map>
 
 namespace df3d::mesher {
 
@@ -656,6 +657,31 @@ BlockMesh meshBlock(const BlockSource& src, wm::BlockPos pos, const MeshOptions&
     for (int lx = 0; lx < kBlockSize; ++lx) e.tile(lx, ly);
   mergeHidden(out.faces, pos);
   return out;
+}
+
+BlockLayers meshBlockLayers(const BlockSource& src, wm::BlockPos pos, bool revealHidden) {
+  MeshOptions opts;
+  opts.revealHidden = revealHidden;
+  auto full = meshBlock(src, pos, opts);
+  opts.topZ = pos.bz;
+  auto cut = meshBlock(src, pos, opts);
+  BlockLayers result{{pos, full.version, {}}, {pos, full.version, {}}, {pos, full.version, {}}};
+  // Compare complete tagged faces, not just positions: material, winding and
+  // hidden-cap merging are part of the rendering contract. Preserve multiplicity.
+  std::map<Face, size_t> remaining;
+  for (const auto& face : cut.faces) ++remaining[face];
+  for (const auto& face : full.faces) {
+    auto found = remaining.find(face);
+    if (found != remaining.end() && found->second > 0) {
+      result.common.faces.push_back(face);
+      --found->second;
+    } else result.covered.faces.push_back(face);
+  }
+  for (const auto& face : cut.faces) {
+    auto& count = remaining.at(face);
+    if (count) { result.cut.faces.push_back(face); --count; }
+  }
+  return result;
 }
 
 TerrainManifest buildTerrainManifest(const BlockSource& src, int32_t topZ, int32_t bottomZ,

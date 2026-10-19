@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode cull_disabled, unshaded;
 #include "res://shaders/world_sampling.gdshaderinc"
-uniform sampler2D sprite_tex : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
+uniform sampler2D sprite_tex : filter_linear_mipmap_anisotropic, repeat_disable;
 uniform vec4 sprite_region = vec4(0.0, 0.0, 1.0, 1.0);
 uniform vec2 sprite_cell = vec2(0.0);
 uniform bool use_instance_ceiling = false;
@@ -60,5 +60,5 @@ void fragment() {
     if (world_height >= clip_height) discard;
     vec4 texel = sample_world_region(sprite_tex, UV, sprite_region);
     if (texel.a < 0.5) discard;
-    ALBEDO = texel.rgb * COLOR.rgb;
+    ALBEDO = world_output(texel.rgb * COLOR.rgb);
 }

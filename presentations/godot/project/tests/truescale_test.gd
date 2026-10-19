@@ -60,6 +60,19 @@ func run():
 			check(before[counter]==after[counter],style+" toggle/camera must not write "+counter)
 		await RenderingServer.frame_post_draw
 		check(root.get_texture().get_image().save_png(capture_dir.path_join("fixture-"+style+".png"))==OK,"capture saved for "+style)
+	# Exercise the real HUD mode callback: it must not rewrite preferences.
+	scene.camera_rig.set_process(false)
+	for style in ["classic","billboard"]:
+		Preferences.visual_style=style
+		for enabled in [false,true]:
+			Preferences.truescale=enabled
+			scene._fortress_hud.scale_toggle.set_pressed_no_signal(enabled)
+			RenderingServer.global_shader_parameter_set("actor_truescale",enabled)
+			scene.camera_rig.set_mode("walk")
+			check(not scene._fortress_hud.scale_toggle.disabled and not scene._fortress_hud.style_picker.disabled,"appearance settings remain available in FPS")
+			check(Preferences.truescale==enabled and Preferences.visual_style==style,"FPS preserves both appearance preferences")
+			scene.camera_rig.exit_walk()
+			check(Preferences.truescale==enabled and Preferences.visual_style==style,"FPS exit preserves both appearance preferences")
 	scene.queue_free()
 	for frame in 5:await process_frame
 	print("TRUESCALE_RUNTIME_PASS" if failures.is_empty() else "TRUESCALE_RUNTIME_FAIL")

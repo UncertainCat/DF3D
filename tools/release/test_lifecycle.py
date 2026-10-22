@@ -21,9 +21,11 @@ def main():
                         "/main:LifecycleTests", f"/out:{executable}",
                         *[f"/reference:{name}.dll" for name in references],
                         str(ROOT / "tools/release/Launcher.cs"),
+                        str(ROOT / "tools/release/IntegrationTests.cs"),
                         str(ROOT / "tools/release/LifecycleTests.cs")], check=True)
         report = directory / "result.txt"
-        result = subprocess.run([str(executable), "--test", str(report)], timeout=40)
+        test_env = dict(os.environ, LOCALAPPDATA=str(directory / "Local"))
+        result = subprocess.run([str(executable), "--test", str(report)], timeout=40, env=test_env)
         print(report.read_text() if report.exists() else "Lifecycle test did not produce a result")
         result.check_returncode()
 

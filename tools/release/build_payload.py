@@ -114,6 +114,7 @@ def main() -> None:
         copy(args.crt / name, bridge / name)
         copy(args.crt / name, bridge / "hack" / name)
     copy(ROOT / "build/tools/audio_guard.exe", stage / "helpers/audio_guard.exe")
+    copy(args.godot.parent / "icon.png", stage / "helpers/godot-icon.png")
     notices = stage / "notices"
     for source, name in (
         (ROOT / "LICENSE", "DF3D-LICENSE.txt"),

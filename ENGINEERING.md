@@ -4493,6 +4493,84 @@ snap is applied. The controller never sends simulation commands to DF.
 
 ### Installation and shipping checks
 
+Setup records `df3d-install.json` in the selected installation. Its format-1
+record contains the installed DF3D version. Matching versions launch; a different
+version offers Update. The record is trusted: launch does not hash DLLs, check
+extra plugins, or verify that users retained installed dependencies. User changes
+remain the user's responsibility. The required DF executable build is still checked.
+
+A clean installation has no DFHack files. Existing unmarked DFHack is rejected. Installation receipts do not establish
+version or ownership; there is no migration from pre-marker installations.
+A malformed marker fails clearly rather than being ignored.
+
+The version record is written last within the installation transaction. Restore
+recovers its previous version or removes it for a formerly unmarked installation.
+Package integrity hashes, install backups and safe restore checks remain; they
+are separate from installed-version detection. `test_lifecycle.py` covers trusted
+user modifications, version changes, rejection without a marker, marker rollback,
+and installation/restore behavior with isolated synthetic files.
+
+The product has one Godot process and one window. Its entry scene shows setup;
+Play asks the hidden C# controller to prepare native DF, then replaces setup with
+the main game scene in that same process/window. Setup owns and releases its art,
+controls, and close handler during the transition. The game applies its normal
+display preferences and save-aware exit confirmation. There is no hidden setup
+window or return to a launcher after play.
+
+Steam suggestions are validated once before the chooser opens; selecting a
+suggestion uses that result. Checks read the version record, not installed DLL
+contents. Manual paths are checked when chosen. Acceptance, installation and
+launch revalidate on disk. A validated target supplies DF artwork, acknowledgment
+is remembered per installation, and compatible returning players go straight to
+startup. Failed startup cleans native DF and leaves setup available for retry.
+Install and restore retain their transactional backend. Closing during a file
+transaction waits for that transaction; closing during startup ends the session.
+
+The controller joins a kill-on-close Windows job before starting children. That
+lifetime job covers the Godot app, native DF, command clients, audio helpers and
+all descendants even after abrupt controller termination. Native DF has a nested
+job and private desktop. App exit or native DF exit ends the controller and the
+whole session; setup does not reappear. The audio guardian gets a bounded chance
+to restore its changes during orderly cleanup. A per-run request/response channel
+serializes setup operations; Play responds once DF is ready, rather than waiting
+for the game to exit. The bundled Godot icon is hash-pinned in the payload audit.
+
+Lifecycle stand-ins cover normal/crash exits in both directions, partial startup,
+nested jobs, helper grandchildren, controller exit/crash and unrelated-process
+isolation. `tools/release/test_setup_session.ps1 -Payload <payload> -Game <copy>`
+checks the real scene handoff, unchanged process/window identity, startup failure,
+native DF death, app closure and forced termination against a disposable game
+copy under build. It runs inside the protected lane and never loads a save.
+Process cleanup cannot recover unsaved game progress after crashes or forced
+termination.
+
+Save locations stay on one line with middle elision; hover and Copy path expose
+the full location. After targeting, occasional decorative dwarves walk beneath
+the panel using the shared actor walk pose, mirrored to face their travel direction.
+Setup composes 96 male and female appearances with different skin, hair, clothing and armor
+from the selected installation's adult dwarf layer and palette definitions;
+these do not represent live units or require starting DF. At most three walkers
+are retained. The chooser keeps its Godot icon and no DF artwork is bundled.
+
+The interactive setup mock runs with `tools/release/MockSetup.cmd` (or
+`powershell -NoProfile -ExecutionPolicy Bypass -File tools/release/mock_setup.ps1`).
+It uses sample installation/save paths and in-memory acceptance/install state;
+Browse only selects a path, Copy path explicitly writes the clipboard, and all
+install/update/launch actions are simulated. The real supported installation is
+read only for UI artwork. Asset cache, logs and test captures stay under
+`build/setup-mock`. It never calls the release installer or starts DF.
+The scenario picker covers first setup, no suggestions, incompatibility, install
+failure, returning players, verified older DF3D updates and foreign DFHack
+rejection. Restart resets the scenario; Reopen tests
+the remembered in-memory state. Closing the harness discards it. `-Test` exercises
+transitions and captures the acknowledgment screen. The mock entry point is excluded
+from exports; its shared view also serves the production setup flow.
+`tools/release/test_setup_ui.ps1 -Payload <extracted-payload> -Game <build-game-copy>`
+checks real UI/backend targeting, acknowledgment, installation and remembered
+reopen against a disposable copy under build, then restores its bridge. Its
+profile and caches are isolated; it does not start a fortress. The package smoke
+check separately verifies the exported viewer and bridge startup.
+
 Discovery and launcher regressions use disposable Steam layouts and stand-in executables:
 
 ```powershell

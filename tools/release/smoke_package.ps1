@@ -39,6 +39,7 @@ foreach ($name in @('PATH','APPDATA','LOCALAPPDATA')) { $saved[$name] = [Environ
 Get-ChildItem Env:DF3D_* | ForEach-Object { $saved[$_.Name] = $_.Value }
 $entered = $false
 $journal = $null
+$ownedSession = $null
 try {
     Get-ChildItem Env:DF3D_* | Remove-Item
     $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot"
@@ -62,7 +63,15 @@ try {
     $env:DF3D_PROFILE = 'off'
     Set-DfPrefs
     Install-DfMenuStartup -DfPath $game
-    $df = Start-Df3d -DfPath $game
+    $ownedSession = New-Object DF3D.Release.OwnedSession
+    $df = Start-Df3d -DfPath $game -OwnedLauncher {
+        param($exe, $cwd)
+        $start = New-Object Diagnostics.ProcessStartInfo
+        $start.FileName = $exe
+        $start.WorkingDirectory = $cwd
+        $start.UseShellExecute = $false
+        $ownedSession.Start($start, $true)
+    }
     $deadline = (Get-Date).AddSeconds(120)
     $ready = $false
     while ((Get-Date) -lt $deadline) {
@@ -105,6 +114,7 @@ try {
 } finally {
     try { if ($entered) { Exit-Df3dLane } }
     finally {
+        if ($ownedSession) { $ownedSession.Dispose() }
         Get-ChildItem Env:DF3D_* | Remove-Item
         foreach ($name in $saved.Keys) { [Environment]::SetEnvironmentVariable($name, $saved[$name]) }
     }

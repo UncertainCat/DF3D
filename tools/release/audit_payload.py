@@ -22,6 +22,11 @@ def audit_resources(root: Path) -> dict:
         if prohibited.intersection(s.lower() for s in rel.parts) or path.name.lower() in {"dwarf fortress.exe", "steam_api64.dll", "steam_appid.txt"} or path.suffix.lower() == ".df3dfix":
             raise ValueError(f"Prohibited game/user payload: {rel}")
         if path.suffix.lower() in media:
+            if rel.as_posix() == "helpers/godot-icon.png":
+                # Unmodified icon from the pinned Godot distribution, covered by its notices.
+                if hashlib.sha256(path.read_bytes()).hexdigest() != "4c7157447b020ecb1a0cb755fe0569620247bf5def9f7c4409f063ac479509a9":
+                    raise ValueError("Unexpected Godot icon; review its upstream provenance")
+                continue
             if rel.parent.as_posix() != "bridge/hack/data/art":
                 raise ValueError(f"Unexpected media in payload: {rel}")
             original = ROOT / "external/dfhack/data/art" / path.name

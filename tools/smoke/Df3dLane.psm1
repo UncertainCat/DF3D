@@ -297,17 +297,24 @@ function Start-Df3d {
     launches on the caller's desktop (still windowed, still contained).
     Returns the Process object.
     #>
-    param([string]$DfPath, [switch]$Visible)
+    param([string]$DfPath, [switch]$Visible, [scriptblock]$OwnedLauncher)
     if ($script:AttachOnly) { throw "Attach lanes cannot launch or own DF" }
     $script:DfVisible = [bool]$Visible
     $exe = Join-Path $DfPath "Dwarf Fortress.exe"
     $env:DFHACK_DISABLE_CONSOLE = "1"
     $env:DFHACK_PORT = "$($script:Port)"
     $desktop = if ($Visible) { $null } else { "df3d_hidden" }
-    if ($Visible) { Write-Host "[lane] launching Dwarf Fortress (visible, windowed; do not interact)" }
+    if ($OwnedLauncher) { Write-Host "[lane] launching Dwarf Fortress through the packaged owned-session launcher" }
+    elseif ($Visible) { Write-Host "[lane] launching Dwarf Fortress (visible, windowed; do not interact)" }
     else { Write-Host "[lane] launching Dwarf Fortress on hidden desktop 'df3d_hidden'" }
-    $dfPid = [Df3dLaneNative]::Launch($exe, "", $DfPath, $desktop)
-    $script:DfProc = Get-Process -Id $dfPid
+    # Package acceptance can inject its production job/desktop launcher while
+    # retaining the lane's single-session and safe teardown contract.
+    if ($OwnedLauncher) { $script:DfProc = & $OwnedLauncher $exe $DfPath }
+    else {
+        $dfPid = [Df3dLaneNative]::Launch($exe, "", $DfPath, $desktop)
+        $script:DfProc = Get-Process -Id $dfPid
+    }
+    $dfPid = $script:DfProc.Id
     Write-Host "[lane] DF pid $dfPid (job-contained: dies with this lane)"
     return $script:DfProc
 }

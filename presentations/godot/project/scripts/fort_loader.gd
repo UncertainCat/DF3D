@@ -80,7 +80,7 @@ func _ready() -> void:
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	box.add_child(logo)
 	var brand := Label.new()
-	brand.text = "D F 3 D   /   A NEW VIEW OF YOUR FORTRESS"
+	brand.text = "D F 3 D"
 	brand.add_theme_font_size_override("font_size", 13)
 	brand.add_theme_color_override("font_color", Color("c7ab77"))
 	brand.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -321,11 +321,12 @@ func update_session(state: Dictionary, terrain_ready: bool, preparation_error :=
 	elif _result_message != "":
 		message.text = _result_message
 	elif phase == 1:
-		message.text = "Choose a fortress to continue. It will open paused." if not saves.is_empty() else "No active fortress saves found. Create a fortress in Dwarf Fortress first."
+		message.text = "" if not saves.is_empty() else "No active fortress saves found. Create a fortress in Dwarf Fortress first."
 	else:
 		message.text = state.get("message", "")
 		if state.get("error", "") != "": message.text = state.error
 		if message.text == "": message.text = "Connecting to Dwarf Fortress..."
 		if phase == 4: message.text += "\nStart the game through the DF3D launcher, or run `enable df3d` in the DFHack console."
 
+	message.visible = not message.text.is_empty()
 	show_loading((busy or can_attach) and (not can_attach or preparation_error.is_empty()) and not (pending_seq == 0 and request_status == 3 and not newer_world))

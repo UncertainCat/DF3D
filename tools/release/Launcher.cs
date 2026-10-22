@@ -19,10 +19,11 @@ namespace DF3D.Release {
  public class PayloadFile { public string path; public string sha256; public long size; }
  public class GameVersion { public string version; public string steamBuildId; public uint peTimestamp; }
  public class Manifest { public int formatVersion; public string version; public GameVersion dwarfFortress; public string viewerExecutable; public string bridgeRoot; public List<PayloadFile> files; }
+ public class InstalledVersion { public int formatVersion; public string version; }
  public class Change { public string relative; public string backup; public string beforeHash; public string installedHash; }
  public class Transaction { public string destination; public List<Change> changes = new List<Change>(); public bool complete; }
  public static class Package {
-  public static readonly string Home = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DF3D");
+  public static readonly string Home = Path.Combine(Environment.GetEnvironmentVariable("LOCALAPPDATA") ?? Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DF3D");
   public static readonly JavaScriptSerializer Json = new JavaScriptSerializer { MaxJsonLength = 64000000 };
   public static string Hash(Stream stream) { using(var h=SHA256.Create()) return BitConverter.ToString(h.ComputeHash(stream)).Replace("-", "").ToLowerInvariant(); }
   public static string HashFile(string path) { using(var f=File.OpenRead(path)) return Hash(f); }
@@ -77,16 +78,54 @@ namespace DF3D.Release {
     f.ReadUInt16();f.ReadUInt16();return f.ReadUInt32();
    }
   }
-  public static void ValidateGame(string path,Manifest m) {
+  public static void ValidateGame(string path,Manifest m) { InspectGame(path,m); }
+  public static string InspectGame(string path,Manifest m) {
+   if(!File.Exists(Inside(path,"Dwarf Fortress.exe")))throw new IOException("Choose Dwarf Fortress.exe.");
    if(PeTimestamp(Inside(path,"Dwarf Fortress.exe"))!=m.dwarfFortress.peTimestamp)
-    throw new IOException("This preview requires Dwarf Fortress "+m.dwarfFortress.version+", Steam build "+m.dwarfFortress.steamBuildId+". The selected executable does not match.");
+    throw new IOException("Unsupported DF version. Requires DF "+m.dwarfFortress.version+" (Steam build "+m.dwarfFortress.steamBuildId+").");
    if(!Directory.Exists(Path.Combine(path,"data","vanilla"))) throw new IOException("Dwarf Fortress data/vanilla folder is missing");
+   return ValidateDfhack(path,m);
+  }
+  static IEnumerable<string> IntegrationFiles(string destination) {
+   // Do not follow directory links while looking for an existing runtime.
+   string hack=Inside(destination,"hack");
+   if(Directory.Exists(hack)) {
+    var pending=new Stack<string>();pending.Push(hack);
+    while(pending.Count!=0) {
+     string directory=pending.Pop();
+     if((File.GetAttributes(directory)&FileAttributes.ReparsePoint)!=0)throw new IOException("Linked DFHack folders are not supported.");
+     foreach(string file in Directory.GetFiles(directory))yield return file;
+     foreach(string child in Directory.GetDirectories(directory))pending.Push(child);
+    }
+   }
+   foreach(string file in Directory.GetFiles(destination)) {
+    string name=Path.GetFileName(file);
+    if(name.StartsWith("dfhack",StringComparison.OrdinalIgnoreCase)||name.StartsWith("dfhooks",StringComparison.OrdinalIgnoreCase))yield return file;
+   }
+  }
+  public const string VersionFile="df3d-install.json";
+  public static string ValidateDfhack(string destination,Manifest m) {
+   destination=Path.GetFullPath(destination);
+   string marker=Inside(destination,VersionFile);
+   if(File.Exists(marker)) {
+    try {
+     var installed=Json.Deserialize<InstalledVersion>(File.ReadAllText(marker));
+     if(installed!=null&&installed.formatVersion==1&&!string.IsNullOrWhiteSpace(installed.version))
+      return installed.version==m.version?"current":"update";
+    } catch(ArgumentException){}catch(InvalidOperationException){}
+    throw new IOException("Invalid DF3D version record. Restore bridge files, then try again.");
+   }
+   if(!IntegrationFiles(destination).Any())return "clean";
+   throw new IOException("Unsupported DFHack installation. Uninstall DFHack, then try again.");
   }
   public static void RequireClosed() {
    if(Process.GetProcessesByName("Dwarf Fortress").Length!=0) throw new IOException("Close Dwarf Fortress before installing or restoring the bridge.");
   }
   public static string Install(string root,Manifest m,string destination) {
-   RequireClosed(); ValidateGame(destination,m);
+   RequireClosed();
+   InspectGame(destination,m);
+   if(string.IsNullOrWhiteSpace(m.version))throw new IOException("Package version is missing.");
+   byte[] markerBytes=System.Text.Encoding.UTF8.GetBytes(Json.Serialize(new InstalledVersion{formatVersion=1,version=m.version}));
    string backups=Path.Combine(Home,"backups");
    if(Directory.Exists(backups)) foreach(string prior in Directory.GetFiles(backups,"transaction.json",SearchOption.AllDirectories)) {
     var previous=Json.Deserialize<Transaction>(File.ReadAllText(prior));
@@ -97,11 +136,19 @@ namespace DF3D.Release {
    string folder=Path.Combine(Home,"backups",DateTime.UtcNow.ToString("yyyyMMdd-HHmmss")+"-"+Guid.NewGuid().ToString("N"));
    string journal=Path.Combine(folder,"transaction.json");
    foreach(var f in m.files.Where(x=>x.path.StartsWith(m.bridgeRoot.TrimEnd('/')+"/",StringComparison.Ordinal))) {
-    string relative=f.path.Substring(m.bridgeRoot.TrimEnd('/').Length+1); string target=Inside(destination,relative);
+    string relative=f.path.Substring(m.bridgeRoot.TrimEnd('/').Length+1);
+    string target=Inside(destination,relative);
     if(File.Exists(target)&&HashFile(target).Equals(f.sha256,StringComparison.OrdinalIgnoreCase)) continue;
     var c=new Change { relative=relative, installedHash=f.sha256 };
     if(File.Exists(target)) { c.beforeHash=HashFile(target); c.backup=Inside(folder,"original/"+relative); Directory.CreateDirectory(Path.GetDirectoryName(c.backup)); File.Copy(target,c.backup); }
     transaction.changes.Add(c);
+   }
+   string markerTarget=Inside(destination,VersionFile);
+   string markerHash;using(var stream=new MemoryStream(markerBytes))markerHash=Hash(stream);
+   if(!File.Exists(markerTarget)||HashFile(markerTarget)!=markerHash) {
+    var change=new Change{relative=VersionFile,installedHash=markerHash};
+    if(File.Exists(markerTarget)){change.beforeHash=HashFile(markerTarget);change.backup=Inside(folder,"original/"+VersionFile);Directory.CreateDirectory(Path.GetDirectoryName(change.backup));File.Copy(markerTarget,change.backup);}
+    transaction.changes.Add(change); // Publish the version only after all payload files succeed.
    }
    if(transaction.changes.Count==0) return null;
    AtomicJson(journal,transaction); // Recovery intent is durable before the first install write.
@@ -109,7 +156,8 @@ namespace DF3D.Release {
     foreach(var c in transaction.changes) {
      string target=Inside(destination,c.relative); Directory.CreateDirectory(Path.GetDirectoryName(target));
      string temp=target+".df3d-"+Guid.NewGuid().ToString("N");
-     File.Copy(Inside(root,m.bridgeRoot+"/"+c.relative),temp);
+     if(c.relative==VersionFile)File.WriteAllBytes(temp,markerBytes);
+     else File.Copy(Inside(root,m.bridgeRoot+"/"+c.relative),temp);
      if(File.Exists(target)) File.Replace(temp,target,null); else File.Move(temp,target);
     }
     transaction.complete=true; AtomicJson(journal,transaction); return journal;
@@ -161,6 +209,10 @@ namespace DF3D.Release {
   }
  }
  public sealed class OwnedSession : IDisposable {
+    [DllImport("user32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern IntPtr CreateDesktop(string name,IntPtr device,IntPtr mode,uint flags,uint access,IntPtr security);
+    [DllImport("user32.dll", SetLastError=true)]
+    static extern bool CloseDesktop(IntPtr desktop);
     [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Unicode)]
     struct STARTUPINFO {
         public int cb; public string lpReserved; public string lpDesktop; public string lpTitle;
@@ -199,7 +251,23 @@ namespace DF3D.Release {
     }
 
 
-    IntPtr job;
+    IntPtr job, desktop;
+    string desktopName;
+    static OwnedSession launcherLifetime;
+    // Intentionally held until process exit, not disposed: this job includes
+    // the launcher itself. Windows closes its handle even after a hard kill,
+    // taking every descendant with it (including helpers outside a play job).
+    public static void ContainLauncher() {
+        if(launcherLifetime!=null)return;
+        var lifetime=new OwnedSession();
+        using(var current=Process.GetCurrentProcess()) {
+            if(!AssignProcessToJobObject(lifetime.job,current.Handle)) {
+                int error=Marshal.GetLastWin32Error();lifetime.Dispose();
+                throw new Win32Exception(error,"Cannot contain launcher process tree");
+            }
+        }
+        launcherLifetime=lifetime;
+    }
     public OwnedSession() {
         job=CreateJobObject(IntPtr.Zero,null);
         if(job==IntPtr.Zero)throw new Win32Exception(Marshal.GetLastWin32Error());
@@ -209,11 +277,17 @@ namespace DF3D.Release {
         catch {Dispose();throw;}
         finally {Marshal.FreeHGlobal(buffer);}
     }
-    public Process Start(ProcessStartInfo start) {
+    public Process Start(ProcessStartInfo start, bool hiddenDesktop=false) {
         if(job==IntPtr.Zero)throw new ObjectDisposedException("OwnedSession");
+        if(hiddenDesktop && desktop==IntPtr.Zero) {
+            desktopName="df3d_"+Guid.NewGuid().ToString("N");
+            desktop=CreateDesktop(desktopName,IntPtr.Zero,IntPtr.Zero,0,0x10000000,IntPtr.Zero);
+            if(desktop==IntPtr.Zero)throw new Win32Exception(Marshal.GetLastWin32Error());
+        }
         string env=string.Join("\0",start.EnvironmentVariables.Keys.Cast<string>().OrderBy(k=>k,StringComparer.OrdinalIgnoreCase).Select(k=>k+"="+start.EnvironmentVariables[k]))+"\0\0";
         IntPtr environment=Marshal.StringToHGlobalUni(env);
         var si=new STARTUPINFO();si.cb=Marshal.SizeOf(si);
+        si.lpDesktop=hiddenDesktop?desktopName:null;
         PROCESS_INFORMATION pi;
         try {if(!CreateProcess(start.FileName,"\""+start.FileName+"\" "+start.Arguments,IntPtr.Zero,IntPtr.Zero,false,0x404,environment,start.WorkingDirectory,ref si,out pi))throw new Win32Exception(Marshal.GetLastWin32Error());}
         finally {Marshal.FreeHGlobal(environment);}
@@ -227,75 +301,133 @@ namespace DF3D.Release {
         } catch {TerminateProcess(pi.hProcess,1);throw;}
         finally {CloseHandle(pi.hThread);CloseHandle(pi.hProcess);}
     }
-    public void Dispose(){if(job!=IntPtr.Zero){CloseHandle(job);job=IntPtr.Zero;}}
+    public void Dispose(){if(job!=IntPtr.Zero){CloseHandle(job);job=IntPtr.Zero;}if(desktop!=IntPtr.Zero){CloseDesktop(desktop);desktop=IntPtr.Zero;}}
  }
  public sealed class Launcher : Form {
-  TextBox path=new TextBox(), status=new TextBox(); Button play=new Button(), setup=new Button(); CheckBox acknowledge=new CheckBox();
-  int commandPort=5000; string root; Manifest manifest; Process game,viewer; string lastJournal; bool busy;
+  TextBox path=new TextBox(); CheckBox acknowledge=new CheckBox();
+  int commandPort=5000; string root; Manifest manifest; Process game,audioGuard; bool playing; OwnedSession playSession; string lastJournal; bool busy;
   string settings=Path.Combine(Package.Home,"launcher.json");
-  public Launcher(string payload) {
-   root=payload;manifest=Package.ReadManifest(root); Text="DF3D "+manifest.version+" Preview"; Width=720;Height=530;MinimumSize=new System.Drawing.Size(650,490);
-   var box=new TableLayoutPanel { Dock=DockStyle.Fill,Padding=new Padding(20),ColumnCount=1,RowCount=7 }; Controls.Add(box);
-   box.Controls.Add(new Label {Text="DF3D "+manifest.version+" Preview",Font=new System.Drawing.Font("Segoe UI",20),AutoSize=true});
-   box.Controls.Add(new Label {Text="Select your Dwarf Fortress installation. Requires DF "+manifest.dwarfFortress.version+" (Steam build "+manifest.dwarfFortress.steamBuildId+").",AutoSize=true,MaximumSize=new System.Drawing.Size(650,0)});
-   var row=new TableLayoutPanel {ColumnCount=2,Dock=DockStyle.Top,AutoSize=true};row.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100)); row.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); path.Dock=DockStyle.Fill;row.Controls.Add(path);var browse=new Button {Text="Browse…",AutoSize=true};row.Controls.Add(browse);box.Controls.Add(row);
-   browse.Click+=(s,e)=>{using(var picker=new OpenFileDialog {Title="Select Dwarf Fortress.exe",Filter="Dwarf Fortress|Dwarf Fortress.exe"})if(picker.ShowDialog()==DialogResult.OK)path.Text=Path.GetDirectoryName(picker.FileName);};
-   acknowledge.Text="I have backed up my saves and understand this preview is unstable.";acknowledge.AutoSize=true;box.Controls.Add(acknowledge);
-   var buttons=new FlowLayoutPanel {AutoSize=true,Dock=DockStyle.Top};setup.Text="Set up bridge";setup.AutoSize=true;play.Text="Play";play.AutoSize=true;buttons.Controls.Add(setup);buttons.Controls.Add(play);
-   var saves=new Button {Text="Save folders",AutoSize=true};buttons.Controls.Add(saves);var restore=new Button {Text="Restore bridge files",AutoSize=true};buttons.Controls.Add(restore);box.Controls.Add(buttons);
-   status.Multiline=true;status.ReadOnly=true;status.ScrollBars=ScrollBars.Vertical;status.Dock=DockStyle.Fill;box.Controls.Add(status);box.RowStyles.Add(new RowStyle(SizeType.AutoSize));box.RowStyles.Add(new RowStyle(SizeType.AutoSize));box.RowStyles.Add(new RowStyle(SizeType.AutoSize));box.RowStyles.Add(new RowStyle(SizeType.AutoSize));box.RowStyles.Add(new RowStyle(SizeType.AutoSize));box.RowStyles.Add(new RowStyle(SizeType.Percent,100));
-   var logs=new Button {Text="Open diagnostics",AutoSize=true};box.Controls.Add(logs); logs.Click+=(s,e)=>Process.Start("explorer.exe",Package.Home);
-   try {if(File.Exists(settings)){var d=Package.Json.Deserialize<Dictionary<string,string>>(File.ReadAllText(settings));path.Text=d["installation"];lastJournal=d.ContainsKey("journal")?d["journal"]:null;}}catch{}
-   if(!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DF3D_DF_PATH"))||path.Text.Length==0||!File.Exists(Path.Combine(path.Text,"Dwarf Fortress.exe")))path.Text=Package.Discover().FirstOrDefault()??"";
-   setup.Click+=async(s,e)=>await Run(async()=>{Check();Package.RequireClosed();Package.ValidateGame(path.Text,manifest);if(MessageBox.Show("Install the bundled DFHack build and DF3D bridge into:\n"+path.Text+"\n\nExisting replaced files will be backed up under:\n"+Package.Home+"\\backups\n\nSaves and DF settings are not replaced. Existing extra plugins and settings remain and may conflict. Close DF before restoring files.","Set up bridge",MessageBoxButtons.OKCancel)!=DialogResult.OK)return; string dest=path.Text;string j=await Task.Run(()=>Package.Install(root,manifest,dest));if(j!=null)lastJournal=j;SaveSettings();Say("Bridge ready. Original files are backed up. You can now Play.");});
-   restore.Click+=async(s,e)=>await Run(async()=>{using(var picker=new OpenFileDialog {Title="Select installation backup",InitialDirectory=Path.Combine(Package.Home,"backups"),Filter="DF3D transaction|transaction.json"}){if(lastJournal!=null)picker.FileName=lastJournal;if(picker.ShowDialog()!=DialogResult.OK)return;string journal=picker.FileName;await Task.Run(()=>Package.Restore(journal));Say("Bridge files restored. Backups retained.");}});
-   saves.Click+=(s,e)=>{string user=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"Bay 12 Games","Dwarf Fortress","save");if(Directory.Exists(user))Process.Start("explorer.exe",user);string local=Path.Combine(path.Text,"save");if(Directory.Exists(local))Process.Start("explorer.exe",local);Say("Copy your save folder somewhere safe while DF is closed. Setup does not modify saves.");};
-   play.Click+=async(s,e)=>await Run(StartGame);
-   FormClosing+=(s,e)=>{if(viewer!=null&&!viewer.HasExited){e.Cancel=true;viewer.CloseMainWindow();}else if(busy){e.Cancel=true;Say("Wait for the current operation to finish.");}};
-   Say("Back up saves before playing. Install the bridge once, then Play. Exit game ends both applications; save your progress before exiting.");
+  Process appProcess; OwnedSession appSession; Timer poll; string channel;
+  Dictionary<string,Dictionary<string,object>> inspections=new Dictionary<string,Dictionary<string,object>>(StringComparer.OrdinalIgnoreCase);
+  Dictionary<string,string> saved=new Dictionary<string,string>();
+  protected override void SetVisibleCore(bool value){base.SetVisibleCore(false);}
+  public Launcher(string payload, string setupScript="res://scripts/setup_launcher.gd") {
+   OwnedSession.ContainLauncher();
+   root=payload;manifest=Package.ReadManifest(root);
+   try {if(File.Exists(settings))saved=Package.Json.Deserialize<Dictionary<string,string>>(File.ReadAllText(settings));}catch{}
+   if(saved==null)saved=new Dictionary<string,string>();
+   if(saved.ContainsKey("journal"))lastJournal=saved["journal"];
+   channel=Path.Combine(Package.Home,"setup",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(channel);
+   foreach(string candidate in Package.Discover().Concat(saved.ContainsKey("installation")?new[]{saved["installation"]}:new string[0]).Where(x=>!string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase)) InspectTarget(candidate);
+   appSession=new OwnedSession();
+   var info=StartInfo(Package.Inside(root,manifest.viewerExecutable),"--log-file \""+Path.Combine(channel,"ui.log")+"\"",Path.GetDirectoryName(Package.Inside(root,manifest.viewerExecutable)));
+   foreach(string key in info.EnvironmentVariables.Keys.Cast<string>().Where(x=>x.StartsWith("DF3D_") && x!="DF3D_CACHE_DIR" && !(setupScript!="res://scripts/setup_launcher.gd" && x.StartsWith("DF3D_SETUP_"))).ToArray())info.EnvironmentVariables.Remove(key);
+   info.EnvironmentVariables["DF3D_PROFILE"]="off";info.EnvironmentVariables["DF3D_RELEASE"]="1";
+   info.EnvironmentVariables["DF3D_SETUP_CHANNEL"]=channel;
+   info.EnvironmentVariables["DF3D_SETUP_SCRIPT"]=setupScript;
+   info.EnvironmentVariables["DF3D_SETUP_ICON"]=Path.Combine(root,"helpers","godot-icon.png");
+   appProcess=appSession.Start(info);
+   poll=new Timer {Interval=100};poll.Tick+=async(s,e)=>await PollSetup();poll.Start();
+   FormClosed+=(s,e)=>{poll.Stop();CleanupPlay();appSession.Dispose();appProcess.Dispose();};
   }
-  void Check(){if(!acknowledge.Checked)throw new IOException("Back up your saves and check the preview acknowledgement first.");}
-  void SaveSettings(){Package.AtomicJson(settings,new Dictionary<string,string>{{"installation",Path.GetFullPath(path.Text)},{"journal",lastJournal}});}
-  void Say(string text){status.AppendText(text+Environment.NewLine);Directory.CreateDirectory(Package.Home);File.AppendAllText(Path.Combine(Package.Home,"launcher.log"),DateTime.UtcNow.ToString("o")+" "+text+Environment.NewLine);}
-  async Task Run(Func<Task> action){if(busy)return;busy=true;setup.Enabled=play.Enabled=false;try{await action();}catch(Exception ex){Say(ex.Message+(ex is UnauthorizedAccessException ? " Choose a writable DF installation or run setup with the required Windows permissions." : ""));}finally{busy=false;setup.Enabled=play.Enabled=true;}}
+  Dictionary<string,object> InspectTarget(string target) {
+   var result=new Dictionary<string,object>();
+   try {target=Path.GetFullPath(target);result["state"]=Package.InspectGame(target,manifest);result["ok"]=true;}
+   catch(IOException ex){result["ok"]=false;result["error"]=ex.Message;}
+   catch(UnauthorizedAccessException ex){result["ok"]=false;result["error"]=ex.Message;}
+   catch(ArgumentException){result["ok"]=false;result["error"]="Choose Dwarf Fortress.exe.";}
+   inspections[target]=result;return result;
+  }
+  async Task PollSetup() {
+   if(appProcess.HasExited){if(!busy||game!=null){CleanupPlay();Environment.Exit(0);}return;}
+   if(playing && game.HasExited){CleanupPlay();Environment.Exit(0);}
+   if(playing && !File.Exists(Path.Combine(channel,"request.json")))return;
+   string request=Path.Combine(channel,"request.json");
+   if(busy||!File.Exists(request))return;
+   busy=true;
+   var response=new Dictionary<string,object>();
+   try {
+    var r=Package.Json.Deserialize<Dictionary<string,string>>(File.ReadAllText(request));File.Delete(request);
+    string action=r["action"];
+    response["ok"]=true;
+    if(action=="bootstrap") {
+     response["suggestions"]=inspections.Keys.ToArray();
+     response["inspections"]=inspections;
+     response["installation"]=saved.ContainsKey("installation")?saved["installation"]:"";
+     response["accepted"]=saved.ContainsKey("acknowledgment")&&saved["acknowledgment"]=="1";
+    } else if(action=="target") {
+     path.Text="";acknowledge.Checked=false;
+     string target=Path.GetFullPath(r["path"]);
+     var inspection=inspections.ContainsKey(target)?inspections[target]:InspectTarget(target);
+     if(!(bool)inspection["ok"])throw new IOException((string)inspection["error"]);
+     path.Text=target;acknowledge.Checked=saved.ContainsKey("installation")&&string.Equals(saved["installation"],target,StringComparison.OrdinalIgnoreCase)&&saved.ContainsKey("acknowledgment")&&saved["acknowledgment"]=="1";
+     response["state"]=inspection["state"];
+     response["accepted"]=acknowledge.Checked;
+     var saves=new List<string>{Path.Combine(target,"save")};
+     string user=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"Bay 12 Games","Dwarf Fortress","save");
+     if(Directory.Exists(user))saves.Add(user);
+     response["saves"]=saves;
+    } else if(action=="accept") {
+     Package.ValidateGame(path.Text,manifest);acknowledge.Checked=true;SaveSettings();
+    } else if(action=="install") {
+     Check();string target=path.Text;
+     string journal=await Task.Run(()=>Package.Install(root,manifest,target));
+     if(journal!=null)lastJournal=journal;SaveSettings();InspectTarget(target);
+    } else if(action=="play") {await StartGame();}
+    else if(action=="abort-play") {CleanupPlay();}
+    else if(action=="restore") {
+     using(var picker=new OpenFileDialog {Title="Select installation backup",InitialDirectory=Path.Combine(Package.Home,"backups"),Filter="DF3D transaction|transaction.json"}) {
+      if(picker.ShowDialog()==DialogResult.OK){string journal=picker.FileName;await Task.Run(()=>Package.Restore(journal));inspections.Clear();}
+     }
+    } else throw new IOException("Unknown setup action");
+   } catch(Exception ex){response["ok"]=false;response["error"]=ex.Message;Say(ex.Message);}
+   finally {Package.AtomicJson(Path.Combine(channel,"response.json"),response);busy=false;}
+  }
+  void Check(){if(!acknowledge.Checked)throw new IOException("Confirm that you understand DF3D is unstable first.");}
+  void SaveSettings(){saved=new Dictionary<string,string>{{"installation",Path.GetFullPath(path.Text)},{"journal",lastJournal},{"acknowledgment",acknowledge.Checked?"1":"0"}};Package.AtomicJson(settings,saved);}
+  void Say(string text){Directory.CreateDirectory(Package.Home);File.AppendAllText(Path.Combine(Package.Home,"launcher.log"),DateTime.UtcNow.ToString("o")+" "+text+Environment.NewLine);}
   static ProcessStartInfo StartInfo(string exe,string args,string cwd){return new ProcessStartInfo(exe,args){WorkingDirectory=cwd,UseShellExecute=false};}
   async Task<string> Command(string installation,string command){var p=StartInfo(Path.Combine(installation,"hack","dfhack-run.exe"),command,installation);p.CreateNoWindow=true;p.RedirectStandardOutput=true;p.RedirectStandardError=true;p.EnvironmentVariables["DFHACK_PORT"]=commandPort.ToString();using(var proc=Process.Start(p)){var output=proc.StandardOutput.ReadToEndAsync();var error=proc.StandardError.ReadToEndAsync();if(!await Task.Run(()=>proc.WaitForExit(4000))){proc.Kill();throw new IOException("DFHack command timed out");}string result=await output+await error;if(proc.ExitCode!=0)throw new IOException(result.Trim());return result;}}
   async Task GuardAudio(){
    string folder=Path.Combine(Package.Home,"audio",Guid.NewGuid().ToString("N"));Directory.CreateDirectory(folder);string statusFile=Path.Combine(folder,"status");
-   string args="--guard "+viewer.Id+" "+viewer.StartTime.ToFileTimeUtc()+" "+game.Id+" "+game.StartTime.ToFileTimeUtc()+" \""+statusFile+"\" \""+Path.Combine(folder,"stop")+"\"";
-   var info=StartInfo(Package.Inside(root,"helpers/audio_guard.exe"),args,folder);info.CreateNoWindow=true;var guard=Process.Start(info);
+   string args="--guard "+appProcess.Id+" "+appProcess.StartTime.ToFileTimeUtc()+" "+game.Id+" "+game.StartTime.ToFileTimeUtc()+" \""+statusFile+"\" \""+Path.Combine(folder,"stop")+"\"";
+   var info=StartInfo(Package.Inside(root,"helpers/audio_guard.exe"),args,folder);info.CreateNoWindow=true;audioGuard=Process.Start(info);var guard=audioGuard;
    var until=DateTime.UtcNow.AddSeconds(15);while(!File.Exists(statusFile)&&!guard.HasExited&&DateTime.UtcNow<until)await Task.Delay(100);
    if(!File.Exists(statusFile)||File.ReadAllText(statusFile).Trim()!="READY")Say("Native audio takeover was not confirmed. Check Windows Volume Mixer. "+folder);
   }
+  void CleanupPlay(){
+   playing=false;
+   if(playSession!=null){playSession.Dispose();playSession=null;}
+   if(game!=null){game.WaitForExit(5000);game.Dispose();game=null;}
+   if(audioGuard!=null){try{if(!audioGuard.WaitForExit(5000)){try{audioGuard.Kill();}catch(InvalidOperationException){}audioGuard.WaitForExit(5000);}}finally{audioGuard.Dispose();audioGuard=null;}}
+  }
   async Task StartGame(){
-   Check();Package.ValidateGame(path.Text,manifest);string installation=Path.GetFullPath(path.Text);
-   foreach(var f in manifest.files.Where(x=>x.path.StartsWith(manifest.bridgeRoot+"/",StringComparison.Ordinal))){string installed=Package.Inside(installation,f.path.Substring(manifest.bridgeRoot.Length+1));if(!File.Exists(installed)||!Package.HashFile(installed).Equals(f.sha256,StringComparison.OrdinalIgnoreCase))throw new IOException("Bridge files differ from this preview. Close DF and run Set up bridge.");}
-   if(viewer!=null&&!viewer.HasExited)throw new IOException("DF3D is already running.");
+   Check();string installation=Path.GetFullPath(path.Text);
+   if(Package.InspectGame(installation,manifest)!="current")throw new IOException("Set up DF3D before launching.");
+   if(playSession!=null)throw new IOException("DF3D is already running.");
    Package.RequireClosed();
    commandPort=5000;
-   using(var session=new OwnedSession()) {
+   playSession=new OwnedSession();
    try {
-   var si=StartInfo(Path.Combine(installation,"Dwarf Fortress.exe"),"",installation);
-   si.EnvironmentVariables["DFHACK_DISABLE_CONSOLE"]="1";si.EnvironmentVariables["DFHACK_PORT"]="5000";
-   game=session.Start(si);
-   Say("Waiting for Dwarf Fortress.");
-   string lastError="";bool ready=false;var deadline=DateTime.UtcNow.AddSeconds(120);while(DateTime.UtcNow<deadline){if(game.HasExited)throw new IOException("Dwarf Fortress exited before the bridge was ready.");try{await Command(installation,"enable df3d");string result=await Command(installation,"df3d status");if(Regex.IsMatch(result,@"mirroring enabled:\s+yes")){ready=true;break;}}catch(IOException ex){lastError=ex.Message;}await Task.Delay(500);}
-   if(!ready)throw new IOException("Bridge did not become ready. The session will be cleaned up. "+lastError);
-   SaveSettings();string logs=Path.Combine(Package.Home,"logs");Directory.CreateDirectory(logs);
-   var launch=StartInfo(Package.Inside(root,manifest.viewerExecutable),"--log-file \""+Path.Combine(logs,"viewer-"+DateTime.Now.ToString("yyyyMMdd-HHmmss")+".log")+"\"",Path.GetDirectoryName(Package.Inside(root,manifest.viewerExecutable)));
-   foreach(string key in launch.EnvironmentVariables.Keys.Cast<string>().Where(x=>x.StartsWith("DF3D_")).ToArray())launch.EnvironmentVariables.Remove(key);
-   launch.EnvironmentVariables["DF3D_DF_PATH"]=installation;launch.EnvironmentVariables["DF3D_PROFILE"]="off";launch.EnvironmentVariables["DF3D_RELEASE"]="1";
-   viewer=session.Start(launch);await GuardAudio();Say("DF3D launched. Exit game closes the viewer and its Dwarf Fortress session.");
-   var sessionViewer=viewer;var sessionGame=game;
-   await Task.WhenAny(Task.Run(()=>sessionViewer.WaitForExit()),Task.Run(()=>sessionGame.WaitForExit()));
-   } finally {
-    session.Dispose();
-    if(viewer!=null){viewer.WaitForExit(5000);viewer.Dispose();viewer=null;}
-    if(game!=null){game.WaitForExit(5000);game.Dispose();game=null;}
-   }
-   }
-   Say("Session closed.");
+    var si=StartInfo(Path.Combine(installation,"Dwarf Fortress.exe"),"",installation);
+    si.EnvironmentVariables["DFHACK_DISABLE_CONSOLE"]="1";si.EnvironmentVariables["DFHACK_PORT"]="5000";
+    game=playSession.Start(si,true);
+    Say("Waiting for Dwarf Fortress.");
+    string lastError="";bool ready=false;var deadline=DateTime.UtcNow.AddSeconds(120);
+    while(DateTime.UtcNow<deadline){
+     if(game.HasExited)throw new IOException("Dwarf Fortress exited before the bridge was ready.");
+     try{await Command(installation,"enable df3d");string result=await Command(installation,"df3d status");if(Regex.IsMatch(result,@"mirroring enabled:\s+yes")){ready=true;break;}}
+     catch(IOException ex){lastError=ex.Message;}
+     await Task.Delay(500);
+    }
+    if(!ready)throw new IOException("Bridge did not become ready. The session will be cleaned up. "+lastError);
+    SaveSettings();await GuardAudio();
+    if(game.HasExited)throw new IOException("Dwarf Fortress exited during startup.");
+    playing=true;
+    Say("Dwarf Fortress ready. The DF3D window will enter the game.");
+   } catch {CleanupPlay();throw;}
   }
+
  }
  public static class Program {
   [STAThread] public static int Main(string[] args){try{Directory.CreateDirectory(Package.Home);if(args.Length>0&&args[0]=="--extract-only"){if(args.Length!=2)return 2;Package.Extract(args[1]);return 0;}if(args.Length>0&&args[0]=="--self-test"){SelfTest();return 0;}Application.EnableVisualStyles();Application.SetCompatibleTextRenderingDefault(false);bool created;using(var mutex=new System.Threading.Mutex(true,@"Local\DF3D.ReleaseLauncher",out created)){if(!created){MessageBox.Show("DF3D launcher is already open.");return 1;}Application.Run(new Launcher(Package.Extract()));}return 0;}catch(Exception ex){File.AppendAllText(Path.Combine(Package.Home,"launcher.log"),ex.ToString()+Environment.NewLine);if(args.Length==0)MessageBox.Show(ex.Message,"DF3D setup");return 1;}}
@@ -304,7 +436,7 @@ namespace DF3D.Release {
    using(var pe=new BinaryWriter(File.Create(Path.Combine(dest,"Dwarf Fortress.exe")))){pe.Write((ushort)0x5a4d);pe.BaseStream.Position=0x3c;pe.Write(128);pe.BaseStream.Position=128;pe.Write((uint)0x4550);pe.Write((ushort)0);pe.Write((ushort)0);pe.Write((uint)1234);}
    File.WriteAllText(Path.Combine(source,"bridge","test.dll"),"new");File.WriteAllText(Path.Combine(dest,"test.dll"),"original");
    File.WriteAllText(Path.Combine(source,"bridge","added.dll"),"added");
-   var manifest=new Manifest {bridgeRoot="bridge",dwarfFortress=new GameVersion {peTimestamp=1234},files=new List<PayloadFile>()};
+   var manifest=new Manifest {version="test.1",bridgeRoot="bridge",dwarfFortress=new GameVersion {peTimestamp=1234},files=new List<PayloadFile>()};
    foreach(string name in new[]{"test.dll","added.dll"})manifest.files.Add(new PayloadFile {path="bridge/"+name,sha256=Package.HashFile(Path.Combine(source,"bridge",name))});
    string journal=Package.Install(source,manifest,dest);
    if(File.ReadAllText(Path.Combine(dest,"test.dll"))!="new")throw new Exception("Install failed");

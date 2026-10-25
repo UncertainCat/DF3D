@@ -2713,5 +2713,28 @@
       "viewport scaling",
       "paged DF3D integration"
     ]
+  },
+  "range_loading_acceptance": {
+    "run": "build/areas-acceptance-20261025-082413",
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "status": "passed_with_known_issues",
+    "source_and_clone_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "native_observations": 109,
+    "screenshots": 60,
+    "scope": [
+      "full staged stockpile main-scene workflow",
+      "contiguous Parchment paging past200 rows",
+      "external refresh retains deep scroll",
+      "viewport pointer drag fetches final16 native Parchment rows directly"
+    ],
+    "omissions": [
+      "native drag mapping parity",
+      "held repeat",
+      "settings wheel modifiers",
+      "scaled viewport",
+      "containers and links",
+      "full lifecycle acceptance"
+    ]
   }
 }

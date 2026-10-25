@@ -4,6 +4,7 @@ var art = preload("res://scripts/original_ui.gd").new()
 var state
 var columns: Array[VBoxContainer] = []
 var scrolls: Array[ScrollContainer] = []
+var native_scrolls: Array = []
 var headers: Array[Button] = []
 var toggles: Dictionary = {}
 var search: LineEdit
@@ -12,6 +13,7 @@ var category_art: Dictionary = {}
 var row_cache: Array = [{},{},{}]
 var retained_scroll: Array[int] = [0,0,0]
 var scroll_generation: Array[int] = [0,0,0]
+var layout_pending: Array[bool] = [false,false,false]
 
 func restore_scroll(column: int, generation: int, offset: int) -> void:
 	# The new VBox must receive its minimum size before ScrollContainer can
@@ -19,6 +21,8 @@ func restore_scroll(column: int, generation: int, offset: int) -> void:
 	await get_tree().process_frame
 	if scroll_generation[column] == generation:
 		scrolls[column].set_deferred("scroll_vertical",offset)
+		await get_tree().process_frame
+		if scroll_generation[column] == generation: layout_pending[column] = false
 
 func configure(source, model) -> void:
 	state = model; art.configure(source); theme = art.theme
@@ -42,22 +46,21 @@ func configure(source, model) -> void:
 		var scroll := ScrollContainer.new(); scroll.position = Vector2(x,48)
 		scroll.size = Vector2(width,576); scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		add_child(scroll); scrolls.append(scroll)
-		var bar := scroll.get_v_scroll_bar()
-		bar.custom_minimum_size.x = 16
-		var track := art.make_style("SCROLLBAR",0)
-		# ScrollContainer reserves the scrollbar style minimum, not its custom
-		# width. Keep rows out of the native two-tile (16px) scrollbar strip.
-		track.set_content_margin(SIDE_LEFT,8); track.set_content_margin(SIDE_RIGHT,8)
-		track.set_texture_margin(SIDE_TOP,12); track.set_texture_margin(SIDE_BOTTOM,12)
-		var thumb := art.make_style("SCROLLBAR_SMALL_SCROLLER",0)
-		thumb.set_texture_margin(SIDE_TOP,12); thumb.set_texture_margin(SIDE_BOTTOM,12)
-		bar.add_theme_stylebox_override("scroll",track)
-		bar.add_theme_stylebox_override("scroll_focus",track)
-		for style in ["grabber","grabber_highlight","grabber_pressed"]: bar.add_theme_stylebox_override(style,thumb)
+		scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+		var native_bar = preload("res://scripts/area_location_scrollbar.gd").new()
+		add_child(native_bar); native_bar.configure(source)
+		native_bar.position = Vector2(x + width - 16,44)
+		native_bar.size = Vector2(16,576); native_bar.page = 16
+		native_bar.row_changed.connect(func(first):
+			retained_scroll[column] = first * 36
+			scroll.scroll_vertical = first * 36)
+		native_scrolls.append(native_bar)
 		var list := VBoxContainer.new(); list.add_theme_constant_override("separation",0)
 		list.size_flags_horizontal = Control.SIZE_EXPAND_FILL; scroll.add_child(list); columns.append(list)
 		scroll.get_v_scroll_bar().value_changed.connect(func(value):
-			if value > 0 and value + bar.page >= bar.max_value - 36: state.more(column))
+			if int(state.receipts[column].get("settings_count",-1)) < 0:
+				var bar := scroll.get_v_scroll_bar()
+				if value > 0 and value + bar.page >= bar.max_value - 36: state.more(column))
 	for index in 2:
 		var key: String = ["organic","inorganic"][index]
 		var button := Button.new(); button.position = Vector2(176 + index * 40,0); button.size = Vector2(32,36)
@@ -121,7 +124,17 @@ func render() -> void:
 				toggles[key].get_node("Icon").texture = art.texture("CUSTOM_STOCKPILE_" + str(key).to_upper() + ("_ON" if int(row.state) == 2 else "_OFF"))
 		toggles[key].disabled = busy or not observed
 	for column in 3:
-		var snapshot := {"rows":state.rows[column],"category":state.category,"subcategory":state.subcategory}
+		var total: int = state.rows[column].size()
+		if column == 0:
+			total = 0
+			for row in state.rows[0]:
+				if int(row.kind) == 1: total += 1
+		elif column == 2:
+			total = maxi(total,int(state.receipts[column].get("settings_count",-1)))
+		native_scrolls[column].set_rows(total,scrolls[column].scroll_vertical / 36)
+		scrolls[column].size.x = [280,256,328][column] - (16 if total > 16 else 0)
+		var snapshot := {"rows":state.rows[column],"category":state.category,"subcategory":state.subcategory,
+			"start":state.row_starts[column],"total":total}
 		if row_cache[column] == snapshot:
 			for line in columns[column].get_children():
 				for control in line.get_children():
@@ -142,6 +155,7 @@ func render() -> void:
 		var previous_scroll: int = retained_scroll[column]
 		for child in columns[column].get_children(): columns[column].remove_child(child); child.queue_free()
 		rendered_rows[column] = []
+		add_spacer(column,state.row_starts[column])
 		for row in state.rows[column]:
 			if column == 0 and int(row.kind) != 1: continue
 			var line := Control.new(); line.custom_minimum_size = Vector2(0,36)
@@ -173,5 +187,33 @@ func render() -> void:
 				icon.offset_left = -40; icon.offset_right = -8
 				icon.texture = art.texture({1:"STOCKPILE_OFF",2:"STOCKPILE_ON",3:"STOCKPILE_PARTIAL"}.get(int(row.state),""))
 				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
+		add_spacer(column,maxi(0,total - state.row_starts[column] - rendered_rows[column].size()))
 		scroll_generation[column] += 1
+		layout_pending[column] = true
 		restore_scroll(column,scroll_generation[column],previous_scroll)
+
+func add_spacer(column: int, count: int) -> void:
+	if count <= 0: return
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.custom_minimum_size.y = count * 36
+	columns[column].add_child(spacer)
+
+func _process(_delta: float) -> void:
+	if state == null or not is_visible_in_tree(): return
+	for column in 3:
+		native_scrolls[column].set_rows(native_scrolls[column].count,scrolls[column].scroll_vertical / 36)
+	# A drag may move again while a read is outstanding. Reconcile the latest
+	# viewport once that ticket finishes instead of losing its final position.
+	if not layout_pending[2]: state.seek(2,scrolls[2].scroll_vertical / 36)
+
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or not event is InputEventMouseButton or not event.pressed: return
+	if event.button_index not in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]: return
+	var point: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+	for column in 3:
+		if not scrolls[column].get_rect().has_point(point): continue
+		var bar = native_scrolls[column]
+		bar.move_to(bar.first + (-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1) * (bar.page if event.shift_pressed else 1))
+		get_viewport().set_input_as_handled()
+		return

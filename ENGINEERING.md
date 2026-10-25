@@ -405,11 +405,26 @@ This focused count run excludes quality modes. Offline
 contract checks, including300-row pagination, a one-row filter, an empty result,
 malformed counts and unknown legacy data.
 
-Settings scrollbar integration remains outstanding: use this filtered count and
-support requesting a not-yet-loaded row range before replacing the current bar.
-Do not infer a total from loaded pages or relabel the unfiltered work count.
-Held repeat, wheel modifiers, dragging and scaled viewport behavior still require
-settings-specific acceptance.
+Settings use the shared segmented native scrollbar and exact filtered count.
+The view reserves16px for a visible bar, uses36px logical rows and spacers for
+unloaded ranges, and creates buttons only for fetched rows. Distant jumps request
+that cursor with the current list receipt; ordinary scrolling appends contiguous
+pages. External refresh obtains a fresh receipt before directly restoring a
+nonzero window. Search/navigation and short/empty-result offset retention remain
+local; obsolete range replies cannot publish into a newer query. Older recordings
+with unknown counts retain sequential paging without inventing a full total.
+
+`build/qa/stockpile-range-live-ready` passed root CTest and state/controller/native
+scrollbar checks. Its rendered check verifies a12000-row logical extent, jump to
+row11984 and return,16 rendered buttons at the native origin, and existing offset
+retention cases; renderer diagnostics are known issues only. Protected main-scene
+`build/areas-acceptance-20261025-082413` passed109 native observations in the broader
+staged stockpile workflow plus an actual pointer drag to the final16 Parchment
+rows. Source and clone manifests were unchanged; owned DF closed unsaved. The
+sole diagnostic was the known separate-thread notice. Bounded provenance is in
+`native_stockpile_scroll.json.range_loading_acceptance`. This proves endpoint
+functionality, not exact native drag mapping. Held repeat, settings wheel modifiers
+and scaled viewport behavior still require settings-specific acceptance.
 
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
@@ -7153,8 +7168,8 @@ Creation, accepted repaint extents and removal matched native state. Both save
 manifests were unchanged and owned DF closed unsaved. The sole diagnostic was
 the documented separate-thread notice, so this is `passed_with_known_issues`.
 Bounded coverage is in `native_stockpile_filters.json.rendered_stockpile_workflow`.
-The native segmented scrollbar thumb remains a visual gap; containers, links and full
-lifecycle/input fidelity are not established by this run. Offline gate
+That run predates segmented scrollbar integration (see settings scroll evidence
+above); containers, links and full lifecycle/input fidelity are not established. Offline gate
 `build/qa/stockpile-scene-scope` passed root CTest.
 
 These focused scopes cannot be combined. `-BoundaryOnly` covers

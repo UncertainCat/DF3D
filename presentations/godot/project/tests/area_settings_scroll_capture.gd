@@ -13,8 +13,9 @@ func settle() -> void:
 	for i in 3: await process_frame
 	await RenderingServer.frame_post_draw
 
-func reply(values: Array) -> void:
-	state.accept({"settings":values,"list_revision":123,"next_cursor":0},state.pending.duplicate(true))
+func reply(values: Array, total := -1, next_cursor := 0) -> void:
+	state.accept({"list_key":state.pending.list_key,"query":state.pending.query,
+		"settings":values,"list_revision":123,"next_cursor":next_cursor,"settings_count":total},state.pending.duplicate(true))
 
 func run() -> void:
 	if DisplayServer.get_name() == "headless": quit(77); return
@@ -62,6 +63,24 @@ func run() -> void:
 	var directory := ProjectSettings.globalize_path("res://../../../build/qa/stockpile-scroll-render")
 	DirAccess.make_dir_recursive_absolute(directory)
 	root.get_texture().get_image().save_png(directory.path_join("scrolled.png"))
+	# Synthetic distant window tests transport/layout; recorded rows above remain
+	# the visual source. These repeated labels are not native ordering evidence.
+	state.open({"id":39,"revision":3,"categories":131071})
+	reply([{"key":"food","label":"Food","kind":1,"state":1}])
+	reply([{"key":"food/meat","label":"Meat","kind":2,"state":1}])
+	reply(lists["food-top"],12000,128); await settle()
+	check(view.native_scrolls[2].count == 12000 and view.native_scrolls[2].thumb().y == 2,"native thumb uses full filtered count instead of loaded page")
+	check(view.native_scrolls[2].get_global_rect() == Rect2(944,108,16,576),"native leaf scrollbar occupies recorded screen rectangle")
+	view.native_scrolls[2].move_to(11984); await settle()
+	check(state.pending.get("cursor",-1) == 11984,"scrollbar jump requests distant native range")
+	reply(lists["food-top"].slice(0,16),12000); await settle()
+	check(state.row_starts[2] == 11984 and view.rendered_rows[2].size() == 16,"distant range renders only fetched buttons")
+	check(view.scrolls[2].scroll_vertical == 11984*36 and state.pending.is_empty(),"distant replacement preserves viewport without fetching an unwanted prefix")
+	check(is_equal_approx(view.rendered_rows[2][0].global_position.y,112),"top spacer places distant first row at native list origin")
+	view.native_scrolls[2].move_to(0); await settle()
+	check(state.pending.get("cursor",-1) == 0,"scrollbar return requests first native range")
+	reply(lists["food-top"],12000,128); await settle()
+	check(state.row_starts[2] == 0 and view.scrolls[2].scroll_vertical == 0,"backward replacement preserves top viewport")
 	state.clear(); await settle()
 	check(view.scrolls[2].scroll_vertical == 0,"closing clears scroll")
 	view.free(); assets.free(); await process_frame

@@ -390,6 +390,22 @@ func pointer_settings_scroll_refresh() -> void:
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.rows[2].size() >= before_count and str(editor.settings_state.rows[2][200].key) == row_key and int(editor.settings_state.rows[2][200].state) == 2,"paged external refresh"): return
 	await capture("parchment_after_refresh")
 	if not check(editor.settings_view.scrolls[2].scroll_vertical == before_scroll,"external refresh changed deep scroll position"): return
+	var bar = editor.settings_view.native_scrolls[2]
+	var total := int(editor.settings_state.receipts[2].settings_count)
+	if not check(total > before_count + 16,"Parchment must exercise a distant unloaded range"): return
+	var grip: Vector2i = bar.thumb()
+	var start: Vector2 = bar.get_global_transform_with_canvas() * Vector2(8,(grip.x+0.5)*12)
+	var finish: Vector2 = bar.get_global_transform_with_canvas() * Vector2(8,bar.size.y-18)
+	var press := InputEventMouseButton.new(); press.position = start; press.global_position = start
+	press.button_index = MOUSE_BUTTON_LEFT; press.button_mask = MOUSE_BUTTON_MASK_LEFT; press.pressed = true
+	root.push_input(press,true)
+	var motion := InputEventMouseMotion.new(); motion.position = finish; motion.global_position = finish
+	motion.button_mask = MOUSE_BUTTON_MASK_LEFT; root.push_input(motion,true)
+	var release := InputEventMouseButton.new(); release.position = finish; release.global_position = finish
+	release.button_index = MOUSE_BUTTON_LEFT; root.push_input(release,true)
+	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.row_starts[2] == total-16,"native scrollbar distant drag"): return
+	await capture("parchment_distant_range")
+	if not check(editor.settings_view.rendered_rows[2].size() == 16 and editor.settings_view.scrolls[2].scroll_vertical == (total-16)*36,"distant drag did not render final native range"): return
 
 func settings_captions() -> Array:
 	var labels: Array = []

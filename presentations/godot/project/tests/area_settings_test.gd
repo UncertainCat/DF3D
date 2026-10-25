@@ -5,9 +5,9 @@ var failures := 0
 var requests: Array = []
 func check(value: bool, description: String) -> void:
 	if not value: failures += 1; push_error(description)
-func page(state, rows: Array, revision := 9007199254740993, cursor := 0) -> void:
+func page(state, rows: Array, revision := 9007199254740993, cursor := 0, total := -1) -> void:
 	state.accept({"list_key":state.pending.list_key,"settings":rows,"list_revision":revision,
-		"build_phase":3,"build_done":100,"build_total":100,"next_cursor":cursor},state.pending.duplicate(true))
+		"build_phase":3,"build_done":100,"build_total":100,"next_cursor":cursor,"settings_count":total},state.pending.duplicate(true))
 func _initialize() -> void:
 	var state := State.new()
 	state.request_ready.connect(func(value): requests.append(value))
@@ -160,6 +160,41 @@ func _initialize() -> void:
 		page(state,[{"key":key,"kind":2,"state":1}])
 		check(state.pending.get("category_opening",false),"native category opening context for " + key)
 		page(state,[])
+	state.clear()
+	state.open({"id":39,"revision":109,"categories":131071})
+	page(state,[{"key":"wood","kind":1,"state":1}])
+	var first_rows: Array = []
+	for index in 128: first_rows.append({"key":"wood/%d" % index,"kind":4,"state":1})
+	page(state,first_rows,200,128,12000)
+	state.seek(2,11984)
+	check(state.pending.cursor == 11984 and state.pending.expected_list_revision == 200 and state.rows[2].size() == 128,"distant seek uses one guarded read and keeps displayed rows until reply")
+	var last_rows: Array = []
+	for index in range(11984,12000): last_rows.append({"key":"wood/%d" % index,"kind":4,"state":1})
+	page(state,last_rows,200,0,12000)
+	check(state.row_starts[2] == 11984 and state.rows[2] == last_rows,"distant reply replaces loaded window without inventing preceding rows")
+	count = requests.size(); state.seek(2,11999)
+	check(requests.size() == count,"seek clamps to the last visible native page")
+	state.open({"id":39,"revision":110,"categories":131071},true)
+	page(state,[{"key":"wood","kind":1,"state":1}])
+	page(state,first_rows,201,128,12000)
+	check(state.pending.cursor == 11984 and state.pending.expected_list_revision == 201 and state.rows[2] == last_rows,"refresh obtains a new receipt then restores the distant window directly")
+	page(state,last_rows,201,0,12000)
+	check(not state.busy() and state.row_starts[2] == 11984,"refresh publishes the restored window")
+	state.seek(2,0)
+	page(state,first_rows,201,128,12000)
+	check(state.row_starts[2] == 0 and state.rows[2] == first_rows,"backward seek replaces instead of appending")
+	state.seek(2,120)
+	check(state.pending.cursor == 128,"scroll across loaded edge retains contiguous paging")
+	page(state,first_rows,201,256,12000)
+	check(state.rows[2].size() == 256 and state.row_starts[2] == 0,"ordinary paging keeps previously loaded rows")
+	state.seek(2,11984)
+	var old_range: Dictionary = state.pending.duplicate(true)
+	state.queue_search("oak")
+	page(state,last_rows,201,0,12000)
+	check(state.row_starts[2] == 0 and state.rows[2].size() == 256,"obsolete range cannot publish into newer search")
+	state.poll(0.25); page(state,[],202,0,0)
+	state.accept({"list_revision":201,"settings":last_rows},old_range)
+	check(state.rows[2].is_empty() and state.row_starts[2] == 0,"late range ticket cannot repopulate empty filtered result")
 	state.clear()
 	print("AREA_SETTINGS PASS" if failures == 0 else "AREA_SETTINGS FAIL")
 	quit(failures)

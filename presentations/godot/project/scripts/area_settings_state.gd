@@ -9,6 +9,9 @@ const CATEGORY_FLAGS = ["animals","food","furniture","corpses","refuse","stone",
 const INITIAL_LISTS = ["food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"]
 var area: Dictionary = {}
 var rows: Array = [[],[],[]]
+var row_starts: Array[int] = [0,0,0]
+var restore_starts: Array[int] = [0,0,0]
+var pending_replace := false
 var receipts: Array = [{},{},{}]
 var category := ""
 var subcategory := ""
@@ -30,6 +33,7 @@ var restore_counts: Array = [0,0,0]
 
 func clear() -> void:
 	area = {}; rows = [[],[],[]]; receipts = [{},{},{}]
+	row_starts = [0,0,0]; restore_starts = [0,0,0]; pending_replace = false
 	category = ""; subcategory = ""; leaf = ""; query = ""; category_opening = false
 	search_text = ""; search_delay = -1
 	pending = {}; delay = -1; failed = false; mutating = false
@@ -47,6 +51,8 @@ func open(value: Dictionary, keep_navigation := false) -> void:
 		# Keep disabled rows in place until each refreshed column has regained its
 		# loaded depth. Never temporarily shrink a scrolled list to its first page.
 		restore_counts = [rows[0].size(),rows[1].size(),rows[2].size() if old_query == query else 0]
+		restore_starts = row_starts.duplicate()
+		if old_query != query: restore_starts[2] = 0
 		refresh_rows = [[],[],[]]; refreshing = true
 		pending = {}; delay = -1; search_delay = -1; failed = false; mutating = false
 		refresh_required = false; refresh_delay = 1.0
@@ -82,13 +88,15 @@ func reset_sublist() -> void:
 	subcategory = ""; leaf = ""
 	category_opening = true
 	rows[1] = []; rows[2] = []; receipts[1] = {}; receipts[2] = {}
+	row_starts[1] = 0; row_starts[2] = 0
 
 func busy() -> bool:
 	return not pending.is_empty() or search_delay >= 0 or mutating or failed or area.is_empty()
 
-func read(column: int, key: String, cursor := 0) -> void:
+func read(column: int, key: String, cursor := 0, replace_range := false) -> void:
 	if area.is_empty(): return
 	pending_column = column
+	pending_replace = replace_range
 	pending = {"action":C.ManagementAction.AreaInspect,"operation":C.AreaOperation.SettingsPage,
 		"id":int(area.id),"kind":0,"expected_revision":int(area.revision),"list_key":key,
 		"query":query if column == 2 else "","cursor":cursor}
@@ -104,7 +112,7 @@ func poll(delta: float) -> void:
 		if search_delay <= 0.000001 and pending.is_empty() and not mutating and not failed:
 			search_delay = -1
 			if search_text != query:
-				query = search_text; rows[2] = []; receipts[2] = {}; read(2,leaf)
+				query = search_text; rows[2] = []; row_starts[2] = 0; receipts[2] = {}; read(2,leaf)
 			else: changed.emit()
 			return
 	if not busy():
@@ -169,16 +177,28 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 	if column == 1 and (key in ["coins","corpses","wood"] or (not values.is_empty() and int(values[0].kind) == 4)):
 		column = 2; leaf = key; subcategory = ""
 	var destination: Array = refresh_rows if refreshing else rows
-	if cursor == 0: destination[column] = []
+	var replace_range := cursor == 0 or pending_replace
+	if replace_range: destination[column] = []
 	destination[column].append_array(values)
 	receipts[column] = page.duplicate(true)
 	pending = {}; delay = -1
 	if refreshing:
+		# Establish a fresh receipt first, then restore a distant loaded window
+		# directly. Never walk every preceding page after an external edit.
+		if cursor == 0 and restore_starts[column] > 0:
+			var total := int(page.get("settings_count",-1))
+			restore_starts[column] = mini(restore_starts[column],maxi(0,total - 16)) if total >= 0 else 0
+			if restore_starts[column] > 0:
+				read(column,key,restore_starts[column],true)
+				return
 		var next_cursor := int(page.get("next_cursor",0))
 		if destination[column].size() < int(restore_counts[column]) and next_cursor != 0:
 			read(column,key,next_cursor)
 			return
 		rows[column] = destination[column]
+		row_starts[column] = restore_starts[column]
+	elif replace_range:
+		row_starts[column] = cursor
 	if column == 0:
 		var first := ""
 		var found := false
@@ -213,6 +233,7 @@ func select(column: int, row: Dictionary) -> void:
 		category = str(row.key); subcategory = ""; leaf = ""
 		category_opening = true
 		rows[1] = []; rows[2] = []; receipts[1] = {}; receipts[2] = {}
+		row_starts[1] = 0; row_starts[2] = 0
 		# Native category-label selection enables this flag without filling its
 		# filters. Keep this explicit write separate from automatic page reads.
 		if not activate_category(): read(1,category)
@@ -220,7 +241,7 @@ func select(column: int, row: Dictionary) -> void:
 		if str(row.key) == subcategory: return
 		category_opening = false
 		subcategory = str(row.key); leaf = subcategory
-		rows[2] = []; receipts[2] = {}; read(2,leaf)
+		rows[2] = []; row_starts[2] = 0; receipts[2] = {}; read(2,leaf)
 
 func search(value: String) -> void:
 	queue_search(value)
@@ -244,6 +265,19 @@ func more(column: int) -> void:
 	if busy() or receipts[column].is_empty(): return
 	var cursor := int(receipts[column].get("next_cursor",0))
 	if cursor != 0: read(column,str(receipts[column].list_key),cursor)
+
+func seek(column: int, first: int, visible_rows := 16) -> void:
+	if busy() or column != 2 or receipts[column].is_empty(): return
+	var total := int(receipts[column].get("settings_count",-1))
+	if total < 0: return # Older recordings do not supply a complete filtered count.
+	first = clampi(first,0,maxi(0,total - visible_rows))
+	var end := mini(total,first + visible_rows)
+	var loaded_end: int = row_starts[column] + rows[column].size()
+	if first >= row_starts[column] and (end < loaded_end or (end <= loaded_end and loaded_end >= total)): return
+	if first >= row_starts[column] and first <= loaded_end:
+		more(column)
+	else:
+		read(column,str(receipts[column].list_key),first,true)
 
 func edit(column: int, scope: int, value: int, row_key := "") -> void:
 	if busy() or int(area.get("revision",0)) == 0: return

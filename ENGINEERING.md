@@ -83,8 +83,25 @@ the recorded separate-thread notice. Offline
 `build/qa/stockpile-link-target-ready` passes root CTest19/19, link controller,
 paint session and adapter checks. Obsolete whole-draft repaint expectations in
 the link controller test were replaced with per-gesture request assertions.
-Production overlap progression and hidden/boundary target checks, broader
-lifecycle and scaled/scroll input remain outside this scoped acceptance.
+Protected `build/areas-acceptance-20261025-131353` extends this to68 native
+observations. With source1513, repeated actual viewport Give clicks at
+(105,94,165) select controlled overlapping piles1516 and1517, then workshop3,
+then no target. Each changed link is observed at both endpoints; exhaustion
+leaves the picker open with an unchanged native-state guard. The fixture
+restores target geometry before deletion. The exhausted-picker capture was
+inspected. Direct production reads also verify revealed workshop eligibility,
+hidden/outside-map misses and stale source rejection, with an unchanged guard.
+Owned DF112200 closes unsaved and both save manifests are unchanged; only the
+known separate-thread notice remains. Offline
+`build/qa/stockpile-link-target-lifecycle` passes root CTest19/19 and the link
+controller, including stale/cancelled lookups and disconnect/new-epoch late
+results that dispatch no mutation or replay.
+
+Native renderer `0x33616d..0x33633b` indexes link vectors in reverse struct
+order: offsets0x48,0x30,0x18,0, corresponding to workshop take, workshop give,
+pile take, pile give. The current Lua list producer still emits the opposite
+group order. Correct this after a four-group native pointer oracle; ordering,
+scrolling/scaled input and broader live lifecycle remain unfinished.
 
 ## Native stockpile storage input (DF 53.16)
 

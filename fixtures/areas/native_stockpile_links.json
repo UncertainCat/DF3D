@@ -920,5 +920,35 @@
       "Full picker lifecycle and scaled/scroll input"
     ],
     "offline": "build/qa/stockpile-link-target-ready"
+  },
+  "target_boundary_acceptance": {
+    "run": "build/areas-acceptance-20261025-131353",
+    "status": "passed_with_known_issues",
+    "known_issue": "separate-thread notice",
+    "native_observations": 68,
+    "owned_df_pid": 112200,
+    "save_preservation": "Two unchanged save manifests; owned DF closed unsaved",
+    "source": 1513,
+    "target_tile": [
+      105,
+      94,
+      165
+    ],
+    "pointer_target_sequence": [
+      1516,
+      1517,
+      3,
+      -1
+    ],
+    "scope": "Production viewport overlap progression and exhaustion; reciprocal effects; native state unchanged for exhausted picks. Production reads: revealed workshop, hidden tile, outside-map coordinate32767/32767/32767 and stale source revision. Synthetic target geometry restored before deletion.",
+    "capture_inspected": "scene_stockpiles_link_overlap_exhausted.png",
+    "offline": "build/qa/stockpile-link-target-lifecycle",
+    "offline_scope": "Root CTest19/19; controller cancelled/stale lookup and disconnected/new-epoch late result dispatch no mutation/replay.",
+    "omissions": [
+      "Live transport failure/epoch replacement during picker",
+      "Unloaded in-map tile",
+      "Malformed link vectors and capacity refusal",
+      "Native link list grouping/scrolling/scaled input"
+    ]
   }
 }

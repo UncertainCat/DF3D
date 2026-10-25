@@ -137,6 +137,35 @@ if request.op=='pile_designations' then
    assert(block.designation[tx%16][ty%16].pile,'created stockpile missing pile designation')
   end
  end end
+elseif request.op=='link_overlap_prepare' then
+ assert(df.global.pause_state and not _G.df3d_link_overlap)
+ local saved={}
+ for _,target in ipairs(request.targets) do
+  local b=assert(df.building.find(target));assert(df.building_stockpilest:is_instance(b))
+  assert(b.room.width==1 and b.room.height==1 and b.room.extents[0]==1)
+  saved[#saved+1]={id=target,x1=b.x1,x2=b.x2,y1=b.y1,y2=b.y2,z=b.z,
+   centerx=b.centerx,centery=b.centery,rx=b.room.x,ry=b.room.y}
+  b.x1=request.x;b.x2=request.x;b.y1=request.y;b.y2=request.y;b.z=request.z
+  b.centerx=request.x;b.centery=request.y;b.room.x=request.x;b.room.y=request.y
+ end
+ _G.df3d_link_overlap=saved
+elseif request.op=='link_overlap_restore' then
+ assert(df.global.pause_state)
+ for _,s in ipairs(assert(_G.df3d_link_overlap)) do
+  local b=assert(df.building.find(s.id))
+  b.x1=s.x1;b.x2=s.x2;b.y1=s.y1;b.y2=s.y2;b.z=s.z
+  b.centerx=s.centerx;b.centery=s.centery;b.room.x=s.rx;b.room.y=s.ry
+ end
+ _G.df3d_link_overlap=nil
+elseif request.op=='link_hidden_prepare' then
+ assert(df.global.pause_state and not _G.df3d_link_hidden)
+ local block=assert(dfhack.maps.getTileBlock(request.x,request.y,request.z))
+ local x,y=request.x%16,request.y%16
+ _G.df3d_link_hidden={block=block,x=x,y=y,whole=block.designation[x][y].whole}
+ block.designation[x][y].hidden=true
+elseif request.op=='link_hidden_restore' then
+ local s=assert(_G.df3d_link_hidden)
+ s.block.designation[s.x][s.y].whole=s.whole;_G.df3d_link_hidden=nil
 elseif request.op=='transfer_links' then
  assert(not df.building.find(request.deleted),'empty donor still exists')
  for _,survivor in ipairs(request.survivors)do

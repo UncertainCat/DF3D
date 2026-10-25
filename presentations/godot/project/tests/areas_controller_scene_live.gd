@@ -757,8 +757,47 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 	await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
 	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"unlink workshop receipt"): return
 	await native("link",{"id":int(fixture.workshop),"pile_id":ids[0],"give":true,"linked":false})
+	step = "link target visibility and overlap progression"
+	var query := {"action":9,"kind":0,"operation":26,"id":ids[0],"expected_revision":int(editor.selected.revision),"origin":workshop_tile,"give":true}
+	await native("guard_before")
+	var found := await request(query)
+	if not check(found.get("links",[]).size()==1 and int(found.links[0].id)==int(fixture.workshop),"revealed workshop query"): return
+	await request(query.merged({"expected_revision":int(editor.selected.revision)+1},true),"Area changed; inspect again")
+	var outside := await request(query.merged({"origin":Vector3i(32767,32767,32767)},true))
+	if not check(outside.get("links",[]).is_empty(),"outside-map target disclosed a building"): return
+	await native("link_hidden_prepare",{"x":workshop_tile.x,"y":workshop_tile.y,"z":workshop_tile.z})
+	var hidden := await request(query)
+	await native("link_hidden_restore")
+	if not check(hidden.get("links",[]).is_empty(),"hidden target disclosed a building"): return
+	await native("guard_after")
+	var overlap_ids: Array[int] = []
+	for offset in [7,9]:
+		var made := await request({"action":10,"kind":0,"operation":5,"paint_mode":1,"paint_z":origin.z,
+			"spans":[{"x":origin.x+offset,"y":origin.y,"length":1}]})
+		if stopped: return
+		overlap_ids.append(int(made.areas[0].id))
+	await native("link_overlap_prepare",{"targets":overlap_ids,"x":workshop_tile.x,"y":workshop_tile.y,"z":workshop_tile.z})
+	for target_id in overlap_ids+[int(fixture.workshop)]:
+		await click_control(editor.links_view.add_buttons[0])
+		await pointer_click(tile_screen(workshop_tile))
+		if not await wait_ui(func(): return settled() and not editor.links_picking and editor.links_pending.is_empty(),"overlapping target receipt"): return
+		if target_id==int(fixture.workshop):
+			await native("link",{"id":target_id,"pile_id":ids[0],"give":false,"linked":true})
+		else: await native("pile_link",{"id":ids[0],"target_id":target_id,"give":true,"linked":true})
+	await native("guard_before")
+	await click_control(editor.links_view.add_buttons[0])
+	await pointer_click(tile_screen(workshop_tile))
+	if not await wait_ui(func(): return settled(),"exhausted overlap receipt"): return
+	if not check(editor.links_picking and not editor.message.visible,"exhausted overlap changed picker"): return
+	await native("guard_after")
+	await capture("stockpiles_link_overlap_exhausted")
+	await click_control(editor.links_view.close)
+	for index in 3:
+		await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
+		if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"overlap unlink"): return
+	await native("link_overlap_restore")
 	editor.close_panel()
-	for pile_id in [ids[0],ids[2]]:
+	for pile_id in [ids[0],ids[2]]+overlap_ids:
 		var current := await inspect(pile_id)
 		await request({"action":12,"kind":0,"id":pile_id,"expected_revision":current.revision})
 		if stopped: return

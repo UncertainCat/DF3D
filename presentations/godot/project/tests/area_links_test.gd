@@ -67,6 +67,11 @@ func run() -> void:
 	count = world.calls.size(); controller.handle_back()
 	reply(9,{"area":{"links":[{"id":40,"kind":0}]}}); service.poll()
 	check(world.calls.size() == count and not controller.links_picking and controller.selected.id == 39,"cancel ignores late map pick without mutation")
+	controller.begin_link_pick(true); controller.link_target_tile(Vector3i(5,4,2)); service.poll()
+	count = world.calls.size()
+	reply(9,{"status":3,"message":"Area changed; inspect again"}); service.poll()
+	check(world.calls.size() == count and controller.request_problem,"stale target lookup cannot dispatch a link edit")
+	controller.handle_back()
 	controller.links_view.rows_box.get_child(0).get_child(2).pressed.emit()
 	var back_ticket: int = controller.request_ticket
 	controller.handle_back(); service.poll()
@@ -317,6 +322,14 @@ func run() -> void:
 	reply(8,{"areas":[zone],"area_next_cursor":0})
 	check(not controller.panel.visible and controller.selected.is_empty(),"late closed zone lookup cannot restore a selection")
 	check(controller.zone_lookup_rows.is_empty() and controller.zone_overlaps.is_empty(),"closed paged lookup retires all retained navigation identities")
+	controller.set_area_kind(0); controller.open_panel(); service.poll(); reply(0); reply(7)
+	controller.use_area(pile); controller.stockpile_control("links"); service.poll(); links_reply([first])
+	controller.begin_link_pick(true); controller.link_target_tile(Vector3i(5,4,2)); service.poll()
+	count = world.calls.size(); world.live = false; service.poll()
+	world.live = true
+	world.state = {"world_epoch":43,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":9,"status":2,"area":{"links":[{"id":40,"kind":0}]}}
+	service.poll()
+	check(world.calls.size() == count,"disconnect and replacement epoch cannot replay a pick or consume its old target")
 	controller.free(); host.free(); service.free(); interaction.free()
 	await process_frame
 	print("AREA_LINKS PASS" if failures == 0 else "AREA_LINKS FAIL")

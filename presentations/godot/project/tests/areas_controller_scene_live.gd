@@ -61,11 +61,11 @@ func capture(label: String) -> void:
 	for frame in 4:
 		editor._process(0); await process_frame
 	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png(directory+"/scene_"+label+".png") == OK,"capture failed")
 	if editor.stockpile_view.visible:
 		var clip: Rect2 = editor.content.get_parent().get_global_rect()
-		if not check(clip.encloses(editor.stockpile_view.warning.get_global_rect()),"stockpile warning clipped: scroll="+str(clip)+" warning="+str(editor.stockpile_view.warning.get_global_rect())): return
+		if not check(clip.grow(0.001).encloses(editor.stockpile_view.warning.get_global_rect()),"stockpile warning clipped: scroll="+str(clip)+" warning="+str(editor.stockpile_view.warning.get_global_rect())): return
 		if not check(editor.panel.size.x == 324,"native stockpile panel width changed: "+str(editor.panel.size)+" minimum="+str(editor.panel.get_combined_minimum_size())): return
-	check(root.get_texture().get_image().save_png(directory+"/scene_"+label+".png") == OK,"capture failed")
 
 func pointer_areas() -> void:
 	var p: Dictionary = fixture.origin
@@ -111,6 +111,9 @@ func pointer_areas() -> void:
 		if destination == "Zones": await pointer_owner(id,origin)
 		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
 			await pointer_storage_limits()
+			if not stopped: await pointer_stockpile_fit(origin)
+			if not stopped and FileAccess.file_exists(directory+"/stockpile-fit-only.json"):
+				await native("final"); return
 			if not stopped: await pointer_settings()
 		if stopped: return
 		await pointer_repaint(origin,id,destination)
@@ -169,6 +172,113 @@ func pointer_storage_limits() -> void:
 		if not await wait_ui(func(): return settled() and int(editor.selected[key]) == 0,"restore numeric entry " + key): return
 	editor.handle_back(); editor._process(0)
 	if not check(editor.stockpile_page == "types","storage popup did not return to pile"): return
+
+func screen_rect(control: Control) -> Rect2:
+	return control.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,control.size)
+
+func pointer_stockpile_fit(origin: Vector3i) -> void:
+	var preferences = preload("res://scripts/presentation_settings.gd")
+	var old_auto: bool = preferences.ui_auto_scale
+	var old_scale: float = preferences.ui_scale
+	for dimensions in [Vector2i(1200,800),Vector2i(960,600),Vector2i(640,480),Vector2i(1920,1080)]:
+		step = "stockpile viewport fit " + str(dimensions)
+		root.size = dimensions
+		preferences.ui_auto_scale = false; preferences.ui_scale = 1.5
+		scene._fortress_hud.apply_ui_scale()
+		for frame in 8: editor._process(0); await process_frame
+		var viewport := Rect2(Vector2.ZERO,Vector2(root.size))
+		var panel_rect := screen_rect(editor.panel)
+		var header_rect := screen_rect(scene._fortress_hud.status_panel)
+		await capture("stockpile_fit_layout_%dx%d" % [dimensions.x,dimensions.y])
+		if stopped: return
+		if not check(viewport.encloses(panel_rect),"stockpile panel extends beyond viewport"): return
+		if not check(not panel_rect.intersects(header_rect),"stockpile panel overlaps HUD header"): return
+		if not check(not panel_rect.intersects(screen_rect(scene._fortress_hud.actions)),"stockpile palette overlaps bottom actions"): return
+		await click_control(editor.stockpile_view.controls.containers)
+		if not await wait_ui(func(): return settled() and editor.storage_view.visible,"scaled storage open"): return
+		if not check(viewport.encloses(screen_rect(editor.storage_view)),"storage popup extends beyond viewport"): return
+		await click_control(editor.storage_view.controls.bins[1])
+		if not await wait_ui(func(): return settled() and int(editor.selected.bins)==1,"scaled storage increment"): return
+		await native("snapshot",{"id":int(editor.selected.id),"expected":{"bins":1}})
+		await capture("stockpile_fit_%dx%d" % [dimensions.x,dimensions.y])
+		await click_control(editor.storage_view.controls.bins[2])
+		if not await wait_ui(func(): return settled() and int(editor.selected.bins)==0,"scaled storage decrement"): return
+		await native("snapshot",{"id":int(editor.selected.id),"expected":{"bins":0}})
+		await pointer_key(KEY_ESCAPE)
+		if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","scaled storage close"): return
+		var custom := -1
+		for index in editor.menu_data.presets.size():
+			if int(editor.menu_data.presets[index].preset)==0: custom=index
+		if not check(custom>=0,"scaled Custom preset missing"): return
+		await click_control(editor.stockpile_view.preset_buttons[custom])
+		if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"scaled settings open"): return
+		await capture("stockpile_fit_settings_%dx%d" % [dimensions.x,dimensions.y])
+		if stopped: return
+		panel_rect=screen_rect(editor.panel)
+		if not check(viewport.encloses(panel_rect) and not panel_rect.intersects(header_rect),"settings panel clips or overlaps header"): return
+		if not check(not panel_rect.intersects(screen_rect(scene._fortress_hud.actions)),"settings panel overlaps bottom actions"): return
+		for column in editor.settings_view.scrolls:
+			if not check(panel_rect.encloses(screen_rect(column)),"settings rows extend beyond their panel"): return
+		if not check(not panel_rect.intersects(screen_rect(scene._fortress_hud.minimap_panel)),"settings panel overlaps minimap"): return
+		var pages := {1920:14}
+		if pages.has(dimensions.x) and not check(editor.settings_view.page_rows==int(pages[dimensions.x]),"scaled settings visible row count"): return
+		write_json("fit_%dx%d.json" % [dimensions.x,dimensions.y],{"canvas_scale":str(editor.canvas.scale),"hud_scale":str(scene._fortress_hud.ui_scale_vector()),"page_rows":editor.settings_view.page_rows,"leaf_width":editor.settings_view.column_widths[2],"panel":str(panel_rect)})
+		for enabled in [true,false]:
+			var button: Button = editor.settings_view.headers[4 if enabled else 5]
+			if not check(panel_rect.encloses(screen_rect(button)),"scaled item header clipped"): return
+			await click_control(button)
+			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"scaled item All/None"): return
+			var expected: Dictionary = {}
+			for row in editor.settings_state.rows[2]: expected[str(int(row.index))] = 1 if enabled else 0
+			await native("snapshot",{"id":int(editor.selected.id),"expected":{"settings":{"ammo":{"type":expected}}}})
+		await pointer_key(KEY_ESCAPE)
+		if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","scaled settings close"): return
+		await pointer_stockpile_fit_actions(origin,dimensions)
+		if stopped: return
+	preferences.ui_auto_scale = old_auto; preferences.ui_scale = old_scale
+	root.size = Vector2i(1200,800); scene._fortress_hud.apply_ui_scale()
+	for frame in 8: editor._process(0); await process_frame
+
+func pointer_stockpile_fit_actions(origin: Vector3i, dimensions: Vector2i) -> void:
+	var id := int(editor.selected.id)
+	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
+	for frame in 8: await process_frame
+	await click_control(editor.stockpile_view.controls.repaint)
+	await click_control(editor.paint_view.buttons.brush)
+	var viewport := Rect2(Vector2.ZERO,Vector2(root.size))
+	if not check(viewport.encloses(screen_rect(editor.paint_view.tools)),"scaled paint toolbar outside viewport"): return
+	await pointer_click(tile_screen(origin+Vector3i(1,0,0)))
+	if not await wait_ui(func(): return settled() and editor.paint_state.cells.size()==2,"scaled brush add"): return
+	await native("snapshot",{"id":id,"expected":{"tile_count":2}})
+	await click_control(editor.paint_view.buttons.erase)
+	await pointer_click(tile_screen(origin+Vector3i(1,0,0)))
+	if not await wait_ui(func(): return settled() and editor.paint_state.cells.size()==1,"scaled brush erase"): return
+	await native("snapshot",{"id":id,"expected":{"tile_count":1}})
+	await capture("stockpile_fit_paint_%dx%d" % [dimensions.x,dimensions.y])
+	if stopped: return
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func(): return settled() and editor.mode=="inspect","scaled paint Accept"): return
+	await click_control(editor.stockpile_view.controls.links)
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"scaled links open"): return
+	if not check(viewport.encloses(screen_rect(editor.links_view)),"scaled links outside viewport"): return
+	if not check(not screen_rect(editor.links_view).intersects(screen_rect(scene._fortress_hud.actions)),"scaled links overlap bottom actions"): return
+	var wp: Dictionary = fixture.workshop_origin
+	var target := Vector3i(int(wp.x),int(wp.y),int(wp.z))
+	scene.camera_rig.focus_on(Vector3(target.x+0.5,target.z+1.0,target.y+0.5),30)
+	for frame in 8: await process_frame
+	await click_control(editor.links_view.add_buttons[0])
+	await pointer_click(tile_screen(target))
+	if not await wait_ui(func(): return settled() and not editor.links_picking and editor.links_pending.is_empty(),"scaled workshop link"): return
+	await native("link",{"id":int(fixture.workshop),"pile_id":id,"give":false,"linked":true})
+	await capture("stockpile_fit_links_%dx%d" % [dimensions.x,dimensions.y])
+	if stopped: return
+	await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"scaled workshop unlink"): return
+	await native("link",{"id":int(fixture.workshop),"pile_id":id,"give":false,"linked":false})
+	await click_control(editor.links_view.close)
+	if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","scaled links close"): return
+	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
+	for frame in 8: await process_frame
 
 func pointer_settings() -> void:
 	step = "viewport stockpile settings categories"

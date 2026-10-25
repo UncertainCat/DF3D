@@ -205,10 +205,11 @@ are unchanged. Only the known separate-thread notice remains. The earlier
 unsaved and preserved both saves. Avoid ordinary reads of an actively written
 PowerShell log, which can briefly deny its writer access.
 
-This scaled-input test scales the links view directly. Stockpile canvas scale
-integration is covered by the responsive settings acceptance below; link input
-at changed product scale, elapsed held-arrow cadence, and broader live
-transport/boundary coverage remain unfinished. Stockpiles stays hidden.
+This earlier scaled-input test scales the links view directly. The responsive
+acceptance below now covers link input through the product canvas at four sizes;
+producer replacement and malformed/capacity boundaries are covered above.
+Elapsed held-arrow cadence and unloaded in-map target coverage remain unfinished.
+Stockpiles stays hidden.
 
 ## Native stockpile storage input (DF 53.16)
 
@@ -1039,8 +1040,13 @@ The captures were inspected. DF110624 closed unsaved and source hashes match.
 Native limits requested150% to125% at1200x800; it reaches150% at1920x1080.
 These are observed native sizes, not a change to viewer preference fit policy.
 
-Stockpile panels share a canvas scaled by the viewer UI preference. Zones retain
-their existing layout. Settings adjusts its third-column width and row count,
+Stockpile panels share a canvas fitted from the viewer UI preference without
+changing the saved preference or the viewer-owned HUD. The native minimum grid
+provides the initial fit; actual HUD side, header and action bounds constrain it
+further. Narrow HUD layouts place actions on a second bottom row. The palette
+must fit above that row, and a larger HUD must not clip the item All/None controls.
+Glyph cells remain whole pixels. Zones retain their existing layout.
+Settings adjusts its third-column width and row count,
 including scrollbar extent, distant-page seeking and refresh restoration. Paint
 toolbar anchoring and panel hit tests convert through that canvas transform.
 Explicit scrollbar input invalidates pending scroll restoration, preventing a
@@ -1060,9 +1066,34 @@ Only the known separate-thread notice remains. Earlier run135316 exposed the
 restoration race;135814 passed scaled input but failed because the driver clicked
 before the restored-size range settled. Both failed runs preserved their saves.
 
-Small-window/high-scale fit, held-arrow timing, and scaled
-editing outside settings remain incomplete. Keep these distinct from the passed
-large-window150% settings case and from full Stockpiles exposure.
+Run `areas_acceptance.ps1 -ControllerScene -StockpileFitOnly -SaveId <new-id>`
+for the focused product fit/input lane. It creates a one-tile pile, exercises
+storage entry, then tests1200x800,960x600,640x480 and1920x1080 with a requested
+150% viewer scale. It verifies header/footer/minimap clearance, all visible
+settings rows, item All/None effects, container increment/decrement, paint
+add/erase/Accept, and workshop link/unlink through viewport input and native
+readback. Captures and `fit_<size>.json` retain the actual scale and geometry.
+
+Final run `build/areas-acceptance-20261025-161723` passes49 native observations;
+owned DF121800 closed unsaved and both save manifests match. Its1200 settings,
+960 links and640 paint captures were inspected. Only the known separate-thread
+notice remains. Offline `build/qa/stockpile-fit-complete-bounds` passes root
+CTest19/19, area/link/settings controllers and rendered settings checks, with
+only documented Godot diagnostics. The preceding full stockpile run `161045`
+passes216 observations before the final palette/header clearance adjustment;
+its captures exposed the overlap missed by its earlier assertions. Final focused
+acceptance includes those bounds explicitly. Earlier `160430` passes200 checks
+for storage/settings fitting but does not establish scaled paint/link input.
+
+When the HUD is larger than the fitted panel, the available space differs from
+native's uniformly scaled whole window. Final logical glyph scales are
+1.125x1.0833 at1200,0.875x0.8333 at960,0.5x0.4167 at640 and1.5x1.5 at1920;
+visible settings row counts are14,12,21 and14 respectively. These are viewer
+clearance adaptations, not whole-screen native pixel parity. The640 window is
+below DF's observed minimum. Matching-scale native geometry fixtures remain
+unchanged. Fractional placement no longer introduces a false outer scrollbar;
+real overflow retains scrolling. Held-arrow timing, text-input boundaries and
+the remaining stockpile audit are still required before launcher exposure.
 
 Stockpile search input follows native letters/space/uppercase flags and a fixed
 76-character limit. It does not apply general Unicode uppercasing. The native

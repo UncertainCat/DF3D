@@ -1,6 +1,6 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -32,6 +32,11 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  return $r
 }
 try {
+ if($StockpileFitOnly) {
+  if($StockpilePaintOnly -or $ControllerRestart){throw 'StockpileFitOnly does not support paint-only or restart scopes'}
+  $StockpilesOnly=$true
+  Write-Lf "$out/stockpile-fit-only.json" '{"scope":"stockpile main-scene scale fit, storage, settings, paint and links"}'
+ }
  if($StockpilePaintOnly -and $ControllerRestart){throw 'StockpilePaintOnly does not support ControllerRestart'}
  if($StockpilePaintOnly) {
   $StockpilesOnly=$true

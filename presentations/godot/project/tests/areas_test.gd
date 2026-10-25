@@ -78,6 +78,14 @@ func _initialize():
 
 
 func run():
+	# Recorded native manual150 at1200x800 resolves to10x15 glyph cells.
+	check(Controller.stockpile_scale(Vector2(1200,800),Vector2(1.5,1.5)) == Vector2(1.25,1.25),"stockpile scale matches recorded native fit")
+	check(Controller.stockpile_scale(Vector2(1920,1080),Vector2(1.5,1.5)) == Vector2(1.5,1.5),"roomy stockpile view retains requested scale")
+	for viewport in [Vector2(640,480),Vector2(912,600),Vector2(960,600),Vector2(1200,800)]:
+		for requested in [Vector2(0.75,0.75),Vector2.ONE,Vector2(1.5,1.5),Vector2(4,4),Vector2(1.625,19.0/12.0)]:
+			var fitted: Vector2 = Controller.stockpile_scale(viewport,requested)
+			check(fitted.x <= requested.x and fitted.y <= requested.y,"stockpile fit never enlarges the requested UI")
+			check(viewport.x/fitted.x >= 912 and viewport.y/fitted.y >= 600,"stockpile layout fits the viewport")
 	var w := FakeWorld.new()
 	var interaction := FakeInteraction.new()
 	root.add_child(interaction)

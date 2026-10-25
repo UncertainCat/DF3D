@@ -92,14 +92,16 @@ func configure(source, model) -> void:
 	state.changed.connect(render)
 	render()
 
-func layout(view: Vector2) -> void:
+func layout(view: Vector2, available_height := INF, available_width := INF) -> void:
 	# Native settings keeps the first two columns fixed and gives the remaining
 	# width to items. Rows occupy three 12px cells; sixteen cells are reserved.
 	var next_width := maxi(40,floori(view.x / 8) * 8 - 872)
-	var next_page := maxi(1,(floori(view.y / 12) - 16) / 3)
-	if next_width == column_widths[2] and next_page == page_rows and custom_minimum_size.y == view.y - 120: return
+	if is_finite(available_width): next_width = mini(next_width,maxi(40,floori((available_width-612)/8)*8))
+	var height := maxf(96,minf(view.y-120,available_height))
+	var next_page := mini(maxi(1,(floori(view.y / 12)-16)/3),maxi(1,floori((height-48)/36)))
+	if next_width == column_widths[2] and next_page == page_rows and is_equal_approx(custom_minimum_size.y,height): return
 	column_widths[2] = next_width; page_rows = next_page; state.viewport_rows = page_rows
-	custom_minimum_size = Vector2(600 + next_width,maxf(96,view.y - 120))
+	custom_minimum_size = Vector2(600 + next_width,height)
 	search.size.x = maxf(0,next_width - 104)
 	search.visible = next_width > 104
 	for column in 3:

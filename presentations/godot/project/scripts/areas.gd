@@ -103,6 +103,7 @@ var drag_start := Vector3i(-1, -1, -1)
 var dragging := false
 var current_z := -1
 var _layout_view := Vector2(-1, -1)
+var _layout_insets := Vector4(-1,-1,-1,-1)
 var next_cursor := 0
 var overlap_cursor := 0
 var overlap_tile := Vector3i()
@@ -1221,20 +1222,54 @@ func _exit_tree() -> void:
 	_release_paint_session("exit")
 	portraits.clear(world)
 
+static func stockpile_scale(view: Vector2, requested: Vector2) -> Vector2:
+	# Native's observed minimum stockpile layout is 114x50 cells (912x600).
+	# Fit this surface without changing the viewer's saved scale preference.
+	var fit := minf(view.x / (912.0 * requested.x),view.y / (600.0 * requested.y))
+	if fit >= 1.0: return requested
+	# Keep glyph cells on whole pixels and retain the requested cell aspect.
+	# The viewer also permits windows below DF's native minimum size.
+	var width := maxf(1.0,floorf(8.0 * requested.x * fit))
+	var ratio := width / (8.0 * requested.x)
+	var height := maxf(1.0,floorf(12.0 * requested.y * ratio))
+	return Vector2(width / 8.0,height / 12.0)
+
 func _process(delta: float) -> void:
 	if not play_enabled or not panel.visible: return
 	_poll_portraits(delta)
 	var view := get_viewport().get_visible_rect().size
-	canvas.scale = hud.ui_scale_vector() if hud != null and kind_picker.selected == 0 else Vector2.ONE
+	canvas.scale = stockpile_scale(view,hud.ui_scale_vector()) if hud != null and kind_picker.selected == 0 else Vector2.ONE
+	if hud != null and kind_picker.selected == 0:
+		# Keep the minimum three-column panel between the viewer's side chrome.
+		var map_rect: Rect2 = hud.minimap_panel.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,hud.minimap_panel.size)
+		var clear_width: float = map_rect.position.x - 32*hud.ui_scale_vector().x
+		var actions_rect: Rect2 = hud.actions.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,hud.actions.size)
+		var clear_height: float = actions_rect.position.y - 48*hud.ui_scale_vector().y
+		# Preserve the native minimum width at matching HUD scale. When the
+		# HUD is larger, reserve room for both item header buttons too.
+		var minimum_width := 662.0 if hud.ui_scale_vector().is_equal_approx(canvas.scale) else 710.0
+		# Minimum settings width plus side gaps; 452px palette plus
+		# top/bottom gaps. The HUD uses two bottom rows at narrow logical widths.
+		if clear_width > 0 and clear_height > 0:
+			canvas.scale = stockpile_scale(Vector2(912*clear_width/minimum_width,600*clear_height/464),canvas.scale)
 	view /= canvas.scale
-	if view != _layout_view:
-		_layout_view = view
-		if settings_view.visible: settings_view.layout(view)
+	var insets := Vector4(34,54,42,226)
+	if hud != null and kind_picker.selected == 0:
+		# A fitted panel can be smaller than the viewer-owned HUD. Reserve its
+		# actual side/header/footer space in the panel's logical coordinates.
+		var ratio: Vector2 = hud.ui_scale_vector() / canvas.scale
+		var inverse: Transform2D = canvas.transform.affine_inverse()
+		var actions_rect: Rect2 = inverse * (hud.actions.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,hud.actions.size))
+		var map_rect: Rect2 = inverse * (hud.minimap_panel.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,hud.minimap_panel.size))
+		insets = Vector4(maxf(34,32*ratio.x+2),maxf(54,48*ratio.y+6),maxf(42,view.y-actions_rect.position.y+6),maxf(226,view.x-map_rect.position.x+8))
+	if view != _layout_view or insets != _layout_insets:
+		_layout_view = view; _layout_insets = insets
+		if settings_view.visible: settings_view.layout(view,view.y-insets.y-insets.z-24,view.x-insets.x-insets.w)
 		panel.custom_minimum_size.x = settings_view.custom_minimum_size.x + 12 if settings_view.visible else (324 if stockpile_view.visible else 390)
 		var panel_height := 452.0
 		if rename_field.visible: panel_height += 40
 		if message.visible: panel_height += maxf(36, message.get_combined_minimum_size().y)
-		panel.size = Vector2(panel.custom_minimum_size.x, minf(panel_height, view.y - 64) if stockpile_view.visible else maxf(220, view.y - 64))
+		panel.size = Vector2(panel.custom_minimum_size.x, minf(panel_height, view.y-insets.y-insets.z) if stockpile_view.visible else maxf(220, view.y - 64))
 		if settings_view.visible: panel.size.y = settings_view.custom_minimum_size.y + 24
 		if paint_view.visible:
 			panel.custom_minimum_size.x = 324
@@ -1243,7 +1278,16 @@ func _process(delta: float) -> void:
 			panel.custom_minimum_size.x = 324
 			panel.size = Vector2(324,minf(584+(36 if message.visible else 0),view.y-64))
 		if kind_picker.selected == 0: paint_view.tools.position = Vector2(minf(view.x/2,view.x-136),view.y-76)
-		panel.position = Vector2(34, 54)
+		if kind_picker.selected == 0:
+			# Fractional canvas placement can make the outer ScrollContainer
+			# invent a scrollbar for a fitting native palette. Keep scrolling
+			# only when the actual content exceeds the intended panel interior.
+			var scroll := content.get_parent() as ScrollContainer
+			var interior := panel.size.y-panel.get_theme_stylebox("panel").get_minimum_size().y
+			scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED if content.get_combined_minimum_size().y <= interior+0.001 else ScrollContainer.SCROLL_MODE_AUTO
+		else:
+			(content.get_parent() as ScrollContainer).vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		panel.position = Vector2(insets.x,insets.y)
 		storage_view.position = Vector2(panel.position.x + panel.size.x + 8,panel.position.y)
 		links_view.position = storage_view.position
 		locations_view.position = Vector2(368,52); locations_view.size = Vector2(328,420)

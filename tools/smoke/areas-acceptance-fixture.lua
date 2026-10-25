@@ -50,6 +50,14 @@ for _,b in ipairs(df.global.world.buildings.all) do
  if b.id~=state.workshop and b:canLinkToStockpile() and not df.building_stockpilest:is_instance(b) and shown(b) then state.second_workshop=b.id;break end
 end
 assert(state.second_workshop,'link ordering fixture needs a second workshop')
+state.link_scroll_workshops={}
+for _,b in ipairs(df.global.world.buildings.all)do
+ if b:canLinkToStockpile() and not df.building_stockpilest:is_instance(b) and shown(b) then
+  state.link_scroll_workshops[#state.link_scroll_workshops+1]=b.id
+  if #state.link_scroll_workshops==20 then break end
+ end
+end
+assert(#state.link_scroll_workshops==20,'link scrolling fixture needs twenty revealed workshops')
 for _,b in ipairs(df.global.world.buildings.other.DOOR) do
  if shown(b) and not b:canLinkToStockpile() then
   state.link_door=b.id;state.link_door_origin={x=b.centerx,y=b.centery,z=b.z};break

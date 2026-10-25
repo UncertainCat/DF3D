@@ -165,7 +165,6 @@ func _ready() -> void:
 	canvas.add_child(links_view); links_view.configure(world); links_view.hide()
 	links_view.pick_requested.connect(begin_link_pick)
 	links_view.unlink_requested.connect(func(row): change_link(int(row.id),int(row.kind),int(row.direction) == 1,true))
-	links_view.more_requested.connect(func(): if links_cursor != 0 and links_pending.is_empty() and request_ticket == 0: read_links(links_cursor))
 	links_view.done.connect(handle_back)
 	paint_view = preload("res://scripts/area_paint_view.gd").new()
 	box.add_child(paint_view); paint_view.configure(world,menu_data.paint_tools,canvas)
@@ -855,6 +854,7 @@ func draw_paint_preview(tile: Vector3i) -> void:
 	mesh.surface_end(); paint_preview.mesh = mesh
 
 func clear_links() -> void:
+	links_view.reset_scroll()
 	observed_links = []; links_pending = {}; links_delay = -1
 	links_cursor = 0; links_revision = 0; links_picking = false
 
@@ -1364,6 +1364,9 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 			observed_links.append_array(page.get("links",[]))
 			links_revision = int(page.list_revision); links_cursor = int(page.get("next_cursor",0))
 			links_pending = {}; links_delay = -1
+			# Complete the bounded immutable list before enabling its edits. The
+			# scrollbar must describe every endpoint, not just the delivered page.
+			if links_cursor != 0: read_links(links_cursor)
 		update_controls(); return
 	if action == Action.AreaInspect and int(_request.get("operation",0)) == Contract.AreaOperation.LinkTarget:
 		if not links_picking or stockpile_page != "links" or int(selected.get("id",-1)) != int(_request.get("id",-2)) or int(selected.get("revision",0)) != int(_request.get("expected_revision",-1)): return

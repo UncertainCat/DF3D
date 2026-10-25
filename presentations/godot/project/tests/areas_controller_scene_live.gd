@@ -819,12 +819,54 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 		if int(first.kind)==0: await native("pile_link",{"id":ids[0],"target_id":int(first.id),"give":int(first.direction)==1,"linked":false})
 		else: await native("link",{"id":int(first.id),"pile_id":ids[0],"give":int(first.direction)==2,"linked":false})
 		await native("link_rows",{"id":ids[0],"rows":editor.observed_links})
+	await pointer_link_scroll(ids[0])
+	if stopped: return
 	editor.close_panel()
 	for pile_id in [ids[0],ids[2]]+overlap_ids:
 		var current := await inspect(pile_id)
 		await request({"action":12,"kind":0,"id":pile_id,"expected_revision":current.revision})
 		if stopped: return
 		await native("removed",{"id":pile_id})
+
+func pointer_link_scroll(source_id: int) -> void:
+	step = "native link scrollbar viewport input"
+	for target_id in fixture.link_scroll_workshops:
+		var current := await inspect(source_id)
+		await request({"action":13,"operation":15,"kind":2,"id":int(target_id),"link_id":source_id,"give":true,"expected_revision":current.revision})
+		if stopped: return
+	editor.use_area(await inspect(source_id)); editor.stockpile_control("links")
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"long link list"): return
+	await native("link_rows",{"id":source_id,"rows":editor.observed_links})
+	var bar = editor.links_view.scrollbar
+	for factor in [1.0,1.5]:
+		editor.links_view.scale = Vector2.ONE * factor
+		bar.move_to(0)
+		for frame in 4: await process_frame
+		var point: Vector2 = editor.links_view.body.get_global_transform_with_canvas() * Vector2(100,150)
+		for page in [false,true]:
+			var wheel := InputEventMouseButton.new(); wheel.position = point; wheel.global_position = point
+			wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN; wheel.pressed = true; wheel.shift_pressed = page
+			root.push_input(wheel,true); await process_frame; await process_frame
+			if not check(bar.first == (10 if page else 1) and editor.links_view.scroll.scroll_vertical == bar.first*36,"link wheel row increment at scale "+str(factor)): return
+		bar.move_to(0); await process_frame
+		var grip: Vector2i = bar.thumb()
+		var start: Vector2 = bar.get_global_transform_with_canvas()*Vector2(8,(grip.x+0.5)*12)
+		var finish: Vector2 = bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-18)
+		await pointer_drag(start,finish)
+		if not check(bar.first==11 and editor.links_view.scroll.scroll_vertical==396,"link drag end at scale "+str(factor)): return
+		await capture("stockpiles_links_scroll_"+str(factor))
+	# Remove the first visible row at the scaled bottom, not the offscreen first row.
+	var selected_row: Dictionary = editor.observed_links[11].duplicate()
+	await click_control(editor.links_view.rows_box.get_child(11).get_child(2))
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"scrolled row removal"): return
+	await native("link",{"id":int(selected_row.id),"pile_id":source_id,"give":true,"linked":false})
+	await native("link_rows",{"id":source_id,"rows":editor.observed_links})
+	editor.links_view.scale = Vector2.ONE
+	for index in 19:
+		bar.move_to(0); await process_frame
+		await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
+		if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"long list cleanup"): return
+	await native("link_rows",{"id":source_id,"rows":editor.observed_links})
 
 func pointer_key(key: Key) -> void:
 	for pressed in [true,false]:

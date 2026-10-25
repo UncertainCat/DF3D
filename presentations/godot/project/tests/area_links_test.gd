@@ -39,8 +39,8 @@ func run() -> void:
 	var first := {"id":40,"kind":0,"direction":1,"name":"Stone Stockpile #40"}
 	var second := {"id":50,"kind":2,"direction":2,"name":"Carpenter's Workshop"}
 	links_reply([first],1)
-	controller.links_view.more_requested.emit(); service.poll()
-	check(world.calls[-1].cursor == 1 and world.calls[-1].expected_list_revision == 91,"next links page uses receipt")
+	service.poll()
+	check(world.calls[-1].cursor == 1 and world.calls[-1].expected_list_revision == 91,"next links page loads automatically using immutable receipt")
 	links_reply([second])
 	check(controller.observed_links == [first,second],"completed phase three pages retain observed names and directions")
 	controller.links_view.rows_box.get_child(1).get_child(2).pressed.emit(); service.poll()
@@ -77,7 +77,7 @@ func run() -> void:
 	controller.handle_back(); service.poll()
 	check(world.calls.size() == count and service.result(back_ticket).get("outcome","") == "not_sent" and controller.stockpile_page == "types","Done cancels queued unlink when leaving links page")
 	controller.stockpile_control("links"); service.poll(); links_reply([first],1)
-	controller.links_view.more_requested.emit(); service.poll(); links_reply([second],0,92)
+	service.poll(); links_reply([second],0,92)
 	check(controller.observed_links == [first] and controller.request_problem,"changed receipt cannot append mismatched links")
 	count = world.calls.size()
 	controller.links_view.rows_box.get_child(0).get_child(2).pressed.emit()

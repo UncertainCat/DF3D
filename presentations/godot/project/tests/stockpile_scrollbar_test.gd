@@ -1,6 +1,9 @@
 extends SceneTree
 # Native stockpile screen texture positions, independent of the shared formula.
 func _initialize() -> void:
+	call_deferred("run")
+
+func run() -> void:
 	var fixture = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_scroll.json"))
 	var bar = preload("res://scripts/area_location_scrollbar.gd").new()
 	root.add_child(bar); bar.size = Vector2(16,576); bar.page = 16
@@ -18,6 +21,31 @@ func _initialize() -> void:
 		bar._gui_input(event)
 		if bar.first != int(sample.after):
 			failures += 1; push_error("Native scrollbar input differs: "+str(sample))
+	var links = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_links.json"))
+	bar.size = Vector2(16,324); bar.page = 9
+	for sample in links.scroll_oracle.inputs:
+		if sample.name == "link-scroll-held": continue # Immediate feeds do not establish elapsed repeat cadence.
+		bar.set_rows(20,int(sample.get("start",0))); bar.dragging = false
+		if sample.name == "link-scroll-drag":
+			bar.drag_to((int(sample.y)-11)*12+6)
+		else:
+			if str(sample.label).begins_with("STANDARDSCROLL"): continue
+			var event := InputEventMouseButton.new(); event.pressed = true
+			event.position = Vector2(12,(int(sample.y)-11)*12+6)
+			if str(sample.label).begins_with("CONTEXT_SCROLL"):
+				event.button_index = MOUSE_BUTTON_WHEEL_UP if "UP" in sample.label else MOUSE_BUTTON_WHEEL_DOWN
+				event.shift_pressed = "PAGE" in sample.label
+			else: event.button_index = MOUSE_BUTTON_LEFT
+			bar._gui_input(event)
+		if bar.first != int(sample.after):
+			failures += 1; push_error("Native link scroll differs: "+str(sample))
+	bar.scale = Vector2(1.5,1.5); bar.position = Vector2(100,60)
+	bar.set_rows(20,0); bar.dragging = true
+	var motion := InputEventMouseMotion.new()
+	motion.position = bar.get_global_transform_with_canvas() * Vector2(8,162)
+	bar._input(motion)
+	if bar.first != 5:
+		failures += 1; push_error("Scaled link thumb drag changed native row mapping")
 	bar.free()
 	print("STOCKPILE_SCROLLBAR_PASS" if failures == 0 else "STOCKPILE_SCROLLBAR_FAIL")
 	quit(failures)

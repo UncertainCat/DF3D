@@ -44,7 +44,8 @@ func drag_to(y: float) -> void:
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree(): return
 	if dragging and event is InputEventMouseMotion:
-		drag_to(event.position.y-global_position.y); get_viewport().set_input_as_handled()
+		var local: Vector2 = get_global_transform_with_canvas().affine_inverse() * event.position
+		drag_to(local.y); get_viewport().set_input_as_handled()
 	elif dragging and event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		dragging = false; get_viewport().set_input_as_handled(); queue_redraw()
 

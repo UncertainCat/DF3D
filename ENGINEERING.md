@@ -27,7 +27,7 @@ mapping; the runtime uses the same native vector primitives with owned storage.
 Link commands now use explicit synchronous work accounting, retaining honest
 unknown-work reporting without spending the paginated read budget. Native UI
 state is not consulted. Production target selection now uses the verified native query described below.
-Broader ordering, scrolling and scaled link input remain unverified.
+Ordering and scoped scrolling/scaled-input acceptance are recorded below.
 
 Protected `build/areas-acceptance-20261025-124144` passes53 native observations
 through actual viewport input: duplicate/self selection, pile reversal/unlink,
@@ -113,9 +113,9 @@ readback. Both save manifests are unchanged and owned DF115244 closed unsaved;
 only the known separate-thread notice remains. Offline
 `build/qa/stockpile-link-order` passes root CTest19/19, controller and adapter
 checks, including4096-row pagination. The production four-group capture was
-inspected: workshop-row icons and row backgrounds still differ from the native
-capture. Those graphics, scrolling/scaled input and broader live lifecycle
-remain unfinished.
+inspected and identified incorrect workshop-row icons and missing row backgrounds;
+the subsequent long-list acceptance below covers their correction. Broader live
+lifecycle remains unfinished.
 
 The protected native long-list oracle is retained in
 `fixtures/areas/native_stockpile_links.json.scroll_oracle`. Run
@@ -135,9 +135,33 @@ DF80444 closed unsaved with source unchanged; offline
 The earlier `132725` probe failed while reading artwork metadata from the wrong
 structure; its owned session closed unsaved/source unchanged. The final probe
 reads `gps.graphical_interface`, but its candidate style fields do not identify
-the observed row background. The viewer still uses a generic ScrollContainer;
-replace it using the verified native geometry/input, then verify production
-scrolling, scaling and exact row artwork before claiming list parity.
+the observed row background. Pixel comparison of the native capture at x408,
+y136 with installed `interface_bits.png` identifies tile(1,7) exactly. The
+installed `graphics_interface.txt` defines this as the top-middle cell of
+`BUTTON_RECTANGLE` (3x3 cells, each8x12). The viewer uses this installed style
+with tiled horizontal fill and stockpile give/take icons for every target kind.
+
+The viewer clips rows in a ScrollContainer with its built-in bar hidden and
+uses the native nine-row scrollbar geometry. Wheel, modified wheel, arrows,
+track clicks and dragging use whole-row positions. Drag coordinates pass through
+the inverse canvas transform. Bounded immutable link pages load automatically
+before edits become available, so scrollbar extent includes the complete list.
+
+`build/qa/stockpile-link-art-ready` passes root CTest19/19, area controller,
+link pagination and native scrollbar fixture checks. Protected production run
+`build/areas-acceptance-20261025-134223` passes81 native observations, including
+20 semantic workshop links, actual wheel/page/drag input at1x and1.5x, and
+removal of the first visible row after scrolling to the bottom at1.5x. Native
+readback checks the removed reciprocal link and remaining order. Both captures
+were compared with native artwork. DF74020 closed unsaved; both save manifests
+are unchanged. Only the known separate-thread notice remains. The earlier
+`133813` run failed from concurrent access to the harness log; it also closed
+unsaved and preserved both saves. Avoid ordinary reads of an actively written
+PowerShell log, which can briefly deny its writer access.
+
+This scaled-input test scales the links view directly. Stockpile-wide integration
+with the product UI scale setting, elapsed held-arrow cadence, and broader live
+transport/boundary coverage remain unfinished; Stockpiles stays hidden.
 
 ## Native stockpile storage input (DF 53.16)
 

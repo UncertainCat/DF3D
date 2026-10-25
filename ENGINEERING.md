@@ -58,6 +58,19 @@ Other-material page reads and63 edits:42 bulk actions, seven individual rows and
 edit. Owned DF closed without saving. These checks establish command effects,
 not rendered settings-panel parity or the remaining material-list branches.
 
+Category and sublist status icons share their row's selection target. They are
+not independent bulk-edit controls. Protected native run
+`build/stockpile-presets-native-20261025-032332` verified98 icon clicks: all17
+categories with enabled/disabled flags, plus15 quality/Other-material sublists,
+including repeated clicks and full-settings comparisons. Source save hashes
+were unchanged and owned DF closed without saving. The viewer retains the
+status artwork while routing clicks to the row. `area_menu_test` dispatches
+actual viewport pointer events at both icon positions and verifies selection
+requests instead of filter edits. `stockpile-status-icons` rendered capture
+passed with known Godot shutdown diagnostics; the corrected pointer test passes
+in `stockpile-status-icons-pointer-final`. This is scoped interaction evidence;
+full settings layout and remaining sublist families still need verification.
+
 Category-wide and global All/None use owned native header routines. Category
 actions fill existing vectors/fixed settings without changing category flags or
 vector lengths. Global All calls `0x30dde0` with mode19 directly, preserving

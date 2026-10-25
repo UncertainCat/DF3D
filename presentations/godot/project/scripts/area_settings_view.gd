@@ -143,12 +143,11 @@ func render() -> void:
 				picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				button.add_child(picture)
 			if int(row.kind) in [1,2]:
-				var toggle := Button.new(); toggle.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
-				toggle.offset_left = -40; toggle.offset_right = -8; toggle.disabled = busy
-				for key in ["normal","hover","pressed","disabled","focus"]: toggle.add_theme_stylebox_override(key,StyleBoxEmpty.new())
-				var icon := TextureRect.new(); icon.size = Vector2(32,36)
+				# Native status icons share the row's selection target. They are
+				# indicators, not separate category/sublist bulk-edit buttons.
+				var icon := TextureRect.new(); icon.name = "Status"
+				icon.set_anchors_and_offsets_preset(Control.PRESET_RIGHT_WIDE)
+				icon.offset_left = -40; icon.offset_right = -8
 				icon.texture = art.texture({1:"STOCKPILE_OFF",2:"STOCKPILE_ON",3:"STOCKPILE_PARTIAL"}.get(int(row.state),""))
-				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; toggle.add_child(icon)
-				toggle.pressed.connect(func(): state.edit(column,1,1 if int(row.state) == 2 else 2,str(row.key)))
-				line.add_child(toggle)
+				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
 		scrolls[column].set_deferred("scroll_vertical",previous_scroll)

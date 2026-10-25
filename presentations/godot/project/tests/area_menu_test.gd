@@ -1,4 +1,5 @@
 extends SceneTree
+const C = preload("res://scripts/management_contract.gd")
 const Data = preload("res://scripts/area_menu_data.gd")
 var failures := 0
 
@@ -18,6 +19,7 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	root.size = Vector2i(1200,800)
 	var data := Data.read()
 	check(values(data.categories, "key") == ["ammo","animals","armor","bars_blocks","cloth","coins","finished_goods","food","furniture","gems","leather","corpses","refuse","sheet","stone","weapons","wood"], "native category display order")
 	check(values(data.categories, "bit") == [6,0,15,8,12,7,10,1,2,9,11,3,4,16,5,14,13], "display order maps to wire bits")
@@ -68,6 +70,31 @@ func run() -> void:
 	check(settings.search.editable, "pending search leaves native search field editable")
 	check(settings.search.position.y + settings.search.size.y <= 48, "search field cannot overlap first leaf row")
 	check(settings.scrolls[0].get_v_scroll_bar().get_theme_stylebox("scroll").texture != null, "native scrollbar texture resolves")
+	# Native status-icon clicks select categories/sublists, including partial
+	# states. Exercise actual pointer dispatch so a nested edit button fails.
+	var settings_requests: Array = []
+	state.request_ready.connect(func(request): settings_requests.append(request))
+	settings.size = settings.custom_minimum_size
+	for column in [0,1]:
+		state.clear(); state.area = {"id":39,"revision":11,"categories":64}
+		state.category = "ammo"; state.subcategory = "ammo/quality_core"; state.leaf = state.subcategory
+		state.rows = [[{"key":"ammo","label":"Ammo","kind":1,"state":3}],
+			[{"key":"ammo/quality_core","label":"Core quality","kind":2,"state":3}],[]]
+		state.changed.emit()
+		await process_frame; await process_frame
+		var status: Control = settings.rendered_rows[column][0].get_node("Status")
+		var status_rect := status.get_global_rect()
+		check(status_rect.size == Vector2(32,36),"status artwork retains native dimensions")
+		settings_requests.clear()
+		for pressed in [true,false]:
+			var event := InputEventMouseButton.new(); event.button_index = MOUSE_BUTTON_LEFT
+			event.pressed = pressed; event.position = status_rect.get_center()
+			root.push_input(event, true)
+			await process_frame
+		check(settings_requests.size() == 1 and int(settings_requests[0].action) == C.ManagementAction.AreaInspect and int(settings_requests[0].operation) == 1,
+			"status icon selects through one read instead of changing filters: %s at %s viewport %s" % [settings_requests,status_rect,root.size])
+		if settings_requests.size() == 1:
+			check(settings_requests[0].list_key == ("ammo" if column == 0 else "ammo/quality_core"),"status selection retains native hierarchy")
 	settings.free()
 	var storage := preload("res://scripts/area_storage_view.gd").new()
 	root.add_child(storage); storage.configure(assets)

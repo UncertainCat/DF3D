@@ -8978,5 +8978,523 @@
         "Remaining native list branches"
       ]
     }
+  },
+  "status_icon_actions": {
+    "run": "build/stockpile-presets-native-20261025-032332",
+    "native_click_count": 98,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "behavior": "Category status icons perform category selection, including initialization when disabled. Sublist status icons select the list without editing filters. Repeated clicks retain settings.",
+    "records": [
+      {
+        "category": "animals",
+        "pointer": {
+          "x": 36,
+          "y": 13
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "animals",
+        "pointer": {
+          "x": 36,
+          "y": 13
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "food",
+        "pointer": {
+          "x": 36,
+          "y": 31
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "food",
+        "pointer": {
+          "x": 36,
+          "y": 31
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "furniture",
+        "pointer": {
+          "x": 36,
+          "y": 34
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "furniture",
+        "pointer": {
+          "x": 36,
+          "y": 34
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "corpses",
+        "pointer": {
+          "x": 36,
+          "y": 43
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "corpses",
+        "pointer": {
+          "x": 36,
+          "y": 43
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "refuse",
+        "pointer": {
+          "x": 36,
+          "y": 46
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "refuse",
+        "pointer": {
+          "x": 36,
+          "y": 46
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "stone",
+        "pointer": {
+          "x": 36,
+          "y": 52
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "stone",
+        "pointer": {
+          "x": 36,
+          "y": 52
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "ammo",
+        "pointer": {
+          "x": 36,
+          "y": 10
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "ammo",
+        "pointer": {
+          "x": 36,
+          "y": 10
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "coins",
+        "pointer": {
+          "x": 36,
+          "y": 25
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "coins",
+        "pointer": {
+          "x": 36,
+          "y": 25
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "bars_blocks",
+        "pointer": {
+          "x": 36,
+          "y": 19
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "bars_blocks",
+        "pointer": {
+          "x": 36,
+          "y": 19
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "gems",
+        "pointer": {
+          "x": 36,
+          "y": 37
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "gems",
+        "pointer": {
+          "x": 36,
+          "y": 37
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "finished_goods",
+        "pointer": {
+          "x": 36,
+          "y": 28
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "finished_goods",
+        "pointer": {
+          "x": 36,
+          "y": 28
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "leather",
+        "pointer": {
+          "x": 36,
+          "y": 40
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "leather",
+        "pointer": {
+          "x": 36,
+          "y": 40
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "cloth",
+        "pointer": {
+          "x": 36,
+          "y": 22
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "cloth",
+        "pointer": {
+          "x": 36,
+          "y": 22
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "wood",
+        "pointer": {
+          "x": 36,
+          "y": 55
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "wood",
+        "pointer": {
+          "x": 36,
+          "y": 55
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "weapons",
+        "pointer": {
+          "x": 36,
+          "y": 55
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "weapons",
+        "pointer": {
+          "x": 36,
+          "y": 55
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "armor",
+        "pointer": {
+          "x": 36,
+          "y": 16
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "armor",
+        "pointer": {
+          "x": 36,
+          "y": 16
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "sheet",
+        "pointer": {
+          "x": 36,
+          "y": 49
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": false
+      },
+      {
+        "category": "sheet",
+        "pointer": {
+          "x": 36,
+          "y": 49
+        },
+        "probe": "category_status_click",
+        "repeated_unchanged": true,
+        "was_enabled": true
+      },
+      {
+        "category": "furniture",
+        "label": "Core quality",
+        "mode": 26,
+        "pointer": {
+          "x": 73,
+          "y": 22
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "furniture",
+        "label": "Total quality",
+        "mode": 27,
+        "pointer": {
+          "x": 73,
+          "y": 25
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "furniture",
+        "label": "Other materials",
+        "mode": 25,
+        "pointer": {
+          "x": 73,
+          "y": 19
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "ammo",
+        "label": "Core quality",
+        "mode": 48,
+        "pointer": {
+          "x": 73,
+          "y": 19
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "ammo",
+        "label": "Total quality",
+        "mode": 49,
+        "pointer": {
+          "x": 73,
+          "y": 22
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "ammo",
+        "label": "Other materials",
+        "mode": 46,
+        "pointer": {
+          "x": 73,
+          "y": 16
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "finished_goods",
+        "label": "Core quality",
+        "mode": 69,
+        "pointer": {
+          "x": 73,
+          "y": 25
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "finished_goods",
+        "label": "Total quality",
+        "mode": 70,
+        "pointer": {
+          "x": 73,
+          "y": 28
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "finished_goods",
+        "label": "Other materials",
+        "mode": 68,
+        "pointer": {
+          "x": 73,
+          "y": 22
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "weapons",
+        "label": "Core quality",
+        "mode": 92,
+        "pointer": {
+          "x": 73,
+          "y": 25
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "weapons",
+        "label": "Total quality",
+        "mode": 93,
+        "pointer": {
+          "x": 73,
+          "y": 28
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "weapons",
+        "label": "Other materials",
+        "mode": 91,
+        "pointer": {
+          "x": 73,
+          "y": 22
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "armor",
+        "label": "Core quality",
+        "mode": 103,
+        "pointer": {
+          "x": 73,
+          "y": 34
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "armor",
+        "label": "Total quality",
+        "mode": 104,
+        "pointer": {
+          "x": 73,
+          "y": 37
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      },
+      {
+        "category": "armor",
+        "label": "Other materials",
+        "mode": 102,
+        "pointer": {
+          "x": 73,
+          "y": 31
+        },
+        "probe": "sublist_status_click",
+        "repeated_unchanged": true
+      }
+    ],
+    "omissions": [
+      "Remaining sublist families",
+      "Full settings-panel visual parity"
+    ]
   }
 }

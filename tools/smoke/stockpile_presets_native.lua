@@ -330,6 +330,43 @@ require('gui.script').start(function()
    b.settings.misc.allow_organic=false;b.settings.misc.allow_inorganic=true
    header_action(0,action,nil,'mixed allowances')
   end
+  -- Status artwork occupies the right edge of the first two columns. Native
+  -- clicks there must be compared with selection, not inferred from the icon.
+  c.entering_spec_filter=false;c.spec_filter=''
+  for bit,key in ipairs(categories)do
+   for _,enabled in ipairs{false,true}do
+    b.settings.flags[key]=enabled
+    c.scroll_position_main=0;view:render(dfhack.getTickCount())
+    local text,code=dfhack.run_command_silent('df3d','stockpile-category-read',tostring(b.id),tostring(1 << (bit-1)))
+    assert(code==0,text);local expected=json.decode(text)
+    local pointer=label_click(category_labels[bit],23)
+    assert(c.cur_main_mode==modes[bit],'status icon failed to select category '..key)
+    compare_settings(expected)
+    local before=settings_snapshot(b.settings)
+    label_click(category_labels[bit],23)
+    assert(settings_snapshot(b.settings)==before,'repeated category icon changed settings '..key)
+    records[#records+1]={probe='category_status_click',category=key,was_enabled=enabled,pointer=pointer,repeated_unchanged=true}
+   end
+  end
+  for _,entry in ipairs{
+   {'Furniture/siege ammo','furniture',26,27,25}, {'Ammo','ammo',48,49,46},
+   {'Finished goods','finished_goods',69,70,68}, {'Weapons/trap comps','weapons',92,93,91},
+   {'Armor','armor',103,104,102}}do
+   c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click(entry[1])
+   for _,field in ipairs{'quality_core','quality_total','other_mats'}do
+    local values=b.settings[entry[2]][field]
+    for i=0,#values-1 do values[i]=field=='other_mats' and i%2 or (i%2==0)end
+   end
+   for i,label in ipairs{'Core quality','Total quality','Other materials'}do
+    local before=settings_snapshot(b.settings)
+    local pointer=label_click(label,28,2)
+    assert(c.cur_sub_mode==entry[i+2],'status icon failed to select sublist '..label)
+    assert(settings_snapshot(b.settings)==before,'sublist icon changed settings '..label)
+    label_click(label,28,2)
+    assert(settings_snapshot(b.settings)==before,'repeated sublist icon changed settings '..label)
+    records[#records+1]={probe='sublist_status_click',category=entry[2],label=label,mode=entry[i+2],pointer=pointer,repeated_unchanged=true}
+   end
+  end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)
  local f=assert(io.open(out..'/result.tmp','w'));f:write(require('json').encode{success=ok,error=tostring(why),records=records});f:close();assert(os.rename(out..'/result.tmp',out..'/result.json'))

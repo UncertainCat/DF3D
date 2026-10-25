@@ -143,6 +143,10 @@ def main():
      if settings_raw_count>65536 then return {ok=false,message='Stockpile settings exceed 65,536 entries',steps=108} end
      return {ok=true,steps=108,raw_count=settings_raw_count,fields={}}
     end
+    function settings_header(b,category,enabled,budget)
+     assert(budget==nil)
+     return {ok=false,message=settings_raw_count>65536 and 'Stockpile settings exceed 65,536 entries' or '',steps=158}
+    end
     function workshop_link(w,p,give,unlink,budget)
      workshop_link_calls=workshop_link_calls+1
      assert(w==workshop and p==pile)
@@ -161,12 +165,13 @@ def main():
      r.settings_preset=settings_preset
      r.settings_categories=settings_categories
      r.settings_rows=settings_rows
+     r.settings_header=settings_header
      r.set_location=set_location
      r.create_location=create_location
      r.create_area=create_area
      r.remove_area=remove_area
      r.synchronous_read=action==9 and r.area.operation==1
-     r.synchronous_write=action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9)
+     r.synchronous_write=action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
      return r
     end
     """)
@@ -328,11 +333,11 @@ def main():
         lua.execute("settings_raw_count=65537")
         result = raw_call(action, values)
         assert result["message"] == "Stockpile settings exceed 65,536 entries"
-        assert result["steps"] == 121
+        assert result["steps"] == (171 if operation == 2 else 121)
         lua.execute("settings_raw_count=65536")
         result = raw_call(action, values)
-        assert result["message"] == ("Stockpile settings layout changed" if operation in (1, 2) else "Area operation producer is not yet available")
-        assert result["steps"] == (228 if operation == 2 else 121)
+        assert result["message"] == ("" if operation == 2 else "Stockpile settings layout changed")
+        assert result["steps"] == (171 if operation == 2 else 121)
         before_calls = lua.globals().settings_layout_calls
         result = raw_call(action, {**values, "expected_revision": 1})
         assert result["message"] == "Area changed; inspect again"
@@ -343,7 +348,7 @@ def main():
         if operation == 1:
             assert result["message"] == "Stockpile settings layout changed" and result["steps"] == 121
         else:
-            assert result["message"] == "Settings layout exceeds remaining step budget" and result["steps"] == 13
+            assert result["message"] == "" and result["steps"] == 171
     lua.execute("settings_raw_count=0")
     assert call(9)["areas"][1]["revision"] == current_revision
     before_calls = lua.globals().settings_layout_calls
@@ -1049,6 +1054,30 @@ def main():
     df.global.world.raws={plants={all={}},creatures={all={}},itemdefs={},
       descriptors={colors={}},inorganics={all={}},mat_table={organic_types={},organic_indexes={},builtin={}}}
     settings_fields={};settings_raw_count=0
+    header_calls=0
+    function settings_header(b,category,enabled,budget)
+     assert(budget==nil);header_calls=header_calls+1
+     if force_header_error then return {ok=false,message='',steps=158,work_unknown=true}end
+     if settings_raw_count>65536 then return {ok=false,message='Stockpile settings exceed 65,536 entries',steps=158}end
+     local categories={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
+      'bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
+     for bit,key in ipairs(categories)do
+      if (category==0 or category==(1 << (bit-1))) and not(category==0 and enabled and (key=='refuse' or key=='corpses'))then
+       for field,values in pairs(b.settings[key] or {})do
+        if type(values)=='table' then
+         local count=#values
+         if category==0 and enabled and settings_fields[key..'.'..field] then count=settings_fields[key..'.'..field].count end
+         local fixed=settings_fields[key..'.'..field] and settings_fields[key..'.'..field].fixed
+         for i=1,count do if fixed then values[i]=enabled else values[i]=enabled and 1 or 0 end end
+         for i=#values,count+1,-1 do values[i]=nil end
+        elseif type(values)=='boolean' then b.settings[key][field]=enabled end
+       end
+       if category==0 and enabled then b.settings.flags[key]=true end
+      end
+     end
+     if category==0 and enabled then b.settings.misc.allow_organic=true;b.settings.misc.allow_inorganic=true end
+     return {ok=true,steps=158,work_unknown=true}
+    end
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
@@ -1454,7 +1483,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1633,15 +1662,17 @@ def main():
     lua.execute("pile.settings.refuse.fresh_raw_hide=false;pile.settings.refuse.rotten_raw_hide=false")
     assert settings_adapter(fixed_edit("refuse"))["ok"]
     assert lua.eval("not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide")
+    lua.execute("pile.settings.flags.refuse=false")
     assert settings_adapter(fixed_edit("refuse", scope=3))["ok"]
-    assert lua.eval("pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide and pile.settings.flags.refuse")
+    assert lua.eval("pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide and not pile.settings.flags.refuse")
     assert settings_adapter(fixed_edit("", "refuse", value=1))["ok"]
     assert lua.eval("not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide and not pile.settings.flags.refuse")
     lua.execute("make_setting('animals.enabled',1,{0});fixture_partitions['animals.enabled']={1}")
     assert settings_adapter(fixed_edit("animals"))["ok"]
     assert lua.eval("pile.settings.animals.enabled[1]==0 and pile.settings.animals.empty_cages")
+    lua.execute("pile.settings.flags.animals=false")
     assert settings_adapter(fixed_edit("animals", scope=3))["ok"]
-    assert lua.eval("pile.settings.animals.enabled[1]==1 and pile.settings.flags.animals")
+    assert lua.eval("pile.settings.animals.enabled[1]==1 and not pile.settings.flags.animals")
     # Middle-column All/None ignores the leaf search.
     assert settings_adapter(fixed_edit("ammo", scope=3, value=1, query="CRAFTED"))["ok"]
     assert lua.eval("not pile.settings.ammo.quality_core[2] and not pile.settings.ammo.quality_total[1]")
@@ -1684,43 +1715,37 @@ def main():
     assert settings_adapter(fixed_edit("finished_goods/metal", value=2, query="inorganic 1"))["ok"]
     assert lua.eval("pile.settings.finished_goods.mats[1]==0 and pile.settings.finished_goods.mats[2]==1 and pile.settings.finished_goods.mats[3]==1")
     lua.execute("settings_fill=unfiltered_fill")
-    lua.execute("all_fill_calls={};settings_fields['wood.mats'].count=-1")
-    assert settings_adapter(fixed_edit("", scope=4))["message"] == "Stockpile settings layout changed"
-    assert len(lua.globals().all_fill_calls) == 0
-    lua.execute("settings_fields['wood.mats'].count=3;settings_raw_count=65537")
+    # Header actions are a single owned native transaction, independent of the
+    # old per-field fill/layout plan. Failures publish nothing and never replay.
+    lua.execute("all_fill_calls={};force_header_error=true;pile.settings.ammo.other_mats={0,0}")
+    before_headers=lua.globals().header_calls
+    failed=settings_adapter(fixed_edit("ammo", scope=3))
+    assert not failed["ok"] and failed["message"] == "" and failed["work_unknown"]
+    assert lua.globals().header_calls==before_headers+1 and len(lua.globals().all_fill_calls)==0
+    assert lua.eval("pile.settings.ammo.other_mats[1]==0 and pile.settings.ammo.other_mats[2]==0")
+    lua.execute("force_header_error=false;settings_raw_count=65537")
     assert settings_adapter(fixed_edit("", scope=4))["message"] == "Stockpile settings exceed 65,536 entries"
-    assert len(lua.globals().all_fill_calls) == 0
-    lua.execute("settings_raw_count=0;fail_fill_at=2;pile.settings.ammo.other_mats={0,0}")
-    partial = settings_adapter(fixed_edit("ammo", scope=3))
-    assert not partial["ok"] and "earlier filters changed; inspect before retrying" in partial["message"]
-    assert len(lua.globals().all_fill_calls) == 2  # no automatic replay or later writes
-    lua.execute("fail_fill_at=nil;all_fill_calls={};pile.settings.flags.refuse=true;pile.settings.flags.corpses=false;pile.settings.refuse.type={1,0};pile.settings.corpses.corpses={0,1};pile.settings.refuse.fresh_raw_hide=true;pile.settings.refuse.rotten_raw_hide=false")
+    lua.execute("settings_raw_count=0;pile.settings.flags.refuse=true;pile.settings.flags.corpses=false;pile.settings.refuse.type={1,0};pile.settings.corpses.corpses={0,1};pile.settings.refuse.fresh_raw_hide=true;pile.settings.refuse.rotten_raw_hide=false")
     assert settings_adapter(fixed_edit("", scope=4))["ok"]
-    fields = list(lua.globals().all_fill_calls.values())
-    assert len(fields) == 94 and len(set(fields)) == 94 and "ore.mats" not in fields
-    assert not any(field.startswith(("refuse.", "corpses.")) for field in fields)
+    assert len(lua.globals().all_fill_calls)==0
     assert lua.eval("pile.settings.flags.refuse and not pile.settings.flags.corpses and pile.settings.refuse.type[1]==1 and pile.settings.refuse.type[2]==0 and pile.settings.corpses.corpses[1]==0 and pile.settings.corpses.corpses[2]==1 and pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide")
     assert lua.eval("pile.settings.misc.allow_organic and pile.settings.misc.allow_inorganic and pile.settings.flags.ammo and pile.settings.flags.wood")
     lua.execute("pile.settings.flags.food=false;pile.settings.flags.refuse=false;pile.settings.misc.allow_inorganic=false")
-    # Maximum sum of per-vector rounding: 76 one-entry vectors and the final
-    # vector with65460 entries. All-field plan/fill/flags and maximum reply fit
-    # the producer budget even when the native pre-snapshot is282 steps.
+    # Native None preserves empty vectors even at the maximum raw inventory.
+    # Category headers likewise preserve a short vector and its category flag.
     lua.execute(r"""
     local active={};for _,field in ipairs(fixture_vector_keys)do if field~='ore.mats' then active[#active+1]=field end end
     assert(#active==77);fixture_partitions={};settings_raw_count=65536
     for i,field in ipairs(active)do make_setting(field,i==77 and 65460 or 1,{}) end
     all_fill_calls={}
     """)
-    maximum = fixed_edit("", scope=4, value=1)
-    maximum["step_budget"] = 1193
-    assert settings_adapter(maximum)["message"] == "Area request exceeds remaining step budget"
-    assert len(lua.globals().all_fill_calls) == 0
-    maximum["step_budget"] = 1194
-    completed = settings_adapter(maximum)
-    assert completed["ok"] and completed["steps"] == 1042, dict(completed)
-    assert len(lua.globals().all_fill_calls) == 104
-    assert lua.eval("#pile.settings.wood.mats==65460 and pile.settings.wood.mats[65460]==0 and pile.settings.flags.wood and pile.settings.misc.allow_organic and not pile.settings.misc.allow_inorganic")
+    completed=settings_adapter(fixed_edit("", scope=4, value=1))
+    assert completed["ok"] and completed["work_unknown"] and len(lua.globals().all_fill_calls)==0
+    assert lua.eval("#pile.settings.wood.mats==0 and pile.settings.flags.wood and pile.settings.misc.allow_organic and not pile.settings.misc.allow_inorganic")
     assert lua.eval("pile.settings.flags.ammo and not pile.settings.flags.food and not pile.settings.flags.refuse and not pile.settings.ammo.quality_core[1] and not pile.settings.refuse.fresh_raw_hide")
+    lua.execute("make_setting('ammo.other_mats',2,{0});pile.settings.flags.ammo=false")
+    assert settings_adapter(fixed_edit("ammo", scope=3))["ok"]
+    assert lua.eval("#pile.settings.ammo.other_mats==1 and pile.settings.ammo.other_mats[1]==1 and not pile.settings.flags.ammo")
     # Presets use the amended synchronous write policy. The native transaction
     # stand-in models effect/rollback boundaries. The protected native oracle
     # compares actual filter contents; this checks adapter integration.

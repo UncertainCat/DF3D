@@ -289,6 +289,47 @@ require('gui.script').start(function()
    records[#records+1]={probe='other_material_empty',mode=entry[4],stored_count=#values}
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
+  local function settings_snapshot(v)
+   if type(v)~='userdata' then return tostring(v)end
+   local parts={}
+   for key,value in pairs(v)do
+    if type(value)~='function' and tostring(key):sub(1,1)~='_' then parts[#parts+1]=tostring(key)..'='..settings_snapshot(value)end
+   end
+   table.sort(parts);return '{'..table.concat(parts,';')..'}'
+  end
+  local function header_action(category,action,column,variant)
+   local before=settings_snapshot(b.settings)
+   local size,address=df.sizeof(df.global.game.main_interface)
+   local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+   local text,code=dfhack.run_command_silent('df3d','stockpile-header-read',tostring(b.id),tostring(category),tostring(action))
+   assert(code==0,text)
+   assert(dfhack.internal.memcmp(guard,address,size)==0,'header probe changed native UI');df.delete(guard)
+   assert(settings_snapshot(b.settings)==before,'header probe changed source settings')
+   local expected=json.decode(text)
+   label_click(action==2 and 'All' or 'None',0,column)
+   compare_settings(expected)
+   records[#records+1]={probe='header_action',category=category,action=action,variant=variant,predicted=expected}
+  end
+  c.entering_spec_filter=false;c.spec_filter=''
+  for bit,key in ipairs(categories)do
+   -- These three direct leaves have no native middle-column header buttons.
+   if key~='wood' and key~='coins' and key~='corpses' then
+    c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click(category_labels[bit])
+    for _,variant in ipairs{'existing','short'}do
+     if variant=='short' then
+      for field in pairs(category_prediction.vectors)do
+       local cat,name=field:match('^([^%.]+)%.(.+)$')
+       if cat==key then local value=b.settings[cat][name];value:resize(math.min(1,#value))end
+      end
+     end
+     for _,action in ipairs{2,1}do header_action(1 << (bit-1),action,2,variant)end
+    end
+   end
+  end
+  for _,action in ipairs{2,1,2,1}do
+   b.settings.misc.allow_organic=false;b.settings.misc.allow_inorganic=true
+   header_action(0,action,nil,'mixed allowances')
+  end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)
  local f=assert(io.open(out..'/result.tmp','w'));f:write(require('json').encode{success=ok,error=tostring(why),records=records});f:close();assert(os.rename(out..'/result.tmp',out..'/result.json'))

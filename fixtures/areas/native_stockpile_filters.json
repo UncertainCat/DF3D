@@ -3758,5 +3758,5225 @@
         "Non-ASCII search not covered."
       ]
     }
+  },
+  "header_actions": {
+    "provenance": {
+      "run": "build/stockpile-presets-native-20261025-030337",
+      "comparison": "Actual middle-column All/None clicks for all14 categories with that native column, with existing and short vectors; four global header clicks with mixed allowances. Compare flags, all78 vectors and29 fixed settings against owned native prediction.",
+      "source_save_changed": false,
+      "simulation_advanced": false,
+      "probe_guards": [
+        "source settings",
+        "main interface bytes"
+      ],
+      "omissions": [
+        "Coins, Corpses and Wood have no native middle-column buttons.",
+        "Gameplay and rendered UI acceptance are separate."
+      ]
+    },
+    "comparisons": [
+      {
+        "category": 1,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "32668e905193025096b98ad9281bd951f6b8e9813b9dfe6a5ccedc8f99f7c37e",
+        "vectors": {
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          }
+        },
+        "fixed": {
+          "animals.empty_cages": [
+            true
+          ],
+          "animals.empty_traps": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "348df304bba68b1e54735390282c1514807a5e54707b8bbcc8068b09e01f8b33",
+        "vectors": {
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          }
+        },
+        "fixed": {
+          "animals.empty_cages": [
+            false
+          ],
+          "animals.empty_traps": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "8f2c21141fe1baf5a87b7207349067697fca001fbb1348c2c4ee0d7c7a96d166",
+        "vectors": {
+          "animals.enabled": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "animals.empty_cages": [
+            true
+          ],
+          "animals.empty_traps": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "5e9167677ef07e38b1af77abf786c3b48a7a68d49bacc3feeb96e26fe49ab0f0",
+        "vectors": {
+          "animals.enabled": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "animals.empty_cages": [
+            false
+          ],
+          "animals.empty_traps": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "5c9b21042a47dd59aa190f333dfd677307afce7fdfba53861c6a0da377ecb89a",
+        "vectors": {
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 24,
+            "sha256": "5b8b4d29020ea5b1bc427c40a0cab2bf944be057ec482110f1d12b68008cd286"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 76,
+            "sha256": "c97339b470e77827ed22f491ec3ce5c072b9a301a413140a93190450a3a32f78"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 203,
+            "sha256": "123c71b340bd2d9c4ea8b95ba2f4fd98f63384f27ace01b8039d44d1b626a55c"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 75,
+            "sha256": "d67717c08947c9234faf18674a322d0ef4328bb90d6b2ef54933fd2cafb08d7c"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 2062,
+            "sha256": "c184060579c12179fe4f6b402e456b8ecbac5162ac3a0d89827dde17e452acd0"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 13,
+            "sha256": "fc1df255dfe9a3d6d2d53746ade768d6cc6578c08b2a4bbc9d6c19153b673791"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 7,
+            "sha256": "c36336f242c655c52fa06c4d03f665ca9ea0bb84f20f1b1f90976aa58ca40a4a"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 95,
+            "sha256": "dd7b207cd5ad353d9e1fa816d1e4ad8e541b765927d5363312b6db28af819d9f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 277,
+            "sha256": "aff80e11499d52dd9be2e065d0ce4b56a9db7eb62348842820bec69a8d2cd405"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 9,
+            "sha256": "040a5a009f9b9d5e4771742174142e74fa2d3e0aaa3df5717f01ade338d75d0e"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 12328,
+            "sha256": "feabf0e0bdda93a67af5b014350c2c331d21d07b8d7c07cc51061085e5433d18"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 225,
+            "sha256": "f1d7af64f0ebcc75e51100787bdef92f807e060f40ad13e6fcf38f92a18405b9"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 101,
+            "sha256": "df5e7ef8b4a2dcbf2d99a0a0ac4527f9b3967daa799f7e0b7c11b06c4cd56a80"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 157,
+            "sha256": "5404bfb990ef720fdab11be62187f0755915ce9e8de74649578513d75de9e776"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 75,
+            "sha256": "d67717c08947c9234faf18674a322d0ef4328bb90d6b2ef54933fd2cafb08d7c"
+          }
+        },
+        "fixed": {
+          "food.prepared_meals": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "5e9167677ef07e38b1af77abf786c3b48a7a68d49bacc3feeb96e26fe49ab0f0",
+        "vectors": {
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 0,
+            "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 0,
+            "sha256": "f2c0d5456a983ecd12e314fcfa19879179fc8424343baeb1325457472ae85601"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 0,
+            "sha256": "2e0d2fe0abe5ed515f31233a722096d2d4061bfc8fc733df44dd1eace7ddff0b"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 0,
+            "sha256": "ae35733ac6d2081fb8dab80a6901f2d1625cb5c33974f40d54d7f8960a2b6306"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 0,
+            "sha256": "dd46c3eebb1884ff3b5258c0a2fc9398e560a29e0780d4b53869b6254aa46a96"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 0,
+            "sha256": "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 0,
+            "sha256": "8542681424ecba28d65569c3be0d3962837fdf9d6cb770620108a86cf9e8d75f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 0,
+            "sha256": "5cdcd733b8b630509bac08589db291ddbde33d79f64664cb9582e66589555257"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 0,
+            "sha256": "f802050ecbdbfba2b936e225565ee1fd10e3ad48f6dc2e72c8597ceec94d2442"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 0,
+            "sha256": "e08dd9962eedb16e12840ea2a977cc07bc5fa8d96259682edaa080573d525e4c"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 0,
+            "sha256": "5ec13d514d24aba23fd78497a131244321c5e650a1468b6e636a19a7ca1fe593"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          }
+        },
+        "fixed": {
+          "food.prepared_meals": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "50f42cffa7b1d066b34b67224367aa0516ce7c18259398cefa0953939310387a",
+        "vectors": {
+          "food.cheese_animal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.drink_plant": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.egg": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.fish": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.glob": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.glob_paste": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.glob_pressed": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.leaves": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.liquid_animal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.liquid_misc": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.liquid_plant": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.meat": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.plants": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.seeds": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "food.unprepared_fish": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "food.prepared_meals": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "9f2ac7e3979002ed3f617df30fc7f2f859c41926d58ea3b39f820805c5d1228b",
+        "vectors": {
+          "food.cheese_animal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.drink_plant": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.egg": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.fish": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.glob": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.glob_paste": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.glob_pressed": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.leaves": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.liquid_animal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.liquid_misc": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.liquid_plant": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.meat": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.plants": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.seeds": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "food.unprepared_fish": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "food.prepared_meals": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "0b240bb30a7365d167970234dbef4d3dd07cf78d08dfb067403817d49decccb9",
+        "vectors": {
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 15,
+            "sha256": "69801b353a8f248b5399788172cf8a7758625782651ae1e8b733fd3f5cd875a8"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 35,
+            "sha256": "c9bcf7a93bbcc2dec8eb37814135d3f166f971785ff872506e903abed2c49fa5"
+          }
+        },
+        "fixed": {
+          "furniture.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "furniture.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "8d5323dc4f5878ca19cee475083c8752d518ea2b49fd9a4d594a046f8be3c536",
+        "vectors": {
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 0,
+            "sha256": "5322fecfc92a5e3248a297a3df3eddfb9bd9049504272e4f572b87fa36d4b3bd"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 0,
+            "sha256": "0d5535e13cc9708d0ff0289af2fae27e564b6bcbcd9242f5140d96957744a517"
+          }
+        },
+        "fixed": {
+          "furniture.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "furniture.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "1601f8bb79f4318b6f17e8cc38276805788cd9f99d0edf7e2949a82ddca896dd",
+        "vectors": {
+          "furniture.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "furniture.other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "furniture.type": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "furniture.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "furniture.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "7098bb9310c4c2591c31b2fb2e2dbb7f592ff0065fed19bf63c919a105fc09a9",
+        "vectors": {
+          "furniture.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "furniture.other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "furniture.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "furniture.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "furniture.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 16,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "a005304b9545705f67250cf10029f5f43ac1575ddf3489120106098f3ea98629",
+        "vectors": {
+          "refuse.body_parts": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.bones": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.corpses": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.hair": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.horns": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.shells": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.skulls": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.teeth": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "refuse.type": {
+            "count": 113,
+            "enabled": 113,
+            "sha256": "dc5e8f8d54bc280b146c76c1cf53581bbd5e073ccaf212aca935d3aff63f6bce"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "refuse.fresh_raw_hide": [
+            true
+          ],
+          "refuse.rotten_raw_hide": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 16,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "7098bb9310c4c2591c31b2fb2e2dbb7f592ff0065fed19bf63c919a105fc09a9",
+        "vectors": {
+          "refuse.body_parts": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.bones": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.hair": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.horns": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.shells": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.skulls": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.teeth": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ]
+        }
+      },
+      {
+        "category": 16,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "810c4c6ab66c72495ab8f48b506978ee37586837d2a7f130ee2ef98b13797a6b",
+        "vectors": {
+          "refuse.body_parts": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.bones": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.corpses": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.hair": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.horns": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.shells": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.skulls": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.teeth": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "refuse.type": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "refuse.fresh_raw_hide": [
+            true
+          ],
+          "refuse.rotten_raw_hide": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 16,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "4b7b420f8b36e58e84c855d6cfde10b05af86e248b23c505c603063724dc849c",
+        "vectors": {
+          "refuse.body_parts": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.bones": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.corpses": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.hair": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.horns": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.shells": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.skulls": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.teeth": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ]
+        }
+      },
+      {
+        "category": 32,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "cdafb9f2f973f73df320910fbf0774ae36e45e322478030d46661e10becab576",
+        "vectors": {
+          "stone.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 32,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "4b7b420f8b36e58e84c855d6cfde10b05af86e248b23c505c603063724dc849c",
+        "vectors": {
+          "stone.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 32,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "94618ed78c7d62220cd5759fa01bd10bb02451e1513bfd49780ab9bcf5fa4797",
+        "vectors": {
+          "stone.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 32,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "13ecf2b785efa6e3f004f21f63d05b62ccaec19f1f3cc5396da69651b226384f",
+        "vectors": {
+          "stone.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 64,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "4ecf38d57d4b9aa2540117c0cd8a4cd267b6b27c37d6d3f9fee8e9a7449c27bb",
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 11,
+            "sha256": "7b0c710c832f5e2d6ba6b0d459531380d8127d86b6ddf9f5e9e7df2f27f16479"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "ammo.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 64,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "3ecad5f8a9d0eedd29eee1f2cd7edcee7cc072be606b9777dd8da06f60d90659",
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "ammo.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 64,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "1d1bedce0c75db6c132aa96d22b13e5478cbe7a440d57a31185276b6b98abe36",
+        "vectors": {
+          "ammo.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "ammo.other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "ammo.type": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "ammo.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 64,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "ccb27956a3425a2f8efbd74817f562945298ca9d283c2dbb5b64f7f915982007",
+        "vectors": {
+          "ammo.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "ammo.other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "ammo.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "ammo.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 256,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "db5d98a5cdb978574cf90e10ba4199c97b660167d3c66b348a90f167de1e172b",
+        "vectors": {
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 5,
+            "sha256": "377a23f52c6b357696238c3318f677a082dd3430bb6691042bd550a5cda28ebb"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 256,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "ccb27956a3425a2f8efbd74817f562945298ca9d283c2dbb5b64f7f915982007",
+        "vectors": {
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 256,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "f2682191bfc6a16e736f9d98de1e79a0a5fa0f5277dc11f909904b1935017657",
+        "vectors": {
+          "bars_blocks.bars_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 256,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "796244094af7d20f23bda82ce86b0b5d8ac10ae7d80530800a77fd1f978db60b",
+        "vectors": {
+          "bars_blocks.bars_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 512,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "de6c6872c17392a6ccea9c37217f092c55ec4cf22cd327938743d4c795d8c308",
+        "vectors": {
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 659,
+            "sha256": "1e06136cb94b8e15f1f5e899035a356e1ee5bfe16a8db44f116506b3494eed0a"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 659,
+            "sha256": "1e06136cb94b8e15f1f5e899035a356e1ee5bfe16a8db44f116506b3494eed0a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 512,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "796244094af7d20f23bda82ce86b0b5d8ac10ae7d80530800a77fd1f978db60b",
+        "vectors": {
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 512,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "7e04df6369ee76820b180751c37d8fab6356b53ab72fae2f71a119224d789beb",
+        "vectors": {
+          "gems.cut_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "gems.cut_other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "gems.rough_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "gems.rough_other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 512,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "0c6e38d0d9919da8be89527607d09fdfe57888d9c94d20df890be6ea62522328",
+        "vectors": {
+          "gems.cut_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "gems.cut_other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "gems.rough_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "gems.rough_other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1024,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "33a39725d06a3a3bc1af24a5bba2b92a4034318673e38d7e5ca281f44adab248",
+        "vectors": {
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 16,
+            "sha256": "cc8cd41cef907c4d216069122c4b89936211361f9050a717a1e37ad1862e952f"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 113,
+            "sha256": "dc5e8f8d54bc280b146c76c1cf53581bbd5e073ccaf212aca935d3aff63f6bce"
+          }
+        },
+        "fixed": {
+          "finished_goods.dyed": [
+            true
+          ],
+          "finished_goods.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1024,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "b3024361980ce0b99b738716be24a0480a641c3b3300edcc1a404be8c6cbd447",
+        "vectors": {
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          }
+        },
+        "fixed": {
+          "finished_goods.dyed": [
+            false
+          ],
+          "finished_goods.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1024,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "8ac9be4a36f329f4846a0f37c6baa958f1a02e0df2ff9e4300fc91a3132bdb81",
+        "vectors": {
+          "finished_goods.color": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "finished_goods.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "finished_goods.other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "finished_goods.type": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "finished_goods.dyed": [
+            true
+          ],
+          "finished_goods.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 1024,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "a48d944b7e382d419d217b5bbb0492bed402025329f2ba55a4cb6848f3e574fe",
+        "vectors": {
+          "finished_goods.color": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "finished_goods.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "finished_goods.other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "finished_goods.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "finished_goods.dyed": [
+            false
+          ],
+          "finished_goods.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2048,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "c69c6547d8ae847c9f36a6f04d2e24e03db55a67e60b37cbb6740925a3f59d72",
+        "vectors": {
+          "leather.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 839,
+            "sha256": "63ad555a4ac93ca9e9d5843d7434a2abcebf4fb50406979f8683f9bc75167611"
+          }
+        },
+        "fixed": {
+          "leather.dyed": [
+            true
+          ],
+          "leather.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2048,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "a48d944b7e382d419d217b5bbb0492bed402025329f2ba55a4cb6848f3e574fe",
+        "vectors": {
+          "leather.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          }
+        },
+        "fixed": {
+          "leather.dyed": [
+            false
+          ],
+          "leather.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2048,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "6ccf461b60021ade1b9102a580bed47d7fd36533baad86a1bf86699a3cd1f1bc",
+        "vectors": {
+          "leather.color": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "leather.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "leather.dyed": [
+            true
+          ],
+          "leather.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 2048,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "24d2afaceb0b69dc87180eec5143244972758268cc836238028aef22bec80e83",
+        "vectors": {
+          "leather.color": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "leather.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "leather.dyed": [
+            false
+          ],
+          "leather.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4096,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "2be28d6b1810c86077f7da2b55ebdd400cef913f72b1ad470ead4bb536c1e6b8",
+        "vectors": {
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 8,
+            "sha256": "04abc8821a06e5a30937967d11ad10221cb5ac3b5273e434f1284ee87129a061"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 39,
+            "sha256": "f5576efe561214ce478995fd3cad0181ac257b8fe19f3e84e731c15b45a51776"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 8,
+            "sha256": "04abc8821a06e5a30937967d11ad10221cb5ac3b5273e434f1284ee87129a061"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 39,
+            "sha256": "f5576efe561214ce478995fd3cad0181ac257b8fe19f3e84e731c15b45a51776"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          }
+        },
+        "fixed": {
+          "cloth.dyed": [
+            true
+          ],
+          "cloth.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4096,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "24d2afaceb0b69dc87180eec5143244972758268cc836238028aef22bec80e83",
+        "vectors": {
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          }
+        },
+        "fixed": {
+          "cloth.dyed": [
+            false
+          ],
+          "cloth.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4096,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "97f4017c90297e3fd2b37ea10b29a7c32f80fd80c46b038054df9b8d38dad1b9",
+        "vectors": {
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.cloth_plant": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.cloth_silk": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.cloth_yarn": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.color": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_plant": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_silk": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_yarn": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "cloth.dyed": [
+            true
+          ],
+          "cloth.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 4096,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "878e9d08cc4479788da53db1e2adf637956e7bc06f7d870d4245241d36dafee4",
+        "vectors": {
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_plant": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_silk": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_yarn": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.color": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_plant": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_silk": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_yarn": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "cloth.dyed": [
+            false
+          ],
+          "cloth.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 16384,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "2226040bccace9d32f452cf237bc11b6878572b19f6e9b9b35e2688174cc3820",
+        "vectors": {
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 10,
+            "sha256": "ffadf8d89d37b3b55fe1847b513cf92e3be87e4c168708c7851845df96fb36be"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 5,
+            "sha256": "377a23f52c6b357696238c3318f677a082dd3430bb6691042bd550a5cda28ebb"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 44,
+            "sha256": "42ff58d57180c0de6d5d45523ff31ac629f063e8f8d9c674d6742f34c0e5cafd"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "weapons.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.unusable": [
+            true
+          ],
+          "weapons.usable": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 16384,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "6e79248e90dc623061e93b448f5fc44948d01977cbdd07ce5790335838357b08",
+        "vectors": {
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 0,
+            "sha256": "85759b3811ff7dc47b03792ac85317be51431a3f9e01dcafce317ed736a391b0"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "weapons.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.unusable": [
+            false
+          ],
+          "weapons.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": 16384,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "1c2bb2e71905a0413caee92500445eba6061e6ade1fb70e76ec9e38305f6cb92",
+        "vectors": {
+          "weapons.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "weapons.other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "weapons.trapcomp_type": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "weapons.weapon_type": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "weapons.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.unusable": [
+            true
+          ],
+          "weapons.usable": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 16384,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "b505858734340a9695c7be3bbef486e095ba57fa0a0098cda12045b87e811775",
+        "vectors": {
+          "weapons.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "weapons.other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "weapons.trapcomp_type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "weapons.weapon_type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "weapons.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.unusable": [
+            false
+          ],
+          "weapons.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": 32768,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "14db50febc7efb04bf8d6892b8fffcb8aa46bc8e45cc9cb76a10aa2518cec560",
+        "vectors": {
+          "armor.body": {
+            "count": 20,
+            "enabled": 20,
+            "sha256": "9b8f65607d891ebc9ee18add4f866748456ebce2d8f0bd9c9a8e508871617f27"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 14,
+            "sha256": "ea3ced18d8c9f5ed3017afbc235db40d7af1a0d3ad50c4d49f7c1549322266c3"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 11,
+            "sha256": "7b0c710c832f5e2d6ba6b0d459531380d8127d86b6ddf9f5e9e7df2f27f16479"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 16,
+            "sha256": "cc8cd41cef907c4d216069122c4b89936211361f9050a717a1e37ad1862e952f"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 17,
+            "sha256": "ff5a51a65ed0412e35a105b0c9d745e3f8bb49fa64c09f3958230e8bfbbe3272"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 10,
+            "sha256": "ffadf8d89d37b3b55fe1847b513cf92e3be87e4c168708c7851845df96fb36be"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 6,
+            "sha256": "dfea2964b5deedea7b1ef077de529c3959e6788bdbb3441e70c77a1ae875bb48"
+          }
+        },
+        "fixed": {
+          "armor.dyed": [
+            true
+          ],
+          "armor.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.undyed": [
+            true
+          ],
+          "armor.unusable": [
+            true
+          ],
+          "armor.usable": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 32768,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "af347b5003bd32651414bb2fc4e4f8da781b115666fcc55838a6d3a438efe1bc",
+        "vectors": {
+          "armor.body": {
+            "count": 20,
+            "enabled": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 0,
+            "sha256": "e7ecebbc590bc88b3761fa6cd03d749f87463dabb67021a5c6768c25ec68b3f2"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 0,
+            "sha256": "0a88111852095cae045340ea1f0b279944b2a756a213d9b50107d7489771e159"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 0,
+            "sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44"
+          }
+        },
+        "fixed": {
+          "armor.dyed": [
+            false
+          ],
+          "armor.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.undyed": [
+            false
+          ],
+          "armor.unusable": [
+            false
+          ],
+          "armor.usable": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 32768,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "8e3a6347ecd1060654f37350e27fd040fd201e18d541f3fe4034c510a2816298",
+        "vectors": {
+          "armor.body": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.color": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.feet": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.hands": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.head": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.legs": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.other_mats": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "armor.shield": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "armor.dyed": [
+            true
+          ],
+          "armor.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.undyed": [
+            true
+          ],
+          "armor.unusable": [
+            true
+          ],
+          "armor.usable": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 32768,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "6cf700f4e716a3c9ebacef8759d190813059caf10de9dfd4704f98b680bf29e3",
+        "vectors": {
+          "armor.body": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.color": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.feet": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.hands": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.head": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.legs": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.other_mats": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "armor.shield": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "armor.dyed": [
+            false
+          ],
+          "armor.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.undyed": [
+            false
+          ],
+          "armor.unusable": [
+            false
+          ],
+          "armor.usable": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 65536,
+        "action": 2,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "048def289b38cbdb707d48dcbf69df9a65214b540f6b34b8eaa4b9049607c849",
+        "vectors": {
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 9,
+            "sha256": "040a5a009f9b9d5e4771742174142e74fa2d3e0aaa3df5717f01ade338d75d0e"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 839,
+            "sha256": "63ad555a4ac93ca9e9d5843d7434a2abcebf4fb50406979f8683f9bc75167611"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 65536,
+        "action": 1,
+        "variant": "existing",
+        "flags": 131071,
+        "settings_sha256": "6cf700f4e716a3c9ebacef8759d190813059caf10de9dfd4704f98b680bf29e3",
+        "vectors": {
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 65536,
+        "action": 2,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "7f24845091a8e3caa4f4619976eac75cba87d9d5e71cbaa69582c95bf84bce3a",
+        "vectors": {
+          "sheet.paper": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "sheet.parchment": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 65536,
+        "action": 1,
+        "variant": "short",
+        "flags": 131071,
+        "settings_sha256": "412a73b5377cad67b80d55fffbe73fa1390ec96ab3b4c56f42cbff12982e1b03",
+        "vectors": {
+          "sheet.paper": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "sheet.parchment": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        "fixed": {
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 0,
+        "action": 2,
+        "variant": "mixed allowances",
+        "flags": 131071,
+        "settings_sha256": "6cf27d81e0e22cb29c4f06b44b1c350d7b04ecf075b4766ab25d012f042c7346",
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 11,
+            "sha256": "7b0c710c832f5e2d6ba6b0d459531380d8127d86b6ddf9f5e9e7df2f27f16479"
+          },
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "armor.body": {
+            "count": 20,
+            "enabled": 20,
+            "sha256": "9b8f65607d891ebc9ee18add4f866748456ebce2d8f0bd9c9a8e508871617f27"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 14,
+            "sha256": "ea3ced18d8c9f5ed3017afbc235db40d7af1a0d3ad50c4d49f7c1549322266c3"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 11,
+            "sha256": "7b0c710c832f5e2d6ba6b0d459531380d8127d86b6ddf9f5e9e7df2f27f16479"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 16,
+            "sha256": "cc8cd41cef907c4d216069122c4b89936211361f9050a717a1e37ad1862e952f"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 17,
+            "sha256": "ff5a51a65ed0412e35a105b0c9d745e3f8bb49fa64c09f3958230e8bfbbe3272"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 10,
+            "sha256": "ffadf8d89d37b3b55fe1847b513cf92e3be87e4c168708c7851845df96fb36be"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 6,
+            "sha256": "dfea2964b5deedea7b1ef077de529c3959e6788bdbb3441e70c77a1ae875bb48"
+          },
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 5,
+            "sha256": "377a23f52c6b357696238c3318f677a082dd3430bb6691042bd550a5cda28ebb"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 8,
+            "sha256": "04abc8821a06e5a30937967d11ad10221cb5ac3b5273e434f1284ee87129a061"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 39,
+            "sha256": "f5576efe561214ce478995fd3cad0181ac257b8fe19f3e84e731c15b45a51776"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 8,
+            "sha256": "04abc8821a06e5a30937967d11ad10221cb5ac3b5273e434f1284ee87129a061"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 39,
+            "sha256": "f5576efe561214ce478995fd3cad0181ac257b8fe19f3e84e731c15b45a51776"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "coins.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "corpses.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 16,
+            "sha256": "cc8cd41cef907c4d216069122c4b89936211361f9050a717a1e37ad1862e952f"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 113,
+            "sha256": "dc5e8f8d54bc280b146c76c1cf53581bbd5e073ccaf212aca935d3aff63f6bce"
+          },
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 24,
+            "sha256": "5b8b4d29020ea5b1bc427c40a0cab2bf944be057ec482110f1d12b68008cd286"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 76,
+            "sha256": "c97339b470e77827ed22f491ec3ce5c072b9a301a413140a93190450a3a32f78"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 203,
+            "sha256": "123c71b340bd2d9c4ea8b95ba2f4fd98f63384f27ace01b8039d44d1b626a55c"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 75,
+            "sha256": "d67717c08947c9234faf18674a322d0ef4328bb90d6b2ef54933fd2cafb08d7c"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 2062,
+            "sha256": "c184060579c12179fe4f6b402e456b8ecbac5162ac3a0d89827dde17e452acd0"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 13,
+            "sha256": "fc1df255dfe9a3d6d2d53746ade768d6cc6578c08b2a4bbc9d6c19153b673791"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 7,
+            "sha256": "c36336f242c655c52fa06c4d03f665ca9ea0bb84f20f1b1f90976aa58ca40a4a"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 95,
+            "sha256": "dd7b207cd5ad353d9e1fa816d1e4ad8e541b765927d5363312b6db28af819d9f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 277,
+            "sha256": "aff80e11499d52dd9be2e065d0ce4b56a9db7eb62348842820bec69a8d2cd405"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 9,
+            "sha256": "040a5a009f9b9d5e4771742174142e74fa2d3e0aaa3df5717f01ade338d75d0e"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 12328,
+            "sha256": "feabf0e0bdda93a67af5b014350c2c331d21d07b8d7c07cc51061085e5433d18"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 225,
+            "sha256": "f1d7af64f0ebcc75e51100787bdef92f807e060f40ad13e6fcf38f92a18405b9"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 101,
+            "sha256": "df5e7ef8b4a2dcbf2d99a0a0ac4527f9b3967daa799f7e0b7c11b06c4cd56a80"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 157,
+            "sha256": "5404bfb990ef720fdab11be62187f0755915ce9e8de74649578513d75de9e776"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 75,
+            "sha256": "d67717c08947c9234faf18674a322d0ef4328bb90d6b2ef54933fd2cafb08d7c"
+          },
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 15,
+            "sha256": "69801b353a8f248b5399788172cf8a7758625782651ae1e8b733fd3f5cd875a8"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 35,
+            "sha256": "c9bcf7a93bbcc2dec8eb37814135d3f166f971785ff872506e903abed2c49fa5"
+          },
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 659,
+            "sha256": "1e06136cb94b8e15f1f5e899035a356e1ee5bfe16a8db44f116506b3494eed0a"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 659,
+            "sha256": "1e06136cb94b8e15f1f5e899035a356e1ee5bfe16a8db44f116506b3494eed0a"
+          },
+          "leather.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 839,
+            "sha256": "63ad555a4ac93ca9e9d5843d7434a2abcebf4fb50406979f8683f9bc75167611"
+          },
+          "ore.mats": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "refuse.body_parts": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.bones": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.corpses": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.hair": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.horns": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.shells": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.skulls": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.teeth": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 9,
+            "sha256": "040a5a009f9b9d5e4771742174142e74fa2d3e0aaa3df5717f01ade338d75d0e"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 839,
+            "sha256": "63ad555a4ac93ca9e9d5843d7434a2abcebf4fb50406979f8683f9bc75167611"
+          },
+          "stone.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 10,
+            "sha256": "ffadf8d89d37b3b55fe1847b513cf92e3be87e4c168708c7851845df96fb36be"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 5,
+            "sha256": "377a23f52c6b357696238c3318f677a082dd3430bb6691042bd550a5cda28ebb"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 44,
+            "sha256": "42ff58d57180c0de6d5d45523ff31ac629f063e8f8d9c674d6742f34c0e5cafd"
+          },
+          "wood.mats": {
+            "count": 225,
+            "enabled": 225,
+            "sha256": "f1d7af64f0ebcc75e51100787bdef92f807e060f40ad13e6fcf38f92a18405b9"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "ammo.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "animals.empty_cages": [
+            true
+          ],
+          "animals.empty_traps": [
+            true
+          ],
+          "armor.dyed": [
+            true
+          ],
+          "armor.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.undyed": [
+            true
+          ],
+          "armor.unusable": [
+            true
+          ],
+          "armor.usable": [
+            true
+          ],
+          "cloth.dyed": [
+            true
+          ],
+          "cloth.undyed": [
+            true
+          ],
+          "finished_goods.dyed": [
+            true
+          ],
+          "finished_goods.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.undyed": [
+            true
+          ],
+          "food.prepared_meals": [
+            true
+          ],
+          "furniture.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "furniture.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "leather.dyed": [
+            true
+          ],
+          "leather.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ],
+          "weapons.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.unusable": [
+            true
+          ],
+          "weapons.usable": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 0,
+        "action": 1,
+        "variant": "mixed allowances",
+        "flags": 131071,
+        "settings_sha256": "b4d1a77954233f299e8637e9a8cfc5a9c707aee628e130efaedee8231761f52a",
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "armor.body": {
+            "count": 20,
+            "enabled": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 0,
+            "sha256": "e7ecebbc590bc88b3761fa6cd03d749f87463dabb67021a5c6768c25ec68b3f2"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 0,
+            "sha256": "0a88111852095cae045340ea1f0b279944b2a756a213d9b50107d7489771e159"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 0,
+            "sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44"
+          },
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "coins.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "corpses.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          },
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 0,
+            "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 0,
+            "sha256": "f2c0d5456a983ecd12e314fcfa19879179fc8424343baeb1325457472ae85601"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 0,
+            "sha256": "2e0d2fe0abe5ed515f31233a722096d2d4061bfc8fc733df44dd1eace7ddff0b"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 0,
+            "sha256": "ae35733ac6d2081fb8dab80a6901f2d1625cb5c33974f40d54d7f8960a2b6306"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 0,
+            "sha256": "dd46c3eebb1884ff3b5258c0a2fc9398e560a29e0780d4b53869b6254aa46a96"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 0,
+            "sha256": "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 0,
+            "sha256": "8542681424ecba28d65569c3be0d3962837fdf9d6cb770620108a86cf9e8d75f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 0,
+            "sha256": "5cdcd733b8b630509bac08589db291ddbde33d79f64664cb9582e66589555257"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 0,
+            "sha256": "f802050ecbdbfba2b936e225565ee1fd10e3ad48f6dc2e72c8597ceec94d2442"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 0,
+            "sha256": "e08dd9962eedb16e12840ea2a977cc07bc5fa8d96259682edaa080573d525e4c"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 0,
+            "sha256": "5ec13d514d24aba23fd78497a131244321c5e650a1468b6e636a19a7ca1fe593"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 0,
+            "sha256": "5322fecfc92a5e3248a297a3df3eddfb9bd9049504272e4f572b87fa36d4b3bd"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 0,
+            "sha256": "0d5535e13cc9708d0ff0289af2fae27e564b6bcbcd9242f5140d96957744a517"
+          },
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "leather.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          },
+          "ore.mats": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "refuse.body_parts": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.bones": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.corpses": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.hair": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.horns": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.shells": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.skulls": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.teeth": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          },
+          "stone.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 0,
+            "sha256": "85759b3811ff7dc47b03792ac85317be51431a3f9e01dcafce317ed736a391b0"
+          },
+          "wood.mats": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "ammo.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "animals.empty_cages": [
+            false
+          ],
+          "animals.empty_traps": [
+            false
+          ],
+          "armor.dyed": [
+            false
+          ],
+          "armor.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.undyed": [
+            false
+          ],
+          "armor.unusable": [
+            false
+          ],
+          "armor.usable": [
+            false
+          ],
+          "cloth.dyed": [
+            false
+          ],
+          "cloth.undyed": [
+            false
+          ],
+          "finished_goods.dyed": [
+            false
+          ],
+          "finished_goods.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.undyed": [
+            false
+          ],
+          "food.prepared_meals": [
+            false
+          ],
+          "furniture.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "furniture.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "leather.dyed": [
+            false
+          ],
+          "leather.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            false
+          ],
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ],
+          "weapons.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.unusable": [
+            false
+          ],
+          "weapons.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": 0,
+        "action": 2,
+        "variant": "mixed allowances",
+        "flags": 131071,
+        "settings_sha256": "6cf27d81e0e22cb29c4f06b44b1c350d7b04ecf075b4766ab25d012f042c7346",
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 11,
+            "sha256": "7b0c710c832f5e2d6ba6b0d459531380d8127d86b6ddf9f5e9e7df2f27f16479"
+          },
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 1131,
+            "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+          },
+          "armor.body": {
+            "count": 20,
+            "enabled": 20,
+            "sha256": "9b8f65607d891ebc9ee18add4f866748456ebce2d8f0bd9c9a8e508871617f27"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 14,
+            "sha256": "ea3ced18d8c9f5ed3017afbc235db40d7af1a0d3ad50c4d49f7c1549322266c3"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 11,
+            "sha256": "7b0c710c832f5e2d6ba6b0d459531380d8127d86b6ddf9f5e9e7df2f27f16479"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 16,
+            "sha256": "cc8cd41cef907c4d216069122c4b89936211361f9050a717a1e37ad1862e952f"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 17,
+            "sha256": "ff5a51a65ed0412e35a105b0c9d745e3f8bb49fa64c09f3958230e8bfbbe3272"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 10,
+            "sha256": "ffadf8d89d37b3b55fe1847b513cf92e3be87e4c168708c7851845df96fb36be"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 6,
+            "sha256": "dfea2964b5deedea7b1ef077de529c3959e6788bdbb3441e70c77a1ae875bb48"
+          },
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 5,
+            "sha256": "377a23f52c6b357696238c3318f677a082dd3430bb6691042bd550a5cda28ebb"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 8,
+            "sha256": "04abc8821a06e5a30937967d11ad10221cb5ac3b5273e434f1284ee87129a061"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 39,
+            "sha256": "f5576efe561214ce478995fd3cad0181ac257b8fe19f3e84e731c15b45a51776"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 1,
+            "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 8,
+            "sha256": "04abc8821a06e5a30937967d11ad10221cb5ac3b5273e434f1284ee87129a061"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 39,
+            "sha256": "f5576efe561214ce478995fd3cad0181ac257b8fe19f3e84e731c15b45a51776"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 4,
+            "sha256": "27ecd0a598e76f8a2fd264d427df0a119903e8eae384e478902541756f089dd1"
+          },
+          "coins.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "corpses.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 16,
+            "sha256": "cc8cd41cef907c4d216069122c4b89936211361f9050a717a1e37ad1862e952f"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 113,
+            "sha256": "dc5e8f8d54bc280b146c76c1cf53581bbd5e073ccaf212aca935d3aff63f6bce"
+          },
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 24,
+            "sha256": "5b8b4d29020ea5b1bc427c40a0cab2bf944be057ec482110f1d12b68008cd286"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 76,
+            "sha256": "c97339b470e77827ed22f491ec3ce5c072b9a301a413140a93190450a3a32f78"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 203,
+            "sha256": "123c71b340bd2d9c4ea8b95ba2f4fd98f63384f27ace01b8039d44d1b626a55c"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 75,
+            "sha256": "d67717c08947c9234faf18674a322d0ef4328bb90d6b2ef54933fd2cafb08d7c"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 2062,
+            "sha256": "c184060579c12179fe4f6b402e456b8ecbac5162ac3a0d89827dde17e452acd0"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 13,
+            "sha256": "fc1df255dfe9a3d6d2d53746ade768d6cc6578c08b2a4bbc9d6c19153b673791"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 7,
+            "sha256": "c36336f242c655c52fa06c4d03f665ca9ea0bb84f20f1b1f90976aa58ca40a4a"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 95,
+            "sha256": "dd7b207cd5ad353d9e1fa816d1e4ad8e541b765927d5363312b6db28af819d9f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 277,
+            "sha256": "aff80e11499d52dd9be2e065d0ce4b56a9db7eb62348842820bec69a8d2cd405"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 2,
+            "sha256": "9dcf97a184f32623d11a73124ceb99a5709b083721e878a16d78f596718ba7b2"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 9,
+            "sha256": "040a5a009f9b9d5e4771742174142e74fa2d3e0aaa3df5717f01ade338d75d0e"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 12328,
+            "sha256": "feabf0e0bdda93a67af5b014350c2c331d21d07b8d7c07cc51061085e5433d18"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 225,
+            "sha256": "f1d7af64f0ebcc75e51100787bdef92f807e060f40ad13e6fcf38f92a18405b9"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 101,
+            "sha256": "df5e7ef8b4a2dcbf2d99a0a0ac4527f9b3967daa799f7e0b7c11b06c4cd56a80"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 157,
+            "sha256": "5404bfb990ef720fdab11be62187f0755915ce9e8de74649578513d75de9e776"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 75,
+            "sha256": "d67717c08947c9234faf18674a322d0ef4328bb90d6b2ef54933fd2cafb08d7c"
+          },
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 15,
+            "sha256": "69801b353a8f248b5399788172cf8a7758625782651ae1e8b733fd3f5cd875a8"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 35,
+            "sha256": "c9bcf7a93bbcc2dec8eb37814135d3f166f971785ff872506e903abed2c49fa5"
+          },
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 659,
+            "sha256": "1e06136cb94b8e15f1f5e899035a356e1ee5bfe16a8db44f116506b3494eed0a"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 659,
+            "sha256": "1e06136cb94b8e15f1f5e899035a356e1ee5bfe16a8db44f116506b3494eed0a"
+          },
+          "leather.color": {
+            "count": 116,
+            "enabled": 116,
+            "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 839,
+            "sha256": "63ad555a4ac93ca9e9d5843d7434a2abcebf4fb50406979f8683f9bc75167611"
+          },
+          "ore.mats": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "refuse.body_parts": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.bones": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.corpses": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.hair": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.horns": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.shells": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.skulls": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.teeth": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 9,
+            "sha256": "040a5a009f9b9d5e4771742174142e74fa2d3e0aaa3df5717f01ade338d75d0e"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 839,
+            "sha256": "63ad555a4ac93ca9e9d5843d7434a2abcebf4fb50406979f8683f9bc75167611"
+          },
+          "stone.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 313,
+            "sha256": "9eb76c3695f09111249fc33366da2d6d7e2e06751acded6a32e3fc73d3ef43d9"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 10,
+            "sha256": "ffadf8d89d37b3b55fe1847b513cf92e3be87e4c168708c7851845df96fb36be"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 5,
+            "sha256": "377a23f52c6b357696238c3318f677a082dd3430bb6691042bd550a5cda28ebb"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 44,
+            "sha256": "42ff58d57180c0de6d5d45523ff31ac629f063e8f8d9c674d6742f34c0e5cafd"
+          },
+          "wood.mats": {
+            "count": 225,
+            "enabled": 225,
+            "sha256": "f1d7af64f0ebcc75e51100787bdef92f807e060f40ad13e6fcf38f92a18405b9"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "ammo.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "animals.empty_cages": [
+            true
+          ],
+          "animals.empty_traps": [
+            true
+          ],
+          "armor.dyed": [
+            true
+          ],
+          "armor.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "armor.undyed": [
+            true
+          ],
+          "armor.unusable": [
+            true
+          ],
+          "armor.usable": [
+            true
+          ],
+          "cloth.dyed": [
+            true
+          ],
+          "cloth.undyed": [
+            true
+          ],
+          "finished_goods.dyed": [
+            true
+          ],
+          "finished_goods.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "finished_goods.undyed": [
+            true
+          ],
+          "food.prepared_meals": [
+            true
+          ],
+          "furniture.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "furniture.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "leather.dyed": [
+            true
+          ],
+          "leather.undyed": [
+            true
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            true
+          ],
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ],
+          "weapons.quality_core": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.quality_total": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "weapons.unusable": [
+            true
+          ],
+          "weapons.usable": [
+            true
+          ]
+        }
+      },
+      {
+        "category": 0,
+        "action": 1,
+        "variant": "mixed allowances",
+        "flags": 131071,
+        "settings_sha256": "b4d1a77954233f299e8637e9a8cfc5a9c707aee628e130efaedee8231761f52a",
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "armor.body": {
+            "count": 20,
+            "enabled": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 0,
+            "sha256": "e7ecebbc590bc88b3761fa6cd03d749f87463dabb67021a5c6768c25ec68b3f2"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 0,
+            "sha256": "0a88111852095cae045340ea1f0b279944b2a756a213d9b50107d7489771e159"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 0,
+            "sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44"
+          },
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "coins.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "corpses.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          },
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 0,
+            "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 0,
+            "sha256": "f2c0d5456a983ecd12e314fcfa19879179fc8424343baeb1325457472ae85601"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 0,
+            "sha256": "2e0d2fe0abe5ed515f31233a722096d2d4061bfc8fc733df44dd1eace7ddff0b"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 0,
+            "sha256": "ae35733ac6d2081fb8dab80a6901f2d1625cb5c33974f40d54d7f8960a2b6306"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 0,
+            "sha256": "dd46c3eebb1884ff3b5258c0a2fc9398e560a29e0780d4b53869b6254aa46a96"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 0,
+            "sha256": "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 0,
+            "sha256": "8542681424ecba28d65569c3be0d3962837fdf9d6cb770620108a86cf9e8d75f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 0,
+            "sha256": "5cdcd733b8b630509bac08589db291ddbde33d79f64664cb9582e66589555257"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 0,
+            "sha256": "f802050ecbdbfba2b936e225565ee1fd10e3ad48f6dc2e72c8597ceec94d2442"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 0,
+            "sha256": "e08dd9962eedb16e12840ea2a977cc07bc5fa8d96259682edaa080573d525e4c"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 0,
+            "sha256": "5ec13d514d24aba23fd78497a131244321c5e650a1468b6e636a19a7ca1fe593"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 0,
+            "sha256": "5322fecfc92a5e3248a297a3df3eddfb9bd9049504272e4f572b87fa36d4b3bd"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 0,
+            "sha256": "0d5535e13cc9708d0ff0289af2fae27e564b6bcbcd9242f5140d96957744a517"
+          },
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "leather.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          },
+          "ore.mats": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "refuse.body_parts": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.bones": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.corpses": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.hair": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.horns": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.shells": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.skulls": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.teeth": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "refuse.type": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          },
+          "stone.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 0,
+            "sha256": "85759b3811ff7dc47b03792ac85317be51431a3f9e01dcafce317ed736a391b0"
+          },
+          "wood.mats": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "ammo.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "animals.empty_cages": [
+            false
+          ],
+          "animals.empty_traps": [
+            false
+          ],
+          "armor.dyed": [
+            false
+          ],
+          "armor.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.undyed": [
+            false
+          ],
+          "armor.unusable": [
+            false
+          ],
+          "armor.usable": [
+            false
+          ],
+          "cloth.dyed": [
+            false
+          ],
+          "cloth.undyed": [
+            false
+          ],
+          "finished_goods.dyed": [
+            false
+          ],
+          "finished_goods.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.undyed": [
+            false
+          ],
+          "food.prepared_meals": [
+            false
+          ],
+          "furniture.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "furniture.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "leather.dyed": [
+            false
+          ],
+          "leather.undyed": [
+            false
+          ],
+          "misc.allow_inorganic": [
+            true
+          ],
+          "misc.allow_organic": [
+            false
+          ],
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ],
+          "weapons.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.unusable": [
+            false
+          ],
+          "weapons.usable": [
+            false
+          ]
+        }
+      }
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-031039",
+      "status": "passed",
+      "native_observations": 525,
+      "header_edits": 72,
+      "coverage": "All/None for all17 category services with existing and shortened vectors and disabled flags; four global actions preserving Refuse/Corpses and native allowances. Full settings and unrelated state compared after each edit.",
+      "diagnostics": "clean",
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "omissions": [
+        "Rendered settings-panel parity",
+        "Remaining native list branches"
+      ]
+    }
   }
 }

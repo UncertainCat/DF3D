@@ -971,6 +971,24 @@ int areaSettingsCategories(lua_State* L) {
   mutated=true;
   return result(true,"",158,true);
 }
+int areaSettingsHeader(lua_State* L) {
+  const auto result=[&](bool ok,const char* reason,uint32_t steps=0,bool unknown=false) {
+    lua_newtable(L);field(L,"ok",ok);field(L,"message",reason);field(L,"steps",steps);
+    field(L,"work_unknown",unknown);return 1;
+  };
+  auto* pile=Lua::GetDFObject<df::building_stockpilest>(L,1);
+  if(!pile || !df::global::world)return result(false,"Area no longer exists",1);
+  if(!lua_isnil(L,4) || !lua_isinteger(L,2) || lua_tointeger(L,2)<0 ||
+      lua_tointeger(L,2)>0x1ffff || lua_type(L,3)!=LUA_TBOOLEAN)return result(false,"");
+  if(!areaPresetInventoryFits(pile))return result(false,"Stockpile settings exceed 65,536 entries",158);
+  try {
+    auto owned=df3d_area::nativeStockpileHeader(pile->settings,uint32_t(lua_tointeger(L,2)),lua_toboolean(L,3)!=0);
+    if(!owned)return result(false,"",158,true);
+    static_assert(std::is_nothrow_swappable_v<df::stockpile_settings>);
+    std::swap(pile->settings,*owned);
+  } catch(...) {return result(false,"",158,true);}
+  mutated=true;return result(true,"",158,true);
+}
 int areaSettingsPreset(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1,bool unknownWork=false) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);
@@ -2083,6 +2101,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSettingsPreset);lua_setfield(L,-2,"settings_preset");
     lua_pushcfunction(L,areaSettingsCategories);lua_setfield(L,-2,"settings_categories");
     lua_pushcfunction(L,areaSettingsRows);lua_setfield(L,-2,"settings_rows");
+    lua_pushcfunction(L,areaSettingsHeader);lua_setfield(L,-2,"settings_header");
     lua_pushcfunction(L,areaLocationSet);lua_setfield(L,-2,"set_location");
     lua_pushcfunction(L,areaLocationCreate);lua_setfield(L,-2,"create_location");
     lua_pushcfunction(L,areaCreate);lua_setfield(L,-2,"create_area");
@@ -2737,12 +2756,14 @@ bool printStockpileWoodRows(color_ostream& out,int32_t id,const std::string& fil
     out.print("{}",Json::FastWriter().write(result));return true;
   } catch(...) {return false;}
 }
-static bool printStockpileSettings(color_ostream& out,int32_t id,int32_t choice,bool category) {
+static bool printStockpileSettings(color_ostream& out,int32_t id,int32_t choice,bool category,
+    std::optional<bool> header=std::nullopt) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !df::global::world)return false;
   if(!areaPresetInventoryFits(pile))return false;
   try {
-    auto settings=category?df3d_area::nativeStockpileCategory(pile->settings,uint32_t(choice)):
+    auto settings=header?df3d_area::nativeStockpileHeader(pile->settings,uint32_t(choice),*header):
+        category?df3d_area::nativeStockpileCategory(pile->settings,uint32_t(choice)):
         df3d_area::nativeStockpilePreset(pile->settings,choice);
     if(!settings)return false;
     std::unique_ptr<df::building_stockpilest> scratch(df::allocate<df::building_stockpilest>());
@@ -2750,7 +2771,7 @@ static bool printStockpileSettings(color_ostream& out,int32_t id,int32_t choice,
     scratch->settings=std::move(*settings);
     Json::Value result(Json::objectValue);
     result["flags"]=scratch->settings.flags.whole;
-    if(!category) {
+    if(!category && !header) {
       const auto containers=df3d_area::nativeStockpilePresetContainers(*pile,choice);
       if(!containers)return false;
       result["storage"]["barrels"]=(*containers)[0];
@@ -2775,6 +2796,9 @@ bool printStockpilePreset(color_ostream& out,int32_t id,int32_t preset) {
 }
 bool printStockpileCategory(color_ostream& out,int32_t id,uint32_t category) {
   return printStockpileSettings(out,id,int32_t(category),true);
+}
+bool printStockpileHeader(color_ostream& out,int32_t id,uint32_t category,bool enabled) {
+  return printStockpileSettings(out,id,int32_t(category),false,enabled);
 }
 bool printMaterialRecipe(color_ostream& out,int32_t type,int32_t subtype,bool collect,bool cold_cache,int32_t custom,int32_t plate_flags,int32_t eligible_tiles) {
   auto* L=Core::getInstance().getLuaState();const int top=lua_gettop(L);

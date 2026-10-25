@@ -52,8 +52,30 @@ func exercise() -> void:
 				await native("quality_after",{"id":pile,"mode":mode})
 				if stopped: return
 	await other_materials(pile)
+	await header_actions(pile,categories)
 	await paint()
 	await native("final")
+
+func header_actions(pile: int, categories: Array) -> void:
+	for bit in range(categories.size()):
+		var category: String = categories[bit]
+		step = "native category header " + category
+		await edit(pile,0,{"operation":3,"preset":bit+2})
+		for shortened in [false,true]:
+			if shortened: await native("header_setup",{"id":pile,"category":category})
+			for value in [1,2]:
+				await native("header_before",{"id":pile,"category":category,"value":value})
+				await edit(pile,0,{"operation":2,"scope":3,"value":value,"list_key":category,"query":"ignored"})
+				await native("header_after",{"id":pile,"category":category})
+				if stopped: return
+	step = "native global headers"
+	for enabled in [false,true]:
+		await native("header_setup",{"id":pile,"category":"","enabled":enabled})
+		for value in [2,1]:
+			await native("header_before",{"id":pile,"category":"","value":value})
+			await edit(pile,0,{"operation":2,"scope":4,"value":value,"list_key":""})
+			await native("header_after",{"id":pile,"category":""})
+			if stopped: return
 
 func other_materials(pile: int) -> void:
 	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768}

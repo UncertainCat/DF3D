@@ -540,15 +540,12 @@ local function merge_edit(target,source)
  end
  for key in pairs(source.flags) do target.flags[key]=true end
 end
-local edit_all=edit_template()
 for _,cat in ipairs(cats) do edit_categories[cat]=edit_template();edit_categories[cat].flags[cat]=true end
 for _,group in ipairs(summary_groups) do
  local one=edit_template();local entry={field=group.field,source=group.source,selection=0}
  one.entries[1]=entry;one.fields[entry.field]=entry
- merge_edit(edit_all,one)
  if edit_categories[group.cat] then merge_edit(edit_categories[group.cat],one) end
 end
-for _,cat in ipairs(cats) do edit_all.flags[cat]=true end
 for key,d in pairs(setting_leaves) do
  local one=edit_template();local entry={field=d.field,source=d.source,selection=setting_partitions[d.partition] or 0}
  one.entries[1]=entry;one.fields[entry.field]=entry;edit_lists[key]=one
@@ -580,7 +577,6 @@ local function order_edit_flags(target)
  target.flag_order={}
  for _,cat in ipairs(cats) do if target.flags[cat] then target.flag_order[#target.flag_order+1]=cat end end
 end
-order_edit_flags(edit_all)
 for _,target in pairs(edit_categories) do order_edit_flags(target) end
 for _,target in pairs(edit_lists) do order_edit_flags(target) end
 for _,target in pairs(embedded_edits) do order_edit_flags(target) end
@@ -588,9 +584,7 @@ for _,rows in pairs(edit_rows) do for _,target in pairs(rows) do order_edit_flag
 local function settings_edit_plan(a,layout,available,native_rows)
  local list=default(a,'list_key','');local row=default(a,'row_key','');local scope=a.scope
  local target,index
- if scope==4 then target=edit_all
- elseif scope==3 and edit_lists[list] then target=edit_categories[list:match('^([^/]+)')]
- elseif scope==2 then target=edit_lists[list]
+ if scope==2 then target=edit_lists[list]
  elseif embedded_settings[list] and embedded_edits[row] and row:sub(1,#list+1)==list..'/' then target=embedded_edits[row]
  elseif setting_leaves[list] then
   target=edit_lists[list];local suffix=row:sub(#list+2);index=tonumber(suffix)
@@ -653,14 +647,8 @@ local function settings_edit_plan(a,layout,available,native_rows)
    members=index and string.rep('\0',index)..'\1'..string.rep('\0',count-index-1) or allowed
    cost=2
   else members={count=count,selection=d.selection,row=index or -1};allowed='';cost=1+2*((count+255)//256) end
-  -- Native global headers: None preserves misc toggles; All skips Refuse and
-  -- Corpses entirely (captures215131/220959), including their filter contents.
-  local preserve=scope==4 and (a.value==1 and (d.field=='misc.allow_organic' or d.field=='misc.allow_inorganic') or
-   a.value==2 and (d.field:match('^refuse%.') or d.field:match('^corpses%.')))
-  if not preserve then
-   plan.entries[#plan.entries+1]={field=d.field,members=members,allowed=allowed,cost=cost}
-   plan.cost=plan.cost+cost
-  end
+  plan.entries[#plan.entries+1]={field=d.field,members=members,allowed=allowed,cost=cost}
+  plan.cost=plan.cost+cost
  end
  return plan,nil,used
 end
@@ -1422,6 +1410,23 @@ local function native_operation(r)
   if not after then return reject(why..'; native edit may have completed; inspect before retrying') end
   return finish{ok=true,message='Native stockpile preset applied',areas={info(b,after)},building_id=b.id}
  end
+ if op==2 and (a.scope==3 or a.scope==4) then
+  if expected==0 then return reject('Area revision required; inspect again') end
+  local category=0
+  if a.scope==3 then
+   local key=default(a,'list_key','')
+   if not edit_lists[key] then return reject('Unknown stockpile settings list or row') end
+   local name=key:match('^([^/]+)')
+   for bit,cat in ipairs(cats)do if cat==name then category=1 << (bit-1);break end end
+   if category==0 then return reject('Unknown stockpile settings list or row') end
+  end
+  local changed,problem,unknown=invoke(r.settings_header,reply_reserve,b,category,a.value==2)
+  if changed or unknown then clear_lists() end
+  if not changed then return reject(problem) end
+  local after,why=observe(b,false)
+  if not after then return reject(why..'; native edit may have completed; inspect before retrying') end
+  return finish{ok=true,message='',areas={info(b,after)},building_id=b.id}
+ end
  if op==1 or op==2 then
   -- Count raw index spaces, not the current (possibly empty) settings vectors.
   -- The native inventory contains copied sizes only; shared display partitions
@@ -1466,9 +1471,7 @@ local function native_operation(r)
    if #plan.flags>0 then
     clear_lists();steps=steps+#plan.flags
     for _,cat in ipairs(plan.flags) do
-     -- Native top-left None clears filters but preserves category activation.
-     -- Captured independently from presets in settings-native-summary-212321.
-     if a.scope~=4 or (a.value~=1 and cat~='refuse' and cat~='corpses') then b.settings.flags[cat]=a.value==2 end
+     b.settings.flags[cat]=a.value==2
     end
    end
    local after,why=observe(b,false)

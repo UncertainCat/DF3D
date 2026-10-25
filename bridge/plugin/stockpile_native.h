@@ -19,6 +19,11 @@ std::optional<df::stockpile_settings> nativeStockpileInitialSettings(uint32_t ca
 // native-sized empty filters; an already enabled category keeps its settings.
 std::optional<df::stockpile_settings> nativeStockpileCategory(
     const df::stockpile_settings& source,uint32_t category);
+// Category header All/None, or global header when category is zero. These are
+// distinct from presets and activation: category headers preserve vector sizes
+// and flags; global None also preserves misc allowances.
+std::optional<df::stockpile_settings> nativeStockpileHeader(
+    const df::stockpile_settings& source,uint32_t category,bool enabled);
 struct NativeStockpileRow {
     size_t index;
     std::string name;

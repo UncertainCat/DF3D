@@ -36,6 +36,20 @@ bool supported(const uint8_t* base) {
     for(const auto& span:spans)if(hash(base+span.rva,span.size)!=span.digest)return false;
     return true;
 }
+void categoryHeader(const uint8_t* base,df::stockpile_settings& owned,size_t index,bool enabled) {
+    static constexpr size_t clears[]={0x30d350,0x30d540,0x30d560,0x30d5a0,
+        0x30d5e0,0x30d5a0,0x30d560,0x30d5a0,0x30d620,0x30d620,0x30d640,
+        0x30d660,0x30d720,0x30d5a0,0x30d760,0x30d780,0x30d740};
+    static constexpr size_t fills[]={0x30d300,0x30d530,0x30d550,0x30d570,
+        0x30d5d0,0x30d570,0x30d550,0x30d570,0x30d610,0x30d610,0x30d630,
+        0x30d650,0x30d710,0x30d570,0x30d750,0x30d770,0x30d730};
+    void* fields[]={&owned.animals,&owned.food,&owned.furniture,&owned.corpses,
+        &owned.refuse,&owned.stone,&owned.ammo,&owned.coins,&owned.bars_blocks,
+        &owned.gems,&owned.finished_goods,&owned.leather,&owned.cloth,&owned.wood,
+        &owned.weapons,&owned.armor,&owned.sheet};
+    using Fill=void (*)(void*);
+    reinterpret_cast<Fill>(base+(enabled?fills[index]:clears[index]))(fields[index]);
+}
 }
 std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
     df::building_stockpilest& pile,int preset) {
@@ -114,16 +128,32 @@ std::optional<df::stockpile_settings> nativeStockpileCategory(
     reinterpret_cast<Initialize>(base+0x30e070)(&owned,category);
     // Category-selection prelude35fdde..35ff70. Every clear helper only writes
     // its supplied category. Shared default helpers are checked by supported().
-    static constexpr size_t clears[]={0x30d350,0x30d540,0x30d560,0x30d5a0,
-        0x30d5e0,0x30d5a0,0x30d560,0x30d5a0,0x30d620,0x30d620,0x30d640,
-        0x30d660,0x30d720,0x30d5a0,0x30d760,0x30d780,0x30d740};
-    void* fields[]={&owned.animals,&owned.food,&owned.furniture,&owned.corpses,
-        &owned.refuse,&owned.stone,&owned.ammo,&owned.coins,&owned.bars_blocks,
-        &owned.gems,&owned.finished_goods,&owned.leather,&owned.cloth,&owned.wood,
-        &owned.weapons,&owned.armor,&owned.sheet};
     size_t index=0;while((uint32_t(1)<<index)!=category)++index;
-    using Clear=void (*)(void*);
-    reinterpret_cast<Clear>(base+clears[index])(fields[index]);
+    categoryHeader(base,owned,index,false);
+    return owned;
+}
+std::optional<df::stockpile_settings> nativeStockpileHeader(
+    const df::stockpile_settings& source,uint32_t category,bool enabled) {
+    if(!df::global::world || (category&(category-1)) || (category&~uint32_t(0x1ffff)))return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return std::nullopt;
+    static const bool compatible=supported(base) &&
+        hash(base+0x30d300,0x490)==0xee34eefa6f163a9bULL &&
+        hash(base+0x3272e3,0x9fd)==0x7f51c1989311fa8dULL;
+    if(!compatible)return std::nullopt;
+    auto owned=source;
+    if(category) {
+        size_t index=0;while((uint32_t(1)<<index)!=category)++index;
+        categoryHeader(base,owned,index,enabled);
+    } else if(enabled) {
+        // Global All calls the initializer directly, unlike a preset. In
+        // particular existing Refuse/Corpses settings are not cleared first.
+        using Initialize=void (*)(df::stockpile_settings*,int16_t);
+        reinterpret_cast<Initialize>(base+0x30dde0)(&owned,19);
+    } else {
+        // Global None clears all category contents, retaining flags and misc.
+        for(size_t index=0;index<17;++index)categoryHeader(base,owned,index,false);
+    }
     return owned;
 }
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(

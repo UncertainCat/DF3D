@@ -37,8 +37,8 @@ read supplied byte vectors and native literal labels. Native bulk dispatch at
 `0x328000` and `0x328122` writes visible row pointers without resizing settings;
 DF3D therefore sizes these masks to the stored vector, preserving empty/short
 vectors and unknown trailing slots. Local Other-material captions, capitalization
-and search reconstruction have been removed. Category/global actions and other
-leaf branches still use staged logic and need further native migration.
+and search reconstruction have been removed. Other leaf branches and per-row
+category toggles still use staged logic and need further native audit.
 
 Protected run `build/stockpile-presets-native-20261025-024935` compared all seven
 Other-material lists against actual native clicks for empty, matching and
@@ -57,6 +57,34 @@ Other-material page reads and63 edits:42 bulk actions, seven individual rows and
 14 short/empty-vector actions. Complete settings snapshots matched after every
 edit. Owned DF closed without saving. These checks establish command effects,
 not rendered settings-panel parity or the remaining material-list branches.
+
+Category-wide and global All/None use owned native header routines. Category
+actions fill existing vectors/fixed settings without changing category flags or
+vector lengths. Global All calls `0x30dde0` with mode19 directly, preserving
+existing Refuse/Corpses settings; it must not use the clear-then-initialize preset
+path. Global None calls all17 native category clear helpers, preserving category
+flags and organic/inorganic allowances. Header requests prepare the complete
+result before one nonthrowing settings swap. The old per-field Lua header plan,
+flag writes and partial-publication path have been removed for these operations.
+
+`df3d stockpile-header-read <building-id> <category-bit-or-0-global> <1-none-or-2-all>`
+reports predicted settings without publication. Protected native run
+`build/stockpile-presets-native-20261025-030337` passed60 actual-button comparisons:
+All/None for14 native middle-column categories with existing and shortened
+vectors, plus four global actions with mixed allowances. Every flag,78 vectors
+and29 fixed settings matched. Probe calls preserved source settings and native
+UI bytes; simulation stayed paused and source save hashes were unchanged.
+Coins, Corpses and Wood have no native middle-column header buttons; the viewer
+continues hiding that column's buttons for these direct leaves. Recorded header
+comparisons are in `fixtures/areas/native_stockpile_filters.json`.
+
+Protected command run `build/stockpile-initialization-20261025-031039` passed525
+native observations, including72 header edits through the real bridge. All17
+category services retained native flags and vector lengths, including shortened
+vectors and disabled flags. Global actions preserved the native Refuse/Corpses
+and allowance behavior. Full settings and unrelated state matched after each
+edit; diagnostics were clean, source save hashes were unchanged and owned DF
+closed without saving. This establishes command effects, not rendered parity.
 
 Protected run `build/stockpile-initialization-20261025-023028` passed201 native
 observations through the real Godot bridge driver. For each quality list, empty,

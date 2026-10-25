@@ -82,13 +82,14 @@ local function area(b)
  end
  return r
 end
-local function fingerprint(without_settings_id)
+local function fingerprint(without_settings_id,without_misc)
  local all={areas={},workshops={},cages={},units={},squads={},locations={},next_building=df.global.building_next_id}
  for _,b in ipairs(df.global.world.buildings.all) do
   if df.building_stockpilest:is_instance(b) or df.building_civzonest:is_instance(b) then
    local observed=area(b)
    if b.id==without_settings_id then
     observed.settings=nil
+    if without_misc then observed.organic=nil;observed.inorganic=nil end
     -- DF derives an unnamed stockpile's display name from its category flags.
     -- Its stored custom_name remains in the guard.
     if observed.custom_name=='' then observed.name=nil end
@@ -133,18 +134,37 @@ if request.op=='guard_before' then
 elseif request.op=='guard_after' then
  assert(df.global.pause_state,'refusal guard requires paused fortress')
  assert(_G.df3d_areas_guard==fingerprint(),'refusal changed native area state')
-elseif request.op=='category_before' then
+elseif request.op=='header_setup' then
+ local b=building();assert(df.global.pause_state)
+ if request.category=='' then
+  b.settings.misc.allow_organic=false;b.settings.misc.allow_inorganic=true
+  b.settings.refuse.type:resize(2);b.settings.corpses.corpses:resize(2)
+  for i=0,1 do b.settings.refuse.type[i]=1-i;b.settings.corpses.corpses[i]=i end
+  b.settings.flags.refuse=request.enabled;b.settings.flags.corpses=request.enabled
+ else
+  local text,code=dfhack.run_command_silent('df3d','stockpile-header-read',tostring(b.id),'0','1')
+  assert(code==0,text)
+  for field in pairs(json.decode(text).vectors)do
+   local cat,key=field:match('^([^%.]+)%.(.+)$')
+   if cat==request.category then local values=b.settings[cat][key];values:resize(math.min(1,#values))end
+  end
+  b.settings.flags[request.category]=false
+ end
+elseif request.op=='category_before' or request.op=='header_before' then
  assert(df.global.pause_state,'category guard requires paused fortress')
  local b=building()
  local categories={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
   'bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
- local bit
+ local header=request.op=='header_before'
+ local bit=header and request.category=='' and 0 or nil
  for i,key in ipairs(categories)do if key==request.category then bit=1 << (i-1)end end
  assert(bit,'category guard requires explicit category')
- local text,code=dfhack.run_command_silent('df3d','stockpile-category-read',tostring(b.id),tostring(bit))
+ local text,code
+ if header then text,code=dfhack.run_command_silent('df3d','stockpile-header-read',tostring(b.id),tostring(bit),tostring(request.value))
+ else text,code=dfhack.run_command_silent('df3d','stockpile-category-read',tostring(b.id),tostring(bit))end
  assert(code==0,text)
- _G.df3d_category_guard={id=b.id,category=request.category,expected=json.decode(text),other=fingerprint(b.id)}
-elseif request.op=='category_after' then
+ _G.df3d_category_guard={id=b.id,category=request.category,header=header,expected=json.decode(text),other=fingerprint(b.id,header)}
+elseif request.op=='category_after' or request.op=='header_after' then
  local b=building();local before=assert(_G.df3d_category_guard)
  assert(df.global.pause_state and before.id==b.id and before.category==request.category,'category guard identity changed')
  assert(b.settings.flags.whole==before.expected.flags,'category flags differ from native selection')
@@ -156,7 +176,7 @@ elseif request.op=='category_after' then
    else for i,value in ipairs(values)do assert(actual[i-1]==value,'category value '..key..' '..i)end end
   end
  end
- assert(before.other==fingerprint(b.id),'category selection changed unrelated native state')
+ assert(before.other==fingerprint(b.id,before.header),'category selection changed unrelated native state')
 elseif request.op=='snapshot' then
  result.area=area(building());if request.expected then check_properties(result.area,request.expected,'area') end
 elseif request.op=='global_all_prepare' then

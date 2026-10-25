@@ -578,6 +578,48 @@ require('gui.script').start(function()
   end
   c.spec_filter='';c.scroll_position_spec=0
   end
+  -- Actual graphical scrollbar cells and input reference for the settings view.
+  do
+  local art_map={}
+  local function grid(token,h)
+   local a=g.graphical_interface['texpos_'..token:lower()]
+   for x=0,1 do for y=0,h-1 do art_map[a[x][y]]={token=token,x=x,y=y}end end
+  end
+  local function strip(token)
+   local a=g.graphical_interface['texpos_'..token:lower()]
+   for x=0,1 do art_map[a[x]]={token=token,x=x,y=0}end
+  end
+  grid('SCROLLBAR',3)
+  for _,token in ipairs{'SCROLLBAR_SMALL_SCROLLER','SCROLLBAR_SMALL_SCROLLER_HOVER','SCROLLBAR_OFFCENTER_SCROLLER','SCROLLBAR_OFFCENTER_SCROLLER_HOVER'}do grid(token,2)end
+  for _,token in ipairs{'SCROLLBAR_UP_HOVER','SCROLLBAR_UP_PRESSED','SCROLLBAR_DOWN_HOVER','SCROLLBAR_DOWN_PRESSED','SCROLLBAR_TOP_SCROLLER','SCROLLBAR_TOP_SCROLLER_HOVER','SCROLLBAR_BOTTOM_SCROLLER','SCROLLBAR_BOTTOM_SCROLLER_HOVER','SCROLLBAR_BLANK_SCROLLER','SCROLLBAR_BLANK_SCROLLER_HOVER','SCROLLBAR_CENTER_SCROLLER','SCROLLBAR_CENTER_SCROLLER_HOVER'}do strip(token)end
+  local function observe(name)
+   view:render(dfhack.getTickCount())
+   local cells={}
+   for _,x in ipairs{39,40,74,75,118,119}do for y=8,58 do
+    local idx=x*g.dimy+y
+    local tokens={}
+    for _,field in ipairs{'screentexpos','screentexpos_lower','screentexpos_top','screentexpos_top_lower'}do
+     local tile=g[field][idx];if art_map[tile]then tokens[field]=art_map[tile]end
+    end
+    if next(tokens)then cells[#cells+1]={x=x,y=y,tokens=tokens}end
+   end end
+   assert(#cells>0,'no graphical scrollbar art found')
+   local visible=0;for i=0,c.cur_spec_item_sz-1 do if c.spec_item[i].on then visible=visible+1 end end
+   records[#records+1]={probe='scrollbar',name=name,main=c.scroll_position_main,sub=c.scroll_position_sub,spec=c.scroll_position_spec,total=visible,cells=cells}
+  end
+  c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0;c.scroll_position_sub=0;c.scroll_position_spec=0
+  view:render(dfhack.getTickCount());label_click('Food');g.mouse_x=0;g.mouse_y=0
+  observe('food_top')
+  c.scroll_position_main=1;c.scroll_position_sub=1;c.scroll_position_spec=30;observe('offsets')
+  c.scroll_position_spec=c.cur_spec_item_sz-16;observe('bottom')
+  c.scroll_position_spec=0;c.spec_filter='A';label_click('Food');observe('filtered')
+  c.spec_filter='ALPACA';label_click('Food');observe('short')
+  c.spec_filter='';label_click('Food');c.scroll_position_spec=30;view:render(dfhack.getTickCount())
+  click(118,56);observe('down_arrow')
+  click(118,9);observe('up_arrow')
+  click(118,30);observe('track_below')
+  c.scroll_position_spec=0;c.scroll_position_main=0;c.scroll_position_sub=0
+  end
   -- Compare every category entry and default-leaf reopening with owned rows.
   do
   local entries={

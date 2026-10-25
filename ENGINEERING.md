@@ -375,6 +375,26 @@ controller checks cleanly. Both rendered settings-scroll and area-menu checks
 passed with the documented thread-notice, device-finalize and shutdown-object
 diagnostics; they are not clean renderer passes.
 
+Protected `build/stockpile-scrollbar-native-20261025-075143` matched actual
+settings scrollbar screen cells against DF's graphical-interface templates.
+Twenty-four column states cover top/interior/bottom, filtering and a short result;
+both tile halves were checked. The bars occupy `(312,108,16,576)`,
+`(592,108,16,576)` and `(944,108,16,576)` at1200x800. The shared
+`area_location_scrollbar.gd` formula matches their segmented thumb geometry and
+single-press arrow/page-track behavior. It is a proportional segmented thumb,
+not a fixed diamond or a stretched two-row texture. The existing
+`stockpile_scrollbar_test` checks these recorded positions and input outcomes;
+`build/qa/stockpile-scrollbar-reference` passed it and root CTest cleanly. Source
+save hashes were unchanged and owned DF closed without saving.
+
+Settings integration remains outstanding. Current `build_total` counts all native
+rows before search, while a page contains at most128 visible rows. Neither is the
+filtered total required by the scrollbar. Expose that count explicitly, preserving
+unknown counts in legacy recordings, and support requesting a not-yet-loaded row
+range before replacing the current settings scrollbar. Do not infer a total from
+loaded pages or relabel the unfiltered work count. Held repeat, wheel modifiers,
+dragging and scaled viewport behavior still require settings-specific acceptance.
+
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
 all; parent slots are unused. The bridge combines native sublist states and the
@@ -7117,7 +7137,7 @@ Creation, accepted repaint extents and removal matched native state. Both save
 manifests were unchanged and owned DF closed unsaved. The sole diagnostic was
 the documented separate-thread notice, so this is `passed_with_known_issues`.
 Bounded coverage is in `native_stockpile_filters.json.rendered_stockpile_workflow`.
-The native fixed scrollbar thumb remains a visual gap; containers, links and full
+The native segmented scrollbar thumb remains a visual gap; containers, links and full
 lifecycle/input fidelity are not established by this run. Offline gate
 `build/qa/stockpile-scene-scope` passed root CTest.
 

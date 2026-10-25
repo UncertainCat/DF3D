@@ -563,6 +563,15 @@
       ]
     },
     {
+      "id": "stockpile_scrollbar_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/stockpile_scrollbar_test.gd",
+      "completion": "STOCKPILE_SCROLLBAR_PASS",
+      "timeout": 50,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "area_settings_scroll_capture",
       "lane": "gpu",
       "kind": "godot",

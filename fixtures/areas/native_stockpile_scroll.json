@@ -1933,5 +1933,785 @@
     "source_save_unchanged": true,
     "owned_df_closed_without_saving": true,
     "behavior": "Native retains offset30 internally while displaying the first row of a twelve-row ALPACA result and no rows for ZZZZNOMATCH; returning to A restores row30."
+  },
+  "scrollbar": {
+    "run": "build/stockpile-scrollbar-native-20261025-075143",
+    "result_sha256": "803aa00a913560fb9c32b4784979e748e420af9557632ed1eaa29f13ce5d12d8",
+    "source_save_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "source": "DF graphical_interface scrollbar templates matched against actual normal/lower/top/top_lower screen layers; both tile halves checked",
+    "rectangles": [
+      [
+        312,
+        108,
+        16,
+        576
+      ],
+      [
+        592,
+        108,
+        16,
+        576
+      ],
+      [
+        944,
+        108,
+        16,
+        576
+      ]
+    ],
+    "cases": [
+      {
+        "case": "food_top",
+        "column": 0,
+        "count": 17,
+        "first": 0,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          1,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 1,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 21,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "food_top",
+        "column": 1,
+        "count": 18,
+        "first": 0,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          1,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 1,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 20,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 39,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "food_top",
+        "column": 2,
+        "count": 12328,
+        "first": 0,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          1,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 1,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 2,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "case": "offsets",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "offsets",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "offsets",
+        "column": 2,
+        "count": 12328,
+        "first": 30,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          2,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 2,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "case": "bottom",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "bottom",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "bottom",
+        "column": 2,
+        "count": 12328,
+        "first": 12312,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          45,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 45,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "case": "filtered",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "filtered",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "filtered",
+        "column": 2,
+        "count": 12000,
+        "first": 0,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          1,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 1,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 2,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "case": "short",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "short",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "short",
+        "column": 2,
+        "count": 12,
+        "first": 0,
+        "page": 16,
+        "height": 576,
+        "visible": false,
+        "tokens": []
+      },
+      {
+        "case": "down_arrow",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "down_arrow",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "down_arrow",
+        "column": 2,
+        "count": 12328,
+        "first": 31,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          2,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 2,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "case": "up_arrow",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "up_arrow",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "up_arrow",
+        "column": 2,
+        "count": 12328,
+        "first": 30,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          2,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 2,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_SMALL_SCROLLER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "case": "track_below",
+        "column": 0,
+        "count": 17,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          6,
+          41
+        ],
+        "tokens": [
+          {
+            "cell": 6,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 26,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 46,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "track_below",
+        "column": 1,
+        "count": 18,
+        "first": 1,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          3,
+          39
+        ],
+        "tokens": [
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_TOP_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 22,
+            "token": "SCROLLBAR_CENTER_SCROLLER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 41,
+            "token": "SCROLLBAR_BOTTOM_SCROLLER",
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "case": "track_below",
+        "column": 2,
+        "count": 12328,
+        "first": 46,
+        "page": 16,
+        "height": 576,
+        "visible": true,
+        "thumb": [
+          2,
+          2
+        ],
+        "tokens": [
+          {
+            "cell": 2,
+            "token": "SCROLLBAR_SMALL_SCROLLER_HOVER",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "cell": 3,
+            "token": "SCROLLBAR_SMALL_SCROLLER_HOVER",
+            "x": 0,
+            "y": 1
+          }
+        ]
+      }
+    ],
+    "input": [
+      {
+        "action": "down_arrow",
+        "before": 30,
+        "after": 31
+      },
+      {
+        "action": "up_arrow",
+        "before": 31,
+        "after": 30
+      },
+      {
+        "action": "track_below",
+        "before": 30,
+        "after": 46
+      }
+    ],
+    "omissions": [
+      "held-repeat timing",
+      "mouse wheel modifiers",
+      "dragging",
+      "viewport scaling",
+      "paged DF3D integration"
+    ]
   }
 }

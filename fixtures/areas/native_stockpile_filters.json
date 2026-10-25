@@ -43303,7 +43303,7 @@
     "unchanged_save_directories": 2,
     "owned_df_closed_without_saving": true,
     "omissions": [
-      "native scrollbar fixed-thumb appearance and full-list proportions",
+      "native segmented scrollbar appearance and full-list proportions",
       "complete input/hover/non-ASCII and viewport-size fidelity",
       "containers and give/take links in the rendered scene",
       "full lifecycle and malformed/historical input acceptance",

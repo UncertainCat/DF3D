@@ -925,7 +925,7 @@ local function native_operation(r)
  end
  local function info(b,snapshot)
   local k=kind(b);local label=k==1 and df.civzone_type[b.type] or nil
-  local out={id=b.id,kind=k,name=name(b),revision=snapshot.revision,
+  local out={id=b.id,kind=k,name=name(b),custom_name=dfhack.df2utf(b.name),revision=snapshot.revision,
    x=snapshot.x,y=snapshot.y,z=snapshot.z,width=snapshot.width,height=snapshot.height,extents=snapshot.extents,
    tile_count=snapshot.tile_count,storage_limit=snapshot.storage_limit or -1,zone_type=-1,categories=0,barrels=0,bins=0,wheelbarrows=0,
    links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owned(b),gives=snapshot.gives,takes=snapshot.takes,

@@ -110,6 +110,8 @@ func pointer_areas() -> void:
 		if stopped: return
 		if destination == "Zones": await pointer_owner(id,origin)
 		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
+			await stockpile_name_contract()
+			if stopped: return
 			await pointer_storage_limits()
 			if not stopped: await pointer_stockpile_fit(origin)
 			if not stopped: await link_unloaded_target()
@@ -135,6 +137,17 @@ func pointer_areas() -> void:
 	if stopped: return
 	await native("final")
 	if not stopped: print("AREAS_POINTER_PASS")
+
+func stockpile_name_contract() -> void:
+	# Semantic field acceptance only; actual inline rename input is separate.
+	step = "stockpile custom name contract"
+	if not check(editor.selected.get("custom_name",null) == "","unnamed custom string missing"): return
+	for value in ["Stockpile #2","Caf\u00e9",""]:
+		editor.rename_area(value)
+		if not await wait_ui(settled,"custom name write"): return
+		var observed := await native("snapshot",{"id":int(editor.selected.id),"expected":{"custom_name":value}})
+		if stopped: return
+		if not check(editor.selected.get("custom_name",null) == value and editor.selected.name == observed.area.name,"custom/display name differs from native"): return
 
 func pointer_storage_limits() -> void:
 	step = "viewport native storage limits"

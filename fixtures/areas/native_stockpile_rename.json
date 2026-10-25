@@ -298,7 +298,24 @@
   "implementation_gaps": [
     "Viewer uses a separate field below the palette, prefilled with the displayed name and selected in full.",
     "Viewer submits only on Enter, permits 128 characters and returns to the palette on Escape.",
-    "AreaInfo exposes the displayed name but does not expose the exact custom name.",
     "Actual viewport rename input and async write lifecycle acceptance remain outstanding."
-  ]
+  ],
+  "contract_acceptance": {
+    "management_version": 60,
+    "run": "build/areas-acceptance-20261025-180611",
+    "summary": "passed_with_known_issues",
+    "files_sha256": {
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "response-2.json": "12a14bbdb260886d5dcf512284e8df745ee8a32172e9d8d891ed1c415793c7d3",
+      "response-3.json": "2a2b986edede1bdbb5b46afddec10ac4634f8e882b939d4de7e59f34603e99d3",
+      "response-4.json": "22cf7a354805903bbd18921e28ed7760c1c43259b6bafd899d2be1254ea81d28"
+    },
+    "tested_custom_names": [
+      "Stockpile #2",
+      "Caf\u00e9",
+      ""
+    ],
+    "scope": "Semantic writes and Godot-decoded custom/display names compared to native readback; not inline rename UI acceptance."
+  }
 }

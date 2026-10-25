@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 59;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v59";
+inline constexpr uint32_t kManagementVersion = 60;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v60";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -919,7 +919,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           v->width()<1 || v->height()<1 || v->width()>256 || v->height()>256 ||
           !v->extents() || v->extents()->size()!=uint32_t(v->width())*v->height() ||
           v->extents()->size()>65536 || (v->categories() & ~0x1ffffu) ||
-          (v->name() && v->name()->size()>512) || (v->owner_name() && v->owner_name()->size()>512) ||
+          textSize(v->custom_name())>512 || (v->name() && v->name()->size()>512) || (v->owner_name() && v->owner_name()->size()>512) ||
           (v->gives() && v->gives()->size()>1024) || (v->takes() && v->takes()->size()>1024) ||
           v->revision()>INT64_MAX || textSize(v->zone_label())>512 ||
           textSize(v->location_name())>512 || textSize(v->religion())>512 ||
@@ -928,7 +928,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           v->storage_limit()<-1 || v->storage_limit()>32767 ||
           (v->kind()!=AreaKind::Stockpile && v->storage_limit()!=-1) || v->tile_count()<-1 || v->assigned_count()<-1 || v->location_kind()>5 ||
           v->owner_sex()<-1 || v->owner_sex()>1 || textSize(v->owner_profession())>512) return "invalid area state";
-      payload+=4+textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
+      payload+=4+textSize(v->custom_name())+textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
           textSize(v->location_name())+textSize(v->religion())+textSize(v->owner_profession());
       for (auto extent:*v->extents()) if(extent>1) return "invalid area extent";
       extentTotal+=v->extents()->size();

@@ -1300,6 +1300,7 @@ table AreaInfo {
   owner_sex:int8 = -1;
   location_site_id:int32 = -1;
   storage_limit:int32 = -1; // Native stockpile container bound; -1 unavailable/legacy.
+  custom_name:string; // Exact stored name, separate from the default display label.
 }
 table AreaChoice { id:int32; name:string; label:string; }
 table LocationDeity { id:int32 = -1; name:string; spheres:[int32]; }
@@ -1704,7 +1705,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 59;
+  schema_version:uint32 = 60;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1750,7 +1751,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 59;
+  schema_version:uint32 = 60;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

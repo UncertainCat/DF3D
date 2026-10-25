@@ -84,7 +84,7 @@ struct AreaRequest {
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;
   AreaKind kind=AreaKind::Stockpile;
-  std::string name,ownerName;
+  std::string name,customName,ownerName;
   std::string ownerProfession;
   uint8_t locationKind=0;
   int8_t ownerSex=-1;

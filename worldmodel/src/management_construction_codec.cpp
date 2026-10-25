@@ -175,7 +175,7 @@ AreaState decodeArea(const m::AreaState* a) {
       n.revision=int64_t(v->revision());n.zoneLabel=text(v->zone_label());n.locationId=v->location_id();n.locationSiteId=v->location_site_id();
       n.locationName=text(v->location_name());n.religion=text(v->religion());
       n.organic=v->organic();n.inorganic=v->inorganic();n.zoneSettings=settings(v->zone_settings());
-      n.storageLimit=v->storage_limit();n.tileCount=v->tile_count();n.assignedCount=v->assigned_count();
+      n.customName=text(v->custom_name());n.storageLimit=v->storage_limit();n.tileCount=v->tile_count();n.assignedCount=v->assigned_count();
       if (v->gives())
         n.gives.assign(v->gives()->begin(), v->gives()->end());
       if (v->takes())

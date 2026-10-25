@@ -262,7 +262,7 @@ struct NativeArea {
   int kind=0,zone=-1,w=0,h=0,barrels=0,bins=0,wheelbarrows=0,storageLimit=-1;
   uint32_t categories=0;
   bool active=false,linksOnly=false,ownerAllowed=false;
-  std::string name,ownerName;
+  std::string name,customName,ownerName;
   std::string ownerProfession;
   uint8_t locationKind=0;
   int8_t ownerSex=-1;
@@ -386,7 +386,7 @@ void publish() {
       b.CreateVector(a.extents),a.zone,a.categories,a.barrels,a.bins,a.wheelbarrows,a.linksOnly,
       a.active,a.owner,b.CreateString(a.ownerName),a.ownerAllowed,b.CreateVector(a.gives),b.CreateVector(a.takes),
       uint64_t(a.revision),b.CreateString(a.zoneLabel),a.locationId,b.CreateString(a.locationName),b.CreateString(a.religion),
-      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit));
+      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit,b.CreateString(a.customName)));
   }
   std::vector<flatbuffers::Offset<m::AreaChoice>> ac;
   for(const auto& c:areaChoices) ac.push_back(m::CreateAreaChoice(b,c.id,b.CreateString(c.name),b.CreateString(c.label)));
@@ -2459,7 +2459,7 @@ void run(color_ostream& out) {
       NativeArea a;
       a.id=int32_t(number(L,"id",-1));a.kind=int(number(L,"kind"));a.zone=int(number(L,"zone_type",-1));
       a.x=int(number(L,"x"));a.y=int(number(L,"y"));a.z=int(number(L,"z"));
-      a.w=int(number(L,"width"));a.h=int(number(L,"height"));a.name=str("name");
+      a.w=int(number(L,"width"));a.h=int(number(L,"height"));a.name=str("name");a.customName=str("custom_name");
       a.categories=uint32_t(number(L,"categories"));a.barrels=int(number(L,"barrels"));a.bins=int(number(L,"bins"));a.wheelbarrows=int(number(L,"wheelbarrows"));
       a.active=boolean(L,"active");a.linksOnly=boolean(L,"links_only");a.ownerAllowed=boolean(L,"owner_allowed");
       a.owner=int32_t(number(L,"owner_id",-1));a.ownerName=str("owner_name");

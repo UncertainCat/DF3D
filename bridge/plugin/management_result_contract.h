@@ -122,7 +122,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
             !number("location_id",-1,INT32_MAX) || !number("location_site_id",-1,INT32_MAX) || !number("organic",-1,1) || !number("inorganic",-1,1) ||
             !number("storage_limit",-1,32767) || !number("tile_count",-1,INT32_MAX) || !number("assigned_count",-1,INT32_MAX) ||
             !boolean("active") || !boolean("links_only") || !boolean("owner_allowed") ||
-            !text("name",512) || !text("owner_name",512) || !text("zone_label",512,false) ||
+            !text("name",512) || !text("custom_name",512,false) || !text("owner_name",512) || !text("zone_label",512,false) ||
             !text("owner_profession",512,false) || !number("owner_sex",-1,1,false) || !number("location_kind",0,5,false) ||
             !text("location_name",512,false) || !text("religion",512,false) || !zone())return false;
         lua_getfield(L,-1,"extents");const bool shape=lua_istable(L,-1);const size_t cells=shape?lua_rawlen(L,-1):0;lua_pop(L,1);

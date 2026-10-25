@@ -23,11 +23,29 @@ reverting it. Clicking the quill again while editing keeps editing active.
 An unnamed pile starts with an empty custom string. The editor occupies the
 existing heading and does not add a field below the palette.
 
-DF3D's current staged rename remains incomplete: it uses the display name,
-a separate128-character field and Enter-only writes. The current AreaInfo
-contract lacks an explicit custom-name field. Command-level signal-dispatch
-coverage is not actual rename UI acceptance; correct the contract, inline
-editor and async write lifecycle before exposing Stockpiles.
+Management60 adds `AreaInfo.custom_name`, the exact stored name in UTF-8,
+separate from the native display label. The bridge reads `b.name` without
+consulting UI state; name bytes already participate in the area revision.
+The field is bounded to512 UTF-8 bytes and counted in response payload limits.
+Bridge, model and Godot must be rebuilt together; the separate v60 region
+prevents older producers from silently supplying an inferred name. Existing
+recordings without this optional field decode it as empty; they do not provide
+a live editing receipt.
+
+`build/qa/stockpile-custom-name-viewer` passes root CTest19/19, the area controller
+and Lua adapter. Codec checks cover distinct display/custom names and the512/513
+byte boundary; the adapter verifies rename and clearing. The bridge build also
+passes. Protected `build/areas-acceptance-20261025-180611` verifies custom names
+`Stockpile #2`, `Café` and empty against native readback through the Godot model,
+alongside the existing main-scene stockpile workflows. Owned DF100736 closes
+unsaved and both save manifests match. Only the known separate-thread notice
+remains. These name comparisons exercise semantic writes, not rename pointer
+input or inline editing.
+
+DF3D's current staged rename remains incomplete: it still uses the display name,
+a separate128-character field and Enter-only writes. Command-level coverage is
+not actual rename UI acceptance; correct the inline editor and async write
+lifecycle before exposing Stockpiles.
 
 ## Stockpile settings ownership and protocol59
 

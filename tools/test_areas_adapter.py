@@ -402,6 +402,7 @@ def main():
 
     renamed = call(11, {"operation": 4, "name": "New pile", "expected_revision": revision()})
     assert renamed["ok"] and renamed["areas"][1]["name"] == "New pile"
+    assert renamed["areas"][1]["custom_name"] == "New pile"
     assert renamed["steps"] == 16 and renamed["active_kinds"] == 0 and renamed["operation"] == 4
     assert not call(11, {"operation": 4, "name": "stale", "expected_revision": 1})["ok"]
     assert lua.eval("pile.name") == "New pile"
@@ -409,6 +410,7 @@ def main():
     assert not call(11, {"operation": 4, "name": "x" * 129, "expected_revision": revision()})["ok"]
     assert not call(11, {"operation": 4, "name": "\u2603", "expected_revision": revision()})["ok"]
     cleared = call(11, {"operation": 4, "name": "", "expected_revision": revision()})
+    assert cleared["ok"] and cleared["areas"][1]["custom_name"] == ""
     assert cleared["ok"] and cleared["areas"][1]["name"] == "Native default area"
     toggled = call(11, {"operation": 13, "organic": 0, "expected_revision": revision()})
     assert toggled["ok"] and toggled["areas"][1]["organic"] == 0 and toggled["areas"][1]["inorganic"] == 1

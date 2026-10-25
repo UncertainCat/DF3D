@@ -130,7 +130,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
     row["revision"]=a.revision;row["zone_label"]=String::utf8(a.zoneLabel.c_str());
     row["location_id"]=a.locationId;row["location_site_id"]=a.locationSiteId;row["location_name"]=String::utf8(a.locationName.c_str());
     row["religion"]=String::utf8(a.religion.c_str());row["organic"]=a.organic;row["inorganic"]=a.inorganic;
-    row["zone_settings"]=areaZoneDictionary(a.zoneSettings);row["storage_limit"]=a.storageLimit;row["tile_count"]=a.tileCount;row["assigned_count"]=a.assignedCount;
+    row["zone_settings"]=areaZoneDictionary(a.zoneSettings);row["custom_name"]=String::utf8(a.customName.c_str());row["storage_limit"]=a.storageLimit;row["tile_count"]=a.tileCount;row["assigned_count"]=a.assignedCount;
     Array gives, takes;
     for (auto id : a.gives)
       gives.push_back(id);

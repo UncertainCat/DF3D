@@ -88,6 +88,21 @@ require('gui.script').start(function()
    click(48,6);assert(ui.adding_new_link)
    capture('links-give-pick');mapclick(b);snapshot('give-self',b)
    assert(ui.adding_new_link,'self-selection closed picker')
+   local empty
+   for y=b.y1-8,b.y2+8 do for x=b.x1-8,b.x2+8 do
+    local block=dfhack.maps.getTileBlock(x,y,b.z)
+    if block and not block.designation[x%16][y%16].hidden and
+       not block.designation[x%16][y%16].pile and block.occupancy[x%16][y%16].building==0 and
+       not dfhack.buildings.findAtTile{x=x,y=y,z=b.z} then empty={id=-1,centerx=x,centery=y,z=b.z};break end
+   end if empty then break end end
+   assert(empty,'missing empty ground');mapclick(empty);snapshot('give-empty')
+   assert(ui.adding_new_link,'empty target closed picker');capture('links-empty-pick')
+   local invalid
+   for _,candidate in ipairs(df.global.world.buildings.all)do
+    if candidate.z==b.z and candidate:getType()==df.building_type.Door and not candidate:canLinkToStockpile() then invalid=candidate;break end
+   end
+   assert(invalid,'missing non-linkable door');mapclick(invalid);snapshot('give-nonlinkable',invalid)
+   assert(ui.adding_new_link,'non-linkable target closed picker');capture('links-nonlinkable-pick')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    capture('links-give-escape');snapshot('escape')
    local other

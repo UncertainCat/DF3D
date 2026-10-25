@@ -38,6 +38,18 @@ Offline `build/qa/stockpile-native-link-ready` passes root CTest, controller and
 adapter checks, including synchronous link work accounting. Boundary/malformed
 endpoint cases remain outside this scoped acceptance.
 
+Native invalid-target run `build/stockpile-storage-native-links-20261025-124453`
+also verifies empty ground and a non-linkable door: neither changes links or
+closes the picker, and no rejection copy appears. The source stayed unchanged
+and owned DF closed unsaved. The non-linkable picker capture was inspected.
+DF3D's current area-then-generic-building lookup does not implement this contract:
+generic construction inspection rejects no building and link mutation rejects
+non-linkable buildings. Replace that fallback with a semantic eligible-target
+query that returns an empty successful result for no target. The native handler
+uses `isSettingOccupancy`, `isExtentShaped`, the native extent predicate and
+`canLinkToStockpile`; its global UI inputs remain prohibited. Vector identity and
+overlap ordering need verification before exposing the replacement query.
+
 ## Native stockpile storage input (DF 53.16)
 
 Run `tools/smoke/stockpile_storage_native.ps1 -CloneEvidence <verified-run-folder>`

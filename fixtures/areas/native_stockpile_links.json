@@ -534,7 +534,8 @@
   "audit": "3c2a70 reads native global link UI despite its interface argument; prohibited runtime. Stockpile pair branches 3c2efb..3c2fe8 inline direction logic using native lookup/insert/erase. Workshop pair helpers 5832b0/583320 update both ends and remove opposite links. Native vector routines take explicit vectors and building pointers; insert may allocate through bad30. Owned copies with reserved capacity can avoid native allocation path; runtime implementation and scoped effect evidence are recorded below.",
   "known_implementation_gaps": [
     "Native workshop eligibility, empty/invalid target, scrolling, full ordering and scaled link UI need further acceptance.",
-    "Boundary and malformed endpoint acceptance remains to be expanded."
+    "Boundary and malformed endpoint acceptance remains to be expanded.",
+    "Current AreaInspectAtTile then generic InspectAtTile fallback rejects empty ground/non-linkable buildings; replace with semantic native-eligible target lookup, preserving no-match as successful empty selection."
   ],
   "runtime": "Pinned native ID lookup, insert and erase on owned copies of both stockpile_links structs. Validate sorted non-null IDs and 1024-entry limits; reserve forward/reverse capacity before native insertion to avoid native allocation. Reverse removes opposite directions. Duplicate exits without publication. Swap both structs only after successful preparation. No global UI scratch. Native workshop helper disassembly establishes directional mapping. Removed local editLinks reconstruction.",
   "acceptance": {
@@ -549,5 +550,69 @@
     "save_preservation": "Verified unchanged manifests for 2 save directories.",
     "scope": "Actual viewport duplicate/self selection preserves picker with no stale busy state, pile reversal/unlink, workshop give/take reversal/unlink; exact reciprocal native assertions; prior paint and multi-donor deletion regressions. Screenshots inspected. Offline core, areas controller and adapter tests pass in build/qa/stockpile-native-link-ready.",
     "failure_evidence": "build/areas-acceptance-20261025-123539 exposed bounded/synchronous helper accounting mismatch; corrected Lua and C++ policies. Owned DF closed unsaved, two manifests unchanged. build/areas-acceptance-20261025-123829 effects passed but screenshot exposed stale busy rendering after self-selection, corrected and rerun."
-  }
+  },
+  "invalid_target_oracle": {
+    "run": "build/stockpile-storage-native-links-20261025-124453",
+    "status": "passed",
+    "result_sha256": "1194c7f2fff5c430afdd0cc821c2113f8e31b59865e14bcdc582ee4db21d7cce",
+    "source_unchanged": "Owned source unchanged",
+    "owned_df_closed_without_saving": true,
+    "observations": [
+      {
+        "adding": false,
+        "context": 0,
+        "direction": 0,
+        "name": "initial",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": false,
+        "ui_rva": 25838056
+      },
+      {
+        "adding": true,
+        "context": 0,
+        "direction": 1,
+        "name": "give-empty",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": false,
+        "ui_rva": 25838056
+      },
+      {
+        "adding": true,
+        "context": 0,
+        "direction": 1,
+        "name": "give-nonlinkable",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": {
+          "id": 16
+        },
+        "ui_rva": 25838056
+      }
+    ],
+    "scope": "Actual native empty-ground and non-linkable door clicks retain picker without links or error text. Full prior reversal/duplicate/removal oracle repeats and passes. Non-linkable picker screenshot inspected."
+  },
+  "target_audit": "Native target handler 3c2d40 checks source identity, isSettingOccupancy (virtual0x130), z, isExtentShaped (virtual0x140) and extent predicate5587b0 or inclusive bounds. Stockpile pass precedes building pass; latter calls canLinkToStockpile (virtual0x28). Generic construction InspectAtTile uses DFHack findAtTile and returns a rejection for no building, which does not implement this selection contract. Need verify vector identities and overlap order before exposing target lookup. No runtime UI handler calls."
 }

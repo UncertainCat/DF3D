@@ -1482,5 +1482,146 @@
     "OS keyboard/IME delivery",
     "Clipboard/newline behavior",
     "Rendered DF3D input acceptance"
-  ]
+  ],
+  "rendered_captions": {
+    "source": "build/stockpile-search-native-20261025-163507",
+    "scope": "Temporary CP437 Ammo names; explicit Type selection matches mode45. Native provider names already contain native capitalization. Screen first glyph at x80,y10+3n matches provider at all four layouts. Narrow native truncation is recorded but not established as viewer parity.",
+    "source_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "cases": [
+      {
+        "layout": "1200x800-0",
+        "result_sha256": "346b64088245dd2b9de5734311c219cc5e20274c4991092f70ddd11b506a42b3",
+        "screen_first_bytes": [
+          133,
+          160,
+          142,
+          144,
+          165,
+          83,
+          84,
+          224,
+          225,
+          230,
+          234
+        ],
+        "screen_prefixes": [
+          "\u00e0captio",
+          "\u00e1captio",
+          "\u00c4ther",
+          "\u00c9preuve",
+          "\u00d1ame",
+          "Stra\u00dfe",
+          "Tapered",
+          "\u03b1captio",
+          "\u00dfcaptio",
+          "\u00b5captio",
+          "\u03a9mega"
+        ]
+      },
+      {
+        "layout": "1920x1080-0",
+        "result_sha256": "6d8ff058caf688b60cac9986f2affb0ec87ca54db470bde3e5422cb1d35ea82f",
+        "screen_first_bytes": [
+          133,
+          160,
+          142,
+          144,
+          165,
+          83,
+          84,
+          224,
+          225,
+          230,
+          234
+        ],
+        "screen_prefixes": [
+          "\u00e0captio",
+          "\u00e1captio",
+          "\u00c4ther",
+          "\u00c9preuve",
+          "\u00d1ame",
+          "Stra\u00dfe",
+          "Tapered",
+          "\u03b1captio",
+          "\u00dfcaptio",
+          "\u00b5captio",
+          "\u03a9mega"
+        ]
+      },
+      {
+        "layout": "1920x1080-150",
+        "result_sha256": "baa4a4309a6d97a0bda0df02d86023bb26d134ecec6a87c94846643ee475d055",
+        "screen_first_bytes": [
+          133,
+          160,
+          142,
+          144,
+          165,
+          83,
+          84,
+          224,
+          225,
+          230,
+          234
+        ],
+        "screen_prefixes": [
+          "\u00e0captio",
+          "\u00e1captio",
+          "\u00c4ther",
+          "\u00c9preuve",
+          "\u00d1ame",
+          "Stra\u00dfe",
+          "Tapered",
+          "\u03b1captio",
+          "\u00dfcaptio",
+          "\u00b5captio",
+          "\u03a9mega"
+        ]
+      },
+      {
+        "layout": "960x600-0",
+        "result_sha256": "c84d212eedbcddc0b77cf353c93ef1dd456df75af01bf9a99984d221f71c531e",
+        "screen_first_bytes": [
+          133,
+          160,
+          142,
+          144,
+          165,
+          83,
+          84,
+          224,
+          225,
+          230,
+          234
+        ],
+        "screen_prefixes": [
+          "\u00e0ca...",
+          "\u00e1ca...",
+          "\u00c4ther",
+          "\u00c9pr...",
+          "\u00d1ame",
+          "Stra\u00dfe",
+          "Tap...",
+          "\u03b1ca...",
+          "\u00dfca...",
+          "\u00b5ca...",
+          "\u03a9mega"
+        ]
+      }
+    ],
+    "labels": [
+      "\u00e0caption",
+      "\u00e1caption",
+      "\u00c4ther",
+      "\u00c9preuve",
+      "\u00d1ame",
+      "Stra\u00dfe",
+      "Tapered blowdarts",
+      "\u03b1caption",
+      "\u00dfcaption",
+      "\u00b5caption",
+      "\u03a9mega"
+    ]
+  }
 }

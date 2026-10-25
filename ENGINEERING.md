@@ -1152,6 +1152,32 @@ filter string leaves the old native visible-row cache and is not a valid oracle.
 The fixture retains caller/helper hashes. OS keyboard/IME delivery and clipboard
 newline behavior remain outside this evidence.
 
+Settings captions are displayed verbatim from the owned native row builder.
+That builder already applies DF's capitalization; applying Unicode uppercase
+again changes characters DF leaves unchanged. Protected
+`build/stockpile-search-native-20261025-163507` uses ten temporary Ammo names
+and compares provider names with native screen glyphs at four layouts. All44
+first glyphs match the provider, including unchanged CP437 `à`, `á`, `α`, `ß`
+and `µ`, and already-capitalized `Ä`, `É` and `Ñ`. Raw names are restored,
+the source is unchanged and owned DF112088 closes unsaved. Bounded glyph samples
+and result hashes are in `native_stockpile_search.json.rendered_captions`.
+
+The probe explicitly selects Metal then Type before comparing mode45. Earlier
+run `163303` incorrectly compared category-opening mode44 with leaf mode45;
+accented equal sort keys exposed their already-documented differing sort passes.
+It closed unsaved with the source unchanged; no runtime ordering change was
+needed. Preliminary run `163118` covered the original five names only.
+
+The Godot view's extra Unicode recasing is removed. The recorded-caption render
+regression failed four rows before removal and passes afterward. Its final
+capture was inspected. `build/qa/stockpile-caption-final` passes root CTest19/19,
+settings controller and rendered settings checks with documented Godot
+diagnostics only. The initial failing gate's console summary also encountered
+Windows output-encoding failure; the test log retains all four failed rows.
+Assertion messages now identify rows by number. Narrow native row truncation
+is visible in these samples but remains a separate layout-parity gap; this
+caption check does not establish ellipsis behavior or OS text-input delivery.
+
 `build/qa/stockpile-search-field-final` passes root CTest19/19, the complete
 recorded character/length map, controller caret/selection checks, and rendered
 settings checks (documented shutdown/thread diagnostics only). The search field

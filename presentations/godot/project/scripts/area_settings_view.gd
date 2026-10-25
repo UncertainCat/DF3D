@@ -194,7 +194,8 @@ func render() -> void:
 			line.add_child(button); rendered_rows[column].append(button)
 			button.tooltip_text = str(row.label)
 			var label := Label.new(); label.text = str(row.label)
-			if not label.text.is_empty(): label.text = label.text.left(1).to_upper()+label.text.substr(1)
+			# DF's owned row builder already formats the caption, including its
+			# CP437 capitalization. Unicode recasing changes native glyphs.
 			label.position = Vector2(56 if column == 0 else 8,0)
 			label.size = Vector2(([208,208][column] - (48 if column == 0 else 0)) if column < 2 else maxi(0,column_widths[2] - 16 - (16 if total > page_rows else 0)),36)
 			label.add_theme_font_size_override("font_size",12); label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

@@ -83,12 +83,18 @@ require('gui.script').start(function()
    for _,row in ipairs(originals)do row.raw.name=row.name;row.raw.name_plural=row.plural;row.raw.adjective=row.adjective end
   end
   local success,problem=pcall(function()
-   for i,name in ipairs{'épreuve','äther','straße','ñame','Ωmega'}do
+   local names={'épreuve','äther','straße','ñame','Ωmega'}
+   -- CP437 characters whose Unicode uppercase differs from DF's byte rules.
+   for _,byte in ipairs{160,133,224,225,230}do names[#names+1]=dfhack.df2utf(string.char(byte))..'caption' end
+   for i,name in ipairs(names)do
     local raw=assert(df.global.world.raws.itemdefs.ammo[i-1])
     originals[#originals+1]={raw=raw,name=raw.name,plural=raw.name_plural,adjective=raw.adjective}
     raw.name=dfhack.utf2df(name);raw.name_plural=raw.name;raw.adjective=''
    end
    c.spec_filter='';label_click('Ammo')
+   -- Category entry sorts its initial leaf twice. Compare mode45 against an
+   -- explicit Type selection, not parent mode44, including equal sort keys.
+   label_click('Metal',0,2);label_click('Type',0,2)
    for _,query in ipairs{'é','É','ä','Ä','ß','SS','ñ','Ñ','Ω','a','A',''}do
     input(dfhack.utf2df(query))
     local before_size,before_address=df.sizeof(df.global.game.main_interface)
@@ -104,6 +110,16 @@ require('gui.script').start(function()
      if row.visible then visible[#visible+1]=row.name end
     end
     records[#records+1]={probe='filtered_names',typed=query,stored=dfhack.df2utf(c.spec_filter),visible=visible}
+    if query=='' then
+     c.scroll_position_spec=0;view:render(dfhack.getTickCount())
+     local rendered={}
+     for i=1,math.min(#visible,(g.dimy-16)//3)do
+      local bytes={}
+      for x=79,math.min(g.dimx-26,100)do bytes[#bytes+1]=dfhack.screen.readTile(x,10+3*(i-1)).ch end
+      rendered[#rendered+1]={name=visible[i],x=79,y=10+3*(i-1),bytes=bytes}
+     end
+     records[#records+1]={probe='rendered_captions',rows=rendered}
+    end
    end
   end)
   restore();assert(success,problem)

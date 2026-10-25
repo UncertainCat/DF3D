@@ -108,6 +108,17 @@ func run() -> void:
 	check(view.native_scrolls[2].first == 1 and view.scrolls[2].scroll_vertical == 36,"explicit wheel supersedes pending page restoration")
 	state.clear(); await settle()
 	check(view.scrolls[2].scroll_vertical == 0,"closing clears scroll")
+	var caption_fixture = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_search.json"))
+	var captions: Array = []
+	for label in caption_fixture.rendered_captions.labels:
+		captions.append({"key":"ammo/type/"+str(captions.size()),"label":label,"kind":4,"state":1})
+	state.open({"id":39,"revision":4,"categories":131071})
+	reply([{"key":"ammo","label":"Ammo","kind":1,"state":1}])
+	reply([{"key":"ammo/type","label":"Type","kind":2,"state":1}])
+	reply(captions); await settle()
+	for index in captions.size():
+		check(view.rendered_rows[2][index].get_child(0).text == captions[index].label,"native-provided caption was recased at row "+str(index))
+	root.get_texture().get_image().save_png(directory.path_join("native-captions.png"))
 	view.free(); assets.free(); await process_frame
 	print("AREA_SETTINGS_SCROLL_CAPTURE_PASS" if failures == 0 else "AREA_SETTINGS_SCROLL_CAPTURE_FAIL")
 	quit(failures)

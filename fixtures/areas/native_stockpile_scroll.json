@@ -1758,6 +1758,180 @@
           "visible": true
         }
       ]
+    },
+    "short": {
+      "total": 12,
+      "query": "ALPACA",
+      "rows": [
+        {
+          "enabled": false,
+          "label": "Alpaca meat",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Alpaca sweetbread",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Alpaca tripe",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Chopped alpaca liver",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca brain",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca eye",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca gizzard",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca heart",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca intestines",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca kidney",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca lung",
+          "visible": true
+        },
+        {
+          "enabled": false,
+          "label": "Prepared alpaca spleen",
+          "visible": true
+        }
+      ]
     }
+  },
+  "short_and_empty": {
+    "run": "build/stockpile-scroll-clamp-native-20261025-073430",
+    "result_sha256": "e26fe889a8c3e74956a5411388c8638fe9e4a17835893a782f48c7ec0b46fee2",
+    "transitions": [
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "start",
+        "organic": true,
+        "query": "",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "empty",
+        "organic": true,
+        "query": "ZZZZNOMATCH",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "after-empty",
+        "organic": true,
+        "query": "A",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "short",
+        "organic": true,
+        "query": "ALPACA",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "after-short",
+        "organic": true,
+        "query": "A",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "fish-a",
+        "organic": true,
+        "query": "A",
+        "spec_scroll": 30,
+        "sub": 3,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "fish-empty",
+        "organic": true,
+        "query": "ZZZZNOMATCH",
+        "spec_scroll": 30,
+        "sub": 3,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "category-empty",
+        "organic": true,
+        "query": "ZZZZNOMATCH",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "category-restored",
+        "organic": true,
+        "query": "A",
+        "spec_scroll": 30,
+        "sub": 2,
+        "sub_scroll": 0
+      }
+    ],
+    "source_save_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "behavior": "Native retains offset30 internally while displaying the first row of a twelve-row ALPACA result and no rows for ZZZZNOMATCH; returning to A restores row30."
   }
 }

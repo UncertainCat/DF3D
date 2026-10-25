@@ -359,9 +359,17 @@ first128 visible rows for three cases. The rendered `area_settings_scroll_captur
 check exercises delayed replies with those rows, refresh and close. Its root and
 sublist scaffolding is synthetic; it does not prove full-panel parity. The view
 retains the last populated offset across empty pending columns and restores it
-after layout, guarded against obsolete restorations. Empty-result behavior,
-scrollbar proportions for fully paged lists and full rendered workflows still
-need acceptance.
+after layout, guarded against obsolete restorations. Protected capture
+`build/stockpile-scroll-clamp-native-20261025-073430` adds nine transitions:
+native retains offset30 through empty and twelve-row searches, displaying short
+results from the top and restoring row30 when results grow. Save hashes remained
+unchanged and owned DF closed unsaved. The view distinguishes a range clamp from
+a changed displayed position, so short searches do not erase the retained offset.
+The recorded fixture and rendered regression cover both empty and short results.
+Scrollbar proportions for fully paged lists and full rendered workflows still
+need acceptance. Gate `build/qa/stockpile-scroll-short-final` passed root CTest,
+settings state/controller and the extended rendered regression, with only the
+documented renderer diagnostics below.
 Gate `build/qa/stockpile-scroll-accepted` passed root CTest and settings state/
 controller checks cleanly. Both rendered settings-scroll and area-menu checks
 passed with the documented thread-notice, device-finalize and shutdown-object

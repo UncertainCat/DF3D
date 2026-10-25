@@ -570,6 +570,12 @@ require('gui.script').start(function()
   c.entering_spec_filter=true;gui.simulateInput(view,'STRING_A097')
   view:render(dfhack.getTickCount());c.entering_spec_filter=false;retained('search')
   label_click('All',0,3);retained('filtered_all')
+  for _,query in ipairs{'zzzznomatch','a','alpaca','a'}do
+   c.spec_filter='';c.entering_spec_filter=true
+   for i=1,#query do gui.simulateInput(view,string.format('STRING_A%03d',query:byte(i)))end
+   view:render(dfhack.getTickCount());c.entering_spec_filter=false
+   retained('search_'..query)
+  end
   c.spec_filter='';c.scroll_position_spec=0
   end
   -- Compare every category entry and default-leaf reopening with owned rows.

@@ -132,7 +132,13 @@ func render() -> void:
 		# reply can leave the column empty long enough for Godot to clamp it to
 		# zero; retain its last populated offset across that temporary gap.
 		if not state.area.is_empty() and not rendered_rows[column].is_empty():
-			retained_scroll[column] = scrolls[column].scroll_vertical
+			var bar := scrolls[column].get_v_scroll_bar()
+			var displayed := mini(retained_scroll[column],maxi(0,int(bar.max_value - bar.page)))
+			# Native keeps an offset beyond a short search's visible range and
+			# restores it when the result grows again. Only adopt a changed
+			# displayed position, not the layout's automatic range clamp.
+			if scrolls[column].scroll_vertical != displayed:
+				retained_scroll[column] = scrolls[column].scroll_vertical
 		var previous_scroll: int = retained_scroll[column]
 		for child in columns[column].get_children(): columns[column].remove_child(child); child.queue_free()
 		rendered_rows[column] = []

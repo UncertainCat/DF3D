@@ -3,6 +3,7 @@ param(
  [Parameter(Mandatory=$true)][string]$CloneEvidence,
  [string]$FilterModes='',
  [switch]$SummariesOnly,
+ [switch]$HistoricalMaterials,
  [string]$DfPath='C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'
 )
 $ErrorActionPreference='Stop'
@@ -19,9 +20,10 @@ function Manifest {
 if((Manifest) -cne $expected){throw 'Disposable clone differs from verified manifest'}
 $out="$repo/build/stockpile-initialization-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
+if($HistoricalMaterials -and -not $FilterModes){$FilterModes='2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,73,76,77,78,79,80,81,82,83,107,108'}
 if($FilterModes) {
  if($FilterModes -notmatch '^\d+(,\d+)*$'){throw 'FilterModes must be comma-separated native mode numbers'}
- @{filter_modes=@($FilterModes.Split(',') | ForEach-Object {[int]$_});scope='focused native filter commands'} | ConvertTo-Json | Set-Content "$out/filter-scope.json"
+ @{filter_modes=@($FilterModes.Split(',') | ForEach-Object {[int]$_});scope='focused native filter commands';historical_materials=[bool]$HistoricalMaterials} | ConvertTo-Json | Set-Content "$out/filter-scope.json"
 }
 if($SummariesOnly) {
  @{summary_only=$true;filter_modes=@();scope='focused native summary commands'} | ConvertTo-Json | Set-Content "$out/filter-scope.json"
@@ -78,6 +80,7 @@ report=error_summary((folder/'godot.log').read_text(encoding='utf-8',errors='rep
  if(@($diagnostics.known_engine).Count){$summary='passed_with_known_issues'}
 } catch {$summary='failed '+$_.Exception.Message}
 finally {
+ try {if($entered -and $HistoricalMaterials){Invoke-Lua 'stockpile-initialization-verify.lua' "[==[$out]==],'historical_final'" | Out-Null}} catch {$summary='failed historical restoration '+$_.Exception.Message}
  try {if($entered){Exit-Df3dLane}} catch {$summary='failed teardown '+$_.Exception.Message}
  try {if((Manifest) -cne $expected){throw 'Source changed'};'Owned source unchanged' | Set-Content "$out/save-preservation.txt"} catch {$summary='failed preservation '+$_.Exception.Message}
  $env:DF3D_AREAS_ACCEPTANCE=$oldInput

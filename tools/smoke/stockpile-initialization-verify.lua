@@ -1,8 +1,38 @@
 -- Protected lane: commands arrive through the real Godot bridge driver.
 local out,index=...
 local json=require('json')
+local function restore_historical()
+ local h=_G.df3d_historical_fixture
+ if not h then return end
+ h.types:resize(h.type_count);h.indexes:resize(h.index_count)
+ if h.type_count>0 then h.types[0]=h.old_type end
+ if h.index_count>0 then h.indexes[0]=h.old_index end
+ h.values:resize(#h.saved);for i,v in ipairs(h.saved)do h.values[i-1]=v end
+ _G.df3d_historical_fixture=nil
+end
+if index=='historical_final' then restore_historical();print('SEMANTIC_PASS historical_final');return end
 local f=assert(io.open(out..'/request-'..index..'.json','r'))
 local request=json.decode(f:read('*a'));f:close()
+if request.op=='historical_setup' or request.op=='historical_restore' then
+ assert(df.global.pause_state)
+ if request.op=='historical_restore' then restore_historical()
+ else
+  assert(not _G.df3d_historical_fixture,'historical fixture already active')
+  local mapping={[2]=0,[6]=4,[7]=5,[8]=6,[9]=7,[10]=8,[11]=9,[12]=10,[13]=11,[14]=12,[15]=13,[16]=33,[17]=34,[18]=14,[19]=15,[20]=16,[73]=17,[76]=18,[77]=19,[78]=35,[79]=36,[80]=18,[81]=19,[82]=35,[83]=36,[107]=37,[108]=38}
+  local slot=assert(mapping[request.mode]);local b=assert(df.building.find(request.id))
+  local cat,field=request.field:match('^([^%.]+)%.(.+)$');local values=b.settings[cat][field]
+  local types,indexes=df.global.world.raws.mat_table.organic_types[slot],df.global.world.raws.mat_table.organic_indexes[slot]
+  local figure
+  for i=#df.global.world.history.figures-1,0,-1 do local h=df.global.world.history.figures[i];if h.race>=0 and h.race<#df.global.world.raws.creatures.all then figure=h;break end end
+  assert(figure)
+  local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
+  _G.df3d_historical_fixture={types=types,indexes=indexes,type_count=#types,index_count=#indexes,old_type=#types>0 and types[0],old_index=#indexes>0 and indexes[0],values=values,saved=saved}
+  types:resize(math.max(1,#types));indexes:resize(math.max(1,#indexes));types[0]=222;indexes[0]=figure.id
+  values:resize(1);values[0]=1
+ end
+ f=assert(io.open(out..'/response-'..index..'.json','w'));f:write(json.encode{status='passed'});f:close()
+ print('SEMANTIC_PASS '..request.op);return
+end
 if request.op=='summary_before' or request.op=='summary_rows'then
  assert(df.global.pause_state)
  local b=assert(df.building.find(request.id));assert(df.building_stockpilest:is_instance(b))

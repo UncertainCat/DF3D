@@ -845,24 +845,40 @@ name, order, visibility and selection matched explicit native leaf selection.
 The same run exercised168 native All/None actions. Provider calls preserved
 native UI bytes and source settings; DF closed without saving and source hashes
 were unchanged. Bounded evidence is in `native_stockpile_filters.json.organic_provider`.
-Injected malformed/null-table cases and malformed historical identities remain
-unverified. Historical Leather read coverage is recorded below; non-ASCII search
-and rendered-panel evidence have separate scopes.
+Paired-index and null creature/plant guards are verified below. Other malformed
+historical identities and arbitrary raw combinations remain outside that evidence.
+Non-ASCII search and rendered-panel evidence have separate scopes.
 
-`stockpile_search_native.ps1 -HistoricalMaterials` replaces one Leather table
-entry with a controlled historical-figure material (type222) in an owned unsaved
-session. `build/stockpile-search-native-20261025-170901` compares three native
-searches with the ordinary and cold owned providers. Each cold query inserts one
-private cache entry; original cache header and native UI bytes remain unchanged.
-Names, visibility and enabled state match native. The table/settings are restored,
-source hashes match and DF104500 closes unsaved. Evidence is retained in
-`native_stockpile_search.json.historical_materials`. Diagnostic
-`df3d stockpile-rows-cold-read <id> <mode> [filter]` clears only the private cache
-and reports insertion count plus rows. This is read/provider evidence for Leather,
-not all historical organic families or malformed historical raws. Initial170550
-failed on a test-only incorrect sublist label;170625 verified the warm path.
-Both closed unsaved with source hashes unchanged. The final bridge build and
-`build/qa/stockpile-historical-material` pass root CTest19/19, the areas adapter
+`stockpile_search_native.ps1 -HistoricalMaterials` injects one type222
+historical-figure material into each of27 material-based organic routes. Fish,
+raw fish and eggs use creature/caste pairs and are not historical-material tests.
+Protected `build/stockpile-search-native-20261025-171951` matches81 native/provider
+searches, including native exclusion from Plants. Cold calls populate75 private
+cache entries across the matrix; Plants and Fruit/leaves do not enter that cache
+path for this input. Warm/cold calls preserve native UI and original cache-header
+bytes. Native counts, order, names, visibility and enabled state match.
+
+The same run verifies81 refusals: a missing paired index, null creature raw and
+null plant raw for each route. Faults are restored before assertions or native
+render; settings remain unchanged. Tables and settings are restored after each
+route. Source hashes match and owned DF118684 closes unsaved. The fixture's
+`historical_materials` section retains bounded rows, guards and provenance.
+Diagnostic `df3d stockpile-rows-cold-read <id> <mode> [filter]` clears only the
+private cache and reports insertion count plus rows. This does not prove every
+malformed historical identity or arbitrary raw combination.
+
+`stockpile_initialization.ps1 -HistoricalMaterials -CloneEvidence <verified-run>`
+exercises those27 routes through real semantic requests. Protected
+`build/stockpile-initialization-20261025-171420` passes763 native observations:
+pages and parent-opening contexts, filtered All/None, individual edits where
+native rows exist, short/empty settings, and creation/removal. Every edit matches
+a complete expected settings snapshot. Per-route restoration and final cleanup
+restore injected table entries/settings; source hashes match and owned DF118240
+closes unsaved. This is command-effect evidence, not a new full-scene visual run.
+The earlier171155 oracle stopped when a test fixture resized an empty category
+after building its parent;171248 passed81 comparisons after correcting fixture
+setup. Both closed unsaved with source hashes unchanged.
+`build/qa/stockpile-historical-matrix` passes root CTest19/19, the areas adapter
 and settings-state checks.
 
 Protected command run `build/stockpile-initialization-20261025-054445` passed719

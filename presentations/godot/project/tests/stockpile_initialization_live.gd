@@ -3,6 +3,7 @@ extends "res://tests/areas_acceptance_live.gd"
 # Native initialization acceptance; an explicit filter-scope file selects a
 # focused command run and records exactly which native lists were exercised.
 var filter_modes: Array = []
+var historical_materials := false
 func exercise() -> void:
 	await seed_catalog()
 	if stopped: return
@@ -13,6 +14,7 @@ func exercise() -> void:
 		if scope.get("summary_only",false):
 			await focused_summaries()
 			return
+		historical_materials = bool(scope.get("historical_materials",false))
 		for mode in scope.filter_modes: filter_modes.append(int(mode))
 		await focused_filters()
 		return
@@ -173,6 +175,7 @@ func native_filter_lists(pile: int) -> void:
 		step = "native materials " + key
 		var category_bit: int = category_bits[field.get_slice(".",0)]
 		await edit(pile,0,{"changed_categories":category_bit,"categories":category_bit})
+		if historical_materials: await native("historical_setup",{"id":pile,"mode":mode,"field":field})
 		for query in ["", "a", "zzzznomatch"]:
 			var page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query},"settings")
 			if stopped: return
@@ -195,7 +198,7 @@ func native_filter_lists(pile: int) -> void:
 				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":query})
 				await native("filter_after",{"id":pile,"mode":mode})
 				if stopped: return
-		if mode in [9,14]:
+		if (not historical_materials and mode in [9,14]) or (historical_materials and mode == 6):
 			if not check(first_row == -1,"expected empty native organic category"): return
 		else:
 			if not check(first_row >= 0,"fixture has no eligible rows for " + key): return
@@ -215,6 +218,7 @@ func native_filter_lists(pile: int) -> void:
 			if stopped: return
 
 		await native("filter_restore",{"id":pile,"field":field})
+		if historical_materials: await native("historical_restore",{"id":pile})
 
 	if not filter_modes.is_empty():
 		for mode in filter_modes:

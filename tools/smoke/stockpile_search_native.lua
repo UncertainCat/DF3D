@@ -80,22 +80,61 @@ require('gui.script').start(function()
   input('')
   if historical then
    local table=df.global.world.raws.mat_table
-   local types,indexes=table.organic_types[17],table.organic_indexes[17]
-   assert(#types>0 and #indexes>0)
    local figure
    for i=#df.global.world.history.figures-1,0,-1 do
     local f=df.global.world.history.figures[i]
     if f.race>=0 and f.race<#df.global.world.raws.creatures.all then figure=f;break end
    end
    assert(figure,'no historical material fixture figure')
-   local old_type,old_index=types[0],indexes[0]
-   local values=b.settings.leather.mats;local saved={}
+   for _,entry in ipairs({{'Food','food','meat',2,'Meat',0},
+   {'Food','food','fish',3,'Fish',1},
+   {'Food','food','unprepared_fish',4,'Unprepared fish',2},
+   {'Food','food','egg',5,'Egg',3},
+   {'Food','food','plants',6,'Plants',4},
+   {'Food','food','drink_plant',7,'Drink (plant)',5},
+   {'Food','food','drink_animal',8,'Drink (animal)',6},
+   {'Food','food','cheese_plant',9,'Cheese (plant)',7},
+   {'Food','food','cheese_animal',10,'Cheese (animal)',8},
+   {'Food','food','seeds',11,'Seeds',9},
+   {'Food','food','leaves',12,'Fruit/leaves',10},
+   {'Food','food','powder_plant',13,'Milled plant',11},
+   {'Food','food','powder_creature',14,'Bone meal',12},
+   {'Food','food','glob',15,'Fat',13},
+   {'Food','food','glob_paste',16,'Paste',33},
+   {'Food','food','glob_pressed',17,'Pressed material',34},
+   {'Food','food','liquid_plant',18,'Extract (plant)',14},
+   {'Food','food','liquid_animal',19,'Extract (animal)',15},
+   {'Food','food','liquid_misc',20,'Misc. liquid',16},
+   {'Leather','leather','mats',73,'Type',17},
+   {'Cloth','cloth','thread_silk',76,'Thread (silk)',18},
+   {'Cloth','cloth','thread_plant',77,'Thread (plant)',19},
+   {'Cloth','cloth','thread_yarn',78,'Thread (yarn)',35},
+   {'Cloth','cloth','thread_metal',79,'Thread (metal)',36},
+   {'Cloth','cloth','cloth_silk',80,'Cloth (silk)',18},
+   {'Cloth','cloth','cloth_plant',81,'Cloth (plant)',19},
+   {'Cloth','cloth','cloth_yarn',82,'Cloth (yarn)',35},
+   {'Cloth','cloth','cloth_metal',83,'Cloth (metal)',36},
+   {'Sheet','sheet','paper',107,'Paper',37},
+   {'Sheet','sheet','parchment',108,'Parchment',38}})do
+    if entry[4]~=3 and entry[4]~=4 and entry[4]~=5 then
+   local types,indexes=table.organic_types[entry[6]],table.organic_indexes[entry[6]]
+   local type_count,index_count=#types,#indexes
+   local old_type,old_index=type_count>0 and types[0],index_count>0 and indexes[0]
+   local values=b.settings[entry[2]][entry[3]];local saved={}
    for i,v in ipairs(values)do saved[i]=v end
    local success,problem=pcall(function()
+    types:resize(math.max(1,type_count));indexes:resize(math.max(1,index_count))
     types[0]=222;indexes[0]=figure.id
-    label_click('Leather');values:resize(1);values[0]=1
-    -- Rebuild explicitly after resizing; category entry may have initialized it.
-    label_click('Color',0,2);label_click('Type',0,2)
+    c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo')
+    values:resize(1);values[0]=1;label_click(entry[1])
+    local alternate=entry[2]=='food' and 'Fish' or entry[2]=='sheet' and (entry[4]==107 and 'Parchment' or 'Paper') or 'Color'
+    c.scroll_position_sub=0;view:render(dfhack.getTickCount());label_click(alternate,0,2)
+    values:resize(1);values[0]=1
+    local sub_index
+    for i,mode in ipairs(c.sub_mode)do if mode==entry[4]then sub_index=i;break end end
+    assert(sub_index,'historical sublist absent '..entry[4])
+    c.scroll_position_sub=math.max(0,sub_index-5);view:render(dfhack.getTickCount());label_click(entry[5],0,2)
+    assert(c.cur_sub_mode==entry[4],'wrong historical mode')
     -- Native has now populated any cache entry. The provider must preserve
     -- the exact existing map object and native UI for every query.
     local cache=df.global.world.raws.creatures:_field('hist_fig_to_creature_map')
@@ -105,27 +144,55 @@ require('gui.script').start(function()
      input(query)
      local size,address=df.sizeof(df.global.game.main_interface)
      local ui=df.new('uint8_t',size);dfhack.internal.memmove(ui,address,size)
-     local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),'73',c.spec_filter)
+     local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[4]),c.spec_filter)
      assert(code==0,text)
-     assert(dfhack.internal.memcmp(ui,address,size)==0,'historical provider changed UI');df.delete(ui)
+     assert(dfhack.internal.memcmp(ui,address,size)==0,'historical provider changed UI')
      assert(dfhack.internal.memcmp(guard,cache_address,cache_size)==0,'historical provider changed cache header')
-     local cold_text,cold_code=dfhack.run_command_silent('df3d','stockpile-rows-cold-read',tostring(b.id),'73',c.spec_filter)
+     local cold_text,cold_code=dfhack.run_command_silent('df3d','stockpile-rows-cold-read',tostring(b.id),tostring(entry[4]),c.spec_filter)
      assert(cold_code==0,cold_text);local cold=json.decode(cold_text)
-     assert(cold.cache_insertions==1,'cold historical cache path was not exercised')
+     assert(cold.cache_insertions<=1,'unexpected cold historical cache entries')
      assert(dfhack.internal.memcmp(guard,cache_address,cache_size)==0,'cold provider changed original cache header')
-     assert(cold.rows[1].name==json.decode(text)[1].name,'cold/warm historical names differ')
-     local actual=json.decode(text);assert(#actual==c.cur_spec_item_sz and #actual==1)
-     local native=c.spec_item[0]
-     assert(actual[1].name==dfhack.df2utf(native.name) and actual[1].visible==native.on and actual[1].enabled==(values[0]~=0),'historical native/provider mismatch')
-     records[#records+1]={probe='historical_material',mode=73,material_type=222,figure=figure.id,race=figure.race,query=query,rows=actual,cache_header_unchanged=true,cold_cache_insertions=cold.cache_insertions}
+     assert(dfhack.internal.memcmp(ui,address,size)==0,'cold historical provider changed UI');df.delete(ui)
+     local actual=json.decode(text);assert(#actual==c.cur_spec_item_sz and #actual==#cold.rows,'historical row count mismatch')
+     for i,row in ipairs(actual)do
+      local native=c.spec_item[i-1]
+      assert(cold.rows[i].name==row.name and cold.rows[i].visible==row.visible,'cold/warm historical names differ')
+      assert(row.name==dfhack.df2utf(native.name) and row.visible==native.on and row.enabled==(values[row.index]~=0),'historical native/provider mismatch')
+     end
+     records[#records+1]={probe='historical_material',mode=entry[4],field=entry[2]..'.'..entry[3],material_type=222,figure=figure.id,race=figure.race,query=query,rows=actual,cache_header_unchanged=true,cold_cache_insertions=cold.cache_insertions}
     end
     df.delete(guard)
    end)
    -- Retire native row pointers before restoring a potentially reallocated vector.
-   local closed,close_error=pcall(function()gui.simulateInput(view,'LEAVESCREEN')end)
-   types[0]=old_type;indexes[0]=old_index;values:resize(#saved);for i,v in ipairs(saved)do values[i-1]=v end
+   local closed,close_error=pcall(function()input('');c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo')end)
+   if success and closed then
+    -- Corrupt only the paused oracle inputs; restore before assertions or render.
+    local guarded,guard_error=pcall(function()
+     local function refused(kind,change,restore)
+      local value=values[0]
+      change()
+      local called,text,code=pcall(dfhack.run_command_silent,'df3d','stockpile-rows-read',tostring(b.id),tostring(entry[4]),'')
+      restore()
+      assert(called and code~=0,'malformed organic input was not refused: '..kind)
+      assert(values[0]==value,'refused organic read changed settings')
+      records[#records+1]={probe='organic_guard',mode=entry[4],kind=kind,refused=true}
+     end
+     local saved_indexes={};for _,value in ipairs(indexes)do saved_indexes[#saved_indexes+1]=value end
+     refused('missing_paired_index',function()indexes:resize(0)end,function()indexes:resize(#saved_indexes);for i,v in ipairs(saved_indexes)do indexes[i-1]=v end end)
+     local creatures=df.global.world.raws.creatures.all;local creature=assert(creatures[0])
+     types[0]=19;indexes[0]=0
+     refused('null_creature_raw',function()creatures[0]=nil end,function()creatures[0]=creature end)
+     local plants=df.global.world.raws.plants.all;local plant=assert(plants[0])
+     types[0]=419
+     refused('null_plant_raw',function()plants[0]=nil end,function()plants[0]=plant end)
+    end)
+    if not guarded then success=false;problem=guard_error end
+   end
+   types:resize(type_count);indexes:resize(index_count);if type_count>0 then types[0]=old_type end;if index_count>0 then indexes[0]=old_index end;values:resize(#saved);for i,v in ipairs(saved)do values[i-1]=v end
    assert(closed,close_error)
    assert(success,problem)
+    end
+   end
    return
   end
   local originals={} 

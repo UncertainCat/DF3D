@@ -2929,13 +2929,950 @@
     ]
   },
   "historical_materials": {
-    "source": "build/stockpile-search-native-20261025-170901/1200x800-0/result.json",
-    "sha256": "6f1680838dfeeae905dc9c79ea52185cc4086c8f107d241530f643654a625953",
-    "scope": "Controlled Leather type222 historical-figure material. Native/provider names, order, visibility and enabled state agree for three searches; cold provider inserts one private cache entry each time and restores original map header bytes. Native UI bytes unchanged. Raw table/settings restored; source unchanged; owned DF104500 closed unsaved. Does not establish all historical organic families or malformed historical IDs/raws.",
+    "source": "build/stockpile-search-native-20261025-171951/1200x800-0/result.json",
+    "sha256": "d4bf228be6f93cf4098512e3d9de56486cee2db80e532d6b8c41373c1fcd292e",
+    "scope": "27 material-based organic routes, three searches each, controlled type222 historical-figure material. Native/provider count, order, names, visibility and enabled state agree; cold and warm calls preserve native UI and original cache header. 81 paired-index/null-creature/null-plant refusals restore inputs before assertions/render. Fish/raw-fish/eggs are creature/caste tables and excluded. Source unchanged; owned DF118684 closed unsaved. Not all malformed historical identities or arbitrary raw combinations.",
     "cases": [
       {
         "cache_header_unchanged": true,
         "cold_cache_insertions": 1,
+        "field": "food.meat",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 2,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.meat",
+            "index": 0,
+            "name": "Dwarf bone chop",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.meat",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 2,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.meat",
+            "index": 0,
+            "name": "Dwarf bone chop",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.meat",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 2,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.meat",
+            "index": 0,
+            "name": "Dwarf bone chop",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 0,
+        "field": "food.plants",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 6,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": []
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 0,
+        "field": "food.plants",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 6,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": []
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 0,
+        "field": "food.plants",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 6,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": []
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.drink_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 7,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.drink_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.drink_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 7,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.drink_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.drink_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 7,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.drink_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.drink_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 8,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.drink_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 8,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.drink_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 8,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.cheese_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 9,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.cheese_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.cheese_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 9,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.cheese_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.cheese_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 9,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.cheese_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.cheese_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 10,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.cheese_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.cheese_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 10,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.cheese_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.cheese_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 10,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.cheese_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.seeds",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 11,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.seeds",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone ",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.seeds",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 11,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.seeds",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone ",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.seeds",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 11,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.seeds",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone ",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 0,
+        "field": "food.leaves",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 12,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.leaves",
+            "index": 0,
+            "name": "Plant growth (?)",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 0,
+        "field": "food.leaves",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 12,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.leaves",
+            "index": 0,
+            "name": "Plant growth (?)",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 0,
+        "field": "food.leaves",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 12,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.leaves",
+            "index": 0,
+            "name": "Plant growth (?)",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.powder_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 13,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.powder_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone meal",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.powder_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 13,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.powder_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone meal",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.powder_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 13,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.powder_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone meal",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.powder_creature",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 14,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.powder_creature",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone meal",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.powder_creature",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 14,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.powder_creature",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone meal",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.powder_creature",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 14,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.powder_creature",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone meal",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 15,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 15,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 15,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob_paste",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 16,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob_paste",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf ",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob_paste",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 16,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob_paste",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf ",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob_paste",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 16,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob_paste",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf ",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob_pressed",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 17,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob_pressed",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf ",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob_pressed",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 17,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob_pressed",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf ",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.glob_pressed",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 17,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.glob_pressed",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf ",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 18,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 18,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 18,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 19,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 19,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_animal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 19,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_animal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_misc",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 20,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_misc",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 20,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "food.liquid_misc",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 20,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf n/a",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "leather.mats",
         "figure": 10562,
         "material_type": 222,
         "mode": 73,
@@ -2955,6 +3892,7 @@
       {
         "cache_header_unchanged": true,
         "cold_cache_insertions": 1,
+        "field": "leather.mats",
         "figure": 10562,
         "material_type": 222,
         "mode": 73,
@@ -2974,6 +3912,7 @@
       {
         "cache_header_unchanged": true,
         "cold_cache_insertions": 1,
+        "field": "leather.mats",
         "figure": 10562,
         "material_type": 222,
         "mode": 73,
@@ -2989,7 +3928,1104 @@
             "visible": false
           }
         ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_silk",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 76,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_silk",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_silk",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 76,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_silk",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_silk",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 76,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_silk",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 77,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 77,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 77,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_yarn",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 78,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_yarn",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_yarn",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 78,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_yarn",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_yarn",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 78,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_yarn",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_metal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 79,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_metal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 79,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.thread_metal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 79,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone thread",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_silk",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 80,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_silk",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_silk",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 80,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_silk",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_silk",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 80,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_silk",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 81,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 81,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_plant",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 81,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_plant",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_yarn",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 82,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_yarn",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_yarn",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 82,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_yarn",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_yarn",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 82,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_yarn",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_metal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 83,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_metal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 83,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "cloth.cloth_metal",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 83,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone cloth",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "sheet.paper",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 107,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "sheet.paper",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone sheet",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "sheet.paper",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 107,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "sheet.paper",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone sheet",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "sheet.paper",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 107,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "sheet.paper",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone sheet",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "sheet.parchment",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 108,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "sheet.parchment",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone sheet",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "sheet.parchment",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 108,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "sheet.parchment",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone sheet",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "field": "sheet.parchment",
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 108,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "sheet.parchment",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone sheet",
+            "visible": false
+          }
+        ]
       }
-    ]
+    ],
+    "guards": [
+      {
+        "kind": "missing_paired_index",
+        "mode": 2,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 2,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 2,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 6,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 6,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 6,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 7,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 7,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 7,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 8,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 8,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 8,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 9,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 9,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 9,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 10,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 10,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 10,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 11,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 11,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 11,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 12,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 12,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 12,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 13,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 13,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 13,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 14,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 14,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 14,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 15,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 15,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 15,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 16,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 16,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 16,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 17,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 17,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 17,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 18,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 18,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 18,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 19,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 19,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 19,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 20,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 20,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 20,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 73,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 73,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 73,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 76,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 76,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 76,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 77,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 77,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 77,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 78,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 78,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 78,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 79,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 79,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 79,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 80,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 80,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 80,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 81,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 81,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 81,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 82,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 82,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 82,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 83,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 83,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 83,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 107,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 107,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 107,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "missing_paired_index",
+        "mode": 108,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_creature_raw",
+        "mode": 108,
+        "probe": "organic_guard",
+        "refused": true
+      },
+      {
+        "kind": "null_plant_raw",
+        "mode": 108,
+        "probe": "organic_guard",
+        "refused": true
+      }
+    ],
+    "commands": {
+      "source": "build/stockpile-initialization-20261025-171420",
+      "scope": "Actual semantic requests across all27 routes: full pages including parent-opening contexts, filtered All/None, individual edits where native rows exist, short/empty settings edits, complete expected settings snapshots, creation/removal. Historical tables/settings restored per route and via final cleanup on failures. 763 native observations; source unchanged; owned DF118240 closed unsaved.",
+      "hashes": {
+        "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+        "filter-scope.json": "5b00f244164be635c2bf8f61f6446a7dcd061dc6bd85224abc0ea5bb727ad9a4",
+        "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+      }
+    }
   }
 }

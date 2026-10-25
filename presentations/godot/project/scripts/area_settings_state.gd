@@ -12,6 +12,7 @@ var rows: Array = [[],[],[]]
 var row_starts: Array[int] = [0,0,0]
 var restore_starts: Array[int] = [0,0,0]
 var pending_replace := false
+var viewport_rows := 16
 var receipts: Array = [{},{},{}]
 var category := ""
 var subcategory := ""
@@ -187,7 +188,7 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 		# directly. Never walk every preceding page after an external edit.
 		if cursor == 0 and restore_starts[column] > 0:
 			var total := int(page.get("settings_count",-1))
-			restore_starts[column] = mini(restore_starts[column],maxi(0,total - 16)) if total >= 0 else 0
+			restore_starts[column] = mini(restore_starts[column],maxi(0,total - viewport_rows)) if total >= 0 else 0
 			if restore_starts[column] > 0:
 				read(column,key,restore_starts[column],true)
 				return

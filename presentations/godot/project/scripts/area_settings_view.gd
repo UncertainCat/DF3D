@@ -13,16 +13,18 @@ var category_art: Dictionary = {}
 var row_cache: Array = [{},{},{}]
 var retained_scroll: Array[int] = [0,0,0]
 var scroll_generation: Array[int] = [0,0,0]
+var page_rows := 16
+var column_widths := [280,256,328]
 var layout_pending: Array[bool] = [false,false,false]
 
 func restore_scroll(column: int, generation: int, offset: int) -> void:
 	# The new VBox must receive its minimum size before ScrollContainer can
 	# admit the old offset. Setting it during rebuild clamps against old bounds.
 	await get_tree().process_frame
+	await get_tree().process_frame
 	if scroll_generation[column] == generation:
-		scrolls[column].set_deferred("scroll_vertical",offset)
-		await get_tree().process_frame
-		if scroll_generation[column] == generation: layout_pending[column] = false
+		scrolls[column].scroll_vertical = offset
+		layout_pending[column] = false
 
 func configure(source, model) -> void:
 	state = model; art.configure(source); theme = art.theme
@@ -52,6 +54,8 @@ func configure(source, model) -> void:
 		native_bar.position = Vector2(x + width - 16,44)
 		native_bar.size = Vector2(16,576); native_bar.page = 16
 		native_bar.row_changed.connect(func(first):
+			# Explicit input supersedes restoration from an older page/layout.
+			scroll_generation[column] += 1; layout_pending[column] = false
 			retained_scroll[column] = first * 36
 			scroll.scroll_vertical = first * 36)
 		native_scrolls.append(native_bar)
@@ -85,6 +89,24 @@ func configure(source, model) -> void:
 	search.text_changed.connect(func(value): state.queue_search(value))
 	add_child(search)
 	state.changed.connect(render)
+	render()
+
+func layout(view: Vector2) -> void:
+	# Native settings keeps the first two columns fixed and gives the remaining
+	# width to items. Rows occupy three 12px cells; sixteen cells are reserved.
+	var next_width := maxi(40,floori(view.x / 8) * 8 - 872)
+	var next_page := maxi(1,(floori(view.y / 12) - 16) / 3)
+	if next_width == column_widths[2] and next_page == page_rows and custom_minimum_size.y == view.y - 120: return
+	column_widths[2] = next_width; page_rows = next_page; state.viewport_rows = page_rows
+	custom_minimum_size = Vector2(600 + next_width,maxf(96,view.y - 120))
+	search.size.x = maxf(0,next_width - 104)
+	search.visible = next_width > 104
+	for column in 3:
+		scrolls[column].size.y = page_rows * 36
+		native_scrolls[column].size.y = page_rows * 36
+		native_scrolls[column].page = page_rows
+		native_scrolls[column].position.x = scrolls[column].position.x + column_widths[column] - 16
+	row_cache = [{},{},{}]
 	render()
 
 func row_style(value: int, selected: bool) -> StyleBox:
@@ -132,7 +154,7 @@ func render() -> void:
 		elif column == 2:
 			total = maxi(total,int(state.receipts[column].get("settings_count",-1)))
 		native_scrolls[column].set_rows(total,scrolls[column].scroll_vertical / 36)
-		scrolls[column].size.x = [280,256,328][column] - (16 if total > 16 else 0)
+		scrolls[column].size.x = column_widths[column] - (16 if total > page_rows else 0)
 		var snapshot := {"rows":state.rows[column],"category":state.category,"subcategory":state.subcategory,
 			"start":state.row_starts[column],"total":total}
 		if row_cache[column] == snapshot:
@@ -171,7 +193,7 @@ func render() -> void:
 			var label := Label.new(); label.text = str(row.label)
 			if not label.text.is_empty(): label.text = label.text.left(1).to_upper()+label.text.substr(1)
 			label.position = Vector2(56 if column == 0 else 8,0)
-			label.size = Vector2([208,208,312][column] - (48 if column == 0 else 0),36)
+			label.size = Vector2(([208,208][column] - (48 if column == 0 else 0)) if column < 2 else maxi(0,column_widths[2] - 16 - (16 if total > page_rows else 0)),36)
 			label.add_theme_font_size_override("font_size",12); label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.clip_text = true; label.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(label)
 			if column == 0:
@@ -205,7 +227,7 @@ func _process(_delta: float) -> void:
 		native_scrolls[column].set_rows(native_scrolls[column].count,scrolls[column].scroll_vertical / 36)
 	# A drag may move again while a read is outstanding. Reconcile the latest
 	# viewport once that ticket finishes instead of losing its final position.
-	if not layout_pending[2]: state.seek(2,scrolls[2].scroll_vertical / 36)
+	if not layout_pending[2]: state.seek(2,scrolls[2].scroll_vertical / 36,page_rows)
 
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or not event is InputEventMouseButton or not event.pressed: return

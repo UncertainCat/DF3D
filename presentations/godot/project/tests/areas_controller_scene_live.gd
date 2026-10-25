@@ -261,7 +261,7 @@ func pointer_settings() -> void:
 	step = "viewport global None preserves flags and resets sublist"
 	for organic in [true,false]:
 		await click_control(editor.settings_view.rendered_rows[0][2])
-		if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"Armor selection for global None"): return
+		if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.category == "armor","Armor selection for global None"): return
 		await click_control(editor.settings_view.rendered_rows[1][8])
 		if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"Armor core quality before global None"): return
 		if not check(editor.settings_state.leaf == "armor/quality_core","global None test did not select Armor core quality"): return
@@ -453,6 +453,38 @@ func pointer_settings_scroll_refresh() -> void:
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.row_starts[2] == total-16,"native scrollbar distant drag"): return
 	await capture("parchment_distant_range")
 	if not check(editor.settings_view.rendered_rows[2].size() == 16 and editor.settings_view.scrolls[2].scroll_vertical == (total-16)*36,"distant drag did not render final native range"): return
+
+	await scaled_settings_range(total)
+
+func scaled_settings_range(total: int) -> void:
+	step = "settings UI preference scaling and range input"
+	var preferences = preload("res://scripts/presentation_settings.gd")
+	var old_auto: bool = preferences.ui_auto_scale
+	var old_scale: float = preferences.ui_scale
+	root.size = Vector2i(1920,1080)
+	preferences.ui_auto_scale = false; preferences.ui_scale = 1.5
+	scene._fortress_hud.apply_ui_scale()
+	for frame in 6: editor._process(0); await process_frame
+	var view = editor.settings_view
+	var bar = view.native_scrolls[2]
+	if not check(editor.canvas.scale == Vector2(1.5,1.5) and bar.page == 14,"settings did not follow product UI scale and native page count"): return
+	bar.move_to(0)
+	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.row_starts[2] == 0,"scaled settings first range"): return
+	var point: Vector2 = view.get_global_transform_with_canvas() * (view.scrolls[2].position + Vector2(50,30))
+	for page in [false,true]:
+		var wheel := InputEventMouseButton.new(); wheel.position = point; wheel.global_position = point
+		wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN; wheel.pressed = true; wheel.shift_pressed = page
+		root.push_input(wheel,true); await process_frame; await process_frame
+		if not check(bar.first == (15 if page else 1),"scaled settings wheel/page increment: first="+str(bar.first)+" page="+str(page)+" scroll="+str(view.scrolls[2].scroll_vertical)): return
+	var grip: Vector2i = bar.thumb()
+	await pointer_drag(bar.get_global_transform_with_canvas()*Vector2(8,(grip.x+0.5)*12),bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-18))
+	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.row_starts[2] == total-14,"scaled settings distant range"): return
+	if not check(view.rendered_rows[2].size() == 14 and view.scrolls[2].scroll_vertical == (total-14)*36,"scaled settings range count or origin"): return
+	await capture("settings_scale_150_distant")
+	preferences.ui_auto_scale = old_auto; preferences.ui_scale = old_scale
+	root.size = Vector2i(1200,800); scene._fortress_hud.apply_ui_scale()
+	for frame in 6: editor._process(0); await process_frame
+	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and not view.layout_pending.has(true),"restored settings size and range"): return
 
 func settings_captions() -> Array:
 	var labels: Array = []

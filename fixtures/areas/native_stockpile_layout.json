@@ -1,0 +1,145 @@
+{
+  "source": "build/stockpile-layout-native-20261025-135121",
+  "version": "DF 53.16",
+  "oracle": "tools/smoke/stockpile_layout_native.ps1",
+  "scope": "Native settings resize and manual scale; actual context page-down after pointer selection of Food. Paused, source unchanged, owned DF closed unsaved.",
+  "omissions": [
+    "Elapsed held repeat",
+    "Minimum-grid behavior below native window limits",
+    "Product-wide scale preference parity"
+  ],
+  "cases": [
+    {
+      "name": "1200x800-0",
+      "grid": [
+        150,
+        66
+      ],
+      "pixels": [
+        1200,
+        800
+      ],
+      "scale": [
+        1.0,
+        1.0
+      ],
+      "logical_view": [
+        1200.0,
+        800.0
+      ],
+      "page_rows": 16,
+      "leaf_width": 328,
+      "screenshot_sha256": "cdfb00870682c89d3df64e648b51528ec48d2500d3e95e25bf819ff7ed5503f1"
+    },
+    {
+      "name": "1200x800-150",
+      "grid": [
+        120,
+        53
+      ],
+      "pixels": [
+        1200,
+        800
+      ],
+      "scale": [
+        1.25,
+        1.25
+      ],
+      "logical_view": [
+        960.0,
+        640.0
+      ],
+      "page_rows": 12,
+      "leaf_width": 88,
+      "screenshot_sha256": "048c4743002ec73b6c62e3e6a51f75067b84404dd52c6d2ed0d232c9c853b394"
+    },
+    {
+      "name": "1920x1080-0",
+      "grid": [
+        192,
+        72
+      ],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "scale": [
+        1.25,
+        1.25
+      ],
+      "logical_view": [
+        1536.0,
+        864.0
+      ],
+      "page_rows": 18,
+      "leaf_width": 664,
+      "screenshot_sha256": "51ca0c1431ca3d1d11ccb4f3aeda4f3e6991e407e47fb4e29625f1dddd6800c8"
+    },
+    {
+      "name": "1920x1080-150",
+      "grid": [
+        160,
+        60
+      ],
+      "pixels": [
+        1920,
+        1080
+      ],
+      "scale": [
+        1.5,
+        1.5
+      ],
+      "logical_view": [
+        1280.0,
+        720.0
+      ],
+      "page_rows": 14,
+      "leaf_width": 408,
+      "screenshot_sha256": "6a244631ec6424ce2c0b3d5ff5957f365f82ef0792cdab0b770a76272cb091ab"
+    },
+    {
+      "name": "800x600-0",
+      "grid": [
+        114,
+        50
+      ],
+      "pixels": [
+        912,
+        600
+      ],
+      "scale": [
+        1.0,
+        1.0
+      ],
+      "logical_view": [
+        912.0,
+        600.0
+      ],
+      "page_rows": 11,
+      "leaf_width": 40,
+      "screenshot_sha256": "6552a3e0734fa41f42fe34329cef90598a593c55df8c38a76587c6402860f976"
+    },
+    {
+      "name": "960x600-0",
+      "grid": [
+        120,
+        50
+      ],
+      "pixels": [
+        960,
+        600
+      ],
+      "scale": [
+        1.0,
+        1.0
+      ],
+      "logical_view": [
+        960.0,
+        600.0
+      ],
+      "page_rows": 11,
+      "leaf_width": 88,
+      "screenshot_sha256": "c75c79ec20e725c3032dbf76e4a4401f485110fdac2876a87c86beddb6b3237d"
+    }
+  ]
+}

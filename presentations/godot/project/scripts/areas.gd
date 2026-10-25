@@ -13,6 +13,7 @@ var hud
 var launcher_destination := "Stockpiles"
 var camera: Camera3D
 var interaction
+var canvas: CanvasLayer
 var panel: PanelContainer
 var content: VBoxContainer
 var stockpile_view: Control
@@ -135,7 +136,7 @@ func _ready() -> void:
 	paint_counts.changed.connect(_show_paint_counts)
 	action_service.session_changed.connect(_session_changed)
 	tree_exiting.connect(_detach_draft)
-	var canvas := CanvasLayer.new()
+	canvas = CanvasLayer.new()
 	canvas.layer = 2
 	add_child(canvas)
 	panel = PanelContainer.new()
@@ -1224,14 +1225,17 @@ func _process(delta: float) -> void:
 	if not play_enabled or not panel.visible: return
 	_poll_portraits(delta)
 	var view := get_viewport().get_visible_rect().size
+	canvas.scale = hud.ui_scale_vector() if hud != null and kind_picker.selected == 0 else Vector2.ONE
+	view /= canvas.scale
 	if view != _layout_view:
 		_layout_view = view
-		panel.custom_minimum_size.x = 940 if settings_view.visible else (324 if stockpile_view.visible else 390)
+		if settings_view.visible: settings_view.layout(view)
+		panel.custom_minimum_size.x = settings_view.custom_minimum_size.x + 12 if settings_view.visible else (324 if stockpile_view.visible else 390)
 		var panel_height := 452.0
 		if rename_field.visible: panel_height += 40
 		if message.visible: panel_height += maxf(36, message.get_combined_minimum_size().y)
 		panel.size = Vector2(panel.custom_minimum_size.x, minf(panel_height, view.y - 64) if stockpile_view.visible else maxf(220, view.y - 64))
-		if settings_view.visible: panel.size.y = minf(704,view.y - 64)
+		if settings_view.visible: panel.size.y = settings_view.custom_minimum_size.y + 24
 		if paint_view.visible:
 			panel.custom_minimum_size.x = 324
 			panel.size = Vector2(324,(68 if kind_picker.selected == 0 else 188) + (36 if message.visible else 0))
@@ -1250,6 +1254,7 @@ func _process(delta: float) -> void:
 	if paint_view.tools.visible and kind_picker.selected == 0 and hud != null:
 		var anchor: Rect2 = hud.launcher_rect(launcher_destination)
 		if anchor.has_area():
+			anchor = canvas.transform.affine_inverse() * anchor
 			var factor := anchor.size.y / 36.0
 			paint_view.tools.scale = Vector2.ONE * factor
 			paint_view.tools.position = Vector2(clampf(anchor.position.x,0,maxf(0,view.x-paint_view.tools.size.x*factor)),anchor.position.y-38*factor)
@@ -1495,7 +1500,7 @@ func _input(event: InputEvent) -> void:
 		and dragging
 		and event is InputEventMouseButton
 		and not event.pressed
-		and panel.get_global_rect().has_point(event.position)
+		and Rect2(Vector2.ZERO,panel.size).has_point(panel.get_global_transform_with_canvas().affine_inverse() * event.position)
 	):
 		if mode == "paint" and paint_tool == "rectangle":
 			# Native permits clicking Erase between the two map corners.

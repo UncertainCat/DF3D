@@ -159,9 +159,10 @@ are unchanged. Only the known separate-thread notice remains. The earlier
 unsaved and preserved both saves. Avoid ordinary reads of an actively written
 PowerShell log, which can briefly deny its writer access.
 
-This scaled-input test scales the links view directly. Stockpile-wide integration
-with the product UI scale setting, elapsed held-arrow cadence, and broader live
-transport/boundary coverage remain unfinished; Stockpiles stays hidden.
+This scaled-input test scales the links view directly. Stockpile canvas scale
+integration is covered by the responsive settings acceptance below; link input
+at changed product scale, elapsed held-arrow cadence, and broader live
+transport/boundary coverage remain unfinished. Stockpiles stays hidden.
 
 ## Native stockpile storage input (DF 53.16)
 
@@ -895,8 +896,9 @@ staged stockpile workflow plus an actual pointer drag to the final16 Parchment
 rows. Source and clone manifests were unchanged; owned DF closed unsaved. The
 sole diagnostic was the known separate-thread notice. Bounded provenance is in
 `native_stockpile_scroll.json.range_loading_acceptance`. This proves endpoint
-functionality, not exact native drag mapping. Held repeat, settings wheel modifiers
-and scaled viewport behavior still require settings-specific acceptance.
+functionality, not exact native drag mapping. Responsive settings acceptance
+below adds wheel modifiers and scaled viewport behavior. Held repeat remains
+unverified.
 
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
@@ -959,6 +961,42 @@ the documented Godot shutdown/thread diagnostics. Core and settings state/contro
 checks pass cleanly. This layout evidence does not establish full rendered
 stockpile workflow acceptance. Bounded observations and screenshot hashes are in
 `native_stockpile_filters.json.settings_layout`; game art stays in ignored output.
+
+Run `tools/smoke/stockpile_layout_native.ps1 -CloneEvidence <verified-run-folder>`
+for settings resize/scale evidence. `native_stockpile_layout.json` retains six
+cases from `build/stockpile-layout-native-20261025-135121`: automatic scaling at
+1200x800,960x600,requested800x600(actual912x600),1920x1080, and requested150%
+at1200x800 and1920x1080. The native first two columns retain their widths; the
+item column uses the remaining space. Page size is `(grid_height-16)/3`, rounded
+down. Actual native Food selection and context page-down verify each count.
+The captures were inspected. DF110624 closed unsaved and source hashes match.
+Native limits requested150% to125% at1200x800; it reaches150% at1920x1080.
+These are observed native sizes, not a change to viewer preference fit policy.
+
+Stockpile panels share a canvas scaled by the viewer UI preference. Zones retain
+their existing layout. Settings adjusts its third-column width and row count,
+including scrollbar extent, distant-page seeking and refresh restoration. Paint
+toolbar anchoring and panel hit tests convert through that canvas transform.
+Explicit scrollbar input invalidates pending scroll restoration, preventing a
+late page-layout callback from overwriting a new wheel or drag position.
+
+`build/qa/stockpile-responsive-input` passes root CTest19/19, area/settings
+controller checks and rendered settings checks for all six native geometries,
+plus wheel input during pending restoration. Only documented render/shutdown
+diagnostics remain. Protected `build/areas-acceptance-20261025-140243` passes190
+native observations across settings, paused external refresh, paint lifecycle
+and links. At1920x1080 with the runtime UI preference set to150%, actual viewport
+wheel/page/drag input reaches the final14 Parchment rows. The driver restores
+1200x800 and waits for the resulting range request before continuing. The scaled
+capture was compared with native; this verifies geometry and input, not exact
+whole-screen pixel equality. DF76084 closed unsaved; both save manifests match.
+Only the known separate-thread notice remains. Earlier run135316 exposed the
+restoration race;135814 passed scaled input but failed because the driver clicked
+before the restored-size range settled. Both failed runs preserved their saves.
+
+Small-window/high-scale fit, non-ASCII search, held-arrow timing, and scaled
+editing outside settings remain incomplete. Keep these distinct from the passed
+large-window150% settings case and from full Stockpiles exposure.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

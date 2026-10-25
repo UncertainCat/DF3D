@@ -326,5 +326,183 @@
     },
     "offline_gate": "build/qa/stockpile-inline-rename-final",
     "scope": "Actual viewport ASCII entry, append, Backspace, Enter, 20-byte limit, Escape/right-click with pending writes, reopen and cleared default heading. Controller tests cover stale/unknown/late replies, disconnect and epoch. OS clipboard/IME input is not established."
+  },
+  "window_text": {
+    "run": "build\\stockpile-storage-native-rename-text-20261025-185244",
+    "oracle": "tools/smoke/stockpile_storage_native.ps1 -RenameText",
+    "scope": "Native quill input followed by paced Windows WM_CHAR UTF-16 units through SDL, 40ms per unit. Actual byte arrays and DF2UTF names. ASCII, accented/Greek/Chinese, ignored CR/LF/tab, 80 ASCII characters, and UTF-8 sequences ending at or crossing the 20-byte limit. Not clipboard or IME composition.",
+    "cases": [
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "bytes": [
+            97,
+            98,
+            99,
+            32,
+            88,
+            89,
+            90
+          ],
+          "editing": true,
+          "frame": 0,
+          "stored": "abc XYZ"
+        },
+        "typed": "abc XYZ"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "bytes": [
+            97,
+            195,
+            169,
+            206,
+            177,
+            228,
+            184,
+            173,
+            98
+          ],
+          "editing": true,
+          "frame": 0,
+          "stored": "a\u251c\u2310\u256c\u2592\u03a3\u2555\u00a1b"
+        },
+        "typed": "a\u00e9\u03b1\u4e2db"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "bytes": [
+            97,
+            98,
+            99,
+            100,
+            101,
+            102
+          ],
+          "editing": true,
+          "frame": 0,
+          "stored": "abcdef"
+        },
+        "typed": "ab\r\ncd\tef"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "bytes": [
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97
+          ],
+          "editing": true,
+          "frame": 0,
+          "stored": "aaaaaaaaaaaaaaaaaaaa"
+        },
+        "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "bytes": [
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            195,
+            169
+          ],
+          "editing": true,
+          "frame": 0,
+          "stored": "aaaaaaaaaaaaaaaaaa\u251c\u2310"
+        },
+        "typed": "aaaaaaaaaaaaaaaaaa\u00e9Z"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "bytes": [
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            97,
+            195
+          ],
+          "editing": true,
+          "frame": 0,
+          "stored": "aaaaaaaaaaaaaaaaaaa\u251c"
+        },
+        "typed": "aaaaaaaaaaaaaaaaaaa\u00e9Z"
+      }
+    ],
+    "save_preservation": "Owned DF121936 closed unsaved; source manifest unchanged; all reads paused at frame0.",
+    "sha256": {
+      "text-messages.json": "5bf74c888c427f0447393afa513d6172a6770adcae95fdb61a502a765a496506",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
+      "name-text-1.png": "e73165252c35a44ddfb440912ace3d6bb4f2c676e2e2ceccee38513ad417750b",
+      "name-text-5.png": "b999f6672f5ead8bbc247e51efc80e96282c7eac77cc9f28c2c675c61e9469e5"
+    },
+    "production_acceptance": {
+      "run": "build\\areas-acceptance-20261025-185618",
+      "offline": "build/qa/stockpile-hover-name-ready",
+      "scope": "All six recorded Windows/SDL inputs fed as actual Godot viewport text events through inline rename, with native stored-name readback. Includes ignored control text and truncation inside UTF-8 sequences. This is viewport text delivery, not OS clipboard or IME composition.",
+      "result": "passed_with_known_issues",
+      "diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "scene_stockpile_name_windows_1.png": "3b7a7c0a2af44dbf369f26e188b9b1f735316787d6ceca0c00ffea76e4f62cdb",
+        "scene_stockpile_name_windows_5.png": "7d6b912e5e2cfc7a7e18134b809cf7e9d3c7af4afce36fbcba76578d190dbe4d"
+      }
+    }
   }
 }

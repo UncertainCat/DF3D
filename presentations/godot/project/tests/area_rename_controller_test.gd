@@ -79,5 +79,16 @@ func run() -> void:
 		controller.available = true
 	controller.close_panel(); controller.queue_free(); host.queue_free(); service.queue_free(); interaction.queue_free()
 	await process_frame
+	var samples = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_rename.json")).window_text.cases
+	var entry = preload("res://scripts/area_name_entry.gd").new(); root.add_child(entry)
+	for sample in samples:
+		entry.begin("")
+		for character in str(sample.typed):
+			var event := InputEventKey.new(); event.pressed = true; event.unicode = character.unicode_at(0)
+			entry.feed_key(event)
+		check(entry.value == str(sample.native.stored),"name input differs from recorded Windows/SDL native bytes")
+		check(entry.editing == bool(sample.native.editing),"text-only input changed native editing state")
+		entry.finish()
+	entry.queue_free(); await process_frame
 	print("AREA_RENAME_CONTROLLER PASS" if failures == 0 else "AREA_RENAME_CONTROLLER FAIL")
 	quit(failures)

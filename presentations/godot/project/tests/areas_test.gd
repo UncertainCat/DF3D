@@ -168,6 +168,11 @@ func run():
 	help_button.disabled = true; help._process(0)
 	check(not help.visible and help.state.key.is_empty(),"pending mutation retires button help")
 	help_button.disabled = false
+	check(c.menu_data.stockpile_controls[0].hover_lines == ["Repaint this stockpile."],"retiring help must not clear source instructions")
+	help.state.enter(help_button.get_instance_id(),"palette/repaint",Time.get_ticks_msec()-600)
+	help._process(0)
+	check(help.visible and help.lines == ["Repaint this stockpile."],"repeated hover keeps native instruction text")
+	help.reset()
 
 	var preset_count := w.calls.size()
 	c.choose_preset(0)

@@ -471,6 +471,24 @@
       "scene_stockpile_help_palette_links_only.png": "a52687d33d08f07719abcdcd8e2ff1e77a756ca22cb33bcc60c810231852d79e",
       "scene_stockpile_help_palette_remove.png": "38d5834c60419f797741fb1ddbd4f6c3f3c885caa8dc6e936231181a9f332dcf",
       "scene_stockpile_help_palette_repaint.png": "ab139949a3549cb8f0e14a20fadd655287b463c9ed23e8cde885ce9d445c9397"
+    },
+    "repeat_acceptance": {
+      "run": "build\\areas-acceptance-20261025-185618",
+      "offline": "build/qa/stockpile-hover-name-ready",
+      "scope": "Nine actual pointer hovers, then repeated links-only and paint Remove hovers at 912x600, 1200x800, 960x600, 640x480 and 1920x1080. Verify exact lines against a freshly read native source, plus viewport bounds. Restoring/hiding a tooltip must not clear the shared source array.",
+      "regression": "Prior full run build/areas-acceptance-20261025-184638 passed239 native observations but screenshot review showed a blank later tooltip; visibility alone had missed shared-array mutation. This focused run verifies the fix and all five fit workflows.",
+      "result": "passed_with_known_issues",
+      "diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "preservation": "Owned DF75596 closed unsaved; both save manifests unchanged.",
+      "sha256": {
+        "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+        "scene_stockpile_help_palette_links_only_1920x1080.png": "472935801fac6ab1fe72d33278bbc256c014666f3179b57fb49e0f93c1e050b3",
+        "scene_stockpile_help_paint_remove_640x480.png": "f5936ace171bd1a28b636ef28802d465d127e076ec01229474cdc8203e414868"
+      }
     }
   }
 }

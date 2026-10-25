@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips=...
+local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips,test_rename_text=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -63,6 +63,7 @@ require('gui.script').start(function()
    while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timeout');if keep_pointer then keep_pointer();view:render(dfhack.getTickCount())end;require('gui.script').sleep(1,'frames')end
   end
   capture('pile')
+  if test_rename_text then return end
   if test_tooltips then
    local function hover(name,x,y)
     local function move()

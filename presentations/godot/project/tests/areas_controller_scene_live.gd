@@ -157,7 +157,7 @@ func name_text(value: String) -> void:
 			var event := InputEventKey.new(); event.pressed = pressed; event.unicode = character.unicode_at(0)
 			root.push_input(event,true)
 
-func hover_stockpile_button(control: Button, key: String) -> void:
+func hover_stockpile_button(control: Button, key: String, suffix := "") -> void:
 	for frame in 3:
 		editor._process(0); await process_frame
 	var motion := InputEventMouseMotion.new()
@@ -165,7 +165,14 @@ func hover_stockpile_button(control: Button, key: String) -> void:
 	motion.global_position = motion.position; root.push_input(motion,true)
 	await create_timer(0.65).timeout
 	if not check(editor.stockpile_help.visible and editor.stockpile_help.displayed == key,"native stockpile hover missing: "+key): return
-	await capture("stockpile_help_"+key.replace("/","_"))
+	var source: Dictionary = preload("res://scripts/area_menu_data.gd").read()
+	var rows: Array = source.paint_tools if key.begins_with("paint/") else source.stockpile_controls
+	var expected: Array = []
+	for row in rows:
+		if str(row.key) == key.get_slice("/",1): expected = row.hover_lines
+	if not check(not expected.is_empty() and editor.stockpile_help.lines == expected,"native hover source text changed: "+key): return
+	if not check(Rect2(Vector2.ZERO,Vector2(root.size)).encloses(screen_rect(editor.stockpile_help)),"stockpile tooltip outside viewport"): return
+	await capture("stockpile_help_"+key.replace("/","_")+suffix)
 
 func pointer_stockpile_help() -> void:
 	step = "viewport stockpile instruction hovers"
@@ -232,6 +239,25 @@ func pointer_stockpile_name(origin: Vector3i) -> void:
 	if not await wait_ui(settled,"restore unnamed stockpile"): return
 	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
 
+	var samples = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_rename.json")).window_text.cases
+	for index in samples.size():
+		var sample: Dictionary = samples[index]
+		await click_control(editor.stockpile_view.controls.rename)
+		for count in 20:
+			var event := InputEventKey.new(); event.pressed = true; event.keycode = KEY_BACKSPACE; root.push_input(event,true)
+		name_text(str(sample.typed))
+		if not await wait_ui(settled,"native Windows name case "+str(index)): return
+		await native("snapshot",{"id":id,"expected":{"custom_name":str(sample.native.stored)}})
+		if not check(editor.rename_field.value == str(sample.native.stored),"rendered name differs from native Windows text"): return
+		if index in [1,5]: await capture("stockpile_name_windows_"+str(index))
+		await pointer_key(KEY_ENTER)
+	await click_control(editor.stockpile_view.controls.rename)
+	for count in 20:
+		var event := InputEventKey.new(); event.pressed = true; event.keycode = KEY_BACKSPACE; root.push_input(event,true)
+	await pointer_key(KEY_ENTER)
+	if not await wait_ui(settled,"restore unnamed after native text cases"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
+
 func pointer_storage_limits() -> void:
 	step = "viewport native storage limits"
 	if not check(int(editor.selected.get("storage_limit",-1)) == 1 and int(editor.selected.tile_count) == 1,"one-tile native bound absent"): return
@@ -293,6 +319,8 @@ func pointer_stockpile_fit(origin: Vector3i) -> void:
 		if not check(viewport.encloses(panel_rect),"stockpile panel extends beyond viewport"): return
 		if not check(not panel_rect.intersects(header_rect),"stockpile panel overlaps HUD header"): return
 		if not check(not panel_rect.intersects(screen_rect(scene._fortress_hud.actions)),"stockpile palette overlaps bottom actions"): return
+		await hover_stockpile_button(editor.stockpile_view.controls.links_only,"palette/links_only","_%dx%d" % [dimensions.x,dimensions.y])
+		if stopped: return
 		await click_control(editor.stockpile_view.controls.containers)
 		if not await wait_ui(func(): return settled() and editor.storage_view.visible,"scaled storage open"): return
 		if not check(viewport.encloses(screen_rect(editor.storage_view)),"storage popup extends beyond viewport"): return
@@ -377,6 +405,8 @@ func pointer_stockpile_fit_actions(origin: Vector3i, dimensions: Vector2i) -> vo
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
 	for frame in 8: await process_frame
 	await click_control(editor.stockpile_view.controls.repaint)
+	await hover_stockpile_button(editor.paint_view.buttons.remove,"paint/remove","_%dx%d" % [dimensions.x,dimensions.y])
+	if stopped: return
 	await click_control(editor.paint_view.buttons.brush)
 	var viewport := Rect2(Vector2.ZERO,Vector2(root.size))
 	if not check(viewport.encloses(screen_rect(editor.paint_view.tools)),"scaled paint toolbar outside viewport"): return

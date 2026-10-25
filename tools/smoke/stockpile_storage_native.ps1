@@ -1,4 +1,4 @@
-param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint,[switch]$Links,[switch]$Rename,[switch]$Tooltips,[switch]$PaintGestures,[switch]$TilePredicates,[ValidateSet("partial-escape","partial-right","complete-escape","complete-right","brush","eligibility","eligibility-create","eligibility-grow","eligibility-erase","transfer-partial","transfer-full","transfer-create-partial","transfer-create-full","transfer-erase-partial","transfer-erase-full")][string]$GestureCase="partial-escape",[ValidateSet("all","floor","wall","water1","water2","water7","magma1","building1","building2","hidden","ramp","open","all-wall","wall-left","wall-right")][string]$EligibilityCase="all")
+param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint,[switch]$Links,[switch]$Rename,[switch]$Tooltips,[switch]$RenameText,[switch]$PaintGestures,[switch]$TilePredicates,[ValidateSet("partial-escape","partial-right","complete-escape","complete-right","brush","eligibility","eligibility-create","eligibility-grow","eligibility-erase","transfer-partial","transfer-full","transfer-create-partial","transfer-create-full","transfer-erase-partial","transfer-erase-full")][string]$GestureCase="partial-escape",[ValidateSet("all","floor","wall","water1","water2","water7","magma1","building1","building2","hidden","ramp","open","all-wall","wall-left","wall-right")][string]$EligibilityCase="all")
 $ErrorActionPreference='Stop'
 if($GestureCase -eq 'eligibility-create' -and $EligibilityCase -eq 'all'){throw 'Creation cases require a fresh owned session per EligibilityCase'}
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
@@ -14,7 +14,7 @@ function Manifest {
  } | Sort-Object) -join "`n")
 }
 if((Manifest) -cne $expected){throw 'Owned source differs from verified manifest'}
-$scope=if($Tooltips){'tooltips'}elseif($Links){'links'}elseif($PaintGestures){"gestures-$GestureCase-$EligibilityCase"}elseif($Repaint){'repaint'}else{'input'}
+$scope=if($RenameText){'rename-text'}elseif($Tooltips){'tooltips'}elseif($Links){'links'}elseif($PaintGestures){"gestures-$GestureCase-$EligibilityCase"}elseif($Repaint){'repaint'}else{'input'}
 $out="$repo/build/stockpile-storage-native-$scope-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
 Add-Type -ReferencedAssemblies System.Drawing -TypeDefinition @"
@@ -34,6 +34,14 @@ public static class Shot {
   [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, out uint p);
   [DllImport("user32.dll")] static extern bool CloseDesktop(IntPtr d);
   [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetWindowText(IntPtr h,System.Text.StringBuilder s,int n);
+  [DllImport("user32.dll",EntryPoint="PostMessageW",CharSet=CharSet.Unicode,SetLastError=true)]
+  static extern bool PostMessage(IntPtr h,uint message,IntPtr w,IntPtr l);
+  public static void Text(IntPtr h,string text) {
+   foreach(char c in text) {
+    if(!PostMessage(h,0x102,(IntPtr)c,IntPtr.Zero)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+    System.Threading.Thread.Sleep(40);
+   }
+  }
   public static string Windows="";
   public static IntPtr Find(uint pid) {
     IntPtr result=IntPtr.Zero, desk=OpenDesktop("df3d_hidden",0,false,0x41);
@@ -66,7 +74,7 @@ try {
  $linksArg=if($Links){'true'}else{'false'}
  $predicateArg=if($TilePredicates){'true'}else{'false'}
  $gestureArg=if($PaintGestures){"'$GestureCase'"}else{'false'}
- $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg,$gestureArg,'$EligibilityCase',$predicateArg,$linksArg,$($Rename.ToString().ToLower()),$($Tooltips.ToString().ToLower()))")
+ $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg,$gestureArg,'$EligibilityCase',$predicateArg,$linksArg,$($Rename.ToString().ToLower()),$($Tooltips.ToString().ToLower()),$($RenameText.ToString().ToLower()))")
  $r | ConvertTo-Json | Set-Content "$out/native.log"
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
@@ -84,6 +92,24 @@ try {
  }
  $result=Get-Content "$out/result.json" -Raw | ConvertFrom-Json
  if(-not $result.success){throw $result.error}
+ if($RenameText) {
+  $samples=@('abc XYZ',("a"+[char]0x00e9+[char]0x03b1+[char]0x4e2d+"b"),"ab`r`ncd`tef",('a'*80),(('a'*18)+[char]0x00e9+'Z'),(('a'*19)+[char]0x00e9+'Z'))
+  $observations=@();$index=0
+  foreach($text in $samples) {
+   $prepare=Invoke-DfhackRaw -CommandArgs @('lua',"local b=df.global.world.buildings.other.STOCKPILE[0];local ui=df.global.game.main_interface;assert(ui.stockpile.cur_bld==b);local g=df.global.gps;g.mouse_x=42;g.mouse_y=6;g.precise_mouse_x=340;g.precise_mouse_y=78;local gui=require('gui');local v=dfhack.gui.getDFViewscreen(true);gui.simulateInput(v,'_MOUSE_L');assert(ui.entering_building_name);for i=1,#b.name do gui.simulateInput(v,'STRING_A000')end;assert(b.name=='' and df.global.pause_state);print('TEXT_READY')")
+   if($prepare.ExitCode -ne 0 -or ($prepare.Output -join "`n") -notmatch 'TEXT_READY'){throw 'Name text preparation failed'}
+   [Shot]::Text([Shot]::Find($owned.Id),$text)
+   Start-Sleep -Milliseconds 500
+   $read=Invoke-DfhackRaw -CommandArgs @('lua',"local b=df.global.world.buildings.other.STOCKPILE[0];assert(df.global.pause_state);local bytes={};for i=1,#b.name do bytes[#bytes+1]=b.name:byte(i)end;print('TEXT_RESULT '..require('json').encode{stored=dfhack.df2utf(b.name),bytes=bytes,editing=df.global.game.main_interface.entering_building_name,frame=df.global.world.frame_counter})")
+   if($read.ExitCode -ne 0){throw 'Name text read failed'}
+   $raw=$read.Output -join "`n";$raw | Add-Content "$out/text-messages.log"
+   $start=$raw.IndexOf('TEXT_RESULT ');if($start -lt 0){throw 'Missing name text observation'}
+   $observations+=@{typed=$text;message_interval_ms=40;native=($raw.Substring($start+12) | ConvertFrom-Json)}
+   [Shot]::Capture([Shot]::Find($owned.Id),"$out/name-text-$index.png") | Out-Null
+   $index++
+  }
+  $observations | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 "$out/text-messages.json"
+ }
  $summary='passed'
 } catch {$summary='failed '+$_.Exception.Message}
 finally {

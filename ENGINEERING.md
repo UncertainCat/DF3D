@@ -67,6 +67,25 @@ is the known separate-thread notice. The viewport text scenarios use ASCII;
 the earlier native high-byte oracle is helper evidence, not OS clipboard/IME
 acceptance. Stockpiles remains hidden while the broader completion audit proceeds.
 
+`tools/smoke/stockpile_storage_native.ps1 -RenameText` verifies the name helper
+through paced Windows WM_CHAR input and SDL. Native run
+`build/stockpile-storage-native-rename-text-20261025-185244` records six cases:
+ASCII, accented/Greek/Chinese input, ignored CR/LF/tab text, eighty ASCII letters,
+and UTF-8 sequences ending at or crossing the20-byte boundary. Native stores the
+UTF-8 bytes verbatim and displays them as CP437, including a truncated leading
+byte at the limit. The current entry matches these observed results. Native
+DF121936 remains paused at frame0 and closes unsaved; the source is unchanged.
+
+`build/qa/stockpile-hover-name-ready` passes root CTest19/19, area, rename and
+storage controllers, including these recorded text cases. Protected
+`build/areas-acceptance-20261025-185618` feeds all six cases through actual Godot
+viewport events and compares the resulting native stored names. The mixed-text
+capture was inspected against native. Owned DF75596 closes unsaved and both
+save manifests match; only the known separate-thread notice remains. This
+establishes native Windows text conversion plus viewer text-event handling,
+not clipboard or IME composition. `native_stockpile_rename.json.window_text`
+retains observations, hashes and the acceptance scope.
+
 Stockpile transitions retain internal request diagnostics without displaying generic
 editor labels or authored waiting/error strips. The native no-type warning remains.
 `build/qa/stockpile-native-copy-ready` passes root CTest19/19 and area, rename,
@@ -107,6 +126,20 @@ known separate-thread notice remains; owned DF122604 closes unsaved and both
 save manifests match. `native_stockpile_layout.json.instruction_hovers` records
 hashes and native instruction observations. This closes the control-help gap;
 Stockpiles remains staged during the completion audit.
+
+Repeated-hover acceptance now checks exact text against a fresh native source,
+not visibility alone. The full main-scene run
+`build/areas-acceptance-20261025-184638` passes239 native observations, but its
+1920x1080 screenshot exposed a blank repeated tooltip: clearing the active lines
+also cleared the shared menu array. Reset now replaces the local array without
+mutating source copy. The controller regression checks retirement and re-entry.
+Protected `build/areas-acceptance-20261025-185618` verifies exact instruction
+lines and viewport bounds at all five fit sizes, plus rename and the existing
+storage/settings/paint/link fit actions. The final1920 links-only and640 paint
+Remove captures were inspected. Save manifests are unchanged and the known
+separate-thread notice is the only diagnostic. This supersedes the earlier
+visibility-only hover acceptance; the239-observation run is functional evidence,
+not acceptance of its blank tooltip. The layout fixture retains both scopes.
 
 ## Stockpile settings ownership and protocol59
 

@@ -27,7 +27,7 @@ func bind_button(button: Button, key: String, row: Dictionary, paint: bool) -> v
 	button.mouse_exited.connect(func(): state.leave(button.get_instance_id(),Time.get_ticks_msec()))
 
 func reset() -> void:
-	state.reset(); displayed = ""; lines.clear(); hide(); queue_redraw()
+	state.reset(); displayed = ""; lines = []; hide(); queue_redraw()
 
 func _process(_delta: float) -> void:
 	if not controller.panel.visible or controller.kind_picker.selected != 0 or not controller.play_enabled:

@@ -112,6 +112,12 @@ func layout(view: Vector2, available_height := INF, available_width := INF) -> v
 	row_cache = [{},{},{}]
 	render()
 
+static func leaf_caption(value: String, cells: int) -> String:
+	# Native screen captures: narrow positive widths clip; four or more cells
+	# use three literal dots. Negative native widths leave the string intact.
+	if cells < 0 or value.length() <= cells: return value
+	return value.left(cells) if cells < 4 else value.left(cells-3)+"..."
+
 func row_style(value: int, selected: bool) -> StyleBox:
 	var token := "BUTTON_CATEGORY_RECTANGLE"
 	if value == 1: token += "_OFF"
@@ -196,6 +202,8 @@ func render() -> void:
 			var label := Label.new(); label.text = str(row.label)
 			# DF's owned row builder already formats the caption, including its
 			# CP437 capitalization. Unicode recasing changes native glyphs.
+			if column == 2:
+				label.text = leaf_caption(label.text,column_widths[2]/8-5-(2 if total > page_rows else 0))
 			label.position = Vector2(56 if column == 0 else 8,0)
 			label.size = Vector2(([208,208][column] - (48 if column == 0 else 0)) if column < 2 else maxi(0,column_widths[2] - 16 - (16 if total > page_rows else 0)),36)
 			label.add_theme_font_size_override("font_size",12); label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

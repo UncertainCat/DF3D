@@ -1174,9 +1174,30 @@ capture was inspected. `build/qa/stockpile-caption-final` passes root CTest19/19
 settings controller and rendered settings checks with documented Godot
 diagnostics only. The initial failing gate's console summary also encountered
 Windows output-encoding failure; the test log retains all four failed rows.
-Assertion messages now identify rows by number. Narrow native row truncation
-is visible in these samples but remains a separate layout-parity gap; this
-caption check does not establish ellipsis behavior or OS text-input delivery.
+Assertion messages now identify rows by number. This caption check does not
+establish OS text-input delivery.
+
+Leaf captions use the native text budget: column width in eight-pixel cells,
+minus five cells and another two when the scrollbar is present. Nonnegative
+budgets below four retain only that many characters; longer overflowing captions
+use three literal dots. Protected captures
+`build/stockpile-search-native-20261025-164156` and
+`build/stockpile-search-native-20261025-164608` cover normal/scaled layouts and
+912..952-pixel window widths with and without scrollbars. Temporary Ammo names
+are restored; owned DF85544 and DF55584 close unsaved with source hashes unchanged.
+`native_stockpile_search.json.caption_truncation` retains bounded screen text,
+widths and result hashes. The rendered regression matches213 rows across18
+nonnegative-budget cases. `build/qa/stockpile-caption-truncation` passes root
+CTest19/19, settings controller and rendered checks with documented Godot
+diagnostics only; the 960-pixel Food capture was visually inspected.
+
+At912 and920 pixels with a scrollbar, DF computes negative text budgets and
+draws full names across the panel border, scrollbar and map. Captured row prefixes
+end at the first zero glyph and do not represent the entire spilled string.
+DF3D currently clips those names inside its existing controls; these two cases
+remain an unresolved native-parity gap pending maintainer direction. They are
+explicitly excluded from the truncation regression's parity claim. Minimum-width
+header overflow/reachability remains a separate full-scene audit.
 
 `build/qa/stockpile-search-field-final` passes root CTest19/19, the complete
 recorded character/length map, controller caret/selection checks, and rendered

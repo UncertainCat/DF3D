@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out=...
+local out,width_probe=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -121,9 +121,33 @@ require('gui.script').start(function()
      records[#records+1]={probe='rendered_captions',rows=rendered}
     end
    end
+   local function record_truncation(kind)
+    c.scroll_position_spec=0;view:render(dfhack.getTickCount())
+    local shown={};local page=(g.dimy-16)//3
+    for i=0,math.min(c.cur_spec_item_sz,page)-1 do
+     local row=c.spec_item[i];assert(row.on,'truncation probe expects unfiltered rows')
+     local chars={}
+     for x=80,g.dimx-1 do
+      local ch=dfhack.screen.readTile(x,10+3*i).ch
+      if ch==0 then break end
+      chars[#chars+1]=string.char(ch)
+     end
+     shown[#shown+1]={label=dfhack.df2utf(row.name),display=dfhack.df2utf(table.concat(chars))}
+    end
+    records[#records+1]={probe='caption_truncation',kind=kind,grid={g.dimx,g.dimy},
+     page=page,count=c.cur_spec_item_sz,rows=shown}
+   end
+   for i,length in ipairs{1,2,3,4,5,6,7,8,35,36,80}do
+    local raw=assert(df.global.world.raws.itemdefs.ammo[i-1])
+    if i>#originals then originals[#originals+1]={raw=raw,name=raw.name,plural=raw.name_plural,adjective=raw.adjective}end
+    raw.name=string.rep('x',length);raw.name_plural=raw.name;raw.adjective=''
+   end
+   label_click('Metal',0,2);label_click('Type',0,2)
+   record_truncation('ammo_boundaries')
+   label_click('Food');record_truncation('food_with_scrollbar')
   end)
   restore();assert(success,problem)
-  c.spec_filter='';label_click('Ammo')
+  c.spec_filter='';label_click(width_probe and 'Food' or 'Ammo')
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)
  local f=assert(io.open(out..'/result.tmp','w'));f:write(require('json').encode{success=ok,error=tostring(why),records=records});f:close();assert(os.rename(out..'/result.tmp',out..'/result.json'))

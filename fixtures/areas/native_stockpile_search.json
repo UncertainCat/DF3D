@@ -1623,5 +1623,1270 @@
       "\u00b5caption",
       "\u03a9mega"
     ]
+  },
+  "caption_truncation": {
+    "scope": "Actual native glyph rows at ten layouts, with and without a scrollbar. Negative widths visibly spill over the panel/map; the recorded display prefix stops at the intervening scrollbar and is not the complete spilled text.",
+    "cases": [
+      {
+        "layout": "1200x800-0",
+        "source": "build/stockpile-search-native-20261025-164156/1200x800-0/result.json",
+        "sha256": "20815e762a14f9ef21b2064a9ccacddd6124fcdbfcd454580d5dcea5eab63dcb",
+        "kind": "ammo_boundaries",
+        "grid": [
+          150,
+          66
+        ],
+        "page": 16,
+        "total": 11,
+        "text_cells": 36,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xxxxx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xxxxxx",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xxxxxxx",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxx",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "1200x800-0",
+        "source": "build/stockpile-search-native-20261025-164156/1200x800-0/result.json",
+        "sha256": "20815e762a14f9ef21b2064a9ccacddd6124fcdbfcd454580d5dcea5eab63dcb",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          150,
+          66
+        ],
+        "page": 16,
+        "total": 12328,
+        "text_cells": 34,
+        "rows": [
+          {
+            "display": "Aardvark man meat",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aardvark man sweetbread",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aardvark man tripe",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aardvark meat",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aardvark sweetbread",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aardvark tripe",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Acorn fly meat",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Acorn fly sweetbread",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Acorn fly tripe",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Adder man meat",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Adder man sweetbread",
+            "label": "Adder man sweetbread"
+          },
+          {
+            "display": "Adder man tripe",
+            "label": "Adder man tripe"
+          },
+          {
+            "display": "Adder meat",
+            "label": "Adder meat"
+          },
+          {
+            "display": "Adder sweetbread",
+            "label": "Adder sweetbread"
+          },
+          {
+            "display": "Adder tripe",
+            "label": "Adder tripe"
+          },
+          {
+            "display": "Albatross man meat",
+            "label": "Albatross man meat"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "1920x1080-0",
+        "source": "build/stockpile-search-native-20261025-164156/1920x1080-0/result.json",
+        "sha256": "1ef8639569bf97fa100ffe2b3a30b032c15776c7132acaf62b3f9926dd22b45a",
+        "kind": "ammo_boundaries",
+        "grid": [
+          192,
+          72
+        ],
+        "page": 18,
+        "total": 11,
+        "text_cells": 78,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xxxxx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xxxxxx",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xxxxxxx",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxx",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "1920x1080-0",
+        "source": "build/stockpile-search-native-20261025-164156/1920x1080-0/result.json",
+        "sha256": "1ef8639569bf97fa100ffe2b3a30b032c15776c7132acaf62b3f9926dd22b45a",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          192,
+          72
+        ],
+        "page": 18,
+        "total": 12328,
+        "text_cells": 76,
+        "rows": [
+          {
+            "display": "Aardvark man meat",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aardvark man sweetbread",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aardvark man tripe",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aardvark meat",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aardvark sweetbread",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aardvark tripe",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Acorn fly meat",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Acorn fly sweetbread",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Acorn fly tripe",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Adder man meat",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Adder man sweetbread",
+            "label": "Adder man sweetbread"
+          },
+          {
+            "display": "Adder man tripe",
+            "label": "Adder man tripe"
+          },
+          {
+            "display": "Adder meat",
+            "label": "Adder meat"
+          },
+          {
+            "display": "Adder sweetbread",
+            "label": "Adder sweetbread"
+          },
+          {
+            "display": "Adder tripe",
+            "label": "Adder tripe"
+          },
+          {
+            "display": "Albatross man meat",
+            "label": "Albatross man meat"
+          },
+          {
+            "display": "Albatross man sweetbread",
+            "label": "Albatross man sweetbread"
+          },
+          {
+            "display": "Albatross man tripe",
+            "label": "Albatross man tripe"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "1920x1080-150",
+        "source": "build/stockpile-search-native-20261025-164156/1920x1080-150/result.json",
+        "sha256": "5b2894e3fc17f67f407ffa4ec6c3adad3b3b53391d036c7f805109d3bb493b16",
+        "kind": "ammo_boundaries",
+        "grid": [
+          160,
+          60
+        ],
+        "page": 14,
+        "total": 11,
+        "text_cells": 46,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xxxxx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xxxxxx",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xxxxxxx",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxx",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "1920x1080-150",
+        "source": "build/stockpile-search-native-20261025-164156/1920x1080-150/result.json",
+        "sha256": "5b2894e3fc17f67f407ffa4ec6c3adad3b3b53391d036c7f805109d3bb493b16",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          160,
+          60
+        ],
+        "page": 14,
+        "total": 12328,
+        "text_cells": 44,
+        "rows": [
+          {
+            "display": "Aardvark man meat",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aardvark man sweetbread",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aardvark man tripe",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aardvark meat",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aardvark sweetbread",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aardvark tripe",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Acorn fly meat",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Acorn fly sweetbread",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Acorn fly tripe",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Adder man meat",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Adder man sweetbread",
+            "label": "Adder man sweetbread"
+          },
+          {
+            "display": "Adder man tripe",
+            "label": "Adder man tripe"
+          },
+          {
+            "display": "Adder meat",
+            "label": "Adder meat"
+          },
+          {
+            "display": "Adder sweetbread",
+            "label": "Adder sweetbread"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "960x600-0",
+        "source": "build/stockpile-search-native-20261025-164156/960x600-0/result.json",
+        "sha256": "232a0f3b2c78be69b5824aed9c1df11c890fff25772ca9404cfed7589fdc95bc",
+        "kind": "ammo_boundaries",
+        "grid": [
+          120,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 6,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xxxxx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xxxxxx",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xxx...",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xxx...",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xxx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "960x600-0",
+        "source": "build/stockpile-search-native-20261025-164156/960x600-0/result.json",
+        "sha256": "232a0f3b2c78be69b5824aed9c1df11c890fff25772ca9404cfed7589fdc95bc",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          120,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": 4,
+        "rows": [
+          {
+            "display": "A...",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "A...",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "A...",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "A...",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "A...",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "A...",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "A...",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "A...",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "A...",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "A...",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "A...",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "912x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/912x600-0/result.json",
+        "sha256": "7ab5eab9c2a535b58a9c79289f2efb9d2f5e1e92b666ce0ed6572c551bf345b6",
+        "kind": "ammo_boundaries",
+        "grid": [
+          114,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 0,
+        "rows": [
+          {
+            "display": "",
+            "label": "X"
+          },
+          {
+            "display": "",
+            "label": "Xx"
+          },
+          {
+            "display": "",
+            "label": "Xxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "912x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/912x600-0/result.json",
+        "sha256": "7ab5eab9c2a535b58a9c79289f2efb9d2f5e1e92b666ce0ed6572c551bf345b6",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          114,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": -2,
+        "rows": [
+          {
+            "display": "Aa",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Ac",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Ac",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Ac",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Ad",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Ad",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": true
+      },
+      {
+        "layout": "920x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/920x600-0/result.json",
+        "sha256": "1897cd8bb2a8103aa1d031796d17d98d0d065b223a69a6359af9bba886e17163",
+        "kind": "ammo_boundaries",
+        "grid": [
+          115,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 1,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "X",
+            "label": "Xx"
+          },
+          {
+            "display": "X",
+            "label": "Xxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "X",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "920x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/920x600-0/result.json",
+        "sha256": "1897cd8bb2a8103aa1d031796d17d98d0d065b223a69a6359af9bba886e17163",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          115,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": -1,
+        "rows": [
+          {
+            "display": "Aar",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Aco",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Aco",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Aco",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Add",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Add",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": true
+      },
+      {
+        "layout": "928x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/928x600-0/result.json",
+        "sha256": "3d823f29ee737fdadea31e74932733e16fc8bfe6701d8442a0f49b6a8a7b769e",
+        "kind": "ammo_boundaries",
+        "grid": [
+          116,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 2,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "928x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/928x600-0/result.json",
+        "sha256": "3d823f29ee737fdadea31e74932733e16fc8bfe6701d8442a0f49b6a8a7b769e",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          116,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": 0,
+        "rows": [
+          {
+            "display": "",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "936x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/936x600-0/result.json",
+        "sha256": "93c5c521f41e19f7e0d98bd8541a34ddb74a0d0bf9c6a7e4da2700c1662ac116",
+        "kind": "ammo_boundaries",
+        "grid": [
+          117,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 3,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "936x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/936x600-0/result.json",
+        "sha256": "93c5c521f41e19f7e0d98bd8541a34ddb74a0d0bf9c6a7e4da2700c1662ac116",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          117,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": 1,
+        "rows": [
+          {
+            "display": "A",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "A",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "A",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "A",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "A",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "A",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "A",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "A",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "A",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "A",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "A",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "944x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/944x600-0/result.json",
+        "sha256": "620b0380baab14a31d780ce37ffa92092d29ad9e870cd2271559db509b2eeded",
+        "kind": "ammo_boundaries",
+        "grid": [
+          118,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 4,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "X...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "944x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/944x600-0/result.json",
+        "sha256": "620b0380baab14a31d780ce37ffa92092d29ad9e870cd2271559db509b2eeded",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          118,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": 2,
+        "rows": [
+          {
+            "display": "Aa",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aa",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Ac",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Ac",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Ac",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Ad",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Ad",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "952x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/952x600-0/result.json",
+        "sha256": "e5f856bc2aacadf1779232f14372d36a3baaa025d85dabe3710cad8522b213ea",
+        "kind": "ammo_boundaries",
+        "grid": [
+          119,
+          50
+        ],
+        "page": 11,
+        "total": 11,
+        "text_cells": 5,
+        "rows": [
+          {
+            "display": "X",
+            "label": "X"
+          },
+          {
+            "display": "Xx",
+            "label": "Xx"
+          },
+          {
+            "display": "Xxx",
+            "label": "Xxx"
+          },
+          {
+            "display": "Xxxx",
+            "label": "Xxxx"
+          },
+          {
+            "display": "Xxxxx",
+            "label": "Xxxxx"
+          },
+          {
+            "display": "Xx...",
+            "label": "Xxxxxx"
+          },
+          {
+            "display": "Xx...",
+            "label": "Xxxxxxx"
+          },
+          {
+            "display": "Xx...",
+            "label": "Xxxxxxxx"
+          },
+          {
+            "display": "Xx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          {
+            "display": "Xx...",
+            "label": "Xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        ],
+        "native_overflow": false
+      },
+      {
+        "layout": "952x600-0",
+        "source": "build/stockpile-search-native-20261025-164608/952x600-0/result.json",
+        "sha256": "e5f856bc2aacadf1779232f14372d36a3baaa025d85dabe3710cad8522b213ea",
+        "kind": "food_with_scrollbar",
+        "grid": [
+          119,
+          50
+        ],
+        "page": 11,
+        "total": 12328,
+        "text_cells": 3,
+        "rows": [
+          {
+            "display": "Aar",
+            "label": "Aardvark man meat"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark man sweetbread"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark man tripe"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark meat"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark sweetbread"
+          },
+          {
+            "display": "Aar",
+            "label": "Aardvark tripe"
+          },
+          {
+            "display": "Aco",
+            "label": "Acorn fly meat"
+          },
+          {
+            "display": "Aco",
+            "label": "Acorn fly sweetbread"
+          },
+          {
+            "display": "Aco",
+            "label": "Acorn fly tripe"
+          },
+          {
+            "display": "Add",
+            "label": "Adder man meat"
+          },
+          {
+            "display": "Add",
+            "label": "Adder man sweetbread"
+          }
+        ],
+        "native_overflow": false
+      }
+    ]
   }
 }

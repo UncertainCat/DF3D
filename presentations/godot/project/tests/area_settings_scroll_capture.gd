@@ -119,6 +119,19 @@ func run() -> void:
 	for index in captions.size():
 		check(view.rendered_rows[2][index].get_child(0).text == captions[index].label,"native-provided caption was recased at row "+str(index))
 	root.get_texture().get_image().save_png(directory.path_join("native-captions.png"))
+	for sample in caption_fixture.caption_truncation.cases:
+		if sample.native_overflow: continue # Negative-width native overflow remains an unresolved parity gap.
+		state.clear(); await settle()
+		view.layout(Vector2(int(sample.grid[0])*8,int(sample.grid[1])*12))
+		state.open({"id":39,"revision":5,"categories":131071})
+		reply([{"key":"ammo","label":"Ammo","kind":1,"state":1}])
+		reply([{"key":"ammo/type","label":"Type","kind":2,"state":1}])
+		var rows: Array = []
+		for row in sample.rows: rows.append({"key":"ammo/type/"+str(rows.size()),"label":row.label,"kind":4,"state":1})
+		reply(rows,int(sample.total)); await settle()
+		for index in rows.size():
+			check(view.rendered_rows[2][index].get_child(0).text == sample.rows[index].display,"native truncation differs at "+str(sample.layout)+" "+str(sample.kind)+" row "+str(index))
+		if sample.layout=="960x600-0": root.get_texture().get_image().save_png(directory.path_join("truncated-"+str(sample.kind)+".png"))
 	view.free(); assets.free(); await process_frame
 	print("AREA_SETTINGS_SCROLL_CAPTURE_PASS" if failures == 0 else "AREA_SETTINGS_SCROLL_CAPTURE_FAIL")
 	quit(failures)

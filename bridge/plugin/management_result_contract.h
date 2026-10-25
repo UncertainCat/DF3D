@@ -19,6 +19,8 @@ inline bool synchronousAreaWrite(df3d::mirror::ManagementAction action,df3d::mir
     // Other producers retain their current scheduling until deliberately changed.
     return (action==df3d::mirror::ManagementAction::AreaCreate &&
         (operation==df3d::mirror::AreaOperation::None || operation==df3d::mirror::AreaOperation::Paint)) ||
+        (action==df3d::mirror::ManagementAction::AreaLink &&
+         (operation==df3d::mirror::AreaOperation::None || operation==df3d::mirror::AreaOperation::WorkshopLink)) ||
         (action==df3d::mirror::ManagementAction::AreaDelete && operation==df3d::mirror::AreaOperation::None) ||
         (action==df3d::mirror::ManagementAction::AreaUpdate &&
         (operation==df3d::mirror::AreaOperation::SettingsSet || operation==df3d::mirror::AreaOperation::Preset || operation==df3d::mirror::AreaOperation::LocationSet ||

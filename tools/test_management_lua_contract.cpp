@@ -221,7 +221,7 @@ int main(int argc,char** argv) {
         test(action,("return {"+envelope+value+"}").c_str(),false);
       test(action,("return {"+envelope+"revision=9223372036854775807,list_revision=9223372036854775807,active_kinds=224,steps=1536}").c_str(),true);
       if(df3d_management::lua_fields::number(L,"revision")!=INT64_MAX)throw std::runtime_error("area revision rounded");
-      test(action,("return {"+envelope+"steps=1537}").c_str(),action==A::AreaDelete || action==A::AreaUpdate || action==A::AreaCreate || action==A::AreaInspect);
+      test(action,("return {"+envelope+"steps=1537}").c_str(),action==A::AreaDelete || action==A::AreaUpdate || action==A::AreaCreate || action==A::AreaInspect || action==A::AreaLink);
     }
     test(A::AreaInspect,("return {"+envelope+"steps=513}").c_str(),true,O::None,512);
     test(A::AreaInspect,("return {"+envelope+"steps=512}").c_str(),true,O::None,512);
@@ -230,6 +230,10 @@ int main(int argc,char** argv) {
       test(A::AreaUpdate,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,operation,0);
     for(auto operation:{O::None,O::Paint})
       test(A::AreaCreate,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,operation,0);
+    for(auto operation:{O::None,O::WorkshopLink}) {
+      test(A::AreaLink,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,operation,0);
+      test(A::AreaLink,("return {"+envelope+"steps=-1,work_unknown=true}").c_str(),false,operation,0);
+    }
     // Presets adopt synchronous writes. Large honest counts and explicit
     // unknown native work must not spend or enlarge an ordinary read budget.
     test(A::AreaUpdate,("return {"+envelope+"steps=9000,work_unknown=true}").c_str(),true,O::Preset,0);

@@ -700,8 +700,8 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 	await native("snapshot",{"id":ids[2],"expected":{"tile_count":1,"width":2,"height":1,"extents":[0,1]}})
 	await native("transfer_links",{"deleted":ids[1],"survivors":[ids[0],ids[2],int(fixture.workshop)]})
 	for give in [true,false]:
-		await native("pile_link",{"id":ids[0],"target_id":ids[2],"give":give,"linked":true})
-		await native("link",{"id":int(fixture.workshop),"pile_id":ids[2],"give":give,"linked":true})
+		await native("pile_link",{"id":ids[0],"target_id":ids[2],"give":give,"linked":not give})
+		await native("link",{"id":int(fixture.workshop),"pile_id":ids[2],"give":give,"linked":not give})
 	await capture("stockpiles_multi_transfer")
 	await click_control(editor.paint_view.accept_button)
 	if not await wait_ui(func(): return settled() and editor.mode=="inspect","transfer Accept"): return
@@ -710,6 +710,38 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 	for row in editor.observed_links:
 		if not check(int(row.id)!=ids[1],"deleted donor remains in rendered links"): return
 	await capture("stockpiles_transfer_links")
+	await click_control(editor.links_view.add_buttons[1])
+	await pointer_click(tile_screen(origin+Vector3i(5,0,0)))
+	if not await wait_ui(func(): return settled(),"duplicate link receipt"): return
+	if not check(editor.links_picking,"duplicate selection closed picker"): return
+	await pointer_click(tile_screen(origin))
+	if not await wait_ui(func(): return settled(),"self link selection"): return
+	if not check(editor.links_picking and not editor.request_problem and not editor.message.visible and not editor.stockpile_view.controls.links.disabled,"self selection changed picker"): return
+	await capture("stockpiles_link_duplicate_self")
+	await click_control(editor.links_view.close)
+	await click_control(editor.links_view.add_buttons[0])
+	await pointer_click(tile_screen(origin+Vector3i(5,0,0)))
+	if not await wait_ui(func(): return settled() and not editor.links_picking and editor.links_pending.is_empty(),"reversed link receipt"): return
+	await native("pile_link",{"id":ids[0],"target_id":ids[2],"give":true,"linked":true})
+	await native("pile_link",{"id":ids[0],"target_id":ids[2],"give":false,"linked":false})
+	await capture("stockpiles_link_reversed")
+	await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"unlink pile receipt"): return
+	await native("pile_link",{"id":ids[0],"target_id":ids[2],"give":true,"linked":false})
+	var wp: Dictionary = fixture.workshop_origin
+	var workshop_tile := Vector3i(int(wp.x),int(wp.y),int(wp.z))
+	scene.camera_rig.focus_on(Vector3(workshop_tile.x+0.5,workshop_tile.z+1.0,workshop_tile.y+0.5),30)
+	for frame in 12: await process_frame
+	for give in [true,false]:
+		await click_control(editor.links_view.add_buttons[0 if give else 1])
+		await pointer_click(tile_screen(workshop_tile))
+		if not await wait_ui(func(): return settled() and not editor.links_picking and editor.links_pending.is_empty(),"viewport workshop link"): return
+		await native("link",{"id":int(fixture.workshop),"pile_id":ids[0],"give":not give,"linked":true})
+		await native("link",{"id":int(fixture.workshop),"pile_id":ids[0],"give":give,"linked":false})
+		await capture("stockpiles_workshop_give" if give else "stockpiles_workshop_take")
+	await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"unlink workshop receipt"): return
+	await native("link",{"id":int(fixture.workshop),"pile_id":ids[0],"give":true,"linked":false})
 	editor.close_panel()
 	for pile_id in [ids[0],ids[2]]:
 		var current := await inspect(pile_id)

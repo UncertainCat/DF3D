@@ -1645,8 +1645,9 @@ int areaLink(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);return 1;
   };
-  if(!lua_isinteger(L,5) || lua_tointeger(L,5)<0 || lua_tointeger(L,5)>1536)return fail("Invalid link budget",0);
-  const auto budget=uint32_t(lua_tointeger(L,5));
+  const bool synchronous=lua_isnil(L,5);
+  if(!synchronous && (!lua_isinteger(L,5) || lua_tointeger(L,5)<0 || lua_tointeger(L,5)>1536))return fail("Invalid link budget",0);
+  const auto budget=synchronous?UINT32_MAX:uint32_t(lua_tointeger(L,5));
   if(!budget)return fail("Link exceeds remaining step budget",0);
   auto* workshop=Lua::GetDFObject<df::building>(L,1);
   auto* pile=Lua::GetDFObject<df::building_stockpilest>(L,2);
@@ -1665,20 +1666,14 @@ int areaLink(lua_State* L) {
   if(lua_type(L,3)!=LUA_TBOOLEAN || lua_type(L,4)!=LUA_TBOOLEAN)return fail("Invalid workshop link arguments");
   const bool give=lua_toboolean(L,3)!=0,unlink=lua_toboolean(L,4)!=0;
   if(give!=op->give() || unlink!=op->unlink())return fail("Workshop link request changed");
-  auto& endpoint=give?links->give_to_pile:links->take_from_pile;
-  df3d_area::LinkResult result;
-  if(legacy) {
-    auto& reverse=give?pile->links.take_from_pile:pile->links.give_to_pile;
-    result=df3d_area::editLinks(endpoint,reverse,pile,firstPile,unlink,budget);
-  } else {
-    auto& reverse=give?pile->links.take_from_workshop:pile->links.give_to_workshop;
-    result=df3d_area::editLinks(endpoint,reverse,pile,workshop,unlink,budget);
-  }
-  if(result.error==df3d_area::LinkError::Limit)return fail("Link limit reached; no endpoints changed",result.steps);
-  if(result.error==df3d_area::LinkError::Budget)return fail("Link exceeds remaining step budget",result.steps);
-  if(result.error!=df3d_area::LinkError::None)return fail("Invalid native link endpoints; inspect again",result.steps);
-  mutated=true;
-  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",result.steps);return 1;
+  // Native link preparation may copy and shift all four endpoint directions.
+  // This explicit action is synchronous at a safe point; budget is not a claim
+  // of bounded native work. Publication occurs only after owned preparation.
+  const auto result=df3d_area::nativeStockpileLink(*workshop,*pile,give,unlink);
+  if(!result)return fail("");
+  mutated=*result;
+  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",1);
+  field(L,"work_unknown",true);return 1;
 }
 // Repaint owns all preflight and allocation before committing any native field.
 // Lua checks request identity/revision and reserves reply-snapshot work first.

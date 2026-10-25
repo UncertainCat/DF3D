@@ -881,7 +881,7 @@ func link_target_tile(tile: Vector3i, cursor := 0) -> void:
 func change_link(id: int, kind: int, give: bool, unlink: bool) -> void:
 	if selected.is_empty() or int(selected.kind) != 0 or not available or request_ticket != 0 or kind not in [0,2] or id < 0: return
 	if id == int(selected.id):
-		message.text = "Links require two different stockpiles"; request_problem = true; update_controls(); return
+		update_controls(); return
 	var request := selected_request(Action.AreaLink)
 	request.link_id = id; request.give = give; request.unlink = unlink
 	if kind == 2:
@@ -1334,6 +1334,12 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 			_flush_storage(completed_ticket)
 		update_controls(); return
 	var action := int(s.get("action", Action.Catalog))
+	if action == Action.AreaLink and links_picking and not bool(_request.get("unlink",false)):
+		var observed: Array = s.get("areas",[])
+		if not observed.is_empty() and int(observed[0].get("revision",0)) == int(_request.get("expected_revision",-1)):
+			# Native duplicate selection keeps the picker active. The unchanged
+			# authoritative revision establishes that this request changed nothing.
+			selected = observed[0].duplicate(true); update_controls(); return
 	if action == Action.AreaInspect and stockpile_page == "settings" and int(_request.get("operation",-1)) == 0 and _request == settings_state.pending:
 		var observed: Array = s.get("areas",[])
 		if observed.is_empty():

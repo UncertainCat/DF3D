@@ -4,9 +4,14 @@
 #include <array>
 #include <string>
 #include <vector>
-namespace df {struct building_stockpilest;}
+namespace df {struct building;struct building_stockpilest;}
 
 namespace df3d_area {
+// Prepares owned endpoint vectors with native sorted insert/erase routines, then
+// publishes both ends together. nullopt rejects without mutation; false is the
+// native duplicate no-op. No native link interface or menu state is consulted.
+std::optional<bool> nativeStockpileLink(df::building& source,
+    df::building_stockpilest& target,bool give,bool unlink);
 // Scalar native placement predicates; no map, UI or mutable scratch inputs.
 std::optional<bool> nativeStockpileTileType(uint16_t tile);
 // Safe-point diagnostic/service building block. The caller bounds raw counts.

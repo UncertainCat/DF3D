@@ -710,6 +710,64 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     }
     return result;
 }
+std::optional<bool> nativeStockpileLink(df::building& source,
+    df::building_stockpilest& target,bool give,bool unlink) {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base || !supported(base))return std::nullopt;
+    static const bool compatible=hash(base+0xeb530,0xf8)==0xa72ce23f0725e6b0ULL &&
+        hash(base+0x3c7390,0xba)==0xa5fdb7ea529d8904ULL &&
+        hash(base+0x3c9ff0,0x9c)==0xabd985a880f5b6dcULL;
+    if(!compatible || source.id==target.id)return std::nullopt;
+    auto* original=source.getStockpileLinks();
+    if(!original)return std::nullopt;
+    const auto valid=[](const auto& rows) {
+        if(rows.size()>1024)return false;
+        int32_t last=-1;
+        for(const auto* row:rows) {
+            if(!row || row->id<=last)return false;
+            last=row->id;
+        }
+        return true;
+    };
+    const auto validLinks=[&](const auto& links) {
+        return valid(links.give_to_pile) && valid(links.take_from_pile) &&
+            valid(links.give_to_workshop) && valid(links.take_from_workshop);
+    };
+    if(!validLinks(*original) || !validLinks(target.links))return std::nullopt;
+    using Find=int32_t (*)(int32_t,const void*);
+    using Insert=int32_t (*)(df::building*,void*);
+    using Erase=void (*)(df::building*,void*);
+    const auto find=reinterpret_cast<Find>(base+0x3c9ff0);
+    const auto insert=reinterpret_cast<Insert>(base+0xeb530);
+    const auto erase=reinterpret_cast<Erase>(base+0x3c7390);
+    const auto& current=give?original->give_to_pile:original->take_from_pile;
+    // The native picker tests the requested direction before changing either
+    // end, including before removing the opposite direction.
+    if(!unlink && find(target.id,&current)>=0)return false;
+    auto first=*original;auto second=target.links;
+    auto& forward=give?first.give_to_pile:first.take_from_pile;
+    auto& opposite=give?first.take_from_pile:first.give_to_pile;
+    const auto prepare=[&](auto& reverse,auto& reverseOpposite) -> std::optional<bool> {
+        if(!unlink) {
+            if(forward.size()==1024 || (reverse.size()==1024 && find(source.id,&reverse)<0))return std::nullopt;
+            // Native insertion's allocation branch is never entered. All
+            // allocation and possible exceptions precede publication.
+            forward.reserve(forward.size()+1);reverse.reserve(reverse.size()+1);
+            insert(&target,&forward);erase(&target,&opposite);
+            insert(&source,&reverse);erase(&source,&reverseOpposite);
+        } else {
+            erase(&target,&forward);erase(&source,&reverse);
+        }
+        using std::swap;
+        swap(*original,first);swap(target.links,second);
+        return true;
+    };
+    if(source.getType()==df::building_type::Stockpile)
+        return give?prepare(second.take_from_pile,second.give_to_pile):
+            prepare(second.give_to_pile,second.take_from_pile);
+    return give?prepare(second.take_from_workshop,second.give_to_workshop):
+        prepare(second.give_to_workshop,second.take_from_workshop);
+}
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(
     const df::stockpile_settings& source,const std::string& filter) {
     if(source.wood.mats.size()>65536)return std::nullopt;

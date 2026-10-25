@@ -531,11 +531,23 @@
       "sha256": "e23fa432003fc0d24843a1dadf1723342fd79a906d9a8d352f4e69395dc1b49c"
     }
   ],
-  "audit": "3c2a70 reads native global link UI despite its interface argument; prohibited runtime. Stockpile pair branches 3c2efb..3c2fe8 inline direction logic using native lookup/insert/erase. Workshop pair helpers 5832b0/583320 update both ends and remove opposite links. Native vector routines take explicit vectors and building pointers; insert may allocate through bad30. Owned copies with reserved capacity can avoid native allocation path; wrapper and effect verification still required.",
+  "audit": "3c2a70 reads native global link UI despite its interface argument; prohibited runtime. Stockpile pair branches 3c2efb..3c2fe8 inline direction logic using native lookup/insert/erase. Workshop pair helpers 5832b0/583320 update both ends and remove opposite links. Native vector routines take explicit vectors and building pointers; insert may allocate through bad30. Owned copies with reserved capacity can avoid native allocation path; runtime implementation and scoped effect evidence are recorded below.",
   "known_implementation_gaps": [
-    "Current bridge editLinks permits simultaneous opposite directions, unlike native.",
-    "Current UI exits picker on duplicate success and shows invented self-link error, unlike native no-op.",
-    "Existing linked-transfer test constructs simultaneous directions; proves cleanup of that state, not native creation parity.",
-    "Native workshop eligibility, empty/invalid target, scrolling, full ordering and scaled link UI need further acceptance."
-  ]
+    "Native workshop eligibility, empty/invalid target, scrolling, full ordering and scaled link UI need further acceptance.",
+    "Boundary and malformed endpoint acceptance remains to be expanded."
+  ],
+  "runtime": "Pinned native ID lookup, insert and erase on owned copies of both stockpile_links structs. Validate sorted non-null IDs and 1024-entry limits; reserve forward/reverse capacity before native insertion to avoid native allocation. Reverse removes opposite directions. Duplicate exits without publication. Swap both structs only after successful preparation. No global UI scratch. Native workshop helper disassembly establishes directional mapping. Removed local editLinks reconstruction.",
+  "acceptance": {
+    "run": "build/areas-acceptance-20261025-124144",
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "native_observations": 53,
+    "owned_df_closed_without_saving": true,
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "scope": "Actual viewport duplicate/self selection preserves picker with no stale busy state, pile reversal/unlink, workshop give/take reversal/unlink; exact reciprocal native assertions; prior paint and multi-donor deletion regressions. Screenshots inspected. Offline core, areas controller and adapter tests pass in build/qa/stockpile-native-link-ready.",
+    "failure_evidence": "build/areas-acceptance-20261025-123539 exposed bounded/synchronous helper accounting mismatch; corrected Lua and C++ policies. Owned DF closed unsaved, two manifests unchanged. build/areas-acceptance-20261025-123829 effects passed but screenshot exposed stale busy rendering after self-selection, corrected and rerun."
+  }
 }

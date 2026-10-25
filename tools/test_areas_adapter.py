@@ -150,11 +150,11 @@ def main():
     function workshop_link(w,p,give,unlink,budget)
      workshop_link_calls=workshop_link_calls+1
      assert(w==workshop and p==pile)
-     if budget<31 then return {ok=false,message='link budget',steps=1} end
+     if budget~=nil and budget<31 then return {ok=false,message='link budget',steps=1} end
      if force_link_refusal then return {ok=false,message='endpoint cap',steps=31} end
      last_link_give=give;last_link_unlink=unlink
      p.name='Linked fixture'
-     return {ok=true,steps=31}
+     return {ok=true,steps=31,work_unknown=budget==nil}
     end
     local old_request=request
     function request(action,extra)
@@ -172,7 +172,7 @@ def main():
      r.create_area=create_area
      r.remove_area=remove_area
      r.synchronous_read=action==9 and r.area.operation==1
-     r.synchronous_write=action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
+     r.synchronous_write=action==13 or action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
      return r
     end
     """)
@@ -537,6 +537,7 @@ def main():
     assert call(13, link)["message"] == "endpoint cap"
     lua.execute("force_link_refusal=false")
     low_budget = lua.globals().request(13, lua.table_from(link))
+    low_budget["synchronous_write"] = False
     low_budget["step_budget"] = 197  # 13 snapshot + 31 link + 154 reserved reply.
     assert not adapter(low_budget)["ok"]
     low_budget["step_budget"] = 198
@@ -556,10 +557,10 @@ def main():
      r.link_areas=function(first,second,give,unlink,budget)
       if first.kind~=0 then return prior_link(first,second,give,unlink,budget) end
       assert(first==pile and second==other_pile)
-      if budget<31 then return {ok=false,message='link budget',steps=1} end
+      if budget~=nil and budget<31 then return {ok=false,message='link budget',steps=1} end
       legacy_link_calls=legacy_link_calls+1;last_link_give=give;last_link_unlink=unlink
       first.name='Linked pile fixture'
-      return {ok=true,steps=31}
+      return {ok=true,steps=31,work_unknown=budget==nil}
      end
      return r
     end
@@ -580,10 +581,15 @@ def main():
     lua.execute("other_pile.hidden=false")
     assert lua.eval("legacy_link_calls") == before
     scarce = lua.globals().request(13, lua.table_from(legacy_link))
+    scarce["synchronous_write"] = False
     scarce["step_budget"] = 200
     assert not adapter(scarce)["ok"] and lua.eval("legacy_link_calls") == before
     scarce["step_budget"] = 201
     assert adapter(scarce)["ok"] and lua.eval("legacy_link_calls") == before + 1
+    synchronous_link = lua.globals().request(13, lua.table_from(dict(legacy_link, expected_revision=revision())))
+    synchronous_link["step_budget"] = 0
+    synchronous_result = adapter(synchronous_link)
+    assert synchronous_result["ok"] and synchronous_result["work_unknown"]
     lua.execute("""
     zone.type=0;zone.assigned_units={2};zone.squad_room_info={}
     df.global.cur_year_tick=2000

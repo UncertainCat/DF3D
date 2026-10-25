@@ -93,37 +93,6 @@ inline LocationMembership prepareLocationMembership(const std::vector<int32_t>* 
   return result;
 }
 
-enum class LinkError { None, Budget, Limit, Invalid };
-struct LinkResult { LinkError error=LinkError::None; uint32_t steps=0; };
-// Prepare both sorted endpoints before changing either native vector. The four
-// bulk passes cover validation, copying, insertion/erase shifts and reallocation.
-// Binary searches are charged individually (at most 11 comparisons per end).
-template<class A,class B,class Left,class Right>
-LinkResult editLinks(A& first,B& second,Left left,Right right,bool unlink,uint32_t budget) {
-  if(!budget)return {LinkError::Budget,0};
-  if(first.size()>1024 || second.size()>1024)return {LinkError::Limit,1};
-  const uint32_t cost=23+4*bulkSteps(first.size()+1)+4*bulkSteps(second.size()+1);
-  if(cost>budget)return {LinkError::Budget,1};
-  const auto valid=[](const auto& v) {
-    int32_t last=-1;
-    for(const auto* item:v){if(!item || item->id<0 || item->id<=last)return false;last=item->id;}
-    return true;
-  };
-  if(!left || !right || !valid(first) || !valid(second))return {LinkError::Invalid,cost};
-  const auto position=[](const auto& v,int32_t id) {
-    return size_t(std::lower_bound(v.begin(),v.end(),id,[](const auto* p,int32_t key){return p->id<key;})-v.begin());
-  };
-  const auto a=position(first,left->id),b=position(second,right->id);
-  const bool hasA=a<first.size() && first[a]->id==left->id;
-  const bool hasB=b<second.size() && second[b]->id==right->id;
-  if(!unlink && ((!hasA && first.size()==1024) || (!hasB && second.size()==1024)))return {LinkError::Limit,cost};
-  A preparedA=first;B preparedB=second;
-  if(unlink){if(hasA)preparedA.erase(preparedA.begin()+a);if(hasB)preparedB.erase(preparedB.begin()+b);}
-  else {if(!hasA)preparedA.insert(preparedA.begin()+a,left);if(!hasB)preparedB.insert(preparedB.begin()+b,right);}
-  first.swap(preparedA);second.swap(preparedB);
-  return {LinkError::None,cost};
-}
-
 // Hash signed/unsigned integers as eight little-endian bytes. Never route a
 // native revision through Lua's floating-point arithmetic or a renderer type.
 struct Revision {

@@ -11,18 +11,32 @@ Native permits one direction per pair. Choosing the opposite direction replaces
 both reciprocal links; it does not create a bidirectional pair. Self-selection
 and an already-present direction leave the picker open without mutation. A new
 link returns to the list; Escape cancels the picker. Removal updates both ends.
-The staged bridge currently permits opposite links simultaneously and the picker
-does not preserve native duplicate/self behavior. These are unresolved defects;
-Stockpiles remains hidden. Earlier linked-transfer evidence proves deletion
-cleanup of its supplied state, not native parity of link creation.
+The bridge prepares owned copies of both endpoints and calls the pinned native
+lookup, insertion and erasure routines. Reversal removes the opposite links;
+duplicate selection leaves the endpoints unchanged. Both endpoints are published
+after preparation. Capacity is reserved before native insertion so its allocator
+branch is not entered. The former local two-vector editor has been removed.
+The picker retains duplicate/self selection without showing a self-link error.
+Stockpiles remains hidden pending the remaining workflow acceptance.
 
 Native target handler `0x3c2a70` reads global link UI despite taking an interface
 pointer and is prohibited as a runtime service. Its stockpile pair branch uses
 explicit-vector lookup `0x3c9ff0`, insertion `0xeb530` and erasure `0x3c7390`.
-Workshop helpers `0x5832b0`/`0x583320` update reciprocal links and remove the
-opposite direction. A runtime wrapper still requires owned preparation, native
-compatibility checks and actual-effect acceptance. Target eligibility, broader
-ordering, scrolling and scaled link input remain unverified.
+Workshop helpers `0x5832b0`/`0x583320` establish the reciprocal/opposite-direction
+mapping; the runtime uses the same native vector primitives with owned storage.
+Link commands now use explicit synchronous work accounting, retaining honest
+unknown-work reporting without spending the paginated read budget. Native UI
+state is not consulted. Target eligibility, broader ordering, scrolling and
+scaled link input remain unverified.
+
+Protected `build/areas-acceptance-20261025-124144` passes53 native observations
+through actual viewport input: duplicate/self selection, pile reversal/unlink,
+workshop give/take reversal/unlink and the prior paint/donor-cleanup regressions.
+Picker and workshop captures were inspected. Only the known separate-thread
+notice remains; both save manifests are unchanged and owned DF closed unsaved.
+Offline `build/qa/stockpile-native-link-ready` passes root CTest, controller and
+adapter checks, including synchronous link work accounting. Boundary/malformed
+endpoint cases remain outside this scoped acceptance.
 
 ## Native stockpile storage input (DF 53.16)
 

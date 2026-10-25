@@ -995,7 +995,7 @@ local function native_operation(r)
  sync_epoch(r.epoch)
  local a=r.area or {};local op=default(a,'operation',0);local steps=0
  local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1) or
-  r.synchronous_write==true and (r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
+  r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
  local budget=synchronous and math.huge or default(r,'step_budget',0)
  local unknown_work=false
  local function finish(result)

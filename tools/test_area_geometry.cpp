@@ -38,39 +38,6 @@ TEST_CASE("unit assignment filtered copies preserve other identities within the 
   CHECK(10+282+154+19+scan+prepared<=1536);
 }
 
-TEST_CASE("area links commit both sorted endpoints within caps and budget") {
-  struct Node {int32_t id;};Node a{1},b{2},c{3},d{4};
-  std::vector<Node*> first{&a,&c},second{&a,&d};
-  const auto beforeFirst=first,beforeSecond=second;
-  auto r=area::editLinks(first,second,&b,&c,false,30);
-  CHECK(r.error==area::LinkError::Budget);CHECK(first==beforeFirst);CHECK(second==beforeSecond);
-  r=area::editLinks(first,second,&b,&c,false,31);
-  REQUIRE(r.error==area::LinkError::None);CHECK(r.steps==31);
-  CHECK(first==std::vector<Node*>{&a,&b,&c});CHECK(second==std::vector<Node*>{&a,&c,&d});
-  REQUIRE(area::editLinks(first,second,&b,&c,false,31).error==area::LinkError::None);
-  CHECK(first.size()==3);CHECK(second.size()==3);
-  REQUIRE(area::editLinks(first,second,&b,&c,true,31).error==area::LinkError::None);
-  CHECK(first==beforeFirst);CHECK(second==beforeSecond);
-  // Repair a missing reverse end and permit idempotent unlink.
-  second.clear();REQUIRE(area::editLinks(first,second,&c,&a,false,31).error==area::LinkError::None);
-  CHECK(first==beforeFirst);CHECK(second==std::vector<Node*>{&a});
-  REQUIRE(area::editLinks(first,second,&b,&d,true,31).error==area::LinkError::None);
-  std::vector<Node> nodes;nodes.reserve(1025);for(int i=0;i<1025;++i)nodes.push_back({i});
-  first.clear();second.clear();for(int i=0;i<1024;++i)first.push_back(&nodes[i]);
-  r=area::editLinks(first,second,&nodes[1024],&a,false,1536);
-  CHECK(r.error==area::LinkError::Limit);CHECK(first.size()==1024);CHECK(second.empty());
-  r=area::editLinks(second,first,&a,&nodes[1024],false,1536);
-  CHECK(r.error==area::LinkError::Limit);CHECK(first.size()==1024);CHECK(second.empty());
-  REQUIRE(area::editLinks(first,second,&nodes[1023],&a,false,1536).error==area::LinkError::None);
-  CHECK(first.size()==1024);CHECK(second.size()==1);
-  REQUIRE(area::editLinks(first,second,&nodes[1023],&a,true,1536).error==area::LinkError::None);
-  REQUIRE(area::editLinks(first,second,&nodes[1024],&a,false,1536).error==area::LinkError::None);
-  CHECK(first.size()==1024);CHECK(first.back()==&nodes[1024]);
-  second={nullptr};const auto saved=first;
-  CHECK(area::editLinks(first,second,&a,&b,false,1536).error==area::LinkError::Invalid);CHECK(first==saved);
-  second={&b,&a};CHECK(area::editLinks(first,second,&a,&b,true,1536).error==area::LinkError::Invalid);CHECK(first==saved);
-}
-
 TEST_CASE("area revision hashing keeps integer bits and a nonzero signed range") {
   area::Revision empty;
   CHECK(empty.finish()==0x4bf29ce484222325ULL);

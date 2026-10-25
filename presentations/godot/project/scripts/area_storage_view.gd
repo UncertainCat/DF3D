@@ -10,6 +10,7 @@ var labels: Dictionary = {}
 var controls: Dictionary = {}
 var editing := ""
 var entry: LineEdit
+var last_entry := ""
 
 func configure(source) -> void:
 	art.configure(source); theme = art.theme; texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -37,9 +38,10 @@ func configure(source) -> void:
 			button.pressed.connect(func(): activate(key,action))
 			body.add_child(button); buttons.append(button)
 		controls[key] = buttons
-	entry = LineEdit.new(); entry.size = Vector2(64,36); entry.max_length = 5
+	entry = LineEdit.new(); entry.size = Vector2(64,36); entry.max_length = 0 # Normalize accepted digits before applying the native three-digit limit.
 	entry.alignment = HORIZONTAL_ALIGNMENT_RIGHT; entry.add_theme_font_size_override("font_size",12)
 	entry.add_theme_stylebox_override("normal",StyleBoxEmpty.new()); entry.add_theme_stylebox_override("focus",StyleBoxEmpty.new())
+	entry.text_changed.connect(edit_entry)
 	entry.text_submitted.connect(submit_entry); body.add_child(entry); entry.hide()
 
 func caption(parent: Node, text: String, point: Vector2, dimensions: Vector2) -> Label:
@@ -50,8 +52,9 @@ func caption(parent: Node, text: String, point: Vector2, dimensions: Vector2) ->
 func maximum(_key: String) -> int:
 	return int(area.get("storage_limit",-1))
 
-func display(value: Dictionary, can_edit: bool) -> void:
-	if int(value.get("id",-1)) != int(area.get("id",-1)) or int(value.get("revision",0)) != int(area.get("revision",0)) or not can_edit: cancel_edit()
+func display(value: Dictionary, can_edit: bool, own_pending := false) -> void:
+	if int(value.get("id",-1)) != int(area.get("id",-1)) or int(value.get("revision",0)) != int(area.get("revision",0)) or (not can_edit and not own_pending): cancel_edit()
+	entry.editable = can_edit or own_pending
 	area = value.duplicate(true); enabled = can_edit
 	for key in KEYS:
 		var current := int(area.get(key,0)); var cap := maximum(key)
@@ -64,18 +67,43 @@ func display(value: Dictionary, can_edit: bool) -> void:
 func activate(key: String, action: int) -> void:
 	if not enabled or key not in KEYS or action < 0 or action > 2 or controls[key][action].disabled: return
 	if action == 0:
+		if editing == key:
+			cancel_edit(); return
 		cancel_edit(); editing = key; labels[key].hide()
 		entry.position = Vector2(136,48 + KEYS.find(key) * 36)
-		entry.text = ""; entry.show(); entry.grab_focus()
+		last_entry = ""; entry.text = ""; entry.show(); entry.grab_focus()
 	else:
 		value_requested.emit(key,int(area[key]) + (1 if action == 1 else -1))
 
-func submit_entry(value: String) -> void:
-	if editing.is_empty() or not enabled or not value.is_valid_int(): return
-	var amount := int(value)
-	if amount < 0 or amount > maximum(editing): return
-	var key := editing; cancel_edit()
-	if amount != int(area[key]): value_requested.emit(key,amount)
+func accept(value: Dictionary) -> void:
+	# A confirmed write advances only this entry's receipt. Keep its current text,
+	# caret and focus while a newer explicit value waits for that receipt.
+	if int(value.get("id",-1)) != int(area.get("id",-1)): cancel_edit()
+	area = value.duplicate(true)
+
+func edit_entry(value: String) -> void:
+	if editing.is_empty() or not entry.editable or maximum(editing) < 0: return
+	var digits := ""
+	var caret := 0
+	for index in value.length():
+		if value[index] >= "0" and value[index] <= "9" and digits.length() < 3:
+			digits += value[index]
+			if index < entry.caret_column: caret += 1
+	if entry.text != digits:
+		entry.set_text(digits); entry.caret_column = caret
+	if digits == last_entry: return
+	last_entry = digits
+	value_requested.emit(editing,mini(int(digits),maximum(editing)))
+
+func submit_entry(_value: String) -> void:
+	# Native Enter ends entry; values have already been requested while typing.
+	finish_edit()
+
+func finish_edit() -> void:
+	# LineEdit can defer text_changed until after a same-frame Escape/Done.
+	# Collect that final explicit input before hiding the field.
+	edit_entry(entry.text)
+	cancel_edit()
 
 func cancel_edit() -> bool:
 	if editing.is_empty(): return false

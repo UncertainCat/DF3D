@@ -18,9 +18,17 @@ The fixture `native_stockpile_storage.json` retains exact input/output records,
 binary-range hashes and omissions. Source save hashes were unchanged and owned
 DF closed unsaved.
 
-The staged DF3D storage surface still permits five digits, treats typing as a
-draft, rejects oversized entry, and uses Escape to cancel that draft. These
-remain unresolved product defects. The native pointer path at
+The staged DF3D storage surface normalizes three digits and requests clamped
+values immediately. Enter finishes entry; Escape/Done closes the popup while
+preserving requested writes. Closing collects any final LineEdit text change
+whose notification is still deferred. Opening a blank field makes no request;
+deleting existing input to empty requests zero. Accepted writes advance the
+revision without clearing the entry. Newer explicit input waits for that receipt
+and uses the action service's continuation queue; rejection or an unknown outcome
+drops buffered input. Closing the entire panel cancels unsent work and detaches
+sent work. Reopening the popup obtains a fresh inspection before enabling edits.
+
+The native pointer path at
 `0x334fa9..0x33561b` counts tiles through `0x57b770` and performs inline field
 updates. The text path at `0x8ba405..0x8ba683` uses numeric input helper
 `0xc39700` with length3, native containment checks and inline field conversion/
@@ -48,6 +56,18 @@ diagnostic was the known separate-thread notice. Offline
 rendered popup checks passed with known renderer diagnostics. The Lua adapter
 checks a holey three-tile pile and four-tile creation, including equal-to-tile
 wheelbarrow limits. These tests establish ordinary bounds, not typed-input parity.
+
+Protected main-scene `build/areas-acceptance-20261025-094942` additionally passed
+124 native observations with66 screenshots. All three fields were typed through
+viewport keyboard input, checked against native storage before Enter, emptied
+with Backspace, and closed with same-frame Escape before awaiting the write.
+Both save manifests were unchanged and owned DF closed unsaved. Its only
+diagnostic was the known separate-thread notice. Offline
+`build/qa/stockpile-storage-input-final` passed root CTest and menu/controller
+checks; rendered captures passed with known renderer diagnostics. Deterministic
+controller cases cover buffered edits, revision advancement, rejection, unknown
+outcomes, full-panel closure, epochs, disconnects and late replies. This does not
+establish full stockpile or links acceptance.
 
 Artificial out-of-range stored values expose separate native arrow quirks:
 incrementing32767 wraps to-32768; decrementing an oversized value only subtracts

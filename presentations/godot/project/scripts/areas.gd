@@ -47,6 +47,9 @@ var paint_preview: MeshInstance3D
 var paint_lookup := false
 var paint_lookup_tile := Vector3i(-1,-1,-1)
 var storage_view: PanelContainer
+var storage_values: Dictionary = {}
+var storage_sending := false
+var storage_failed := false
 var links_view: PanelContainer
 var observed_links: Array = []
 var links_pending: Dictionary = {}
@@ -160,7 +163,7 @@ func _ready() -> void:
 	storage_view = preload("res://scripts/area_storage_view.gd").new()
 	canvas.add_child(storage_view); storage_view.configure(world); storage_view.hide()
 	storage_view.value_requested.connect(set_storage_value)
-	storage_view.done.connect(func(): storage_view.cancel_edit(); handle_back())
+	storage_view.done.connect(handle_back)
 	links_view = preload("res://scripts/area_links_view.gd").new()
 	canvas.add_child(links_view); links_view.configure(world); links_view.hide()
 	links_view.pick_requested.connect(begin_link_pick)
@@ -544,7 +547,7 @@ func choose_zone_type(id: int) -> void:
 		return
 
 
-func send(request: Dictionary) -> void:
+func send(request: Dictionary, previous_ticket := 0) -> void:
 	if not play_enabled or not panel.visible or request_ticket != 0: return
 	paint_counts.clear()
 	var multi := int(request.get("operation",0)) in [Contract.AreaOperation.MultiCreate,Contract.AreaOperation.MultiUndo,Contract.AreaOperation.MultiFinish]
@@ -555,12 +558,15 @@ func send(request: Dictionary) -> void:
 	request_problem = false
 	_request_action = int(request.action)
 	var generation := draft_generation
-	request_ticket = action_service.submit(Contract.domain_of(int(request.action)), request,
-		func(ticket, result, sent):
-			if generation == draft_generation and ticket == request_ticket and panel.visible:
-				request_ticket = 0
-				_request_action = -1
-				_receive_result(result, sent))
+	var observer := func(ticket, result, sent):
+		if generation == draft_generation and ticket == request_ticket and panel.visible:
+			request_ticket = 0
+			_request_action = -1
+			_receive_result(result, sent, ticket)
+	if previous_ticket > 0:
+		request_ticket = action_service.submit_continuation(previous_ticket,Contract.domain_of(int(request.action)),request,observer)
+	else:
+		request_ticket = action_service.submit(Contract.domain_of(int(request.action)),request,observer)
 	message.text = "" if multi else "Waiting for Dwarf Fortress"
 	update_controls()
 
@@ -608,6 +614,9 @@ func stockpile_control(key: String) -> void:
 			storage_view.cancel_edit()
 			stockpile_page = key
 			if key == "links": clear_links(); read_links()
+			else:
+				storage_failed = false
+				send({"action":Action.AreaInspect,"id":int(selected.id),"kind":0})
 			update_controls()
 
 
@@ -917,13 +926,29 @@ func rename_area(value: String) -> void:
 
 
 func set_storage_value(key: String, value: int) -> void:
-	if selected.is_empty() or int(selected.kind) != 0 or key not in ["barrels","bins","wheelbarrows"] or request_ticket != 0 or not available: return
+	if selected.is_empty() or int(selected.kind) != 0 or key not in ["barrels","bins","wheelbarrows"] or not available or storage_failed: return
+	if request_ticket != 0 and not storage_sending: return
 	var cap := int(selected.get("storage_limit",-1))
-	if cap < 0: return
-	if value < 0 or value > cap or value == int(selected[key]): return
+	if cap < 0 or value < 0 or value > cap: return
+	# This is a newer explicit input, not a retry. A pending write might differ
+	# even when this value equals the currently displayed authoritative count.
+	storage_values[key] = value
+	_flush_storage()
+
+func _flush_storage(previous_ticket := 0) -> void:
+	if request_ticket != 0 or storage_failed or selected.is_empty(): return
 	var request := selected_request(Action.AreaUpdate)
-	request[key] = value
-	send(request)
+	var changed := false
+	for key in storage_values:
+		if int(storage_values[key]) != int(selected[key]):
+			request[key] = storage_values[key]; changed = true
+	storage_values.clear()
+	if not changed: return
+	storage_sending = true
+	send(request,previous_ticket)
+	if request_ticket == 0:
+		storage_sending = false; storage_failed = true
+		storage_view.cancel_edit(); update_controls()
 
 
 func category_mask() -> int:
@@ -1166,7 +1191,7 @@ func update_controls() -> void:
 	if storage_view.visible:
 		storage_view.add_theme_stylebox_override("panel",stockpile_view.panel_style())
 		storage_view.size = Vector2.ZERO
-		storage_view.display(selected,available and request_ticket == 0 and int(selected.get("revision",0)) > 0)
+		storage_view.display(selected,available and not storage_failed and request_ticket == 0 and int(selected.get("revision",0)) > 0,storage_sending and not storage_failed)
 	rename_field.visible = native_types and stockpile_page == "rename"
 	rename_field.editable = request_ticket == 0
 	if native_types: stockpile_view.display(selected, available and request_ticket == 0 and int(selected.get("revision",0)) > 0)
@@ -1288,7 +1313,9 @@ func _process(delta: float) -> void:
 			links_delay = -1
 			if not links_pending.is_empty(): send(links_pending.duplicate(true))
 
-func _receive_result(s: Dictionary, _request: Dictionary) -> void:
+func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0) -> void:
+	var storage_reply := storage_sending
+	if storage_reply: storage_sending = false
 	if int(_request.get("operation",0)) in [Contract.AreaOperation.MultiCreate,Contract.AreaOperation.MultiUndo]:
 		if mode != "multi": return
 		multi_state.accept(s,_request)
@@ -1297,6 +1324,8 @@ func _receive_result(s: Dictionary, _request: Dictionary) -> void:
 	message.text = str(s.get("message", "Request ended"))
 	request_problem = int(s.get("status", Status.Rejected)) != Status.Ok
 	if int(s.get("status", Status.Rejected)) != Status.Ok:
+		if storage_reply:
+			storage_values.clear(); storage_failed = true; storage_view.cancel_edit()
 		if int(s.get("status", Status.Rejected)) == Status.Rejected and stockpile_page == "settings" and int(_request.get("action",-1)) == Action.AreaInspect and message.text in ["Area changed; inspect again","List changed; refresh"] and settings_state.recover_read(_request):
 			request_problem = false
 			update_controls()
@@ -1321,6 +1350,15 @@ func _receive_result(s: Dictionary, _request: Dictionary) -> void:
 		_cancel_candidate_poll()
 		update_controls()
 		return
+	if storage_reply:
+		var observed: Array = s.get("areas",[])
+		if observed.is_empty() or int(observed[0].get("id",-1)) != int(selected.get("id",-2)):
+			storage_values.clear(); storage_failed = true; storage_view.cancel_edit()
+		else:
+			selected = observed[0].duplicate(true)
+			storage_view.accept(selected)
+			_flush_storage(completed_ticket)
+		update_controls(); return
 	var action := int(s.get("action", Action.Catalog))
 	if action == Action.AreaInspect and stockpile_page == "settings" and int(_request.get("operation",-1)) == 0 and _request == settings_state.pending:
 		var observed: Array = s.get("areas",[])
@@ -1444,7 +1482,7 @@ func _receive_result(s: Dictionary, _request: Dictionary) -> void:
 		overlap_cursor = int(s.get("area_next_cursor", 0))
 		if not areas.is_empty():
 			var keep_settings := stockpile_page == "settings" and action == Action.AreaUpdate
-			var keep_storage := stockpile_page == "containers" and action == Action.AreaUpdate
+			var keep_storage := stockpile_page == "containers" and action in [Action.AreaInspect,Action.AreaUpdate]
 			var keep_links := stockpile_page == "links" and action in [Action.AreaUpdate,Action.AreaLink]
 			var keep_assignments := stockpile_page in ["animals","squads"] and action == Action.AreaUpdate and int(_request.get("operation",0)) in [Contract.AreaOperation.AssignUnits,Contract.AreaOperation.SquadUse]
 			var selector_page := stockpile_page
@@ -1587,7 +1625,9 @@ func handle_back() -> void:
 		use_area(observed,false); return
 	if links_view.visible and links_picking:
 		_detach_draft(); links_picking = false; mode = "inspect"; update_controls(); return
-	if storage_view.visible and storage_view.cancel_edit(): return
+	if storage_view.visible:
+		# Closing this popup ends input but preserves already requested writes.
+		storage_view.finish_edit(); stockpile_page = "types"; update_controls(); return
 	if not selected.is_empty() and stockpile_page != "types":
 		if stockpile_page == "links":
 			_detach_draft()
@@ -1660,6 +1700,7 @@ func draw_outline() -> void:
 
 
 func _detach_draft() -> void:
+	storage_values.clear(); storage_sending = false; storage_failed = false
 	if details_parent_ticket!=0 and action_service!=null:action_service.detach(details_parent_ticket)
 	details_parent_ticket=0;details_parent_refresh_again=false
 	close_location_details()

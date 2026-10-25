@@ -59,7 +59,9 @@ func run() -> void:
 		push_error("Connected stockpile panel collapsed or clipped its preset grid")
 		quit(1); return
 	if root.get_texture().get_image().save_png(directory.path_join("controller_stockpile.png")) != OK: quit(1); return
-	controller.stockpile_control("containers"); controller._process(0)
+	controller.stockpile_control("containers"); service.poll()
+	world.state = {"world_epoch":42,"revision":2,"request_seq":world.seq,"action":9,"status":2,"areas":[controller.selected.duplicate(true)]}
+	service.poll(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if not controller.storage_view.visible or controller.storage_view.position.x < controller.panel.get_global_rect().end.x:
 		push_error("Storage popup overlaps or replaces stockpile panel"); quit(1); return
@@ -69,7 +71,7 @@ func run() -> void:
 	controller.storage_view.controls.barrels[0].pressed.emit()
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_storage_entry.png")) != OK: quit(1); return
-	controller.handle_back(); controller.handle_back()
+	controller.handle_back()
 	controller.stockpile_control("repaint"); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if controller.panel.size != Vector2(324,68):

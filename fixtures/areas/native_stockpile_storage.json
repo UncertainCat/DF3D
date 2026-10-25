@@ -1106,6 +1106,34 @@
     "safe standalone mutation service",
     "concurrent edits and disconnected numeric input"
   ],
+  "input_acceptance": {
+    "run": "build/areas-acceptance-20261025-094942",
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "status": "passed_with_known_issues",
+    "source_and_clone_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "native_observations": 124,
+    "screenshots": 66,
+    "scope": [
+      "viewport typed entry immediately clamps all three counts to the native one-tile bound, retaining entered text",
+      "Backspace to empty writes zero, independently verified in DF",
+      "same-frame typed input and Escape closes the popup and preserves the requested write",
+      "broader staged settings, range scrolling, paint and removal regression"
+    ],
+    "offline": "build/qa/stockpile-storage-input-final",
+    "offline_scope": [
+      "three digits and ignored non-digits; Enter finishes without duplicate mutation",
+      "revision-guarded buffered edits survive own accepted receipts and popup closure",
+      "same-frame viewport Escape collects deferred LineEdit changes",
+      "rejection, unknown outcome, full-panel close, epochs, disconnects and late replies cannot replay buffered input"
+    ],
+    "omissions": [
+      "oversized stored limits and signed16 overflow behavior",
+      "zero/one-tile independent native input oracle",
+      "scaled UI and non-ASCII input",
+      "full links and lifecycle live acceptance"
+    ]
+  },
   "limit_acceptance": {
     "run": "build/areas-acceptance-20261025-085313",
     "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",

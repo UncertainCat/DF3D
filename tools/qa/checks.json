@@ -483,6 +483,15 @@
       ]
     },
     {
+      "id": "area_storage_controller_test",
+      "lane": "assets",
+      "kind": "godot",
+      "script": "res://tests/area_storage_controller_test.gd",
+      "completion": "AREA_STORAGE_CONTROLLER PASS",
+      "timeout": 50,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "area_settings_controller_test",
       "lane": "assets",
       "kind": "godot",

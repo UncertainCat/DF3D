@@ -285,5 +285,2717 @@
     "nonempty Escape/right-click and pending-corner transitions",
     "signed16 overflow and historical malformed storage limits",
     "scaled UI input"
-  ]
+  ],
+  "assignment_cleanup": {
+    "run": "build/stockpile-storage-native-repaint-20261025-100535",
+    "result_sha256": "e2ebbb937acd0372d9e00c05d320d142bceb5b8d3161d6851f094963c6a5304b",
+    "native_observations": 292,
+    "source_save_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "scope": "46 actual assigned containers; all remain alive while native shrink releases45 and empty-pile Escape releases the final1. Empty active pile retains its final assignment until exit.",
+    "records": [
+      {
+        "containers": [
+          {
+            "id": 956,
+            "type": 17,
+            "x": 114,
+            "y": 71
+          },
+          {
+            "id": 965,
+            "type": 17,
+            "x": 114,
+            "y": 72
+          },
+          {
+            "id": 3185,
+            "type": 32,
+            "x": 113,
+            "y": 73
+          },
+          {
+            "id": 3180,
+            "type": 32,
+            "x": 111,
+            "y": 71
+          },
+          {
+            "id": 959,
+            "type": 17,
+            "x": 116,
+            "y": 73
+          },
+          {
+            "id": 960,
+            "type": 17,
+            "x": 117,
+            "y": 71
+          },
+          {
+            "id": 6274,
+            "type": 17,
+            "x": 114,
+            "y": 74
+          },
+          {
+            "id": 5768,
+            "type": 32,
+            "x": 111,
+            "y": 75
+          },
+          {
+            "id": 5961,
+            "type": 17,
+            "x": 117,
+            "y": 73
+          },
+          {
+            "id": 7095,
+            "type": 32,
+            "x": 117,
+            "y": 75
+          },
+          {
+            "id": 8124,
+            "type": 32,
+            "x": 113,
+            "y": 77
+          },
+          {
+            "id": 7918,
+            "type": 32,
+            "x": 112,
+            "y": 77
+          },
+          {
+            "id": 12653,
+            "type": 32,
+            "x": 120,
+            "y": 63
+          },
+          {
+            "id": 9407,
+            "type": 17,
+            "x": 122,
+            "y": 61
+          },
+          {
+            "id": 19580,
+            "type": 32,
+            "x": 117,
+            "y": 61
+          },
+          {
+            "id": 19591,
+            "type": 32,
+            "x": 118,
+            "y": 61
+          },
+          {
+            "id": 19602,
+            "type": 32,
+            "x": 119,
+            "y": 61
+          },
+          {
+            "id": 19624,
+            "type": 32,
+            "x": 121,
+            "y": 61
+          },
+          {
+            "id": 19657,
+            "type": 32,
+            "x": 112,
+            "y": 62
+          },
+          {
+            "id": 19668,
+            "type": 32,
+            "x": 113,
+            "y": 62
+          },
+          {
+            "id": 19679,
+            "type": 32,
+            "x": 114,
+            "y": 62
+          },
+          {
+            "id": 19690,
+            "type": 32,
+            "x": 115,
+            "y": 62
+          },
+          {
+            "id": 19701,
+            "type": 32,
+            "x": 116,
+            "y": 62
+          },
+          {
+            "id": 19712,
+            "type": 32,
+            "x": 117,
+            "y": 62
+          },
+          {
+            "id": 18207,
+            "type": 32,
+            "x": 119,
+            "y": 62
+          },
+          {
+            "id": 4329,
+            "type": 86,
+            "x": 120,
+            "y": 62
+          },
+          {
+            "id": 7882,
+            "type": 32,
+            "x": 112,
+            "y": 61
+          },
+          {
+            "id": 7608,
+            "type": 32,
+            "x": 121,
+            "y": 62
+          },
+          {
+            "id": 14481,
+            "type": 32,
+            "x": 122,
+            "y": 62
+          },
+          {
+            "id": 14737,
+            "type": 32,
+            "x": 113,
+            "y": 61
+          },
+          {
+            "id": 7239,
+            "type": 32,
+            "x": 111,
+            "y": 61
+          },
+          {
+            "id": 28250,
+            "type": 32,
+            "x": 120,
+            "y": 61
+          },
+          {
+            "id": 28262,
+            "type": 32,
+            "x": 123,
+            "y": 61
+          },
+          {
+            "id": 28228,
+            "type": 32,
+            "x": 111,
+            "y": 63
+          },
+          {
+            "id": 28297,
+            "type": 32,
+            "x": 113,
+            "y": 63
+          },
+          {
+            "id": 28320,
+            "type": 32,
+            "x": 115,
+            "y": 63
+          },
+          {
+            "id": 28342,
+            "type": 32,
+            "x": 116,
+            "y": 63
+          },
+          {
+            "id": 21207,
+            "type": 32,
+            "x": 114,
+            "y": 61
+          },
+          {
+            "id": 19635,
+            "type": 32,
+            "x": 116,
+            "y": 61
+          },
+          {
+            "id": 37962,
+            "type": 32,
+            "x": 118,
+            "y": 62
+          },
+          {
+            "id": 38029,
+            "type": 32,
+            "x": 114,
+            "y": 63
+          },
+          {
+            "id": 38168,
+            "type": 32,
+            "x": 119,
+            "y": 63
+          },
+          {
+            "id": 38179,
+            "type": 32,
+            "x": 121,
+            "y": 63
+          },
+          {
+            "id": 5746,
+            "type": 32,
+            "x": 115,
+            "y": 61
+          },
+          {
+            "id": 21154,
+            "type": 32,
+            "x": 112,
+            "y": 63
+          },
+          {
+            "id": 5803,
+            "type": 32,
+            "x": 117,
+            "y": 63
+          }
+        ],
+        "items": [
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 71
+            },
+            "exists": true,
+            "id": 956
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 72
+            },
+            "exists": true,
+            "id": 965
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 73
+            },
+            "exists": true,
+            "id": 3185
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 71
+            },
+            "exists": true,
+            "id": 3180
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 73
+            },
+            "exists": true,
+            "id": 959
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 71
+            },
+            "exists": true,
+            "id": 960
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 74
+            },
+            "exists": true,
+            "id": 6274
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 75
+            },
+            "exists": true,
+            "id": 5768
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 73
+            },
+            "exists": true,
+            "id": 5961
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 75
+            },
+            "exists": true,
+            "id": 7095
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 77
+            },
+            "exists": true,
+            "id": 8124
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 77
+            },
+            "exists": true,
+            "id": 7918
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 120,
+              "y": 63
+            },
+            "exists": true,
+            "id": 12653
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 122,
+              "y": 61
+            },
+            "exists": true,
+            "id": 9407
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19580
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 118,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19591
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 119,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19602
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 121,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19624
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19657
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19668
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19679
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 115,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19690
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19701
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19712
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 119,
+              "y": 62
+            },
+            "exists": true,
+            "id": 18207
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 120,
+              "y": 62
+            },
+            "exists": true,
+            "id": 4329
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 61
+            },
+            "exists": true,
+            "id": 7882
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 121,
+              "y": 62
+            },
+            "exists": true,
+            "id": 7608
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 122,
+              "y": 62
+            },
+            "exists": true,
+            "id": 14481
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 61
+            },
+            "exists": true,
+            "id": 14737
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 61
+            },
+            "exists": true,
+            "id": 7239
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 120,
+              "y": 61
+            },
+            "exists": true,
+            "id": 28250
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 123,
+              "y": 61
+            },
+            "exists": true,
+            "id": 28262
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28228
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28297
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 115,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28320
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28342
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 61
+            },
+            "exists": true,
+            "id": 21207
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19635
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 118,
+              "y": 62
+            },
+            "exists": true,
+            "id": 37962
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 63
+            },
+            "exists": true,
+            "id": 38029
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 119,
+              "y": 63
+            },
+            "exists": true,
+            "id": 38168
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 121,
+              "y": 63
+            },
+            "exists": true,
+            "id": 38179
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 115,
+              "y": 61
+            },
+            "exists": true,
+            "id": 5746
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 63
+            },
+            "exists": true,
+            "id": 21154
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 63
+            },
+            "exists": true,
+            "id": 5803
+          }
+        ],
+        "name": "assignments-before"
+      },
+      {
+        "containers": [
+          {
+            "id": 956,
+            "type": 17,
+            "x": 114,
+            "y": 71
+          },
+          {
+            "id": 965,
+            "type": 17,
+            "x": 114,
+            "y": 72
+          },
+          {
+            "id": 3185,
+            "type": 32,
+            "x": 113,
+            "y": 73
+          },
+          {
+            "id": 3180,
+            "type": 32,
+            "x": 111,
+            "y": 71
+          },
+          {
+            "id": 959,
+            "type": 17,
+            "x": 116,
+            "y": 73
+          },
+          {
+            "id": 960,
+            "type": 17,
+            "x": 117,
+            "y": 71
+          },
+          {
+            "id": 6274,
+            "type": 17,
+            "x": 114,
+            "y": 74
+          },
+          {
+            "id": 5768,
+            "type": 32,
+            "x": 111,
+            "y": 75
+          },
+          {
+            "id": 5961,
+            "type": 17,
+            "x": 117,
+            "y": 73
+          },
+          {
+            "id": 7095,
+            "type": 32,
+            "x": 117,
+            "y": 75
+          },
+          {
+            "id": 8124,
+            "type": 32,
+            "x": 113,
+            "y": 77
+          },
+          {
+            "id": 7918,
+            "type": 32,
+            "x": 112,
+            "y": 77
+          },
+          {
+            "id": 12653,
+            "type": 32,
+            "x": 120,
+            "y": 63
+          },
+          {
+            "id": 9407,
+            "type": 17,
+            "x": 122,
+            "y": 61
+          },
+          {
+            "id": 19580,
+            "type": 32,
+            "x": 117,
+            "y": 61
+          },
+          {
+            "id": 19591,
+            "type": 32,
+            "x": 118,
+            "y": 61
+          },
+          {
+            "id": 19602,
+            "type": 32,
+            "x": 119,
+            "y": 61
+          },
+          {
+            "id": 19624,
+            "type": 32,
+            "x": 121,
+            "y": 61
+          },
+          {
+            "id": 19657,
+            "type": 32,
+            "x": 112,
+            "y": 62
+          },
+          {
+            "id": 19668,
+            "type": 32,
+            "x": 113,
+            "y": 62
+          },
+          {
+            "id": 19679,
+            "type": 32,
+            "x": 114,
+            "y": 62
+          },
+          {
+            "id": 19690,
+            "type": 32,
+            "x": 115,
+            "y": 62
+          },
+          {
+            "id": 19701,
+            "type": 32,
+            "x": 116,
+            "y": 62
+          },
+          {
+            "id": 19712,
+            "type": 32,
+            "x": 117,
+            "y": 62
+          },
+          {
+            "id": 18207,
+            "type": 32,
+            "x": 119,
+            "y": 62
+          },
+          {
+            "id": 4329,
+            "type": 86,
+            "x": 120,
+            "y": 62
+          },
+          {
+            "id": 7882,
+            "type": 32,
+            "x": 112,
+            "y": 61
+          },
+          {
+            "id": 7608,
+            "type": 32,
+            "x": 121,
+            "y": 62
+          },
+          {
+            "id": 14481,
+            "type": 32,
+            "x": 122,
+            "y": 62
+          },
+          {
+            "id": 14737,
+            "type": 32,
+            "x": 113,
+            "y": 61
+          },
+          {
+            "id": 7239,
+            "type": 32,
+            "x": 111,
+            "y": 61
+          },
+          {
+            "id": 28250,
+            "type": 32,
+            "x": 120,
+            "y": 61
+          },
+          {
+            "id": 28262,
+            "type": 32,
+            "x": 123,
+            "y": 61
+          },
+          {
+            "id": 28228,
+            "type": 32,
+            "x": 111,
+            "y": 63
+          },
+          {
+            "id": 28297,
+            "type": 32,
+            "x": 113,
+            "y": 63
+          },
+          {
+            "id": 28320,
+            "type": 32,
+            "x": 115,
+            "y": 63
+          },
+          {
+            "id": 28342,
+            "type": 32,
+            "x": 116,
+            "y": 63
+          },
+          {
+            "id": 21207,
+            "type": 32,
+            "x": 114,
+            "y": 61
+          },
+          {
+            "id": 19635,
+            "type": 32,
+            "x": 116,
+            "y": 61
+          },
+          {
+            "id": 37962,
+            "type": 32,
+            "x": 118,
+            "y": 62
+          },
+          {
+            "id": 38029,
+            "type": 32,
+            "x": 114,
+            "y": 63
+          },
+          {
+            "id": 38168,
+            "type": 32,
+            "x": 119,
+            "y": 63
+          },
+          {
+            "id": 38179,
+            "type": 32,
+            "x": 121,
+            "y": 63
+          },
+          {
+            "id": 5746,
+            "type": 32,
+            "x": 115,
+            "y": 61
+          },
+          {
+            "id": 21154,
+            "type": 32,
+            "x": 112,
+            "y": 63
+          },
+          {
+            "id": 5803,
+            "type": 32,
+            "x": 117,
+            "y": 63
+          }
+        ],
+        "items": [
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 71
+            },
+            "exists": true,
+            "id": 956
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 72
+            },
+            "exists": true,
+            "id": 965
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 73
+            },
+            "exists": true,
+            "id": 3185
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 71
+            },
+            "exists": true,
+            "id": 3180
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 73
+            },
+            "exists": true,
+            "id": 959
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 71
+            },
+            "exists": true,
+            "id": 960
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 74
+            },
+            "exists": true,
+            "id": 6274
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 75
+            },
+            "exists": true,
+            "id": 5768
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 73
+            },
+            "exists": true,
+            "id": 5961
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 75
+            },
+            "exists": true,
+            "id": 7095
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 77
+            },
+            "exists": true,
+            "id": 8124
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 77
+            },
+            "exists": true,
+            "id": 7918
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 120,
+              "y": 63
+            },
+            "exists": true,
+            "id": 12653
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 122,
+              "y": 61
+            },
+            "exists": true,
+            "id": 9407
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19580
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 118,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19591
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 119,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19602
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 121,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19624
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19657
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19668
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19679
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 115,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19690
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19701
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 62
+            },
+            "exists": true,
+            "id": 19712
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 119,
+              "y": 62
+            },
+            "exists": true,
+            "id": 18207
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 120,
+              "y": 62
+            },
+            "exists": true,
+            "id": 4329
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 61
+            },
+            "exists": true,
+            "id": 7882
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 121,
+              "y": 62
+            },
+            "exists": true,
+            "id": 7608
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 122,
+              "y": 62
+            },
+            "exists": true,
+            "id": 14481
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 61
+            },
+            "exists": true,
+            "id": 14737
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 61
+            },
+            "exists": true,
+            "id": 7239
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 120,
+              "y": 61
+            },
+            "exists": true,
+            "id": 28250
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 123,
+              "y": 61
+            },
+            "exists": true,
+            "id": 28262
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28228
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 113,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28297
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 115,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28320
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 63
+            },
+            "exists": true,
+            "id": 28342
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 61
+            },
+            "exists": true,
+            "id": 21207
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 116,
+              "y": 61
+            },
+            "exists": true,
+            "id": 19635
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 118,
+              "y": 62
+            },
+            "exists": true,
+            "id": 37962
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 114,
+              "y": 63
+            },
+            "exists": true,
+            "id": 38029
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 119,
+              "y": 63
+            },
+            "exists": true,
+            "id": 38168
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 121,
+              "y": 63
+            },
+            "exists": true,
+            "id": 38179
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 115,
+              "y": 61
+            },
+            "exists": true,
+            "id": 5746
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 112,
+              "y": 63
+            },
+            "exists": true,
+            "id": 21154
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 117,
+              "y": 63
+            },
+            "exists": true,
+            "id": 5803
+          }
+        ],
+        "name": "assignments-after-erase-272"
+      },
+      {
+        "containers": [
+          {
+            "id": 7239,
+            "type": 32,
+            "x": 111,
+            "y": 61
+          }
+        ],
+        "items": [
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 956
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 965
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 3185
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 3180
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 959
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 960
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 6274
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5768
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5961
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7095
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 8124
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7918
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 12653
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 9407
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19580
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19591
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19602
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19624
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19657
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19668
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19679
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19690
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19701
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19712
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 18207
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 4329
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7882
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7608
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 14481
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 14737
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 61
+            },
+            "exists": true,
+            "id": 7239
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28250
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28262
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28228
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28297
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28320
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28342
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 21207
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19635
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 37962
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38029
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38168
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38179
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5746
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 21154
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5803
+          }
+        ],
+        "name": "assignments-after-erase-2"
+      },
+      {
+        "containers": [
+          {
+            "id": 7239,
+            "type": 32,
+            "x": 111,
+            "y": 61
+          }
+        ],
+        "items": [
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 956
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 965
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 3185
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 3180
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 959
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 960
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 6274
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5768
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5961
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7095
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 8124
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7918
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 12653
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 9407
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19580
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19591
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19602
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19624
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19657
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19668
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19679
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19690
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19701
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19712
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 18207
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 4329
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7882
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7608
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 14481
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 14737
+          },
+          {
+            "assignment": {
+              "id": 121,
+              "x": 111,
+              "y": 61
+            },
+            "exists": true,
+            "id": 7239
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28250
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28262
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28228
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28297
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28320
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28342
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 21207
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19635
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 37962
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38029
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38168
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38179
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5746
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 21154
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5803
+          }
+        ],
+        "name": "assignments-empty"
+      },
+      {
+        "containers": [],
+        "items": [
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 956
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 965
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 3185
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 3180
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 959
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 960
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 6274
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5768
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5961
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7095
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 8124
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7918
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 12653
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 9407
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19580
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19591
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19602
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19624
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19657
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19668
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19679
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19690
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19701
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19712
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 18207
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 4329
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7882
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7608
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 14481
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 14737
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 7239
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28250
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28262
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28228
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28297
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28320
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 28342
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 21207
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 19635
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 37962
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38029
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38168
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 38179
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5746
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 21154
+          },
+          {
+            "assignment": {
+              "id": -1,
+              "x": -30000,
+              "y": -30000
+            },
+            "exists": true,
+            "id": 5803
+          }
+        ],
+        "name": "assignments-after-exit"
+      }
+    ],
+    "native_methods": [
+      {
+        "types": [
+          "item_barrelst",
+          "item_binst"
+        ],
+        "slot": 208,
+        "method": "removeStockpileAssignment",
+        "start_rva": "0x28ad00",
+        "end_rva": "0x28ad15",
+        "sha256": "03026ccf0dc4a45706a4a1c5a32f02b9251897145884fa9edaa41b0471cfdcac",
+        "instructions": [
+          "0x28ad00 mov dword ptr [rcx + 0xe8], 0xffffffff",
+          "0x28ad0a mov dword ptr [rcx + 0xec], 0x8ad08ad0",
+          "0x28ad14 ret "
+        ]
+      },
+      {
+        "types": [
+          "item_toolst"
+        ],
+        "slot": 208,
+        "method": "removeStockpileAssignment",
+        "start_rva": "0x28a450",
+        "end_rva": "0x28a465",
+        "sha256": "81ff1287831104ad5229dbe377dd6706571dbcbd4568264a139eda3b46f8004b",
+        "instructions": [
+          "0x28a450 mov dword ptr [rcx + 0xf4], 0xffffffff",
+          "0x28a45a mov dword ptr [rcx + 0xf8], 0x8ad08ad0",
+          "0x28a464 ret "
+        ]
+      }
+    ],
+    "ownership": "UI handler calls item virtual slot208 (offset0x680) then erases matching entries from four stockpile vectors. Barrel/bin/tool leaf methods write only the supplied item assignment fields; no native UI, globals or allocation. No DF3D runtime acceptance."
+  }
 }

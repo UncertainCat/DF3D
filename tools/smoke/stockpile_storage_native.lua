@@ -46,6 +46,22 @@ require('gui.script').start(function()
     if not b.room.extents or b.room.extents[(y-b.room.y)*b.room.width+x-b.room.x]~=0 then cells[#cells+1]={x=x,y=y,z=b.z}end
    end end
    assert(#cells==dfhack.buildings.countExtentTiles(b,-1) and #cells>3)
+   local assigned_ids={}
+   for _,id in ipairs(b.storage.container_item_id)do assigned_ids[#assigned_ids+1]=id end
+   local function assignments(name)
+    local rows,items={},{}
+    local alive=df.building.find(pile_id)
+    if alive then
+     for i,id in ipairs(alive.storage.container_item_id)do
+      rows[#rows+1]={id=id,type=alive.storage.container_type[i],x=alive.storage.container_x[i],y=alive.storage.container_y[i]}
+     end
+    end
+    for _,id in ipairs(assigned_ids)do
+     local item=df.item.find(id);local ref=item and item:getStockpile2()
+     items[#items+1]={id=id,exists=item~=nil,assignment=ref and {id=ref.id,x=ref.x,y=ref.y} or false}
+    end
+    records[#records+1]={name=name,containers=rows,items=items}
+   end
    local function mapclick(p)
     dfhack.gui.revealInDwarfmodeMap(p,true);view:render(dfhack.getTickCount())
     for y=0,g.dimy-1 do for x=0,g.dimx-1 do
@@ -62,12 +78,14 @@ require('gui.script').start(function()
    end
    for _,key in ipairs{'barrels','bins','wheelbarrows'}do b.storage['max_'..key]=#cells end
    record('before-shrink')
+   assignments('assignments-before')
    click(84,61) -- Eraser at678,742 in protected repaint.png (1200x800).
    assert(paint.erasing and paint.doing_rectangle,'rectangle erase did not activate')
    for index=#cells,2,-1 do
     mapclick(cells[index]);mapclick(cells[index])
     assert(dfhack.buildings.countExtentTiles(b,-1)==index-1,'erase did not remove exactly one tile')
     record('erase-'..index)
+    if index==#cells or index==2 then assignments('assignments-after-erase-'..index)end
    end
    capture('one-tile')
    click(84,61);assert(not paint.erasing,'erase did not toggle off')
@@ -79,6 +97,7 @@ require('gui.script').start(function()
    mapclick(cells[2]);mapclick(cells[2]);record('mixed-limits-one')
    mapclick(cells[1]);mapclick(cells[1]);record('erased-all')
    capture('empty')
+   assignments('assignments-empty')
    click(84,61);assert(not paint.erasing)
    mapclick(cells[1]);mapclick(cells[1]);record('regrow-empty')
    click(84,61);assert(paint.erasing)
@@ -89,6 +108,7 @@ require('gui.script').start(function()
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    records[#records+1]={name='escape-empty',exists=df.building.find(pile_id)~=nil,repainting=paint.repainting,current=paint.cur_bld and paint.cur_bld.id or -1}
    capture('escaped-empty')
+   assignments('assignments-after-exit')
    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
    return
   end

@@ -99,6 +99,25 @@ remains unfinished. The geometry planner already preserves bounds for erase,
 but the presentation's replacement path can choose a different bounding basis.
 Do not treat the native oracle as acceptance of those product paths.
 
+Extended protected run `build/stockpile-storage-native-repaint-20261025-100535`
+tracked46 actual assigned containers through292 observations. Shrinking to one
+tile released45 assignments and retained the remaining container. The empty
+active pile retained that final assignment; Escape released it when removing the
+pile. All46 items remained alive. Released item references became id-1 with
+coordinates-30000/-30000. Source hashes were unchanged and owned DF closed
+unsaved. The resize fixture retains all46 before/after item references.
+
+The native repaint path at `0x354817..0x354943` tests each assigned coordinate,
+calls item virtual slot208 (`removeStockpileAssignment`) and removes the
+corresponding entry from all four storage vectors. Audited barrel/bin leaf
+`0x28ad00..0x28ad15` and tool leaf `0x28a450..0x28a465` only reset fields in the
+supplied item; they read no UI/global state and allocate nothing. Use this native
+item operation when implementing cleanup. `detachStockpileAssignment` is a
+different operation that also changes the pile's vectors. Current DF3D repaint
+does not perform this cleanup; native method availability does not establish
+DF3D effect parity. Offline `build/qa/stockpile-assignment-oracle` passed root
+CTest; no product bridge changes are included in this audit.
+
 ## Native stockpile initialization (DF 53.16)
 
 The read-only `df3d stockpile-wood-read <building-id> [filter]` probe calls the

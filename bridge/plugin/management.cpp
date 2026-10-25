@@ -1,4 +1,6 @@
 #include "bed_appearance_native.h"
+#include "stockpile_native.h"
+#include <json/json.h>
 #include "tile_description_native.h"
 #include "management.h"
 #include "construction_track_route.h"
@@ -2682,6 +2684,33 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
+bool printStockpilePreset(color_ostream& out,int32_t id,int32_t preset) {
+  auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
+  if(!pile || !df::global::world)return false;
+  std::array<size_t,78> counts{};size_t index=0;
+  for(const auto& entry:areaSettingRawCounts())counts[index++]=entry.second;
+  if(!df3d_area::settingsRawTotal(counts).valid)return false;
+  try {
+    auto settings=df3d_area::nativeStockpilePreset(pile->settings,preset);
+    if(!settings)return false;
+    std::unique_ptr<df::building_stockpilest> scratch(df::allocate<df::building_stockpilest>());
+    if(!scratch)return false;
+    scratch->settings=std::move(*settings);
+    Json::Value result(Json::objectValue);
+    result["flags"]=scratch->settings.flags.whole;
+    for(const auto& entry:areaSettingVectors(scratch.get())) {
+      Json::Value values(Json::arrayValue);
+      for(const auto value:*entry.second)values.append(int(value));
+      result["vectors"][entry.first]=std::move(values);
+    }
+    for(const auto& entry:areaFixedSettings(scratch.get())) {
+      Json::Value values(Json::arrayValue);
+      for(size_t i=0;i<entry.count;++i)values.append(bool(entry.values[i]));
+      result["fixed"][entry.key]=std::move(values);
+    }
+    out.print("{}",Json::FastWriter().write(result));return true;
+  } catch(...) {return false;}
+}
 bool printMaterialRecipe(color_ostream& out,int32_t type,int32_t subtype,bool collect,bool cold_cache,int32_t custom,int32_t plate_flags,int32_t eligible_tiles) {
   auto* L=Core::getInstance().getLuaState();const int top=lua_gettop(L);
   lua_pushcfunction(L,df3d_construction::nativeMaterialRecipe);lua_pushinteger(L,type);lua_pushinteger(L,subtype);lua_pushboolean(L,collect);lua_pushboolean(L,cold_cache);lua_pushinteger(L,custom);lua_pushinteger(L,plate_flags);lua_pushinteger(L,eligible_tiles);

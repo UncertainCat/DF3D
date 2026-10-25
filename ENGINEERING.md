@@ -1,3 +1,31 @@
+## Native stockpile preset probe (DF 53.16)
+
+Stockpile management remains staged. The gameplay preset path still uses DFHack
+serialized settings and is pending migration. `df3d stockpile-preset-read
+<building-id> <preset1..19>` independently copies the pile settings, calls DF's
+clear routine at RVA `0x30e950` and preset initializer at `0x30dde0`, and reports
+flags, vectors and fixed switches without editing the pile. The service checks
+the supported PE and fingerprints its initializer/default/clear helpers. These
+read world raws and write owned settings; no native UI or search scratch is used.
+The caller bounds raw entries before allocation. Preset numbering is the existing
+wire order (All, Animals through Sheets, None), not native display order.
+
+`fixtures/areas/native_stockpile_presets.json` records comparison against all19
+native icon clicks in protected run `build/stockpile-presets-native-20261025-005558`.
+All78 filter vectors,29 fixed settings and flags matched. Each probe preserved
+the source building structure, main-interface bytes and RNG state; the simulation
+remained paused and the source save manifest was unchanged after owned teardown.
+`tools/smoke/stockpile_presets_native.lua` retains the oracle; run it only through
+a protected owned lane, with autosave disabled and no save on exit. Vector hashes
+depend on this fortress's raw inventory. This does not establish general UI parity.
+
+The native click handler also resets container limits after applying a preset;
+the probe does not yet perform that step. Captured All excludes Corpses/Refuse,
+splits272 tiles into136 barrels/136 bins, and permits one wheelbarrow. Food uses
+272 barrels, Stone one wheelbarrow, container-using manufactured categories272
+bins, and other categories zero. These observations identify migration work;
+they do not authorize preserving the old importer's container behavior.
+
 ## Native construction site support (DF 53.16)
 
 The captures below document the native-service migration. For the current

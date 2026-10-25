@@ -27904,5 +27904,2127 @@
       "diagnostics": "clean",
       "scope": "Thirteen inorganic modes; creation/removal, filtered/individual edits, short/empty backing vectors; shared fixture restored between lists"
     }
+  },
+  "gem_glass_lists": {
+    "run": "build/stockpile-presets-native-20261025-045644",
+    "status": "passed",
+    "comparisons": 66,
+    "native_reference_captures": 6,
+    "native_bulk_actions": 84,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 127,
+        "rows_sha256": "df51d11e47cbb9d85d851ddf17ce16bffc8d8e73c4e902fc4374f39d9e7afe61",
+        "visible_indices_sha256": "ed6fa1e7d04d0a6597225ee9f109345333df415608c3fa5cbae122dec511784f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "gems.rough_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "gems.rough_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.rough_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 3,
+        "rows_sha256": "c627c46381cda91215105ce1dfe6a56c4f327d9f3860acbd9707d82a0de8eb32",
+        "visible_indices_sha256": "5196092220552e2fc0c51e3017e40bc335c005a72a8a47070552a1144a68f584",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 0,
+        "rows_sha256": "92934143c66d6d60214913d1a3bafdcd0c53b1e0fb2bc7b8cff7538169e614f1",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 127,
+        "rows_sha256": "df51d11e47cbb9d85d851ddf17ce16bffc8d8e73c4e902fc4374f39d9e7afe61",
+        "visible_indices_sha256": "ed6fa1e7d04d0a6597225ee9f109345333df415608c3fa5cbae122dec511784f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "gems.rough_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "gems.rough_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.rough_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 3,
+        "rows_sha256": "c627c46381cda91215105ce1dfe6a56c4f327d9f3860acbd9707d82a0de8eb32",
+        "visible_indices_sha256": "5196092220552e2fc0c51e3017e40bc335c005a72a8a47070552a1144a68f584",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 60,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 0,
+        "rows_sha256": "92934143c66d6d60214913d1a3bafdcd0c53b1e0fb2bc7b8cff7538169e614f1",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 127,
+        "rows_sha256": "964672db9c6c6c155204e24a4aae4e28298e8bfa00849af5e65fda8375ffbe43",
+        "visible_indices_sha256": "ed6fa1e7d04d0a6597225ee9f109345333df415608c3fa5cbae122dec511784f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 3,
+        "rows_sha256": "bdb8ff3559a5a7ad3736cf6077d2092209f855f071547083e8b52c27ed66b22d",
+        "visible_indices_sha256": "5196092220552e2fc0c51e3017e40bc335c005a72a8a47070552a1144a68f584",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 0,
+        "rows_sha256": "994770f08a96036e872756a6c7dc7592b6abe3eba83f43245e1379312b05b5ab",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 127,
+        "rows_sha256": "964672db9c6c6c155204e24a4aae4e28298e8bfa00849af5e65fda8375ffbe43",
+        "visible_indices_sha256": "ed6fa1e7d04d0a6597225ee9f109345333df415608c3fa5cbae122dec511784f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 3,
+        "rows_sha256": "bdb8ff3559a5a7ad3736cf6077d2092209f855f071547083e8b52c27ed66b22d",
+        "visible_indices_sha256": "5196092220552e2fc0c51e3017e40bc335c005a72a8a47070552a1144a68f584",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 61,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 0,
+        "rows_sha256": "994770f08a96036e872756a6c7dc7592b6abe3eba83f43245e1379312b05b5ab",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 113,
+            "name": "Alexandrites",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 106,
+            "name": "Almandines",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 125,
+            "name": "Yellow spessartines",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 123,
+            "name": "Yellow zircons",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "be2cb4fa6924d34c5eb4bacd349a02696342713f512a4aefa8b3b5018492662b",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 1,
+        "rows_sha256": "a889649ccdba89cdc85d120d67cdf9ba9c82d69ab85b9a33e9e3b044341212ba",
+        "visible_indices_sha256": "3eb7381879d467cec45f173a3d8abe4bbb3f5a62278e04dac82ff69d072e06cb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "94a4161982373221bb515fa06b2ddeb2aa26c86571d227178ed8ba19e94e62d4",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "be2cb4fa6924d34c5eb4bacd349a02696342713f512a4aefa8b3b5018492662b",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "gems.cut_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "quartz",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 1,
+        "rows_sha256": "a889649ccdba89cdc85d120d67cdf9ba9c82d69ab85b9a33e9e3b044341212ba",
+        "visible_indices_sha256": "3eb7381879d467cec45f173a3d8abe4bbb3f5a62278e04dac82ff69d072e06cb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 62,
+        "probe": "gem_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "94a4161982373221bb515fa06b2ddeb2aa26c86571d227178ed8ba19e94e62d4",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "353aacd81427c1f6c797a730e878e5e13fa92ea33ff3d7428f3bff5ca0ea6807",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 4,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "adad552e378e0cb406e640d988687ca18e721949a03fb90dbacfee2266ccfb06",
+        "visible_indices_sha256": "06d033ece6645de592db973644cf7357255f24536ff7b03c3b2ace10736f7636",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 660,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "353aacd81427c1f6c797a730e878e5e13fa92ea33ff3d7428f3bff5ca0ea6807",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 58,
+        "probe": "glass_reference",
+        "query": "",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "c01f39f7cc8c7ff97489daa66462c18a694e96dce0af78da5818d9abdde69ae0",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "353aacd81427c1f6c797a730e878e5e13fa92ea33ff3d7428f3bff5ca0ea6807",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 4,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "adad552e378e0cb406e640d988687ca18e721949a03fb90dbacfee2266ccfb06",
+        "visible_indices_sha256": "06d033ece6645de592db973644cf7357255f24536ff7b03c3b2ace10736f7636",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 660,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "353aacd81427c1f6c797a730e878e5e13fa92ea33ff3d7428f3bff5ca0ea6807",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 58,
+        "probe": "glass_reference",
+        "query": "a",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "c01f39f7cc8c7ff97489daa66462c18a694e96dce0af78da5818d9abdde69ae0",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 0,
+        "rows_sha256": "85af7b14764117031b3017f9d92cbe436c7505603a5ba22e1fd89f054cc14f71",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 4,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "37aef107a25f808e47bc5944dcacd4ced48915ba14d84db5945c84f79436bd93",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 58,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 660,
+        "row_count": 3,
+        "visible_count": 0,
+        "rows_sha256": "85af7b14764117031b3017f9d92cbe436c7505603a5ba22e1fd89f054cc14f71",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 58,
+        "probe": "glass_reference",
+        "query": "zzzznomatch",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 0,
+        "rows_sha256": "8915b0671a345029631391e040caa94ebbe92e7bfb1d712086887ae4a2fd142f",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "field": "gems.rough_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": false
+          },
+          {
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "field": "gems.rough_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          },
+          {
+            "field": "gems.rough_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "576fba6e17db4063f26c5096662e56cc5c23851681a8706ab7b09924e30f74e2",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 4,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "5cf308ecdd9a3398cdb35d29e5b04dd680ab7091a26b73d847b01b83ee9c2d4d",
+        "visible_indices_sha256": "06d033ece6645de592db973644cf7357255f24536ff7b03c3b2ace10736f7636",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "",
+        "stored_count": 660,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "576fba6e17db4063f26c5096662e56cc5c23851681a8706ab7b09924e30f74e2",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 59,
+        "probe": "glass_reference",
+        "query": "",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "5182457f4f9ea4d9526d70da0294a0bff3112f2bdd148e4a8dd0dee0289853e5",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "576fba6e17db4063f26c5096662e56cc5c23851681a8706ab7b09924e30f74e2",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 4,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "5cf308ecdd9a3398cdb35d29e5b04dd680ab7091a26b73d847b01b83ee9c2d4d",
+        "visible_indices_sha256": "06d033ece6645de592db973644cf7357255f24536ff7b03c3b2ace10736f7636",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "a",
+        "stored_count": 660,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "576fba6e17db4063f26c5096662e56cc5c23851681a8706ab7b09924e30f74e2",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 59,
+        "probe": "glass_reference",
+        "query": "a",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 3,
+        "rows_sha256": "5182457f4f9ea4d9526d70da0294a0bff3112f2bdd148e4a8dd0dee0289853e5",
+        "visible_indices_sha256": "c63692aef3eedc45ce2ebf33811913e18bc948468c2d100933c5379fe6aa4490",
+        "first_rows": [
+          {
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 0,
+        "rows_sha256": "ad922466439f54d236aa28006f08b5c369d718d44e23a462a4a6f66840e86823",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 4,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "60cf6eed49f18fc93dcf8b2eadba57213b91271f4dbe98a58e1a41dbf8bce136",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 59,
+        "probe": "glass_provider",
+        "query": "zzzznomatch",
+        "stored_count": 660,
+        "row_count": 3,
+        "visible_count": 0,
+        "rows_sha256": "ad922466439f54d236aa28006f08b5c369d718d44e23a462a4a6f66840e86823",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 59,
+        "probe": "glass_reference",
+        "query": "zzzznomatch",
+        "stored_count": 659,
+        "row_count": 3,
+        "visible_count": 0,
+        "rows_sha256": "1bff92d90d94e92963b2cec028976139f74e29c2f2196b159f69e49228f2ffd5",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "field": "gems.cut_other_mats",
+            "index": 4,
+            "name": "Clear glass",
+            "visible": false
+          },
+          {
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "field": "gems.cut_other_mats",
+            "index": 5,
+            "name": "Crystal glass",
+            "visible": false
+          },
+          {
+            "field": "gems.cut_other_mats",
+            "index": 3,
+            "name": "Green glass",
+            "visible": false
+          }
+        ]
+      }
+    ],
+    "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
+    "omissions": [
+      "Non-ASCII search",
+      "Rendered settings-panel parity",
+      "Synthetic special plural-marker cases are offline only"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-050202",
+      "status": "passed",
+      "native_observations": 123,
+      "page_reads": 15,
+      "edits": 45,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "Five gem/glass lists; creation/removal, filtered/individual edits, short/empty backing vectors; shared fixture restored between lists"
+    }
   }
 }

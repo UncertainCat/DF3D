@@ -1081,6 +1081,23 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     if mode>=58 and mode<=62 then
+      local field=({[58]='rough_other_mats',[59]='cut_other_mats',[60]='rough_mats',[61]='cut_mats',[62]='cut_mats'})[mode]
+      local rows={}
+      for i,value in ipairs(b.settings.gems[field])do
+       local raw=df.global.world.raws.inorganics.all[i];local label
+       if mode<=59 then
+        if i>=4 and i<=6 then label='Glass '..(i-1)end
+       elseif raw and (mode==62 and not raw.material.flags.IS_GEM and raw.material.flags.IS_STONE or mode~=62 and raw.material.flags.IS_GEM)then
+        local mat=raw.material;local plural=mat.gem_name2
+        label=plural=='STP' and (mat.gem_name1 or '')..'s' or plural=='NP' and mat.gem_name1 or plural and plural~='' and plural or mat.gem_name1
+        if not label or label==''then label='Inorganic '..(i-1)end
+       end
+       if label then rows[#rows+1]={field='gems.'..field,index=i-1,label=label,enabled=value~=0,visible=label:lower():find(query:lower(),1,true)~=nil}end
+      end
+      table.sort(rows,function(a,b)return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      local inorganic_modes={[23]={'furniture','mats','IS_STONE'},[24]={'furniture','mats','IS_METAL'},
       [47]={'ammo','mats','IS_METAL'},[50]={'coins','mats'},[52]={'bars_blocks','bars_mats','IS_METAL'},
       [54]={'bars_blocks','blocks_mats','IS_STONE'},[55]={'bars_blocks','blocks_mats','IS_METAL'},
@@ -1338,6 +1355,9 @@ def main():
     lua.execute("df.global.world.raws.inorganics.all[1].material.gem_name1='alexandrite';df.global.world.raws.inorganics.all[1].material.gem_name2='STP'")
     regular_gem, _ = setting_page("gems/rough_gem", query="alexandrite")
     assert regular_gem["settings"][1]["label"] == "alexandrites"
+    lua.execute("df.global.world.raws.inorganics.all[1].material.gem_name2='NP'")
+    assert setting_page("gems/rough_gem")[0]["settings"][1]["label"] == "alexandrite"
+    lua.execute("df.global.world.raws.inorganics.all[1].material.gem_name2='STP'")
     assert setting_page("cloth/thread_silk")[0]["settings"][1]["label"] == "Organic 6 thread"
     assert setting_page("sheet/paper")[0]["settings"][1]["label"] == "Organic 7 sheet"
     assert setting_indices("gems/rough_glass") == [3, 4, 5]
@@ -1578,7 +1598,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if list_key.startswith("gems/") or extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1829,6 +1849,17 @@ def main():
     assert mixed_edit(value=1)["ok"]
     assert lua.eval("pile.settings.refuse.type[1]==0 and pile.settings.refuse.type[2]==0 and pile.settings.refuse.type[3]==9 and not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide")
     lua.execute("settings_rows=saved_rows;pile.settings.refuse.type=saved_refuse_type;settings_fields['refuse.type']=saved_refuse_layout;pile.settings.refuse.fresh_raw_hide=saved_fresh;pile.settings.refuse.rotten_raw_hide=saved_rotten")
+    for key, field in [("gems/rough_glass", "gems.rough_other_mats"), ("gems/cut_glass", "gems.cut_other_mats")]:
+        for values in ("{}", "{9}", "{9,9,9,0}", "{9,9,9,0,0,0,7}"):
+            lua.execute(f"make_setting('{field}',6,{values})")
+            before = list(lua.eval("pile.settings." + field).values())
+            assert settings_adapter(fixed_edit(key, value=2))["ok"]
+            after = list(lua.eval("pile.settings." + field).values())
+            assert after == [1 if 3 <= i <= 5 else v for i, v in enumerate(before)]
+        assert settings_adapter(fixed_edit(key, value=1, query="Glass 4"))["ok"]
+        assert list(lua.eval("pile.settings." + field).values()) == [9,9,9,1,0,1,7]
+        assert not settings_adapter(fixed_edit(key, key + "/6"))["ok"]
+        lua.execute(f"make_setting('{field}',6,{{0,0,0,0,0,0}})")
     lua.execute("make_setting('ammo.other_mats',2,{0})")
     assert settings_adapter(fixed_edit("ammo/other_materials", value=2))["ok"]
     assert lua.eval("#pile.settings.ammo.other_mats==1 and pile.settings.ammo.other_mats[1]==1")

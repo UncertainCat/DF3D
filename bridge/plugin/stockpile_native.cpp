@@ -177,11 +177,13 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     if(!df::global::world || filter.size()>256)return std::nullopt;
     // Inorganic branches pass material type0, state0 and flags0 to14d1920;
     // bounds-checked14add70 reads raws/fallback material without historical lookup.
+    // Gems use type0 plural formatting; glass uses builtin types3..5/index-1.
     // These branches have no historical-cache path. Color branches copy raw
     // descriptor names; constant branches use native labels and owned settings.
     switch(mode) {
       case 23:case 24:case 47:case 50:case 52:case 54:case 55:
       case 65:case 66:case 67:case 89:case 90:case 101:break;
+      case 58:case 59:case 60:case 61:case 62:break;
       case 22:case 30:case 64:break;
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
@@ -256,6 +258,10 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
         hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
+        hash(base+0x14d1790,0x181)==0x4a5b855077250003ULL &&
+        hash(base+0x724a30,0xd9)==0x5121a9264bd432feULL &&
+        hash(base+0x1f9bd0,0x8c)==0xe9d8573a55300bd7ULL &&
+        hash(base+0x6f530,0x2d)==0xc2a3fd308b4fc92eULL &&
         hash(base+0x14d1920,0x459)==0xf48e28715360ed9aULL &&
         hash(base+0x14add70,0x12f)==0x1f897b15772d540ULL &&
         hash(base+0x145bee0,0x5e)==0x6abc4e374e372eefULL &&
@@ -300,10 +306,10 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     static_assert(sizeof(bool)==1); // Fixed settings ranges use byte indices.
     // Fixed enum branches assume full storage. Supply it only in owned scratch,
     // restore the caller's vector afterwards, and omit padded rows from output.
-    struct TypeBacking {
+    struct IndexedBacking {
         std::vector<char>* target=nullptr;
         std::vector<char> saved;
-        ~TypeBacking(){if(target)target->swap(saved);}
+        ~IndexedBacking(){if(target)target->swap(saved);}
     } backing;
     auto localRanges=ranges;
     size_t stored=0;const char* padded=nullptr;size_t paddedCount=0;
@@ -311,6 +317,9 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     if(mode==22){types=&owned.furniture.type;typeField="furniture.type";required=35;}
     if(mode==30){types=&owned.refuse.type;typeField="refuse.type";required=93;}
     if(mode==64){types=&owned.finished_goods.type;typeField="finished_goods.type";required=93;}
+    // Glass loops over builtins but only emits the three glass slots3..5.
+    if(mode==58){types=&owned.gems.rough_other_mats;typeField="gems.rough_other_mats";required=6;}
+    if(mode==59){types=&owned.gems.cut_other_mats;typeField="gems.cut_other_mats";required=6;}
     if(types && types->size()<required) {
         stored=types->size();backing.saved=*types;backing.saved.resize(required,0);
         backing.target=types;types->swap(backing.saved);

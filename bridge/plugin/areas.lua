@@ -229,6 +229,8 @@ for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
 local native_setting_modes={
+ ['gems/rough_glass']=58,['gems/cut_glass']=59,
+ ['gems/rough_gem']=60,['gems/cut_gem']=61,['gems/cut_stone']=62,
  ['furniture/stone']=23,['furniture/metal']=24,['ammo/metal']=47,['coins']=50,
  ['bars_blocks/bars_metal']=52,['bars_blocks/blocks_stone']=54,['bars_blocks/blocks_metal']=55,
  ['finished_goods/stone']=65,['finished_goods/metal']=66,['finished_goods/gem']=67,
@@ -350,8 +352,7 @@ local function setting_caption(d,index,values)
   -- native indices before trying to read a material object.
   local token=df.builtin_mats[index]
   if token~='GLASS_GREEN' and token~='GLASS_CLEAR' and token~='GLASS_CRYSTAL' then return nil end
-  local material=dfhack.matinfo.decode(index,-1)
-  return material and material:toString() or ''
+  return '' -- Summary membership only; native rows own glass names.
  end
  local v=element(values,index)
  if v==nil then error('Settings source changed') end
@@ -370,12 +371,7 @@ local function setting_caption(d,index,values)
   elseif d.selector=='ammo' or d.selector=='armor' or d.selector=='metal' then part=f.IS_METAL and 'metal' or nil
   else part=f.IS_METAL and 'metal' or f.IS_STONE and 'stone' or nil end
   if not part or d.partition and d.partition~=part then return nil end
-  -- Rough-gem stockpile rows use the native plural, including irregular names.
-  if (d.selector=='rough_gem' or d.selector=='cut_gem' and part=='gem') and v.material.gem_name2 and v.material.gem_name2~='' then
-   local plural=v.material.gem_name2
-   if plural=='STP' then plural=(v.material.gem_name1 or '')..'s' end
-   return plural,part
-  end
+  if d.selector=='rough_gem' or d.selector=='cut_gem' then return '',part end -- Summary membership only.
   local material=dfhack.matinfo.decode(0,index)
   return material and material:toString() or '',part
 

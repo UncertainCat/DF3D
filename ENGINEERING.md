@@ -167,7 +167,7 @@ overlapping flags. Edits use stored vector lengths and visible native rows;
 empty/short vectors are not expanded. Coins can retain a native fallback row
 for an out-of-range stored index, unlike flagged lists whose fallback lacks the
 required flag. Do not replace this behavior with a blanket raw-count rejection.
-Staged summary counts, Stone-category lists and gem-specific lists remain separate.
+Staged summary counts and Stone-category lists remain separate.
 
 Protected run `build/stockpile-presets-native-20261025-044259` passed156 exact
 native list/search comparisons and312 actual All/None actions across full,
@@ -184,6 +184,30 @@ settings and unrelated-state snapshots matched; diagnostics were clean, source
 hashes unchanged and owned DF closed without saving. The lane restores its
 short-vector fixture after each list, allowing successive lists that share one
 backing field to run independently. Full workflow regression remains separate.
+
+Gems Rough glass, Cut glass, Rough gem, Cut gem and Cut stone use native modes
+58..62 with owned settings and search text. Gem/stone rows use DF's plural
+formatter, including its NP/STP markers and material-name fallback. Glass reads
+builtin material types3..5 with index-1 and flags0; these arguments bypass
+historical-material caches. The fixed glass branch receives at least six owned
+bytes, while returned rows and edits remain limited to the original stored
+vector. No source settings are resized. Staged summary membership remains
+separate from native leaf rows.
+
+Protected run `build/stockpile-presets-native-20261025-045644` passed66 gem/glass
+provider comparisons and84 actual native All/None actions. Gem lists covered
+full, short, empty and stale vectors; glass also covered a four-byte vector
+containing only its first eligible slot. Native UI retained full glass backing
+while provider-only probes exercised short storage. Exact identities, names,
+order, visibility and selection matched; source settings/UI bytes were preserved.
+Owned DF closed without saving and source save hashes were unchanged. Bounded
+evidence is in `native_stockpile_filters.json.gem_glass_lists`. Non-ASCII,
+rendered-panel parity and live synthetic plural-marker cases remain unverified.
+Focused command run `build/stockpile-initialization-20261025-050202` passed123
+native observations,15 page reads and45 edits, plus creation/removal. Complete
+settings and unrelated-state snapshots matched; diagnostics were clean, source
+hashes unchanged and owned DF closed without saving. Full workflow acceptance
+and launcher exposure remain separate.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

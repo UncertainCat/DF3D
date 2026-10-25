@@ -361,7 +361,10 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
-  for _,entry in ipairs{{'Furniture','furniture','mats',23,'Stone/clay','inorganic','Type'},
+  for _,entry in ipairs{{'Gems','gems','rough_mats',60,'Rough gem','gem','Cut gem'},
+   {'Gems','gems','cut_mats',61,'Cut gem','gem','Rough gem'},
+   {'Gems','gems','cut_mats',62,'Cut stone','gem','Rough gem'},
+   {'Furniture','furniture','mats',23,'Stone/clay','inorganic','Type'},
    {'Furniture','furniture','mats',24,'Metal','inorganic','Type'},
    {'Ammo','ammo','mats',47,'Metal','inorganic','Type'},
    {'Coins','coins','mats',50,nil,'inorganic'},
@@ -383,8 +386,8 @@ require('gui.script').start(function()
    view:render(dfhack.getTickCount());label_click(entry[1])
    local values=b.settings[entry[2]][entry[3]];local original={}
    for _,v in ipairs(values)do original[#original+1]=v end
-   local wood=entry[4]==85;local inorganic=entry[6]=='inorganic'
-   local raw_count=inorganic and #df.global.world.raws.inorganics.all or wood and #df.global.world.raws.plants.all or #df.global.world.raws.creatures.all
+   local wood=entry[4]==85;local inorganic=entry[6]=='inorganic';local gem=entry[6]=='gem'
+   local raw_count=(inorganic or gem) and #df.global.world.raws.inorganics.all or wood and #df.global.world.raws.plants.all or #df.global.world.raws.creatures.all
    for _,count in ipairs{raw_count,1,0,raw_count+1}do
     c.spec_filter='';c.entering_spec_filter=false
     values:resize(count);for i=0,count-1 do values[i]=i%2 end
@@ -393,7 +396,7 @@ require('gui.script').start(function()
      c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo');label_click(entry[1])
     end
     assert((entry[5] and c.cur_sub_mode or c.cur_main_mode)==entry[4],'wrong creature mode')
-    for _,query in ipairs{'',inorganic and 'iron' or wood and 'maple' or 'aard','zzzznomatch'}do
+    for _,query in ipairs{'',gem and 'quartz' or inorganic and 'iron' or wood and 'maple' or 'aard','zzzznomatch'}do
      c.spec_filter='';c.entering_spec_filter=true
      for i=1,#query do
       df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
@@ -421,18 +424,19 @@ require('gui.script').start(function()
       label_click(action[1],0,3);assert(#values==count,'creature action resized vector')
       for i,v in ipairs(values)do assert(v==expected[i],'creature action changed excluded row')end
      end
-     records[#records+1]={probe=inorganic and 'inorganic_rows' or wood and 'wood_leaf_rows' or 'creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
+     records[#records+1]={probe=gem and 'gem_rows' or inorganic and 'inorganic_rows' or wood and 'wood_leaf_rows' or 'creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
     end
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
-  -- Observe native item-type membership before enabling the formatter-backed
-  -- runtime service. Refuse embeds two scalar settings among its type rows.
-  for _,entry in ipairs{{'Furniture','furniture',22,35,'Type'},
+  -- Fixed-index branches need full native UI backing. Provider-only probes
+  -- exercise short vectors; Refuse also embeds two scalar settings.
+  for _,entry in ipairs{{'Gems','gems',58,659,'Rough glass','rough_other_mats'},
+   {'Gems','gems',59,659,'Cut glass','cut_other_mats'},{'Furniture','furniture',22,35,'Type'},
    {'Finished goods','finished_goods',64,93,'Type'},{'Refuse','refuse',30,93,'Item types'}}do
    c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
    view:render(dfhack.getTickCount());label_click('Ammo')
-   local values=b.settings[entry[2]].type;local original={}
+   local leaf=entry[6] or 'type';local values=b.settings[entry[2]][leaf];local original={}
    for _,v in ipairs(values)do original[#original+1]=v end
    local fresh,rotten=b.settings.refuse.fresh_raw_hide,b.settings.refuse.rotten_raw_hide
    values:resize(entry[4]+1);values:resize(entry[4]);for i=0,#values-1 do values[i]=i%2 end
@@ -441,7 +445,7 @@ require('gui.script').start(function()
    assert(c.cur_sub_mode==entry[3],'wrong item-type mode')
    local pointers={}
    for i=0,#values-1 do
-    local _,address=df.sizeof(values:_field(i));pointers[address]={field=entry[2]..'.type',index=i}
+    local _,address=df.sizeof(values:_field(i));pointers[address]={field=entry[2]..'.'..leaf,index=i}
    end
    if entry[3]==30 then
     for _,field in ipairs{'fresh_raw_hide','rotten_raw_hide'}do
@@ -465,7 +469,7 @@ require('gui.script').start(function()
      local expected={};for i,v in ipairs(values)do expected[i]=v end
      local ef,er=b.settings.refuse.fresh_raw_hide,b.settings.refuse.rotten_raw_hide
      for _,row in ipairs(rows)do if row.visible then
-      if row.field==entry[2]..'.type' then expected[row.index]=action[2]
+      if row.field==entry[2]..'.'..leaf then expected[row.index]=action[2]
       elseif row.field=='refuse.fresh_raw_hide' then ef=action[2]==1
       elseif row.field=='refuse.rotten_raw_hide' then er=action[2]==1 end
      end end
@@ -477,7 +481,7 @@ require('gui.script').start(function()
     -- Only the owned provider sees short vectors: the native UI builder uses
     -- unchecked fixed indices and must retain full backing storage.
     local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
-    for _,count in ipairs{entry[4],1,0,entry[4]+1}do
+    for _,count in ipairs(entry[6] and {entry[4],4,1,0,entry[4]+1} or {entry[4],1,0,entry[4]+1})do
      values:resize(count)
      for j=0,count-1 do values[j]=j<#saved and saved[j+1] or 9 end
      local before=settings_snapshot(b.settings)
@@ -488,7 +492,7 @@ require('gui.script').start(function()
      assert(dfhack.internal.memcmp(guard,address,size)==0,'item-type provider changed UI');df.delete(guard)
      assert(settings_snapshot(b.settings)==before,'item-type provider changed settings')
      local actual=json.decode(text);local expected={}
-     for _,row in ipairs(rows)do if row.field~=entry[2]..'.type' or row.index<count then expected[#expected+1]=row end end
+     for _,row in ipairs(rows)do if row.field~=entry[2]..'.'..leaf or row.index<count then expected[#expected+1]=row end end
      assert(#actual==#expected,'item-type provider row count')
      for j,row in ipairs(actual)do
       local e=expected[j]
@@ -497,10 +501,10 @@ require('gui.script').start(function()
       local v=b.settings[category][field];local enabled=type(v)=='boolean' and v or type(v)~='boolean' and v[row.index]~=0
       assert(row.enabled==enabled,'item-type provider state')
      end
-     records[#records+1]={probe='itemtype_provider',mode=entry[3],stored_count=count,query=query,rows=actual}
+     records[#records+1]={probe=entry[6] and 'glass_provider' or 'itemtype_provider',mode=entry[3],stored_count=count,query=query,rows=actual}
     end
     values:resize(#saved);for j,v in ipairs(saved)do values[j-1]=v end
-    records[#records+1]={probe='itemtype_reference',mode=entry[3],stored_count=#values,query=query,rows=rows,bulk_actions=2}
+    records[#records+1]={probe=entry[6] and 'glass_reference' or 'itemtype_reference',mode=entry[3],stored_count=#values,query=query,rows=rows,bulk_actions=2}
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
    b.settings.refuse.fresh_raw_hide=fresh;b.settings.refuse.rotten_raw_hide=rotten

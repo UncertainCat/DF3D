@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case,test_predicates,test_links=...
+local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -58,6 +58,46 @@ require('gui.script').start(function()
    while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timeout');require('gui.script').sleep(1,'frames')end
   end
   capture('pile')
+  if test_rename then
+   local original=b.name
+   local ui=df.global.game.main_interface
+   local _,name_address=df.sizeof(b:_field('name'))
+   local _,building_address=df.sizeof(b)
+   local _,entry_address=df.sizeof(ui:_field('entering_building_name'))
+   local _,pile_pointer_address=df.sizeof(ui.stockpile:_field('cur_bld'))
+   records[#records+1]={name='rename-native-layout',name_offset=name_address-building_address,
+    entering_name_rva=entry_address-dfhack.internal.getImageBase(),pile_pointer_rva=pile_pointer_address-dfhack.internal.getImageBase()}
+   local function state(name)
+    local bytes={};for i=1,#b.name do bytes[#bytes+1]=b.name:byte(i)end
+    records[#records+1]={name='rename-state-'..name,custom_name=dfhack.df2utf(b.name),name_bytes=bytes,
+     entering=ui.entering_building_name,bottom_mode=ui.bottom_mode_selected,paused=df.global.pause_state,frame=df.global.world.frame_counter}
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'rename simulation advanced')
+    capture('rename-'..name)
+   end
+   state('before');click(42,6);state('opened')
+   for _,byte in ipairs{65,97,49,32,66}do gui.simulateInput(view,string.format('STRING_A%03d',byte))end
+   state('typed');assert(b.name=='Aa1 B');gui.simulateInput(view,'SELECT');state('enter')
+   gui.simulateInput(view,'STRING_A090');state('after-enter-input')
+   click(42,6);state('reopened')
+   gui.simulateInput(view,'STRING_A088');state('append-existing')
+   gui.simulateInput(view,'STRING_A000');state('backspace')
+   click(42,6);state('quill-again')
+   gui.simulateInput(view,'STRING_A089');state('after-quill-input')
+   click(42,6)
+   for i=1,150 do gui.simulateInput(view,'STRING_A097')end
+   state('length-limit');assert(b.name=='Aa1 BY'..string.rep('a',14),'native rename limit differs')
+   for i=1,20 do gui.simulateInput(view,'STRING_A000')end
+   state('cleared');assert(b.name=='','native backspace differs')
+   for _,byte in ipairs{33,45,46,95,126,128,130,255}do
+    gui.simulateInput(view,string.format('STRING_A%03d',byte))
+   end
+   state('punctuation-and-high-bytes')
+   gui.simulateInput(view,'_MOUSE_R');state('right-click')
+   click(42,6);state('after-right-quill')
+   gui.simulateInput(view,'LEAVESCREEN');state('escape')
+   b.name=original
+   return
+  end
   if test_links then
    local ui=df.global.game.main_interface.stockpile_link
    local vectors={name='target-vector-identities',vectors={}}

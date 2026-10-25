@@ -1,0 +1,304 @@
+{
+  "source": {
+    "df_version": "53.16",
+    "run": "build/stockpile-storage-native-input-20261025-175600",
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "result_sha256": "14cbf4e22a3496a657f66f7c26e09697ff063fc421847fcd00011eb28e9297a4",
+    "preservation_sha256": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+    "oracle_sha256": "1275eaea17e9e905119a9d16d827bc7e43236999963cc067fa1a6cfcc00d62b5"
+  },
+  "scope": "Native mouse clicks and DFHack one-byte STRING_A inputs. No OS clipboard or IME claim. All recorded states paused at frame zero; owned DF closed unsaved, source manifest unchanged.",
+  "native": {
+    "stockpile_handler_rva": "0x8bc486",
+    "text_call_rva": "0x8bc506",
+    "text_wrapper_rva": "0xc396d0",
+    "text_helper_rva": "0xc39700",
+    "name_offset": 208,
+    "limit_bytes": 20,
+    "input_flags": 23,
+    "handler_sha256": "9ea76c7b476bfeae6af368eacf51bf4a4ca37a48e0a4368e728b3de06b1c5cfa"
+  },
+  "layout": {
+    "viewport": [
+      1200,
+      800
+    ],
+    "heading_rect": [
+      40,
+      64,
+      280,
+      36
+    ],
+    "quill_rect": [
+      320,
+      64,
+      32,
+      36
+    ]
+  },
+  "states": [
+    {
+      "entering_name_rva": 25858864,
+      "name": "rename-native-layout",
+      "name_offset": 208,
+      "pile_pointer_rva": 25838048
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-before",
+      "name_bytes": [],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-opened",
+      "name_bytes": [],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-typed",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 B",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-enter",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 B",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-after-enter-input",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-reopened",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 BX",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-append-existing",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66,
+        88
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-backspace",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 B",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-quill-again",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 BY",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-after-quill-input",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66,
+        89
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "Aa1 BYaaaaaaaaaaaaaa",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-length-limit",
+      "name_bytes": [
+        65,
+        97,
+        49,
+        32,
+        66,
+        89,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97,
+        97
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-cleared",
+      "name_bytes": [],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-punctuation-and-high-bytes",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": -1,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": true,
+      "frame": 0,
+      "name": "rename-state-right-click",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": 5,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-after-right-quill",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    },
+    {
+      "bottom_mode": -1,
+      "custom_name": "!-._~\u00c7\u00e9\u00a0",
+      "entering": false,
+      "frame": 0,
+      "name": "rename-state-escape",
+      "name_bytes": [
+        33,
+        45,
+        46,
+        95,
+        126,
+        128,
+        130,
+        255
+      ],
+      "paused": true
+    }
+  ],
+  "implementation_gaps": [
+    "Viewer uses a separate field below the palette, prefilled with the displayed name and selected in full.",
+    "Viewer submits only on Enter, permits 128 characters and returns to the palette on Escape.",
+    "AreaInfo exposes the displayed name but does not expose the exact custom name.",
+    "Actual viewport rename input and async write lifecycle acceptance remain outstanding."
+  ]
+}

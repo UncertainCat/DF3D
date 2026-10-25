@@ -1,3 +1,34 @@
+## Native stockpile rename reference (DF 53.16)
+
+`tools/smoke/stockpile_storage_native.ps1 -Rename` captures the native inline
+heading editor and reads the actual building name after input. Protected run
+`build/stockpile-storage-native-input-20261025-175600` records empty and existing
+custom names, immediate writes, Enter, repeated quill clicks, Backspace, the
+20-byte limit, punctuation, selected high bytes and right-click closure.
+All recorded states remained paused at frame zero; owned DF103108 closed
+unsaved and the source manifest was unchanged. The heading, Enter, length-limit
+and right-click captures were inspected. The earlier175432 capture emitted raw
+DF bytes as invalid UTF-8 JSON; the oracle now records UTF-8 names plus exact
+byte arrays. These simulated one-byte inputs do not establish OS clipboard or
+IME behavior. `fixtures/areas/native_stockpile_rename.json` retains provenance,
+state observations and the remaining implementation gaps.
+
+Native stockpile mode5 handles the building name at offset0xd0 through
+`0x8bc506`, calling text wrapper `0xc396d0` with limit20 and flags0x17. The
+wrapper consumes native input scratch and is not a runtime service for DF3D.
+The protected oracle identifies the stockpile pointer and entering-name flag
+addresses against DF structures. Native edits the custom name immediately;
+Enter ends editing, while Escape/right-click closes the palette without
+reverting it. Clicking the quill again while editing keeps editing active.
+An unnamed pile starts with an empty custom string. The editor occupies the
+existing heading and does not add a field below the palette.
+
+DF3D's current staged rename remains incomplete: it uses the display name,
+a separate128-character field and Enter-only writes. The current AreaInfo
+contract lacks an explicit custom-name field. Command-level signal-dispatch
+coverage is not actual rename UI acceptance; correct the contract, inline
+editor and async write lifecycle before exposing Stockpiles.
+
 ## Stockpile settings ownership and protocol59
 
 Management59 retires legacy SettingsSet requests that treated category rows or

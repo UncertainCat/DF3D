@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures=...
+local out,repaint,gestures,eligibility_case=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -88,6 +88,76 @@ require('gui.script').start(function()
      bounds={b.x1,b.y1,b.x2,b.y2},repainting=paint.repainting,erasing=paint.erasing,
      current=paint.cur_bld and paint.cur_bld.id or -1,bottom_mode=df.global.game.main_interface.bottom_mode_selected,
      corner={df.global.selection_rect.start_x,df.global.selection_rect.start_y,df.global.selection_rect.start_z}}
+   end
+   if gestures=='eligibility' or gestures=='eligibility-create' then
+    local first,last
+    for _,p in ipairs(cells)do
+     if dfhack.buildings.containsTile(b,p.x+1,p.y) and dfhack.buildings.containsTile(b,p.x+2,p.y)then
+      first=p;last={x=p.x+2,y=p.y,z=p.z};break
+     end
+    end
+    assert(first,'no three-cell eligibility span')
+    local middle={x=first.x+1,y=first.y,z=first.z}
+    local block=assert(dfhack.maps.getTileBlock(middle));local x,y=middle.x%16,middle.y%16
+    local tile=block.tiletype[x][y];local designation=block.designation[x][y].whole;local occupancy=block.occupancy[x][y].whole
+    local function restore()
+     block.tiletype[x][y]=tile;block.designation[x][y].whole=designation;block.occupancy[x][y].whole=occupancy
+    end
+    local cases={{name='floor'},{name='wall',tile='StoneWall'},{name='water1',depth=1},{name='water2',depth=2},
+     {name='water7',depth=7},{name='magma1',depth=1,magma=true},{name='building1',building=1},{name='building2',building=2},
+     {name='hidden',hidden=true},{name='ramp',tile='StoneRamp'},{name='open',tile='OpenSpace'},{name='all-wall',tile='StoneWall',all_wall=true}}
+    if eligibility_case and eligibility_case~='all' then
+     local filtered={};for _,case in ipairs(cases)do if case.name==eligibility_case then filtered[1]=case end end
+     assert(#filtered==1,'unknown eligibility case');cases=filtered
+    end
+    for _,case in ipairs(cases)do
+     restore()
+     if paint.erasing then click(84,61)end
+     mapclick(first);mapclick(last)
+     click(84,61);assert(paint.erasing and paint.doing_rectangle)
+     mapclick(first);mapclick(last)
+     assert(not dfhack.buildings.containsTile(b,first.x,first.y) and not dfhack.buildings.containsTile(b,last.x,last.y),'erase setup failed')
+     block.tiletype[x][y]=assert(df.tiletype[case.tile or 'StoneFloor1'])
+     block.designation[x][y].hidden=case.hidden or false
+     block.designation[x][y].flow_size=case.depth or 0;block.designation[x][y].liquid_type=case.magma or false
+     block.occupancy[x][y].building=case.building or 0
+     if case.all_wall then
+      for _,p in ipairs{first,last}do local cell=assert(dfhack.maps.getTileBlock(p));cell.tiletype[p.x%16][p.y%16]=df.tiletype.StoneWall end
+     end
+     local created
+     if gestures=='eligibility-create' then
+      gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+      gui.simulateInput(view,'D_STOCKPILES');view:render(dfhack.getTickCount())
+      local next_id=df.global.building_next_id
+      mapclick(first);mapclick(last)
+      for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do if candidate.id>=next_id then assert(not created,'multiple piles created');created=candidate end end
+      if case.all_wall then
+       assert(not created,'all-wall rectangle unexpectedly created a pile')
+       records[#records+1]={name=case.name,setup=case,created=false,first=first,middle=middle,last=last,bottom_mode=df.global.game.main_interface.bottom_mode_selected}
+       capture('eligibility-created-none')
+       assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+       return
+      end
+      assert(created,'native created no pile for mixed rectangle')
+     else
+      click(84,61);assert(not paint.erasing)
+      mapclick(first);mapclick(last)
+     end
+     local observed=created or b
+     records[#records+1]={name=case.name,first=first,middle=middle,last=last,setup=case,
+      tiletype=df.tiletype[block.tiletype[x][y]],designation=block.designation[x][y].whole,occupancy=block.occupancy[x][y].whole,
+      start_present=dfhack.buildings.containsTile(observed,first.x,first.y),middle_present=dfhack.buildings.containsTile(observed,middle.x,middle.y),
+      end_present=dfhack.buildings.containsTile(observed,last.x,last.y),tiles=dfhack.buildings.countExtentTiles(observed,-1),
+      id=observed.id,bounds={observed.x1,observed.y1,observed.x2,observed.y2}}
+     if created then
+      capture('eligibility-created-'..case.name)
+      assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+      return
+     end
+    end
+    restore();capture('eligibility-completed')
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+    return
    end
    if gestures=='brush' then
     click(81,61);click(84,61);assert(paint.erasing and not paint.doing_rectangle)

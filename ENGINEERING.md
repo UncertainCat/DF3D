@@ -185,6 +185,33 @@ and owner checks; rendered menu captures have known engine diagnostics only.
 The focused live scope excludes settings. Native placement clipping/eligibility,
 links and settings input scaling remain separate acceptance requirements.
 
+## Native stockpile placement eligibility (DF 53.16)
+
+`fixtures/areas/native_stockpile_placement.json` records native pointer rectangles
+with controlled terrain/occupancy in disposable paused sessions. Reproduce with
+`stockpile_storage_native.ps1 -PaintGestures -GestureCase eligibility`; creation
+uses `-GestureCase eligibility-create -EligibilityCase <case>` and a fresh process
+per case. The fixture records exact runs, result digests, inputs and effects.
+All successful oracle sessions close unsaved with unchanged source manifests.
+
+Native repaint trims wall, hidden, occupied and open-space cells while painting
+the other selected cells. Water depths1/2/7 and magma1 remain eligible. Independent
+creation runs confirm full selected bounds with holes, deep-water/magma acceptance,
+and no building published for an all-wall rectangle; painting remains open.
+These are native observations, not acceptance of DF3D's current placement path.
+The bridge still rejects whole rectangles using a local shape whitelist and
+liquid/occupancy checks. DFHack `Buildings::checkFreeTiles` also reconstructs
+rules and differs on liquid depth, so it is not a substitute native service.
+
+The native path calls tile-type predicates `0x289050` and `0x2c2f10`. Their complete
+code/data ranges are pinned in the fixture. Both take a uint16 scalar, read only
+embedded constants/tables, return AL, make no calls and write no memory. They
+have not yet been exposed or live-compared through a DF3D service. UI handler
+`0x311c10` is not callable by the bridge. Its inline occupancy and overlapping
+stockpile effects still require an ownership audit; scalar tile eligibility alone
+does not establish full placement parity. Clipped/no-op replies must also be
+reconciled by the paint owner without losing newer explicit gestures.
+
 ## Native stockpile initialization (DF 53.16)
 
 The read-only `df3d stockpile-wood-read <building-id> [filter]` probe calls the

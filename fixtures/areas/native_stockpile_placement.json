@@ -1,0 +1,712 @@
+{
+  "game": "DF53.16 Steam24557528",
+  "scope": "Native UI oracle in paused disposable sessions; terrain/occupancy are deliberate fixture setup. No DF3D gameplay acceptance. Creation uses a fresh owned process for each case. Repaint uses an existing stocked pile; created-pile tests use three freshly erased holes in its bounds.",
+  "runner": "tools/smoke/stockpile_storage_native.ps1 -PaintGestures -GestureCase eligibility; creation: -GestureCase eligibility-create -EligibilityCase <case>",
+  "observations": [
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-20261025-110515",
+      "result_sha256": "c352a861e3702690144165b6b3107395e02da1724942fb392116eca71800491c",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "designation": 561160,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "floor",
+          "occupancy": 34,
+          "setup": {
+            "name": "floor"
+          },
+          "start_present": true,
+          "tiles": 272,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "wall",
+          "occupancy": 32,
+          "setup": {
+            "name": "wall",
+            "tile": "StoneWall"
+          },
+          "start_present": true,
+          "tiles": 271,
+          "tiletype": "StoneWall"
+        },
+        {
+          "designation": 561161,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "water1",
+          "occupancy": 34,
+          "setup": {
+            "depth": 1,
+            "name": "water1"
+          },
+          "start_present": true,
+          "tiles": 272,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561162,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "water2",
+          "occupancy": 34,
+          "setup": {
+            "depth": 2,
+            "name": "water2"
+          },
+          "start_present": true,
+          "tiles": 272,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561167,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "water7",
+          "occupancy": 34,
+          "setup": {
+            "depth": 7,
+            "name": "water7"
+          },
+          "start_present": true,
+          "tiles": 272,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 2658313,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "magma1",
+          "occupancy": 34,
+          "setup": {
+            "depth": 1,
+            "magma": true,
+            "name": "magma1"
+          },
+          "start_present": true,
+          "tiles": 272,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "building1",
+          "occupancy": 33,
+          "setup": {
+            "building": 1,
+            "name": "building1"
+          },
+          "start_present": true,
+          "tiles": 271,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "building2",
+          "occupancy": 34,
+          "setup": {
+            "building": 2,
+            "name": "building2"
+          },
+          "start_present": true,
+          "tiles": 271,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561664,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "hidden",
+          "occupancy": 32,
+          "setup": {
+            "hidden": true,
+            "name": "hidden"
+          },
+          "start_present": true,
+          "tiles": 271,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "designation": 561160,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "ramp",
+          "occupancy": 34,
+          "setup": {
+            "name": "ramp",
+            "tile": "StoneRamp"
+          },
+          "start_present": true,
+          "tiles": 272,
+          "tiletype": "StoneRamp"
+        },
+        {
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "open",
+          "occupancy": 32,
+          "setup": {
+            "name": "open",
+            "tile": "OpenSpace"
+          },
+          "start_present": true,
+          "tiles": 271,
+          "tiletype": "OpenSpace"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-floor-20261025-110839",
+      "result_sha256": "94a6ab7ec74dc8515862f412aa5d704152967ed4dee3407a0b2f9902bda97d6b",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561160,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "floor",
+          "occupancy": 34,
+          "setup": {
+            "name": "floor"
+          },
+          "start_present": true,
+          "tiles": 3,
+          "tiletype": "StoneFloor1"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-wall-20261025-110905",
+      "result_sha256": "a55ccd20f88bb109d1a22f08eb13dd9a0e2cc239b12b1b5f067003e6dc5bd438",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "wall",
+          "occupancy": 32,
+          "setup": {
+            "name": "wall",
+            "tile": "StoneWall"
+          },
+          "start_present": true,
+          "tiles": 2,
+          "tiletype": "StoneWall"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-water7-20261025-110932",
+      "result_sha256": "2e144063fd012b6f05cd6dd8dfa619dfdd32151dd7962ece865677c755bbf515",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561167,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "water7",
+          "occupancy": 34,
+          "setup": {
+            "depth": 7,
+            "name": "water7"
+          },
+          "start_present": true,
+          "tiles": 3,
+          "tiletype": "StoneFloor1"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-magma1-20261025-110958",
+      "result_sha256": "cedd7e91681e58e72e28421f7be222a2e8c4437903da287fb2d84a3cfec01cf0",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 2658313,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": true,
+          "name": "magma1",
+          "occupancy": 34,
+          "setup": {
+            "depth": 1,
+            "magma": true,
+            "name": "magma1"
+          },
+          "start_present": true,
+          "tiles": 3,
+          "tiletype": "StoneFloor1"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-building1-20261025-111024",
+      "result_sha256": "e3dbda898f222d1af68fbe6069627ffde4770f55d851e109cb2c253fbf2b433b",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "building1",
+          "occupancy": 33,
+          "setup": {
+            "building": 1,
+            "name": "building1"
+          },
+          "start_present": true,
+          "tiles": 2,
+          "tiletype": "StoneFloor1"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-hidden-20261025-111050",
+      "result_sha256": "34e08bd27401ef40f0f30ddefab06475a005739757db7d5158c2c37ab88d4f48",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561664,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "hidden",
+          "occupancy": 32,
+          "setup": {
+            "hidden": true,
+            "name": "hidden"
+          },
+          "start_present": true,
+          "tiles": 2,
+          "tiletype": "StoneFloor1"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-open-20261025-111116",
+      "result_sha256": "a3d25d094b1017dccbc937a5e40d4ae1ecac7490ec6e3c3c7c450410161e33ef",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "open",
+          "occupancy": 32,
+          "setup": {
+            "name": "open",
+            "tile": "OpenSpace"
+          },
+          "start_present": true,
+          "tiles": 2,
+          "tiletype": "OpenSpace"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-all-wall-20261025-111208",
+      "result_sha256": "dedf801074cd8e1a3088fdf2935cd70aa83d3bc84c11278fc905090a9894ee82",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bottom_mode": 6,
+          "created": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "name": "all-wall",
+          "setup": {
+            "all_wall": true,
+            "name": "all-wall",
+            "tile": "StoneWall"
+          }
+        }
+      ]
+    }
+  ],
+  "native_code": [
+    {
+      "name": "tile_predicate_with_jump_tables",
+      "start_rva": "0x289050",
+      "size": "0x2eb",
+      "sha256": "57c60ef479c7fae0b41539f6ea27c66262924fe90e9b60417428373d7e2c7565",
+      "fnv1a64": "0xd12be3ad912c079f"
+    },
+    {
+      "name": "additional_tile_predicate",
+      "start_rva": "0x2c2f10",
+      "size": "0x20",
+      "sha256": "ff0040f865c0061db5ba454d80631e00bc631299134dac2256aa361e8540e6b0",
+      "fnv1a64": "0xee0f7c2a6109db61"
+    },
+    {
+      "name": "native_repaint_tile_gate",
+      "start_rva": "0x353bac",
+      "size": "0xf7",
+      "sha256": "331cf66ac7785f40afe839decf6fa1d0daf88b3bc2ea7f5ba117cf6d826aa101",
+      "fnv1a64": "0xe80bd90267e67b53"
+    }
+  ],
+  "predicate_ownership_audit": "Both scalar predicates take a uint16 tile type. First reads only embedded immutable dispatch tables, second uses four scalar comparisons. Both return AL and write no memory, make no calls, read no UI state. Audit only: not yet invoked through DF3D.",
+  "findings": [
+    "Mixed rectangles retain full selected bounds with holes for wall, hidden, building occupancy and open-space cells.",
+    "Repaint allows water depths1,2,7 and magma1; fresh creation independently confirms water7 and magma1.",
+    "All-wall creation publishes no pile and leaves the native paint tool open.",
+    "Native repaint uses scalar predicates289050 and2c2f10 after hidden check; building occupancy gate follows. The inline path also handles overlap with another stockpile, requiring a separate ownership/effects audit."
+  ],
+  "omissions": [
+    "Runtime native-predicate wrapper and compatibility rejection",
+    "All tiletype values, vegetation and stairs",
+    "Real building occupancy combinations and multi-pile overlap transfer/erase",
+    "Full native inline call-graph audit beyond scalar predicates",
+    "DF3D clipping/no-op receipt reconciliation and live acceptance"
+  ]
+}

@@ -118,7 +118,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
             !number("barrels",0,32767) || !number("bins",0,32767) || !number("wheelbarrows",0,32767) ||
             !number("owner_id",-1,INT32_MAX) || !number("revision",0,INT64_MAX) ||
             !number("location_id",-1,INT32_MAX) || !number("location_site_id",-1,INT32_MAX) || !number("organic",-1,1) || !number("inorganic",-1,1) ||
-            !number("tile_count",-1,INT32_MAX) || !number("assigned_count",-1,INT32_MAX) ||
+            !number("storage_limit",-1,32767) || !number("tile_count",-1,INT32_MAX) || !number("assigned_count",-1,INT32_MAX) ||
             !boolean("active") || !boolean("links_only") || !boolean("owner_allowed") ||
             !text("name",512) || !text("owner_name",512) || !text("zone_label",512,false) ||
             !text("owner_profession",512,false) || !number("owner_sex",-1,1,false) || !number("location_kind",0,5,false) ||

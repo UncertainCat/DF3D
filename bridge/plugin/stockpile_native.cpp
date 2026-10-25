@@ -69,16 +69,13 @@ void categoryHeader(const uint8_t* base,df::stockpile_settings& owned,size_t ind
     reinterpret_cast<Fill>(base+(enabled?fills[index]:clears[index]))(fields[index]);
 }
 }
-std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
-    df::building_stockpilest& pile,int preset) {
-    if(!df::global::world || preset<1 || preset>19)return std::nullopt;
+std::optional<int32_t> nativeStockpileTileCount(df::building_stockpilest& pile) {
+    if(!df::global::world)return std::nullopt;
     auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
         hash(base+0x5587b0,0x79)==0x14b4f3f138690067ULL &&
-        hash(base+0x57b770,0x113)==0x3fc5ac46eee9f334ULL &&
-        hash(base+0x34a8d4,0x141)==0x444c389c4f7878d4ULL &&
-        hash(base+0x35f0b8,0x4c)==0xf5f32f7dfd8f6deeULL;
+        hash(base+0x57b770,0x113)==0x3fc5ac46eee9f334ULL;
     if(!compatible || pile.x1<0 || pile.y1<0 || pile.z<0 || pile.z>32767 ||
        pile.x2<pile.x1 || pile.y2<pile.y1 || pile.x2>32767 || pile.y2>32767 ||
        int64_t(pile.x2-pile.x1+1)*(pile.y2-pile.y1+1)>65536)return std::nullopt;
@@ -90,6 +87,18 @@ std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
     int32_t count=0;
     for(int32_t y=pile.y1;y<=pile.y2;++y)for(int32_t x=pile.x1;x<=pile.x2;++x)
         count+=!pile.room.extents || occupies(&pile,int16_t(x),int16_t(y),int16_t(pile.z));
+    return count;
+}
+std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
+    df::building_stockpilest& pile,int preset) {
+    if(preset<1 || preset>19)return std::nullopt;
+    const auto observed=nativeStockpileTileCount(pile);
+    if(!observed)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x34a8d4,0x141)==0x444c389c4f7878d4ULL &&
+        hash(base+0x35f0b8,0x4c)==0xf5f32f7dfd8f6deeULL;
+    if(!compatible)return std::nullopt;
+    const auto count=*observed;
     std::array<int16_t,3> limits{};
     // The inline native dispatch34a8d4..34aa15 follows the settings initializer.
     // Narrowing matches native int16 storage, including oversized native piles.

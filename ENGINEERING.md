@@ -18,16 +18,36 @@ The fixture `native_stockpile_storage.json` retains exact input/output records,
 binary-range hashes and omissions. Source save hashes were unchanged and owned
 DF closed unsaved.
 
-The existing staged DF3D storage surface is inconsistent with that evidence:
-it subtracts one from the wheelbarrow cap, permits five digits, treats typing as
-a draft, rejects oversized entry, and uses Escape to cancel that draft. These
-are unresolved product defects. The native pointer path at
+The staged DF3D storage surface still permits five digits, treats typing as a
+draft, rejects oversized entry, and uses Escape to cancel that draft. These
+remain unresolved product defects. The native pointer path at
 `0x334fa9..0x33561b` counts tiles through `0x57b770` and performs inline field
 updates. The text path at `0x8ba405..0x8ba683` uses numeric input helper
 `0xc39700` with length3, native containment checks and inline field conversion/
 clamping. Both paths borrow native UI globals and must not be invoked as runtime
 semantic services. No standalone storage mutation routine is established by this
 audit. The renderer is `0x3aef70..0x3afd54`.
+
+`AreaInfo.storage_limit` now exposes the ordinary native bound for all three
+container fields. Its additive default is-1 for unavailable/legacy observations;
+schema/management version56 is unchanged. The shared native tile-count service
+calls the audited extent predicate at `0x5587b0`, also used by the native preset
+path, without viewscreen or menu state. Snapshot work accounts for that additional
+pass. The bridge validates edits against this observed bound; Godot no longer
+derives the cap from geometry or subtracts one for wheelbarrows. Unknown bounds
+disable storage editing. Counts outside nonnegative signed16 storage remain
+unavailable; this does not claim native overflow behavior.
+
+Protected main-scene `build/areas-acceptance-20261025-085313` passed115 native
+observations, including actual pointer increments/decrements of all three fields
+on a one-tile pile and independent native readback. One wheelbarrow is accepted.
+The broader settings, range scrolling, repaint/cancel and removal workflow also
+passed. Both save manifests were unchanged and owned DF closed unsaved. Its sole
+diagnostic was the known separate-thread notice. Offline
+`build/qa/stockpile-storage-limit-ready` passed root CTest, menu and wire checks;
+rendered popup checks passed with known renderer diagnostics. The Lua adapter
+checks a holey three-tile pile and four-tile creation, including equal-to-tile
+wheelbarrow limits. These tests establish ordinary bounds, not typed-input parity.
 
 Artificial out-of-range stored values expose separate native arrow quirks:
 incrementing32767 wraps to-32768; decrementing an oversized value only subtracts

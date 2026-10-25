@@ -98,7 +98,7 @@ def main():
      end
      return {ok=true,steps=cost,revision=revision,visible=not force_hidden and not b.hidden,
       x=b.x1,y=b.y1,z=b.z,width=b.x2-b.x1+1,height=b.y2-b.y1+1,extents=extents,
-      tile_count=tiles,gives={},takes={},assigned_units=b.assigned_units or {}}
+      tile_count=tiles,storage_limit=b.kind==0 and tiles or -1,gives={},takes={},assigned_units=b.assigned_units or {}}
     end
     function repaint(b,spans,mode,budget)
      budget=budget or math.huge
@@ -373,14 +373,14 @@ def main():
     lua.execute("pile.room={x=0,y=0,width=3,height=3,extents={[0]=1,[1]=0,[2]=1,[3]=0,[4]=1,[5]=0,[6]=0,[7]=0,[8]=0}}")
     current_revision = call(9)["areas"][1]["revision"]
     assert call(11, {"bins": 4, "expected_revision": current_revision})["message"] == "Container limits exceed usable stockpile tiles"
-    assert not call(11, {"wheelbarrows": 3, "expected_revision": current_revision})["ok"]
-    containers = {"bins": 3, "barrels": 3, "wheelbarrows": 2, "links_only": 1,
+    assert not call(11, {"wheelbarrows": 4, "expected_revision": current_revision})["ok"]
+    containers = {"bins": 3, "barrels": 3, "wheelbarrows": 3, "links_only": 1,
                   "expected_revision": current_revision}
     scarce_update = lua.globals().request(11, lua.table_from(containers))
     scarce_update["step_budget"] = 0
     updated = adapter(scarce_update)
     assert updated["ok"] and updated["steps"] == 19 and updated["areas"][1]["bins"] == 3
-    assert updated["areas"][1]["barrels"] == 3 and updated["areas"][1]["wheelbarrows"] == 2
+    assert updated["areas"][1]["barrels"] == 3 and updated["areas"][1]["wheelbarrows"] == 3
     assert updated["areas"][1]["links_only"] and updated["areas"][1]["revision"] != current_revision
     assert not call(11, {"bins": 2, "expected_revision": current_revision})["ok"]
     assert lua.eval("pile.settings.food.meat[1] and not pile.settings.food.meat[2] and pile.settings.food.meat[3]")
@@ -2515,7 +2515,7 @@ def main():
                             ({"width": 0}, "invalid area rectangle"), ({"x": 32767, "width": 2}, "invalid area rectangle"),
                             ({"categories": 131072}, "invalid stockpile categories"),
                             ({"barrels": 5}, "Container limits exceed usable stockpile tiles"),
-                            ({"wheelbarrows": 4}, "Container limits exceed usable stockpile tiles"),
+                            ({"wheelbarrows": 5}, "Container limits exceed usable stockpile tiles"),
                             ({"active": 1}, "Zone-only fields on stockpile"),
                             ({"kind": 1, "zone_type": 255}, "Unsupported zone type"),
                             ({"kind": 1, "zone_type": 0, "bins": 1}, "Stockpile-only fields on zone"),
@@ -2526,11 +2526,11 @@ def main():
     assert lua.globals().create_calls == before
     assert settings_adapter(create_request(width=31, height=31))["ok"]
     assert settings_adapter(create_request(x=32767, y=32767, width=1, height=1))["ok"]
-    none = settings_adapter(create_request(barrels=4, bins=4, wheelbarrows=3, links_only=1))
+    none = settings_adapter(create_request(barrels=4, bins=4, wheelbarrows=4, links_only=1))
     assert none["ok"] and none["work_unknown"] and none["message"] == "Native area created"
     created = none["areas"][1]
     assert created["revision"] > 0 and created["categories"] == 0 and len(created["extents"]) == 4
-    assert created["barrels"] == 4 and created["bins"] == 4 and created["wheelbarrows"] == 3 and created["links_only"]
+    assert created["barrels"] == 4 and created["bins"] == 4 and created["wheelbarrows"] == 4 and created["links_only"]
     assert none["hint_x"] == 10 and none["hint_y"] == 11 and none["hint_z"] == 1
     all_categories = settings_adapter(create_request(categories=131071, barrels=1))
     assert all_categories["ok"] and all_categories["areas"][1]["categories"] == 131071

@@ -918,8 +918,8 @@ func rename_area(value: String) -> void:
 
 func set_storage_value(key: String, value: int) -> void:
 	if selected.is_empty() or int(selected.kind) != 0 or key not in ["barrels","bins","wheelbarrows"] or request_ticket != 0 or not available: return
-	if not selected.has("tile_count"): return
-	var cap := mini(32767,maxi(0,int(selected.tile_count) - (1 if key == "wheelbarrows" else 0)))
+	var cap := int(selected.get("storage_limit",-1))
+	if cap < 0: return
 	if value < 0 or value > cap or value == int(selected[key]): return
 	var request := selected_request(Action.AreaUpdate)
 	request[key] = value

@@ -918,7 +918,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           textSize(v->location_name())>512 || textSize(v->religion())>512 ||
           v->location_id()<-1 || v->location_site_id()<-1 || v->organic()<-1 || v->organic()>1 ||
           v->inorganic()<-1 || v->inorganic()>1 || !validAreaZoneSettings(v->zone_settings()) ||
-          v->tile_count()<-1 || v->assigned_count()<-1 || v->location_kind()>5 ||
+          v->storage_limit()<-1 || v->storage_limit()>32767 ||
+          (v->kind()!=AreaKind::Stockpile && v->storage_limit()!=-1) || v->tile_count()<-1 || v->assigned_count()<-1 || v->location_kind()>5 ||
           v->owner_sex()<-1 || v->owner_sex()>1 || textSize(v->owner_profession())>512) return "invalid area state";
       payload+=4+textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
           textSize(v->location_name())+textSize(v->religion())+textSize(v->owner_profession());

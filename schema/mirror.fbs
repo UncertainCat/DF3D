@@ -1296,6 +1296,7 @@ table AreaInfo {
   owner_profession:string;
   owner_sex:int8 = -1;
   location_site_id:int32 = -1;
+  storage_limit:int32 = -1; // Native stockpile container bound; -1 unavailable/legacy.
 }
 table AreaChoice { id:int32; name:string; label:string; }
 table LocationDeity { id:int32 = -1; name:string; spheres:[int32]; }

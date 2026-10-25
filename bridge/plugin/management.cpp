@@ -257,7 +257,7 @@ struct NativeAreaZone {
 };
 struct NativeArea {
   int32_t id=-1,x=0,y=0,z=0,owner=-1;
-  int kind=0,zone=-1,w=0,h=0,barrels=0,bins=0,wheelbarrows=0;
+  int kind=0,zone=-1,w=0,h=0,barrels=0,bins=0,wheelbarrows=0,storageLimit=-1;
   uint32_t categories=0;
   bool active=false,linksOnly=false,ownerAllowed=false;
   std::string name,ownerName;
@@ -384,7 +384,7 @@ void publish() {
       b.CreateVector(a.extents),a.zone,a.categories,a.barrels,a.bins,a.wheelbarrows,a.linksOnly,
       a.active,a.owner,b.CreateString(a.ownerName),a.ownerAllowed,b.CreateVector(a.gives),b.CreateVector(a.takes),
       uint64_t(a.revision),b.CreateString(a.zoneLabel),a.locationId,b.CreateString(a.locationName),b.CreateString(a.religion),
-      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId));
+      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit));
   }
   std::vector<flatbuffers::Offset<m::AreaChoice>> ac;
   for(const auto& c:areaChoices) ac.push_back(m::CreateAreaChoice(b,c.id,b.CreateString(c.name),b.CreateString(c.label)));
@@ -1818,6 +1818,7 @@ int areaSnapshot(lua_State* L) {
   // Seven fixed groups plus one step per 256 scalar/extent/list entries.
   // Reserve a non-visibility reply after any settings vector grows to raw size.
   const uint32_t steps=7+df3d_area::bulkSteps(cells+members+b->name.size())+
+      (pile?df3d_area::bulkSteps(cells):0)+
       (visibility?df3d_area::bulkSteps(cells):0);
   if(steps>budget)return fail("Area snapshot exceeds remaining step budget");
   df3d_area::Revision hash;
@@ -1877,8 +1878,14 @@ int areaSnapshot(lua_State* L) {
       hash.add(squad->squad_id);hash.add(squad->mode.whole);
     }
   }
+  int32_t storageLimit=-1;
+  if(pile) {
+    const auto count=df3d_area::nativeStockpileTileCount(*pile);
+    if(count && *count<=32767)storageLimit=*count;
+  }
   lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",steps);
-  field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154);
+  field(L,"storage_limit",storageLimit);
+  field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154);
   field(L,"revision",hash.finish());field(L,"tile_count",tiles);field(L,"visible_count",visibleTiles);
   field(L,"has_visibility",visibility);field(L,"visible",visibleTiles!=0 || emptyZoneVisible);
   field(L,"x",b->x1);field(L,"y",b->y1);field(L,"z",b->z);field(L,"width",width);field(L,"height",height);
@@ -2441,7 +2448,7 @@ void run(color_ostream& out) {
       a.locationKind=uint8_t(number(L,"location_kind",0));
       a.revision=number(L,"revision");a.zoneLabel=str("zone_label");a.locationId=int32_t(number(L,"location_id",-1));a.locationSiteId=int32_t(number(L,"location_site_id",-1));
       a.locationName=str("location_name");a.religion=str("religion");a.organic=int8_t(number(L,"organic",-1));a.inorganic=int8_t(number(L,"inorganic",-1));
-      a.tileCount=int32_t(number(L,"tile_count",-1));a.assignedCount=int32_t(number(L,"assigned_count",-1));
+      a.storageLimit=int32_t(number(L,"storage_limit",-1));a.tileCount=int32_t(number(L,"tile_count",-1));a.assignedCount=int32_t(number(L,"assigned_count",-1));
       lua_getfield(L,-1,"zone_settings");if(lua_istable(L,-1)) {
         a.zoneSettings={uint8_t(number(L,"pond_mode")),uint8_t(number(L,"facing")),int8_t(number(L,"tomb_citizens",-1)),
             int8_t(number(L,"tomb_pets",-1)),int8_t(number(L,"gather_trees",-1)),int8_t(number(L,"gather_shrubs",-1))};

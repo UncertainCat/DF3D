@@ -97,7 +97,7 @@ struct AreaInfo {
   std::vector<int32_t> gives,takes;
   int64_t revision=0;
   std::string zoneLabel,locationName,religion;
-  int32_t locationId=-1,tileCount=-1,assignedCount=-1,locationSiteId=-1;
+  int32_t locationId=-1,tileCount=-1,assignedCount=-1,locationSiteId=-1,storageLimit=-1;
   int8_t organic=-1,inorganic=-1;
   AreaZoneSettings zoneSettings;
 };

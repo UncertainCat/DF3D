@@ -51,7 +51,7 @@ func run() -> void:
 	host.activate(controller); controller.panel.show(); controller.available = true
 	controller.use_area({"id":39,"revision":123,"kind":0,"name":"Wood Stockpile #39",
 		"origin":Vector3i(3,4,2),"width":2,"height":2,"extents":PackedByteArray([1,1,1,1]),
-		"tile_count":4,"categories":8192,"barrels":0,"bins":0,"wheelbarrows":0,"links_only":false,
+		"tile_count":4,"storage_limit":4,"categories":8192,"barrels":0,"bins":0,"wheelbarrows":0,"links_only":false,
 		"active":true,"owner_id":-1,"owner_name":"","owner_allowed":false,"gives":[],"takes":[]})
 	controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw

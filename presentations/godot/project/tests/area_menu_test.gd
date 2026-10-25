@@ -69,7 +69,7 @@ func run() -> void:
 	check(settings.rendered_rows[2][0] == original_button and original_button.disabled, "search busy state preserves row widgets and disables edits")
 	check(settings.search.editable, "pending search leaves native search field editable")
 	check(settings.search.position.y + settings.search.size.y <= 48, "search field cannot overlap first leaf row")
-	check(settings.scrolls[0].get_v_scroll_bar().get_theme_stylebox("scroll").texture != null, "native scrollbar texture resolves")
+	check(settings.native_scrolls[0].texture("SCROLLBAR") != null, "native scrollbar texture resolves")
 	# Native status-icon clicks select categories/sublists, including partial
 	# states. Exercise actual pointer dispatch so a nested edit button fails.
 	var settings_requests: Array = []
@@ -77,7 +77,7 @@ func run() -> void:
 	settings.size = settings.custom_minimum_size
 	for column in [0,1]:
 		state.clear(); state.area = {"id":39,"revision":11,"categories":64}
-		state.category = "ammo"; state.subcategory = "ammo/quality_core"; state.leaf = state.subcategory
+		state.category = "ammo"; state.subcategory = "ammo/type"; state.leaf = state.subcategory
 		state.rows = [[{"key":"ammo","label":"Ammo","kind":1,"state":3}],
 			[{"key":"ammo/quality_core","label":"Core quality","kind":2,"state":3}],[]]
 		state.changed.emit()
@@ -99,8 +99,8 @@ func run() -> void:
 	var storage := preload("res://scripts/area_storage_view.gd").new()
 	root.add_child(storage); storage.configure(assets)
 	var edits: Array = []; storage.value_requested.connect(func(key,value): edits.append([key,value]))
-	storage.display({"id":39,"revision":11,"tile_count":4,"barrels":4,"bins":1,"wheelbarrows":3},true)
-	check(storage.controls.barrels[1].disabled and storage.controls.wheelbarrows[1].disabled,"storage limits use occupied tile count, wheelbarrows leave one tile")
+	storage.display({"id":39,"revision":11,"tile_count":4,"storage_limit":4,"barrels":4,"bins":1,"wheelbarrows":4},true)
+	check(storage.controls.barrels[1].disabled and storage.controls.wheelbarrows[1].disabled,"storage limits use the observed native bound for all three fields")
 	storage.controls.bins[1].pressed.emit()
 	check(edits == [["bins",2]] and storage.labels.bins.text == "1","storage emits chosen value without optimistic count")
 	storage.activate("bins",0); storage.submit_entry("5")
@@ -109,8 +109,10 @@ func run() -> void:
 	check(edits[-1] == ["bins",3] and storage.editing.is_empty(),"native hash field accepts a valid exact value")
 	storage.activate("barrels",0); storage.cancel_edit()
 	check(edits.size() == 2 and not storage.entry.visible,"cancel numeric entry does not submit")
-	storage.display({"id":39,"revision":12,"tile_count":4,"barrels":4,"bins":3,"wheelbarrows":3},false)
+	storage.display({"id":39,"revision":12,"tile_count":4,"storage_limit":4,"barrels":4,"bins":3,"wheelbarrows":4},false)
 	check(storage.controls.bins[0].disabled and storage.labels.bins.text == "3","busy controls display authoritative new count")
+	storage.display({"id":39,"revision":13,"tile_count":4,"barrels":0,"bins":0,"wheelbarrows":0},true)
+	check(storage.controls.barrels[0].disabled and storage.controls.wheelbarrows[1].disabled,"legacy unknown storage bound is not inferred from geometry")
 	storage.free(); assets.free()
 	await process_frame
 	print("AREA_MENU PASS" if failures == 0 else "AREA_MENU FAIL")

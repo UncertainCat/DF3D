@@ -1068,7 +1068,7 @@ local function native_operation(r)
   local k=kind(b);local label=k==1 and df.civzone_type[b.type] or nil
   local out={id=b.id,kind=k,name=name(b),revision=snapshot.revision,
    x=snapshot.x,y=snapshot.y,z=snapshot.z,width=snapshot.width,height=snapshot.height,extents=snapshot.extents,
-   tile_count=snapshot.tile_count,zone_type=-1,categories=0,barrels=0,bins=0,wheelbarrows=0,
+   tile_count=snapshot.tile_count,storage_limit=snapshot.storage_limit or -1,zone_type=-1,categories=0,barrels=0,bins=0,wheelbarrows=0,
    links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owned(b),gives=snapshot.gives,takes=snapshot.takes,
    zone_label='',location_site_id=kind(b)==1 and default(b,'location_id',-1)>=0 and default(b,'site_id',-1) or -1,location_id=b.location_id or -1,location_name=location_name,religion=religion,location_kind=location_kind,
    owner_profession='',owner_sex=-1,organic=-1,inorganic=-1,assigned_count=-1}
@@ -1155,7 +1155,7 @@ local function native_operation(r)
    if op==0 then
     local tiles=default(a,'width',1)*default(a,'height',1)
     for _,key in ipairs{'barrels','bins','wheelbarrows'} do
-     if default(a,key,-1)>(key=='wheelbarrows' and math.max(0,tiles-1) or tiles) then
+     if default(a,key,-1)>tiles then
       return reject('Container limits exceed usable stockpile tiles')
      end
     end
@@ -1419,7 +1419,7 @@ local function native_operation(r)
   for _,key in ipairs{'barrels','bins','wheelbarrows'} do
    local value=default(a,key,-1)
    if not integer(value) or value< -1 or value>32767 then return reject('invalid area edit') end
-   local maximum=key=='wheelbarrows' and math.max(0,before.tile_count-1) or before.tile_count
+   local maximum=before.storage_limit or -1
    if value>maximum then return reject('Container limits exceed usable stockpile tiles') end
   end
   local links_only=default(a,'links_only',-1)

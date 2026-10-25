@@ -47,9 +47,8 @@ func caption(parent: Node, text: String, point: Vector2, dimensions: Vector2) ->
 	label.add_theme_font_size_override("font_size",12); label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	parent.add_child(label); return label
 
-func maximum(key: String) -> int:
-	if not area.has("tile_count"): return -1
-	return mini(32767,maxi(0,int(area.tile_count) - (1 if key == "wheelbarrows" else 0)))
+func maximum(_key: String) -> int:
+	return int(area.get("storage_limit",-1))
 
 func display(value: Dictionary, can_edit: bool) -> void:
 	if int(value.get("id",-1)) != int(area.get("id",-1)) or int(value.get("revision",0)) != int(area.get("revision",0)) or not can_edit: cancel_edit()

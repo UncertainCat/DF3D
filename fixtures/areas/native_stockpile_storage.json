@@ -1105,5 +1105,26 @@
     "DF3D rendered/effect parity",
     "safe standalone mutation service",
     "concurrent edits and disconnected numeric input"
-  ]
+  ],
+  "limit_acceptance": {
+    "run": "build/areas-acceptance-20261025-085313",
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "status": "passed_with_known_issues",
+    "source_and_clone_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "native_observations": 115,
+    "screenshots": 63,
+    "scope": [
+      "native bound transported as storage_limit",
+      "one-tile pile admits one wheelbarrow",
+      "viewport increments/decrements for barrels, bins, wheelbarrows with native readback",
+      "broader staged settings, range scrolling, paint and removal regression"
+    ],
+    "omissions": [
+      "immediate typed entry and Escape behavior",
+      "oversized stored limits",
+      "zero/one-tile independent native input oracle",
+      "full links and lifecycle acceptance"
+    ]
+  }
 }

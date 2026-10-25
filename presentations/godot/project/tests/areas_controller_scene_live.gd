@@ -109,7 +109,9 @@ func pointer_areas() -> void:
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
 		if destination == "Zones": await pointer_owner(id,origin)
-		else: await pointer_settings()
+		else:
+			await pointer_storage_limits()
+			if not stopped: await pointer_settings()
 		if stopped: return
 		await pointer_repaint(origin,id,destination)
 		if stopped: return
@@ -122,6 +124,23 @@ func pointer_areas() -> void:
 	if stopped: return
 	await native("final")
 	if not stopped: print("AREAS_POINTER_PASS")
+
+func pointer_storage_limits() -> void:
+	step = "viewport native storage limits"
+	if not check(int(editor.selected.get("storage_limit",-1)) == 1 and int(editor.selected.tile_count) == 1,"one-tile native bound absent"): return
+	await click_control(editor.stockpile_view.controls.containers)
+	if not check(editor.storage_view.visible,"storage popup did not open"): return
+	for key in ["barrels","bins","wheelbarrows"]:
+		await click_control(editor.storage_view.controls[key][1])
+		if not await wait_ui(func(): return settled() and int(editor.selected[key]) == 1,"storage increment " + key): return
+		await native("snapshot",{"id":int(editor.selected.id),"expected":{key:1,"tile_count":1}})
+		if not check(editor.storage_view.controls[key][1].disabled,"increment remains enabled at native limit"): return
+		await capture("storage_limit_" + key)
+		await click_control(editor.storage_view.controls[key][2])
+		if not await wait_ui(func(): return settled() and int(editor.selected[key]) == 0,"storage decrement " + key): return
+		await native("snapshot",{"id":int(editor.selected.id),"expected":{key:0,"tile_count":1}})
+	editor.handle_back(); editor._process(0)
+	if not check(editor.stockpile_page == "types","storage popup did not return to pile"): return
 
 func pointer_settings() -> void:
 	step = "viewport stockpile settings categories"

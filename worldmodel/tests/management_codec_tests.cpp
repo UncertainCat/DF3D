@@ -881,7 +881,7 @@ TEST_CASE("area response codec carries list families and unknown sentinels") {
     const auto extents=b.CreateVector(std::vector<uint8_t>{1});wire::TilePos origin(1,2,3);
     wire::AreaInfoBuilder info(b);info.add_id(7);info.add_origin(&origin);info.add_width(1);info.add_height(1);info.add_extents(extents);
     info.add_name(text);info.add_revision(INT64_MAX);info.add_zone_label(text);info.add_location_id(99);info.add_location_site_id(651);info.add_location_name(text);
-    info.add_religion(text);info.add_organic(0);info.add_inorganic(1);info.add_zone_settings(zone);info.add_tile_count(1);info.add_assigned_count(4);
+    info.add_religion(text);info.add_organic(0);info.add_inorganic(1);info.add_zone_settings(zone);info.add_tile_count(1);info.add_storage_limit(1);info.add_assigned_count(4);
     info.add_location_kind(2);info.add_owner_profession(text);info.add_owner_sex(1);
     const auto record=info.Finish();const auto areas=b.CreateVector(std::vector{record});
     const auto setting=wire::CreateAreaSettingRow(b,key,5,text,4,3,true);const auto settings=b.CreateVector(std::vector{setting});
@@ -908,7 +908,7 @@ TEST_CASE("area response codec carries list families and unknown sentinels") {
     CHECK(decoded.omitted==4);CHECK(decoded.capturedTick==9876543210);CHECK(decoded.nextCursor==128);CHECK(decoded.truncated);
     if(family<4){REQUIRE(decoded.areas.size()==1);const auto& v=decoded.areas[0];CHECK(v.revision==INT64_MAX);CHECK(v.zoneLabel=="observed");
       CHECK(v.locationId==99);CHECK(v.locationSiteId==651);CHECK(v.locationName=="observed");CHECK(v.religion=="observed");CHECK(v.organic==0);CHECK(v.inorganic==1);
-      CHECK(v.zoneSettings==wm::AreaZoneSettings{2,4,0,1,1,0});CHECK(v.tileCount==1);CHECK(v.assignedCount==4);
+      CHECK(v.zoneSettings==wm::AreaZoneSettings{2,4,0,1,1,0});CHECK(v.tileCount==1);CHECK(v.storageLimit==1);CHECK(v.assignedCount==4);
       CHECK(v.locationKind==2);CHECK(v.ownerProfession=="observed");CHECK(v.ownerSex==1);}
     if(family==0){REQUIRE(decoded.settings.size()==1);const auto& v=decoded.settings[0];CHECK(v.key=="food/meat");CHECK(v.index==5);CHECK(v.label=="observed");CHECK(v.kind==4);CHECK(v.state==3);CHECK(v.estimated);}
     if(family==1){REQUIRE(decoded.locations.size()==1);const auto& v=decoded.locations[0];CHECK(v.id==99);CHECK(v.name=="observed");CHECK(v.locationKind==4);CHECK(v.religion=="observed");CHECK(v.guildProfession==41);CHECK(v.locationTier==2);CHECK(v.siteId==651);}
@@ -920,22 +920,25 @@ TEST_CASE("area response codec carries list families and unknown sentinels") {
   flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateAreaState(b));
   const auto empty=codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer()));
   CHECK(empty.areaId==-1);CHECK(empty.capturedTick==-1);CHECK(empty.listRevision==0);CHECK(empty.buildPhase==0);
-  CHECK(wm::AreaRequest{}.locationId==-2);CHECK(wm::AreaRequest{}.deityKind==-1);CHECK(wm::AreaInfo{}.tileCount==-1);CHECK(wm::AreaInfo{}.locationSiteId==-1);CHECK(wm::AreaLocationRow{}.siteId==-1);
+  CHECK(wm::AreaRequest{}.locationId==-2);CHECK(wm::AreaRequest{}.deityKind==-1);CHECK(wm::AreaInfo{}.tileCount==-1);CHECK(wm::AreaInfo{}.storageLimit==-1);CHECK(wm::AreaInfo{}.locationSiteId==-1);CHECK(wm::AreaLocationRow{}.siteId==-1);
 }
 
 TEST_CASE("area metadata validates boundaries and preserves unknown values") {
-  for(int variant=0;variant<5;++variant) {
+  for(int variant=0;variant<8;++variant) {
     flatbuffers::FlatBufferBuilder b;wire::TilePos origin(1,2,3);
     const auto extents=b.CreateVector(std::vector<uint8_t>{1});
     const auto profession=b.CreateString(std::string(variant==4 ? 513 : 0,'x'));
     wire::AreaInfoBuilder info(b);info.add_id(7);info.add_origin(&origin);info.add_width(1);info.add_height(1);info.add_extents(extents);
     info.add_location_kind(variant==1 ? 6 : 0);info.add_owner_sex(variant==2 ? 2 : variant==3 ? -2 : -1);info.add_owner_profession(profession);
+    if(variant==5)info.add_storage_limit(-2);
+    if(variant==6)info.add_storage_limit(32768);
+    if(variant==7){info.add_kind(wire::AreaKind::Zone);info.add_storage_limit(0);}
     const auto rows=b.CreateVector(std::vector{info.Finish()});
     const auto area=wire::CreateAreaState(b,rows);wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);b.Finish(root.Finish());
     const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(wire::validateManagementState(*state).has_value()==(variant!=0));
     if(variant==0){const auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.areas.size()==1);
-      CHECK(decoded.areas[0].locationKind==0);CHECK(decoded.areas[0].ownerSex==-1);CHECK(decoded.areas[0].ownerProfession.empty());}
+      CHECK(decoded.areas[0].storageLimit==-1);CHECK(decoded.areas[0].locationKind==0);CHECK(decoded.areas[0].ownerSex==-1);CHECK(decoded.areas[0].ownerProfession.empty());}
   }
 }
 

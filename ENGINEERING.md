@@ -58,6 +58,30 @@ Other-material page reads and63 edits:42 bulk actions, seven individual rows and
 edit. Owned DF closed without saving. These checks establish command effects,
 not rendered settings-panel parity or the remaining material-list branches.
 
+The four Color lists (Finished goods, Leather, Cloth, Armor) also use owned
+native row generation and native visible-row membership for edits. These
+branches copy raw descriptor names and do not enter the historical-material
+cache path. Because DF indexes descriptors using stored settings length through
+an unchecked getter, the bridge rejects lengths beyond the color raw vector or
+missing referenced raws before entering DF. Short and empty settings remain
+valid and are never expanded by leaf All/None. Local color captions/search were
+removed; summary counting still uses staged membership logic.
+
+Protected run `build/stockpile-presets-native-20261025-033222` matched36 color
+list/search comparisons and72 actual All/None actions across full, short and
+empty vectors. Labels, order, backing-field/index identities, selection and
+search visibility matched; four oversized-vector probes rejected without
+publication. Probe calls preserved native UI bytes and settings. Source save
+hashes were unchanged and owned DF closed without saving. Recorded cases are in
+`fixtures/areas/native_stockpile_filters.json`; rendered and non-ASCII parity
+remain unverified.
+
+Protected command run `build/stockpile-initialization-20261025-033404` passed617
+native observations, including12 color page reads and36 color edits. Native
+order/search and filtered/individual edits matched, short/empty vectors retained
+their length, and complete settings/unrelated state checks passed. Diagnostics
+were clean, source save hashes unchanged and owned DF closed without saving.
+
 Category and sublist status icons share their row's selection target. They are
 not independent bulk-edit controls. Protected native run
 `build/stockpile-presets-native-20261025-032332` verified98 icon clicks: all17

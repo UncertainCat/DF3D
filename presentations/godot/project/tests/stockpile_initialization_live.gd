@@ -51,7 +51,7 @@ func exercise() -> void:
 				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":"CRAFTED"})
 				await native("quality_after",{"id":pile,"mode":mode})
 				if stopped: return
-	await other_materials(pile)
+	await native_filter_lists(pile)
 	await header_actions(pile,categories)
 	await paint()
 	await native("final")
@@ -77,15 +77,17 @@ func header_actions(pile: int, categories: Array) -> void:
 			await native("header_after",{"id":pile,"category":""})
 			if stopped: return
 
-func other_materials(pile: int) -> void:
-	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768}
+func native_filter_lists(pile: int) -> void:
+	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096}
 	for entry in [["furniture/other_materials","furniture.other_mats",25],
 		["ammo/other_materials","ammo.other_mats",46],
 		["bars_blocks/bars_other","bars_blocks.bars_other_mats",53],
 		["bars_blocks/blocks_other","bars_blocks.blocks_other_mats",56],
 		["finished_goods/other_materials","finished_goods.other_mats",68],
 		["weapons/other_materials","weapons.other_mats",91],
-		["armor/other_materials","armor.other_mats",102]]:
+		["armor/other_materials","armor.other_mats",102],
+		["finished_goods/color","finished_goods.color",71],["leather/color","leather.color",74],
+		["cloth/color","cloth.color",84],["armor/color","armor.color",105]]:
 		var key: String = entry[0]
 		var field: String = entry[1]
 		var mode: int = entry[2]

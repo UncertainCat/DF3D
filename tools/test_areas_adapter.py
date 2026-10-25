@@ -1081,6 +1081,19 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     local colors={[71]='finished_goods',[74]='leather',[84]='cloth',[105]='armor'}
+     if colors[mode] then
+      local category=colors[mode];local values=b.settings[category].color
+      local raws=df.global.world.raws.descriptors.colors;local rows={}
+      if #values>#raws then return {ok=false,message='',steps=0} end
+      for i,value in ipairs(values)do
+       local label=raws[i].name
+       rows[#rows+1]={field=category..'.color',index=i-1,label=label,enabled=value~=0,
+        visible=label:lower():find(query:lower(),1,true)~=nil}
+      end
+      table.sort(rows,function(a,b)return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      local fields={[26]='furniture',[48]='ammo',[69]='finished_goods',[92]='weapons',[103]='armor'}
      local other={[25]={'furniture','other_mats'},[46]={'ammo','other_mats'},
       [53]={'bars_blocks','bars_other_mats'},[56]={'bars_blocks','blocks_other_mats'},
@@ -1483,7 +1496,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1621,6 +1634,24 @@ def main():
     end
     pile.settings.wood.mats={0}
     """)
+    # Native colors use stored row membership, never reconstruct missing rows.
+    lua.execute("df.global.world.raws.descriptors.colors={{name='Red'},{name='Blue'}}")
+    for category in ["armor", "cloth", "leather", "finished_goods"]:
+        key = category + "/color"
+        lua.execute(f"make_setting('{category}.color',2,{{0,0}})")
+        assert settings_adapter(fixed_edit(key, value=2, query="blue"))["ok"]
+        assert lua.eval(f"pile.settings.{category}.color[1]==0 and pile.settings.{category}.color[2]==1")
+        lua.execute(f"make_setting('{category}.color',2,{{0}})")
+        assert settings_adapter(fixed_edit(key, value=2))["ok"]
+        assert lua.eval(f"#pile.settings.{category}.color==1 and pile.settings.{category}.color[1]==1")
+        assert not settings_adapter(fixed_edit(key,key+"/1"))["ok"]
+        lua.execute(f"make_setting('{category}.color',2,{{}})")
+        assert settings_adapter(fixed_edit(key, value=2))["ok"]
+        assert lua.eval(f"#pile.settings.{category}.color==0")
+        lua.execute(f"make_setting('{category}.color',2,{{0,0,9}})")
+        assert not settings_adapter(fixed_edit(key, value=2))["ok"]
+        assert lua.eval(f"pile.settings.{category}.color[1]==0 and pile.settings.{category}.color[3]==9")
+        lua.execute(f"make_setting('{category}.color',2,{{0,0}})")
     lua.execute("make_setting('ammo.other_mats',2,{0})")
     assert settings_adapter(fixed_edit("ammo/other_materials", value=2))["ok"]
     assert lua.eval("#pile.settings.ammo.other_mats==1 and pile.settings.ammo.other_mats[1]==1")

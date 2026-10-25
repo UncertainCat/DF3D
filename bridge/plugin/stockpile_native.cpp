@@ -1,5 +1,6 @@
 #include "stockpile_native.h"
 #include "df/global_objects.h"
+#include "df/world.h"
 #include "df/building_stockpilest.h"
 #include "df/custom_stockpile_interfacest.h"
 #include "df/custom_stockpile_itemst.h"
@@ -160,13 +161,29 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
     const std::vector<NativeStockpileSettingRange>& ranges) {
     if(!df::global::world || filter.size()>256)return std::nullopt;
-    // Wood, quality and constant Other-material lists have no historical-cache
-    // path. Constant branches read only owned byte vectors and native literals.
+    // These branches have no historical-cache path. Color branches copy raw
+    // descriptor names; constant branches use native labels and owned settings.
     switch(mode) {
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
       case 25:case 46:case 53:case 56:case 68:case 91:case 102:break;
+      case 71:case 74:case 84:case 105:break;
       default:return std::nullopt;
+    }
+    // Color branches index world descriptors by stored setting length through
+    // an unchecked native getter. Reject stale or missing raws before entry;
+    // short/empty settings remain valid and must not be expanded.
+    const std::vector<char>* colors=nullptr;
+    switch(mode) {
+      case 71:colors=&owned.finished_goods.color;break;
+      case 74:colors=&owned.leather.color;break;
+      case 84:colors=&owned.cloth.color;break;
+      case 105:colors=&owned.armor.color;break;
+    }
+    if(colors) {
+        const auto& raws=df::global::world->raws.descriptors.colors;
+        if(colors->size()>raws.size())return std::nullopt;
+        for(size_t i=0;i<colors->size();++i)if(!raws[i])return std::nullopt;
     }
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
@@ -182,7 +199,9 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         hash(base+0x2240f0,0x8)==0x4bfd67e9e540ffc4ULL &&
         hash(base+0x1b9fa0,0x7)==0xa88a5a439c83b069ULL &&
         hash(base+0x6f520,0x3d)==0xaceb003bf538dbfcULL &&
-        hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL;
+        hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL &&
+        hash(base+0x6f220,0x8)==0x2bba791d9cd7ac1dULL &&
+        hash(base+0x6f5d0,0xc0)==0xd7cc734d277fe129ULL;
     if(!compatible)return std::nullopt;
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);

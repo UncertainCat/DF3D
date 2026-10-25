@@ -238,6 +238,7 @@ local native_setting_modes={
  ['bars_blocks/bars_other']=53,['bars_blocks/blocks_other']=56,
  ['finished_goods/other_materials']=68,['weapons/other_materials']=91,
  ['armor/other_materials']=102,
+ ['finished_goods/color']=71,['leather/color']=74,['cloth/color']=84,['armor/color']=105,
 }
 for _,cat in ipairs{'armor','cloth','finished_goods','leather'} do setting_leaf(cat..'/color',cat..'.color','color') end
 for _,entry in ipairs{{'ammo/type','ammo.type','ammo'},{'armor/body','armor.body','armor'},
@@ -349,7 +350,7 @@ end
 local function setting_caption(d,index,values)
  if d.source=='toggle' then return '' end
  -- Summary counting needs membership only. Leaf labels/search come from DF.
- if d.source=='quality' or d.source=='other' then return '' end
+ if d.source=='quality' or d.source=='other' or d.source=='color' then return '' end
  if d.source=='furniture' then
   local token=df.furniture_type[index];return furniture_captions[token] or token or ''
  end
@@ -391,7 +392,7 @@ local function setting_caption(d,index,values)
   end
   local material=dfhack.matinfo.decode(0,index)
   return material and material:toString() or '',part
- elseif d.source=='color' then return v.name or ''
+
  elseif d.source=='itemdef' then
   local label=v.name_plural or v.name or ''
   if v.adjective and v.adjective~='' and label~='' then label=v.adjective..' '..label end
@@ -1435,7 +1436,7 @@ local function native_operation(r)
   if not layout then return reject(problem) end
   local mode=native_setting_modes[default(a,'list_key','')]
   local native_rows
-  local native_leaf_edit=mode and setting_leaves[a.list_key].source=='other' and (a.scope==1 or a.scope==2)
+  local native_leaf_edit=mode and setting_leaves[a.list_key].source~='quality' and (a.scope==1 or a.scope==2)
   if mode and (op==1 or native_leaf_edit or a.scope==2 and default(a,'query','')~='') then
    local result,why=invoke(r.settings_rows,0,b,mode,default(a,'query',''))
    if not result then return reject(why) end

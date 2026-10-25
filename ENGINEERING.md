@@ -91,11 +91,11 @@ digest are in `fixtures/areas/native_stockpile_resize.json`.
 The native clamp is inline at `0x354a29..0x354acf`, inside UI handler `0x311c10`.
 The preceding path checks emptiness through `0x559580`, skips the active empty
 pile, and counts through `0x57b770`. This is evidence, not a callable semantic
-service: surrounding cleanup and ownership still require audit. The staged
-DF3D repaint guard incorrectly rejects reduced footprints when limits exceed
-the count (and subtracts one for wheelbarrows); the painter submits a replacement
-only at Accept and rejects an empty footprint. Native resize parity therefore
-remains unfinished. The geometry planner already preserves bounds for erase,
+service. The bridge now preflights parallel container vectors, uses the native
+extent predicate and item assignment method to release removed assignments,
+and clamps all three limits to the native count. The painter still submits a
+replacement only at Accept and rejects an empty footprint. Native resize parity
+therefore remains unfinished. The geometry planner already preserves bounds for erase,
 but the presentation's replacement path can choose a different bounding basis.
 Do not treat the native oracle as acceptance of those product paths.
 
@@ -112,11 +112,29 @@ calls item virtual slot208 (`removeStockpileAssignment`) and removes the
 corresponding entry from all four storage vectors. Audited barrel/bin leaf
 `0x28ad00..0x28ad15` and tool leaf `0x28a450..0x28a465` only reset fields in the
 supplied item; they read no UI/global state and allocate nothing. Use this native
-item operation when implementing cleanup. `detachStockpileAssignment` is a
-different operation that also changes the pile's vectors. Current DF3D repaint
-does not perform this cleanup; native method availability does not establish
-DF3D effect parity. Offline `build/qa/stockpile-assignment-oracle` passed root
-CTest; no product bridge changes are included in this audit.
+item operation for cleanup. `detachStockpileAssignment` is a
+different operation that also changes the pile's vectors. Offline
+`build/qa/stockpile-assignment-oracle` passed root CTest for that native audit.
+
+`tools/smoke/areas_acceptance.ps1 -SaveId <new-id> -StockpileResizeOnly` runs
+focused semantic acceptance against an existing stocked pile. Protected run
+`build/areas-acceptance-20261025-101744` passed with clean diagnostics: shrinking
+272 occupied tiles to one released45 of46 container assignments, retained the
+matching container, preserved bounds, and clamped limits to1/1/1. Regrowth to two
+tiles retained those limits and did not restore released assignments. A malformed
+parallel vector was rejected before changing geometry; a stale resize was also
+rejected. Both save manifests were unchanged and owned DF closed unsaved.
+This proves command effects, not the unfinished painter's gesture/empty lifecycle.
+Native cleanup runs synchronously at a safe point and reports unknown work cost;
+it never borrows native menu state. The inline native clamp has no independent
+entry point; the bridge reproduces it after DF's count and assignment queries.
+Main-scene regression `build/areas-acceptance-20261025-101902` passed124 native
+observations and66 captures with only the known separate-thread notice. It
+covered the staged settings, typed storage, stale edits, repaint/cancel and
+removal workflow. Both save manifests were unchanged and owned DF closed
+unsaved. Final offline `build/qa/stockpile-repaint-cleanup-final` passed root
+CTest. This regression retains the existing deferred-commit painter; it does
+not establish native immediate-gesture or empty-pile lifecycle parity.
 
 ## Native stockpile initialization (DF 53.16)
 

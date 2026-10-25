@@ -3432,6 +3432,11 @@
       "reason": "Protected live workflow; launched by tools/smoke/areas_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_AREAS_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/stockpile_resize_live.gd",
+      "status": "manual",
+      "reason": "Protected stocked-pile shrink/regrow, assignment cleanup and malformed/stale refusal checks through areas_acceptance.ps1 -StockpileResizeOnly on an owned never-saved clone. Semantic effects only, not rendered paint lifecycle acceptance."
+    },
+    {
       "path": "presentations/godot/project/tests/stockpile_initialization_live.gd",
       "status": "manual",
       "reason": "Protected native stockpile creation/preset/paint acceptance through tools/smoke/stockpile_initialization.ps1 -CloneEvidence <verified-clone-folder>; requires clone-path.txt and clone-manifest.txt, preserves the source and closes owned DF without saving. Headless command effects, not rendered UI parity."

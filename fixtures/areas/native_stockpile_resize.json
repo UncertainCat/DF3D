@@ -2997,5 +2997,111 @@
       }
     ],
     "ownership": "UI handler calls item virtual slot208 (offset0x680) then erases matching entries from four stockpile vectors. Barrel/bin/tool leaf methods write only the supplied item assignment fields; no native UI, globals or allocation. No DF3D runtime acceptance."
+  },
+  "bridge_cleanup_acceptance": {
+    "run": "build/areas-acceptance-20261025-101744",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "status": "passed",
+    "source_and_clone_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "runner": "tools/smoke/areas_acceptance.ps1 -StockpileResizeOnly",
+    "checks": [
+      {
+        "native_response": 4,
+        "sha256": "e1c968b7d410b062d941b413e4b9c09d37aafc685f330ccff7ce21df02f779a5",
+        "occupied_tiles": 1,
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "limits": [
+          1,
+          1,
+          1
+        ],
+        "retained": [
+          {
+            "id": 956,
+            "type": 17,
+            "x": 114,
+            "y": 71
+          }
+        ],
+        "released": 45
+      },
+      {
+        "native_response": 5,
+        "sha256": "e1c968b7d410b062d941b413e4b9c09d37aafc685f330ccff7ce21df02f779a5",
+        "occupied_tiles": 1,
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "limits": [
+          1,
+          1,
+          1
+        ],
+        "retained": [
+          {
+            "id": 956,
+            "type": 17,
+            "x": 114,
+            "y": 71
+          }
+        ],
+        "released": 45
+      },
+      {
+        "native_response": 6,
+        "sha256": "9f6cfd9c18fa6c62db4de32a734eaed1751b27f60af057220f97a13046a62b4b",
+        "occupied_tiles": 2,
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "limits": [
+          1,
+          1,
+          1
+        ],
+        "retained": [
+          {
+            "id": 956,
+            "type": 17,
+            "x": 114,
+            "y": 71
+          }
+        ],
+        "released": 45
+      }
+    ],
+    "refusals": [
+      "misaligned container vectors rejected before geometry mutation",
+      "stale resize rejected without replaying assignment cleanup"
+    ],
+    "omissions": [
+      "rendered gesture lifecycle",
+      "empty active pile and exit lifecycle in DF3D",
+      "growth placement eligibility parity",
+      "native UI preservation guard during command effects"
+    ],
+    "main_scene_regression": {
+      "run": "build/areas-acceptance-20261025-101902",
+      "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "status": "passed_with_known_issues",
+      "native_observations": 124,
+      "screenshots": 66,
+      "source_and_clone_unchanged": true,
+      "owned_df_closed_without_saving": true,
+      "scope": "Existing staged settings/storage/stale/repaint/cancel/removal workflow; not immediate paint lifecycle parity."
+    },
+    "offline": "build/qa/stockpile-repaint-cleanup-final"
   }
 }

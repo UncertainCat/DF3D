@@ -13,6 +13,10 @@ std::optional<df::stockpile_settings> nativeStockpilePreset(
     const df::stockpile_settings& source, int preset);
 // Native coordinate/extent predicate shared by preset and storage bounds.
 std::optional<int32_t> nativeStockpileTileCount(df::building_stockpilest& pile);
+// Validate before publishing a new footprint. Cleanup uses DF's coordinate
+// predicate and native item assignment method; no UI state is accessed.
+bool nativeStockpileRepaintReady(df::building_stockpilest& pile);
+bool nativeStockpileRepaintCleanup(df::building_stockpilest& pile);
 std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
     df::building_stockpilest& pile, int preset);
 // New unpublished pile: constructor defaults followed by native category setup.

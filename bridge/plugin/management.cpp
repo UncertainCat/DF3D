@@ -1713,9 +1713,10 @@ int areaRepaint(lua_State* L) {
       default:return fail("Invalid area paint geometry",spent);
     }
   }
-  if(plan.erased && pile && (pile->storage.max_barrels>int32_t(plan.tiles) || pile->storage.max_bins>int32_t(plan.tiles) ||
-      pile->storage.max_wheelbarrows>int32_t(plan.tiles)-1))
-    return fail("Container limits exceed usable stockpile tiles",spent);
+  if(pile) {
+    unknownWork=true;
+    if(!df3d_area::nativeStockpileRepaintReady(*pile))return fail("Invalid area paint geometry",spent);
+  }
   if(changes.empty()) {
     lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",spent);
     field(L,"tile_count",plan.tiles);return 1;
@@ -1752,6 +1753,13 @@ int areaRepaint(lua_State* L) {
           change.remove?df::tile_building_occ::None:df::tile_building_occ::Planned;
       if(change.remove){change.block->flags.bits.update_liquid=true;change.block->flags.bits.update_liquid_twice=true;}
     }
+  }
+  if(pile) {
+    // Native cleanup includes item lookup and vector retirement work. It runs
+    // synchronously at this safe point; do not advertise a bounded work count.
+    unknownWork=true;
+    if(!df3d_area::nativeStockpileRepaintCleanup(*pile))
+      return fail("Area changed; inspect again",spent+uint32_t(changes.size())+1);
   }
   if(zone) {
     unknownWork=true;

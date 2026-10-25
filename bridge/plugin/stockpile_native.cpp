@@ -2,6 +2,7 @@
 #include "df/global_objects.h"
 #include "df/world.h"
 #include "df/building_stockpilest.h"
+#include "df/item.h"
 #include "df/custom_stockpile_interfacest.h"
 #include "df/custom_stockpile_itemst.h"
 #include "df/inorganic_raw.h"
@@ -88,6 +89,45 @@ std::optional<int32_t> nativeStockpileTileCount(df::building_stockpilest& pile) 
     for(int32_t y=pile.y1;y<=pile.y2;++y)for(int32_t x=pile.x1;x<=pile.x2;++x)
         count+=!pile.room.extents || occupies(&pile,int16_t(x),int16_t(y),int16_t(pile.z));
     return count;
+}
+bool nativeStockpileRepaintReady(df::building_stockpilest& pile) {
+    const auto& storage=pile.storage;
+    const size_t count=storage.container_item_id.size();
+    if(count>32768 || storage.container_type.size()!=count ||
+       storage.container_x.size()!=count || storage.container_y.size()!=count)return false;
+    return nativeStockpileTileCount(pile).has_value();
+}
+bool nativeStockpileRepaintCleanup(df::building_stockpilest& pile) {
+    const size_t entries=pile.storage.container_item_id.size();
+    if(entries>32768 || pile.storage.container_type.size()!=entries ||
+       pile.storage.container_x.size()!=entries || pile.storage.container_y.size()!=entries)return false;
+    const auto count=nativeStockpileTileCount(pile);
+    if(!count)return false;
+    // Native3546ee..35472b retains the active empty pile, including assignments
+    // and limits. Its interaction owner decides whether to regrow or remove it.
+    if(!*count)return true;
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Occupies=bool (*)(df::building_stockpilest*,int16_t,int16_t,int16_t);
+    const auto occupies=reinterpret_cast<Occupies>(base+0x5587b0);
+    auto& storage=pile.storage;
+    // Native354817..354943 removes all four parallel entries in reverse order.
+    // removeStockpileAssignment only clears the item; detachStockpileAssignment
+    // also changes these vectors and would invalidate this traversal.
+    for(size_t index=storage.container_item_id.size();index-->0;) {
+        if(occupies(&pile,storage.container_x[index],storage.container_y[index],int16_t(pile.z)))continue;
+        if(auto* item=df::item::find(storage.container_item_id[index]))item->removeStockpileAssignment();
+        storage.container_type.erase(storage.container_type.begin()+index);
+        storage.container_item_id.erase(storage.container_item_id.begin()+index);
+        storage.container_x.erase(storage.container_x.begin()+index);
+        storage.container_y.erase(storage.container_y.begin()+index);
+    }
+    // This clamp is inline in DF354a29..354acf, not a standalone entry point.
+    // Count and assignment eligibility above come from DF's native predicate.
+    const auto limit=static_cast<int16_t>(*count);
+    storage.max_barrels=(std::min)(storage.max_barrels,limit);
+    storage.max_bins=(std::min)(storage.max_bins,limit);
+    storage.max_wheelbarrows=(std::min)(storage.max_wheelbarrows,limit);
+    return true;
 }
 std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
     df::building_stockpilest& pile,int preset) {

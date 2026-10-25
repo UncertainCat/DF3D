@@ -108,6 +108,23 @@ full initialization, preset, header or geometry regression suite. Omitting the
 option retains the full suite. Individual-row checks choose an actually returned
 native row instead of assuming raw index0 is eligible.
 
+Furniture Type (mode22), Finished goods Type (64), and Refuse Item types (30)
+remain staged. Protected reference run
+`build/stockpile-presets-native-20261025-041740` captured35,25 and85 rows,
+respectively, and verified18 actual filtered All/None actions. The Refuse list
+contains83 type-vector entries and two independent hide booleans; native order
+interleaves those scalar rows with ordinary types. Pointer-to-field/index checks
+and action effects are retained in `native_stockpile_filters.json.itemtype_reference`.
+The source save was unchanged and owned DF closed without saving.
+
+These branches iterate fixed native enum ranges (Furniture35; item types93),
+using unchecked vector indexing. Their general formatter receives material and
+subtype -1, but complete reachable-path ownership remains under audit. Do not
+whitelist these modes or test short vectors by entering the native builder
+without safe backing storage. Runtime integration also needs mixed-field row
+handling; the existing single-field page assumption cannot represent Refuse.
+This reference does not establish native provider or rendered acceptance.
+
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row

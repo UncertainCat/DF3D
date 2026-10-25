@@ -413,6 +413,58 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
+  -- Observe native item-type membership before enabling the formatter-backed
+  -- runtime service. Refuse embeds two scalar settings among its type rows.
+  for _,entry in ipairs{{'Furniture','furniture',22,35,'Type'},
+   {'Finished goods','finished_goods',64,93,'Type'},{'Refuse','refuse',30,93,'Item types'}}do
+   c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
+   view:render(dfhack.getTickCount());label_click(entry[1])
+   local values=b.settings[entry[2]].type;local original={}
+   for _,v in ipairs(values)do original[#original+1]=v end
+   local fresh,rotten=b.settings.refuse.fresh_raw_hide,b.settings.refuse.rotten_raw_hide
+   values:resize(entry[4]);for i=0,#values-1 do values[i]=i%2 end
+   label_click(entry[5],0,2)
+   assert(c.cur_sub_mode==entry[3],'wrong item-type mode')
+   local pointers={}
+   for i=0,#values-1 do
+    local _,address=df.sizeof(values:_field(i));pointers[address]={field=entry[2]..'.type',index=i}
+   end
+   if entry[3]==30 then
+    for _,field in ipairs{'fresh_raw_hide','rotten_raw_hide'}do
+     local _,address=df.sizeof(b.settings.refuse:_field(field));pointers[address]={field='refuse.'..field,index=0}
+    end
+   end
+   for _,query in ipairs{'','a','zzzznomatch'}do
+    c.spec_filter='';c.entering_spec_filter=true
+    for i=1,#query do
+     df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
+     gui.simulateInput(view,string.format('STRING_A%03d',query:byte(i)))
+    end
+    c.entering_spec_filter=false;view:render(dfhack.getTickCount())
+    local rows={}
+    for i=0,c.cur_spec_item_sz-1 do
+     local native=c.spec_item[i];local _,address=df.sizeof(native.set_pointer)
+     local identity=assert(pointers[address],'unknown item-type pointer')
+     rows[#rows+1]={field=identity.field,index=identity.index,name=dfhack.df2utf(native.name),visible=native.on}
+    end
+    for _,action in ipairs{{'All',1},{'None',0}}do
+     local expected={};for i,v in ipairs(values)do expected[i]=v end
+     local ef,er=b.settings.refuse.fresh_raw_hide,b.settings.refuse.rotten_raw_hide
+     for _,row in ipairs(rows)do if row.visible then
+      if row.field==entry[2]..'.type' then expected[row.index]=action[2]
+      elseif row.field=='refuse.fresh_raw_hide' then ef=action[2]==1
+      elseif row.field=='refuse.rotten_raw_hide' then er=action[2]==1 end
+     end end
+     label_click(action[1],0,3)
+     assert(#values==entry[4],'item-type action resized vector')
+     for i,v in ipairs(values)do assert(v==expected[i],'item-type action changed excluded row')end
+     assert(b.settings.refuse.fresh_raw_hide==ef and b.settings.refuse.rotten_raw_hide==er,'item-type scalar effect')
+    end
+    records[#records+1]={probe='itemtype_reference',mode=entry[3],stored_count=#values,query=query,rows=rows,bulk_actions=2}
+   end
+   values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
+   b.settings.refuse.fresh_raw_hide=fresh;b.settings.refuse.rotten_raw_hide=rotten
+  end
   local function header_action(category,action,column,variant)
    local before=settings_snapshot(b.settings)
    local size,address=df.sizeof(df.global.game.main_interface)

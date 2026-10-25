@@ -20470,5 +20470,1314 @@
       "diagnostics": "clean",
       "scope": "Wood mode85 only, plus creation and removal"
     }
+  },
+  "itemtype_reference": {
+    "run": "build/stockpile-presets-native-20261025-041740",
+    "status": "passed",
+    "native_list_captures": 9,
+    "native_bulk_actions": 18,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "runtime_integration": "pending formatter ownership audit and mixed-field support",
+    "omissions": [
+      "Runtime native provider comparison",
+      "Short vectors: native fixed-index access requires prior safety work",
+      "Non-ASCII search",
+      "Rendered settings-panel parity"
+    ],
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 22,
+        "probe": "itemtype_reference",
+        "query": "",
+        "stored_count": 35,
+        "rows": [
+          {
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 24,
+            "name": "Bags",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 27,
+            "name": "Ballista arrow heads",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 5,
+            "name": "Ballista parts",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 26,
+            "name": "Barrels",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 7,
+            "name": "Beds",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 22,
+            "name": "Bins",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 34,
+            "name": "Bolt thrower parts",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 23,
+            "name": "Boxes",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 21,
+            "name": "Buckets",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 19,
+            "name": "Cabinets",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 4,
+            "name": "Catapult parts",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 12,
+            "name": "Coffins",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 3,
+            "name": "Doors",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 2,
+            "name": "Grates",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 1,
+            "name": "Hatch covers",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 29,
+            "name": "Large pots/food storage",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 6,
+            "name": "Mechanisms",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 16,
+            "name": "Millstones",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 30,
+            "name": "Minecarts",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 32,
+            "name": "Other large tools",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 28,
+            "name": "Pipe section",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 15,
+            "name": "Querns",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 33,
+            "name": "Sand bags",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 25,
+            "name": "Siege ammo",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 14,
+            "name": "Slabs",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 13,
+            "name": "Statues",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 11,
+            "name": "Tables",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 10,
+            "name": "Thrones",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 8,
+            "name": "Traction benches",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 18,
+            "name": "Weapon racks",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": true
+          },
+          {
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 22,
+        "probe": "itemtype_reference",
+        "query": "a",
+        "stored_count": 35,
+        "visible_rows": [
+          {
+            "field": "furniture.type",
+            "index": 20
+          },
+          {
+            "field": "furniture.type",
+            "index": 17
+          },
+          {
+            "field": "furniture.type",
+            "index": 24
+          },
+          {
+            "field": "furniture.type",
+            "index": 27
+          },
+          {
+            "field": "furniture.type",
+            "index": 5
+          },
+          {
+            "field": "furniture.type",
+            "index": 26
+          },
+          {
+            "field": "furniture.type",
+            "index": 34
+          },
+          {
+            "field": "furniture.type",
+            "index": 19
+          },
+          {
+            "field": "furniture.type",
+            "index": 4
+          },
+          {
+            "field": "furniture.type",
+            "index": 0
+          },
+          {
+            "field": "furniture.type",
+            "index": 2
+          },
+          {
+            "field": "furniture.type",
+            "index": 1
+          },
+          {
+            "field": "furniture.type",
+            "index": 29
+          },
+          {
+            "field": "furniture.type",
+            "index": 6
+          },
+          {
+            "field": "furniture.type",
+            "index": 30
+          },
+          {
+            "field": "furniture.type",
+            "index": 32
+          },
+          {
+            "field": "furniture.type",
+            "index": 33
+          },
+          {
+            "field": "furniture.type",
+            "index": 25
+          },
+          {
+            "field": "furniture.type",
+            "index": 14
+          },
+          {
+            "field": "furniture.type",
+            "index": 13
+          },
+          {
+            "field": "furniture.type",
+            "index": 11
+          },
+          {
+            "field": "furniture.type",
+            "index": 8
+          },
+          {
+            "field": "furniture.type",
+            "index": 18
+          },
+          {
+            "field": "furniture.type",
+            "index": 31
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 22,
+        "probe": "itemtype_reference",
+        "query": "zzzznomatch",
+        "stored_count": 35,
+        "visible_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 64,
+        "probe": "itemtype_reference",
+        "query": "",
+        "stored_count": 93,
+        "rows": [
+          {
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 61,
+            "name": "Backpacks",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 43,
+            "name": "Bracelets",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 10,
+            "name": "Chains",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 89,
+            "name": "Codices",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 40,
+            "name": "Crowns",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 83,
+            "name": "Crutches",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 42,
+            "name": "Earrings",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 36,
+            "name": "Figurines",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 11,
+            "name": "Flasks",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 26,
+            "name": "Footwear",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 12,
+            "name": "Goblets",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 29,
+            "name": "Handwear",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 28,
+            "name": "Headwear",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 44,
+            "name": "Large gems",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 60,
+            "name": "Legwear",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 13,
+            "name": "Musical instruments",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 62,
+            "name": "Quivers",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 41,
+            "name": "Rings",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 38,
+            "name": "Scepters",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 82,
+            "name": "Splints",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 86,
+            "name": "Tools",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": true
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 64,
+        "probe": "itemtype_reference",
+        "query": "a",
+        "stored_count": 93,
+        "visible_rows": [
+          {
+            "field": "finished_goods.type",
+            "index": 37
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 25
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 61
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 43
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 10
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 42
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 11
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 26
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 29
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 28
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 44
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 60
+          },
+          {
+            "field": "finished_goods.type",
+            "index": 13
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 64,
+        "probe": "itemtype_reference",
+        "query": "zzzznomatch",
+        "stored_count": 93,
+        "visible_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 30,
+        "probe": "itemtype_reference",
+        "query": "",
+        "stored_count": 93,
+        "rows": [
+          {
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 19,
+            "name": "Animal traps",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 45,
+            "name": "Anvils",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 33,
+            "name": "Armor stands",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 61,
+            "name": "Backpacks",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 31,
+            "name": "Bags",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 66,
+            "name": "Ballista arrow heads",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 64,
+            "name": "Ballista parts",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 17,
+            "name": "Barrels",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 8,
+            "name": "Beds",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 32,
+            "name": "Bins",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 92,
+            "name": "Bolt thrower parts",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 30,
+            "name": "Boxes",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 43,
+            "name": "Bracelets",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 18,
+            "name": "Buckets",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 35,
+            "name": "Cabinets",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 16,
+            "name": "Cages",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 63,
+            "name": "Catapult parts",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 10,
+            "name": "Chains",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 71,
+            "name": "Cheese",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 58,
+            "name": "Cloth",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 89,
+            "name": "Codices",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 21,
+            "name": "Coffins",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 74,
+            "name": "Coins",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 40,
+            "name": "Crowns",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 83,
+            "name": "Crutches",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 6,
+            "name": "Doors",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 69,
+            "name": "Drinks",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 42,
+            "name": "Earrings",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 88,
+            "name": "Egg",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 36,
+            "name": "Figurines",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 49,
+            "name": "Fish",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 11,
+            "name": "Flasks",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 7,
+            "name": "Floodgates",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 26,
+            "name": "Footwear",
+            "visible": true
+          },
+          {
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 75,
+            "name": "Glob",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 12,
+            "name": "Goblets",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 79,
+            "name": "Grates",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 29,
+            "name": "Handwear",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 78,
+            "name": "Hatch covers",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 28,
+            "name": "Headwear",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 44,
+            "name": "Large gems",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 56,
+            "name": "Leaves and fruit",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 60,
+            "name": "Legwear",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 73,
+            "name": "Liquid",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 5,
+            "name": "Logs",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 48,
+            "name": "Meat",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 67,
+            "name": "Mechanisms",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 81,
+            "name": "Millstones",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 13,
+            "name": "Musical instruments",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 77,
+            "name": "Pipe section",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 54,
+            "name": "Plants",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 70,
+            "name": "Powder",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 72,
+            "name": "Prepared meals",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 80,
+            "name": "Querns",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 62,
+            "name": "Quivers",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 50,
+            "name": "Raw fish",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 47,
+            "name": "Remains",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 41,
+            "name": "Rings",
+            "visible": true
+          },
+          {
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 38,
+            "name": "Scepters",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 53,
+            "name": "Seeds",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 90,
+            "name": "Sheet",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 27,
+            "name": "Shields/bucklers",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 65,
+            "name": "Siege ammo",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 87,
+            "name": "Slabs",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 51,
+            "name": "Small live animals",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 52,
+            "name": "Small tame animals",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 82,
+            "name": "Splints",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 22,
+            "name": "Statues",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 20,
+            "name": "Tables",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 55,
+            "name": "Tanned hides",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 57,
+            "name": "Thread",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 9,
+            "name": "Thrones",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 86,
+            "name": "Tools",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 84,
+            "name": "Traction benches",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 68,
+            "name": "Trap components",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 34,
+            "name": "Weapon racks",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": true
+          },
+          {
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 30,
+        "probe": "itemtype_reference",
+        "query": "a",
+        "stored_count": 93,
+        "visible_rows": [
+          {
+            "field": "refuse.type",
+            "index": 39
+          },
+          {
+            "field": "refuse.type",
+            "index": 37
+          },
+          {
+            "field": "refuse.type",
+            "index": 19
+          },
+          {
+            "field": "refuse.type",
+            "index": 45
+          },
+          {
+            "field": "refuse.type",
+            "index": 25
+          },
+          {
+            "field": "refuse.type",
+            "index": 33
+          },
+          {
+            "field": "refuse.type",
+            "index": 61
+          },
+          {
+            "field": "refuse.type",
+            "index": 31
+          },
+          {
+            "field": "refuse.type",
+            "index": 66
+          },
+          {
+            "field": "refuse.type",
+            "index": 64
+          },
+          {
+            "field": "refuse.type",
+            "index": 17
+          },
+          {
+            "field": "refuse.type",
+            "index": 92
+          },
+          {
+            "field": "refuse.type",
+            "index": 43
+          },
+          {
+            "field": "refuse.type",
+            "index": 35
+          },
+          {
+            "field": "refuse.type",
+            "index": 16
+          },
+          {
+            "field": "refuse.type",
+            "index": 63
+          },
+          {
+            "field": "refuse.type",
+            "index": 10
+          },
+          {
+            "field": "refuse.type",
+            "index": 42
+          },
+          {
+            "field": "refuse.type",
+            "index": 11
+          },
+          {
+            "field": "refuse.type",
+            "index": 7
+          },
+          {
+            "field": "refuse.type",
+            "index": 26
+          },
+          {
+            "field": "refuse.fresh_raw_hide",
+            "index": 0
+          },
+          {
+            "field": "refuse.type",
+            "index": 79
+          },
+          {
+            "field": "refuse.type",
+            "index": 29
+          },
+          {
+            "field": "refuse.type",
+            "index": 78
+          },
+          {
+            "field": "refuse.type",
+            "index": 28
+          },
+          {
+            "field": "refuse.type",
+            "index": 44
+          },
+          {
+            "field": "refuse.type",
+            "index": 56
+          },
+          {
+            "field": "refuse.type",
+            "index": 60
+          },
+          {
+            "field": "refuse.type",
+            "index": 48
+          },
+          {
+            "field": "refuse.type",
+            "index": 67
+          },
+          {
+            "field": "refuse.type",
+            "index": 13
+          },
+          {
+            "field": "refuse.type",
+            "index": 54
+          },
+          {
+            "field": "refuse.type",
+            "index": 72
+          },
+          {
+            "field": "refuse.type",
+            "index": 50
+          },
+          {
+            "field": "refuse.type",
+            "index": 47
+          },
+          {
+            "field": "refuse.rotten_raw_hide",
+            "index": 0
+          },
+          {
+            "field": "refuse.type",
+            "index": 65
+          },
+          {
+            "field": "refuse.type",
+            "index": 87
+          },
+          {
+            "field": "refuse.type",
+            "index": 51
+          },
+          {
+            "field": "refuse.type",
+            "index": 52
+          },
+          {
+            "field": "refuse.type",
+            "index": 22
+          },
+          {
+            "field": "refuse.type",
+            "index": 20
+          },
+          {
+            "field": "refuse.type",
+            "index": 55
+          },
+          {
+            "field": "refuse.type",
+            "index": 57
+          },
+          {
+            "field": "refuse.type",
+            "index": 84
+          },
+          {
+            "field": "refuse.type",
+            "index": 68
+          },
+          {
+            "field": "refuse.type",
+            "index": 34
+          },
+          {
+            "field": "refuse.type",
+            "index": 24
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 30,
+        "probe": "itemtype_reference",
+        "query": "zzzznomatch",
+        "stored_count": 93,
+        "visible_rows": []
+      }
+    ]
   }
 }

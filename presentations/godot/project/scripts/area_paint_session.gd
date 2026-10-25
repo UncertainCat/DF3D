@@ -58,9 +58,11 @@ func configure(owner_service, observed: Dictionary, type: int, bounds: Vector2i,
 
 func rectangle(first: Vector3i, last: Vector3i, erase := false) -> bool:
 	if stopped or not ending.is_empty(): return false
-	var before: Dictionary = geometry.cells.duplicate()
 	if not geometry.rectangle(first,last,erase): return false
-	_enqueue_difference(before,erase)
+	var spans: Array = []
+	for y in range(mini(first.y,last.y),maxi(first.y,last.y)+1):
+		spans.append({"x":mini(first.x,last.x),"y":y,"length":absi(first.x-last.x)+1})
+	_enqueue_gesture(spans,erase)
 	return true
 
 func can_follow_elevation() -> bool:
@@ -68,21 +70,18 @@ func can_follow_elevation() -> bool:
 
 func stroke(_first: Vector3i, last: Vector3i, erase := false) -> bool:
 	if stopped or not ending.is_empty(): return false
-	var before: Dictionary = geometry.cells.duplicate()
 	# Native082230 samples the current held-pointer tile; it does not fill an
 	# interpolated line between sparse motion events.
 	if not geometry.stroke(last,last,erase): return false
-	_enqueue_difference(before,erase)
+	_enqueue_gesture([{"x":last.x,"y":last.y,"length":1}],erase)
 	return true
 
-func _enqueue_difference(before: Dictionary, erase: bool) -> void:
-	var delta: Dictionary = {}
-	var source: Dictionary = before if erase else geometry.cells
-	var other: Dictionary = geometry.cells if erase else before
-	for point in source:
-		if not other.has(point): delta[point] = true
-	if not delta.is_empty():
-		_queue.append({"mode":2 if erase else 1,"spans":Geometry.spans_for(delta)})
+func _enqueue_gesture(spans: Array, erase: bool) -> void:
+	# Retain explicit intent, not differences against speculative cells: DF may
+	# trim an earlier gesture before a later overlapping one reaches it.
+	var gesture := {"mode":2 if erase else 1,"spans":spans}
+	# Repeated held-pointer samples can share the latest unsent intent.
+	if _queue.is_empty() or _queue[-1] != gesture: _queue.append(gesture)
 	_drain()
 	changed.emit()
 
@@ -115,6 +114,10 @@ func _drain(previous := 0) -> void:
 		else:
 			request.id = int(area.id); request.expected_revision = int(area.revision)
 	elif not ending.is_empty():
+		if ending == "accept" and Geometry.footprint(area).is_empty():
+			# Speculative additions can be trimmed by DF. Empty native Paint has
+			# no Accept action; keep the interaction available for another gesture.
+			ending = ""; changed.emit(); return
 		if not area.is_empty() and (ending in ["cancel","remove","multi"] or (ending == "exit" and Geometry.footprint(area).is_empty())):
 			_deleting = true
 			request = {"action":Contract.ManagementAction.AreaDelete,"kind":area_kind,"id":int(area.id),"expected_revision":int(area.revision)}
@@ -140,9 +143,14 @@ func _received(receipt: int, result: Dictionary, _request: Dictionary) -> void:
 	area = observed.duplicate(true)
 	geometry.area = area.duplicate(true)
 	geometry.original = Geometry.footprint(area)
-	if _queue.is_empty():
-		geometry.cells = geometry.original.duplicate()
-		geometry.geometry_generation += 1
+	geometry.cells = geometry.original.duplicate()
+	for gesture in _queue:
+		for span in gesture.spans:
+			for x in range(int(span.x),int(span.x)+int(span.length)):
+				var point := Vector2i(x,int(span.y))
+				if int(gesture.mode) == 2: geometry.cells.erase(point)
+				else: geometry.cells[point] = true
+	geometry.geometry_generation += 1
 	changed.emit()
 	_drain(receipt)
 

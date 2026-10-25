@@ -162,6 +162,32 @@ func run() -> void:
 			check(session.stopped and world.calls.size() == before+1,"failed lookup never dispatches queued creation")
 		await process_frame
 
+	session = Session.new(); service.add_child(session)
+	session.configure(service,{},-1,Vector2i(48,48),2,0)
+	session.rectangle(first,last+Vector3i(1,0,0)); service.poll()
+	# The repeated add is explicit even though its cell is already speculative.
+	session.stroke(last,last); session.stroke(last,last)
+	check(session._queue.size() == 1,"identical adjacent unsent samples coalesce")
+	pile = observed(1,93); pile.kind = 0
+	reply(service,world,[pile])
+	check(world.calls[-1].spans == [{"x":last.x,"y":last.y,"length":1}],"clipped earlier creation cannot discard later overlapping add")
+	check(session.geometry.cells.size() == 2 and not session.geometry.cells.has(Vector2i(last.x+1,last.y)),"reconciliation removes clipped ghosts but retains queued intent")
+	session.rectangle(first,last,true)
+	pile.extents = PackedByteArray([1,1]); pile.tile_count = 2; pile.revision += 1
+	reply(service,world,[pile])
+	check(session.geometry.cells.is_empty(),"queued erase reapplies over authoritative growth")
+	pile.extents = PackedByteArray([0,0]); pile.tile_count = 0; pile.revision += 1
+	reply(service,world,[pile]); session.finish("exit"); service.poll()
+	check(world.calls[-1].action == 12 and world.calls[-1].id == 93,"reconciled empty exit deletes correct pile")
+	reply(service,world,[]); await process_frame
+
+	session = Session.new(); service.add_child(session)
+	session.configure(service,pile,-1,Vector2i(48,48),2,0)
+	session.stroke(first,first); service.poll(); session.finish("accept")
+	reply(service,world,[pile]) # Native clips the speculative addition.
+	check(not session.stopped and session.ending.is_empty() and session.geometry.cells.is_empty(),"clipped empty result must disarm pending Accept and retain painting")
+	session.finish("exit"); service.poll(); reply(service,world,[]); await process_frame
+
 	session = start(service); session.rectangle(first,last); service.poll()
 	session.rectangle(last,last,true)
 	before = world.calls.size()

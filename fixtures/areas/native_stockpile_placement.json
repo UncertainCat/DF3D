@@ -1510,5 +1510,20 @@
       ]
     ],
     "scope": "Read-only native wrapper and native UI oracle. Production mutation path not yet migrated."
+  },
+  "gesture_reconciliation": {
+    "offline": "build/qa/stockpile-gesture-reconcile-final",
+    "scope": "Synthetic clipped replies retain later explicit overlapping add/erase intent, remove clipped speculative cells, coalesce identical adjacent unsent samples, and keep native-empty Paint open after pending Accept. Not acceptance of production native clipping.",
+    "viewport_regression": {
+      "run": "build/areas-acceptance-20261025-112246",
+      "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "native_observations": 23,
+      "status": "passed_with_known_issues",
+      "diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "scope": "Existing focused stockpile pointer workflows, empty/regrow/exit after switching queued work to full explicit gestures."
+    }
   }
 }

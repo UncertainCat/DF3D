@@ -180,6 +180,17 @@ Its only diagnostic is the known separate-thread notice.
 spans and generations. Request preparation, replacement-at-Accept, local brush
 interpolation and the controller's no-owner mutation fallback are removed.
 The session is the sole owner of gesture submission and authoritative replies.
+Queued work retains full explicit gesture spans rather than differences against
+speculative cells. Identical adjacent unsent brush samples coalesce. Each reply
+rebuilds preview geometry from DF's observed footprint and reapplies newer queued
+intent, removing clipped ghosts without dropping later overlapping edits. If
+an outstanding addition resolves to empty, pending Accept is disarmed and Paint
+stays open. Unknown/rejected results still stop the owner without replay.
+`build/qa/stockpile-gesture-reconcile-final` checks these clipped-reply boundaries.
+Focused viewport regression `build/areas-acceptance-20261025-112246` passes23
+native observations with the known separate-thread notice, unsaved closure and
+two unchanged save manifests. Production native clipping/no-op creation remains
+unmigrated; synthetic reply tests do not establish that bridge behavior.
 Offline `build/qa/stockpile-paint-cleanup-fixed` passes core, controller, geometry
 and owner checks; rendered menu captures have known engine diagnostics only.
 The focused live scope excludes settings. Native placement clipping/eligibility,

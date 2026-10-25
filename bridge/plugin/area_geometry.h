@@ -147,25 +147,6 @@ struct FillResult { Error error=Error::None; uint32_t steps=0; bool resized=fals
 enum SettingPartition : uint16_t { Any=1, Metal=2, Stone=4, Gem=8,
                                   MetalOres=16, Economic=32, Clay=64, OtherStone=128 };
 
-// Preset SET imports clear each active vector before populating it. Keep the
-// original buffers by swapping them out, not by copying possibly oversized
-// stored tails. Rollback is noexcept and restores the exact original buffers.
-// Null slots represent native fields the importer never touches (ore.mats).
-template<class Vector,size_t Count> class PresetVectors {
-  std::array<Vector*,Count> targets_;
-  std::array<Vector,Count> saved_{};
-  bool active_=true;
-public:
-  explicit PresetVectors(const std::array<Vector*,Count>& targets) noexcept : targets_(targets) {
-    static_assert(noexcept(std::declval<Vector&>().swap(std::declval<Vector&>())));
-    for(size_t i=0;i<Count;++i)if(targets_[i])targets_[i]->swap(saved_[i]);
-  }
-  PresetVectors(const PresetVectors&)=delete;
-  PresetVectors& operator=(const PresetVectors&)=delete;
-  ~PresetVectors() { if(active_)for(size_t i=0;i<Count;++i)if(targets_[i])targets_[i]->swap(saved_[i]); }
-  void commit() noexcept {active_=false;}
-};
-
 struct SettingsRawTotal {bool valid=true;uint32_t count=0;};
 template<class Counts> SettingsRawTotal settingsRawTotal(const Counts& counts) {
   SettingsRawTotal total;

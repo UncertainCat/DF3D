@@ -221,14 +221,21 @@ elseif request.op=='preset' then
  local b=building();local cats={'animals','food','furniture','corpses','refuse','stone','ammo','coins','bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
  for _,key in ipairs(cats) do
   -- The pinned All preset excludes Corpses and Refuse (E9 finding1 and
-  -- native import receipt131047); SettingsSet/All is a different operation.
+  -- native pointer receipt131047); SettingsSet/All is a different operation.
   local enabled=request.preset==1 and key~='corpses' and key~='refuse' or request.category==key
   assert(b.settings.flags[key]==enabled,'preset category '..key)
  end
  local retained=request.retained or {barrels=2,bins=1,wheelbarrows=1,links_only=true}
- assert(b.storage.max_barrels==retained.barrels and b.storage.max_bins==retained.bins and
-  b.storage.max_wheelbarrows==retained.wheelbarrows and b.stockpile_flag.use_links_only==retained.links_only,
-  'preset changed containers/links-only')
+ local tiles=0
+ for y=b.y1,b.y2 do for x=b.x1,b.x2 do if dfhack.buildings.containsTile(b,x,y) then tiles=tiles+1 end end end
+ local barrels,bins,wheelbarrows=0,0,0
+ if request.preset==1 then barrels=tiles//2;bins=(tiles+1)//2;wheelbarrows=1
+ elseif request.preset==3 then barrels=tiles
+ elseif request.preset==7 then wheelbarrows=1
+ elseif (request.preset>=8 and request.preset<=14) or (request.preset>=16 and request.preset<=18)then bins=tiles end
+ assert(b.storage.max_barrels==barrels and b.storage.max_bins==bins and
+  b.storage.max_wheelbarrows==wheelbarrows and b.stockpile_flag.use_links_only==retained.links_only,
+  'preset native container defaults/links-only differ')
  result.area=area(b)
 elseif request.op=='zone_settings' then
  local b=building();local v=b.zone_settings;local actual={}

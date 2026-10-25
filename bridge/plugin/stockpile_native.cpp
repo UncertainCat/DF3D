@@ -1,5 +1,8 @@
 #include "stockpile_native.h"
 #include "df/global_objects.h"
+#include "df/building_stockpilest.h"
+#include "df/custom_stockpile_interfacest.h"
+#include "df/custom_stockpile_itemst.h"
 #include <windows.h>
 #include <cstdint>
 
@@ -34,6 +37,36 @@ bool supported(const uint8_t* base) {
     return true;
 }
 }
+std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
+    df::building_stockpilest& pile,int preset) {
+    if(!df::global::world || preset<1 || preset>19)return std::nullopt;
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return std::nullopt;
+    static const bool compatible=supported(base) &&
+        hash(base+0x5587b0,0x79)==0x14b4f3f138690067ULL &&
+        hash(base+0x57b770,0x113)==0x3fc5ac46eee9f334ULL &&
+        hash(base+0x34a8d4,0x141)==0x444c389c4f7878d4ULL &&
+        hash(base+0x35f0b8,0x4c)==0xf5f32f7dfd8f6deeULL;
+    if(!compatible || pile.x1<0 || pile.y1<0 || pile.z<0 || pile.z>32767 ||
+       pile.x2<pile.x1 || pile.y2<pile.y1 || pile.x2>32767 || pile.y2>32767 ||
+       int64_t(pile.x2-pile.x1+1)*(pile.y2-pile.y1+1)>65536)return std::nullopt;
+    // Stockpile's two predicate virtuals in57b770 are constant true. Invoke its
+    // coordinate/extent leaf directly with the actual pile, avoiding vtable hooks.
+    // Without extents57b770 accepts the bounding rectangle.
+    using Occupies=bool (*)(df::building_stockpilest*,int16_t,int16_t,int16_t);
+    const auto occupies=reinterpret_cast<Occupies>(base+0x5587b0);
+    int32_t count=0;
+    for(int32_t y=pile.y1;y<=pile.y2;++y)for(int32_t x=pile.x1;x<=pile.x2;++x)
+        count+=!pile.room.extents || occupies(&pile,int16_t(x),int16_t(y),int16_t(pile.z));
+    std::array<int16_t,3> limits{};
+    // The inline native dispatch34a8d4..34aa15 follows the settings initializer.
+    // Narrowing matches native int16 storage, including oversized native piles.
+    if(preset==1)limits={int16_t(count/2),int16_t((count+1)/2),1};
+    else if(preset==3)limits[0]=int16_t(count);
+    else if(preset==7)limits[2]=1;
+    else if((preset>=8 && preset<=14) || (preset>=16 && preset<=18))limits[1]=int16_t(count);
+    return limits;
+}
 std::optional<df::stockpile_settings> nativeStockpilePreset(
     const df::stockpile_settings& source,int preset) {
     if(!df::global::world || preset<1 || preset>19)return std::nullopt;
@@ -51,5 +84,90 @@ std::optional<df::stockpile_settings> nativeStockpilePreset(
     reinterpret_cast<Clear>(base+0x30e950)(&owned);
     reinterpret_cast<Initialize>(base+0x30dde0)(&owned,modes[preset-1]);
     return owned;
+}
+std::optional<df::stockpile_settings> nativeStockpileInitialSettings(uint32_t categories) {
+    if(categories&~uint32_t(0x1ffff))return std::nullopt;
+    // DF's stockpile constructor30f0d0 calls30d790: empty vectors/flags and
+    // both misc allowances true. Generated defaults retain those allowances;
+    // inactive fixed switches remain initialized instead of reading spare bytes.
+    df::stockpile_settings initial;
+    auto owned=nativeStockpilePreset(initial,19);
+    if(!owned)return std::nullopt;
+    using Initialize=void (*)(df::stockpile_settings*,uint32_t);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    reinterpret_cast<Initialize>(base+0x30e070)(&*owned,categories);
+    return owned;
+}
+std::optional<df::stockpile_settings> nativeStockpileCategory(
+    const df::stockpile_settings& source,uint32_t category) {
+    if(!df::global::world || !category || (category&(category-1)) ||
+       (category&~uint32_t(0x1ffff)))return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return std::nullopt;
+    static const bool compatible=supported(base) &&
+        hash(base+0x30d350,0x440)==0xf4c028803a3e2f1dULL &&
+        hash(base+0x35fdde,0x192)==0x2a2bc478f013cef1ULL;
+    if(!compatible)return std::nullopt;
+    auto owned=source;
+    if(owned.flags.whole&category)return owned;
+    using Initialize=void (*)(df::stockpile_settings*,uint32_t);
+    reinterpret_cast<Initialize>(base+0x30e070)(&owned,category);
+    // Category-selection prelude35fdde..35ff70. Every clear helper only writes
+    // its supplied category. Shared default helpers are checked by supported().
+    static constexpr size_t clears[]={0x30d350,0x30d540,0x30d560,0x30d5a0,
+        0x30d5e0,0x30d5a0,0x30d560,0x30d5a0,0x30d620,0x30d620,0x30d640,
+        0x30d660,0x30d720,0x30d5a0,0x30d760,0x30d780,0x30d740};
+    void* fields[]={&owned.animals,&owned.food,&owned.furniture,&owned.corpses,
+        &owned.refuse,&owned.stone,&owned.ammo,&owned.coins,&owned.bars_blocks,
+        &owned.gems,&owned.finished_goods,&owned.leather,&owned.cloth,&owned.wood,
+        &owned.weapons,&owned.armor,&owned.sheet};
+    size_t index=0;while((uint32_t(1)<<index)!=category)++index;
+    using Clear=void (*)(void*);
+    reinterpret_cast<Clear>(base+clears[index])(fields[index]);
+    return owned;
+}
+std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(
+    const df::stockpile_settings& source,const std::string& filter) {
+    if(!df::global::world || source.wood.mats.size()>65536 || filter.size()>256)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return std::nullopt;
+    static const bool compatible=supported(base) &&
+        hash(base+0x35fd70,0x77f0)==0x9826ec82d86ebf51ULL &&
+        hash(base+0x35fb50,0x188)==0x0370358adf30598bULL &&
+        hash(base+0x35fce0,0x89)==0x60a96499876e0c98ULL &&
+        hash(base+0x14d880,0x5a)==0x4aa033209ea95fd2ULL &&
+        hash(base+0x144d90,0xba)==0x97aed5d23117e68fULL &&
+        hash(base+0x52d650,0x2b0)==0xcf43211ff8e2c344ULL &&
+        hash(base+0x52cee0,0x19e)==0xc25c2d8a6eb9fcacULL &&
+        hash(base+0x3bc400,0x14d)==0x038c68edadcc2b69ULL &&
+        hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL;
+    if(!compatible)return std::nullopt;
+    static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
+    static_assert(sizeof(df::custom_stockpile_itemst)==0x60);
+    auto owned=source;
+    struct Rows {
+        df::custom_stockpile_interfacest scratch;
+        ~Rows(){for(auto* row:scratch.spec_item)delete row;}
+    } rows;
+    rows.scratch.sp=&owned;
+    rows.scratch.spec_filter=filter;
+    // Fixed Wood branch365d1f: raw TREE flag, native plural plant name, row
+    // formatter, native comparator and search. Flag0 skips category activation.
+    // Never call open-wrapper35f3c0, which writes global UI/graphics state.
+    using Build=void (*)(df::custom_stockpile_interfacest*,int32_t,uint32_t);
+    reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,85,0);
+    if(rows.scratch.cur_spec_item_sz<0 ||
+       size_t(rows.scratch.cur_spec_item_sz)>rows.scratch.spec_item.size())return std::nullopt;
+    std::vector<NativeStockpileRow> result;
+    result.reserve(rows.scratch.cur_spec_item_sz);
+    const auto start=reinterpret_cast<uintptr_t>(owned.wood.mats.data());
+    for(int32_t i=0;i<rows.scratch.cur_spec_item_sz;++i) {
+        const auto* row=rows.scratch.spec_item[i];
+        if(!row)return std::nullopt;
+        const auto pointer=reinterpret_cast<uintptr_t>(row->set_pointer);
+        if(pointer<start || pointer-start>=owned.wood.mats.size())return std::nullopt;
+        result.push_back({size_t(pointer-start),row->name,*row->set_pointer!=0,row->on});
+    }
+    return result;
 }
 }

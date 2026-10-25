@@ -1,30 +1,75 @@
-## Native stockpile preset probe (DF 53.16)
+## Native stockpile initialization (DF 53.16)
 
-Stockpile management remains staged. The gameplay preset path still uses DFHack
-serialized settings and is pending migration. `df3d stockpile-preset-read
-<building-id> <preset1..19>` independently copies the pile settings, calls DF's
-clear routine at RVA `0x30e950` and preset initializer at `0x30dde0`, and reports
-flags, vectors and fixed switches without editing the pile. The service checks
-the supported PE and fingerprints its initializer/default/clear helpers. These
-read world raws and write owned settings; no native UI or search scratch is used.
-The caller bounds raw entries before allocation. Preset numbering is the existing
-wire order (All, Animals through Sheets, None), not native display order.
+The read-only `df3d stockpile-wood-read <building-id> [filter]` probe calls the
+Wood branch of DF's list builder at `0x35fd70`, with independently owned settings,
+row storage and search text. Category activation is skipped with a zero flag;
+the native open wrapper is never called. The branch uses plant raw flags/names,
+native row formatting, sorting and filtering. Returned rows contain stable vector
+indices, labels and booleans; native pointers remain local. Protected run
+`build/stockpile-presets-native-20261025-014925` matched all72 native Wood rows
+with an empty search, preserving native UI, row values, source Wood filters and
+RNG buffers. Nonempty search, other filter categories and gameplay integration
+remain under audit.
+
+`df3d stockpile-category-read <building-id> <category-bit>` predicts native
+category selection on owned settings. The selection prelude at `0x35fdde`
+initializes disabled categories and calls their native clear helper; selecting
+an enabled category leaves its settings intact. This diagnostic does not mutate
+the pile. The same run matched all78 vectors,29 fixed settings and flags after
+native selection of disabled Wood with populated filters. Evidence is retained in
+`fixtures/areas/native_stockpile_filters.json`. The gameplay category path still
+uses the older flag-only update; other category transitions need live comparison.
+
+Stockpile management remains staged. Preset edits call DF's clear routine at RVA
+`0x30e950` and preset initializer at `0x30dde0` on independently owned settings.
+Container limits follow the native inline click dispatch, counting extents through
+DF's coordinate predicate at `0x5587b0`. Settings and limits publish together after
+all native work and allocation succeed; links-only remains unchanged. Both current
+raw counts and stored vectors are bounded before copying. The serialized DFHack
+preset importer and its buffer rollback helper have been removed.
+
+New piles prepare settings before publication through DF's category initializer
+at `0x30e070`. Empty-pile defaults retain organic/inorganic allowances, matching
+native constructor `0x30d790`. Creation's geometry and publication still use the
+existing implementation and require further native audit; this migration does not
+establish complete stockpile placement parity.
+
+`df3d stockpile-preset-read <building-id> <preset1..19>` reports owned predicted
+flags, vectors, fixed switches and container limits without editing the pile.
+The service checks the supported PE and fingerprints its semantic helpers. These
+read world raws and supplied geometry/settings; no native UI or search scratch is
+used. Preset numbering is existing wire order (All, Animals through Sheets, None),
+not native display order.
 
 `fixtures/areas/native_stockpile_presets.json` records comparison against all19
 native icon clicks in protected run `build/stockpile-presets-native-20261025-005558`.
-All78 filter vectors,29 fixed settings and flags matched. Each probe preserved
-the source building structure, main-interface bytes and RNG state; the simulation
-remained paused and the source save manifest was unchanged after owned teardown.
-`tools/smoke/stockpile_presets_native.lua` retains the oracle; run it only through
-a protected owned lane, with autosave disabled and no save on exit. Vector hashes
-depend on this fortress's raw inventory. This does not establish general UI parity.
+All78 filter vectors,29 fixed settings and flags matched. Follow-up run
+`build/stockpile-presets-native-20261025-010528` also compared predicted container
+limits for all19 presets. Each probe preserved source building structure,
+main-interface bytes and RNG state; simulation remained paused and source save
+manifests were unchanged after owned teardown. The retained oracle is
+`tools/smoke/stockpile_presets_native.lua`; use a protected owned lane with autosave
+disabled and no save on exit. Follow-up run
+`build/stockpile-presets-native-20261025-014925` passed all19 comparisons and
+the oversized stored-vector rejection check with the migrated implementation.
 
-The native click handler also resets container limits after applying a preset;
-the probe does not yet perform that step. Captured All excludes Corpses/Refuse,
-splits272 tiles into136 barrels/136 bins, and permits one wheelbarrow. Food uses
-272 barrels, Stone one wheelbarrow, container-using manufactured categories272
-bins, and other categories zero. These observations identify migration work;
-they do not authorize preserving the old importer's container behavior.
+Protected run `build/stockpile-initialization-20261025-015203` passed real bridge
+creation for empty,17 individual and2 combined category masks, comparing flags,
+filter vectors/fixed settings and constructor allowances. It also passed preset
+updates, paint/reshape/erase, rejection guards and removal. Source hashes remained
+unchanged, owned DF closed and engine diagnostics were clean. The focused driver
+is `tools/smoke/stockpile_initialization.ps1 -CloneEvidence <verified-clone-folder>`;
+the evidence folder must contain `clone-path.txt` and `clone-manifest.txt`.
+This covers initialization and command effects, not complete geometry eligibility
+or rendered UI parity. The earlier broad Areas run `20261025-010601` remains
+incomplete: restart/save verification succeeded but took2263s across390094 files,
+exceeding the viewer handshake wait. It is not evidence of viewer reload recovery.
+
+Vector hashes depend on this fortress's raw inventory. These probes do not prove
+UI pixel parity, creation effects or complete lifecycle behavior. All excludes
+Corpses/Refuse, splits272 tiles into136 barrels/136 bins, and permits one
+wheelbarrow. Food uses272 barrels, Stone one wheelbarrow, container-using
+manufactured categories272 bins, and other categories zero.
 
 ## Native construction site support (DF 53.16)
 

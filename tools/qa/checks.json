@@ -3405,6 +3405,11 @@
       "reason": "Protected live workflow; launched by tools/smoke/areas_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_AREAS_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/stockpile_initialization_live.gd",
+      "status": "manual",
+      "reason": "Protected native stockpile creation/preset/paint acceptance through tools/smoke/stockpile_initialization.ps1 -CloneEvidence <verified-clone-folder>; requires clone-path.txt and clone-manifest.txt, preserves the source and closes owned DF without saving. Headless command effects, not rendered UI parity."
+    },
+    {
       "path": "presentations/godot/project/tests/areas_paint_counts_live.gd",
       "status": "manual",
       "reason": "Protected v24 PaintCounts protocol/controller workflow; areas_acceptance.ps1 -PaintCountsOnly on a never-saved region5 clone. Recorded native count references and paused external terrain refresh; headless, not GPU or physical-pointer acceptance."

@@ -1619,8 +1619,8 @@ def main():
     assert lua.eval("#pile.settings.wood.mats==65460 and pile.settings.wood.mats[65460]==0 and pile.settings.flags.wood and pile.settings.misc.allow_organic and not pile.settings.misc.allow_inorganic")
     assert lua.eval("pile.settings.flags.ammo and not pile.settings.flags.food and not pile.settings.flags.refuse and not pile.settings.ammo.quality_core[1] and not pile.settings.refuse.fresh_raw_hide")
     # Presets use the amended synchronous write policy. The native transaction
-    # stand-in models effect/rollback boundaries; buffer identity is tested in
-    # DF-free C++, and the actual importer/native guard still require C/D.
+    # stand-in models effect/rollback boundaries. The protected native oracle
+    # compares actual filter contents; this checks adapter integration.
     lua.execute(r"""
     settings_raw_count=0;import_calls=0;preset_calls=0
     local cats={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
@@ -1638,52 +1638,33 @@ def main():
      table.sort(entries);return '{'..table.concat(entries,',')..'}'
     end
     function preset_state()return encode{pile.settings,pile.storage,pile.stockpile_flag} end
-    function fixture_import(path,id,mode,filter)
-     import_calls=import_calls+1;last_import_path=path
-     assert(id==5 and mode=='set' and filter=='')
-     local cat=path:match('/cat_([^/]+)%.dfstock$');if cat=='sheets' then cat='sheet' end
-     for _,name in ipairs(cats)do pile.settings.flags[name]=cat and name==cat or not cat and name~='corpses' and name~='refuse' end
-     for _,field in ipairs(fixture_vector_keys)do
-      if field~='ore.mats' then
-       local category,key=field:match('^([^%.]+)%.(.+)$')
-       pile.settings[category][key]=pile.settings.flags[category] and {1,1,1} or {}
-      end
-     end
-     for _,field in ipairs(fixture_fixed_keys)do
-      local category,key=field:match('^([^%.]+)%.(.+)$');local enabled=pile.settings.flags[category] or category=='misc'
-      pile.settings[category][key]=key:find('quality',1,true) and {enabled,enabled,enabled,enabled,enabled,enabled,enabled} or enabled
-     end
-     pile.storage.max_bins=0;pile.storage.max_barrels=0;pile.storage.max_wheelbarrows=0;pile.stockpile_flag.use_links_only=false
-     if import_mode=='error' then error('fixture import failed after mutation') end
-     if import_mode=='false' then return false end
-     if import_mode=='malformed' then return 'true' end
-     return true
-    end
-    package.preload['plugins.stockpiles']=function()
-     if plugin_missing then error('plugin unavailable') end
-     return {stockpiles_import=fixture_import}
-    end
     dfhack.getHackPath=function()return 'C:/Pinned DFHack' end
-    function settings_preset(b,preset,importer,path,budget)
+    package.preload['plugins.stockpiles']=function()error('preset edit must not load importer')end
+    function settings_preset(b,preset,budget)
      preset_calls=preset_calls+1
      assert(budget==nil)
      if helper_lost then error('fixture transaction helper lost') end
-     if settings_raw_count>65536 then return {ok=false,message='Stockpile settings exceed 65,536 entries',steps=79} end
-     local saved=copy_state(b.settings);local storage=copy_state(b.storage);local flags=copy_state(b.stockpile_flag)
-     local ok=true
-     if preset==19 then
-      b.settings.flags={}
-      for _,field in ipairs(fixture_vector_keys)do
-       if field~='ore.mats' then local cat,key=field:match('^([^%.]+)%.(.+)$');b.settings[cat][key]={} end
+     if settings_raw_count>65536 or (settings_stored_count or 0)>65536 then return {ok=false,message='Stockpile settings exceed 65,536 entries',steps=158} end
+     if native_failed then return {ok=false,message='Native stockpile preset failed; previous settings restored',steps=158,work_unknown=true} end
+     local prepared=copy_state(b.settings);prepared.flags={}
+     for _,name in ipairs(cats)do prepared.flags[name]=preset==1 and name~='corpses' and name~='refuse' or cats[preset-1]==name end
+     for _,field in ipairs(fixture_vector_keys)do
+      local category,key=field:match('^([^%.]+)%.(.+)$')
+      prepared[category][key]=prepared.flags[category] and {1,1,1} or {}
+     end
+     for _,field in ipairs(fixture_fixed_keys)do
+      local category,key=field:match('^([^%.]+)%.(.+)$')
+      if prepared.flags[category] or (category=='misc' and preset==1) then
+       prepared[category][key]=key:find('quality',1,true) and {true,true,true,true,true,true,true} or true
       end
-      for _,field in ipairs(fixture_fixed_keys)do
-       local cat,key=field:match('^([^%.]+)%.(.+)$')
-       b.settings[cat][key]=key:find('quality',1,true) and {false,false,false,false,false,false,false} or false
-      end
-     else local worked,result=pcall(importer,path,b.id,'set','');ok=worked and result==true end
-     b.storage=storage;b.stockpile_flag=flags
-     if not ok then b.settings=saved end
-     return {ok=ok,message=ok and '' or 'Native stockpile preset failed; previous settings restored',steps=reported_preset_steps or 79,work_unknown=true}
+     end
+     local barrels,bins,wheelbarrows=0,0,0
+     if preset==1 then barrels,bins,wheelbarrows=2,2,1
+     elseif preset==3 then barrels=4
+     elseif preset==7 then wheelbarrows=1
+     elseif (preset>=8 and preset<=14) or (preset>=16 and preset<=18) then bins=4 end
+     b.settings=prepared;b.storage.max_barrels=barrels;b.storage.max_bins=bins;b.storage.max_wheelbarrows=wheelbarrows
+     return {ok=true,message='',steps=reported_preset_steps or 158,work_unknown=true}
     end
     """)
     def preset_request(preset=1, **extra):
@@ -1695,29 +1676,29 @@ def main():
         lua.execute("pile.storage.max_bins=3;pile.storage.max_barrels=2;pile.storage.max_wheelbarrows=1;pile.stockpile_flag.use_links_only=true")
         request = preset_request(preset);request["step_budget"] = 0
         result = settings_adapter(request)
-        assert result["ok"] and result["work_unknown"] and result["steps"] == 94, dict(result)
-        stem = "all" if preset == 1 else "cat_" + ("sheets" if preset == 18 else categories[preset-2])
-        assert lua.globals().last_import_path == f"C:/Pinned DFHack/data/stockpiles/{stem}.dfstock"
-        assert lua.eval("pile.storage.max_bins==3 and pile.storage.max_barrels==2 and pile.storage.max_wheelbarrows==1 and pile.stockpile_flag.use_links_only")
-        assert lua.eval("#pile.settings.ore.mats==4 and pile.settings.ore.mats[4]==7")
+        assert result["ok"] and result["work_unknown"] and result["steps"] == 173, dict(result)
+        expected = (2, 2, 1) if preset == 1 else (4, 0, 0) if preset == 3 else (0, 0, 1) if preset == 7 else (0, 4, 0) if 8 <= preset <= 14 or 16 <= preset <= 18 else (0, 0, 0)
+        assert tuple(lua.globals().pile.storage[key] for key in ("max_barrels", "max_bins", "max_wheelbarrows")) == expected
+        assert lua.eval("pile.stockpile_flag.use_links_only and #pile.settings.ore.mats==0")
         if preset == 1:
             assert lua.eval("not pile.settings.flags.refuse and not pile.settings.flags.corpses and pile.settings.misc.allow_organic and pile.settings.misc.allow_inorganic")
         else:
             assert [cat for cat in categories if lua.globals().pile.settings.flags[cat]] == [categories[preset-2]]
-    # False, Lua exception, and malformed importer success all roll back exact
-    # vector lengths/values, fixed fields, category flags and container settings.
-    for mode in ["false", "error", "malformed"]:
-        lua.globals().import_mode = mode
-        saved = lua.globals().preset_state()
-        before = lua.globals().import_calls
-        result = settings_adapter(preset_request())
-        assert not result["ok"] and result["work_unknown"] and "previous settings restored" in result["message"]
-        assert lua.globals().preset_state() == saved and lua.globals().import_calls == before + 1
+    # Failed native preparation cannot publish any settings or container changes.
+    lua.execute("native_failed=true")
+    saved = lua.globals().preset_state()
+    result = settings_adapter(preset_request())
+    assert not result["ok"] and result["work_unknown"] and "previous settings restored" in result["message"]
+    assert lua.globals().preset_state() == saved
+    lua.execute("native_failed=false")
     lua.execute("import_mode=nil;settings_raw_count=65537")
     saved = lua.globals().preset_state();before = lua.globals().import_calls
     assert settings_adapter(preset_request())["message"] == "Stockpile settings exceed 65,536 entries"
     assert lua.globals().preset_state() == saved and lua.globals().import_calls == before
-    lua.execute("settings_raw_count=65536")
+    lua.execute("settings_raw_count=65536;settings_stored_count=65537")
+    assert settings_adapter(preset_request())["message"] == "Stockpile settings exceed 65,536 entries"
+    assert lua.globals().preset_state() == saved
+    lua.execute("settings_stored_count=0")
     assert settings_adapter(preset_request(expected_revision=0))["message"] == "Area revision required; inspect again"
     assert settings_adapter(preset_request(expected_revision=1))["message"] == "Area changed; inspect again"
     assert lua.globals().import_calls == before
@@ -1727,13 +1708,13 @@ def main():
     request = preset_request();request["step_budget"] = 0
     result = settings_adapter(request)
     assert result["ok"] and result["steps"] == 9015 and result["work_unknown"]
-    lua.execute("reported_preset_steps=nil;package.loaded['plugins.stockpiles']=nil;plugin_missing=true")
-    assert settings_adapter(preset_request())["message"] == "Native stockpile preset plugin unavailable"
+    lua.execute("reported_preset_steps=nil;package.loaded['plugins.stockpiles']=nil")
+    assert settings_adapter(preset_request())["ok"]
     before = lua.globals().import_calls
     result = settings_adapter(preset_request(19))
     assert result["ok"] and lua.globals().import_calls == before  # None requires no importer
-    assert lua.eval("not next(pile.settings.flags) and #pile.settings.wood.mats==0 and not pile.settings.misc.allow_organic and not pile.settings.armor.quality_core[1]")
-    assert lua.eval("#pile.settings.ore.mats==4 and pile.settings.ore.mats[4]==7 and pile.storage.max_bins==3 and pile.stockpile_flag.use_links_only")
+    assert lua.eval("not pile.settings.flags.wood and #pile.settings.wood.mats==0 and pile.settings.misc.allow_organic and pile.settings.armor.quality_core[1]")
+    assert lua.eval("#pile.settings.ore.mats==0 and pile.storage.max_bins==0 and pile.stockpile_flag.use_links_only")
     lua.execute("helper_lost=true")
     unknown = settings_adapter(preset_request(19))
     assert not unknown["ok"] and unknown["steps"] == 13 and unknown["work_unknown"] and "inspect before retrying" in unknown["message"]
@@ -1998,13 +1979,16 @@ def main():
       for i=0,w*h-1 do room.extents[i]=0 end
       for _,span in ipairs(a.spans)do for tx=span.x,span.x+span.length-1 do room.extents[(span.y-y)*w+tx-x]=1 end end
      end
+     if a.kind==0 and native_creation_failed then return {ok=false,message='',steps=79,work_unknown=true} end
      local id=next_area_id;next_area_id=id+1
      created_areas[id]={id=id,kind=a.kind,name='',x1=x,y1=y,z=z,x2=x+w-1,y2=y+h-1,room=room,
-      type=a.zone_type or -1,settings={flags={},misc={allow_organic=false,allow_inorganic=false}},
+      type=a.zone_type or -1,settings={flags={},misc={allow_organic=true,allow_inorganic=true}},
       storage={max_barrels=0,max_bins=0,max_wheelbarrows=0},stockpile_flag={use_links_only=false},
       links={give_to_pile={},take_from_pile={}},spec_sub_flag={active=false},assigned_unit_id=-1,
       zone_settings={pen={flags={}},pond={flag={keep_filled=true}},archery={dir_x=0,dir_y=0},
        tomb={flags={no_pets=false,no_citizens=false}},gather={flags={}}}}
+     local cats={'animals','food','furniture','corpses','refuse','stone','ammo','coins','bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
+     if a.kind==0 then for i,cat in ipairs(cats)do created_areas[id].settings.flags[cat]=((a.categories or 0)&(1<<(i-1)))~=0 end end
      return {ok=true,building_id=id,steps=7,work_unknown=true}
     end
     package.loaded['plugins.stockpiles']=nil
@@ -2021,7 +2005,6 @@ def main():
                             ({"barrels": 5}, "Container limits exceed usable stockpile tiles"),
                             ({"wheelbarrows": 4}, "Container limits exceed usable stockpile tiles"),
                             ({"active": 1}, "Zone-only fields on stockpile"),
-                            ({"categories": 1}, "Native stockpile preset plugin unavailable"),
                             ({"kind": 1, "zone_type": 255}, "Unsupported zone type"),
                             ({"kind": 1, "zone_type": 0, "bins": 1}, "Stockpile-only fields on zone"),
                             ({"kind": 1, "zone_type": 2, "owner_id": -1}, "This zone type has no single owner"),
@@ -2037,44 +2020,24 @@ def main():
     assert created["revision"] > 0 and created["categories"] == 0 and len(created["extents"]) == 4
     assert created["barrels"] == 4 and created["bins"] == 4 and created["wheelbarrows"] == 3 and created["links_only"]
     assert none["hint_x"] == 10 and none["hint_y"] == 11 and none["hint_z"] == 1
-    lua.execute(r"""
-    package.loaded['plugins.stockpiles']={stockpiles_import=function(path,id,mode,filter)
-     table.insert(import_calls,{path=path,id=id,mode=mode,filter=filter})
-     assert(mode=='enable' and filter=='')
-     local b=df.building.find(id)
-     b.storage.max_bins=123;b.stockpile_flag.use_links_only=true
-     local cat=path:match('/cat_(.+)%.dfstock$');if cat=='sheets' then cat='sheet' end
-     b.settings.flags[cat]=true
-     if import_mode=='throw' then error('fixture failed import') end
-     if import_mode=='false' then return false end
-     if import_mode=='malformed' then return 1 end
-     return true
-    end}
-    """)
     all_categories = settings_adapter(create_request(categories=131071, barrels=1))
     assert all_categories["ok"] and all_categories["areas"][1]["categories"] == 131071
     assert all_categories["areas"][1]["barrels"] == 1 and all_categories["areas"][1]["bins"] == 0
-    assert not all_categories["areas"][1]["links_only"] and len(lua.globals().import_calls) == 17
-    assert lua.globals().import_calls[17]["path"].endswith("/cat_sheets.dfstock")
+    assert not all_categories["areas"][1]["links_only"] and len(lua.globals().import_calls) == 0
+    assert all_categories["areas"][1]["organic"] == 1 and all_categories["areas"][1]["inorganic"] == 1
     lua.execute("settings_raw_count=65537")
     assert settings_adapter(create_request(categories=1))["message"] == "Stockpile settings exceed 65,536 entries"
     assert settings_adapter(create_request())["ok"]  # None allocates no raw filters
     lua.execute("settings_raw_count=65536")
     assert settings_adapter(create_request(categories=1))["ok"]
     lua.execute("settings_raw_count=0")
-    for failure in ("false", "throw", "malformed"):
-        lua.globals().import_mode = failure
-        expected_id = lua.globals().next_area_id
-        before_removes = lua.globals().remove_calls
-        result = settings_adapter(create_request(categories=1))
-        assert result["message"].startswith("New pile preset failed; new area removed: ") and result["work_unknown"]
-        assert lua.globals().df.building.find(expected_id) is None and lua.globals().remove_calls == before_removes+1
-    lua.execute("import_mode='false';remove_mode='reject'")
-    uncertain_id = lua.globals().next_area_id
-    uncertain = settings_adapter(create_request(categories=1))
-    assert not uncertain["ok"] and uncertain["message"] == "New area initialization failed; cleanup uncertain; inspect before retrying"
-    assert lua.globals().df.building.find(uncertain_id) is not None
-    lua.execute("import_mode=nil;remove_mode=nil;refuse_area_creation=true")
+    lua.execute("native_creation_failed=true")
+    expected_id = lua.globals().next_area_id
+    before_removes = lua.globals().remove_calls
+    result = settings_adapter(create_request(categories=1))
+    assert not result["ok"] and result["message"] == "" and result["work_unknown"]
+    assert lua.globals().next_area_id == expected_id and lua.globals().remove_calls == before_removes
+    lua.execute("native_creation_failed=false;refuse_area_creation=true")
     before_id = lua.globals().next_area_id
     assert settings_adapter(create_request())["message"] == "Every selected tile must be visible and loaded"
     assert lua.globals().next_area_id == before_id

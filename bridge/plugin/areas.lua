@@ -1245,7 +1245,7 @@ local function native_operation(r)
   local zone_type=default(a,'zone_type',-1)
   if not integer(zone_type) or zone_type< -1 or zone_type>255 then return reject('invalid area edit') end
   if a.kind==1 and not zone_types[df.civzone_type[zone_type]] then return reject('Unsupported zone type') end
-  local new_owner,importer,paths
+  local new_owner
   if a.kind==0 then
    if default(a,'active',-1)~=-1 or default(a,'owner_id',-2)~=-2 then return reject('Zone-only fields on stockpile') end
    if op==0 then
@@ -1255,16 +1255,6 @@ local function native_operation(r)
       return reject('Container limits exceed usable stockpile tiles')
      end
     end
-   end
-   if default(a,'categories',0)~=0 then
-    local loaded,plugin=pcall(require,'plugins.stockpiles')
-    if not loaded or type(plugin)~='table' or type(plugin.stockpiles_import)~='function' then
-     return reject('Native stockpile preset plugin unavailable')
-    end
-    importer=plugin.stockpiles_import;paths={}
-    for i,cat in ipairs(cats) do if (a.categories & (1 << (i-1)))~=0 then
-     paths[#paths+1]=dfhack.getHackPath()..'/data/stockpiles/cat_'..(cat=='sheet' and 'sheets' or cat)..'.dfstock'
-    end end
    end
   else
    if default(a,'changed_categories',0)~=0 or default(a,'barrels',-1)~=-1 or default(a,'bins',-1)~=-1 or
@@ -1286,15 +1276,9 @@ local function native_operation(r)
   -- The native helper has transferred ownership to DF. Initialization is one
   -- protected Lua call; a normal refusal removes only this newly created area.
   unknown_work=true
-  local initializing_presets=false
   local initialized,why=pcall(function()
    if a.kind==0 then
     local barrels,bins,wheelbarrows,links=b.storage.max_barrels,b.storage.max_bins,b.storage.max_wheelbarrows,b.stockpile_flag.use_links_only
-    initializing_presets=true
-    for _,path in ipairs(paths or {}) do
-     if importer(path,b.id,'enable','')~=true then error('Native stockpile preset failed',0) end
-    end
-    initializing_presets=false
     b.storage.max_barrels=default(a,'barrels',-1)>=0 and a.barrels or barrels
     b.storage.max_bins=default(a,'bins',-1)>=0 and a.bins or bins
     b.storage.max_wheelbarrows=default(a,'wheelbarrows',-1)>=0 and a.wheelbarrows or wheelbarrows
@@ -1319,7 +1303,7 @@ local function native_operation(r)
   if not initialized then
    local removed=invoke(r.remove_area,0,b)
    if removed then
-    local prefix=initializing_presets and 'New pile preset failed; new area removed: ' or 'Invalid new area settings; new area removed: '
+    local prefix='Invalid new area settings; new area removed: '
     return reject(prefix..tostring(why))
    end
    return reject('New area initialization failed; cleanup uncertain; inspect before retrying')
@@ -1393,22 +1377,9 @@ local function native_operation(r)
  end
  if op==3 then
   if expected==0 then return reject('Area revision required; inspect again') end
-  local importer,path
-  if a.preset~=19 then
-   local loaded,plugin=pcall(require,'plugins.stockpiles')
-   if not loaded or type(plugin)~='table' or type(plugin.stockpiles_import)~='function' then
-    return reject('Native stockpile preset plugin unavailable')
-   end
-   importer=plugin.stockpiles_import
-   local key=a.preset==1 and 'all' or 'cat_'..cats[a.preset-1]
-   if key=='cat_sheet' then key='cat_sheets' end
-   path=dfhack.getHackPath()..'/data/stockpiles/'..key..'.dfstock'
-  end
-  -- The transaction helper performs the raw-cap inventory itself, avoiding a
-  -- duplicate108-step layout payload. Its synchronous transaction restores all
-  -- settings on failure, containers and links-only on success. Opaque importer
-  -- work is reported separately, never fabricated as a read-budget step count.
-  local changed,problem,unknown=invoke(r.settings_preset,reply_reserve,b,a.preset,importer,path or '')
+  -- Native routines prepare owned settings before atomically publishing them.
+  -- Their synchronous work is separate from the paginated read budget.
+  local changed,problem,unknown=invoke(r.settings_preset,reply_reserve,b,a.preset)
   if changed or unknown then clear_lists() end
   if not changed then return reject(problem) end
   local after,why=observe(b,false)

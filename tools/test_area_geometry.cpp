@@ -136,32 +136,6 @@ TEST_CASE("classified settings validate membership before bounded native fills")
   CHECK(allFields==799);CHECK(10+282+108+107+allFields+17+154==1477);
 }
 
-TEST_CASE("preset vector transactions restore original buffers or commit replacement filters") {
-  std::vector<char> first{1,2,3},second(100000,7),unused{9};
-  const auto* firstBuffer=first.data();const auto* secondBuffer=second.data();
-  std::array<std::vector<char>*,3> fields{{&first,&second,nullptr}};
-  {
-    area::PresetVectors<std::vector<char>,3> guard(fields);
-    CHECK(first.empty());CHECK(second.empty());CHECK(unused==std::vector<char>{9});
-    first={4,5};second={6};
-  }
-  CHECK(first==std::vector<char>{1,2,3});CHECK(first.data()==firstBuffer);
-  CHECK(second.size()==100000);CHECK(second.data()==secondBuffer);CHECK(second.back()==7);
-  try {
-    area::PresetVectors<std::vector<char>,3> guard(fields);
-    first={8};throw 7;
-  } catch(int value) {CHECK(value==7);}
-  CHECK(first.data()==firstBuffer);CHECK(first==std::vector<char>{1,2,3});
-  {
-    area::PresetVectors<std::vector<char>,3> guard(fields);
-    first={4,5};second={6};guard.commit();
-  }
-  CHECK(first==std::vector<char>{4,5});CHECK(second==std::vector<char>{6});
-  // None commits cleared vectors, without traversing oversized stored tails.
-  {area::PresetVectors<std::vector<char>,3> guard(fields);guard.commit();}
-  CHECK(first.empty());CHECK(second.empty());CHECK(unused==std::vector<char>{9});
-}
-
 TEST_CASE("fixed area settings write only selected qualities and switches") {
   std::array<bool,7> quality{{false,true,false,true,false,true,false}};
   const std::array<uint8_t,7> members{{1,1,0,0,0,0,1}},allowed{{1,0,1,1,1,1,1}};

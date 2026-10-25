@@ -1,0 +1,1002 @@
+{
+  "provenance": {
+    "kind": "protected native category click and row comparison",
+    "df": "53.16 Steam 24557528",
+    "run": "build\\stockpile-presets-native-20261025-014925",
+    "script": "tools/smoke/stockpile_presets_native.lua",
+    "source": "df3d-areas-effect-0930081415",
+    "source_save_changed": false,
+    "simulation_advanced": false,
+    "comparison": "Wood preset, disable Wood flag while preserving populated filters, open Custom, predict disabled Wood selection, click Wood; compare all vectors/fixed settings and flags. Compare all 72 native row names/order/visibility with owned builder output.",
+    "row_probe_guards": [
+      "main interface bytes",
+      "native row values",
+      "source wood vector",
+      "RNG buffers"
+    ],
+    "omissions": [
+      "Nonempty search is not yet compared.",
+      "Other categories are not yet compared for activation/list behavior.",
+      "Gameplay category and list integration is pending.",
+      "UI pixel parity is not established by this capture."
+    ]
+  },
+  "activation": {
+    "flags": 8256,
+    "vectors": {
+      "ammo.mats": {
+        "count": 313,
+        "enabled": 0,
+        "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+      },
+      "ammo.other_mats": {
+        "count": 2,
+        "enabled": 0,
+        "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+      },
+      "ammo.type": {
+        "count": 11,
+        "enabled": 0,
+        "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+      },
+      "animals.enabled": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.body": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.color": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.feet": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.hands": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.head": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.legs": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "armor.shield": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bars_blocks.bars_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bars_blocks.bars_other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bars_blocks.blocks_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bars_blocks.blocks_other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.cloth_metal": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.cloth_plant": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.cloth_silk": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.cloth_yarn": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.color": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.thread_metal": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.thread_plant": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.thread_silk": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cloth.thread_yarn": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "coins.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "corpses.corpses": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "finished_goods.color": {
+        "count": 116,
+        "enabled": 116,
+        "sha256": "beeda2b1db7766647d527ce0252decc2ab77a358946f67b0444f23fadd931fac"
+      },
+      "finished_goods.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "finished_goods.other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "finished_goods.type": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.cheese_animal": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.cheese_plant": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.drink_animal": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.drink_plant": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.egg": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.fish": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.glob": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.glob_paste": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.glob_pressed": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.leaves": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.liquid_animal": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.liquid_misc": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.liquid_plant": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.meat": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.plants": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.powder_creature": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.powder_plant": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.seeds": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "food.unprepared_fish": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "furniture.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "furniture.other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "furniture.type": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "gems.cut_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "gems.cut_other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "gems.rough_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "gems.rough_other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "leather.color": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "leather.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ore.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "refuse.body_parts": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.bones": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.corpses": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.hair": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.horns": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.shells": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.skulls": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.teeth": {
+        "count": 1131,
+        "enabled": 1131,
+        "sha256": "fde6766a1558b02d77d9e77da0ad73466803dcd5587a51a8fd1df2a58b1a01cc"
+      },
+      "refuse.type": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "sheet.paper": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "sheet.parchment": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stone.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "weapons.mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "weapons.other_mats": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "weapons.trapcomp_type": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "weapons.weapon_type": {
+        "count": 0,
+        "enabled": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "wood.mats": {
+        "count": 225,
+        "enabled": 0,
+        "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+      }
+    },
+    "fixed": {
+      "ammo.quality_core": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ammo.quality_total": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "animals.empty_cages": [
+        true
+      ],
+      "animals.empty_traps": [
+        true
+      ],
+      "armor.dyed": [
+        true
+      ],
+      "armor.quality_core": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "armor.quality_total": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "armor.undyed": [
+        true
+      ],
+      "armor.unusable": [
+        true
+      ],
+      "armor.usable": [
+        true
+      ],
+      "cloth.dyed": [
+        true
+      ],
+      "cloth.undyed": [
+        true
+      ],
+      "finished_goods.dyed": [
+        true
+      ],
+      "finished_goods.quality_core": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "finished_goods.quality_total": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "finished_goods.undyed": [
+        true
+      ],
+      "food.prepared_meals": [
+        true
+      ],
+      "furniture.quality_core": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "furniture.quality_total": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "leather.dyed": [
+        true
+      ],
+      "leather.undyed": [
+        true
+      ],
+      "misc.allow_inorganic": [
+        true
+      ],
+      "misc.allow_organic": [
+        true
+      ],
+      "refuse.fresh_raw_hide": [
+        true
+      ],
+      "refuse.rotten_raw_hide": [
+        true
+      ],
+      "weapons.quality_core": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "weapons.quality_total": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "weapons.unusable": [
+        true
+      ],
+      "weapons.usable": [
+        true
+      ]
+    }
+  },
+  "rows": [
+    {
+      "enabled": false,
+      "index": 132,
+      "name": "Abaca trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 200,
+      "name": "Acacias",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 217,
+      "name": "Alders",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 159,
+      "name": "Almond trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 160,
+      "name": "Apple trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 161,
+      "name": "Apricot trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 219,
+      "name": "Ashes",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 143,
+      "name": "Avocado trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 133,
+      "name": "Banana trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 162,
+      "name": "Bayberry trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 218,
+      "name": "Birches",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 148,
+      "name": "Bitter orange trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 205,
+      "name": "Black-caps",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 211,
+      "name": "Blood thorn",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 223,
+      "name": "Cacao trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 220,
+      "name": "Candlenuts",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 134,
+      "name": "Carambola trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 135,
+      "name": "Cashew trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 197,
+      "name": "Cedars",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 163,
+      "name": "Cherry trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 216,
+      "name": "Chestnuts",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 146,
+      "name": "Citron trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 224,
+      "name": "Coconut palms",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 136,
+      "name": "Coffee trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 153,
+      "name": "Custard-apple trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 154,
+      "name": "Date palms",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 151,
+      "name": "Desert lime trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 137,
+      "name": "Durian trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 213,
+      "name": "Feather trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 149,
+      "name": "Finger lime trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 208,
+      "name": "Fungiwoods",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 164,
+      "name": "Ginkgo trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 212,
+      "name": "Glumprongs",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 207,
+      "name": "Goblin-caps",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 138,
+      "name": "Guava trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 165,
+      "name": "Hazel trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 214,
+      "name": "Highwoods",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 201,
+      "name": "Kapoks",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 152,
+      "name": "Kumquat trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 215,
+      "name": "Larches",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 144,
+      "name": "Lime trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 155,
+      "name": "Lychee trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 156,
+      "name": "Macadamia trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 199,
+      "name": "Mahoganies",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 221,
+      "name": "Mango trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 194,
+      "name": "Mangroves",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 202,
+      "name": "Maples",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 206,
+      "name": "Nether-caps",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 198,
+      "name": "Oaks",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 157,
+      "name": "Olive trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 147,
+      "name": "Orange trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 139,
+      "name": "Papaya trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 140,
+      "name": "Paradise nut trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 166,
+      "name": "Peach trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 167,
+      "name": "Pear trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 168,
+      "name": "Pecan trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 169,
+      "name": "Persimmon trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 196,
+      "name": "Pines",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 170,
+      "name": "Plum trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 158,
+      "name": "Pomegranate trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 145,
+      "name": "Pomelo trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 141,
+      "name": "Rambutan trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 150,
+      "name": "Round lime trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 222,
+      "name": "Rubber trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 195,
+      "name": "Saguaros",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 171,
+      "name": "Sand pear trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 210,
+      "name": "Spore trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 142,
+      "name": "Tea trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 204,
+      "name": "Tower-caps",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 209,
+      "name": "Tunnel tubes",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 172,
+      "name": "Walnut trees",
+      "visible": true
+    },
+    {
+      "enabled": false,
+      "index": 203,
+      "name": "Willows",
+      "visible": true
+    }
+  ]
+}

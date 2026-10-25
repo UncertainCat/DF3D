@@ -1553,7 +1553,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             }
             out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
-        if(parameters[0]=="stockpile-preset-read") {
+        if(parameters[0]=="stockpile-wood-read") {
+          if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
+          int32_t id{};const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          return df3d_management::printStockpileWoodRows(out,id,parameters.size()==3?parameters[2]:"")?CR_OK:CR_FAILURE;
+        }
+        if(parameters[0]=="stockpile-preset-read" || parameters[0]=="stockpile-category-read") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t values[2]{};
           for(size_t i=0;i<2;++i) {
@@ -1562,7 +1570,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          return df3d_management::printStockpilePreset(out,values[0],values[1])?CR_OK:CR_FAILURE;
+          const bool ok=parameters[0]=="stockpile-category-read"?
+              df3d_management::printStockpileCategory(out,values[0],uint32_t(values[1])):
+              df3d_management::printStockpilePreset(out,values[0],values[1]);
+          return ok?CR_OK:CR_FAILURE;
         }
         if(parameters[0]=="tile-description-read") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
@@ -2152,6 +2163,8 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d site-support-read <family> <x> <y> <z> (read-only support, not full placement)\n"
         "df3d bars-connections-read <x> <y> <z> (read-only native vertical-bar adjacency)\n"
         "df3d stockpile-preset-read <building-id> <preset1..19> (read-only owned native settings)\n"
+        "df3d stockpile-category-read <building-id> <category-bit> (read-only native activation)\n"
+        "df3d stockpile-wood-read <building-id> [filter] (read-only native Wood rows)\n"
         "df3d door-support-read <x> <y> <z> (read-only wall support, not full placement)\n"
         "df3d bed-choices-read <item-id> <descriptor-color-count> (owned-state appearance diagnostic)\n"
         "df3d material-distances-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"

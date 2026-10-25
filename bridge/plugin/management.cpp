@@ -897,46 +897,15 @@ uint16_t areaSettingPartition(AreaSettingRule rule,size_t index) {
     default:return 0;
   }
 }
-class AreaPresetGuard {
-  df::building_stockpilest* pile_;
-  decltype(areaFixedSettings(nullptr)) fixed_;
-  std::array<std::array<bool,7>,29> values_{};
-  uint32_t flags_,stockpileFlags_;
-  int16_t barrels_,bins_,wheelbarrows_;
-  bool committed_=false;
-  df3d_area::PresetVectors<std::vector<char>,78> vectors_;
-  static auto vectorTargets(df::building_stockpilest* pile) {
-    std::array<std::vector<char>*,78> targets{};size_t index=0;
-    for(const auto& entry:areaSettingVectors(pile)) {
-      if(std::string_view(entry.first)!="ore.mats")targets[index]=entry.second;
-      ++index;
-    }
-    return targets;
-  }
-public:
-  explicit AreaPresetGuard(df::building_stockpilest* pile) noexcept
-      :pile_(pile),fixed_(areaFixedSettings(pile)),flags_(pile->settings.flags.whole),
-       stockpileFlags_(pile->stockpile_flag.whole),barrels_(pile->storage.max_barrels),
-       bins_(pile->storage.max_bins),wheelbarrows_(pile->storage.max_wheelbarrows),vectors_(vectorTargets(pile)) {
-    for(size_t i=0;i<fixed_.size();++i)std::copy_n(fixed_[i].values,fixed_[i].count,values_[i].begin());
-  }
-  ~AreaPresetGuard() {
-    pile_->storage.max_barrels=barrels_;pile_->storage.max_bins=bins_;pile_->storage.max_wheelbarrows=wheelbarrows_;
-    if(!committed_) {
-      pile_->settings.flags.whole=flags_;pile_->stockpile_flag.whole=stockpileFlags_;
-      for(size_t i=0;i<fixed_.size();++i)std::copy_n(values_[i].begin(),fixed_[i].count,fixed_[i].values);
-    } else {
-      // Preserve only links-only on success; import owns filter/category state.
-      decltype(pile_->stockpile_flag) original{};original.whole=stockpileFlags_;
-      pile_->stockpile_flag.bits.use_links_only=original.bits.use_links_only;
-    }
-  }
-  void clear() noexcept {
-    pile_->settings.flags.whole=0;
-    for(const auto& entry:fixed_)std::fill_n(entry.values,entry.count,false);
-  }
-  void commit() noexcept {vectors_.commit();committed_=true;}
-};
+// Bound both current raws and stored vectors before copying owned native settings.
+// A changed raw inventory can leave larger old vectors in a loaded stockpile.
+bool areaPresetInventoryFits(df::building_stockpilest* pile) {
+  std::array<size_t,78> raw{},stored{};size_t index=0;
+  for(const auto& entry:areaSettingRawCounts())raw[index++]=entry.second;
+  index=0;
+  for(const auto& entry:areaSettingVectors(pile))stored[index++]=entry.second->size();
+  return df3d_area::settingsRawTotal(raw).valid && df3d_area::settingsRawTotal(stored).valid;
+}
 int areaSettingsPreset(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1,bool unknownWork=false) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);
@@ -946,39 +915,26 @@ int areaSettingsPreset(lua_State* L) {
   if(!pile || !df::global::world)return fail("Area no longer exists");
   if(!lua_isinteger(L,2) || lua_tointeger(L,2)<1 || lua_tointeger(L,2)>19)
     return fail("Invalid stockpile preset");
-  const bool none=lua_tointeger(L,2)==19;
-  if(!none && (!lua_isfunction(L,3) || lua_type(L,4)!=LUA_TSTRING))
-    return fail("Native stockpile preset plugin unavailable");
-  std::array<size_t,78> counts{};size_t index=0;
-  for(const auto& entry:areaSettingRawCounts())counts[index++]=entry.second;
-  const auto total=df3d_area::settingsRawTotal(counts);
-  if(!total.valid)return fail("Stockpile settings exceed 65,536 entries",79);
-  // Allocate Lua call slots and intern literals before taking buffers out of
-  // native settings. pcall contains Lua errors; guard destruction precedes any
-  // allocating reply construction, including failed import responses.
-  if(!none) {
-    luaL_checkstack(L,5,"stockpile preset call");
-    lua_pushvalue(L,3);lua_pushvalue(L,4);lua_pushinteger(L,pile->id);
-    lua_pushliteral(L,"set");lua_pushliteral(L,"");
-  }
-  bool imported=false;
+  if(!areaPresetInventoryFits(pile))return fail("Stockpile settings exceed 65,536 entries",158);
+  bool applied=false;
   try {
-    AreaPresetGuard guard(pile);
-    if(none) {guard.clear();imported=true;}
-    else {
-      const int callStatus=lua_pcall(L,4,1,0);
-      imported=callStatus==LUA_OK && lua_type(L,-1)==LUA_TBOOLEAN && lua_toboolean(L,-1);
-      lua_pop(L,1);
+    const auto preset=int(lua_tointeger(L,2));
+    auto settings=df3d_area::nativeStockpilePreset(pile->settings,preset);
+    const auto containers=df3d_area::nativeStockpilePresetContainers(*pile,preset);
+    if(settings && containers) {
+      // All allocation and native work precede this nonthrowing publication.
+      // Links, identity and all other building state retain their ownership.
+      static_assert(std::is_nothrow_swappable_v<df::stockpile_settings>);
+      std::swap(pile->settings,*settings);
+      pile->storage.max_barrels=(*containers)[0];
+      pile->storage.max_bins=(*containers)[1];
+      pile->storage.max_wheelbarrows=(*containers)[2];
+      applied=true;
     }
-    if(imported)guard.commit();
-  } catch(...) {
-    lua_settop(L,5);return fail("Native stockpile preset failed; previous settings restored",79,true);
-  }
-  if(!imported)return fail("Native stockpile preset failed; previous settings restored",79,true);
+  } catch(...) {}
+  if(!applied)return fail("Native stockpile preset failed; previous settings restored",158,true);
   mutated=true;
-  // Count the instrumented inventory only. The transaction/native importer is
-  // opaque synchronous work, not a fabricated estimate charged to read jobs.
-  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",79);
+  lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",158);
   field(L,"work_unknown",true);return 1;
 }
 int areaLocationSet(lua_State* L) {
@@ -1239,9 +1195,9 @@ int areaCreate(lua_State* L) {
     if(pile) {
       auto* stock=virtual_cast<df::building_stockpilest>(b);
       if(!stock)return "Native area allocation type changed";
-      stock->settings.flags.whole=0;
-      for(const auto& entry:areaFixedSettings(stock))std::fill_n(entry.values,entry.count,false);
-      for(const auto& entry:areaSettingVectors(stock))entry.second->clear();
+      auto settings=df3d_area::nativeStockpileInitialSettings(a->categories());
+      if(!settings)return ""; // Unsupported native service; no invented gameplay refusal.
+      stock->settings=std::move(*settings);
     }
     unknownWork=true;
     if(!Buildings::setSize(b,df::coord2d(bounds.width,bounds.height)))return "Native area construction rejected: cannot place at this position";
@@ -2684,20 +2640,41 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
-bool printStockpilePreset(color_ostream& out,int32_t id,int32_t preset) {
+bool printStockpileWoodRows(color_ostream& out,int32_t id,const std::string& filter) {
+  auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
+  if(!pile || !areaPresetInventoryFits(pile))return false;
+  try {
+    const auto rows=df3d_area::nativeStockpileWoodRows(pile->settings,filter);
+    if(!rows)return false;
+    Json::Value result(Json::arrayValue);
+    for(const auto& row:*rows) {
+      Json::Value value(Json::objectValue);
+      value["index"]=Json::UInt64(row.index);value["name"]=DF2UTF(row.name);
+      value["enabled"]=row.enabled;value["visible"]=row.visible;result.append(value);
+    }
+    out.print("{}",Json::FastWriter().write(result));return true;
+  } catch(...) {return false;}
+}
+static bool printStockpileSettings(color_ostream& out,int32_t id,int32_t choice,bool category) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !df::global::world)return false;
-  std::array<size_t,78> counts{};size_t index=0;
-  for(const auto& entry:areaSettingRawCounts())counts[index++]=entry.second;
-  if(!df3d_area::settingsRawTotal(counts).valid)return false;
+  if(!areaPresetInventoryFits(pile))return false;
   try {
-    auto settings=df3d_area::nativeStockpilePreset(pile->settings,preset);
+    auto settings=category?df3d_area::nativeStockpileCategory(pile->settings,uint32_t(choice)):
+        df3d_area::nativeStockpilePreset(pile->settings,choice);
     if(!settings)return false;
     std::unique_ptr<df::building_stockpilest> scratch(df::allocate<df::building_stockpilest>());
     if(!scratch)return false;
     scratch->settings=std::move(*settings);
     Json::Value result(Json::objectValue);
     result["flags"]=scratch->settings.flags.whole;
+    if(!category) {
+      const auto containers=df3d_area::nativeStockpilePresetContainers(*pile,choice);
+      if(!containers)return false;
+      result["storage"]["barrels"]=(*containers)[0];
+      result["storage"]["bins"]=(*containers)[1];
+      result["storage"]["wheelbarrows"]=(*containers)[2];
+    }
     for(const auto& entry:areaSettingVectors(scratch.get())) {
       Json::Value values(Json::arrayValue);
       for(const auto value:*entry.second)values.append(int(value));
@@ -2710,6 +2687,12 @@ bool printStockpilePreset(color_ostream& out,int32_t id,int32_t preset) {
     }
     out.print("{}",Json::FastWriter().write(result));return true;
   } catch(...) {return false;}
+}
+bool printStockpilePreset(color_ostream& out,int32_t id,int32_t preset) {
+  return printStockpileSettings(out,id,preset,false);
+}
+bool printStockpileCategory(color_ostream& out,int32_t id,uint32_t category) {
+  return printStockpileSettings(out,id,int32_t(category),true);
 }
 bool printMaterialRecipe(color_ostream& out,int32_t type,int32_t subtype,bool collect,bool cold_cache,int32_t custom,int32_t plate_flags,int32_t eligible_tiles) {
   auto* L=Core::getInstance().getLuaState();const int top=lua_gettop(L);

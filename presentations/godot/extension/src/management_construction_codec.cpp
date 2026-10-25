@@ -380,7 +380,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
     error=String("Wrong area field type: ")+key;return false;
   };
   if(!typed(data,"list_key",Variant::STRING) || !typed(data,"row_key",Variant::STRING) ||
-      !typed(data,"sort_descending",Variant::BOOL) || !typed(data,"spans",Variant::ARRAY) ||
+      !typed(data,"category_opening",Variant::BOOL) || !typed(data,"sort_descending",Variant::BOOL) || !typed(data,"spans",Variant::ARRAY) ||
       !typed(data,"zone_settings",Variant::DICTIONARY) || !typed(data,"paint_preview",Variant::DICTIONARY))return false;
   if(data.has("paint_preview")) {
     const Dictionary preview=data["paint_preview"];
@@ -462,6 +462,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
     if(size_t(utf.length())>limit)valid=false;
     return std::string(utf.get_data(),size_t(utf.length()));
   };
+  a.categoryOpening=data.get("category_opening",false);
   a.query=text("query",128);a.listKey=text("list_key",64);a.rowKey=text("row_key",64);a.name=text("name",512);
   a.scope=uint8_t(n("scope",0,0,4));a.value=uint8_t(n("value",0,0,a.operation==wm::AreaOperation::LocationAccess?3:2));a.preset=uint8_t(n("preset",0,0,19));
   a.paintMode=uint8_t(n("paint_mode",0,0,3));a.paintZ=int16_t(n("paint_z",-1,-1,INT16_MAX));

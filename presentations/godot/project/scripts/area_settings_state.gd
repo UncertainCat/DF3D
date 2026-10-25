@@ -12,6 +12,7 @@ var receipts: Array = [{},{},{}]
 var category := ""
 var subcategory := ""
 var leaf := ""
+var category_opening := false
 var query := ""
 var search_text := ""
 var search_delay := -1.0
@@ -28,7 +29,7 @@ var restore_counts: Array = [0,0,0]
 
 func clear() -> void:
 	area = {}; rows = [[],[],[]]; receipts = [{},{},{}]
-	category = ""; subcategory = ""; leaf = ""; query = ""
+	category = ""; subcategory = ""; leaf = ""; query = ""; category_opening = false
 	search_text = ""; search_delay = -1
 	pending = {}; delay = -1; failed = false; mutating = false
 	refresh_delay = 1.0
@@ -40,6 +41,7 @@ func open(value: Dictionary, keep_navigation := false) -> void:
 	var old_category := category if keep_navigation else ""
 	var old_subcategory := subcategory if keep_navigation else ""
 	var old_query := search_text if keep_navigation else ""
+	var old_opening := category_opening if keep_navigation else false
 	if keep_navigation and int(value.get("id",-1)) == int(area.get("id",-2)):
 		# Keep disabled rows in place until each refreshed column has regained its
 		# loaded depth. Never temporarily shrink a scrolled list to its first page.
@@ -51,6 +53,7 @@ func open(value: Dictionary, keep_navigation := false) -> void:
 		clear()
 	area = value.duplicate(true)
 	category = old_category; subcategory = old_subcategory; query = old_query
+	category_opening = old_opening
 	search_text = old_query
 	if not keep_navigation:
 		# Native Custom opens Ammo/Type and activates Ammo even when every flag
@@ -76,6 +79,7 @@ func reset_sublist() -> void:
 	# Applied only after an accepted native global All/None. This is a navigation
 	# reset, so do not restore the old sublist's rows or loaded page depth.
 	subcategory = ""; leaf = ""
+	category_opening = category == "food"
 	rows[1] = []; rows[2] = []; receipts[1] = {}; receipts[2] = {}
 
 func busy() -> bool:
@@ -87,6 +91,7 @@ func read(column: int, key: String, cursor := 0) -> void:
 	pending = {"action":C.ManagementAction.AreaInspect,"operation":C.AreaOperation.SettingsPage,
 		"id":int(area.id),"kind":0,"expected_revision":int(area.revision),"list_key":key,
 		"query":query if column == 2 else "","cursor":cursor}
+	if column == 2 and key == "food/meat" and category_opening: pending.category_opening = true
 	if column == 1 and key in ["coins","corpses","wood"]: pending.query = query
 	if cursor != 0: pending.expected_list_revision = int(receipts[column].get("list_revision",0))
 	delay = -1
@@ -180,6 +185,7 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 			if int(row.kind) != 1: continue
 			if first.is_empty(): first = str(row.key)
 			if str(row.key) == category: found = true
+		if not found: category_opening = first == "food"
 		category = category if found else first
 		if not category.is_empty(): read(1,category)
 	elif column == 1:
@@ -204,11 +210,14 @@ func select(column: int, row: Dictionary) -> void:
 		edit(column,1,1 if int(row.state) == 2 else 2,str(row.key)); return
 	if column == 0:
 		category = str(row.key); subcategory = ""; leaf = ""
+		category_opening = category == "food"
 		rows[1] = []; rows[2] = []; receipts[1] = {}; receipts[2] = {}
 		# Native category-label selection enables this flag without filling its
 		# filters. Keep this explicit write separate from automatic page reads.
 		if not activate_category(): read(1,category)
 	elif column == 1:
+		if str(row.key) == subcategory: return
+		category_opening = false
 		subcategory = str(row.key); leaf = subcategory
 		rows[2] = []; receipts[2] = {}; read(2,leaf)
 

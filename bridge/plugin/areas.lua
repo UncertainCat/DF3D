@@ -75,7 +75,7 @@ local function validate_operation(r,a)
   {'deity_kind',-1,{8}},{'deity_id',-1,{8}},{'zone_settings',false,{9}},{'unit_id',-1,{11}},
   {'assign',-1,{11}},{'squad_id',-1,{12}},{'squad_use',-1,{12}},{'organic',-1,{13}},
   {'inorganic',-1,{13}},{'candidate_kind',0,{14}},{'sort',0,{14}},{'sort_descending',false,{14}},
-  {'occupation_id',-1,{}}}
+  {'occupation_id',-1,{}},{'category_opening',false,{1}}}
  for _,entry in ipairs(foreign) do
   local v=default(a,entry[1],entry[2]);local present=v~=entry[2]
   if entry[1]=='spans' then present=v~=false and (type(v)~='table' or next(v)~=nil)
@@ -102,6 +102,8 @@ local function validate_operation(r,a)
   local v=default(a,key,'');local cap=(key=='name' and 512) or (key=='query' and 128) or 64
   if type(v)~='string' or #v>cap then return key=='name' and 'area name too long' or 'area key too long' end
  end
+ if type(default(a,'category_opening',false))~='boolean' or
+  default(a,'category_opening',false) and default(a,'list_key','')~='food/meat' then return 'invalid settings opening context' end
  if op==2 then
   local scope,value=default(a,'scope',0),default(a,'value',0)
   if not integer(scope) or scope<1 or scope>4 or not integer(value) or value<1 or value>2 or
@@ -879,6 +881,7 @@ local function native_settings_page(r,a,b,area_revision,layout,rows)
  for _,text in ipairs{key,default(a,'query','')} do
   hash=hash_integer(hash,#text);for i=1,#text do hash=hash_integer(hash,text:byte(i)) end
  end
+ hash=hash_integer(hash,default(a,'category_opening',false) and 1 or 0)
  local visible={};local identities={}
  for _,row in ipairs(rows) do
   local identity=native_setting_identity(key,row)
@@ -1310,6 +1313,7 @@ local function native_operation(r)
   local layout,problem=invoke(r.settings_layout,0,b)
   if not layout then return reject(problem) end
   local mode=native_setting_modes[default(a,'list_key','')]
+  if default(a,'category_opening',false) then mode=1 end
   local native_rows
   local native_leaf_edit=mode and setting_leaves[a.list_key].source~='quality' and (a.scope==1 or a.scope==2)
   if mode and (op==1 or native_leaf_edit or a.scope==2 and default(a,'query','')~='') then

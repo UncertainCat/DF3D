@@ -301,9 +301,29 @@ across full, one-entry, empty and stale vectors and three search queries. All
 row identities, labels, order, selection and visibility matched; probe calls
 preserved source settings and native interface bytes. Owned DF closed without
 saving and source hashes stayed unchanged. Bounded evidence is retained in
-`native_stockpile_filters.json.food_category_order`. Gameplay still needs explicit
-navigation-context transport and receipt handling before this initial-order gap
-is resolved; other category opening contexts also require verification.
+`native_stockpile_filters.json.food_category_order`.
+
+Gameplay SettingsPage requests carry additive `category_opening` context for
+`food/meat`. Missing/false retains explicit leaf ordering for older requests and
+recordings; schema/version56 is unchanged. Validators reject true on unrelated
+lists or writes. The bridge dispatches native mode1 for category entry and mode2
+for explicit leaf selection, and hashes the context into continuation receipts,
+including empty results. Presentation navigation preserves context across paging,
+search, refresh and edits; selecting another leaf clears it. The already selected
+leaf is a no-op. Clicking Food again or accepting global All/None restores parent
+context. Protected `build/stockpile-order-navigation-native-20261025-065911`
+verified these eight native transitions: parent and leaf orders differ at89
+identically named row positions in this fixture. Category All preserves leaf
+order. Source hashes were unchanged and owned DF closed unsaved. Other category
+opening contexts and full rendered workflows still require verification.
+Focused command run `build/stockpile-initialization-20261025-070119` passed42
+native observations: six complete paginated reads (three in each context), three
+cross-context receipt refusals and nine leaf edits, plus creation, activation and
+removal. The full12328 Meat list was exercised. Diagnostics were clean, source
+hashes unchanged and owned DF closed without saving. Offline
+`build/qa/stockpile-parent-gameplay-final` passed root CTest, the wire contract,
+adapter, settings state and controller checks. Older requests retain false context;
+no migration invents navigation history absent from a recording.
 
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2

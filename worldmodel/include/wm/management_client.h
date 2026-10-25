@@ -79,6 +79,7 @@ struct AreaRequest {
   int64_t countGeneration=0;
   std::optional<AreaPaintPreview> paintPreview;
   int32_t locationSiteId=-1,occupationId=-1;
+  bool categoryOpening=false;
 };
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;

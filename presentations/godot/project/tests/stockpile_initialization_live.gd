@@ -178,6 +178,15 @@ func native_filter_lists(pile: int) -> void:
 			if stopped: return
 			if query.is_empty() and not page.settings.is_empty(): first_row = int(page.settings[0].index)
 			await native("filter_rows",{"id":pile,"mode":mode,"list_key":key,"query":query,"rows":page.settings})
+			if mode == 2:
+				await native("guard_before")
+				var parent_page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query,"category_opening":true},"settings")
+				if stopped: return
+				await native("guard_after")
+				await native("filter_rows",{"id":pile,"mode":1,"list_key":key,"query":query,"rows":parent_page.settings})
+				if not check(parent_page.list_revision != page.list_revision,"opening context must change receipt even for an empty search result"): return
+				await refusal({"action":9,"id":pile,"operation":1,"list_key":key,"query":query,"category_opening":true,"cursor":128,"expected_list_revision":page.list_revision},"List changed; refresh")
+
 			for value in [1,2]:
 				await native("filter_before",{"id":pile,"mode":mode,"field":field,"query":query,"value":value})
 				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":query})

@@ -40843,11 +40843,80 @@
     ],
     "comparisons": "Exact row field/index pointer identity, labels/order, selection and visibility against actual category/leaf selections; complete source settings and native interface bytes preserved by probe",
     "native_entry": "35fd70 mode1, flag0; recursively builds mode2 at360710 then native parent sort/filter at366fd2",
-    "scope": "Owned provider/diagnostic only. Gameplay currently uses explicit leaf mode2.",
+    "scope": "Owned native Food parent service and gameplay SettingsPage category_opening context",
     "omissions": [
-      "Gameplay navigation-context request/receipt integration",
       "Other category opening versus leaf order",
       "Full rendered workflow acceptance"
-    ]
+    ],
+    "navigation_acceptance": {
+      "run": "build/stockpile-order-navigation-native-20261025-065911",
+      "status": "passed",
+      "records": [
+        {
+          "leaf_differences": 89,
+          "name": "category_entry",
+          "parent_differences": 0,
+          "query": ""
+        },
+        {
+          "leaf_differences": 89,
+          "name": "same_leaf",
+          "parent_differences": 0,
+          "query": ""
+        },
+        {
+          "leaf_differences": 0,
+          "name": "explicit_leaf",
+          "parent_differences": 89,
+          "query": ""
+        },
+        {
+          "leaf_differences": 89,
+          "name": "same_category",
+          "parent_differences": 0,
+          "query": ""
+        },
+        {
+          "leaf_differences": 0,
+          "name": "search_after_leaf",
+          "parent_differences": 89,
+          "query": "MEAT"
+        },
+        {
+          "leaf_differences": 0,
+          "name": "category_all",
+          "parent_differences": 89,
+          "query": "MEAT"
+        },
+        {
+          "leaf_differences": 89,
+          "name": "global_all",
+          "parent_differences": 0,
+          "query": "MEAT"
+        },
+        {
+          "leaf_differences": 89,
+          "name": "global_none",
+          "parent_differences": 0,
+          "query": "MEAT"
+        }
+      ],
+      "result_sha256": "4c83ad8167241222309a5fef71c2806b60390724270365f008d98a08d0b3a5df",
+      "source_save": "unchanged",
+      "owned_df": "closed without saving"
+    },
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-070119",
+      "status": "passed",
+      "native_observations": 42,
+      "page_reads": 6,
+      "parent_page_reads": 3,
+      "context_continuation_refusals": 3,
+      "leaf_edits": 9,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "Full12328 Meat pagination in parent and leaf contexts, three searches, rejection of opposite-context continuation receipts, existing filtered/individual/short/empty edits, creation/activation/removal"
+    }
   }
 }

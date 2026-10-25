@@ -9,6 +9,21 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("stockpile category opening context is read-only and scoped to the verified leaf") {
+  for(int mode=0;mode<5;++mode) {
+    wm::ManagementRequest q;q.action=wm::ManagementAction::AreaInspect;
+    q.area.operation=wm::AreaOperation::SettingsPage;q.area.id=39;
+    q.area.listKey="food/meat";q.area.categoryOpening=mode!=0;
+    if(mode==2)q.area.listKey="food/fish";
+    if(mode==3){q.action=wm::ManagementAction::AreaUpdate;q.area.operation=wm::AreaOperation::SettingsSet;q.area.scope=2;q.area.value=2;}
+    if(mode==4)q.area.listKey="";
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,1,2,3);
+    const auto* r=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    REQUIRE(r->area());CHECK(r->area()->category_opening()==(mode!=0));
+    CHECK(wire::validateConstructionRequest(*r).has_value()==(mode>=2));
+  }
+}
+
 TEST_CASE("world hover preserves native prose and rejects malformed tile replies") {
   for(int mode=0;mode<5;++mode) {
     flatbuffers::FlatBufferBuilder b;

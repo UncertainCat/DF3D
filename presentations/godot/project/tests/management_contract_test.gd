@@ -662,7 +662,7 @@ func test_area_operations() -> void:
 			request[key] = bad
 			assert(world.area_request(request) == 0)
 			assert(world.last_error() == "Wrong management field type: " + key)
-	for pair in [["list_key",1],["row_key",1],["sort_descending",1],["spans",{}],["zone_settings",[]]]:
+	for pair in [["list_key",1],["row_key",1],["category_opening",1],["sort_descending",1],["spans",{}],["zone_settings",[]]]:
 		var request := {"action":A.AreaInspect,"id":7}
 		request[pair[0]] = pair[1]
 		assert(world.area_request(request) == 0)
@@ -684,6 +684,7 @@ func test_area_operations() -> void:
 			"expected_revision":9223372036854775807,"query":"native","cursor":17}
 		if operation in [1,6,10,14]: request.expected_list_revision = 9223372036854775807
 		if operation in [1,2]: request.list_key = "food/meat"
+		if operation == 1: request.category_opening = true
 		if operation == 2: request.merge({"row_key":"material:4","scope":1,"value":2})
 		if operation == 3: request.preset = 19
 		if operation == 4: request.name = "Native name"

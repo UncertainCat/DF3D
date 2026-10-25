@@ -1080,6 +1080,7 @@ def main():
      return {ok=true,steps=158,work_unknown=true}
     end
     function settings_rows(b,mode,query,budget)
+     last_settings_mode=mode;if mode==1 then mode=2 end
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
      local organic_modes={
@@ -1475,6 +1476,14 @@ def main():
     """)
     meat_page, _ = setting_page("food/meat")
     meat_revision = meat_page["list_revision"]
+    parent_page, _ = setting_page("food/meat", category_opening=True)
+    assert parent_page["ok"] and lua.globals().last_settings_mode == 1
+    assert parent_page["list_revision"] != meat_revision
+    assert not setting_page("food/meat", category_opening=True, cursor=128, expected_list_revision=meat_revision)[0]["ok"]
+    assert setting_page("food/meat", category_opening=True, cursor=128, expected_list_revision=parent_page["list_revision"])[0]["ok"]
+    assert not setting_page("food/fish", category_opening=True)[0]["ok"]
+    assert not setting_page("food/meat", category_opening=1)[0]["ok"]
+
     meat_indices = [row["index"] for row in meat_page["settings"].values()]
     while meat_page["next_cursor"]:
         meat_page, _ = setting_page("food/meat", cursor=meat_page["next_cursor"], expected_list_revision=meat_revision)

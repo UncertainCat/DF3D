@@ -2220,7 +2220,7 @@ void run(color_ostream& out) {
     field(L,"links_only",a->links_only());field(L,"active",a->active());field(L,"owner_id",a->owner_id());
     field(L,"link_id",a->link_id());field(L,"give",a->give());field(L,"unlink",a->unlink());
     field(L,"query",a->query()?a->query()->str():"");field(L,"cursor",a->cursor());
-    field(L,"operation",int(a->operation()));field(L,"expected_revision",a->expected_revision());field(L,"expected_list_revision",a->expected_list_revision());
+    field(L,"operation",int(a->operation()));field(L,"expected_revision",a->expected_revision());field(L,"expected_list_revision",a->expected_list_revision());field(L,"category_opening",a->category_opening());
     field(L,"list_key",a->list_key()?a->list_key()->str():"");field(L,"row_key",a->row_key()?a->row_key()->str():"");
     field(L,"scope",a->scope());field(L,"value",a->value());field(L,"preset",a->preset());field(L,"name",a->name()?a->name()->str():"");
     field(L,"paint_mode",a->paint_mode());field(L,"paint_z",a->paint_z());

@@ -54,7 +54,7 @@ void verifyAreaOperation(const m::AreaRequest& q) {
   require(q.id()==7 && q.owner_id()==-2 && q.barrels()==-1 && q.active()==-1,"area operation sentinels");
   require(q.expected_list_revision()==uint64_t(op==1 || op==6 || op==10 || op==14?INT64_MAX:0),"area list revision");
   switch(op) {
-    case 1: require(q.list_key()->str()=="food/meat","area settings page");break;
+    case 1: require(q.list_key()->str()=="food/meat" && q.category_opening(),"area settings page opening context");break;
     case 2: require(q.list_key()->str()=="food/meat" && q.row_key()->str()=="material:4" && q.scope()==1 && q.value()==2,"area settings set");break;
     case 3: require(q.preset()==19,"area preset");break;
     case 4: require(q.name()->str()=="Native name","area rename");break;

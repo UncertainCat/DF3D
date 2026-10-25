@@ -522,6 +522,38 @@ require('gui.script').start(function()
   end
   values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
+  -- Navigation context controls the native equal-name ordering.
+  do
+  label_click('Food')
+  local function classify(name,expected)
+   assert(c.cur_sub_mode==2,'expected Meat at '..name)
+   local values=b.settings.food.meat;local matches={}
+   for _,mode in ipairs{1,2}do
+    local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(mode),c.spec_filter)
+    assert(code==0,text);local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz)
+    local differences=0
+    for i,row in ipairs(rows)do
+     local _,expected=df.sizeof(values:_field(row.index));local _,actual=df.sizeof(c.spec_item[i-1].set_pointer)
+     if expected~=actual then differences=differences+1 end
+    end
+    matches[#matches+1]=differences
+   end
+   assert(matches[expected]==0,'native navigation ordering '..name)
+   records[#records+1]={probe='food_order_navigation',name=name,parent_differences=matches[1],leaf_differences=matches[2],query=c.spec_filter}
+  end
+  classify('category_entry',1)
+  label_click('Meat',0,2);classify('same_leaf',1)
+  label_click('Fish',0,2);label_click('Meat',0,2);classify('explicit_leaf',2)
+  label_click('Food');classify('same_category',1)
+  label_click('Fish',0,2);label_click('Meat',0,2)
+  c.entering_spec_filter=true
+  for i=1,4 do local byte=('MEAT'):byte(i);df.global.enabler.last_text_input[0]=byte;df.global.enabler.last_text_input[1]=0;gui.simulateInput(view,string.format('STRING_A%03d',byte))end
+  c.entering_spec_filter=false;view:render(dfhack.getTickCount());classify('search_after_leaf',2)
+  label_click('All',0,2);classify('category_all',2)
+  label_click('All');classify('global_all',1)
+  label_click('Fish',0,2);label_click('Meat',0,2)
+  label_click('None');classify('global_none',1)
+  end
   for _,entry in ipairs{{'Stone','stone','mats',40,'Metal ores','stone','Economic'},
    {'Stone','stone','mats',41,'Economic','stone','Metal ores'},
    {'Stone','stone','mats',42,'Other stone','stone','Metal ores'},

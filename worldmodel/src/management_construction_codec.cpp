@@ -219,6 +219,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
   r.add_room_furniture(a.roomFurniture);r.add_interaction_id(uint64_t(a.interactionId));r.add_undo_token(uint64_t(a.undoToken));
   r.add_count_generation(uint64_t(a.countGeneration));r.add_paint_preview(preview);
   r.add_location_site_id(a.locationSiteId);r.add_occupation_id(a.occupationId);
+  r.add_category_opening(a.categoryOpening);
   return r.Finish();
 }
 }  // namespace wm::detail::management

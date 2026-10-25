@@ -910,7 +910,7 @@ bool areaPresetInventoryFits(df::building_stockpilest* pile) {
   return df3d_area::settingsRawTotal(raw).valid && df3d_area::settingsRawTotal(stored).valid;
 }
 std::optional<std::vector<df3d_area::NativeStockpileRow>> ownedStockpileRows(
-    df::building_stockpilest* pile,int32_t mode,const std::string& filter) {
+    df::building_stockpilest* pile,int32_t mode,const std::string& filter,size_t* coldCacheInsertions=nullptr) {
   if(!pile || !areaPresetInventoryFits(pile))return std::nullopt;
   std::unique_ptr<df::building_stockpilest> scratch(df::allocate<df::building_stockpilest>());
   if(!scratch)return std::nullopt;
@@ -920,7 +920,7 @@ std::optional<std::vector<df3d_area::NativeStockpileRow>> ownedStockpileRows(
     ranges.push_back({entry.first,entry.second->data(),entry.second->size()});
   for(const auto& entry:areaFixedSettings(scratch.get()))
     ranges.push_back({entry.key,entry.values,entry.count});
-  return df3d_area::nativeStockpileRows(scratch->settings,mode,filter,ranges);
+  return df3d_area::nativeStockpileRows(scratch->settings,mode,filter,ranges,coldCacheInsertions);
 }
 int areaSettingsSummary(lua_State* L) {
   bool attempted=false;
@@ -2915,11 +2915,12 @@ bool printStockpileSummaries(color_ostream& out,int32_t id,uint32_t categories) 
     out.print("{}",Json::FastWriter().write(result));return true;
   } catch(...) {return false;}
 }
-bool printStockpileRows(color_ostream& out,int32_t id,int32_t mode,const std::string& filter) {
+bool printStockpileRows(color_ostream& out,int32_t id,int32_t mode,const std::string& filter,bool coldCache) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !areaPresetInventoryFits(pile))return false;
   try {
-    const auto rows=ownedStockpileRows(pile,mode,filter);
+    size_t insertions=0;
+    const auto rows=ownedStockpileRows(pile,mode,filter,coldCache?&insertions:nullptr);
     if(!rows)return false;
     Json::Value result(Json::arrayValue);
     for(const auto& row:*rows) {
@@ -2927,6 +2928,7 @@ bool printStockpileRows(color_ostream& out,int32_t id,int32_t mode,const std::st
       value["field"]=row.field;value["index"]=Json::UInt64(row.index);value["name"]=DF2UTF(row.name);
       value["enabled"]=row.enabled;value["visible"]=row.visible;result.append(value);
     }
+    if(coldCache){Json::Value probe;probe["rows"]=result;probe["cache_insertions"]=Json::UInt64(insertions);result=std::move(probe);}
     out.print("{}",Json::FastWriter().write(result));return true;
   } catch(...) {return false;}
 }

@@ -15,7 +15,7 @@ bool printStockpileCategory(DFHack::color_ostream& out,int32_t id,uint32_t categ
 bool printStockpileHeader(DFHack::color_ostream& out,int32_t id,uint32_t category,bool enabled);
 bool printStockpileWoodRows(DFHack::color_ostream& out,int32_t id,const std::string& filter);
 bool printStockpileSummaries(DFHack::color_ostream& out,int32_t id,uint32_t categories=0x1ffff);
-bool printStockpileRows(DFHack::color_ostream& out,int32_t id,int32_t mode,const std::string& filter);
+bool printStockpileRows(DFHack::color_ostream& out,int32_t id,int32_t mode,const std::string& filter,bool coldCache=false);
 // Read-only diagnostic; caller holds the DF safe point. Coordinates are seed xyz, target xyz.
 bool printMaterialRecipe(DFHack::color_ostream& out, int32_t type, int32_t subtype, bool collect=false, bool cold_cache=false, int32_t custom=-1, int32_t plate_flags=0, int32_t eligible_tiles=-1);
 bool printMaterialDistances(DFHack::color_ostream& out, const std::array<int32_t,6>& positions, int32_t tileLimit);

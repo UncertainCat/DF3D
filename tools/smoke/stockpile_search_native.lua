@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,width_probe=...
+local out,width_probe,historical=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -78,6 +78,56 @@ require('gui.script').start(function()
    input(string.rep('a',length));records[#records+1]={probe='input_limit',typed_length=length,stored_length=#c.spec_filter}
   end
   input('')
+  if historical then
+   local table=df.global.world.raws.mat_table
+   local types,indexes=table.organic_types[17],table.organic_indexes[17]
+   assert(#types>0 and #indexes>0)
+   local figure
+   for i=#df.global.world.history.figures-1,0,-1 do
+    local f=df.global.world.history.figures[i]
+    if f.race>=0 and f.race<#df.global.world.raws.creatures.all then figure=f;break end
+   end
+   assert(figure,'no historical material fixture figure')
+   local old_type,old_index=types[0],indexes[0]
+   local values=b.settings.leather.mats;local saved={}
+   for i,v in ipairs(values)do saved[i]=v end
+   local success,problem=pcall(function()
+    types[0]=222;indexes[0]=figure.id
+    label_click('Leather');values:resize(1);values[0]=1
+    -- Rebuild explicitly after resizing; category entry may have initialized it.
+    label_click('Color',0,2);label_click('Type',0,2)
+    -- Native has now populated any cache entry. The provider must preserve
+    -- the exact existing map object and native UI for every query.
+    local cache=df.global.world.raws.creatures:_field('hist_fig_to_creature_map')
+    local cache_size,cache_address=df.sizeof(cache)
+    local guard=df.new('uint8_t',cache_size);dfhack.internal.memmove(guard,cache_address,cache_size)
+    for _,query in ipairs{'','a','zzzznomatch'}do
+     input(query)
+     local size,address=df.sizeof(df.global.game.main_interface)
+     local ui=df.new('uint8_t',size);dfhack.internal.memmove(ui,address,size)
+     local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),'73',c.spec_filter)
+     assert(code==0,text)
+     assert(dfhack.internal.memcmp(ui,address,size)==0,'historical provider changed UI');df.delete(ui)
+     assert(dfhack.internal.memcmp(guard,cache_address,cache_size)==0,'historical provider changed cache header')
+     local cold_text,cold_code=dfhack.run_command_silent('df3d','stockpile-rows-cold-read',tostring(b.id),'73',c.spec_filter)
+     assert(cold_code==0,cold_text);local cold=json.decode(cold_text)
+     assert(cold.cache_insertions==1,'cold historical cache path was not exercised')
+     assert(dfhack.internal.memcmp(guard,cache_address,cache_size)==0,'cold provider changed original cache header')
+     assert(cold.rows[1].name==json.decode(text)[1].name,'cold/warm historical names differ')
+     local actual=json.decode(text);assert(#actual==c.cur_spec_item_sz and #actual==1)
+     local native=c.spec_item[0]
+     assert(actual[1].name==dfhack.df2utf(native.name) and actual[1].visible==native.on and actual[1].enabled==(values[0]~=0),'historical native/provider mismatch')
+     records[#records+1]={probe='historical_material',mode=73,material_type=222,figure=figure.id,race=figure.race,query=query,rows=actual,cache_header_unchanged=true,cold_cache_insertions=cold.cache_insertions}
+    end
+    df.delete(guard)
+   end)
+   -- Retire native row pointers before restoring a potentially reallocated vector.
+   local closed,close_error=pcall(function()gui.simulateInput(view,'LEAVESCREEN')end)
+   types[0]=old_type;indexes[0]=old_index;values:resize(#saved);for i,v in ipairs(saved)do values[i-1]=v end
+   assert(closed,close_error)
+   assert(success,problem)
+   return
+  end
   local originals={} 
   local function restore()
    for _,row in ipairs(originals)do row.raw.name=row.name;row.raw.name_plural=row.plural;row.raw.adjective=row.adjective end

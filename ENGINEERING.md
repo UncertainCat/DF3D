@@ -811,13 +811,16 @@ blind material-type validator. No historical-material types219..418 appeared in
 the ordinary material lists on this fixture; that observation does not prove a
 universal input invariant or authorize historical-cache access. Native table
 lookup bounds-checks types but assumes a matching index array. The owned provider described below adds paired-array and raw-pointer guards;
-the historical table domain remains unfinished.
+historical material formatting uses the isolated cache described below.
 
 The gameplay adapter uses the owned native row provider for all30 organic modes. It validates the paired organic table index
 range and referenced raw/caste/growth pointers before entering DF. Creature/caste
 pairs for fish and eggs have their own validation. Ordinary material entries in
-219..418 are explicitly rejected because DF can populate a historical-material
-cache; handling that domain remains unresolved. Short/stale settings retain their
+219..418 use native formatting with an isolated copy of the historical-material
+cache. The original nodes and buckets are swapped out before the native call and
+restored afterward, including exceptional exits. Nonhistorical tables avoid this
+copy. This follows the verified construction collector ownership pattern; no
+native menu scratch is used. Short/stale settings retain their
 stored size; the native table getter skips entries beyond the type table.
 
 The Food branch excludes TREE/GRASS from Plants and matches growth item/material
@@ -842,8 +845,25 @@ name, order, visibility and selection matched explicit native leaf selection.
 The same run exercised168 native All/None actions. Provider calls preserved
 native UI bytes and source settings; DF closed without saving and source hashes
 were unchanged. Bounded evidence is in `native_stockpile_filters.json.organic_provider`.
-Injected malformed/null-table cases, historical materials, non-ASCII search
-and rendered-panel parity remain unverified.
+Injected malformed/null-table cases and malformed historical identities remain
+unverified. Historical Leather read coverage is recorded below; non-ASCII search
+and rendered-panel evidence have separate scopes.
+
+`stockpile_search_native.ps1 -HistoricalMaterials` replaces one Leather table
+entry with a controlled historical-figure material (type222) in an owned unsaved
+session. `build/stockpile-search-native-20261025-170901` compares three native
+searches with the ordinary and cold owned providers. Each cold query inserts one
+private cache entry; original cache header and native UI bytes remain unchanged.
+Names, visibility and enabled state match native. The table/settings are restored,
+source hashes match and DF104500 closes unsaved. Evidence is retained in
+`native_stockpile_search.json.historical_materials`. Diagnostic
+`df3d stockpile-rows-cold-read <id> <mode> [filter]` clears only the private cache
+and reports insertion count plus rows. This is read/provider evidence for Leather,
+not all historical organic families or malformed historical raws. Initial170550
+failed on a test-only incorrect sublist label;170625 verified the warm path.
+Both closed unsaved with source hashes unchanged. The final bridge build and
+`build/qa/stockpile-historical-material` pass root CTest19/19, the areas adapter
+and settings-state checks.
 
 Protected command run `build/stockpile-initialization-20261025-054445` passed719
 native observations across all30 organic lists:90 complete page reads and268

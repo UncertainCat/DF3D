@@ -1600,7 +1600,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           return df3d_management::printStockpileSummaries(out,id,categories)?CR_OK:CR_FAILURE;
         }
-        if(parameters[0]=="stockpile-rows-read") {
+        if(parameters[0]=="stockpile-rows-read" || parameters[0]=="stockpile-rows-cold-read") {
           if(parameters.size()<3 || parameters.size()>4)return CR_WRONG_USAGE;
           int32_t values[2]{};
           for(size_t i=0;i<2;++i) {
@@ -1609,7 +1609,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          return df3d_management::printStockpileRows(out,values[0],values[1],parameters.size()==4?parameters[3]:"")?CR_OK:CR_FAILURE;
+          return df3d_management::printStockpileRows(out,values[0],values[1],parameters.size()==4?parameters[3]:"",parameters[0]=="stockpile-rows-cold-read")?CR_OK:CR_FAILURE;
         }
         if(parameters[0]=="stockpile-wood-read") {
           if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
@@ -2230,6 +2230,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d stockpile-summary-read <building-id> [category-mask] (read-only native summary indicators)\n"
         "df3d stockpile-link-target-read <pile-id> <x> <y> <z> <give0-or-1> (read-only native target lookup)\n"
         "df3d stockpile-tile-types-read <first-uint16> <count1..1024> (read-only native tile predicates)\n"
+        "df3d stockpile-rows-cold-read <building-id> <native-mode> [filter] (private historical cache probe)\n"
         "df3d stockpile-rows-read <building-id> <native-mode> [filter] (read-only verified list modes)\n"
         "df3d door-support-read <x> <y> <z> (read-only wall support, not full placement)\n"
         "df3d bed-choices-read <item-id> <descriptor-color-count> (owned-state appearance diagnostic)\n"

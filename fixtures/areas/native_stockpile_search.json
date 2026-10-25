@@ -2927,5 +2927,69 @@
         "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       }
     ]
+  },
+  "historical_materials": {
+    "source": "build/stockpile-search-native-20261025-170901/1200x800-0/result.json",
+    "sha256": "6f1680838dfeeae905dc9c79ea52185cc4086c8f107d241530f643654a625953",
+    "scope": "Controlled Leather type222 historical-figure material. Native/provider names, order, visibility and enabled state agree for three searches; cold provider inserts one private cache entry each time and restores original map header bytes. Native UI bytes unchanged. Raw table/settings restored; source unchanged; owned DF104500 closed unsaved. Does not establish all historical organic families or malformed historical IDs/raws.",
+    "cases": [
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 73,
+        "probe": "historical_material",
+        "query": "",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "leather.mats",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 73,
+        "probe": "historical_material",
+        "query": "a",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "leather.mats",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "cache_header_unchanged": true,
+        "cold_cache_insertions": 1,
+        "figure": 10562,
+        "material_type": 222,
+        "mode": 73,
+        "probe": "historical_material",
+        "query": "zzzznomatch",
+        "race": 572,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "leather.mats",
+            "index": 0,
+            "name": "Fikod Clearspear's dwarf bone",
+            "visible": false
+          }
+        ]
+      }
+    ]
   }
 }

@@ -77,7 +77,7 @@ struct NativeStockpileSettingRange {
 // Verified parent modes return initial leaf rows in category-opening order.
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
-    const std::vector<NativeStockpileSettingRange>& ranges);
+    const std::vector<NativeStockpileSettingRange>& ranges,size_t* coldCacheInsertions=nullptr);
 // Read-only Wood-list probe. Caller bounds settings before copying. Filter bytes
 // use DF's encoding. Selection activation is deliberately not part of this query.
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(

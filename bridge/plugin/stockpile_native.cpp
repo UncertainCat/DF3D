@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <windows.h>
 #include <cstdint>
+#include <type_traits>
 
 namespace df3d_area {
 namespace {
@@ -463,7 +464,7 @@ std::optional<NativeStockpileSummaries> nativeStockpileSummaries(
 }
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
-    const std::vector<NativeStockpileSettingRange>& ranges) {
+    const std::vector<NativeStockpileSettingRange>& ranges,size_t* coldCacheInsertions) {
     if(!df::global::world || filter.size()>256)return std::nullopt;
     // Category entry recursively builds its initial leaf, then performs the
     // native parent sort/filter pass. Validate that leaf's input domain while
@@ -547,6 +548,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
       case 107:organic=&owned.sheet.paper;organicCategory=37;break;
       case 108:organic=&owned.sheet.parchment;organicCategory=38;break;
     }
+    bool needsMaterialCache=false;
     if(organic) {
         const auto& types=raws.mat_table.organic_types[organicCategory];
         const auto& indexes=raws.mat_table.organic_indexes[organicCategory];
@@ -569,9 +571,9 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
                 }
                 continue;
             }
-            // Historical material resolution can write DF's derived cache.
-            // No runtime fallback may borrow that cache or native menu state.
-            if(type>=219 && type<=418)return std::nullopt;
+            // Resolve historical materials against an isolated cache below,
+            // using the same copy/swap ownership as construction collection.
+            if(type>=219 && type<=418)needsMaterialCache=true;
             if(type>=19 && type<=218) {
                 if(!creatureExists(index))return std::nullopt;
                 if(mode==2 && !creatureExists(int16_t(index)))return std::nullopt;
@@ -685,7 +687,24 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     // preserve native quality order. Flag0 skips category activation.
     // Never call open-wrapper35f3c0, which writes global UI/graphics state.
     using Build=void (*)(df::custom_stockpile_interfacest*,int32_t,uint32_t);
-    reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,buildMode,0);
+    {
+        // Preserve the original map nodes/buckets, not just their values. DF's
+        // historical-material formatter may populate only this private copy.
+        // Its returned material pointers belong to raws, not cache nodes.
+        auto& cache=df::global::world->raws.creatures.hist_fig_to_creature_map;
+        struct RestoreMaterialCache {
+            decltype(cache)& target;
+            std::remove_reference_t<decltype(cache)> saved;
+            explicit RestoreMaterialCache(decltype(cache) value):target(value),saved(value){target.swap(saved);}
+            ~RestoreMaterialCache(){target.swap(saved);}
+            RestoreMaterialCache(const RestoreMaterialCache&)=delete;
+        };
+        std::optional<RestoreMaterialCache> restore;
+        if(needsMaterialCache || coldCacheInsertions)restore.emplace(cache);
+        if(coldCacheInsertions)cache.clear(); // Diagnostic: only the private copy.
+        reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,buildMode,0);
+        if(coldCacheInsertions)*coldCacheInsertions=cache.size();
+    }
     if(rows.scratch.cur_spec_item_sz<0 ||
        size_t(rows.scratch.cur_spec_item_sz)>rows.scratch.spec_item.size())return std::nullopt;
     std::vector<NativeStockpileRow> result;

@@ -1,0 +1,1486 @@
+{
+  "source": "build/stockpile-search-native-20261025-141555",
+  "version": "DF 53.16 Steam24557528",
+  "oracle": "tools/smoke/stockpile_search_native.ps1",
+  "scope": "Native search input with UTF-8 last_text_input and STRING keys; native backspace clears each query. Five temporary ammo names establish accented-name filtering and are restored. Provider reads preserve native UI bytes. Paused/source unchanged/owned session closed unsaved.",
+  "native_code": [
+    {
+      "rva": "0x8bb191",
+      "size": 26,
+      "sha256": "a5885eb2eb9fb46eea7936400cc14160812d0adfe5933f9a757bcf90042dd674"
+    },
+    {
+      "rva": "0xc396d0",
+      "size": 47,
+      "sha256": "cb720b7270b0484cabc1b5d0f1a9907dad4c14ac6f4c7e650114c65f612673ac"
+    },
+    {
+      "rva": "0xc39700",
+      "size": 659,
+      "sha256": "7b60fc998bf8d31aa4fbec5fd92418e89f257ef539109f6103c80d9a41c2f11f"
+    }
+  ],
+  "maximum_length": 76,
+  "input_map": [
+    [
+      32,
+      " ",
+      " "
+    ],
+    [
+      33,
+      "!",
+      ""
+    ],
+    [
+      34,
+      "\"",
+      ""
+    ],
+    [
+      35,
+      "#",
+      ""
+    ],
+    [
+      36,
+      "$",
+      ""
+    ],
+    [
+      37,
+      "%",
+      ""
+    ],
+    [
+      38,
+      "&",
+      ""
+    ],
+    [
+      39,
+      "'",
+      ""
+    ],
+    [
+      40,
+      "(",
+      ""
+    ],
+    [
+      41,
+      ")",
+      ""
+    ],
+    [
+      42,
+      "*",
+      ""
+    ],
+    [
+      43,
+      "+",
+      ""
+    ],
+    [
+      44,
+      ",",
+      ""
+    ],
+    [
+      45,
+      "-",
+      ""
+    ],
+    [
+      46,
+      ".",
+      ""
+    ],
+    [
+      47,
+      "/",
+      ""
+    ],
+    [
+      48,
+      "0",
+      ""
+    ],
+    [
+      49,
+      "1",
+      ""
+    ],
+    [
+      50,
+      "2",
+      ""
+    ],
+    [
+      51,
+      "3",
+      ""
+    ],
+    [
+      52,
+      "4",
+      ""
+    ],
+    [
+      53,
+      "5",
+      ""
+    ],
+    [
+      54,
+      "6",
+      ""
+    ],
+    [
+      55,
+      "7",
+      ""
+    ],
+    [
+      56,
+      "8",
+      ""
+    ],
+    [
+      57,
+      "9",
+      ""
+    ],
+    [
+      58,
+      ":",
+      ""
+    ],
+    [
+      59,
+      ";",
+      ""
+    ],
+    [
+      60,
+      "<",
+      ""
+    ],
+    [
+      61,
+      "=",
+      ""
+    ],
+    [
+      62,
+      ">",
+      ""
+    ],
+    [
+      63,
+      "?",
+      ""
+    ],
+    [
+      64,
+      "@",
+      ""
+    ],
+    [
+      65,
+      "A",
+      "A"
+    ],
+    [
+      66,
+      "B",
+      "B"
+    ],
+    [
+      67,
+      "C",
+      "C"
+    ],
+    [
+      68,
+      "D",
+      "D"
+    ],
+    [
+      69,
+      "E",
+      "E"
+    ],
+    [
+      70,
+      "F",
+      "F"
+    ],
+    [
+      71,
+      "G",
+      "G"
+    ],
+    [
+      72,
+      "H",
+      "H"
+    ],
+    [
+      73,
+      "I",
+      "I"
+    ],
+    [
+      74,
+      "J",
+      "J"
+    ],
+    [
+      75,
+      "K",
+      "K"
+    ],
+    [
+      76,
+      "L",
+      "L"
+    ],
+    [
+      77,
+      "M",
+      "M"
+    ],
+    [
+      78,
+      "N",
+      "N"
+    ],
+    [
+      79,
+      "O",
+      "O"
+    ],
+    [
+      80,
+      "P",
+      "P"
+    ],
+    [
+      81,
+      "Q",
+      "Q"
+    ],
+    [
+      82,
+      "R",
+      "R"
+    ],
+    [
+      83,
+      "S",
+      "S"
+    ],
+    [
+      84,
+      "T",
+      "T"
+    ],
+    [
+      85,
+      "U",
+      "U"
+    ],
+    [
+      86,
+      "V",
+      "V"
+    ],
+    [
+      87,
+      "W",
+      "W"
+    ],
+    [
+      88,
+      "X",
+      "X"
+    ],
+    [
+      89,
+      "Y",
+      "Y"
+    ],
+    [
+      90,
+      "Z",
+      "Z"
+    ],
+    [
+      91,
+      "[",
+      ""
+    ],
+    [
+      92,
+      "\\",
+      ""
+    ],
+    [
+      93,
+      "]",
+      ""
+    ],
+    [
+      94,
+      "^",
+      ""
+    ],
+    [
+      95,
+      "_",
+      ""
+    ],
+    [
+      96,
+      "`",
+      ""
+    ],
+    [
+      97,
+      "a",
+      "A"
+    ],
+    [
+      98,
+      "b",
+      "B"
+    ],
+    [
+      99,
+      "c",
+      "C"
+    ],
+    [
+      100,
+      "d",
+      "D"
+    ],
+    [
+      101,
+      "e",
+      "E"
+    ],
+    [
+      102,
+      "f",
+      "F"
+    ],
+    [
+      103,
+      "g",
+      "G"
+    ],
+    [
+      104,
+      "h",
+      "H"
+    ],
+    [
+      105,
+      "i",
+      "I"
+    ],
+    [
+      106,
+      "j",
+      "J"
+    ],
+    [
+      107,
+      "k",
+      "K"
+    ],
+    [
+      108,
+      "l",
+      "L"
+    ],
+    [
+      109,
+      "m",
+      "M"
+    ],
+    [
+      110,
+      "n",
+      "N"
+    ],
+    [
+      111,
+      "o",
+      "O"
+    ],
+    [
+      112,
+      "p",
+      "P"
+    ],
+    [
+      113,
+      "q",
+      "Q"
+    ],
+    [
+      114,
+      "r",
+      "R"
+    ],
+    [
+      115,
+      "s",
+      "S"
+    ],
+    [
+      116,
+      "t",
+      "T"
+    ],
+    [
+      117,
+      "u",
+      "U"
+    ],
+    [
+      118,
+      "v",
+      "V"
+    ],
+    [
+      119,
+      "w",
+      "W"
+    ],
+    [
+      120,
+      "x",
+      "X"
+    ],
+    [
+      121,
+      "y",
+      "Y"
+    ],
+    [
+      122,
+      "z",
+      "Z"
+    ],
+    [
+      123,
+      "{",
+      ""
+    ],
+    [
+      124,
+      "|",
+      ""
+    ],
+    [
+      125,
+      "}",
+      ""
+    ],
+    [
+      126,
+      "~",
+      ""
+    ],
+    [
+      128,
+      "\u00c7",
+      ""
+    ],
+    [
+      129,
+      "\u00fc",
+      ""
+    ],
+    [
+      130,
+      "\u00e9",
+      ""
+    ],
+    [
+      131,
+      "\u00e2",
+      ""
+    ],
+    [
+      132,
+      "\u00e4",
+      ""
+    ],
+    [
+      133,
+      "\u00e0",
+      ""
+    ],
+    [
+      134,
+      "\u00e5",
+      ""
+    ],
+    [
+      135,
+      "\u00e7",
+      ""
+    ],
+    [
+      136,
+      "\u00ea",
+      ""
+    ],
+    [
+      137,
+      "\u00eb",
+      ""
+    ],
+    [
+      138,
+      "\u00e8",
+      ""
+    ],
+    [
+      139,
+      "\u00ef",
+      ""
+    ],
+    [
+      140,
+      "\u00ee",
+      ""
+    ],
+    [
+      141,
+      "\u00ec",
+      ""
+    ],
+    [
+      142,
+      "\u00c4",
+      ""
+    ],
+    [
+      143,
+      "\u00c5",
+      ""
+    ],
+    [
+      144,
+      "\u00c9",
+      ""
+    ],
+    [
+      145,
+      "\u00e6",
+      ""
+    ],
+    [
+      146,
+      "\u00c6",
+      ""
+    ],
+    [
+      147,
+      "\u00f4",
+      ""
+    ],
+    [
+      148,
+      "\u00f6",
+      ""
+    ],
+    [
+      149,
+      "\u00f2",
+      ""
+    ],
+    [
+      150,
+      "\u00fb",
+      ""
+    ],
+    [
+      151,
+      "\u00f9",
+      ""
+    ],
+    [
+      152,
+      "\u00ff",
+      ""
+    ],
+    [
+      153,
+      "\u00d6",
+      ""
+    ],
+    [
+      154,
+      "\u00dc",
+      ""
+    ],
+    [
+      155,
+      "\u00a2",
+      ""
+    ],
+    [
+      156,
+      "\u00a3",
+      ""
+    ],
+    [
+      157,
+      "\u00a5",
+      ""
+    ],
+    [
+      158,
+      "\u20a7",
+      ""
+    ],
+    [
+      159,
+      "\u0192",
+      ""
+    ],
+    [
+      160,
+      "\u00e1",
+      ""
+    ],
+    [
+      161,
+      "\u00ed",
+      ""
+    ],
+    [
+      162,
+      "\u00f3",
+      ""
+    ],
+    [
+      163,
+      "\u00fa",
+      ""
+    ],
+    [
+      164,
+      "\u00f1",
+      ""
+    ],
+    [
+      165,
+      "\u00d1",
+      ""
+    ],
+    [
+      166,
+      "\u00aa",
+      ""
+    ],
+    [
+      167,
+      "\u00ba",
+      ""
+    ],
+    [
+      168,
+      "\u00bf",
+      ""
+    ],
+    [
+      169,
+      "\u2310",
+      ""
+    ],
+    [
+      170,
+      "\u00ac",
+      ""
+    ],
+    [
+      171,
+      "\u00bd",
+      ""
+    ],
+    [
+      172,
+      "\u00bc",
+      ""
+    ],
+    [
+      173,
+      "\u00a1",
+      ""
+    ],
+    [
+      174,
+      "\u00ab",
+      ""
+    ],
+    [
+      175,
+      "\u00bb",
+      ""
+    ],
+    [
+      176,
+      "\u2591",
+      ""
+    ],
+    [
+      177,
+      "\u2592",
+      ""
+    ],
+    [
+      178,
+      "\u2593",
+      ""
+    ],
+    [
+      179,
+      "\u2502",
+      ""
+    ],
+    [
+      180,
+      "\u2524",
+      ""
+    ],
+    [
+      181,
+      "\u2561",
+      ""
+    ],
+    [
+      182,
+      "\u2562",
+      ""
+    ],
+    [
+      183,
+      "\u2556",
+      ""
+    ],
+    [
+      184,
+      "\u2555",
+      ""
+    ],
+    [
+      185,
+      "\u2563",
+      ""
+    ],
+    [
+      186,
+      "\u2551",
+      ""
+    ],
+    [
+      187,
+      "\u2557",
+      ""
+    ],
+    [
+      188,
+      "\u255d",
+      ""
+    ],
+    [
+      189,
+      "\u255c",
+      ""
+    ],
+    [
+      190,
+      "\u255b",
+      ""
+    ],
+    [
+      191,
+      "\u2510",
+      ""
+    ],
+    [
+      192,
+      "\u2514",
+      ""
+    ],
+    [
+      193,
+      "\u2534",
+      ""
+    ],
+    [
+      194,
+      "\u252c",
+      ""
+    ],
+    [
+      195,
+      "\u251c",
+      ""
+    ],
+    [
+      196,
+      "\u2500",
+      ""
+    ],
+    [
+      197,
+      "\u253c",
+      ""
+    ],
+    [
+      198,
+      "\u255e",
+      ""
+    ],
+    [
+      199,
+      "\u255f",
+      ""
+    ],
+    [
+      200,
+      "\u255a",
+      ""
+    ],
+    [
+      201,
+      "\u2554",
+      ""
+    ],
+    [
+      202,
+      "\u2569",
+      ""
+    ],
+    [
+      203,
+      "\u2566",
+      ""
+    ],
+    [
+      204,
+      "\u2560",
+      ""
+    ],
+    [
+      205,
+      "\u2550",
+      ""
+    ],
+    [
+      206,
+      "\u256c",
+      ""
+    ],
+    [
+      207,
+      "\u2567",
+      ""
+    ],
+    [
+      208,
+      "\u2568",
+      ""
+    ],
+    [
+      209,
+      "\u2564",
+      ""
+    ],
+    [
+      210,
+      "\u2565",
+      ""
+    ],
+    [
+      211,
+      "\u2559",
+      ""
+    ],
+    [
+      212,
+      "\u2558",
+      ""
+    ],
+    [
+      213,
+      "\u2552",
+      ""
+    ],
+    [
+      214,
+      "\u2553",
+      ""
+    ],
+    [
+      215,
+      "\u256b",
+      ""
+    ],
+    [
+      216,
+      "\u256a",
+      ""
+    ],
+    [
+      217,
+      "\u2518",
+      ""
+    ],
+    [
+      218,
+      "\u250c",
+      ""
+    ],
+    [
+      219,
+      "\u2588",
+      ""
+    ],
+    [
+      220,
+      "\u2584",
+      ""
+    ],
+    [
+      221,
+      "\u258c",
+      ""
+    ],
+    [
+      222,
+      "\u2590",
+      ""
+    ],
+    [
+      223,
+      "\u2580",
+      ""
+    ],
+    [
+      224,
+      "\u03b1",
+      ""
+    ],
+    [
+      225,
+      "\u00df",
+      ""
+    ],
+    [
+      226,
+      "\u0393",
+      ""
+    ],
+    [
+      227,
+      "\u03c0",
+      ""
+    ],
+    [
+      228,
+      "\u03a3",
+      ""
+    ],
+    [
+      229,
+      "\u03c3",
+      ""
+    ],
+    [
+      230,
+      "\u00b5",
+      ""
+    ],
+    [
+      231,
+      "\u03c4",
+      ""
+    ],
+    [
+      232,
+      "\u03a6",
+      ""
+    ],
+    [
+      233,
+      "\u0398",
+      ""
+    ],
+    [
+      234,
+      "\u03a9",
+      ""
+    ],
+    [
+      235,
+      "\u03b4",
+      ""
+    ],
+    [
+      236,
+      "\u221e",
+      ""
+    ],
+    [
+      237,
+      "\u03c6",
+      ""
+    ],
+    [
+      238,
+      "\u03b5",
+      ""
+    ],
+    [
+      239,
+      "\u2229",
+      ""
+    ],
+    [
+      240,
+      "\u2261",
+      ""
+    ],
+    [
+      241,
+      "\u00b1",
+      ""
+    ],
+    [
+      242,
+      "\u2265",
+      ""
+    ],
+    [
+      243,
+      "\u2264",
+      ""
+    ],
+    [
+      244,
+      "\u2320",
+      ""
+    ],
+    [
+      245,
+      "\u2321",
+      ""
+    ],
+    [
+      246,
+      "\u00f7",
+      ""
+    ],
+    [
+      247,
+      "\u2248",
+      ""
+    ],
+    [
+      248,
+      "\u00b0",
+      ""
+    ],
+    [
+      249,
+      "\u2219",
+      ""
+    ],
+    [
+      250,
+      "\u00b7",
+      ""
+    ],
+    [
+      251,
+      "\u221a",
+      ""
+    ],
+    [
+      252,
+      "\u207f",
+      ""
+    ],
+    [
+      253,
+      "\u00b2",
+      ""
+    ],
+    [
+      254,
+      "\u25a0",
+      ""
+    ],
+    [
+      255,
+      "\u00a0",
+      ""
+    ]
+  ],
+  "cases": [
+    {
+      "name": "1200x800-0",
+      "grid": [
+        150,
+        66
+      ],
+      "limits": [
+        {
+          "probe": "input_limit",
+          "stored_length": 31,
+          "typed_length": 31
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 127
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 128
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 129
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 256
+        }
+      ]
+    },
+    {
+      "name": "1920x1080-0",
+      "grid": [
+        192,
+        72
+      ],
+      "limits": [
+        {
+          "probe": "input_limit",
+          "stored_length": 31,
+          "typed_length": 31
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 127
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 128
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 129
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 256
+        }
+      ]
+    },
+    {
+      "name": "1920x1080-150",
+      "grid": [
+        160,
+        60
+      ],
+      "limits": [
+        {
+          "probe": "input_limit",
+          "stored_length": 31,
+          "typed_length": 31
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 127
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 128
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 129
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 256
+        }
+      ]
+    },
+    {
+      "name": "960x600-0",
+      "grid": [
+        120,
+        50
+      ],
+      "limits": [
+        {
+          "probe": "input_limit",
+          "stored_length": 31,
+          "typed_length": 31
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 127
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 128
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 129
+        },
+        {
+          "probe": "input_limit",
+          "stored_length": 76,
+          "typed_length": 256
+        }
+      ]
+    }
+  ],
+  "filtered_names": [
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00e9",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00c9",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00e4",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00c4",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00df",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "SS",
+      "typed": "SS",
+      "visible": []
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00f1",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u00d1",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "\u03a9",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "A",
+      "typed": "a",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "Jagged bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "A",
+      "typed": "A",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "Jagged bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    },
+    {
+      "probe": "filtered_names",
+      "stored": "",
+      "typed": "",
+      "visible": [
+        "\u00c4ther",
+        "Cone-headed arrows",
+        "Cone-headed arrows",
+        "\u00c9preuve",
+        "Jagged bolts",
+        "Long bolts",
+        "\u00d1ame",
+        "Stra\u00dfe",
+        "Tapered blowdarts",
+        "Wide-headed arrows",
+        "\u03a9mega"
+      ]
+    }
+  ],
+  "omissions": [
+    "OS keyboard/IME delivery",
+    "Clipboard/newline behavior",
+    "Rendered DF3D input acceptance"
+  ]
+}

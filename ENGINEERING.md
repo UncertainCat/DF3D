@@ -994,9 +994,49 @@ Only the known separate-thread notice remains. Earlier run135316 exposed the
 restoration race;135814 passed scaled input but failed because the driver clicked
 before the restored-size range settled. Both failed runs preserved their saves.
 
-Small-window/high-scale fit, non-ASCII search, held-arrow timing, and scaled
+Small-window/high-scale fit, held-arrow timing, and scaled
 editing outside settings remain incomplete. Keep these distinct from the passed
 large-window150% settings case and from full Stockpiles exposure.
+
+Stockpile search input follows native letters/space/uppercase flags and a fixed
+76-character limit. It does not apply general Unicode uppercasing. The native
+caller at `0x8bb191` passes limit0x4c and flags0xb to `0xc396d0`. That wrapper and
+`0xc39700` touch global text-input state and SDL, so they are prohibited runtime
+services. The viewer owns this input policy locally; native owned row routines
+still supply filtering, membership and names. Normalization removes unsupported
+characters before limiting accepted text, and maps caret/selection positions
+through the same transformation. LineEdit's raw length cap is disabled so
+rejected characters do not consume the native allowance.
+
+`tools/smoke/stockpile_search_native.ps1` records the supported input path in
+`native_stockpile_search.json`. Protected run
+`build/stockpile-search-native-20261025-141555` verifies223 available printable
+STRING keys with UTF-8 `last_text_input`, plus length boundaries at four grid/
+scale configurations. All yield the same character map and76-character cap.
+Five temporary accented/non-ASCII Ammo names verify12 native/provider filter
+comparisons per configuration, preserving native UI bytes during provider calls.
+Names are restored, simulation stays paused, source hashes match and DF99212
+closes unsaved. Each query is cleared with native Backspace: changing only the
+filter string leaves the old native visible-row cache and is not a valid oracle.
+The fixture retains caller/helper hashes. OS keyboard/IME delivery and clipboard
+newline behavior remain outside this evidence.
+
+`build/qa/stockpile-search-field-final` passes root CTest19/19, the complete
+recorded character/length map, controller caret/selection checks, and rendered
+settings checks (documented shutdown/thread diagnostics only). The search field
+uses12px text, a16px left inset and the native style for normal/focus/read-only;
+the inherited read-only style otherwise forced44px height instead of36px. The
+rendered field rectangle is checked against(736,64,224,36). Its36 foreground
+pixels for `A` have zero mask differences against native `072912/search-a.png`.
+This is scoped glyph/geometry evidence, not whole-screen pixel equality.
+
+Protected `build/areas-acceptance-20261025-142351` passes192 native observations
+across the full stockpile driver. Actual viewport input rejects accented/digit/
+punctuation characters, caps120 typed letters at76, and turns mixed input into
+`CRAFTED` with the native two quality rows. Native state guards remain unchanged
+around these reads. The capture was inspected. DF120408 closes unsaved and both
+save manifests match; only the known separate-thread notice remains. Subsequent
+font/inset/style corrections were verified by the rendered check above.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

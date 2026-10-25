@@ -82,6 +82,11 @@ func run() -> void:
 	controller.settings_view.search.select(1,3)
 	controller.settings_view.search.text_changed.emit("pine")
 	check(controller.settings_view.search.text == "PINE" and controller.settings_view.search.caret_column == 2 and controller.settings_view.search.get_selection_from_column() == 1 and controller.settings_view.search.get_selection_to_column() == 3,"native uppercase normalization retains caret and selection")
+	controller.settings_view.search.text = "p1ïine!"
+	controller.settings_view.search.caret_column = 5
+	controller.settings_view.search.select(1,5)
+	controller.settings_view.search.text_changed.emit("p1ïine!")
+	check(controller.settings_view.search.text == "PINE" and controller.settings_view.search.caret_column == 3 and controller.settings_view.search.get_selection_from_column() == 1 and controller.settings_view.search.get_selection_to_column() == 3,"native character filtering preserves surviving caret and selection: "+str([controller.settings_view.search.text,controller.settings_view.search.caret_column,controller.settings_view.search.get_selection_from_column(),controller.settings_view.search.get_selection_to_column()]))
 	controller._process(0.249); service.poll()
 	check(world.calls.size() == count,"connected search waits before sending")
 	controller._process(0.001); service.poll()

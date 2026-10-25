@@ -76,13 +76,14 @@ func configure(source, model) -> void:
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
 		add_child(button); toggles[key] = button
 	search = LineEdit.new(); search.position = Vector2(696,0); search.size = Vector2(224,36)
-	search.placeholder_text = "..."; search.max_length = 128
+	search.add_theme_font_size_override("font_size",12)
+	search.placeholder_text = "..."; search.max_length = 0
 	var field := art.make_style("UNIT_SELECTOR_UNASSIGNED",8)
 	field.set_texture_margin(SIDE_TOP,12); field.set_texture_margin(SIDE_BOTTOM,12)
 	field.set_content_margin(SIDE_TOP,0); field.set_content_margin(SIDE_BOTTOM,0)
-	field.set_content_margin(SIDE_LEFT,8); field.set_content_margin(SIDE_RIGHT,8)
+	field.set_content_margin(SIDE_LEFT,16); field.set_content_margin(SIDE_RIGHT,8)
 	field.draw_center = false
-	search.add_theme_stylebox_override("normal",field); search.add_theme_stylebox_override("focus",field)
+	for style in ["normal","focus","read_only"]: search.add_theme_stylebox_override(style,field)
 	search.right_icon = art.texture("WORK_ORDERS_DETAILS")
 	search.size.y = 36
 	search.text_submitted.connect(func(value): state.search(value))
@@ -129,12 +130,12 @@ func render() -> void:
 		headers[index].disabled = busy or (column == 1 and state.category.is_empty()) or (column == 2 and state.leaf.is_empty())
 	search.editable = not state.mutating and not state.failed and not state.leaf.is_empty()
 	if search.text != state.search_text:
-		# Normalize while typing without moving the insertion point or dropping
-		# selection. Uppercase expansion can change string length.
-		var caret := search.text.left(search.caret_column).to_upper().length()
+		# Normalize while typing, preserving the corresponding insertion point and
+		# selection after native input filtering removes unsupported characters.
+		var caret: int = state.normalize_search(search.text.left(search.caret_column)).length()
 		var selected := search.has_selection()
-		var start := search.text.left(search.get_selection_from_column()).to_upper().length() if selected else 0
-		var end := search.text.left(search.get_selection_to_column()).to_upper().length() if selected else 0
+		var start: int = state.normalize_search(search.text.left(search.get_selection_from_column())).length() if selected else 0
+		var end: int = state.normalize_search(search.text.left(search.get_selection_to_column())).length() if selected else 0
 		search.set_text(state.search_text)
 		search.caret_column = mini(caret,search.text.length())
 		if selected: search.select(start,end)

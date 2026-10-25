@@ -301,7 +301,8 @@ func pointer_settings() -> void:
 	editor._process(0)
 	await process_frame; await process_frame
 
-func replace_settings_search(value: String) -> void:
+func replace_settings_search(value: String, expected = null) -> void:
+	var normalized: String = value.to_upper() if expected == null else str(expected)
 	await click_control(editor.settings_view.search)
 	var select_all := InputEventKey.new(); select_all.keycode = KEY_A; select_all.ctrl_pressed = true; select_all.pressed = true
 	root.push_input(select_all,true)
@@ -313,8 +314,8 @@ func replace_settings_search(value: String) -> void:
 	# LineEdit coalesces text_changed delivery. If the replacement equals the
 	# old query, do not mistake that old receipt for completion of new input.
 	await process_frame
-	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.query == value.to_upper(),"native uppercase search replacement"): return
-	check(editor.settings_view.search.text == value.to_upper(),"displayed search differs from native uppercase input: "+editor.settings_view.search.text)
+	if not await wait_ui(func(): return settled() and not editor.settings_state.busy() and editor.settings_state.query == normalized,"native uppercase search replacement"): return
+	check(editor.settings_view.search.text == normalized,"displayed search differs from native uppercase input: "+editor.settings_view.search.text)
 
 func pointer_filtered_settings() -> void:
 	step = "viewport filtered stockpile All/None"
@@ -326,6 +327,17 @@ func pointer_filtered_settings() -> void:
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"Core quality filter setup"): return
 	await click_control(editor.settings_view.headers[4])
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"unfiltered quality All"): return
+	await native("guard_before")
+	await replace_settings_search("é12Ω-!","")
+	if stopped: return
+	if not check(settings_captions().size() == 7,"rejected characters must leave unfiltered quality rows"): return
+	await replace_settings_search("a".repeat(120),"A".repeat(76))
+	if stopped: return
+	if not check(settings_captions().is_empty(),"native-length unmatched query must show no quality rows"): return
+	await replace_settings_search("cráa1f-tedΩ","CRAFTED")
+	if stopped: return
+	await native("guard_after")
+	await capture("settings_native_search_input")
 	await replace_settings_search("crafted")
 	if stopped: return
 	if not check(settings_captions() == ["Well-crafted","Finely-crafted"],"quality search differs from native captions"): return

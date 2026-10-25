@@ -250,10 +250,22 @@ func search(value: String) -> void:
 		search_delay = 0
 		poll(0)
 
+static func normalize_search(value: String) -> String:
+	# DF53.16 input call8bb191: maximum76, flags0xb (letters, space, uppercase).
+	# Its SDL/global-input helper is not a runtime service. Filtering stays in DF.
+	var normalized := ""
+	for index in value.length():
+		var code := value.unicode_at(index)
+		if code >= 97 and code <= 122: code -= 32
+		if code == 32 or (code >= 65 and code <= 90):
+			normalized += String.chr(code)
+			if normalized.length() == 76: break
+	return normalized
+
 func queue_search(value: String) -> void:
 	if mutating or failed or area.is_empty() or leaf.is_empty(): return
 	# Native settings search stores/displays uppercase and survives navigation.
-	value = value.to_upper()
+	value = normalize_search(value)
 	if value == search_text and search_delay < 0:
 		changed.emit(); return
 	search_text = value; search_delay = 0.25

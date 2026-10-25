@@ -9,6 +9,14 @@ func page(state, rows: Array, revision := 9007199254740993, cursor := 0, total :
 	state.accept({"list_key":state.pending.list_key,"settings":rows,"list_revision":revision,
 		"build_phase":3,"build_done":100,"build_total":100,"next_cursor":cursor,"settings_count":total},state.pending.duplicate(true))
 func _initialize() -> void:
+	var native_input = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_search.json"))
+	for sample in native_input.input_map:
+		check(State.normalize_search(str(sample[1])) == str(sample[2]),"native search byte "+str(sample[0]))
+	for sample in native_input.cases:
+		for limit in sample.limits:
+			check(State.normalize_search("a".repeat(int(limit.typed_length))).length() == int(limit.stored_length),"native search length "+str(sample.name))
+	check(State.normalize_search("éAb1-c Ωd!"+"z".repeat(100)) == ("ABC D"+"Z".repeat(71)),"search removes unsupported input before limiting accepted characters")
+
 	var state := State.new()
 	state.request_ready.connect(func(value): requests.append(value))
 	state.open({"categories":131071,"id":39,"revision":11})

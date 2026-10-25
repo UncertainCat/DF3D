@@ -35,6 +35,7 @@ func run() -> void:
 	reply([{"key":"food","label":"Food","kind":1,"state":1}])
 	reply([{"key":"food/meat","label":"Meat","kind":2,"state":1},{"key":"food/fish","label":"Fish","kind":2,"state":1}])
 	reply(lists["food-top"]); await settle()
+	check(view.search.get_global_rect() == Rect2(736,64,224,36),"native search rectangle: "+str(view.search.get_global_rect()))
 	view.scrolls[2].scroll_vertical = 30 * 36; await settle()
 	check(view.scrolls[2].scroll_vertical == 1080,"native row30 is reachable")
 	state.select(1,state.rows[1][1]); await settle()

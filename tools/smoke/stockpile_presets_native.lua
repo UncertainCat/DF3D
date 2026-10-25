@@ -361,6 +361,78 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
+  -- Native-only organic references; runtime formatter ownership is audited separately.
+  for _,entry in ipairs{{'Food','food','meat',2,'Meat',0},
+   {'Food','food','fish',3,'Fish',1},
+   {'Food','food','unprepared_fish',4,'Unprepared fish',2},
+   {'Food','food','egg',5,'Egg',3},
+   {'Food','food','plants',6,'Plants',4},
+   {'Food','food','drink_plant',7,'Drink (plant)',5},
+   {'Food','food','drink_animal',8,'Drink (animal)',6},
+   {'Food','food','cheese_plant',9,'cheese/plant',7},
+   {'Food','food','cheese_animal',10,'Cheese (animal)',8},
+   {'Food','food','seeds',11,'Seeds',9},
+   {'Food','food','leaves',12,'Fruit/leaves',10},
+   {'Food','food','powder_plant',13,'Milled plant',11},
+   {'Food','food','powder_creature',14,'powder/animal',12},
+   {'Food','food','glob',15,'Fat',13},
+   {'Food','food','glob_paste',16,'Paste',33},
+   {'Food','food','glob_pressed',17,'Pressed material',34},
+   {'Food','food','liquid_plant',18,'Extract (plant)',14},
+   {'Food','food','liquid_animal',19,'Extract (animal)',15},
+   {'Food','food','liquid_misc',20,'Misc. liquid',16},
+   {'Leather','leather','mats',73,'Type',17},
+   {'Cloth','cloth','thread_silk',76,'Thread (silk)',18},
+   {'Cloth','cloth','thread_plant',77,'Thread (plant)',19},
+   {'Cloth','cloth','thread_yarn',78,'Thread (yarn)',35},
+   {'Cloth','cloth','thread_metal',79,'Thread (metal)',36},
+   {'Cloth','cloth','cloth_silk',80,'Cloth (silk)',18},
+   {'Cloth','cloth','cloth_plant',81,'Cloth (plant)',19},
+   {'Cloth','cloth','cloth_yarn',82,'Cloth (yarn)',35},
+   {'Cloth','cloth','cloth_metal',83,'Cloth (metal)',36},
+   {'Sheet','sheet','paper',107,'Paper',37},
+   {'Sheet','sheet','parchment',108,'Parchment',38}}do
+   c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0;c.scroll_position_sub=0
+   view:render(dfhack.getTickCount());label_click(entry[1])
+   local values=b.settings[entry[2]][entry[3]];local original={}
+   for _,v in ipairs(values)do original[#original+1]=v end
+   local types=df.global.world.raws.mat_table.organic_types[entry[6]]
+   local indexes=df.global.world.raws.mat_table.organic_indexes[entry[6]]
+   assert(#types==#indexes,'organic paired arrays differ')
+   local pairs={};for i,t in ipairs(types)do pairs[#pairs+1]={type=t,index=indexes[i]}end
+   if #values==0 then
+    records[#records+1]={probe='organic_reference_empty',mode=entry[4],field=entry[2]..'.'..entry[3],stored_count=0,materials=pairs}
+   else
+    local sub_index
+    for i,mode in ipairs(c.sub_mode)do if mode==entry[4]then sub_index=i;break end end
+    assert(sub_index,'organic sublist absent')
+    c.scroll_position_sub=math.max(0,sub_index-5);view:render(dfhack.getTickCount());label_click(entry[5],0,2)
+    assert(c.cur_sub_mode==entry[4],'wrong organic mode')
+    local pointers={};for i=0,#values-1 do local _,address=df.sizeof(values:_field(i));pointers[address]=i end
+    for _,query in ipairs{'','a','zzzznomatch'}do
+     c.spec_filter='';c.entering_spec_filter=true
+     for i=1,#query do
+      df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
+      gui.simulateInput(view,string.format('STRING_A%03d',query:byte(i)))
+     end
+     c.entering_spec_filter=false;view:render(dfhack.getTickCount())
+     local rows={}
+     for i=0,c.cur_spec_item_sz-1 do
+      local native=c.spec_item[i];local _,address=df.sizeof(native.set_pointer)
+      local index=assert(pointers[address],'organic row outside stored settings')
+      rows[#rows+1]={field=entry[2]..'.'..entry[3],index=index,name=dfhack.df2utf(native.name),visible=native.on,enabled=values[index]~=0}
+     end
+     for _,action in ipairs{{'All',1},{'None',0}}do
+      local expected={};for i,v in ipairs(values)do expected[i]=v end
+      for _,row in ipairs(rows)do if row.visible then expected[row.index]=action[2]end end
+      label_click(action[1],0,3);assert(#values==#original,'organic action resized vector')
+      for i,v in ipairs(values)do assert(v==expected[i],'organic action changed excluded row')end
+     end
+     records[#records+1]={probe='organic_reference',mode=entry[4],stored_count=#values,query=query,rows=rows,materials=pairs,bulk_actions=2}
+    end
+   end
+   for i,v in ipairs(original)do values[i-1]=v end
+  end
   for _,entry in ipairs{{'Stone','stone','mats',40,'Metal ores','stone','Economic'},
    {'Stone','stone','mats',41,'Economic','stone','Metal ores'},
    {'Stone','stone','mats',42,'Other stone','stone','Metal ores'},

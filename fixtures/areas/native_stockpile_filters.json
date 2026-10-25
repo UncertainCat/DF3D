@@ -31445,5 +31445,4341 @@
       "diagnostics": "clean",
       "scope": "Four Stone lists; creation/removal, filtered/individual edits, short/empty backing vectors; shared fixture restored between lists"
     }
+  },
+  "organic_reference": {
+    "run": "build/stockpile-presets-native-20261025-051600",
+    "status": "passed",
+    "populated_lists": 28,
+    "empty_lists": 2,
+    "native_reference_captures": 84,
+    "native_bulk_actions": 168,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 2,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 12328,
+        "row_count": 12328,
+        "visible_count": 12328,
+        "rows_sha256": "d2d9430aa76d1612ab4acf2b50b8a11babc1c99b162e9cd45193f5a0ec9adb9f",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 8800,
+            "name": "Aardvark man meat",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 8809,
+            "name": "Aardvark man sweetbread",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 6855,
+            "name": "Yeti sweetbread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 6853,
+            "name": "Yeti tripe",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 12328,
+        "organic_pairs_sha256": "cb6a0c501fdcd8048c2b1de44ee9c777e207b12ffab0198a800688983ee468c2",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          419
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 2,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 12328,
+        "row_count": 12328,
+        "visible_count": 12000,
+        "rows_sha256": "dd42a4b3405b29d8a6802aa4a30b57fecd7e123fe353768dd9c920f744ff7fb4",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 8800,
+            "name": "Aardvark man meat",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 8809,
+            "name": "Aardvark man sweetbread",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 6855,
+            "name": "Yeti sweetbread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 6853,
+            "name": "Yeti tripe",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 12328,
+        "organic_pairs_sha256": "cb6a0c501fdcd8048c2b1de44ee9c777e207b12ffab0198a800688983ee468c2",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          419
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 2,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 12328,
+        "row_count": 12328,
+        "visible_count": 0,
+        "rows_sha256": "e9e5e3d9fc9f3397aefd0fc98f90062f94db881079c77f65ca43b25d672897a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 8800,
+            "name": "Aardvark man meat",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 8809,
+            "name": "Aardvark man sweetbread",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 6855,
+            "name": "Yeti sweetbread",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.meat",
+            "index": 6853,
+            "name": "Yeti tripe",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 12328,
+        "organic_pairs_sha256": "cb6a0c501fdcd8048c2b1de44ee9c777e207b12ffab0198a800688983ee468c2",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          419
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 3,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "d02e874bff18af533112ccaa6deeaec056c4da7eececb928745eeb8b9e860b51",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 29,
+            "name": "Anchovy, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 28,
+            "name": "Anchovy, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 56,
+            "name": "Yellow bullhead, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 55,
+            "name": "Yellow bullhead, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 75,
+        "organic_pairs_sha256": "60a5ddfc8c036d4f3dde4b87641ae6e4283aff898eed2d411496eb750c52a801",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 3,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 49,
+        "rows_sha256": "55f0e788780cecb3a86f49da0d8f9fe21eb434d0324b9790fbd58989d6271825",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 29,
+            "name": "Anchovy, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 28,
+            "name": "Anchovy, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 56,
+            "name": "Yellow bullhead, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 55,
+            "name": "Yellow bullhead, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 75,
+        "organic_pairs_sha256": "60a5ddfc8c036d4f3dde4b87641ae6e4283aff898eed2d411496eb750c52a801",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 3,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 0,
+        "rows_sha256": "d4b85b703f8e08253c5c6efd62f2ffcc5de8bcf60845e3b38397856640eaf57f",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 29,
+            "name": "Anchovy, \u00e2\u2122\u201a",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 28,
+            "name": "Anchovy, \u00e2\u2122\u20ac",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 56,
+            "name": "Yellow bullhead, \u00e2\u2122\u201a",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.fish",
+            "index": 55,
+            "name": "Yellow bullhead, \u00e2\u2122\u20ac",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 75,
+        "organic_pairs_sha256": "60a5ddfc8c036d4f3dde4b87641ae6e4283aff898eed2d411496eb750c52a801",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 4,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "ad8d974a79b3b0becd257ab10dcd708677a68ad8c6536efa726fd3a186731023",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 29,
+            "name": "Unprepared raw anchovy, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 28,
+            "name": "Unprepared raw anchovy, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 56,
+            "name": "Unprepared raw yellow bullhead, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 55,
+            "name": "Unprepared raw yellow bullhead, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 75,
+        "organic_pairs_sha256": "60a5ddfc8c036d4f3dde4b87641ae6e4283aff898eed2d411496eb750c52a801",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 4,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "ad8d974a79b3b0becd257ab10dcd708677a68ad8c6536efa726fd3a186731023",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 29,
+            "name": "Unprepared raw anchovy, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 28,
+            "name": "Unprepared raw anchovy, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 56,
+            "name": "Unprepared raw yellow bullhead, \u00e2\u2122\u201a",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 55,
+            "name": "Unprepared raw yellow bullhead, \u00e2\u2122\u20ac",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 75,
+        "organic_pairs_sha256": "60a5ddfc8c036d4f3dde4b87641ae6e4283aff898eed2d411496eb750c52a801",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 4,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 0,
+        "rows_sha256": "9407b5aaf5b587dc486fb44138a83c423d020d746f4cee11da9ddba98ac5d755",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 29,
+            "name": "Unprepared raw anchovy, \u00e2\u2122\u201a",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 28,
+            "name": "Unprepared raw anchovy, \u00e2\u2122\u20ac",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 56,
+            "name": "Unprepared raw yellow bullhead, \u00e2\u2122\u201a",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.unprepared_fish",
+            "index": 55,
+            "name": "Unprepared raw yellow bullhead, \u00e2\u2122\u20ac",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 75,
+        "organic_pairs_sha256": "60a5ddfc8c036d4f3dde4b87641ae6e4283aff898eed2d411496eb750c52a801",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 5,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 203,
+        "row_count": 203,
+        "visible_count": 203,
+        "rows_sha256": "239b13d3e28e53a639e9ba2ef8773ea68c52d727fbbb2d7f46a718606bddccd2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 179,
+            "name": "Adder egg",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 180,
+            "name": "Adder woman egg",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 74,
+            "name": "Wren egg",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 75,
+            "name": "Wren woman egg",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 203,
+        "organic_pairs_sha256": "cc94ae3047ae9e2c69dc56ddc2442f60cbfae4e183247de005edc4a645c453e2",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 5,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 203,
+        "row_count": 203,
+        "visible_count": 172,
+        "rows_sha256": "5a45c9f52237a290e132edde6a82ce3e81ae30b6205271686198798157687aa2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 179,
+            "name": "Adder egg",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 180,
+            "name": "Adder woman egg",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 74,
+            "name": "Wren egg",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 75,
+            "name": "Wren woman egg",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 203,
+        "organic_pairs_sha256": "cc94ae3047ae9e2c69dc56ddc2442f60cbfae4e183247de005edc4a645c453e2",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 5,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 203,
+        "row_count": 203,
+        "visible_count": 0,
+        "rows_sha256": "55e4608ec8d6cb9233797e678cf006171a34c8c50284793bac85d5622848e84c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 179,
+            "name": "Adder egg",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 180,
+            "name": "Adder woman egg",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 74,
+            "name": "Wren egg",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.egg",
+            "index": 75,
+            "name": "Wren woman egg",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 203,
+        "organic_pairs_sha256": "cc94ae3047ae9e2c69dc56ddc2442f60cbfae4e183247de005edc4a645c453e2",
+        "pair_kind": "creature/caste"
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 6,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 225,
+        "row_count": 112,
+        "visible_count": 112,
+        "rows_sha256": "2c4b48c3a1ca0336ff94bbb2141544087a70d17f021420464c87d4fc98d45413",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 8,
+            "name": "Alfalfa",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 34,
+            "name": "Artichoke",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 43,
+            "name": "Wild carrot plant",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 78,
+            "name": "Winter melon vine",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 225,
+        "organic_pairs_sha256": "642801b61384e126b5053b87df9db8e715bb3585cc01b86b562efe7b2d225797",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 6,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 225,
+        "row_count": 112,
+        "visible_count": 86,
+        "rows_sha256": "cc3ddf13611d73f4d617cd5a7cdd0200e046c5ba305acf8fe91df8842aeafef7",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 8,
+            "name": "Alfalfa",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 34,
+            "name": "Artichoke",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 43,
+            "name": "Wild carrot plant",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 78,
+            "name": "Winter melon vine",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 225,
+        "organic_pairs_sha256": "642801b61384e126b5053b87df9db8e715bb3585cc01b86b562efe7b2d225797",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 6,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 225,
+        "row_count": 112,
+        "visible_count": 0,
+        "rows_sha256": "39f5e140561073adadc0c502724a093479ced535adbf22da7af99fe34312cef1",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 8,
+            "name": "Alfalfa",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 34,
+            "name": "Artichoke",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 43,
+            "name": "Wild carrot plant",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.plants",
+            "index": 78,
+            "name": "Winter melon vine",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 225,
+        "organic_pairs_sha256": "642801b61384e126b5053b87df9db8e715bb3585cc01b86b562efe7b2d225797",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 7,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 76,
+        "row_count": 76,
+        "visible_count": 76,
+        "rows_sha256": "52de0fbb21a89ae177879a766b532108aa394f8ae099f13b6ccf2b2741f9187b",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 51,
+            "name": "Apple cider",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 52,
+            "name": "Apricot wine",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 17,
+            "name": "White millet beer",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 34,
+            "name": "Wine",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 76,
+        "organic_pairs_sha256": "719d6aa4280848ee70bb42a03d9a84a614cd8d46efd9e692a31612dc97de9e54",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          421,
+          424
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 7,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 76,
+        "row_count": 76,
+        "visible_count": 50,
+        "rows_sha256": "e5c23638f9fdb7e2522dd0c299cdd1cb65afb186c655bf7c8b699a3cbcc30ef6",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 51,
+            "name": "Apple cider",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 52,
+            "name": "Apricot wine",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 17,
+            "name": "White millet beer",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 34,
+            "name": "Wine",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 76,
+        "organic_pairs_sha256": "719d6aa4280848ee70bb42a03d9a84a614cd8d46efd9e692a31612dc97de9e54",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          421,
+          424
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 7,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 76,
+        "row_count": 76,
+        "visible_count": 0,
+        "rows_sha256": "5888885963680d0da307e4d87e00342a0457710b4a4e82a175061ea2572940f8",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 51,
+            "name": "Apple cider",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 52,
+            "name": "Apricot wine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 17,
+            "name": "White millet beer",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_plant",
+            "index": 34,
+            "name": "Wine",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 76,
+        "organic_pairs_sha256": "719d6aa4280848ee70bb42a03d9a84a614cd8d46efd9e692a31612dc97de9e54",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          421,
+          424
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 8,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "5f0b84054e84975d61cb66ed484c0f37c0c65ee1af7bd0edb97df626a5f3ee95",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 1,
+            "name": "Bumblebee mead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Mead",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 1,
+            "name": "Bumblebee mead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Mead",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 2,
+        "organic_pairs_sha256": "721b1b9d7ea3e1ed5c13ab12f779439516fdf365e9f9733a03b6c48fc056eb18",
+        "pair_kind": "material type/index",
+        "material_types": [
+          22
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 8,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "5f0b84054e84975d61cb66ed484c0f37c0c65ee1af7bd0edb97df626a5f3ee95",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 1,
+            "name": "Bumblebee mead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Mead",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 1,
+            "name": "Bumblebee mead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Mead",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 2,
+        "organic_pairs_sha256": "721b1b9d7ea3e1ed5c13ab12f779439516fdf365e9f9733a03b6c48fc056eb18",
+        "pair_kind": "material type/index",
+        "material_types": [
+          22
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 8,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "a5fd4df171c13924866b52515273dac56bf5bf12c91049507f756c441ed95b55",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 1,
+            "name": "Bumblebee mead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Mead",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 1,
+            "name": "Bumblebee mead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.drink_animal",
+            "index": 0,
+            "name": "Mead",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 2,
+        "organic_pairs_sha256": "721b1b9d7ea3e1ed5c13ab12f779439516fdf365e9f9733a03b6c48fc056eb18",
+        "pair_kind": "material type/index",
+        "material_types": [
+          22
+        ]
+      },
+      {
+        "field": "food.cheese_plant",
+        "mode": 9,
+        "probe": "organic_reference_empty",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": [],
+        "organic_pair_count": 0,
+        "organic_pairs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "pair_kind": "material type/index",
+        "material_types": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 10,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 24,
+        "row_count": 24,
+        "visible_count": 24,
+        "rows_sha256": "0dfa572baabedd1da8340cffd08d89ce6e7424ca161363bb65ebc957563a17f8",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 10,
+            "name": "Alpaca cheese",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 2,
+            "name": "Cow cheese",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 6,
+            "name": "Water buffalo cheese",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 8,
+            "name": "Yak cheese",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 24,
+        "organic_pairs_sha256": "e2e2819b338bbf4f72a9a40248c670d16fdaa728d9e806f751cb0ca8ed6b217e",
+        "pair_kind": "material type/index",
+        "material_types": [
+          42,
+          46,
+          47,
+          48
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 10,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 24,
+        "row_count": 24,
+        "visible_count": 18,
+        "rows_sha256": "0f07d9e24c5a40d2780773392bfec68041d7b476747f4d740b96df36196bb9e2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 10,
+            "name": "Alpaca cheese",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 2,
+            "name": "Cow cheese",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 6,
+            "name": "Water buffalo cheese",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 8,
+            "name": "Yak cheese",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 24,
+        "organic_pairs_sha256": "e2e2819b338bbf4f72a9a40248c670d16fdaa728d9e806f751cb0ca8ed6b217e",
+        "pair_kind": "material type/index",
+        "material_types": [
+          42,
+          46,
+          47,
+          48
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 10,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 24,
+        "row_count": 24,
+        "visible_count": 0,
+        "rows_sha256": "a23b5569f2dfe21f61c33b922eba4c72f0384f54b5b102189af12e56279425d3",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 10,
+            "name": "Alpaca cheese",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 2,
+            "name": "Cow cheese",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 6,
+            "name": "Water buffalo cheese",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.cheese_animal",
+            "index": 8,
+            "name": "Yak cheese",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 24,
+        "organic_pairs_sha256": "e2e2819b338bbf4f72a9a40248c670d16fdaa728d9e806f751cb0ca8ed6b217e",
+        "pair_kind": "material type/index",
+        "material_types": [
+          42,
+          46,
+          47,
+          48
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 11,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 157,
+        "row_count": 157,
+        "visible_count": 157,
+        "rows_sha256": "1cd305ec66ca1d2154c13375bd8eda91d74f9b059d2b8d74bbf3a5204777aa26",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 91,
+            "name": "Abaca seeds",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 152,
+            "name": "Acacia seeds",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 82,
+            "name": "White yam seeds",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 78,
+            "name": "Winter melon seeds",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 157,
+        "organic_pairs_sha256": "40e0a80ee7f46c12440a809b6fb9528bb3e5d5a2189588d28f09f81a4e943279",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          424,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 11,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 157,
+        "row_count": 157,
+        "visible_count": 107,
+        "rows_sha256": "0d8d53e006db016b7c5d53ff44bc012ec0929b50aa689abc61c01ecbf2f0b623",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 91,
+            "name": "Abaca seeds",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 152,
+            "name": "Acacia seeds",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 82,
+            "name": "White yam seeds",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 78,
+            "name": "Winter melon seeds",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 157,
+        "organic_pairs_sha256": "40e0a80ee7f46c12440a809b6fb9528bb3e5d5a2189588d28f09f81a4e943279",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          424,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 11,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 157,
+        "row_count": 157,
+        "visible_count": 0,
+        "rows_sha256": "51fa57394bf6ed8593880a9a6e88f7d83780bbf24d3ce86953916df66fdffbdb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 91,
+            "name": "Abaca seeds",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 152,
+            "name": "Acacia seeds",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 82,
+            "name": "White yam seeds",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.seeds",
+            "index": 78,
+            "name": "Winter melon seeds",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 157,
+        "organic_pairs_sha256": "40e0a80ee7f46c12440a809b6fb9528bb3e5d5a2189588d28f09f81a4e943279",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          424,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 12,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 95,
+        "row_count": 95,
+        "visible_count": 95,
+        "rows_sha256": "fd23460df0f212361d482b5b2d86fa65c088018c0ee5fa4d4b80b3b0a849e142",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 92,
+            "name": "Alder pollen catkin",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 70,
+            "name": "Apple",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 88,
+            "name": "Willow leaf",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 28,
+            "name": "Winter melon",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 95,
+        "organic_pairs_sha256": "43bfc7e23c1dc0c13621fcdfd2a5c029f67e046abe6a5056b4b97f248fb7ee18",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 12,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 95,
+        "row_count": 95,
+        "visible_count": 73,
+        "rows_sha256": "83400faefdcceb5aa490aee425636cb34fe82416bf626b4239f25245755ad2e8",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 92,
+            "name": "Alder pollen catkin",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 70,
+            "name": "Apple",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 88,
+            "name": "Willow leaf",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 28,
+            "name": "Winter melon",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 95,
+        "organic_pairs_sha256": "43bfc7e23c1dc0c13621fcdfd2a5c029f67e046abe6a5056b4b97f248fb7ee18",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 12,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 95,
+        "row_count": 95,
+        "visible_count": 0,
+        "rows_sha256": "2e99590763f167eabf2e077027676b682d0876f72fb19b8bec74da4bfed43c99",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 92,
+            "name": "Alder pollen catkin",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 70,
+            "name": "Apple",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 88,
+            "name": "Willow leaf",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.leaves",
+            "index": 28,
+            "name": "Winter melon",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 95,
+        "organic_pairs_sha256": "43bfc7e23c1dc0c13621fcdfd2a5c029f67e046abe6a5056b4b97f248fb7ee18",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419,
+          420,
+          421,
+          422,
+          423,
+          424,
+          425
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 13,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 101,
+        "row_count": 101,
+        "visible_count": 101,
+        "rows_sha256": "7bc541f23e04a3883a08b01ce386b24870656f5834647ecbe77d3013b70c5cfb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 89,
+            "name": "Acacia bark dye",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 97,
+            "name": "Alder bark dye",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 91,
+            "name": "Willow bark dye",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 92,
+            "name": "Willow leaf dye",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 101,
+        "organic_pairs_sha256": "d476b1147cd93e4d02dc48238ddce101fd378c7acc2d4f5efc63e246457fb8df",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          428
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 13,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 101,
+        "row_count": 101,
+        "visible_count": 81,
+        "rows_sha256": "44affdf1475a77ff5cf1389cb624998b4d14708b98447d3f1bba66bbb8636dc9",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 89,
+            "name": "Acacia bark dye",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 97,
+            "name": "Alder bark dye",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 91,
+            "name": "Willow bark dye",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 92,
+            "name": "Willow leaf dye",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 101,
+        "organic_pairs_sha256": "d476b1147cd93e4d02dc48238ddce101fd378c7acc2d4f5efc63e246457fb8df",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          428
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 13,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 101,
+        "row_count": 101,
+        "visible_count": 0,
+        "rows_sha256": "b48d887d05a779002ef06de7415cdb1fa26238c3aaafd6b568575cabd05a32e5",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 89,
+            "name": "Acacia bark dye",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 97,
+            "name": "Alder bark dye",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 91,
+            "name": "Willow bark dye",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.powder_plant",
+            "index": 92,
+            "name": "Willow leaf dye",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 101,
+        "organic_pairs_sha256": "d476b1147cd93e4d02dc48238ddce101fd378c7acc2d4f5efc63e246457fb8df",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          421,
+          422,
+          423,
+          424,
+          425,
+          426,
+          427,
+          428
+        ]
+      },
+      {
+        "field": "food.powder_creature",
+        "mode": 14,
+        "probe": "organic_reference_empty",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": [],
+        "organic_pair_count": 0,
+        "organic_pairs_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "pair_kind": "material type/index",
+        "material_types": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 15,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 2062,
+        "row_count": 2062,
+        "visible_count": 2062,
+        "rows_sha256": "e2b704235ce0681e7d9360ed322bd07ffa4ef9e1f8567849b9bb2b7edd8f6bcd",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1472,
+            "name": "Aardvark fat",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1474,
+            "name": "Aardvark man fat",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1148,
+            "name": "Yeti fat",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1149,
+            "name": "Yeti tallow",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 2062,
+        "organic_pairs_sha256": "1907a56ba006e6db6d782c7231aa6e7eecd641da7e05688a924c310b4a454e72",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          23,
+          25,
+          28,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          42
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 15,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 2062,
+        "row_count": 2062,
+        "visible_count": 2062,
+        "rows_sha256": "e2b704235ce0681e7d9360ed322bd07ffa4ef9e1f8567849b9bb2b7edd8f6bcd",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1472,
+            "name": "Aardvark fat",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1474,
+            "name": "Aardvark man fat",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1148,
+            "name": "Yeti fat",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1149,
+            "name": "Yeti tallow",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 2062,
+        "organic_pairs_sha256": "1907a56ba006e6db6d782c7231aa6e7eecd641da7e05688a924c310b4a454e72",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          23,
+          25,
+          28,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          42
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 15,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 2062,
+        "row_count": 2062,
+        "visible_count": 0,
+        "rows_sha256": "561714b60d3b704659f813be5eb49a04e1f19913dc792277f0f839d35b48e4c1",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1472,
+            "name": "Aardvark fat",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1474,
+            "name": "Aardvark man fat",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1148,
+            "name": "Yeti fat",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.glob",
+            "index": 1149,
+            "name": "Yeti tallow",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 2062,
+        "organic_pairs_sha256": "1907a56ba006e6db6d782c7231aa6e7eecd641da7e05688a924c310b4a454e72",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          23,
+          25,
+          28,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          42
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 16,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 13,
+        "row_count": 13,
+        "visible_count": 13,
+        "rows_sha256": "aa2c39dc66b7c9a0edec2e3d76b229c0d06620559f3ce4049b8faf5b4cb99036",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 5,
+            "name": "Cotton seed paste",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 6,
+            "name": "Cotton slurry",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 11,
+            "name": "Rock nut paste",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 12,
+            "name": "Rope reed slurry",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 13,
+        "organic_pairs_sha256": "15a0c8bd0908b78d11884bfe63dd06b896b7456746d83beaa00f30fa4f994daf",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          424,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 16,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 13,
+        "row_count": 13,
+        "visible_count": 8,
+        "rows_sha256": "ef864940c7375c6060f21d1fc7f82fc5ef701a026adcbb502fd7fd6762b418eb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 5,
+            "name": "Cotton seed paste",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 6,
+            "name": "Cotton slurry",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 11,
+            "name": "Rock nut paste",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 12,
+            "name": "Rope reed slurry",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 13,
+        "organic_pairs_sha256": "15a0c8bd0908b78d11884bfe63dd06b896b7456746d83beaa00f30fa4f994daf",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          424,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 16,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 13,
+        "row_count": 13,
+        "visible_count": 0,
+        "rows_sha256": "1cf5870cc306210654df4dd9d15a39fa751ccb0384afedd3595af36b20d3fd04",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 5,
+            "name": "Cotton seed paste",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 6,
+            "name": "Cotton slurry",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 11,
+            "name": "Rock nut paste",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_paste",
+            "index": 12,
+            "name": "Rope reed slurry",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 13,
+        "organic_pairs_sha256": "15a0c8bd0908b78d11884bfe63dd06b896b7456746d83beaa00f30fa4f994daf",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          424,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 17,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 7,
+        "row_count": 7,
+        "visible_count": 7,
+        "rows_sha256": "c0808aa44c13dde1fc903cee66f9a546ba355e22be2bdd21b2f7fbc6c85bae86",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 2,
+            "name": "Cotton seed press cake",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 0,
+            "name": "Flax seed press cake",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 4,
+            "name": "Olive pomace",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 5,
+            "name": "Rock nut press cake",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 7,
+        "organic_pairs_sha256": "90704c2bb360592e4f2ed78b4a8242062d7c3e8136eddfdc641cd32c6881d63c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          423,
+          424,
+          425
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 17,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 7,
+        "row_count": 7,
+        "visible_count": 7,
+        "rows_sha256": "c0808aa44c13dde1fc903cee66f9a546ba355e22be2bdd21b2f7fbc6c85bae86",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 2,
+            "name": "Cotton seed press cake",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 0,
+            "name": "Flax seed press cake",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 4,
+            "name": "Olive pomace",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 5,
+            "name": "Rock nut press cake",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 7,
+        "organic_pairs_sha256": "90704c2bb360592e4f2ed78b4a8242062d7c3e8136eddfdc641cd32c6881d63c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          423,
+          424,
+          425
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 17,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 7,
+        "row_count": 7,
+        "visible_count": 0,
+        "rows_sha256": "c89ef7c323465671ace0e625287cead08cf34923bfb934ff53d81ddc2aa96ecb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 2,
+            "name": "Cotton seed press cake",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 0,
+            "name": "Flax seed press cake",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 4,
+            "name": "Olive pomace",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.glob_pressed",
+            "index": 5,
+            "name": "Rock nut press cake",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 7,
+        "organic_pairs_sha256": "90704c2bb360592e4f2ed78b4a8242062d7c3e8136eddfdc641cd32c6881d63c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          423,
+          424,
+          425
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 18,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 9,
+        "rows_sha256": "a3e74db315317754df6928de76d2b646b1293b3f081027aa2e200ddd9c77dabb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 2,
+            "name": "Cottonseed oil",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 5,
+            "name": "Dwarven syrup",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 4,
+            "name": "Olive oil",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 6,
+            "name": "Rock nut oil",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 9,
+        "organic_pairs_sha256": "72c8a93d9e1f809f37a61279647a9fc712cc6af9e861752c0101795141fc87f7",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          422
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 18,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 3,
+        "rows_sha256": "e616511cd5bfd8c4dcc81baf981ae90ed6262b47d2cdf23ef335249aa1f68c17",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 2,
+            "name": "Cottonseed oil",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 5,
+            "name": "Dwarven syrup",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 4,
+            "name": "Olive oil",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 6,
+            "name": "Rock nut oil",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 9,
+        "organic_pairs_sha256": "72c8a93d9e1f809f37a61279647a9fc712cc6af9e861752c0101795141fc87f7",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          422
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 18,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 0,
+        "rows_sha256": "eba11bba95cdfc4d01a0e56adaf09205b78848ac4a2fd2cf6f355dfbde92db6e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 2,
+            "name": "Cottonseed oil",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 5,
+            "name": "Dwarven syrup",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 4,
+            "name": "Olive oil",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_plant",
+            "index": 6,
+            "name": "Rock nut oil",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 9,
+        "organic_pairs_sha256": "72c8a93d9e1f809f37a61279647a9fc712cc6af9e861752c0101795141fc87f7",
+        "pair_kind": "material type/index",
+        "material_types": [
+          420,
+          422
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 19,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 277,
+        "row_count": 277,
+        "visible_count": 277,
+        "rows_sha256": "cef029e8e8dfadcb719516a7d9b69615c33488a792b00b462510a72223b0200a",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 58,
+            "name": "Adder man venom",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 57,
+            "name": "Adder venom",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 258,
+            "name": "Weasel fiend extract",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 17,
+            "name": "Yak's milk",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 277,
+        "organic_pairs_sha256": "b469f3eea2969bd72b98177a0fceabc8b682873a8bb42e6509896114a2bd8d68",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          36,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 19,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 277,
+        "row_count": 277,
+        "visible_count": 262,
+        "rows_sha256": "6689d5b20600b915ea90d033af6aa617bdc7b937014f681419f294cdd64bd41c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 58,
+            "name": "Adder man venom",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 57,
+            "name": "Adder venom",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 258,
+            "name": "Weasel fiend extract",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 17,
+            "name": "Yak's milk",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 277,
+        "organic_pairs_sha256": "b469f3eea2969bd72b98177a0fceabc8b682873a8bb42e6509896114a2bd8d68",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          36,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 19,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 277,
+        "row_count": 277,
+        "visible_count": 0,
+        "rows_sha256": "4c073da2c5000481df528a60d0a264e0d1192bc0df7bdfcc3756c7615a8dd849",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 58,
+            "name": "Adder man venom",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 57,
+            "name": "Adder venom",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 258,
+            "name": "Weasel fiend extract",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_animal",
+            "index": 17,
+            "name": "Yak's milk",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 277,
+        "organic_pairs_sha256": "b469f3eea2969bd72b98177a0fceabc8b682873a8bb42e6509896114a2bd8d68",
+        "pair_kind": "material type/index",
+        "material_types": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          36,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 20,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "7c3f8e46a758af4d2f8dffeeab845f45937732bec6a8bf81931d1694b599594f",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Lye",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 1,
+            "name": "Milk of lime",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Lye",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 1,
+            "name": "Milk of lime",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 2,
+        "organic_pairs_sha256": "aaf7bc26775afa261697d3ef0357a2778f2a518c3fc921a5aec10f065a9038c0",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          11
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 20,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "4c333b82b08c69e4ef0e2e37c7279caa3e0fd5e3104934b646600c135dc422e1",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Lye",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 1,
+            "name": "Milk of lime",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Lye",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 1,
+            "name": "Milk of lime",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 2,
+        "organic_pairs_sha256": "aaf7bc26775afa261697d3ef0357a2778f2a518c3fc921a5aec10f065a9038c0",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          11
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 20,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "4c333b82b08c69e4ef0e2e37c7279caa3e0fd5e3104934b646600c135dc422e1",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Lye",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 1,
+            "name": "Milk of lime",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 0,
+            "name": "Lye",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "food.liquid_misc",
+            "index": 1,
+            "name": "Milk of lime",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 2,
+        "organic_pairs_sha256": "aaf7bc26775afa261697d3ef0357a2778f2a518c3fc921a5aec10f065a9038c0",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          11
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 73,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "c5029706dbf2567156f50ced25e502aa3f79bdcdc4b396744df547a807d7dd1d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 544,
+            "name": "Aardvark leather",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 545,
+            "name": "Aardvark man leather",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 142,
+            "name": "Yak leather",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 425,
+            "name": "Yeti leather",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 839,
+        "organic_pairs_sha256": "99a03d45fefe357a5f8c2b982a832f5d4068b1e46ae67fc2f2fb7536fbcb5fce",
+        "pair_kind": "material type/index",
+        "material_types": [
+          20,
+          21,
+          23,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 73,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "c5029706dbf2567156f50ced25e502aa3f79bdcdc4b396744df547a807d7dd1d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 544,
+            "name": "Aardvark leather",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 545,
+            "name": "Aardvark man leather",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 142,
+            "name": "Yak leather",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 425,
+            "name": "Yeti leather",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 839,
+        "organic_pairs_sha256": "99a03d45fefe357a5f8c2b982a832f5d4068b1e46ae67fc2f2fb7536fbcb5fce",
+        "pair_kind": "material type/index",
+        "material_types": [
+          20,
+          21,
+          23,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 73,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 0,
+        "rows_sha256": "b7cde88a26d2194d0bf5fb1acb92ddf69e9cb22671439c405efc6bd7f3aaae06",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 544,
+            "name": "Aardvark leather",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 545,
+            "name": "Aardvark man leather",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 142,
+            "name": "Yak leather",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "leather.mats",
+            "index": 425,
+            "name": "Yeti leather",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 839,
+        "organic_pairs_sha256": "99a03d45fefe357a5f8c2b982a832f5d4068b1e46ae67fc2f2fb7536fbcb5fce",
+        "pair_kind": "material type/index",
+        "material_types": [
+          20,
+          21,
+          23,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 76,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "767b3b03a8cf1416dc11ac9ed77471929dedc364df8cc49b9bcedd9788c0fb8b",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 1,
+            "name": "Brown recluse spider man silk thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 0,
+            "name": "Brown recluse spider silk thread",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 14,
+            "name": "Undulating cloth thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 38,
+            "name": "Vomit monster silk thread",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 39,
+        "organic_pairs_sha256": "f515568dc2ace2ee0159d2b1446cd2c8052ed716e53fb5ae7aa78ccb7afce24c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          19,
+          20,
+          37,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 76,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "767b3b03a8cf1416dc11ac9ed77471929dedc364df8cc49b9bcedd9788c0fb8b",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 1,
+            "name": "Brown recluse spider man silk thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 0,
+            "name": "Brown recluse spider silk thread",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 14,
+            "name": "Undulating cloth thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 38,
+            "name": "Vomit monster silk thread",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 39,
+        "organic_pairs_sha256": "f515568dc2ace2ee0159d2b1446cd2c8052ed716e53fb5ae7aa78ccb7afce24c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          19,
+          20,
+          37,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 76,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 0,
+        "rows_sha256": "e4947f99619ca7d904ed9bbb109a7bd2faf99493ee447d5172c21f64aceea878",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 1,
+            "name": "Brown recluse spider man silk thread",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 0,
+            "name": "Brown recluse spider silk thread",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 14,
+            "name": "Undulating cloth thread",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_silk",
+            "index": 38,
+            "name": "Vomit monster silk thread",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 39,
+        "organic_pairs_sha256": "f515568dc2ace2ee0159d2b1446cd2c8052ed716e53fb5ae7aa78ccb7afce24c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          19,
+          20,
+          37,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 77,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "efd9e0f501cbeab03dae69d7c55568ff66428f9fc55508805e6f4c04a6925931",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 3,
+            "name": "Cotton thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 2,
+            "name": "Hemp thread",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 4,
+            "name": "Ramie thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 7,
+            "name": "Rope reed thread",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 8,
+        "organic_pairs_sha256": "d0d81e06ef3ea99e5705733e12adcf5727f81c7479d0a12f269f5ea69c27b428",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 77,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "efd9e0f501cbeab03dae69d7c55568ff66428f9fc55508805e6f4c04a6925931",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 3,
+            "name": "Cotton thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 2,
+            "name": "Hemp thread",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 4,
+            "name": "Ramie thread",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 7,
+            "name": "Rope reed thread",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 8,
+        "organic_pairs_sha256": "d0d81e06ef3ea99e5705733e12adcf5727f81c7479d0a12f269f5ea69c27b428",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 77,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 0,
+        "rows_sha256": "131d8745b8efa3c015f4897f7525c2ac87ff3174ac0329eec115ca582c999625",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 3,
+            "name": "Cotton thread",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 2,
+            "name": "Hemp thread",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 4,
+            "name": "Ramie thread",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_plant",
+            "index": 7,
+            "name": "Rope reed thread",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 8,
+        "organic_pairs_sha256": "d0d81e06ef3ea99e5705733e12adcf5727f81c7479d0a12f269f5ea69c27b428",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 78,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "778b8b6ab568826bc0425a53720b2ef416d9e96fb8bbebd2ee82edbfd99cda1b",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 2,
+            "name": "Alpaca wool yarn",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 1,
+            "name": "Llama wool yarn",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 0,
+            "name": "Sheep wool yarn",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 3,
+            "name": "Troll fur yarn",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 4,
+        "organic_pairs_sha256": "cfc8c1ea7f640a41f7564a02fd0db72519ba4f9a2639a4a99eedcea53eb975f1",
+        "pair_kind": "material type/index",
+        "material_types": [
+          24
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 78,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "778b8b6ab568826bc0425a53720b2ef416d9e96fb8bbebd2ee82edbfd99cda1b",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 2,
+            "name": "Alpaca wool yarn",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 1,
+            "name": "Llama wool yarn",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 0,
+            "name": "Sheep wool yarn",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 3,
+            "name": "Troll fur yarn",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 4,
+        "organic_pairs_sha256": "cfc8c1ea7f640a41f7564a02fd0db72519ba4f9a2639a4a99eedcea53eb975f1",
+        "pair_kind": "material type/index",
+        "material_types": [
+          24
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 78,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 0,
+        "rows_sha256": "c5889023b7b9822b3cdfd44f5f5a4fe486417fc2c43e5c1c4b87db46939fbe08",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 2,
+            "name": "Alpaca wool yarn",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 1,
+            "name": "Llama wool yarn",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 0,
+            "name": "Sheep wool yarn",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.thread_yarn",
+            "index": 3,
+            "name": "Troll fur yarn",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 4,
+        "organic_pairs_sha256": "cfc8c1ea7f640a41f7564a02fd0db72519ba4f9a2639a4a99eedcea53eb975f1",
+        "pair_kind": "material type/index",
+        "material_types": [
+          24
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 79,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Adamantine strands",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Adamantine strands",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 1,
+        "organic_pairs_sha256": "33e6f7c7f428e769b5268c94a84c371111f72e0045863d33732003f180f82c49",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 79,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Adamantine strands",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Adamantine strands",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 1,
+        "organic_pairs_sha256": "33e6f7c7f428e769b5268c94a84c371111f72e0045863d33732003f180f82c49",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 79,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8361fa8ee653a57dab6e5380500b66755e5ca4defa6474306d59192ee262cfca",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Adamantine strands",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.thread_metal",
+            "index": 0,
+            "name": "Adamantine strands",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 1,
+        "organic_pairs_sha256": "33e6f7c7f428e769b5268c94a84c371111f72e0045863d33732003f180f82c49",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 80,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "18907ba9eba821991e2644e192a365567ab1a1872f50804177dbed89fe18c71f",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 1,
+            "name": "Brown recluse spider man silk cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 0,
+            "name": "Brown recluse spider silk cloth",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 14,
+            "name": "Undulating cloth cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 38,
+            "name": "Vomit monster silk cloth",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 39,
+        "organic_pairs_sha256": "f515568dc2ace2ee0159d2b1446cd2c8052ed716e53fb5ae7aa78ccb7afce24c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          19,
+          20,
+          37,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 80,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 29,
+        "rows_sha256": "1513bc598d205f755d6ee72ac4434e15d7d1418befb0afa17319aee155e47a14",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 1,
+            "name": "Brown recluse spider man silk cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 0,
+            "name": "Brown recluse spider silk cloth",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 14,
+            "name": "Undulating cloth cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 38,
+            "name": "Vomit monster silk cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 39,
+        "organic_pairs_sha256": "f515568dc2ace2ee0159d2b1446cd2c8052ed716e53fb5ae7aa78ccb7afce24c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          19,
+          20,
+          37,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 80,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 0,
+        "rows_sha256": "768e31ddd19b3b098b5061c83196ef63956647803fab22c510e931eb51e596af",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 1,
+            "name": "Brown recluse spider man silk cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 0,
+            "name": "Brown recluse spider silk cloth",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 14,
+            "name": "Undulating cloth cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_silk",
+            "index": 38,
+            "name": "Vomit monster silk cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 39,
+        "organic_pairs_sha256": "f515568dc2ace2ee0159d2b1446cd2c8052ed716e53fb5ae7aa78ccb7afce24c",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0,
+          19,
+          20,
+          37,
+          43,
+          44,
+          45
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 81,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "82af09eac0232e6cdfc8741e22b277497e47e6280a263d3a2502de5c76ae1256",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 3,
+            "name": "Cotton cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 2,
+            "name": "Hemp cloth",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 4,
+            "name": "Ramie cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 7,
+            "name": "Rope reed cloth",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 8,
+        "organic_pairs_sha256": "d0d81e06ef3ea99e5705733e12adcf5727f81c7479d0a12f269f5ea69c27b428",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 81,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 3,
+        "rows_sha256": "fd82c189ff7be29ffb190ffc5f39519ad35a2ec3740bb740638f882903165208",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 3,
+            "name": "Cotton cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 2,
+            "name": "Hemp cloth",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 4,
+            "name": "Ramie cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 7,
+            "name": "Rope reed cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 8,
+        "organic_pairs_sha256": "d0d81e06ef3ea99e5705733e12adcf5727f81c7479d0a12f269f5ea69c27b428",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 81,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 0,
+        "rows_sha256": "f5c167f857c6fd8fe7827c23517c303e0d86220650ea2e67d71f05356d8a3afb",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 3,
+            "name": "Cotton cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 2,
+            "name": "Hemp cloth",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 4,
+            "name": "Ramie cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_plant",
+            "index": 7,
+            "name": "Rope reed cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 8,
+        "organic_pairs_sha256": "d0d81e06ef3ea99e5705733e12adcf5727f81c7479d0a12f269f5ea69c27b428",
+        "pair_kind": "material type/index",
+        "material_types": [
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 82,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "861323b07158bf3c4ddd3fc4350206523bd65a4c2e3e22cea1cb25e6b64fb218",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 2,
+            "name": "Alpaca wool cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 1,
+            "name": "Llama wool cloth",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 0,
+            "name": "Sheep wool cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 3,
+            "name": "Troll fur cloth",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 4,
+        "organic_pairs_sha256": "cfc8c1ea7f640a41f7564a02fd0db72519ba4f9a2639a4a99eedcea53eb975f1",
+        "pair_kind": "material type/index",
+        "material_types": [
+          24
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 82,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 2,
+        "rows_sha256": "807bbbc09bcb25b05624a6394781803e744fa881035f291cf12a81efa8725e27",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 2,
+            "name": "Alpaca wool cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 1,
+            "name": "Llama wool cloth",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 0,
+            "name": "Sheep wool cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 3,
+            "name": "Troll fur cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 4,
+        "organic_pairs_sha256": "cfc8c1ea7f640a41f7564a02fd0db72519ba4f9a2639a4a99eedcea53eb975f1",
+        "pair_kind": "material type/index",
+        "material_types": [
+          24
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 82,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 0,
+        "rows_sha256": "d5845c2a9f29f24d8120f5a004007e5c57c00e38d0ae5bee42219a1d3e77ec3f",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 2,
+            "name": "Alpaca wool cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 1,
+            "name": "Llama wool cloth",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 0,
+            "name": "Sheep wool cloth",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "cloth.cloth_yarn",
+            "index": 3,
+            "name": "Troll fur cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 4,
+        "organic_pairs_sha256": "cfc8c1ea7f640a41f7564a02fd0db72519ba4f9a2639a4a99eedcea53eb975f1",
+        "pair_kind": "material type/index",
+        "material_types": [
+          24
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 83,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Adamantine cloth",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Adamantine cloth",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 1,
+        "organic_pairs_sha256": "33e6f7c7f428e769b5268c94a84c371111f72e0045863d33732003f180f82c49",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 83,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Adamantine cloth",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Adamantine cloth",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 1,
+        "organic_pairs_sha256": "33e6f7c7f428e769b5268c94a84c371111f72e0045863d33732003f180f82c49",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 83,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "e0ff5d2cc1d4b32ed74eb8cc2d42e06fea806724c19d0b9d73bc12dbb8d40156",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Adamantine cloth",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "cloth.cloth_metal",
+            "index": 0,
+            "name": "Adamantine cloth",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 1,
+        "organic_pairs_sha256": "33e6f7c7f428e769b5268c94a84c371111f72e0045863d33732003f180f82c49",
+        "pair_kind": "material type/index",
+        "material_types": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 107,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 9,
+        "rows_sha256": "e9a380ec6bb7dffa651ae8bf556cfaabccbb057519cf1f3d89f9882b143e9789",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 3,
+            "name": "Cotton sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 2,
+            "name": "Hemp sheet",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 4,
+            "name": "Ramie sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 8,
+            "name": "Rope reed sheet",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 9,
+        "organic_pairs_sha256": "fd6a7b9db38e76d2eb093c2f24693f98a56c0615556b55c2c510938d485b58b9",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419,
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 107,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 4,
+        "rows_sha256": "ef3b769b5f9bedaf8f79f71c897d0f035dcbe2ddab4e454642004c87426147d7",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 3,
+            "name": "Cotton sheet",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 2,
+            "name": "Hemp sheet",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 4,
+            "name": "Ramie sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 8,
+            "name": "Rope reed sheet",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 9,
+        "organic_pairs_sha256": "fd6a7b9db38e76d2eb093c2f24693f98a56c0615556b55c2c510938d485b58b9",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419,
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 107,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 0,
+        "rows_sha256": "9c5ec2a6c4b2d87a8c26b84f908454708c25951b74c67e0ec7e306ead774aa6d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 3,
+            "name": "Cotton sheet",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 2,
+            "name": "Hemp sheet",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 4,
+            "name": "Ramie sheet",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "sheet.paper",
+            "index": 8,
+            "name": "Rope reed sheet",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 9,
+        "organic_pairs_sha256": "fd6a7b9db38e76d2eb093c2f24693f98a56c0615556b55c2c510938d485b58b9",
+        "pair_kind": "material type/index",
+        "material_types": [
+          419,
+          421,
+          422,
+          423,
+          425,
+          426
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 108,
+        "probe": "organic_reference",
+        "query": "",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "3f992065cf2f52f4770a8c74599745c5eeda0c6aae106fe1b524b04b7ef2f8b6",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 545,
+            "name": "Aardvark man parchment sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 544,
+            "name": "Aardvark parchment sheet",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 142,
+            "name": "Yak parchment sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 425,
+            "name": "Yeti parchment sheet",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 839,
+        "organic_pairs_sha256": "d371716e308392d4759d13eae0e21422c0ddd0bdf7282d433137ff4507d4608d",
+        "pair_kind": "material type/index",
+        "material_types": [
+          21,
+          22,
+          24,
+          36,
+          37,
+          38,
+          39
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 108,
+        "probe": "organic_reference",
+        "query": "a",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 838,
+        "rows_sha256": "a654e2cb8d6a047e6ab8e5fd431ff622dd59d90da0a4e56e8b5696865161645a",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 545,
+            "name": "Aardvark man parchment sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 544,
+            "name": "Aardvark parchment sheet",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 142,
+            "name": "Yak parchment sheet",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 425,
+            "name": "Yeti parchment sheet",
+            "visible": true
+          }
+        ],
+        "organic_pair_count": 839,
+        "organic_pairs_sha256": "d371716e308392d4759d13eae0e21422c0ddd0bdf7282d433137ff4507d4608d",
+        "pair_kind": "material type/index",
+        "material_types": [
+          21,
+          22,
+          24,
+          36,
+          37,
+          38,
+          39
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 108,
+        "probe": "organic_reference",
+        "query": "zzzznomatch",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 0,
+        "rows_sha256": "6df3593b680f27335d2c93e97ec12b81a79909d1cd3e15247cf4b1acb937de82",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 545,
+            "name": "Aardvark man parchment sheet",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 544,
+            "name": "Aardvark parchment sheet",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 142,
+            "name": "Yak parchment sheet",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "sheet.parchment",
+            "index": 425,
+            "name": "Yeti parchment sheet",
+            "visible": false
+          }
+        ],
+        "organic_pair_count": 839,
+        "organic_pairs_sha256": "d371716e308392d4759d13eae0e21422c0ddd0bdf7282d433137ff4507d4608d",
+        "pair_kind": "material type/index",
+        "material_types": [
+          21,
+          22,
+          24,
+          36,
+          37,
+          38,
+          39
+        ]
+      }
+    ],
+    "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
+    "omissions": [
+      "Runtime owned-provider comparison/integration",
+      "Short and stale vectors",
+      "Empty table populated by synthetic raws",
+      "Non-ASCII search",
+      "Rendered panel parity",
+      "Summary membership"
+    ],
+    "scope": "Native UI oracle only; does not authorize runtime formatter calls. The raw record materials field contains organic pairs; fish/egg pairs are creature/caste IDs."
   }
 }

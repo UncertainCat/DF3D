@@ -234,6 +234,25 @@ settings/unrelated-state snapshots matched; diagnostics were clean. Owned DF
 closed without saving and source save hashes were unchanged. The full stockpile
 workflow and launcher exposure remain unfinished.
 
+Protected organic reference `build/stockpile-presets-native-20261025-051600`
+captured all30 Food/Leather/Cloth/Sheet leaf routes:28 populated lists across
+three searches,168 actual native All/None actions, and two empty tables (plant
+cheese and animal powder). This is native UI evidence only; runtime integration
+and owned-provider comparison remain unfinished. Source hashes were unchanged,
+DF closed without saving, and simulation stayed paused. Bounded row/pair digests
+and samples are in `native_stockpile_filters.json.organic_reference`.
+
+On this fixture, Plants displays112 of225 stored entries. Fish/raw-fish names
+include native caste/sex information; metal thread uses the native strands name.
+The organic table's fish/raw-fish/egg pairs represent creature/caste IDs, while
+ordinary material lists use material type/index pairs. They must not share a
+blind material-type validator. No historical-material types219..418 appeared in
+the ordinary material lists on this fixture; that observation does not prove a
+universal input invariant or authorize historical-cache access. Native table
+lookup bounds-checks types but assumes a matching index array. Remaining work
+includes paired-array bounds, raw-pointer guards, Food eligibility/growth paths,
+formatter ownership and short/stale-vector acceptance.
+
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row

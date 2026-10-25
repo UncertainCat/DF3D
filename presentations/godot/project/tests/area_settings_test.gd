@@ -12,6 +12,8 @@ func _initialize() -> void:
 	var native_input = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_stockpile_search.json"))
 	for sample in native_input.input_map:
 		check(State.normalize_search(str(sample[1])) == str(sample[2]),"native search byte "+str(sample[0]))
+	for sample in native_input.windows_text_messages.cases:
+		check(State.normalize_search(str(sample.typed)) == str(sample.native.stored),"native Windows committed-text normalization")
 	for sample in native_input.cases:
 		for limit in sample.limits:
 			check(State.normalize_search("a".repeat(int(limit.typed_length))).length() == int(limit.stored_length),"native search length "+str(sample.name))

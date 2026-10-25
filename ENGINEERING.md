@@ -1149,8 +1149,21 @@ comparisons per configuration, preserving native UI bytes during provider calls.
 Names are restored, simulation stays paused, source hashes match and DF99212
 closes unsaved. Each query is cleared with native Backspace: changing only the
 filter string leaves the old native visible-row cache and is not a valid oracle.
-The fixture retains caller/helper hashes. OS keyboard/IME delivery and clipboard
-newline behavior remain outside this evidence.
+The fixture retains caller/helper hashes. Physical keyboard layouts, IME
+composition and clipboard paste remain outside this evidence.
+
+The optional `-TextMessages` lane sends Unicode WM_CHAR messages to the owned
+DF window, spaced40ms apart. Protected
+`build/stockpile-search-native-20261025-165550` confirms ASCII uppercase,
+rejection of accented/Greek/Chinese input, removal of CR/LF/tab characters and
+the76-character limit through Windows/SDL delivery. All four stored strings
+match the viewer normalizer; the fixture's `windows_text_messages` section
+retains them with the raw-result hash. Owned DF54364 closes unsaved and the
+source manifest is unchanged. This tests committed text, not keyboard layout,
+clipboard newline handling or IME composition. An earlier unpaced burst
+capture165458 retained only the final character per burst; it is not an ordinary
+typing oracle. Preparation runs165304/165332 failed layout setup and165415 failed
+JSON parsing; each closed its owned process unsaved and preserved the source.
 
 Settings captions are displayed verbatim from the owned native row builder.
 That builder already applies DF's capitalization; applying Unicode uppercase

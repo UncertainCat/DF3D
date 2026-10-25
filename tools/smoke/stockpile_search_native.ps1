@@ -1,4 +1,4 @@
-param([string]$CloneEvidence="build/native-save-effects-20260930-081415",[switch]$TruncationWidths)
+param([string]$CloneEvidence="build/native-save-effects-20260930-081415",[switch]$TruncationWidths,[switch]$TextMessages)
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 $env:Path='C:/msys64/mingw64/bin;'+$env:Path
@@ -39,6 +39,15 @@ public static class Shot {
    if(!SetWindowPos(h,IntPtr.Zero,0,0,width+(outer.R-outer.L)-(client.R-client.L),height+(outer.B-outer.T)-(client.B-client.T),0x16))throw new Exception("Resize failed");
    return width+"x"+height;
   }
+  [DllImport("user32.dll",EntryPoint="PostMessageW",CharSet=CharSet.Unicode,SetLastError=true)]
+  static extern bool PostMessage(IntPtr h,uint message,IntPtr w,IntPtr l);
+  public static void Text(IntPtr h,string text,int delay) {
+   foreach(char c in text) {
+    if(!PostMessage(h,0x102,(IntPtr)c,IntPtr.Zero))
+     throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+    if(delay>0) System.Threading.Thread.Sleep(delay);
+   }
+  }
   public static string Windows="";
   public static IntPtr Find(uint pid) {
     IntPtr result=IntPtr.Zero, desk=OpenDesktop("df3d_hidden",0,false,0x41);
@@ -69,10 +78,11 @@ try {
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'Source load failed'}
  $sizes=if($TruncationWidths){@(@(912,600,0),@(920,600,0),@(928,600,0),@(936,600,0),@(944,600,0),@(952,600,0))}else{@(@(1200,800,0),@(960,600,0),@(1920,1080,0),@(1920,1080,150))}
+ if($TextMessages){$sizes=,@(1200,800,0)}
  foreach($size in $sizes) {
   $stageOut="$out/$($size[0])x$($size[1])-$($size[2])";New-Item -ItemType Directory -Path $stageOut | Out-Null
   $config=Invoke-DfhackRaw -CommandArgs @('lua',"local d=df.global.init.display;d.flag.INTERFACE_SCALING_TO_DESIRED_HEIGHT_WIDTH=$(([bool]($size[2] -eq 0)).ToString().ToLower());d.interface_scaling_percentage=$($size[2]);print('LAYOUT_CONFIGURED')")
-  if($config.ExitCode -ne 0){throw 'Layout configuration failed'}
+  if($config.ExitCode -ne 0){throw ('Layout configuration failed: '+($config.Output -join ' '))}
   [Shot]::Resize([Shot]::Find($owned.Id),($size[0]+1),$size[1]) | Out-Null
   Start-Sleep -Milliseconds 300
   [Shot]::Resize([Shot]::Find($owned.Id),$size[0],$size[1]) | Set-Content "$stageOut/requested-size.txt"
@@ -84,6 +94,24 @@ try {
  while(-not(Test-Path "$stageOut/result.json") -and (Get-Date) -lt $limit){Start-Sleep -Milliseconds 200}
  $result=Get-Content "$stageOut/result.json" -Raw | ConvertFrom-Json
  if(-not $result.success){throw $result.error}
+  if($TextMessages) {
+   $samples=@('abc XYZ',("a"+[char]0x00e9+[char]0x03b1+[char]0x4e2d+"b"),"ab`r`ncd`tef",('a'*80))
+   $observations=@()
+   foreach($text in $samples) {
+    $prepare=Invoke-DfhackRaw -CommandArgs @('lua',"local c=df.global.game.main_interface.custom_stockpile;assert(c.open);c.entering_spec_filter=true;local gui=require('gui');local v=dfhack.gui.getDFViewscreen(true);for i=1,#c.spec_filter do gui.simulateInput(v,'STRING_A000')end;assert(c.spec_filter=='');assert(df.global.pause_state);print('TEXT_READY')")
+    if($prepare.ExitCode -ne 0 -or ($prepare.Output -join "`n") -notmatch 'TEXT_READY'){throw 'Text preparation failed'}
+    [Shot]::Text([Shot]::Find($owned.Id),$text,40)
+    Start-Sleep -Milliseconds 500
+    $read=Invoke-DfhackRaw -CommandArgs @('lua',"local c=df.global.game.main_interface.custom_stockpile;assert(c.open and df.global.pause_state);print('TEXT_RESULT '..require('json').encode{stored=dfhack.df2utf(c.spec_filter),editing=c.entering_spec_filter})")
+    if($read.ExitCode -ne 0){throw 'Text read failed'}
+    $raw=$read.Output -join "`n"
+    $raw | Add-Content "$stageOut/text-messages.log"
+    $start=$raw.IndexOf('TEXT_RESULT ')
+    if($start -lt 0){throw 'Missing text observation'}
+    $observations+=@{typed=$text;message_interval_ms=40;native=($raw.Substring($start+12) | ConvertFrom-Json)}
+   }
+   $observations | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 "$stageOut/text-messages.json"
+  }
   [Shot]::Capture([Shot]::Find($owned.Id),"$stageOut/native.png") | Set-Content "$stageOut/actual-size.txt"
  }
  $summary='passed'

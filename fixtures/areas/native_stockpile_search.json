@@ -2888,5 +2888,44 @@
         "native_overflow": false
       }
     ]
+  },
+  "windows_text_messages": {
+    "source": "build/stockpile-search-native-20261025-165550/1200x800-0/text-messages.json",
+    "sha256": "0e3c8f557e47c56628ed2c61a0e88c4df3c6f73ecb4de7bb42515d777497657b",
+    "scope": "Unicode WM_CHAR messages to the owned hidden-desktop DF window, spaced 40ms apart. This verifies committed text delivery through Windows/SDL; not physical keyboard layout, clipboard paste, IME composition, or unpaced message bursts. Owned DF54364 closed unsaved; source manifest unchanged.",
+    "cases": [
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "editing": true,
+          "stored": "ABC XYZ"
+        },
+        "typed": "abc XYZ"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "editing": true,
+          "stored": "AB"
+        },
+        "typed": "a\u00e9\u03b1\u4e2db"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "editing": true,
+          "stored": "ABCDEF"
+        },
+        "typed": "ab\r\ncd\tef"
+      },
+      {
+        "message_interval_ms": 40,
+        "native": {
+          "editing": true,
+          "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "typed": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ]
   }
 }

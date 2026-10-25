@@ -25,6 +25,7 @@
 #include "TileTypes.h"
 #include "modules/Buildings.h"
 #include "df/world.h"
+#include "df/plotinfost.h"
 #include "MiscUtils.h"
 #include "modules/Units.h"
 #include "modules/Maps.h"
@@ -1217,6 +1218,45 @@ int areaLocationCreate(lua_State* L) {
   catch(...) {reason="Native location preparation failed; no location created";}
   return result(reason);
 }
+// A transfer prepares donor cells without changing their allocation or bounds.
+// Native paint clears these cells and cleans every affected donor after the
+// recipient footprint is published. Empty donors use DF's semantic destructor.
+struct StockpileTransfers {
+  struct Donor {df::building_stockpilest* pile;std::vector<size_t> cells;};
+  std::vector<Donor> donors;
+  bool prepare(df::building_stockpilest* recipient,int32_t x,int32_t y,int32_t z) {
+    const auto found=df3d_area::nativeStockpileAt(int16_t(x),int16_t(y),int16_t(z));
+    if(!found)return false;
+    auto* donor=*found;
+    if(!donor || donor==recipient)return true;
+    if(donor->flags.bits.almost_deleted || !donor->room.extents || donor->room.width<1 || donor->room.height<1 ||
+        donor->room.width>256 || donor->room.height>256 ||
+        int64_t(donor->room.width)*donor->room.height>32768)return false;
+    const int64_t dx=int64_t(x)-donor->room.x,dy=int64_t(y)-donor->room.y;
+    if(dx<0 || dy<0 || dx>=donor->room.width || dy>=donor->room.height)return false;
+    const size_t index=size_t(dy)*donor->room.width+size_t(dx);
+    if(donor->room.extents[index]==df::building_extents_type::None)return false;
+    auto row=std::find_if(donors.begin(),donors.end(),[&](const Donor& value){return value.pile==donor;});
+    if(row==donors.end()) {
+      if(!df3d_area::nativeStockpileRepaintReady(*donor))return false;
+      donors.push_back({donor,{}});row=donors.end()-1;
+    }
+    row->cells.push_back(index);return true;
+  }
+  void clearCells() {
+    for(auto& donor:donors)for(const auto index:donor.cells)
+      donor.pile->room.extents[index]=df::building_extents_type::None;
+  }
+  bool cleanup() {
+    for(auto& donor:donors) {
+      const auto count=df3d_area::nativeStockpileTileCount(*donor.pile);
+      if(!count)return false;
+      if(*count) {if(!df3d_area::nativeStockpileRepaintCleanup(*donor.pile))return false;}
+      else if(!df3d_area::nativeStockpileRemoveEmpty(*donor.pile))return false;
+    }
+    return true;
+  }
+};
 // Construction receives the already validated wire request. Only native code
 // owns unpublished extents/buildings; Lua sees an ID after native publication.
 int areaCreate(lua_State* L) {
@@ -1236,11 +1276,13 @@ int areaCreate(lua_State* L) {
       steps+=79;
       if(!df3d_area::settingsRawTotal(counts).valid)return "Stockpile settings exceed 65,536 entries";
     }
-    // Native constructAbstract assigns the next per-kind number with max+1.
+    // Native creation assigns the next per-kind number with max+1.
+    int32_t stockpileNumber=1;
     if(pile) {
       for(const auto* b:df::global::world->buildings.other.STOCKPILE) {
         ++steps;if(!b)return "Area no longer exists";
         if(b->stockpile_number==INT32_MAX)return "Stockpile numbers exhausted";
+        stockpileNumber=(std::max)(stockpileNumber,b->stockpile_number+1);
       }
     } else {
       for(const auto* b:df::global::world->buildings.other.ANY_ZONE) {
@@ -1249,6 +1291,7 @@ int areaCreate(lua_State* L) {
       }
     }
     std::vector<std::pair<int32_t,int32_t>> clipped;
+    StockpileTransfers transfers;
     const auto checkSite=[&](int32_t x,int32_t y) -> const char* {
       auto* block=Maps::isValidTilePos(x,y,z)?Maps::getTileBlock(x,y,z):nullptr;
       if(!block)return "Every selected tile must be visible and loaded";
@@ -1260,8 +1303,7 @@ int areaCreate(lua_State* L) {
             (block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None && !designation.bits.pile)) {
           clipped.emplace_back(x,y);return nullptr;
         }
-        // Native cross-pile transfer remains a separate ownership audit.
-        if(designation.bits.pile)return "Stockpiles cannot overlap another stockpile";
+        if(designation.bits.pile && !transfers.prepare(nullptr,x,y,z))return "";
       } else if(designation.bits.hidden)return "Every selected tile must be visible and loaded";
       // Native zones retain wall/fortification extent cells, even for a
       // zero-count area. The paint caption counts usable tiles separately.
@@ -1296,6 +1338,28 @@ int areaCreate(lua_State* L) {
       }
     }
     if(pile && !expectedTiles){noOp=true;return nullptr;}
+    if(pile) {
+      auto settings=df3d_area::nativeStockpileInitialSettings(a->categories());
+      if(!settings || !df3d_area::nativeStockpileCreateReady())return "";
+      // Prepare allocations before the native constructor publishes an ID.
+      for(int by=bounds.y>>4;by<=(bounds.y+bounds.height-1)>>4;++by)
+        for(int bx=bounds.x>>4;bx<=(bounds.x+bounds.width-1)>>4;++bx)areaHints.push_back({bx<<4,by<<4,z});
+      unknownWork=true;mutated=true;
+      auto* stock=df3d_area::nativeStockpileAllocate();
+      if(!stock)return "Native area construction failed; cleanup uncertain; inspect before retrying";
+      createdId=stock->id;
+      stock->race=df::global::plotinfo->race_id;
+      stock->x1=stock->room.x=bounds.x;stock->y1=stock->room.y=bounds.y;stock->z=z;
+      stock->x2=bounds.x+bounds.width-1;stock->y2=bounds.y+bounds.height-1;
+      stock->centerx=(stock->x1+stock->x2)/2;stock->centery=(stock->y1+stock->y2)/2;
+      stock->room.width=bounds.width;stock->room.height=bounds.height;
+      stock->stockpile_number=stockpileNumber;stock->settings=std::move(*settings);
+      stock->room.extents=extents.release();
+      if(!df3d_area::nativeStockpileComplete(*stock))return "Native area construction failed; cleanup uncertain; inspect before retrying";
+      transfers.clearCells();
+      if(!transfers.cleanup())return "Native area construction failed; cleanup uncertain; inspect before retrying";
+      return nullptr;
+    }
     const auto destroyUnpublished=[](df::building* b) {
       if(!b)return;
       delete[] b->room.extents;b->room.extents=nullptr;delete b;
@@ -1303,22 +1367,14 @@ int areaCreate(lua_State* L) {
     unknownWork=true;
     std::unique_ptr<df::building,decltype(destroyUnpublished)> owned(
         Buildings::allocInstance(df::coord(bounds.x,bounds.y,z),
-          pile?df::building_type::Stockpile:df::building_type::Civzone,pile?-1:a->zone_type()),destroyUnpublished);
+          df::building_type::Civzone,a->zone_type()),destroyUnpublished);
     if(!owned)return "Native area allocation failed; no area created";
     auto* b=owned.get();
     b->room.x=bounds.x;b->room.y=bounds.y;b->room.width=bounds.width;b->room.height=bounds.height;
     b->room.extents=extents.release();
-    if(pile) {
-      auto* stock=virtual_cast<df::building_stockpilest>(b);
-      if(!stock)return "Native area allocation type changed";
-      auto settings=df3d_area::nativeStockpileInitialSettings(a->categories());
-      if(!settings)return ""; // Unsupported native service; no invented gameplay refusal.
-      stock->settings=std::move(*settings);
-    }
     unknownWork=true;
     if(!Buildings::setSize(b,df::coord2d(bounds.width,bounds.height)))return "Native area construction rejected: cannot place at this position";
-    // Native filtering already selected the mask. DFHack's shape check must
-    // preserve that mask (all317 native eligible types are HighPassable).
+    // Zone registration must preserve the prepared mask and bounds.
     if(b->x1!=bounds.x || b->y1!=bounds.y || b->x2!=bounds.x+bounds.width-1 || b->y2!=bounds.y+bounds.height-1 ||
         !b->room.extents || b->room.x!=bounds.x || b->room.y!=bounds.y ||
         b->room.width!=bounds.width || b->room.height!=bounds.height)
@@ -1332,11 +1388,16 @@ int areaCreate(lua_State* L) {
       for(int bx=bounds.x>>4;bx<=(bounds.x+bounds.width-1)>>4;++bx)areaHints.push_back({bx<<4,by<<4,z});
     mutated=true;
     owned.release(); // constructAbstract can expose zone pointers before assigning its ID.
+    bool constructed=false;
     try {
-      if(Buildings::constructAbstract(b)){createdId=b->id;return nullptr;}
+      constructed=Buildings::constructAbstract(b);
     } catch(...) {
       // Native construction does not destroy the input. Remove any partially
       // published relationships with native deconstruction, exactly once.
+    }
+    if(constructed) {
+      createdId=b->id;
+      return nullptr;
     }
     try {
       if(Buildings::deconstruct(b))return "Native area construction rejected: could not construct the building";
@@ -1346,7 +1407,7 @@ int areaCreate(lua_State* L) {
   };
   const char* reason=nullptr;
   try {reason=execute();}
-  catch(...) {reason="Native area preparation failed; no area created";}
+  catch(...) {reason=mutated?"Native area construction failed; cleanup uncertain; inspect before retrying":"Native area preparation failed; no area created";}
   // All unpublished owners have unwound before Lua can allocate its response.
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
   field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
@@ -1709,6 +1770,7 @@ int areaRepaint(lua_State* L) {
   };
   struct Change {df::map_block* block;int32_t x,y;bool remove;};
   std::vector<Change> changes;changes.reserve(requested+(mode==3?size_t(width)*height:0));
+  StockpileTransfers transfers;
   const char* siteError="Invalid paint site";
   auto plan=df3d_area::paint<df3d_area::NativeExtents<df::building_extents_type>>(
       before,ExtentsView{b,size_t(width),size_t(height)},spans,mode,budget-reserved-eligibilitySteps,
@@ -1727,7 +1789,7 @@ int areaRepaint(lua_State* L) {
       if(block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None && !designation.bits.pile) {
         siteError="Stockpile site contains liquid or a building";return false;
       }
-      if(designation.bits.pile && !prior){siteError="Stockpiles cannot overlap another stockpile";return false;}
+      if(designation.bits.pile && !prior && !transfers.prepare(pile,x,y,b->z)){siteError="";return false;}
     }
     // Zone extents may include walls and fortifications, as native paint does.
     if(prior!=after)changes.push_back({block,x,y,after==0});
@@ -1763,10 +1825,12 @@ int areaRepaint(lua_State* L) {
   // must not bypass capacity accounting for an already committed native edit.
   areaPaintCommitted=true;mutated=true;areaPaintRetired=retired;
   if(retired){areaHolding[areaHoldingCount++]=retired;areaHoldingBytes+=retiredBytes;}
+  transfers.clearCells();
   b->room.extents=plan.extents.release();b->room.x=b->x1=plan.bounds.x;b->room.y=b->y1=plan.bounds.y;
   b->room.width=plan.bounds.width;b->room.height=plan.bounds.height;
   b->x2=b->x1+plan.bounds.width-1;b->y2=b->y1+plan.bounds.height-1;
-  b->centerx=b->x1+plan.bounds.width/2;b->centery=b->y1+plan.bounds.height/2;
+  b->centerx=pile?(b->x1+b->x2)/2:b->x1+plan.bounds.width/2;
+  b->centery=pile?(b->y1+b->y2)/2:b->y1+plan.bounds.height/2;
   areaHints.swap(nextHints);
   // Pinned Buildings.cpp markBuildingTiles semantics on changed cells only.
   // Civzones do not own occupancy; overlapping actual buildings stay intact.
@@ -1788,6 +1852,7 @@ int areaRepaint(lua_State* L) {
     // Native cleanup includes item lookup and vector retirement work. It runs
     // synchronously at this safe point; do not advertise a bounded work count.
     unknownWork=true;
+    if(!transfers.cleanup())return fail("Area changed; inspect again",spent+uint32_t(changes.size())+1);
     if(!df3d_area::nativeStockpileRepaintCleanup(*pile))
       return fail("Area changed; inspect again",spent+uint32_t(changes.size())+1);
   }

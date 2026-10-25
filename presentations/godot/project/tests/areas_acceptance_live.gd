@@ -56,7 +56,7 @@ func native(op: String, args: Dictionary = {}) -> Dictionary:
 
 # Bridge-bound intents use this helper. Each intent is sent exactly once;
 # a lost/unknown outcome ends the run and is never retried.
-func request(data: Dictionary, refusal: String = "") -> Dictionary:
+func request(data: Dictionary, refusal: String = "", expect_rejected := false) -> Dictionary:
 	if stopped: return {}
 	world.poll()
 	var seq: int = world.area_request(data)
@@ -67,7 +67,7 @@ func request(data: Dictionary, refusal: String = "") -> Dictionary:
 		var state: Dictionary = world.poll_management()
 		if int(state.get("request_seq", 0)) == seq and int(state.get("status", S.Idle)) not in [S.Idle, S.Pending]:
 			print("AREA_RECEIPT step=", step, " seq=", seq, " ", state)
-			if refusal.is_empty():
+			if refusal.is_empty() and not expect_rejected:
 				if not check(int(state.status) == S.Ok, str(state.get("message", "request failed"))): return {}
 			else:
 				if not check(int(state.status) == S.Rejected and str(state.get("message", "")) == refusal, "expected refusal: " + refusal): return {}

@@ -111,7 +111,8 @@ require('gui.script').start(function()
      current=paint.cur_bld and paint.cur_bld.id or -1,bottom_mode=df.global.game.main_interface.bottom_mode_selected,
      corner={df.global.selection_rect.start_x,df.global.selection_rect.start_y,df.global.selection_rect.start_z}}
    end
-   if gestures=='transfer-partial' or gestures=='transfer-full' then
+   if gestures=='transfer-partial' or gestures=='transfer-full' or gestures=='transfer-create-partial' or gestures=='transfer-create-full' or gestures=='transfer-erase-partial' or gestures=='transfer-erase-full' then
+    local creating=gestures:find('create',1,true)~=nil
     local donor
     for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
      if candidate.id~=b.id and candidate.z==b.z and #candidate.storage.container_item_id>0 and
@@ -124,7 +125,7 @@ require('gui.script').start(function()
     end end
     for _,id in ipairs(donor.storage.container_item_id)do items[#items+1]=id end
     local first,last
-    if gestures=='transfer-partial' then
+    if gestures:find('partial',1,true) then
      first={x=donor.storage.container_x[0],y=donor.storage.container_y[0],z=donor.z};last=first
     else first={x=donor.x1,y=donor.y1,z=donor.z};last={x=donor.x2,y=donor.y2,z=donor.z}end
     local function donor_record(name)
@@ -143,9 +144,18 @@ require('gui.script').start(function()
       donor_containers=current and #current.storage.container_item_id or 0,items=assignments,
       donor_limits=current and {current.storage.max_barrels,current.storage.max_bins,current.storage.max_wheelbarrows} or false}
     end
+    if creating then
+     first={x=donor.x1-1,y=donor.y1,z=donor.z}
+     local block=assert(dfhack.maps.getTileBlock(first));assert(not block.designation[first.x%16][first.y%16].pile and block.occupancy[first.x%16][first.y%16].building==0,'creation anchor occupied')
+    end
     donor_record('donor-before');record('recipient-before')
+    local next_id=df.global.building_next_id
+    if creating then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());gui.simulateInput(view,'D_STOCKPILES');view:render(dfhack.getTickCount())end
+    if gestures:find('erase',1,true)then click(84,61);assert(paint.erasing)end
     mapclick(first);mapclick(last)
-    donor_record('donor-after');record('recipient-after')
+    if creating then b=assert(df.building.find(next_id),'transfer creation failed')end
+    donor_record('donor-after')
+    if creating then records[#records+1]={name='created-recipient',id=b.id,tiles=dfhack.buildings.countExtentTiles(b,-1),bounds={b.x1,b.y1,b.x2,b.y2}} else record('recipient-after')end
     capture(gestures)
     assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
     return

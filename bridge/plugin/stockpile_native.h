@@ -19,6 +19,18 @@ std::optional<int32_t> nativeStockpileTileCount(df::building_stockpilest& pile);
 // predicate and native item assignment method; no UI state is accessed.
 bool nativeStockpileRepaintReady(df::building_stockpilest& pile);
 bool nativeStockpileRepaintCleanup(df::building_stockpilest& pile);
+// Native ownership lookup and immediate removal used by paint transfers.
+// nullopt means unsupported; an engaged null pointer means no stockpile owner.
+std::optional<df::building_stockpilest*> nativeStockpileAt(int16_t x,int16_t y,int16_t z);
+bool nativeStockpileTransferReady();
+// Requires an already empty donor. Destroys the object on success.
+bool nativeStockpileRemoveEmpty(df::building_stockpilest& pile);
+bool nativeStockpileCreateReady();
+// The native constructor allocates an ID and registers in world.buildings.all.
+// Caller prepares all inputs before this call, then supplies bounds/settings and
+// the owned extent allocation before completing publication at the safe point.
+df::building_stockpilest* nativeStockpileAllocate();
+bool nativeStockpileComplete(df::building_stockpilest& pile);
 std::optional<std::array<int16_t,3>> nativeStockpilePresetContainers(
     df::building_stockpilest& pile, int preset);
 // New unpublished pile: constructor defaults followed by native category setup.

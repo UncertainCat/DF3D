@@ -54,6 +54,75 @@ elseif request.op=='resize_check' then
  assert(#actual.containers==#expected,'wrong container vector length')
  for i,row in ipairs(expected)do for key,value in pairs(row)do assert(actual.containers[i][key]==value,'parallel vectors differ')end end
  result.area=actual;result.released=released;result.retained=#expected
+elseif request.op=='resize_transfer_prepare' then
+ local recipient=assert(df.building.find(request.id));local donor
+ for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+  if candidate.id~=recipient.id and candidate.z==recipient.z and #candidate.storage.container_item_id>0 then
+   local usable=true
+   if request.case:find('create',1,true)then
+    local first_y,last_y=candidate.y1,candidate.y2;local x=candidate.x1-1
+    if request.case:find('partial',1,true)then x=candidate.storage.container_x[0]-1;first_y=candidate.storage.container_y[0];last_y=first_y end
+    for y=first_y,last_y do
+     local block=dfhack.maps.getTileBlock(x,y,candidate.z)
+     if not block or block.designation[x%16][y%16].pile or block.occupancy[x%16][y%16].building~=0 then usable=false;break end
+    end
+   end
+   if usable then donor=candidate;break end
+  end
+ end
+ assert(donor,'missing stocked donor')
+ local spans={}
+ if request.case:find('partial',1,true) then spans={{x=donor.storage.container_x[0],y=donor.storage.container_y[0],length=1}}
+ else for y=donor.y1,donor.y2 do spans[#spans+1]={x=donor.x1,y=y,length=donor.x2-donor.x1+1}end end
+ if request.case:find('create',1,true) then
+  for _,span in ipairs(spans)do
+   span.x=span.x-1;span.length=span.length+1
+   local block=assert(dfhack.maps.getTileBlock(span.x,span.y,donor.z))
+   assert(not block.designation[span.x%16][span.y%16].pile and block.occupancy[span.x%16][span.y%16].building==0,'creation anchor occupied')
+  end
+ end
+ local cells={}
+ for y=donor.y1,donor.y2 do for x=donor.x1,donor.x2 do
+  if dfhack.buildings.containsTile(donor,x,y)then
+   local transferred=false;for _,span in ipairs(spans)do if span.y==y and x>=span.x and x<span.x+span.length then transferred=true end end
+   cells[#cells+1]={x=x,y=y,transferred=transferred}
+  end
+ end end
+ _G.df3d_transfer_check={recipient=recipient.id,donor=donor.id,before=snapshot(donor),recipient_before=snapshot(recipient),cells=cells}
+ result.spans=spans;result.donor=donor.id
+elseif request.op=='resize_transfer_unchanged' then
+ local s=assert(_G.df3d_transfer_check)
+ assert(json.encode(snapshot(assert(df.building.find(s.donor))))==json.encode(s.before),'erase changed other pile')
+ assert(json.encode(snapshot(assert(df.building.find(s.recipient))))==json.encode(s.recipient_before),'outside erase changed selected pile')
+elseif request.op=='resize_transfer_malformed' then
+ local s=assert(_G.df3d_transfer_check);local b=assert(df.building.find(s.donor))
+ s.recipient_before=snapshot(assert(df.building.find(s.recipient)))
+ s.last_y=b.storage.container_y[#b.storage.container_y-1];b.storage.container_y:erase(#b.storage.container_y-1)
+elseif request.op=='resize_transfer_restore' then
+ local s=assert(_G.df3d_transfer_check);local b=assert(df.building.find(s.donor))
+ b.storage.container_y:insert('#',s.last_y)
+ assert(json.encode(snapshot(b))==json.encode(s.before),'refusal changed donor')
+ assert(json.encode(snapshot(assert(df.building.find(s.recipient))))==json.encode(s.recipient_before),'refusal changed recipient')
+elseif request.op=='resize_transfer_check' then
+ local s=assert(_G.df3d_transfer_check);local recipient=assert(df.building.find(request.id or s.recipient));local donor=df.building.find(s.donor)
+ local retained,transferred=0,0
+ for _,cell in ipairs(s.cells)do
+  assert(dfhack.buildings.containsTile(recipient,cell.x,cell.y)==cell.transferred,'wrong recipient ownership')
+  if cell.transferred then transferred=transferred+1 else retained=retained+1 end
+  assert((donor and dfhack.buildings.containsTile(donor,cell.x,cell.y) or false)==not cell.transferred,'wrong donor ownership')
+ end
+ assert((donor~=nil)==(retained>0),'empty donor was not deleted')
+ for _,item in ipairs(s.before.containers)do
+  local ref=assert(df.item.find(item.id)):getStockpile2();local moved=false
+  for _,cell in ipairs(s.cells)do if cell.x==item.x and cell.y==item.y then moved=cell.transferred;break end end
+  assert(ref and ref.id==(moved and -1 or s.donor) and ref.x==(moved and -30000 or item.x) and ref.y==(moved and -30000 or item.y),'wrong donor item assignment')
+ end
+ if donor then
+  local current=snapshot(donor)
+  for i,v in ipairs(current.limits)do assert(v==math.min(s.before.limits[i],retained),'donor limit not clamped')end
+  result.donor=current
+ end
+ result.transferred=transferred;result.retained=retained;result.recipient=snapshot(recipient)
 elseif request.op=='resize_erase_prepare' then
  local b=assert(df.building.find(request.id));local x,y=b.x1+1,b.y1
  local block=assert(dfhack.maps.getTileBlock(x,y,b.z));local bx,by=x%16,y%16
@@ -93,6 +162,7 @@ elseif request.op=='resize_grow_check' then
   if v==1 then right=s.x+i-1;count=count+1 end
  end
  assert(b.x1==s.before.bounds[1] and b.x2==right and b.y1==s.before.bounds[2] and b.y2==s.before.bounds[4],'growth bounds include rejected edge')
+ assert(b.centerx==(b.x1+b.x2)//2 and b.centery==(b.y1+b.y2)//2,'growth center differs from native midpoint')
  assert(dfhack.buildings.countExtentTiles(b,-1)==count,'growth changed retained cells')
  result.area=snapshot(b)
 elseif request.op=='resize_create_prepare' then
@@ -119,6 +189,7 @@ elseif request.op=='resize_create_check' then
   result.noop=true
  else
   local b=assert(df.building.find(request.id));assert(b.x1==s.x and b.x2==s.x+2 and b.y1==s.y and b.y2==s.y and b.z==s.z,'clipped creation changed requested bounds')
+  assert(b.centerx==(b.x1+b.x2)//2 and b.centery==(b.y1+b.y2)//2,'creation center differs from native midpoint')
   local count=0
   for i,value in ipairs(s.mask)do assert(dfhack.buildings.containsTile(b,s.x+i-1,s.y)==(value==1),'wrong clipped cell');count=count+value end
   assert(dfhack.buildings.countExtentTiles(b,-1)==count,'wrong clipped creation count')

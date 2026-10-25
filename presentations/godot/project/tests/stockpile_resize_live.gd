@@ -106,4 +106,39 @@ func exercise() -> void:
 		await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(erased.areas[0].revision)})
 		if stopped: return
 		await native("removed",{"id":int(target.id)})
+	for sample in ["partial","full","create-partial","create-full"]:
+		step = "native stockpile transfer "+sample
+		var site := await native("resize_create_prepare",{"case":"floor"})
+		var point := Vector3i(int(site.origin.x),int(site.origin.y),int(site.origin.z))
+		var created := await request({"action":10,"kind":0,"operation":5,"paint_mode":1,"paint_z":point.z,
+			"spans":[{"x":point.x,"y":point.y,"length":3}]})
+		if stopped: return
+		var target: Dictionary = created.areas[0]
+		site = await native("resize_transfer_prepare",{"id":int(target.id),"case":sample})
+		for span in site.spans:
+			for key in ["x","y","length"]: span[key]=int(span[key])
+		var transfer_intent := {"action":11,"kind":0,"id":int(target.id),"expected_revision":int(target.revision),
+			"operation":5,"paint_mode":1,"paint_z":point.z,"spans":site.spans}
+		if sample.begins_with("create"):
+			transfer_intent.action=10;transfer_intent.erase("id");transfer_intent.erase("expected_revision")
+		if sample == "partial":
+			var outside_erase := transfer_intent.duplicate(true);outside_erase.paint_mode=2
+			await request(outside_erase)
+			if stopped: return
+			await native("resize_transfer_unchanged")
+			await native("resize_transfer_malformed")
+			await request(transfer_intent,"",true)
+			if stopped: return
+			await native("resize_transfer_restore")
+		var transferred := await request(transfer_intent)
+		if stopped: return
+		var recipient: Dictionary = transferred.areas[0]
+		await native("resize_transfer_check",{"id":int(recipient.id)})
+		await request({"action":12,"kind":0,"id":int(recipient.id),"expected_revision":int(recipient.revision)})
+		if stopped: return
+		await native("removed",{"id":int(recipient.id)})
+		if sample.begins_with("create"):
+			await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(target.revision)})
+			if stopped: return
+			await native("removed",{"id":int(target.id)})
 	await native("final")

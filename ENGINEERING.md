@@ -240,18 +240,40 @@ cells. Zones retain their existing visibility policy. Protected
 `build/areas-acceptance-20261025-114757` passes six invalid-cell erase cases, exact
 empty extents/occupancy, unchanged bounds and subsequent deletion, plus prior
 creation/growth/storage checks. Source and clone manifests are unchanged; owned
-DF closed unsaved. Cross-pile transfer and legacy whole-footprint replacement
-semantics remain unfinished. Native `transfer-partial` and `transfer-full`
-probes record the required donor effects: a transferred occupied cell releases
-its container assignment and clamps donor limits; transferring the final cell
-deletes the donor and releases all remaining assignments. The fixture retains
-exact before/after ownership. Those probes do not establish DF3D transfer support.
+DF closed unsaved.
 
-DFHack `Buildings::checkFreeTiles` reconstructs shape rules and is not the
-eligibility authority. Its stockpile caller passes `allow_flow=true`. All317
-native-accepted tile types have the pinned XML shape's `passable_high` attribute,
-so registration retains that helper after native filtering and checks that its
-output mask/bounds are unchanged.
+Cross-pile additions prepare donor cell indexes and validate every affected
+stockpile before publishing any edit. Native owner lookup `0xa82b00` determines
+the donor; retained donors use native assignment cleanup and limit clamping.
+Empty donors use native removal `0x587d80(b,false,false,false)`, including
+relationship cleanup and object destruction. Erasing outside the selected pile
+leaves other piles unchanged, as the native partial/full erase probes establish.
+Native pointer creation and repaint transfer fixtures retain exact ownership,
+container assignment and donor-deletion observations.
+
+Stockpile creation uses DF's constructor `0x30f090` (which allocates the ID and
+registers the building), completion routine `0x577040` and stockpile categorize
+method. Settings, extents, transfer edits and refresh allocations are prepared
+before publication. Native inline bounds/number setup is reproduced with owned
+inputs, including floor-rounded center coordinates. Zones keep their separate
+existing registration path. The DFHack `setSize`/`constructAbstract` stockpile
+path was removed: it rejects occupied cells even when native's pile designation
+permits them. Matching all317 native tile types to HighPassable was insufficient
+to establish that helper's full eligibility parity.
+
+Protected `build/areas-acceptance-20261025-120842` passes90 independent native
+observations, including partial/full creation and repaint transfers, released
+assignments, donor limits/deletion, malformed-donor refusal with both footprints
+unchanged, and outside-pile erase. Earlier creation/growth/erase/container
+regressions also pass, with two unchanged save manifests and unsaved closure.
+The fixture retains native service hashes and scope. Full main-scene pointer
+regression `build/areas-acceptance-20261025-120954` passes creation, settings,
+container limits, repaint, empty/regrow, removal and all-clipped creation with
+only the known separate-thread notice. The created panel capture was inspected;
+owned DF closed unsaved and both manifests are unchanged. This regression does
+not exercise cross-pile transfer gestures. Multi-donor viewport transfer,
+relationship cleanup acceptance and legacy whole-footprint replacement
+semantics remain unverified.
 
 The native path calls tile-type predicates `0x289050` and `0x2c2f10`. Their complete
 code/data ranges are pinned in the fixture. Both take a uint16 scalar, read only
@@ -269,10 +291,10 @@ source manifest is unchanged. Reproduce with `-PaintGestures -GestureCase
 eligibility -TilePredicates`; the fixture retains the accepted IDs and exact
 pointer observations. This establishes the native primitive; creation effect
 acceptance is recorded separately above. UI handler
-`0x311c10` is not callable by the bridge. Its inline occupancy and overlapping
-stockpile effects still require an ownership audit; scalar tile eligibility alone
-does not establish full placement parity. Clipped/no-op replies must also be
-reconciled by the paint owner without losing newer explicit gestures.
+`0x311c10` is not callable by the bridge. The bridge uses semantic primitives
+and independently owned footprint preparation. Scalar tile eligibility alone
+does not establish full placement parity; transfer and UI lifecycle evidence
+remain separately scoped.
 
 ## Native stockpile initialization (DF 53.16)
 

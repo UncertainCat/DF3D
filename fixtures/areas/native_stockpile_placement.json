@@ -2733,6 +2733,749 @@
           "wheelbarrows": 1
         }
       ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-transfer-create-partial-all-20261025-115657",
+      "result_sha256": "d9a66369ee98c590d7fb164f5cf83687bdaa90a7fb5823095e2a2134acbe25ed",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "scope": "Native pointer creation/erase oracle. Erasing outside the selected pile preserves the other pile.",
+      "records": [
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 121,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "name": "donor-before",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-before",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "donor_containers": 3,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            3,
+            0,
+            0
+          ],
+          "donor_tiles": 3,
+          "first": {
+            "x": 121,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "name": "donor-after",
+          "retained": 3,
+          "transferred": 1
+        },
+        {
+          "bounds": [
+            121,
+            91,
+            122,
+            91
+          ],
+          "id": 1490,
+          "name": "created-recipient",
+          "tiles": 1
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-transfer-create-full-all-20261025-115723",
+      "result_sha256": "ce7ef0b0866500b3c5eea1764a22fbe7b7ed583898315a013e16bd05a0f1b7b0",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "scope": "Native pointer creation/erase oracle. Erasing outside the selected pile preserves the other pile.",
+      "records": [
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 121,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 123,
+            "y": 92,
+            "z": 165
+          },
+          "name": "donor-before",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-before",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "donor_containers": 0,
+          "donor_exists": false,
+          "donor_id": 163,
+          "donor_limits": false,
+          "donor_tiles": 0,
+          "first": {
+            "x": 121,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 123,
+            "y": 92,
+            "z": 165
+          },
+          "name": "donor-after",
+          "retained": 0,
+          "transferred": 4
+        },
+        {
+          "bounds": [
+            121,
+            91,
+            123,
+            92
+          ],
+          "id": 1490,
+          "name": "created-recipient",
+          "tiles": 4
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-transfer-erase-partial-all-20261025-120535",
+      "result_sha256": "75cac4ffb99864128dc3a65495e8067372501a0602a88d8079630680551e270e",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "scope": "Native pointer creation/erase oracle. Erasing outside the selected pile preserves the other pile.",
+      "records": [
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "name": "donor-before",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-before",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "name": "donor-after",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": true,
+          "name": "recipient-after",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-transfer-erase-full-all-20261025-120601",
+      "result_sha256": "11f75ea69ef17e40b6339404379acfa7655da83b091ebb432f85991b89e9aba7",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "scope": "Native pointer creation/erase oracle. Erasing outside the selected pile preserves the other pile.",
+      "records": [
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 123,
+            "y": 92,
+            "z": 165
+          },
+          "name": "donor-before",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-before",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 123,
+            "y": 92,
+            "z": 165
+          },
+          "name": "donor-after",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": true,
+          "name": "recipient-after",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        }
+      ]
     }
-  ]
+  ],
+  "native_transfer_services": {
+    "ownership": "All calls use owned coordinates or semantic building pointers at safe points. No native paint-menu/cursor/search inputs. Generic removal may clear a selected-building reference to its destroyed target.",
+    "ranges": [
+      {
+        "name": "tile-owner",
+        "rva": "0xa82b00",
+        "size": 263,
+        "sha256": "c9730fcc65c8d13c3dd77b275f00e7d0ab20db6248020e30ec0f67e117eaf20e"
+      },
+      {
+        "name": "destroy-building",
+        "rva": "0x587d80",
+        "size": 3224,
+        "sha256": "2429b65a054143c604d3e815990a3fdda3c9216f284408caf451daa9e6d0bb21"
+      },
+      {
+        "name": "map-cleanup",
+        "rva": "0x586ac0",
+        "size": 517,
+        "sha256": "7bcb647fcb102d6cff3d8113fdc270559c0633c81491105e5f5a6485f865a8a2"
+      },
+      {
+        "name": "relations-cleanup",
+        "rva": "0x558550",
+        "size": 315,
+        "sha256": "2ca735e04b98d29cb8c34d45dea3059a8b993f34e461da0b2a2bcdbfe97da93b"
+      },
+      {
+        "name": "unregister-delete",
+        "rva": "0x5a78e0",
+        "size": 206,
+        "sha256": "9944dd1870503dc9fcd6105d576d4c6c86146f62a3a09fc018b8b5a26adedf3a"
+      },
+      {
+        "name": "stockpile-remove-uses",
+        "rva": "0x5873c0",
+        "size": 304,
+        "sha256": "53fb2089af39e85b7c63b72667584c178eeae757d7cbd7084f9412b0eb8994c8"
+      },
+      {
+        "name": "allocate-stockpile",
+        "rva": "0x30f090",
+        "size": 35,
+        "sha256": "a8d87d2972e3d3eae9cc39da7a4a1484860db9e07b5f04bd1a476e4fa365d179"
+      },
+      {
+        "name": "stockpile-constructor",
+        "rva": "0x30f0d0",
+        "size": 255,
+        "sha256": "e68e99aed224be426475d944e6b4987c63e25893b67e45dfbee41121710599eb"
+      },
+      {
+        "name": "building-constructor",
+        "rva": "0x54bb60",
+        "size": 272,
+        "sha256": "3c084b9bb849e4d55d4e89ff9e0423caa5dcca0d86b2fdb85bda48fa5e32c63b"
+      },
+      {
+        "name": "complete-building",
+        "rva": "0x577040",
+        "size": 13568,
+        "sha256": "beda62aa89745ff6a9b33f49c5ea15ed4e0d42c636052b19c1dece16c526bc75"
+      },
+      {
+        "name": "categorize-stockpile",
+        "rva": "0x57d930",
+        "size": 45,
+        "sha256": "d6d6ee7fbf625f5fe9b50d10898282bd89d7eb0b92c1328de750326ee9c65719"
+      }
+    ]
+  },
+  "transfer_acceptance": {
+    "run": "build/areas-acceptance-20261025-120842",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "status": "passed",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "owned_df_closed_without_saving": true,
+    "native_observations": 90,
+    "scope": "Semantic partial/full repaint and creation transfers, exact donor/recipient ownership, assignment release, limit clamp, empty donor deletion, malformed-donor refusal preserving both piles, outside erase no-op, creation/growth/erase/container regressions. Native publication replaces DFHack occupancy revalidation. Repaint/creation centers match native floor midpoint. Does not establish multi-donor UI transfer or link cleanup acceptance.",
+    "viewport_regression": {
+      "run": "build/areas-acceptance-20261025-120954",
+      "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "status": "passed_with_known_issues",
+      "diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "owned_df_closed_without_saving": true,
+      "native_observations": 136,
+      "captures": 71,
+      "scope": "Full stockpile main-scene pointer creation/settings/storage/repaint/empty/regrow/removal and no-op creation regression after native publication migration. Created-stockpile panel capture inspected. This run does not exercise cross-pile transfer through pointer gestures."
+    }
+  }
 }

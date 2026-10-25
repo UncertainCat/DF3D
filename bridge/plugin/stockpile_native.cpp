@@ -103,6 +103,64 @@ std::optional<int32_t> nativeStockpileTileCount(df::building_stockpilest& pile) 
         count+=!pile.room.extents || occupies(&pile,int16_t(x),int16_t(y),int16_t(pile.z));
     return count;
 }
+bool nativeStockpileCreateReady() {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return false;
+    static const bool compatible=supported(base) &&
+        hash(base+0x30f090,0x23)==0x31e45e8c88a50ff0ULL &&
+        hash(base+0x30f0d0,0xff)==0xcac520928ecc2d91ULL &&
+        hash(base+0x54bb60,0x110)==0xad02785ff295fa9bULL &&
+        hash(base+0x577040,0x3500)==0x758911d1932d14dbULL &&
+        hash(base+0x57d930,0x2d)==0x81ea0ddf18781ceaULL;
+    return compatible;
+}
+df::building_stockpilest* nativeStockpileAllocate() {
+    if(!df::global::world || !nativeStockpileCreateReady())return nullptr;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Allocate=df::building_stockpilest* (*)();
+    return reinterpret_cast<Allocate>(base+0x30f090)();
+}
+bool nativeStockpileComplete(df::building_stockpilest& pile) {
+    if(!nativeStockpileCreateReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Complete=void (*)(df::building*,bool);
+    reinterpret_cast<Complete>(base+0x577040)(&pile,true);
+    pile.categorize(true);
+    return true;
+}
+bool nativeStockpileTransferReady() {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return false;
+    static const bool compatible=supported(base) &&
+        hash(base+0xa82b00,0x107)==0x8e125972b5fb4fffULL &&
+        hash(base+0x5587b0,0x79)==0x14b4f3f138690067ULL &&
+        hash(base+0x587d80,0xc98)==0x0f7410a976032a15ULL &&
+        hash(base+0x586ac0,0x205)==0x963ec0e2ff50cf12ULL &&
+        hash(base+0x558550,0x13b)==0x60e1b99a5ab1f65dULL &&
+        hash(base+0x5a78e0,0xce)==0x3d9bdaeb35702e06ULL &&
+        hash(base+0x5873c0,0x130)==0x80766a7707ce5493ULL;
+    return compatible;
+}
+std::optional<df::building_stockpilest*> nativeStockpileAt(int16_t x,int16_t y,int16_t z) {
+    if(!df::global::world || !nativeStockpileTransferReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Find=df::building* (*)(int16_t,int16_t,int16_t);
+    auto* owner=reinterpret_cast<Find>(base+0xa82b00)(x,y,z);
+    return owner && owner->getType()==df::building_type::Stockpile ?
+        static_cast<df::building_stockpilest*>(owner):nullptr;
+}
+bool nativeStockpileRemoveEmpty(df::building_stockpilest& pile) {
+    if(!nativeStockpileTransferReady())return false;
+    const auto count=nativeStockpileTileCount(pile);
+    if(!count || *count)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    // Native354720 supplies false for destroy-items, insanify and damage.
+    // The semantic destructor owns assignments, relationships and registration;
+    // its generic selected-building cleanup is an effect, never a paint input.
+    using Remove=void (*)(df::building*,bool,bool,bool);
+    reinterpret_cast<Remove>(base+0x587d80)(&pile,false,false,false);
+    return true;
+}
 bool nativeStockpileRepaintReady(df::building_stockpilest& pile) {
     const auto& storage=pile.storage;
     const size_t count=storage.container_item_id.size();

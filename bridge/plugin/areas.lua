@@ -175,7 +175,7 @@ local function validate_operation(r,a)
    not integer(links) or links< -1 or links>1 then return 'invalid area edit' end
  end
  if op==5 then
-  if not integer(a.paint_mode) or a.paint_mode<1 or a.paint_mode>3 or
+  if not integer(a.paint_mode) or a.paint_mode<1 or a.paint_mode>2 or
    r.action==10 and a.paint_mode~=1 or type(a.spans)~='table' or #a.spans==0 then return 'invalid area paint' end
   if #a.spans>32768 then return 'too many area spans' end
   local total=0

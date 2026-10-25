@@ -199,19 +199,21 @@ func paint() -> void:
 	if not check(first.areas.size() == 1, "Create+Paint area missing"): return
 	var a: Dictionary = first.areas[0]
 	await native("snapshot", {"id":int(a.id), "expected":{"tile_count":400}})
-	# Two independent Accept operations, each replacing the complete footprint.
-	# The second adds 200 and erases 200 cells in one revision-checked request.
+	# Native painting applies add/erase gestures, never a replacement footprint.
 	for parity in [0,1]:
-		var desired: Array = []; var expected: Array = []
+		var desired: Array = []; var removed: Array = []; var expected: Array = []
 		for y in range(20):
 			for x in range(20):
 				var on: bool = (x+y)%2 == int(parity)
 				expected.append(1 if on else 0)
-				if on: desired.append({"x":int(p.x)+x,"y":int(p.y)+y,"length":1})
-		var changed := await request({"action":11,"id":int(a.id),"operation":5,"expected_revision":a.revision,
-			"paint_mode":3,"paint_z":int(p.z),"spans":desired})
-		if stopped: return
-		a = changed.areas[0]; retirements += 1
+				var cell := {"x":int(p.x)+x,"y":int(p.y)+y,"length":1}
+				if on: desired.append(cell)
+				else: removed.append(cell)
+		for gesture in [{"mode":1,"spans":desired},{"mode":2,"spans":removed}]:
+			var changed := await request({"action":11,"id":int(a.id),"operation":5,"expected_revision":a.revision,
+				"paint_mode":gesture.mode,"paint_z":int(p.z),"spans":gesture.spans})
+			if stopped: return
+			a = changed.areas[0]; retirements += 1
 		await native("snapshot",{"id":int(a.id),"expected":{"tile_count":200,"extents":expected}})
 	var erase := await request({"action":11, "id":int(a.id), "operation":5, "expected_revision":a.revision,
 		"paint_mode":2, "paint_z":int(p.z), "spans":[{"x":int(p.x), "y":int(p.y)+19, "length":20}]})
@@ -219,9 +221,12 @@ func paint() -> void:
 	a = erase.areas[0]; retirements += 1
 	await native("snapshot", {"id":int(a.id), "expected":{"tile_count":190}})
 	await refusal({"action":11, "id":int(a.id), "operation":5, "expected_revision":a.revision,
-		"paint_mode":2, "paint_z":int(p.z), "spans":spans}, "Erase would remove the whole area; use Remove")
-	await refusal({"action":11, "id":int(a.id), "operation":5, "expected_revision":a.revision,
 		"paint_mode":1, "paint_z":int(p.z)+1, "spans":[spans[0]]}, "Paint must stay on the area's z level")
+	var emptied := await request({"action":11,"id":int(a.id),"operation":5,"expected_revision":a.revision,
+		"paint_mode":2,"paint_z":int(p.z),"spans":spans})
+	if stopped: return
+	a = emptied.areas[0]; retirements += 1
+	await native("snapshot",{"id":int(a.id),"expected":{"tile_count":0}})
 	await request({"action":12, "id":int(a.id), "expected_revision":a.revision})
 	await native("removed", {"id":int(a.id)})
 

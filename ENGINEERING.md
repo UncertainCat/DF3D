@@ -448,7 +448,27 @@ Native designation checks and exact footprints pass; transfer and surviving-link
 captures were inspected. Its45 native observations pass with only the known
 separate-thread notice, unchanged save manifests and unsaved owned closure.
 This establishes deletion cleanup, not native parity of link creation/editing.
-Legacy whole-footprint replacement semantics remain unverified.
+Management58 removes the superseded whole-footprint replacement command and
+planner. Paint accepts only add(1) and erase(2) gestures; creation requires add.
+The shared Zone painter already uses these same gestures. No production caller
+requires replacement. Bridge, model and Godot must be rebuilt together: the v58
+management region excludes older peers, and mode3 requests are rejected rather
+than converted into gestures with invented intermediate state. Recorded world
+snapshots are unchanged; old replacement commands have no migration.
+
+Offline `build/qa/stockpile-retire-replacement` passes root CTest19/19, area
+controller, Zone paint-session and Lua adapter checks. Tests reject mode3 in the
+wire validator, adapter and planner before visiting cells. Protected
+`build/areas-acceptance-20261025-144404` passes90 native observations with v58,
+including viewer rejection of replacement without a changed revision/footprint,
+stocked-pile resize, empty/regrow, transfers and container cleanup. Full pointer
+run `build/areas-acceptance-20261025-144507` passes192 native observations across
+settings, storage, painting and links; only the known separate-thread notice
+remains. Search and storage captures were inspected. Both runs preserve both
+save manifests and close owned DF unsaved. The legacy combined-area driver's
+checkerboard test now sends individual gestures and accepts an empty paint mask;
+that combined Stockpiles/Zones suite was not rerun for this stockpile-only cut.
+
 
 The native path calls tile-type predicates `0x289050` and `0x2c2f10`. Their complete
 code/data ranges are pinned in the fixture. Both take a uint16 scalar, read only

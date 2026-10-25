@@ -14,6 +14,12 @@ func exercise() -> void:
 	if stopped: return
 	var intent := {"action":11,"kind":0,"id":int(pile.id),"expected_revision":int(pile.revision),
 		"operation":Contract.AreaOperation.Paint,"paint_mode":2,"paint_z":int(pile.origin.z),"spans":setup.erase}
+	step = "retired replacement command is rejected before dispatch"
+	var retired := intent.duplicate(true); retired.paint_mode = 3
+	if not check(world.area_request(retired) == 0,"retired replacement was dispatched"): return
+	var unchanged := await inspect(int(pile.id))
+	if stopped: return
+	if not check(unchanged.revision == pile.revision and unchanged.extents == pile.extents,"retired replacement changed pile"): return
 	step = "malformed parallel storage vectors refuse before mutation"
 	await native("resize_malformed")
 	await request(intent,"Invalid area paint geometry")

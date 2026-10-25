@@ -236,18 +236,14 @@ TEST_CASE("native073705 zone erase retains an empty mask for repaint") {
   CHECK(rejected.error==area::Error::InvalidSite);CHECK(source==std::vector<uint8_t>(9,1));
 }
 
-TEST_CASE("replacement paint plans additions and removals as one private edit") {
+TEST_CASE("retired replacement paint refuses before visiting or changing cells") {
   const area::Bounds before{10,10,2,2};const std::vector<uint8_t> source(4,1);
   const std::vector<area::Span> desired{{11,10,2},{12,10,2}};
-  int changes=0;
+  int visits=0;
   auto plan=area::paint(before,source,desired,3,UINT32_MAX,
-      [&](int32_t,int32_t,int64_t prior,int64_t after){changes+=prior!=after;return true;});
-  REQUIRE(plan.error==area::Error::None);
-  CHECK(plan.bounds.y==11);CHECK(plan.bounds.height==2);
-  CHECK(plan.tiles==4);CHECK(plan.added==2);CHECK(plan.erased==2);CHECK(changes==4);
-  auto fail=area::paint(before,source,desired,3,UINT32_MAX,
-      [](int32_t,int32_t y,int64_t,int64_t){return y!=12;});
-  CHECK(fail.error==area::Error::InvalidSite);CHECK(source==std::vector<uint8_t>(4,1));
+      [&](int32_t,int32_t,int64_t,int64_t){++visits;return true;});
+  CHECK(plan.error==area::Error::InvalidMode);CHECK(visits==0);
+  CHECK(source==std::vector<uint8_t>(4,1));
 }
 
 TEST_CASE("native paint transfers its original allocation and preserves raw extents") {

@@ -743,6 +743,17 @@ TEST_CASE("Multi outcomes distinguish empty creation and uncertain partial remov
   }
 }
 
+TEST_CASE("area paint wire contract refuses retired replacement mode") {
+  for(auto kind:{wm::AreaKind::Stockpile,wm::AreaKind::Zone}) {
+    wm::ManagementRequest request;request.action=wm::ManagementAction::AreaUpdate;
+    auto& a=request.area;a.kind=kind;a.id=7;a.expectedRevision=1;
+    a.operation=wm::AreaOperation::Paint;a.paintMode=3;a.paintZ=0;a.spans={{0,0,1}};
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* r=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(wire::validateConstructionRequest(*r).value_or("")=="invalid area paint");
+  }
+}
+
 TEST_CASE("full paint fits one versioned management command") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::AreaCreate;
   auto& a=request.area;a.operation=wm::AreaOperation::Paint;a.paintMode=1;a.paintZ=3;

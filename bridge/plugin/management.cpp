@@ -1716,7 +1716,7 @@ int areaRepaint(lua_State* L) {
   auto* zone=virtual_cast<df::building_civzonest>(b);
   if(!pile && !zone)return fail("Area no longer exists");
   if(areaHoldingCount==areaHolding.size())return fail("Area retire capacity reached; restart DF3D bridge");
-  if(!lua_isinteger(L,3) || lua_tointeger(L,3)<1 || lua_tointeger(L,3)>3 || !lua_istable(L,2))
+  if(!lua_isinteger(L,3) || lua_tointeger(L,3)<1 || lua_tointeger(L,3)>2 || !lua_istable(L,2))
     return fail("Invalid paint arguments");
   const auto mode=uint8_t(lua_tointeger(L,3));
   const size_t count=lua_rawlen(L,2);
@@ -1777,7 +1777,7 @@ int areaRepaint(lua_State* L) {
   }
   // Site checks run in the planner's counted tile visit. Native occupancy is a
   // second pass over at most requested tiles; reserve it before allocating.
-  const uint32_t reserved=requested+(mode==3?uint32_t(width*height):0)+1;
+  const uint32_t reserved=requested+1;
   if(uint64_t(reserved)+eligibilitySteps>=budget || uint64_t(count)+reserved+eligibilitySteps>=budget)return fail("Paint exceeds remaining step budget",uint32_t(count)+eligibilitySteps);
   struct ExtentsView {
     const df::building* b;size_t width,height;
@@ -1790,7 +1790,7 @@ int areaRepaint(lua_State* L) {
     }
   };
   struct Change {df::map_block* block;int32_t x,y;bool remove;};
-  std::vector<Change> changes;changes.reserve(requested+(mode==3?size_t(width)*height:0));
+  std::vector<Change> changes;changes.reserve(requested);
   StockpileTransfers transfers;
   const char* siteError="Invalid paint site";
   auto plan=df3d_area::paint<df3d_area::NativeExtents<df::building_extents_type>>(
@@ -1801,8 +1801,8 @@ int areaRepaint(lua_State* L) {
       siteError="Every selected tile must be visible and loaded";return false;
     }
     const auto& designation=block->designation[x&15][y&15];
-    // Retained cells already belong to this area. Its own native occupancy
-    // must not make a footprint replacement fail placement validation.
+    // Retained cells already belong to this area. Repainting them must not
+    // fail placement validation against their own native occupancy.
     if(after!=0 && prior==0 && pile) {
       const auto eligible=df3d_area::nativeStockpileTileType(uint16_t(block->tiletype[x&15][y&15]));
       if(!eligible){siteError="";return false;}

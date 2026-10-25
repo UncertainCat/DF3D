@@ -243,44 +243,10 @@ BasicPaintPlan<Storage> paint(const Bounds& before,const Extents& existing,const
   const auto fail=[&](Error error){out.error=error;return std::move(out);};
   if(!budget)return fail(Error::Budget);
   out.steps=1;
-  if(mode!=1 && mode!=2 && mode!=3)return fail(Error::InvalidMode);
+  if(mode!=1 && mode!=2)return fail(Error::InvalidMode);
   const bool empty=before.width==0 && before.height==0;
   if(!validBounds(before,true) || existing.size()!=size_t(before.width)*before.height)
     return fail(Error::InvalidExtent);
-  if(mode==3) {
-    // Replacement describes the desired footprint, including holes. Build it
-    // privately, then preflight removals and retained/new cells before commit.
-    auto next=paint<Storage>(Bounds{},std::vector<uint8_t>{},spans,1,budget);
-    if(next.error!=Error::None)return next;
-    const uint64_t visits=existing.size()+next.extents.size();
-    if(uint64_t(next.steps)+visits>budget)return fail(Error::Budget);
-    next.added=0;next.erased=0;
-    for(int32_t y=0;y<before.height;++y)for(int32_t x=0;x<before.width;++x) {
-      ++next.steps;
-      const auto raw=static_cast<int64_t>(existing[size_t(y)*before.width+x]);
-      if(raw<0 || raw>(std::is_enum_v<Value>?4:1))return fail(Error::InvalidExtent);
-      const int32_t wx=before.x+x,wy=before.y+y;
-      const int32_t nx=wx-next.bounds.x,ny=wy-next.bounds.y;
-      const bool kept=nx>=0 && ny>=0 && nx<next.bounds.width && ny<next.bounds.height &&
-          next.extents[size_t(ny)*next.bounds.width+nx]!=Value{};
-      if(raw && !kept) {
-        if(!checkTile(wx,wy,raw,0))return fail(Error::InvalidSite);
-        ++next.erased;
-      }
-    }
-    for(int32_t y=0;y<next.bounds.height;++y)for(int32_t x=0;x<next.bounds.width;++x) {
-      ++next.steps;
-      auto& value=next.extents[size_t(y)*next.bounds.width+x];
-      if(value==Value{})continue;
-      const int32_t wx=next.bounds.x+x,wy=next.bounds.y+y;
-      const int32_t ox=wx-before.x,oy=wy-before.y;
-      const auto raw=ox>=0 && oy>=0 && ox<before.width && oy<before.height ?
-          static_cast<int64_t>(existing[size_t(oy)*before.width+ox]):0;
-      if(!checkTile(wx,wy,raw,raw?raw:1))return fail(Error::InvalidSite);
-      if(raw)value=static_cast<Value>(raw);else ++next.added;
-    }
-    return next;
-  }
   if(spans.empty())return fail(Error::InvalidSpan);
   if(spans.size()>kMaxSpans)return fail(Error::TooManySpans);
   if(1+spans.size()>budget)return fail(Error::Budget);

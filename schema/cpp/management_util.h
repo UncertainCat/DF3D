@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 57;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v57";
+inline constexpr uint32_t kManagementVersion = 58;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v58";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -127,7 +127,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
       present(a.row_key())!=(a.scope()==1))) return "invalid area settings edit";
   if(op==3 && (a.preset()<1 || a.preset()>19)) return "invalid area preset";
   if(locationAccess && a.value()>3)return "invalid location access mode";
-  if(op==5 && (a.paint_mode()<1 || a.paint_mode()>3 || (create && a.paint_mode()!=1) ||
+  if(op==5 && (a.paint_mode()<1 || a.paint_mode()>2 || (create && a.paint_mode()!=1) ||
       !present(a.spans()))) return "invalid area paint";
   if(op==7 && a.location_id()<-1) return "area location required";
   if(op==8 && (a.location_kind()<1 || a.location_kind()>5 ||

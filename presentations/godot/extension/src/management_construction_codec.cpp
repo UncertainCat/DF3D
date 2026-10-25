@@ -469,7 +469,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.categoryOpening=data.get("category_opening",false);
   a.query=text("query",128);a.listKey=text("list_key",64);a.rowKey=text("row_key",64);a.name=text("name",512);
   a.scope=uint8_t(n("scope",0,0,4));a.value=uint8_t(n("value",0,0,a.operation==wm::AreaOperation::LocationAccess?3:2));a.preset=uint8_t(n("preset",0,0,19));
-  a.paintMode=uint8_t(n("paint_mode",0,0,3));a.paintZ=int16_t(n("paint_z",-1,-1,INT16_MAX));
+  a.paintMode=uint8_t(n("paint_mode",0,0,2));a.paintZ=int16_t(n("paint_z",-1,-1,INT16_MAX));
   a.locationId=int32_t(n("location_id",-2,-2,INT32_MAX));a.locationKind=uint8_t(n("location_kind",0,0,5));
   a.profession=int16_t(n("profession",-1,-1,INT16_MAX));a.deityKind=int8_t(n("deity_kind",-1,-1,3));
   a.deityId=int32_t(n("deity_id",-1,-1,INT32_MAX));a.unitId=int32_t(n("unit_id",-1,-1,INT32_MAX));

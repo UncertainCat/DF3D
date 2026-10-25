@@ -1228,6 +1228,7 @@ table AreaRequest {
   preset:uint8;
   name:string;
   spans:[AreaSpan];
+  // 1 adds selected cells; 2 erases selected cells. Former replacement mode 3 is retired.
   paint_mode:uint8;
   paint_z:int16 = -1;
   location_id:int32 = -2;
@@ -1701,7 +1702,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 57;
+  schema_version:uint32 = 58;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1747,7 +1748,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 57;
+  schema_version:uint32 = 58;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

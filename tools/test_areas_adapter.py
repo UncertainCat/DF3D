@@ -2624,6 +2624,12 @@ def main():
         "paint_mode": 1, "expected_revision": created["revision"],
         "spans": lua.table_from([lua.table_from({"x": 11, "y": 11, "length": 1})])})))
     assert chained["ok"] and chained["areas"][1]["revision"] != created["revision"]
+    current = chained["areas"][1]
+    retired = settings_adapter(lua.globals().request(11, lua.table_from({"id": current["id"], "operation": 5,
+        "paint_mode": 3, "expected_revision": current["revision"],
+        "spans": lua.table_from([lua.table_from({"x": 11, "y": 11, "length": 1})])})))
+    assert retired["message"] == "invalid area paint"
+
     assert create_paint([{"x": 0, "y": 0, "length": 256}, {"x": 0, "y": 1, "length": 128}])["ok"]
     full_footprint = [{"x": 0, "y": y, "length": 256} for y in range(128)]
     maximum_paint = create_paint(full_footprint)

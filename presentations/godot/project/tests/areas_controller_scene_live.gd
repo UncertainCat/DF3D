@@ -181,10 +181,10 @@ func pointer_stockpile_fit(origin: Vector3i) -> void:
 	var preferences = preload("res://scripts/presentation_settings.gd")
 	var old_auto: bool = preferences.ui_auto_scale
 	var old_scale: float = preferences.ui_scale
-	for dimensions in [Vector2i(1200,800),Vector2i(960,600),Vector2i(640,480),Vector2i(1920,1080)]:
+	for dimensions in [Vector2i(912,600),Vector2i(1200,800),Vector2i(960,600),Vector2i(640,480),Vector2i(1920,1080)]:
 		step = "stockpile viewport fit " + str(dimensions)
 		root.size = dimensions
-		preferences.ui_auto_scale = false; preferences.ui_scale = 1.5
+		preferences.ui_auto_scale = dimensions.x == 912; preferences.ui_scale = 1.5
 		scene._fortress_hud.apply_ui_scale()
 		for frame in 8: editor._process(0); await process_frame
 		var viewport := Rect2(Vector2.ZERO,Vector2(root.size))
@@ -226,7 +226,10 @@ func pointer_stockpile_fit(origin: Vector3i) -> void:
 		write_json("fit_%dx%d.json" % [dimensions.x,dimensions.y],{"canvas_scale":str(editor.canvas.scale),"hud_scale":str(scene._fortress_hud.ui_scale_vector()),"page_rows":editor.settings_view.page_rows,"leaf_width":editor.settings_view.column_widths[2],"panel":str(panel_rect)})
 		for enabled in [true,false]:
 			var button: Button = editor.settings_view.headers[4 if enabled else 5]
-			if not check(panel_rect.encloses(screen_rect(button)),"scaled item header clipped"): return
+			if dimensions.x == 912:
+				if not check(viewport.encloses(screen_rect(button)) and not (editor.content.get_parent() as ScrollContainer).clip_contents,"native minimum-width item header clipped"): return
+			else:
+				if not check(panel_rect.encloses(screen_rect(button)),"scaled item header clipped"): return
 			await click_control(button)
 			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"scaled item All/None"): return
 			var expected: Dictionary = {}

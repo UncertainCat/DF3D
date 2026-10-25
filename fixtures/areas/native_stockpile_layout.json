@@ -304,5 +304,22 @@
     ],
     "source_unchanged": true,
     "owned_df_closed_without_saving": true
+  },
+  "minimum_header_acceptance": {
+    "source": "build/areas-acceptance-20261025-165959",
+    "scope": "Actual main-scene viewport All/None input and native settings readback at 912x600 automatic scale. Native header extends beyond minimum-width frame; outer wrapper does not clip it. Leaf clipping is unchanged. Also reruns four manual150 fit cases with storage, paint and links; 61 native observations. Both save manifests unchanged; owned DF114128 closed unsaved. Not whole-screen pixel equality.",
+    "geometry": {
+      "canvas_scale": "(1.0, 1.0)",
+      "hud_scale": "(1.0, 1.0)",
+      "leaf_width": 40,
+      "page_rows": 11,
+      "panel": "[P: (34.0, 54.0), S: (652.0, 504.0)]"
+    },
+    "evidence_sha256": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "fit_912x600.json": "73de6abe8099a1767e859b2bae9cb193fadf7030c7cac8f46f653349ae403fa8",
+      "scene_stockpile_fit_settings_912x600.png": "36254a6b2b975323f584b1d1351bd1ee1cabbb624da318c065335b2ab8a0855c",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   }
 }

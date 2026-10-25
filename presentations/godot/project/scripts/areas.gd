@@ -1283,9 +1283,13 @@ func _process(delta: float) -> void:
 			# invent a scrollbar for a fitting native palette. Keep scrolling
 			# only when the actual content exceeds the intended panel interior.
 			var scroll := content.get_parent() as ScrollContainer
+			# Native item All/None headers extend beyond the minimum-width frame.
+			# Leaf rows keep their own clipping; only the outer wrapper may overflow.
+			scroll.clip_contents = not settings_view.visible
 			var interior := panel.size.y-panel.get_theme_stylebox("panel").get_minimum_size().y
 			scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED if content.get_combined_minimum_size().y <= interior+0.001 else ScrollContainer.SCROLL_MODE_AUTO
 		else:
+			(content.get_parent() as ScrollContainer).clip_contents = true
 			(content.get_parent() as ScrollContainer).vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 		panel.position = Vector2(insets.x,insets.y)
 		storage_view.position = Vector2(panel.position.x + panel.size.x + 8,panel.position.y)

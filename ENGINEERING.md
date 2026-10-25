@@ -1091,8 +1091,8 @@ before the restored-size range settled. Both failed runs preserved their saves.
 
 Run `areas_acceptance.ps1 -ControllerScene -StockpileFitOnly -SaveId <new-id>`
 for the focused product fit/input lane. It creates a one-tile pile, exercises
-storage entry, then tests1200x800,960x600,640x480 and1920x1080 with a requested
-150% viewer scale. It verifies header/footer/minimap clearance, all visible
+storage entry, then tests912x600 at automatic scale and1200x800,960x600,640x480
+and1920x1080 with a requested150% viewer scale. It verifies header/footer/minimap clearance, all visible
 settings rows, item All/None effects, container increment/decrement, paint
 add/erase/Accept, and workshop link/unlink through viewport input and native
 readback. Captures and `fit_<size>.json` retain the actual scale and geometry.
@@ -1107,6 +1107,22 @@ passes216 observations before the final palette/header clearance adjustment;
 its captures exposed the overlap missed by its earlier assertions. Final focused
 acceptance includes those bounds explicitly. Earlier `160430` passes200 checks
 for storage/settings fitting but does not establish scaled paint/link input.
+
+At the native minimum912x600, item None extends beyond the settings frame.
+The outer Godot ScrollContainer previously hid it; the settings wrapper now
+allows that header overflow while leaf columns retain their own clipping.
+Protected `build/areas-acceptance-20261025-165959` passes61 native observations
+across all five fit cases, including actual All/None clicks and native readback
+at912x600. The minimum-window capture was inspected against native164608:
+both show the header beyond the frame. This is scoped geometry/reachability
+evidence, not whole-screen pixel equality or acceptance of native leaf-text spill.
+At912 the canvas/HUD scale is1, leaf width40 and page count11. Fixture
+`native_stockpile_layout.json.minimum_header_acceptance` retains geometry and
+hashes. Owned DF114128 closes unsaved; both save manifests match. Only the known
+separate-thread notice remains. Offline `build/qa/stockpile-minimum-header`
+passes root CTest19/19, areas controller and rendered settings checks with the
+documented Godot diagnostics. Earlier165835 reproduced the clipped-header
+failure and closed DF118768 unsaved with both save manifests unchanged.
 
 When the HUD is larger than the fitted panel, the available space differs from
 native's uniformly scaled whole window. Final logical glyph scales are
@@ -1209,8 +1225,8 @@ draws full names across the panel border, scrollbar and map. Captured row prefix
 end at the first zero glyph and do not represent the entire spilled string.
 DF3D currently clips those names inside its existing controls; these two cases
 remain an unresolved native-parity gap pending maintainer direction. They are
-explicitly excluded from the truncation regression's parity claim. Minimum-width
-header overflow/reachability remains a separate full-scene audit.
+explicitly excluded from the truncation regression's parity claim. The separate
+minimum-width header reachability check is accepted below.
 
 `build/qa/stockpile-search-field-final` passes root CTest19/19, the complete
 recorded character/length map, controller caret/selection checks, and rendered

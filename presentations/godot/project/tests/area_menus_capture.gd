@@ -265,6 +265,9 @@ func run() -> void:
 	await process_frame; await RenderingServer.frame_post_draw
 	if not controller.settings_view.visible or controller.settings_view.rendered_rows[2].size() != 2:
 		push_error("Connected settings replies did not populate the native columns"); quit(1); return
+	var status_icon = controller.settings_view.rendered_rows[0][0].get_node("Status")
+	if controller.settings_view.rendered_rows[0][0].get_global_rect() != Rect2(48,112,264,36) or status_icon.get_global_rect() != Rect2(272,112,32,36):
+		push_error("Settings category rows overlap the native scrollbar strip or misplace status artwork"); quit(1); return
 	if root.get_texture().get_image().save_png(directory.path_join("controller_settings_food.png")) != OK: quit(1); return
 	controller.settings_view.rendered_rows[2][0].pressed.emit(); service.poll()
 	if world.calls[-1].operation != 2 or world.calls[-1].row_key != "food/meat/0":

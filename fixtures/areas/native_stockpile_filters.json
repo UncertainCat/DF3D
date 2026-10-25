@@ -40472,5 +40472,173 @@
       "diagnostics": "clean",
       "scope": "Empty-category creation, incremental activation of all17 categories, root and middle-column pages, three global header actions, paused leaf edit and stale continuation refusal, removal; read-only settings guards"
     }
+  },
+  "settings_layout": {
+    "run": "build/stockpile-hierarchy-native-20261025-064032",
+    "status": "passed",
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "result_sha256": "9982953595df66264a53fa1d240d410169a211364d94481ab81530a7a0242dc6",
+    "viewport": [
+      1200,
+      800
+    ],
+    "tile_pixels": [
+      8,
+      12
+    ],
+    "observations": [
+      {
+        "inorganic": true,
+        "main": 44,
+        "main_scroll": 0,
+        "name": "ammo",
+        "organic": true,
+        "sub": 45,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 0,
+        "main_scroll": 0,
+        "name": "animals",
+        "organic": true,
+        "sub": 0,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 1,
+        "main_scroll": 0,
+        "name": "food",
+        "organic": true,
+        "sub": 2,
+        "sub_scroll": 0
+      },
+      {
+        "inorganic": true,
+        "main": 85,
+        "main_scroll": 4,
+        "name": "wood",
+        "organic": true,
+        "sub": 85,
+        "sub_scroll": 0
+      },
+      {
+        "modes": [
+          44,
+          0,
+          94,
+          51,
+          75,
+          50,
+          63,
+          1,
+          21,
+          57,
+          72,
+          28,
+          29,
+          106,
+          39,
+          86,
+          85
+        ],
+        "probe": "root_modes"
+      },
+      {
+        "after": false,
+        "before": true,
+        "field": "allow_organic",
+        "probe": "header_toggle",
+        "x": 29,
+        "y": 6
+      },
+      {
+        "inorganic": true,
+        "main": 85,
+        "main_scroll": 4,
+        "name": "allow_organic-off",
+        "organic": false,
+        "sub": 85,
+        "sub_scroll": 0
+      },
+      {
+        "after": true,
+        "before": false,
+        "field": "allow_organic",
+        "probe": "header_toggle",
+        "x": 29,
+        "y": 6
+      },
+      {
+        "after": false,
+        "before": true,
+        "field": "allow_inorganic",
+        "probe": "header_toggle",
+        "x": 34,
+        "y": 6
+      },
+      {
+        "inorganic": false,
+        "main": 85,
+        "main_scroll": 4,
+        "name": "allow_inorganic-off",
+        "organic": true,
+        "sub": 85,
+        "sub_scroll": 0
+      },
+      {
+        "after": true,
+        "before": false,
+        "field": "allow_inorganic",
+        "probe": "header_toggle",
+        "x": 34,
+        "y": 6
+      }
+    ],
+    "captures": {
+      "allow_inorganic-off.png": "6875ffa2797c94b02552dfc39be4089dc595e489a0836be047794b2ac62c27d4",
+      "allow_organic-off.png": "bc34b7a51e66bc968daec771f39b8d04b2988d9984cdcb96a000c23cf633e245",
+      "ammo.png": "2e7e43f6a6efbfe9b5b184587be514586d9c5efdec0510e2d39d615dac98a440",
+      "animals.png": "a87052141e831bb9b81ab80ff8ab6e15b18282f1c061962bdc735d4635e94dfe",
+      "food.png": "1d0baaa75334a580280e72f30d98eeb627c01711a2ad864dbfe23687c4be98e7",
+      "wood.png": "61f3b4456b4bc00e9f82699b95c2e4d8c76d485e4dd82dd1df1462da74e4bfb6"
+    },
+    "category_row_pixels": [
+      48,
+      112,
+      264,
+      36
+    ],
+    "first_category_status_pixels": [
+      272,
+      112,
+      32,
+      36
+    ],
+    "scrollbar_width": 16,
+    "additional_options": "Legacy mode109 is absent from all17 observed native root modes; organic/inorganic are header icons. Renderer branch presence alone is not evidence of exposed hierarchy.",
+    "godot_acceptance": {
+      "run": "build/qa/stockpile-layout-scrollbar",
+      "status": "passed_with_known_issues",
+      "checks": [
+        "core",
+        "area_settings_test",
+        "area_settings_controller_test",
+        "area_menus_capture"
+      ],
+      "scope": "Root scrollbar reservation and status bounds; existing synthetic connected settings fixture. Native screenshot comparison of root/category/header arrangement.",
+      "known_diagnostics": [
+        "godot-separate-thread-notice",
+        "godot-device-finalize",
+        "godot-shutdown-objects"
+      ]
+    },
+    "omissions": [
+      "Full native-data DF3D rendered workflow comparison",
+      "Remaining scrolling/search/hover/viewport size interactions",
+      "Complete stockpile acceptance"
+    ]
   }
 }

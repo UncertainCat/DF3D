@@ -297,6 +297,22 @@ require('gui.script').start(function()
    end
    table.sort(parts);return '{'..table.concat(parts,';')..'}'
   end
+  -- The supported graphical UI exposes17 roots plus two header icons.
+  -- Legacy enum109 (Additional options) has renderer code but is not a root.
+  local root_modes={};for _,mode in ipairs(c.main_mode)do root_modes[#root_modes+1]=mode end
+  assert(#root_modes==17,'unexpected root mode count')
+  for _,mode in ipairs(root_modes)do assert(mode~=109,'Additional options exposed')end
+  records[#records+1]={probe='root_modes',modes=root_modes}
+  -- Header positions are from the protected1200x800 native capture (8x12 tiles).
+  for _,entry in ipairs{{'allow_organic',29},{'allow_inorganic',34}}do
+   for attempt=1,2 do
+    local before=b.settings.misc[entry[1]];b.settings.misc[entry[1]]=not before
+    local predicted=settings_snapshot(b.settings);b.settings.misc[entry[1]]=before
+    click(entry[2],6)
+    assert(settings_snapshot(b.settings)==predicted,'header changed unexpected settings')
+    records[#records+1]={probe='header_toggle',field=entry[1],before=before,after=b.settings.misc[entry[1]],x=entry[2],y=6}
+   end
+  end
   for _,entry in ipairs{{'Finished goods','finished_goods',71,'Type'},
    {'Leather','leather',74,'Type'},{'Cloth','cloth',84,'Thread (silk)'},{'Armor','armor',105,'Body'},
    {'Ammo','ammo',45,'Metal','type','ammo','Type'},

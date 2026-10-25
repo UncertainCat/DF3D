@@ -36,6 +36,9 @@ func configure(source, model) -> void:
 		var bar := scroll.get_v_scroll_bar()
 		bar.custom_minimum_size.x = 16
 		var track := art.make_style("SCROLLBAR",0)
+		# ScrollContainer reserves the scrollbar style minimum, not its custom
+		# width. Keep rows out of the native two-tile (16px) scrollbar strip.
+		track.set_content_margin(SIDE_LEFT,8); track.set_content_margin(SIDE_RIGHT,8)
 		track.set_texture_margin(SIDE_TOP,12); track.set_texture_margin(SIDE_BOTTOM,12)
 		var thumb := art.make_style("SCROLLBAR_SMALL_SCROLLER",0)
 		thumb.set_texture_margin(SIDE_TOP,12); thumb.set_texture_margin(SIDE_BOTTOM,12)

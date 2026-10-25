@@ -337,6 +337,21 @@ refusal and removal. Reads preserved complete settings; diagnostics were clean,
 source hashes unchanged and owned DF closed without saving. Rendered DF3D
 hierarchy/layout and the full stockpile workflow remain separate requirements.
 
+Protected settings capture `build/stockpile-hierarchy-native-20261025-064032`
+confirms17 native root categories and Organic/Inorganic header icons. Legacy
+mode109 (`Additional options`) is absent from the actual root catalog despite
+having renderer code. Four native icon clicks changed only their corresponding
+allowance boolean. Ammo, Animals, Food, Wood and both disabled header states were
+captured at1200x800; source hashes stayed unchanged and owned DF closed unsaved.
+The native first category row is264x36 at(48,112), with32x36 status art at(272,112).
+DF3D reserves16px for each visible scrollbar through its style minimum; setting
+only a custom width left rows10px under the scrollbar. Rendered regression
+`build/qa/stockpile-layout-scrollbar` checks the corrected bounds and passes with
+the documented Godot shutdown/thread diagnostics. Core and settings state/controller
+checks pass cleanly. This layout evidence does not establish full rendered
+stockpile workflow acceptance. Bounded observations and screenshot hashes are in
+`native_stockpile_filters.json.settings_layout`; game art stays in ignored output.
+
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row

@@ -1,0 +1,289 @@
+{
+  "provenance": {
+    "run": "build/stockpile-storage-native-repaint-20261025-100204",
+    "game": "DF53.16 Steam24557528",
+    "result_sha256": "41df9b110fcfe780d55f7f41148731ce51aee5689c2b05ed9a5e18801be3c1ba",
+    "runner": "tools/smoke/stockpile_storage_native.ps1 -Repaint",
+    "oracle": "tools/smoke/stockpile_storage_native.lua",
+    "native_observations": 287,
+    "source_save_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "scope": "Native pointer erase/regrow on a272-tile pile; storage fields explicitly set to establish boundaries; no DF3D gameplay acceptance."
+  },
+  "native_code": [
+    {
+      "start_rva": "0x354a29",
+      "end_rva": "0x354acf",
+      "sha256": "a6e750a81556d20d83795904ab3f30d027cc2d48f22333afcd17433ba56c3494",
+      "meaning": "Inline signed16 clamp of bins, barrels and wheelbarrows to native counted occupancy; part of UI handler311c10, not a standalone semantic entry point."
+    }
+  ],
+  "shrink_sequence": {
+    "observations": 271,
+    "tile_counts": "271 down to1 inclusive",
+    "all_three_limits_equal_tile_count": true,
+    "all_bounds": [
+      111,
+      61,
+      123,
+      84
+    ]
+  },
+  "records": [
+    {
+      "barrels": 136,
+      "bins": 136,
+      "name": "pile",
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 136,
+      "bins": 136,
+      "name": "repaint",
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 272,
+      "bins": 272,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": false,
+      "name": "before-shrink",
+      "repainting": true,
+      "tiles": 272,
+      "wheelbarrows": 272
+    },
+    {
+      "barrels": 271,
+      "bins": 271,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erase-272",
+      "repainting": true,
+      "tiles": 271,
+      "wheelbarrows": 271
+    },
+    {
+      "barrels": 136,
+      "bins": 136,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erase-137",
+      "repainting": true,
+      "tiles": 136,
+      "wheelbarrows": 136
+    },
+    {
+      "barrels": 135,
+      "bins": 135,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erase-136",
+      "repainting": true,
+      "tiles": 135,
+      "wheelbarrows": 135
+    },
+    {
+      "barrels": 3,
+      "bins": 3,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erase-4",
+      "repainting": true,
+      "tiles": 3,
+      "wheelbarrows": 3
+    },
+    {
+      "barrels": 2,
+      "bins": 2,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erase-3",
+      "repainting": true,
+      "tiles": 2,
+      "wheelbarrows": 2
+    },
+    {
+      "barrels": 1,
+      "bins": 1,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erase-2",
+      "repainting": true,
+      "tiles": 1,
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 1,
+      "bins": 1,
+      "name": "one-tile",
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 1,
+      "bins": 1,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": false,
+      "name": "regrow-two",
+      "repainting": true,
+      "tiles": 2,
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 1,
+      "bins": 1,
+      "name": "regrown",
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 0,
+      "bins": 2,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": false,
+      "name": "mixed-limits-two",
+      "repainting": true,
+      "tiles": 2,
+      "wheelbarrows": 0
+    },
+    {
+      "barrels": 0,
+      "bins": 1,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "mixed-limits-one",
+      "repainting": true,
+      "tiles": 1,
+      "wheelbarrows": 0
+    },
+    {
+      "barrels": 0,
+      "bins": 1,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "erased-all",
+      "repainting": true,
+      "tiles": 0,
+      "wheelbarrows": 0
+    },
+    {
+      "barrels": 0,
+      "bins": 1,
+      "name": "empty",
+      "wheelbarrows": 0
+    },
+    {
+      "barrels": 0,
+      "bins": 1,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": false,
+      "name": "regrow-empty",
+      "repainting": true,
+      "tiles": 1,
+      "wheelbarrows": 0
+    },
+    {
+      "barrels": 0,
+      "bins": 1,
+      "bounds": [
+        111,
+        61,
+        123,
+        84
+      ],
+      "erasing": true,
+      "name": "empty-before-accept",
+      "repainting": true,
+      "tiles": 0,
+      "wheelbarrows": 0
+    },
+    {
+      "current": 121,
+      "exists": true,
+      "name": "accept-empty",
+      "repainting": true
+    },
+    {
+      "barrels": 0,
+      "bins": 1,
+      "name": "accepted-empty",
+      "wheelbarrows": 0
+    },
+    {
+      "current": -1,
+      "exists": false,
+      "name": "escape-empty",
+      "repainting": true
+    },
+    {
+      "name": "escaped-empty",
+      "removed": true
+    }
+  ],
+  "omissions": [
+    "DF3D resize implementation/effects",
+    "native standalone repaint service and side-effect ownership audit",
+    "growth outside original bounds and holes",
+    "nonempty Escape/right-click and pending-corner transitions",
+    "signed16 overflow and historical malformed storage limits",
+    "scaled UI input"
+  ]
+}

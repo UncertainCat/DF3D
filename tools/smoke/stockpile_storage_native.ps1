@@ -1,4 +1,4 @@
-param([string]$CloneEvidence='build/native-save-effects-20260930-081415')
+param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint)
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 $env:Path='C:/msys64/mingw64/bin;'+$env:Path
@@ -13,7 +13,8 @@ function Manifest {
  } | Sort-Object) -join "`n")
 }
 if((Manifest) -cne $expected){throw 'Owned source differs from verified manifest'}
-$out="$repo/build/stockpile-storage-native-$(Get-Date -Format yyyyMMdd-HHmmss)"
+$scope=if($Repaint){'repaint'}else{'input'}
+$out="$repo/build/stockpile-storage-native-$scope-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
 Add-Type -ReferencedAssemblies System.Drawing -TypeDefinition @"
 using System; using System.Runtime.InteropServices; using System.Drawing;
@@ -60,7 +61,8 @@ try {
  $owned=Start-Df3d -DfPath $dfPath
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'Source load failed'}
- $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==])")
+ $repaintArg=if($Repaint){'true'}else{'false'}
+ $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg)")
  $r | ConvertTo-Json | Set-Content "$out/native.log"
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)

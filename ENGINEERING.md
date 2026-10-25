@@ -75,6 +75,30 @@ one, without clamping it to tile count. These observations do not authorize a
 parity exception or establish support for malformed limits. Holes, zero/one-tile
 piles, scaled input and DF3D asynchronous edits still need acceptance.
 
+## Native stockpile resize storage and empty lifecycle (DF 53.16)
+
+Use `tools/smoke/stockpile_storage_native.ps1 -Repaint` for the protected native
+resize oracle. Run `build/stockpile-storage-native-repaint-20261025-100204`
+recorded287 observations: a272-tile pile erased one cell at a time to one tile
+clamped all three limits to the remaining occupied count on every step. Its
+bounding rectangle stayed unchanged. Regrowing to two tiles retained limits of1;
+limits below the new count remained unchanged. Erasing the last cell retained
+the empty pile and its previous limits. Regrowth reused that identity. Accept
+was disabled while empty; Escape removed the empty pile. The source save stayed
+unchanged and owned DF closed unsaved. Bounded exact records and the full-result
+digest are in `fixtures/areas/native_stockpile_resize.json`.
+
+The native clamp is inline at `0x354a29..0x354acf`, inside UI handler `0x311c10`.
+The preceding path checks emptiness through `0x559580`, skips the active empty
+pile, and counts through `0x57b770`. This is evidence, not a callable semantic
+service: surrounding cleanup and ownership still require audit. The staged
+DF3D repaint guard incorrectly rejects reduced footprints when limits exceed
+the count (and subtracts one for wheelbarrows); the painter submits a replacement
+only at Accept and rejects an empty footprint. Native resize parity therefore
+remains unfinished. The geometry planner already preserves bounds for erase,
+but the presentation's replacement path can choose a different bounding basis.
+Do not treat the native oracle as acceptance of those product paths.
+
 ## Native stockpile initialization (DF 53.16)
 
 The read-only `df3d stockpile-wood-read <building-id> [filter]` probe calls the

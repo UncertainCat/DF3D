@@ -1741,6 +1741,60 @@ def main():
         assert not settings_adapter(fixed_edit(key, value=2))["ok"]
         assert lua.eval(f"pile.settings.{category}.color[1]==0 and pile.settings.{category}.color[3]==9")
         lua.execute(f"make_setting('{category}.color',2,{{0,0}})")
+    # Exercise mixed-field routing with a test-only mode injection. Runtime
+    # mode30 remains disabled until its formatter ownership audit is complete.
+    mixed_source = (Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text()
+    mixed_source = mixed_source.replace("local native_setting_modes={", "local native_setting_modes={['refuse/type']=30,", 1)
+    mixed_adapter = lua.execute(mixed_source)
+    lua.execute(r"""
+    saved_rows=settings_rows;saved_refuse_type=pile.settings.refuse.type;saved_refuse_layout=settings_fields['refuse.type']
+    saved_fresh=pile.settings.refuse.fresh_raw_hide;saved_rotten=pile.settings.refuse.rotten_raw_hide
+    make_setting('refuse.type',3,{0,0,9})
+    pile.settings.refuse.fresh_raw_hide=false;pile.settings.refuse.rotten_raw_hide=true
+    function settings_rows(b,mode,query,budget)
+     if mode~=30 then return saved_rows(b,mode,query,budget)end
+     local rows={
+      {field='refuse.type',index=0,label='Fixture first',enabled=b.settings.refuse.type[1]~=0,visible=true},
+      {field='refuse.fresh_raw_hide',index=0,label='Fixture hide',enabled=b.settings.refuse.fresh_raw_hide,visible=true},
+      {field='refuse.type',index=1,label='Fixture second',enabled=b.settings.refuse.type[2]~=0,visible=query==''},
+      {field='refuse.rotten_raw_hide',index=0,label='Fixture rotten',enabled=b.settings.refuse.rotten_raw_hide,visible=query==''}}
+     if mixed_bad=='foreign' then rows[4].field='food.prepared_meals'
+     elseif mixed_bad=='duplicate' then rows[4]=rows[2]
+     elseif mixed_bad=='index' then rows[4].index=1
+     elseif mixed_bad=='missing' then table.remove(rows,2)
+     elseif mixed_bad=='swap' then rows[2].field='refuse.rotten_raw_hide';rows[4].field='refuse.fresh_raw_hide' end
+     return {ok=true,steps=0,work_unknown=true,rows=rows}
+    end
+    """)
+    def mixed_edit(row=None, **extra):
+        request = fixed_edit("refuse/type", row, **extra)
+        request["synchronous_write"] = True
+        return mixed_adapter(request)
+    mixed_page = mixed_adapter(setting_request("refuse/type"))
+    assert mixed_page["ok"]
+    assert [r["key"] for r in mixed_page["settings"].values()] == [
+        "refuse/type/0", "refuse/type/fresh_raw_hide", "refuse/type/1", "refuse/type/rotten_raw_hide"]
+    assert mixed_edit(query="filtered")["ok"]
+    assert lua.eval("pile.settings.refuse.type[1]==1 and pile.settings.refuse.type[2]==0 and pile.settings.refuse.type[3]==9 and pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide")
+    assert mixed_edit("refuse/type/fresh_raw_hide", value=1)["ok"]
+    assert lua.eval("not pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide and pile.settings.refuse.type[1]==1")
+    assert mixed_edit("refuse/type/1")["ok"]
+    assert lua.eval("pile.settings.refuse.type[2]==1 and not pile.settings.refuse.fresh_raw_hide")
+    for bad in ["foreign", "duplicate", "index", "missing"]:
+        lua.globals().mixed_bad = bad
+        before = len(lua.globals().all_fill_calls)
+        if bad != "missing":
+            assert not mixed_adapter(setting_request("refuse/type"))["ok"]
+        assert not mixed_edit("refuse/type/fresh_raw_hide")["ok"]
+        assert len(lua.globals().all_fill_calls) == before
+    lua.execute("mixed_bad=nil;pile.settings.refuse.fresh_raw_hide=false;pile.settings.refuse.rotten_raw_hide=false")
+    original = mixed_adapter(setting_request("refuse/type"))
+    lua.execute("mixed_bad='swap'")
+    assert not mixed_adapter(setting_request("refuse/type", expected_list_revision=original["list_revision"]))["ok"]
+    lua.execute("mixed_bad=nil")
+    assert mixed_edit(value=1)["ok"]
+    assert lua.eval("pile.settings.refuse.type[1]==0 and pile.settings.refuse.type[2]==0 and pile.settings.refuse.type[3]==9 and not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide")
+    lua.execute("settings_rows=saved_rows;pile.settings.refuse.type=saved_refuse_type;settings_fields['refuse.type']=saved_refuse_layout;pile.settings.refuse.fresh_raw_hide=saved_fresh;pile.settings.refuse.rotten_raw_hide=saved_rotten")
     lua.execute("make_setting('ammo.other_mats',2,{0})")
     assert settings_adapter(fixed_edit("ammo/other_materials", value=2))["ok"]
     assert lua.eval("#pile.settings.ammo.other_mats==1 and pile.settings.ammo.other_mats[1]==1")

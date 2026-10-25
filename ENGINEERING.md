@@ -121,9 +121,22 @@ These branches iterate fixed native enum ranges (Furniture35; item types93),
 using unchecked vector indexing. Their general formatter receives material and
 subtype -1, but complete reachable-path ownership remains under audit. Do not
 whitelist these modes or test short vectors by entering the native builder
-without safe backing storage. Runtime integration also needs mixed-field row
-handling; the existing single-field page assumption cannot represent Refuse.
-This reference does not establish native provider or rendered acceptance.
+without safe backing storage. The adapter supports mixed-field rows using
+existing semantic keys: type-vector indices and named hide toggles retain
+separate identities even when their numeric indices coincide. Page receipts
+include that identity; bulk masks route native visibility to each backing field.
+Unknown fields, duplicate identities and invalid indices reject before writes.
+Individual edits require a matching visible native row, including scalar rows.
+
+Adapter tests inject mode30 only in a private test instance to check ordering,
+filtered bulk and individual effects, missing/foreign/duplicate rows, and receipt
+invalidation when scalar identities swap. Runtime mode30 remains disabled pending
+the formatter audit. Protected regression
+`build/stockpile-initialization-20261025-042525` passed118 native observations
+across Animals, Furniture Other materials, Ammo Type, Finished goods Color and
+Wood, with clean diagnostics and unchanged source save hashes. Owned DF closed
+without saving. This verifies the shared service's existing native callers;
+it does not establish the pending Refuse provider or rendered acceptance.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

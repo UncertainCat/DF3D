@@ -584,6 +584,14 @@ for _,target in pairs(edit_categories) do order_edit_flags(target) end
 for _,target in pairs(edit_lists) do order_edit_flags(target) end
 for _,target in pairs(embedded_edits) do order_edit_flags(target) end
 for _,rows in pairs(edit_rows) do for _,target in pairs(rows) do order_edit_flags(target) end end
+local function native_setting_identity(list,row)
+ local d=setting_leaves[list]
+ if not d or not integer(row.index) or row.index<0 then return nil end
+ if row.field==d.field then return list..'/'..row.index end
+ for _,extra in ipairs(embedded_settings[list] or {}) do
+  if row.field==extra.field and row.index==0 then return extra.key end
+ end
+end
 local function settings_edit_plan(a,layout,available,native_rows)
  local list=default(a,'list_key','');local row=default(a,'row_key','');local scope=a.scope
  local target,index
@@ -597,6 +605,18 @@ local function settings_edit_plan(a,layout,available,native_rows)
   target={entries={target.entries[1]},flag_order={}}
  else target=edit_rows[list] and edit_rows[list][row] end
  if not target then return nil,'Unknown stockpile settings list or row',0 end
+ if native_rows then
+  local seen={};local selected=scope==2
+  for _,item in ipairs(native_rows) do
+   local identity=native_setting_identity(list,item)
+   local field=layout.fields and layout.fields[item.field]
+   if not identity or seen[identity] or not field or not integer(field.stored_count) or
+    item.index>=field.stored_count then return nil,'',0 end
+   seen[identity]=true
+   if identity==row and item.visible then selected=true end
+  end
+  if not selected then return nil,'Unknown stockpile settings row',0 end
+ end
  local used=1+#target.entries
  if available<used then return nil,'Area request exceeds remaining step budget',0 end
  local plan={entries={},flags=target.flag_order,cost=#target.flag_order}
@@ -626,8 +646,9 @@ local function settings_edit_plan(a,layout,available,native_rows)
    local selected,eligible={},{}
    for i=1,count do selected[i]='\0';eligible[i]='\0' end
    for _,row in ipairs(native_rows) do
-    if row.field~=d.field or row.index<0 or row.index>=count then return nil,'',used end
-    eligible[row.index+1]='\1';selected[row.index+1]=row.visible and (not index or index==row.index) and '\1' or '\0'
+    if row.field==d.field then
+     eligible[row.index+1]='\1';selected[row.index+1]=row.visible and (not index or index==row.index) and '\1' or '\0'
+    end
    end
    if index and selected[index+1]~='\1' then return nil,'Unknown stockpile settings row',used end
    members=table.concat(selected);allowed=table.concat(eligible);cost=fixed and 2 or 1+((count+255)//256)
@@ -970,9 +991,15 @@ local function native_settings_page(r,a,b,area_revision,layout,rows)
  for _,text in ipairs{key,default(a,'query','')} do
   hash=hash_integer(hash,#text);for i=1,#text do hash=hash_integer(hash,text:byte(i)) end
  end
- local visible={}
+ local visible={};local identities={}
  for _,row in ipairs(rows) do
-  if row.field~=d.field then return fail('') end
+  local identity=native_setting_identity(key,row)
+  local field=layout.fields and layout.fields[row.field]
+  if not identity or identities[identity] or not field or not integer(field.stored_count) or
+   row.index>=field.stored_count then return fail('') end
+  identities[identity]=true
+  hash=hash_integer(hash,#identity)
+  for i=1,#identity do hash=hash_integer(hash,identity:byte(i)) end
   hash=hash_integer(hash,row.index);hash=hash_integer(hash,row.enabled and 1 or 0)
   hash=hash_integer(hash,row.visible and 1 or 0);hash=hash_integer(hash,#row.label)
   for i=1,#row.label do hash=hash_integer(hash,row.label:byte(i)) end
@@ -985,7 +1012,7 @@ local function native_settings_page(r,a,b,area_revision,layout,rows)
   build_phase=0,build_done=#rows,build_total=#rows,captured_tick=tick(),omitted=0,next_cursor=0,settings={}}
  for i=cursor+1,math.min(cursor+128,#visible) do
   local row=visible[i]
-  out.settings[#out.settings+1]={key=key..'/'..row.index,index=row.index,label=row.label,
+  out.settings[#out.settings+1]={key=native_setting_identity(key,row),index=row.index,label=row.label,
    kind=4,state=row.enabled and 2 or 1,estimated=false}
  end
  if cursor+128<#visible then out.next_cursor=cursor+128 end

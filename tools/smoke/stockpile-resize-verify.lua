@@ -54,6 +54,25 @@ elseif request.op=='resize_check' then
  assert(#actual.containers==#expected,'wrong container vector length')
  for i,row in ipairs(expected)do for key,value in pairs(row)do assert(actual.containers[i][key]==value,'parallel vectors differ')end end
  result.area=actual;result.released=released;result.retained=#expected
+elseif request.op=='resize_erase_prepare' then
+ local b=assert(df.building.find(request.id));local x,y=b.x1+1,b.y1
+ local block=assert(dfhack.maps.getTileBlock(x,y,b.z));local bx,by=x%16,y%16
+ block.tiletype[bx][by]=request.case=='wall' and df.tiletype.StoneWall or request.case=='open' and df.tiletype.OpenSpace or df.tiletype.StoneFloor1
+ block.designation[bx][by].hidden=request.case=='hidden'
+ block.designation[bx][by].flow_size=request.case=='water7' and 7 or request.case=='magma1' and 1 or 0
+ block.designation[bx][by].liquid_type=request.case=='magma1'
+ block.occupancy[bx][by].building=request.case=='building' and 2 or 0
+ _G.df3d_erase_check={id=b.id,before=snapshot(b)}
+elseif request.op=='resize_erase_check' then
+ local s=assert(_G.df3d_erase_check);local b=assert(df.building.find(s.id))
+ assert(dfhack.buildings.countExtentTiles(b,-1)==0,'invalid cell was not erased')
+ local after=snapshot(b)
+ for i,v in ipairs(s.before.bounds)do assert(after.bounds[i]==v,'erase changed allocation bounds')end
+ for y=b.y1,b.y2 do for x=b.x1,b.x2 do
+  local block=assert(dfhack.maps.getTileBlock(x,y,b.z))
+  assert(not block.designation[x%16][y%16].pile and block.occupancy[x%16][y%16].building==0,'erase retained occupancy')
+ end end
+ result.area=after
 elseif request.op=='resize_grow_prepare' then
  local b=assert(df.building.find(request.id));local x,y,z=b.x2+1,b.y1,b.z
  local mask={1,1,1}

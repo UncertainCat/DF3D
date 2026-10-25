@@ -1714,7 +1714,7 @@ int areaRepaint(lua_State* L) {
       before,ExtentsView{b,size_t(width),size_t(height)},spans,mode,budget-reserved-eligibilitySteps,
       [&](int32_t x,int32_t y,int64_t prior,int64_t after) {
     auto* block=Maps::isValidTilePos(x,y,b->z)?Maps::getTileBlock(x,y,b->z):nullptr;
-    if(!block || block->designation[x&15][y&15].bits.hidden) {
+    if(!block || (block->designation[x&15][y&15].bits.hidden && !(pile && mode==2))) {
       siteError="Every selected tile must be visible and loaded";return false;
     }
     const auto& designation=block->designation[x&15][y&15];
@@ -1882,12 +1882,19 @@ int areaSnapshot(lua_State* L) {
     }
   }
   // Native Paint can retain a zero-cell area until exit. Its allocated bounds
-  // remain the redraw target. Permit observing it only when that entire empty
-  // footprint is loaded and revealed; do not fabricate visible occupied cells.
+  // remain the redraw target. An empty stockpile needs one revealed coordinate
+  // in those bounds, so erasing a hidden cell cannot strand its identity before
+  // exit/removal. This never fabricates visible occupied cells. Zones retain
+  // their separately scoped whole-bounds visibility policy.
   bool emptyAreaVisible=visibility && (zone || pile) && tiles==0;
-  if(emptyAreaVisible)for(int y=b->y1;y<=b->y2 && emptyAreaVisible;++y)for(int x=b->x1;x<=b->x2;++x) {
-    const auto* block=Maps::getTileBlock(x,y,b->z);
-    if(!block || block->designation[x&15][y&15].bits.hidden){emptyAreaVisible=false;break;}
+  if(emptyAreaVisible) {
+    bool anyVisible=false,allVisible=true;
+    for(int y=b->y1;y<=b->y2;++y)for(int x=b->x1;x<=b->x2;++x) {
+      const auto* block=Maps::getTileBlock(x,y,b->z);
+      const bool revealed=block && !block->designation[x&15][y&15].bits.hidden;
+      anyVisible|=revealed;allVisible&=revealed;
+    }
+    emptyAreaVisible=pile?anyVisible:allVisible;
   }
   std::vector<int32_t> gives,takes,givesWorkshops,takesWorkshops;
   const auto links=[&](const auto& source,auto& ids) {

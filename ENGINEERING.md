@@ -229,8 +229,23 @@ planning allocation bounds. Native growth probes (`eligibility-grow` with
 do not extend bounds; an all-rejected stroke leaves the pile unchanged. Protected
 `build/areas-acceptance-20261025-114153` passes exact masks/bounds and retained-cell
 checks for all four cases, plus creation and storage cleanup regressions. Owned
-DF closed unsaved with two unchanged manifests. Cross-pile transfer, hidden-cell
-erasure and legacy whole-footprint replacement semantics remain unaudited.
+DF closed unsaved with two unchanged manifests.
+
+Native `eligibility-erase` covers12 terrain/occupancy cases: erasing ignores
+placement eligibility, including hidden cells. Stockpile erasure therefore
+requires loaded cells but does not reject hidden cells. An empty stockpile stays
+observable when at least one coordinate in its allocated bounds is revealed,
+with zero visible occupied cells, so removal can follow an erase across hidden
+cells. Zones retain their existing visibility policy. Protected
+`build/areas-acceptance-20261025-114757` passes six invalid-cell erase cases, exact
+empty extents/occupancy, unchanged bounds and subsequent deletion, plus prior
+creation/growth/storage checks. Source and clone manifests are unchanged; owned
+DF closed unsaved. Cross-pile transfer and legacy whole-footprint replacement
+semantics remain unfinished. Native `transfer-partial` and `transfer-full`
+probes record the required donor effects: a transferred occupied cell releases
+its container assignment and clamps donor limits; transferring the final cell
+deletes the donor and releases all remaining assignments. The fixture retains
+exact before/after ownership. Those probes do not establish DF3D transfer support.
 
 DFHack `Buildings::checkFreeTiles` reconstructs shape rules and is not the
 eligibility authority. Its stockpile caller passes `allow_flow=true`. All317

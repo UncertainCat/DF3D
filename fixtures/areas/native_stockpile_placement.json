@@ -1042,6 +1042,447 @@
           "name": "grow-cells"
         }
       ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-erase-all-20261025-114359",
+      "result_sha256": "c09baf2d904673e78b8a8fbf3de09cd96d0f441bc3a8de2ad05019a8189ba7c1",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "floor",
+          "occupancy": 32,
+          "setup": {
+            "name": "floor"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "wall",
+          "occupancy": 32,
+          "setup": {
+            "name": "wall",
+            "tile": "StoneWall"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneWall"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561153,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "water1",
+          "occupancy": 32,
+          "setup": {
+            "depth": 1,
+            "name": "water1"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561154,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "water2",
+          "occupancy": 32,
+          "setup": {
+            "depth": 2,
+            "name": "water2"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561159,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "water7",
+          "occupancy": 32,
+          "setup": {
+            "depth": 7,
+            "name": "water7"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 2658305,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "magma1",
+          "occupancy": 32,
+          "setup": {
+            "depth": 1,
+            "magma": true,
+            "name": "magma1"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "building1",
+          "occupancy": 32,
+          "setup": {
+            "building": 1,
+            "name": "building1"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "building2",
+          "occupancy": 32,
+          "setup": {
+            "building": 2,
+            "name": "building2"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561664,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "hidden",
+          "occupancy": 32,
+          "setup": {
+            "hidden": true,
+            "name": "hidden"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneFloor1"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "ramp",
+          "occupancy": 32,
+          "setup": {
+            "name": "ramp",
+            "tile": "StoneRamp"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneRamp"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "open",
+          "occupancy": 32,
+          "setup": {
+            "name": "open",
+            "tile": "OpenSpace"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "OpenSpace"
+        },
+        {
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 121,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 112,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "all-wall",
+          "occupancy": 32,
+          "setup": {
+            "all_wall": true,
+            "name": "all-wall",
+            "tile": "StoneWall"
+          },
+          "start_present": false,
+          "tiles": 269,
+          "tiletype": "StoneWall"
+        }
+      ]
     }
   ],
   "native_code": [
@@ -1941,5 +2382,357 @@
       "floor"
     ],
     "scope": "Semantic add-paint growth compares every new cell and exact bounds while retaining original three cells; deletion verified per case. Includes prior creation and stocked-container cleanup regressions. Does not establish cross-pile transfer, hidden-cell erasure or legacy replacement semantics."
-  }
+  },
+  "erase_acceptance": {
+    "run": "build/areas-acceptance-20261025-114757",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "status": "passed",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "owned_df_closed_without_saving": true,
+    "cases": [
+      "hidden",
+      "wall",
+      "open",
+      "water7",
+      "magma1",
+      "building"
+    ],
+    "scope": "Semantic erase removes all selected extent/occupancy cells and preserves allocated bounds. Each empty pile is then removed. An empty stockpile remains visible when at least one allocated coordinate is revealed; visible occupied count stays zero. Includes prior creation/growth/container cleanup regressions."
+  },
+  "native_transfer_observations": [
+    {
+      "run": "build/stockpile-storage-native-gestures-transfer-partial-all-20261025-114721",
+      "result_sha256": "b38ef56eb07c336003737676c17d8a0e002117aa317d8cf12f70f2690ecbf074",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "scope": "Native pointer repaint only; runtime cross-pile transfer is not implemented.",
+      "records": [
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "name": "donor-before",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-before",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "donor_containers": 3,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            3,
+            0,
+            0
+          ],
+          "donor_tiles": 3,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "name": "donor-after",
+          "retained": 3,
+          "transferred": 1
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            91
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-after",
+          "repainting": true,
+          "tiles": 273,
+          "wheelbarrows": 1
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-transfer-full-all-20261025-114849",
+      "result_sha256": "a14c116f3f955654e4b08676e40805c8cb8b2344fd1def34ac7e591364bc47b8",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "scope": "Native pointer repaint only; runtime cross-pile transfer is not implemented.",
+      "records": [
+        {
+          "donor_containers": 4,
+          "donor_exists": true,
+          "donor_id": 163,
+          "donor_limits": [
+            4,
+            0,
+            0
+          ],
+          "donor_tiles": 4,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 91
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 91
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 122,
+                "y": 92
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": 163,
+                "x": 123,
+                "y": 92
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 123,
+            "y": 92,
+            "z": 165
+          },
+          "name": "donor-before",
+          "retained": 4,
+          "transferred": 0
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-before",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "donor_containers": 0,
+          "donor_exists": false,
+          "donor_id": 163,
+          "donor_limits": false,
+          "donor_tiles": 0,
+          "first": {
+            "x": 122,
+            "y": 91,
+            "z": 165
+          },
+          "items": [
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 962
+            },
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 954
+            },
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 6030
+            },
+            {
+              "assignment": {
+                "id": -1,
+                "x": -30000,
+                "y": -30000
+              },
+              "id": 6076
+            }
+          ],
+          "last": {
+            "x": 123,
+            "y": 92,
+            "z": 165
+          },
+          "name": "donor-after",
+          "retained": 0,
+          "transferred": 4
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            92
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "recipient-after",
+          "repainting": true,
+          "tiles": 276,
+          "wheelbarrows": 1
+        }
+      ]
+    }
+  ]
 }

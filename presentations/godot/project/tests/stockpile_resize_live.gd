@@ -88,4 +88,22 @@ func exercise() -> void:
 		await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(grown.areas[0].revision)})
 		if stopped: return
 		await native("removed",{"id":int(target.id)})
+	for sample in ["hidden","wall","open","water7","magma1","building"]:
+		step = "erase invalid stockpile cell "+sample
+		var site := await native("resize_create_prepare",{"case":"floor"})
+		var point := Vector3i(int(site.origin.x),int(site.origin.y),int(site.origin.z))
+		var created := await request({"action":10,"kind":0,"operation":5,"paint_mode":1,"paint_z":point.z,
+			"spans":[{"x":point.x,"y":point.y,"length":3}]})
+		if stopped: return
+		var target: Dictionary = created.areas[0]
+		await native("resize_erase_prepare",{"id":int(target.id),"case":sample})
+		target = await inspect(int(target.id))
+		if stopped: return
+		var erased := await request({"action":11,"kind":0,"id":int(target.id),"expected_revision":int(target.revision),
+			"operation":5,"paint_mode":2,"paint_z":point.z,"spans":[{"x":point.x,"y":point.y,"length":3}]})
+		if stopped: return
+		await native("resize_erase_check")
+		await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(erased.areas[0].revision)})
+		if stopped: return
+		await native("removed",{"id":int(target.id)})
 	await native("final")

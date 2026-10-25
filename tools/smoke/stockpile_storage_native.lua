@@ -111,6 +111,45 @@ require('gui.script').start(function()
      current=paint.cur_bld and paint.cur_bld.id or -1,bottom_mode=df.global.game.main_interface.bottom_mode_selected,
      corner={df.global.selection_rect.start_x,df.global.selection_rect.start_y,df.global.selection_rect.start_z}}
    end
+   if gestures=='transfer-partial' or gestures=='transfer-full' then
+    local donor
+    for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+     if candidate.id~=b.id and candidate.z==b.z and #candidate.storage.container_item_id>0 and
+      math.max(candidate.x2,b.x2)-math.min(candidate.x1,b.x1)<128 and math.max(candidate.y2,b.y2)-math.min(candidate.y1,b.y1)<128 then donor=candidate;break end
+    end
+    assert(donor,'no nearby stocked donor')
+    local donor_id=donor.id;local donor_cells,items={},{}
+    for y=donor.y1,donor.y2 do for x=donor.x1,donor.x2 do
+     if dfhack.buildings.containsTile(donor,x,y)then donor_cells[#donor_cells+1]={x=x,y=y,z=donor.z}end
+    end end
+    for _,id in ipairs(donor.storage.container_item_id)do items[#items+1]=id end
+    local first,last
+    if gestures=='transfer-partial' then
+     first={x=donor.storage.container_x[0],y=donor.storage.container_y[0],z=donor.z};last=first
+    else first={x=donor.x1,y=donor.y1,z=donor.z};last={x=donor.x2,y=donor.y2,z=donor.z}end
+    local function donor_record(name)
+     local current=df.building.find(donor_id);local assignments={}
+     for _,id in ipairs(items)do
+      local item=assert(df.item.find(id));local ref=item:getStockpile2()
+      assignments[#assignments+1]={id=id,assignment=ref and {id=ref.id,x=ref.x,y=ref.y} or false}
+     end
+     local transferred,retained=0,0
+     for _,p in ipairs(donor_cells)do
+      if dfhack.buildings.containsTile(b,p.x,p.y)then transferred=transferred+1 end
+      if current and dfhack.buildings.containsTile(current,p.x,p.y)then retained=retained+1 end
+     end
+     records[#records+1]={name=name,donor_id=donor_id,donor_exists=current~=nil,first=first,last=last,
+      donor_tiles=current and dfhack.buildings.countExtentTiles(current,-1) or 0,transferred=transferred,retained=retained,
+      donor_containers=current and #current.storage.container_item_id or 0,items=assignments,
+      donor_limits=current and {current.storage.max_barrels,current.storage.max_bins,current.storage.max_wheelbarrows} or false}
+    end
+    donor_record('donor-before');record('recipient-before')
+    mapclick(first);mapclick(last)
+    donor_record('donor-after');record('recipient-after')
+    capture(gestures)
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+    return
+   end
    if gestures=='eligibility-grow' then
     assert(eligibility_case=='floor' or eligibility_case=='wall-left' or eligibility_case=='wall-right' or eligibility_case=='all-wall')
     local first,last
@@ -145,7 +184,7 @@ require('gui.script').start(function()
     assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
     return
    end
-   if gestures=='eligibility' or gestures=='eligibility-create' then
+   if gestures=='eligibility' or gestures=='eligibility-create' or gestures=='eligibility-erase' then
     local first,last
     for _,p in ipairs(cells)do
      if dfhack.buildings.containsTile(b,p.x+1,p.y) and dfhack.buildings.containsTile(b,p.x+2,p.y)then
@@ -172,9 +211,11 @@ require('gui.script').start(function()
      restore()
      if paint.erasing then click(84,61)end
      mapclick(first);mapclick(last)
-     click(84,61);assert(paint.erasing and paint.doing_rectangle)
-     mapclick(first);mapclick(last)
-     assert(not dfhack.buildings.containsTile(b,first.x,first.y) and not dfhack.buildings.containsTile(b,last.x,last.y),'erase setup failed')
+     if gestures~='eligibility-erase' then
+      click(84,61);assert(paint.erasing and paint.doing_rectangle)
+      mapclick(first);mapclick(last)
+      assert(not dfhack.buildings.containsTile(b,first.x,first.y) and not dfhack.buildings.containsTile(b,last.x,last.y),'erase setup failed')
+     end
      block.tiletype[x][y]=assert(df.tiletype[case.tile or 'StoneFloor1'])
      block.designation[x][y].hidden=case.hidden or false
      block.designation[x][y].flow_size=case.depth or 0;block.designation[x][y].liquid_type=case.magma or false
@@ -202,7 +243,7 @@ require('gui.script').start(function()
       end
       assert(created,'native created no pile for mixed rectangle')
      else
-      click(84,61);assert(not paint.erasing)
+      click(84,61);assert(paint.erasing==(gestures=='eligibility-erase'))
       mapclick(first);mapclick(last)
      end
      local observed=created or b

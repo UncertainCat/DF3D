@@ -168,6 +168,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
       case 92:case 93:case 103:case 104:break;
       case 25:case 46:case 53:case 56:case 68:case 91:case 102:break;
       case 71:case 74:case 84:case 105:break;
+      case 0:case 28:case 31:case 32:case 33:case 34:case 35:case 36:case 37:case 38:break;
       case 45:case 87:case 88:case 95:case 96:case 97:case 98:case 99:case 100:break;
       default:return std::nullopt;
     }
@@ -196,6 +197,24 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
       case 99:valid=fits(owned.armor.legs,raws.itemdefs.pants);break;
       case 100:valid=fits(owned.armor.shield,raws.itemdefs.shields);break;
     }
+    // Creature helpers perform their own signed-16-bit index bounds checks.
+    // Preserve their behavior for stale tails; reject only null raws that a
+    // valid native index would dereference. No raw-count resizing is allowed.
+    const std::vector<char>* creatures=nullptr;
+    switch(mode) {
+      case 0:creatures=&owned.animals.enabled;break;
+      case 28:creatures=&owned.corpses.corpses;break;
+      case 31:creatures=&owned.refuse.corpses;break;
+      case 32:creatures=&owned.refuse.body_parts;break;
+      case 33:creatures=&owned.refuse.skulls;break;
+      case 34:creatures=&owned.refuse.bones;break;
+      case 35:creatures=&owned.refuse.shells;break;
+      case 36:creatures=&owned.refuse.teeth;break;
+      case 37:creatures=&owned.refuse.horns;break;
+      case 38:creatures=&owned.refuse.hair;break;
+    }
+    if(creatures)for(size_t i=0;i<creatures->size() && i<raws.creatures.all.size() && i<32768;++i)
+        if(!raws.creatures.all[i])return std::nullopt;
     if(!valid)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
@@ -217,7 +236,18 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         hash(base+0x6f560,0x20)==0xd0ebc9e82e46ffe8ULL &&
         hash(base+0xb9d10,0x13)==0x5ad8171f894aa0c8ULL &&
         hash(base+0x6f690,0x1d)==0x53c89dc946758be9ULL &&
-        hash(base+0x6fa10,0x161)==0xdf2151da834b95e7ULL;
+        hash(base+0x6fa10,0x161)==0xdf2151da834b95e7ULL &&
+        hash(base+0xe35c0,0x66)==0xab8dd56de421fbe9ULL &&
+        hash(base+0xaa3bd0,0x1c3)==0xf9cd818efc6bad8ULL &&
+        hash(base+0x256880,0xa7)==0xbe498be3e4e4a895ULL &&
+        hash(base+0x6f8d0,0x10d)==0xcc29ed917c3d3bf4ULL &&
+        hash(base+0x3c6a70,0x1d)==0x71d2ae7fe2bf2ddbULL &&
+        hash(base+0x13bbf0,0x1e)==0x1bd597972a2ba0eULL &&
+        hash(base+0x6f410,0x1d)==0xc4deaa9fd6b78e02ULL &&
+        hash(base+0x287020,0x15b)==0xc5cbef45bac88ad3ULL &&
+        hash(base+0x70bd0,0x15c)==0x4f81ccfaa39439f5ULL &&
+        hash(base+0x70e20,0x117)==0x9aba69f846f6c10ULL &&
+        hash(base+0x71830,0x88)==0x929730bf6bcaccccULL;
     if(!compatible)return std::nullopt;
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);

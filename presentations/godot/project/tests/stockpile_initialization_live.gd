@@ -1,11 +1,18 @@
 extends "res://tests/areas_acceptance_live.gd"
 
-# Focused native initialization acceptance; the parent supplies one-shot requests.
+# Native initialization acceptance; an explicit filter-scope file selects a
+# focused command run and records exactly which native lists were exercised.
+var filter_modes: Array = []
 func exercise() -> void:
 	await seed_catalog()
 	if stopped: return
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
 	if not check(fixture.has("origin"), "missing free stockpile footprint"): return
+	if FileAccess.file_exists(directory + "/filter-scope.json"):
+		var scope: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(directory + "/filter-scope.json"))
+		for mode in scope.filter_modes: filter_modes.append(int(mode))
+		await focused_filters()
+		return
 	var p: Dictionary = fixture.origin
 	var masks: Array[int] = [0]
 	for bit in range(17): masks.append(1 << bit)
@@ -56,6 +63,22 @@ func exercise() -> void:
 	await paint()
 	await native("final")
 
+func focused_filters() -> void:
+	var p: Dictionary = fixture.origin
+	var reply := await request({"action":10,"operation":0,
+		"origin":Vector3i(int(p.x),int(p.y),int(p.z)),"width":2,"height":1,"categories":131071})
+	if stopped: return
+	if not check(reply.areas.size() == 1,"focused pile absent"): return
+	var pile: int = reply.areas[0].id
+	await native("stockpile_initialization",{"id":pile,"categories":131071})
+	await native_filter_lists(pile)
+	if stopped: return
+	var current := await request({"action":9,"id":pile})
+	if stopped: return
+	await request({"action":12,"id":pile,"expected_revision":current.areas[0].revision})
+	await native("removed",{"id":pile})
+	await native("final")
+
 func header_actions(pile: int, categories: Array) -> void:
 	for bit in range(categories.size()):
 		var category: String = categories[bit]
@@ -78,7 +101,8 @@ func header_actions(pile: int, categories: Array) -> void:
 			if stopped: return
 
 func native_filter_lists(pile: int) -> void:
-	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096}
+	var exercised: Array = []
+	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16}
 	for entry in [["furniture/other_materials","furniture.other_mats",25],
 		["ammo/other_materials","ammo.other_mats",46],
 		["bars_blocks/bars_other","bars_blocks.bars_other_mats",53],
@@ -91,24 +115,34 @@ func native_filter_lists(pile: int) -> void:
 		["ammo/type","ammo.type",45],["weapons/weapons","weapons.weapon_type",87],
 		["weapons/trap_components","weapons.trapcomp_type",88],["armor/body","armor.body",95],
 		["armor/head","armor.head",96],["armor/feet","armor.feet",97],
-		["armor/hands","armor.hands",98],["armor/legs","armor.legs",99],["armor/shield","armor.shield",100]]:
+		["armor/hands","armor.hands",98],["armor/legs","armor.legs",99],["armor/shield","armor.shield",100],
+		["animals/animals","animals.enabled",0],["corpses","corpses.corpses",28],
+		["refuse/corpses","refuse.corpses",31],["refuse/body_parts","refuse.body_parts",32],
+		["refuse/skulls","refuse.skulls",33],["refuse/bones","refuse.bones",34],
+		["refuse/shells","refuse.shells",35],["refuse/teeth","refuse.teeth",36],
+		["refuse/horns","refuse.horns",37],["refuse/hair","refuse.hair",38]]:
 		var key: String = entry[0]
 		var field: String = entry[1]
 		var mode: int = entry[2]
+		if not filter_modes.is_empty() and not mode in filter_modes: continue
+		var first_row := -1
+		exercised.append(mode)
 		step = "native materials " + key
 		var category_bit: int = category_bits[field.get_slice(".",0)]
 		await edit(pile,0,{"changed_categories":category_bit,"categories":category_bit})
 		for query in ["", "a", "zzzznomatch"]:
 			var page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query},"settings")
 			if stopped: return
+			if query.is_empty() and not page.settings.is_empty(): first_row = int(page.settings[0].index)
 			await native("filter_rows",{"id":pile,"mode":mode,"list_key":key,"query":query,"rows":page.settings})
 			for value in [1,2]:
 				await native("filter_before",{"id":pile,"mode":mode,"field":field,"query":query,"value":value})
 				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":query})
 				await native("filter_after",{"id":pile,"mode":mode})
 				if stopped: return
-		await native("filter_before",{"id":pile,"mode":mode,"field":field,"row":0,"value":1})
-		await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/0"})
+		if not check(first_row >= 0,"fixture has no eligible rows for " + key): return
+		await native("filter_before",{"id":pile,"mode":mode,"field":field,"row":first_row,"value":1})
+		await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/"+str(first_row)})
 		await native("filter_after",{"id":pile,"mode":mode})
 		for count in [1,0]:
 			await native("filter_setup",{"id":pile,"field":field,"count":count})
@@ -116,3 +150,7 @@ func native_filter_lists(pile: int) -> void:
 			await edit(pile,0,{"operation":2,"scope":2,"value":2,"list_key":key})
 			await native("filter_after",{"id":pile,"mode":mode})
 			if stopped: return
+
+	if not filter_modes.is_empty():
+		for mode in filter_modes:
+			if not check(mode in exercised,"requested native mode was not exercised"): return

@@ -1,6 +1,7 @@
 # Reuse a previously verified disposable clone. No saves and no process restart.
 param(
  [Parameter(Mandatory=$true)][string]$CloneEvidence,
+ [string]$FilterModes='',
  [string]$DfPath='C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'
 )
 $ErrorActionPreference='Stop'
@@ -17,6 +18,10 @@ function Manifest {
 if((Manifest) -cne $expected){throw 'Disposable clone differs from verified manifest'}
 $out="$repo/build/stockpile-initialization-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $out | Out-Null
+if($FilterModes) {
+ if($FilterModes -notmatch '^\d+(,\d+)*$'){throw 'FilterModes must be comma-separated native mode numbers'}
+ @{filter_modes=@($FilterModes.Split(',') | ForEach-Object {[int]$_});scope='focused native filter commands'} | ConvertTo-Json | Set-Content "$out/filter-scope.json"
+}
 $entered=$false;$summary='failed';$g=$null
 $oldInput=$env:DF3D_AREAS_ACCEPTANCE
 function Invoke-Lua([string]$Script,[string]$Arguments) {

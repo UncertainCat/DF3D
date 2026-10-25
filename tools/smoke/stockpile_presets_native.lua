@@ -361,6 +361,57 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
+  for _,entry in ipairs{{'Animals','animals','enabled',0},{'Corpses','corpses','corpses',28},
+   {'Refuse','refuse','corpses',31,'Corpses'},{'Refuse','refuse','body_parts',32,'Body parts'},
+   {'Refuse','refuse','skulls',33,'Skulls'},{'Refuse','refuse','bones',34,'Bones'},
+   {'Refuse','refuse','shells',35,'Shells'},{'Refuse','refuse','teeth',36,'Teeth'},
+   {'Refuse','refuse','horns',37,'Horns/hooves'},{'Refuse','refuse','hair',38,'Hair/wool'}}do
+   c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
+   view:render(dfhack.getTickCount());label_click(entry[1])
+   local values=b.settings[entry[2]][entry[3]];local original={}
+   for _,v in ipairs(values)do original[#original+1]=v end
+   local raw_count=#df.global.world.raws.creatures.all
+   for _,count in ipairs{raw_count,1,0,raw_count+1}do
+    c.spec_filter='';c.entering_spec_filter=false
+    values:resize(count);for i=0,count-1 do values[i]=i%2 end
+    if entry[5] then label_click('Item types',0,2);label_click(entry[5],0,2)
+    else
+     c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo');label_click(entry[1])
+    end
+    assert((entry[5] and c.cur_sub_mode or c.cur_main_mode)==entry[4],'wrong creature mode')
+    for _,query in ipairs{'','aard','zzzznomatch'}do
+     c.spec_filter='';c.entering_spec_filter=true
+     for i=1,#query do
+      df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
+      gui.simulateInput(view,string.format('STRING_A%03d',query:byte(i)))
+     end
+     c.entering_spec_filter=false;view:render(dfhack.getTickCount())
+     local before=settings_snapshot(b.settings)
+     local size,address=df.sizeof(df.global.game.main_interface)
+     local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+     local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[4]),query)
+     assert(code==0,text)
+     assert(dfhack.internal.memcmp(guard,address,size)==0,'creature probe changed UI');df.delete(guard)
+     assert(settings_snapshot(b.settings)==before,'creature probe changed settings')
+     local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'creature row count')
+     for i,row in ipairs(rows)do
+      local native=c.spec_item[i-1]
+      local _,expected_pointer=df.sizeof(values:_field(row.index));local _,actual_pointer=df.sizeof(native.set_pointer)
+      assert(row.field==entry[2]..'.'..entry[3] and expected_pointer==actual_pointer,'creature identity')
+      assert(row.name==dfhack.df2utf(native.name) and row.visible==native.on,'creature labels/order/search')
+      assert(row.enabled==(values[row.index]~=0),'creature selection')
+     end
+     for _,action in ipairs{{'All',1},{'None',0}}do
+      local expected={};for i,v in ipairs(values)do expected[i]=v end
+      for _,row in ipairs(rows)do if row.visible then expected[row.index]=action[2]end end
+      label_click(action[1],0,3);assert(#values==count,'creature action resized vector')
+      for i,v in ipairs(values)do assert(v==expected[i],'creature action changed excluded row')end
+     end
+     records[#records+1]={probe='creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
+    end
+   end
+   values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
+  end
   local function header_action(category,action,column,variant)
    local before=settings_snapshot(b.settings)
    local size,address=df.sizeof(df.global.game.main_interface)

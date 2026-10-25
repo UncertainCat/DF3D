@@ -15885,5 +15885,4173 @@
       "source_save": "unchanged",
       "owned_df": "closed without saving"
     }
+  },
+  "creature_lists": {
+    "run": "build/stockpile-presets-native-20261025-035705",
+    "status": "passed",
+    "native_list_comparisons": 120,
+    "native_bulk_actions": 240,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "1732bbd24a4a46789ece3dec69ea345689c95fd4074bae86b18ad5f90dbe51d8",
+        "visible_indices_sha256": "c265932bd89ef6e6cd14bd71d039ac0d7bdd877285767b5d0e475ac31fb12376",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "animals.enabled",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "animals.enabled",
+            "index": 477,
+            "name": "Acorn flies",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 588,
+            "name": "Yetis",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "1ccaf7d11711d5bd78a74726fd2839cade46b487f853cfe575f1ec406a832eb4",
+        "visible_indices_sha256": "9cddcc249714e049eed2beaab780d80f5d0f04a99f25157a06f868879548f81e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 477,
+            "name": "Acorn flies",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "48285a16e3226d6be70477df84f36151f42b6e9c6f1650bea9fbeae5577985dd",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 477,
+            "name": "Acorn flies",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f350df6be9281cfb4ecd288a7b2e0970f26f6d44c209fa9df06d69b2af8a31c8",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 0,
+            "name": "Toads",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8b1e6ce0fe9be647b534feae67086cc2035d3c767376d61303ee890c4f1c15e9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 0,
+            "name": "Toads",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8b1e6ce0fe9be647b534feae67086cc2035d3c767376d61303ee890c4f1c15e9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 0,
+            "name": "Toads",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "74601db7f87e1e056a5ac3692c2b08609218f220da992add503c138e708404bf",
+        "visible_indices_sha256": "b033b9a52d51de922909010addb6c595a9b90ad32a4c3b2a3c635597383898e5",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "animals.enabled",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "animals.enabled",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 588,
+            "name": "Yetis",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "6832ec7768f4bd665ef48af2b2ad520e46c5b78f440288b59160a7bf4f37ad48",
+        "visible_indices_sha256": "9cddcc249714e049eed2beaab780d80f5d0f04a99f25157a06f868879548f81e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 0,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "9d4f1ea4e6b1da6e91a3c165e538cf4ff2664ae2c7f97f38f6d4be7342741582",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "animals.enabled",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "c97f2f44a6a850704edda30c0dc87a945b368a5307bdcb8cabf4497479e2e9a3",
+        "visible_indices_sha256": "c265932bd89ef6e6cd14bd71d039ac0d7bdd877285767b5d0e475ac31fb12376",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "corpses.corpses",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "corpses.corpses",
+            "index": 477,
+            "name": "Acorn flies",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 588,
+            "name": "Yetis",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "51a9571f29c981bb02ce9dd3d50b8fcb769a57e032f1c14057b57da345fc113c",
+        "visible_indices_sha256": "9cddcc249714e049eed2beaab780d80f5d0f04a99f25157a06f868879548f81e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 477,
+            "name": "Acorn flies",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "691b6c5f71202313cd9ff16cafa059efcf8acaa9798877991701b3a11488e95b",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 477,
+            "name": "Acorn flies",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "e13fc96cc9ed4dfbc8af34cb43c361712e71ef2693de93103368ba111ba0efb5",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 0,
+            "name": "Toads",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "331ba5923956f5d8a93ba00f10c8db388885b133d4c99d0171c7b2d656971425",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 0,
+            "name": "Toads",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "331ba5923956f5d8a93ba00f10c8db388885b133d4c99d0171c7b2d656971425",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 0,
+            "name": "Toads",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "6977349330c5fd9208cf5429a8050cfc3a54fc68f92d41c5b52caff0ac596d64",
+        "visible_indices_sha256": "b033b9a52d51de922909010addb6c595a9b90ad32a4c3b2a3c635597383898e5",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "corpses.corpses",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "corpses.corpses",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 588,
+            "name": "Yetis",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "559ec6cf2d90a11b9d3cdf98e59ea6fa8f4124b88c99f567ef79964db7ab780f",
+        "visible_indices_sha256": "9cddcc249714e049eed2beaab780d80f5d0f04a99f25157a06f868879548f81e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 28,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "9ea597d2c48da5433f30afb31188e06c2a6dd121b1a9264bbb291c126860effd",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 756,
+            "name": "Aardvark men",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 755,
+            "name": "Aardvarks",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 564,
+            "name": "Yellow bullheads",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "corpses.corpses",
+            "index": 588,
+            "name": "Yetis",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "3758f63cd9e9c8d8cc14547c1d5635ff3cd034bddaf06b05c5d9f2d085dc9556",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.corpses",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.corpses",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "7219ffc8c17513ebf5931935c51ad3ce8ba585f5bc1b33d278e4721bde30c5d4",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "c93a964dcdc9a1a5a908883dcbda70ab9d012f8457c2740b3d5a52e6cc1d8570",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "6fdb9cdac9f64309ec6140a7475b70cab1d83006ffc24f5d0d5af29b95cf9fd1",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "0cad700868afd91e4f4a9082dac68311c09ef9c794b0caefaea485d8465047c4",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "0cad700868afd91e4f4a9082dac68311c09ef9c794b0caefaea485d8465047c4",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "cb606b7604680529cff1e9febdeaedab96b89edb96596e79be433a17ca87037f",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.corpses",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.corpses",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "d64824653bbe6fef0661cc92dc2f38b3d8ca3dca025b37a12a1cdf8377309ccf",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 31,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "01aabbd879ba2bec6f74006d5189197baa7f765ec4ff12bc424aa4dba5c73958",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.corpses",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "5a83bcfc013f88bedc6d95bb6fffa1174a8e71d74e07c2f83bb85c3b53910ade",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.body_parts",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.body_parts",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "d5c2dff3728fe9f3efec98b8011535bf1b1a29be5f6835772c65880d326543b9",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "df4732c42e084d19130ef086ef075e3d6c3a2c2bdaf4d09262df8336434c8563",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "652a45764ed06ea4f53b95b1e345f1b53754ec7493256e06b8c7ca5bddae9d61",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "1a993b7b89a970f1a347e40ad93a99c23bed1398f50d2b2d1456e84ff897e31e",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "1a993b7b89a970f1a347e40ad93a99c23bed1398f50d2b2d1456e84ff897e31e",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "2033c252738bdb4037c324b82f855a9047c1d35cbe6b8b49c80ce5de4f1f15f9",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.body_parts",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.body_parts",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "f4fab3ffe4bb4e48d8f5c69ddba7b8f6ad433e4a03c30c343e84806013089dd5",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 32,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "31b5d783aeba9f015488718c9b005107f10c278b50d718ddbe67642406cefbb6",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.body_parts",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "9f7d16e62b6da755cc065be3ec6f9a53ca1416bb7dbc90591cb5ee71855b31b8",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.skulls",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.skulls",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "be6afd9f5514701449e9ce7bea76f83842c14cd270d06156698520be53aceb59",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "cd341d47e2c3853f21f9e52a49459de001ee92ba3d3c0cc5319a6402becf88f6",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "ada6906ddfa56176377de0e92c0ffb1f11180a02c0259ceb3a4825ab1411aad0",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "b268a0184b272dea36dc44b3eb93a2eed0fe70906df819854a38e7d2d823c142",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "b268a0184b272dea36dc44b3eb93a2eed0fe70906df819854a38e7d2d823c142",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "d708391b0fd49cba0a61ac16aef63c9d75d40860828411f625f921d37b4643f1",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.skulls",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.skulls",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "e0fe11adf8e0ab352b9490380ab1d8fae2c9f593297ab9b1a10240b506b114fe",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 33,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "2571cf275263670eeb58b0a5e2bf8fa756ae46573ceabc1758ba75e922489858",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.skulls",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "a0ef47d567ff3f21ddaaa9217823df260f29cc3f98950aa2e24b14becefcabd7",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.bones",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.bones",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "4e56aa41e921d1b86937f1a21b2b98a4eaf878954d417251e856eb30a7ebafe8",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "4ce57d2ebfec289877b029de7577f74bcd95d4a12b59465b6a0600ea1977c74b",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "504e83e66480c19479ed0d4fb77acc37c8aa0c6bf93ee94195ea13f7e4e33322",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "726ea97b665257b7f9744a12f2e71b6a2152a766c0246c6c2839998be2c0c9f0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "726ea97b665257b7f9744a12f2e71b6a2152a766c0246c6c2839998be2c0c9f0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "b1c2850b7cad083f3c577fbdb059d75a5d937bbdaddc2ff32dc6df64b8331523",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.bones",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.bones",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "f73d327fa858537b1ea9e63674c4ca99463eaa624c2922e4e222019294f26e4a",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 34,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "ec3398840b29966ad39cc5f91f4a3662d76f7ef400cf1fe9b3da39fdefff1cce",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.bones",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "d05c10508e0240751d53ad44b8985f53f475e6de3b284b59eaae8d2887a721d8",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.shells",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.shells",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "a3c635d6f2a8abff5fa1dc0ec453e4e868cc3b7a6b9d841611268c18d7c1b8bc",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "7c9198756eed9a3a235698acbd8b0b650fc403fa00f82e3b27dabfeebf69bc29",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "717aafb69300cc7796d44ce5db3cb58aa68188e4ef1fe7652e72feb85eaeba26",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "fc701d61a51064beb764072bdc124015a58aa480460d45c8f9957646e83ec274",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "fc701d61a51064beb764072bdc124015a58aa480460d45c8f9957646e83ec274",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "d601a811ae3775f106b3dcada9038149e93890b86a6e3b5b14909b1fe181e449",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.shells",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.shells",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "9f0dbb7a05106ae34300bbd90337fedd5054ed94d82d7614cb26ee44b51bb070",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 35,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "5aeb53f000510c1e385c1fe4e8f7275edb27516e1c8780c3cbd7428af6fe8c11",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.shells",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "9a3e06eaa95d0d2331effde408bc6312325512949f7a5a0c63e1ee50040c79ea",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.teeth",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.teeth",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "6753c4373e2ec60ce0cdd644dd508d15be0a9dbbfd8653fccc0fca7b2d83fde9",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "d2133ee9f2ecc8c8a8159604d059aa9dc59ad02c34d4ba1e662a9f9f5b423853",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "3ac640e3ba78f387759a890cf0567e0cab3bea5fcba705aa2aadd8da0974e268",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "d7c514a87e92ab40852813c039299841371a4d0cc09da6ffef3d2c8eecc74665",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "d7c514a87e92ab40852813c039299841371a4d0cc09da6ffef3d2c8eecc74665",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "4fb02a82c7756c28703b04156ca8ead165c1cf2af21a29a2f5319c83a0b3836b",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.teeth",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.teeth",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "d5fab8328e0835fe611b0a441a4e9a034ab95acd43826fe26049588b9ad7b70f",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 36,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "fc4f00da35a62c76cb334324c68b7f9d2a3025a1e2c27df779d407bf26219059",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.teeth",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "a49fc93466ad18a2ebe2184035586f5ecf968c587816df17a62c7efd08da4b16",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.horns",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.horns",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "e15c98aa0fc3a7b430ac1a5344493525009bd6788a01f0022604dc7a3e084725",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "2107a4ae0cabe4096a96f09aa6b9c430e51c0886ec214530574ec2ee8690932f",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "47c4ed4b2e5856042ee48839ebe3d328dfb39f91b09cff82623d15a8ed0af0bf",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "03f794a99c7fd8f87f59f284d7ed27325a5aa0175a0ff2577ea40f3c79999cfa",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "03f794a99c7fd8f87f59f284d7ed27325a5aa0175a0ff2577ea40f3c79999cfa",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "7cb30a8db0cae4d80eda65817293985de4d8d6a968704b7e62111b60da48a182",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.horns",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.horns",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "ee08355b3b912dc43c4da85fdb7285207f11710571c6ab3be35fdb919f45ff3e",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 37,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "c3625e23062cdd5e5fc60bbc5bcd78ef90e40fd12ece6e1a878ccce5b6b8526b",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.horns",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 778,
+        "rows_sha256": "c96d091f5b87d548b4543fadea2bf6859167655c3188f77bcdd21c55dee49d59",
+        "visible_indices_sha256": "f1b78464fa5ebd7b5e80e4f28026842f63a50cada2b65cfd71c83a63d42d7ea7",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.hair",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.hair",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 3,
+        "rows_sha256": "613040b819d3fb621fd637c87927985989b8c324036f5afb152167c42f232df6",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1131,
+        "row_count": 778,
+        "visible_count": 0,
+        "rows_sha256": "e8c9107001c251a555b730fc083a5205e81483b93669f3df16eaf17672d84aac",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 477,
+            "name": "Acorn fly",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "414372bac4df9b5f94c44cc266d2252e7adc178cc41c6011f431448ce53958a6",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 0,
+            "name": "Toad",
+            "visible": true
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "075bc1e9e700e36a5b2019a128249276512840650f57eaff4974c65a500a9e57",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "075bc1e9e700e36a5b2019a128249276512840650f57eaff4974c65a500a9e57",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 0,
+            "name": "Toad",
+            "visible": false
+          }
+        ],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 779,
+        "rows_sha256": "4bc2c3bc0045bf4bfe953481812421bd0476a0ec13c5292926ce7bab4daa6e5b",
+        "visible_indices_sha256": "57f765dd763f367693c26fac1bf48f4999746b02c0d7e9b77c7e6ea88476e95f",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "refuse.hair",
+            "index": 1131,
+            "name": "",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "refuse.hair",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 588,
+            "name": "Yeti",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "aard",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 3,
+        "rows_sha256": "6384b5117c9d0c3ee9e1543b9655dd9e78bdd844d042dde815590bc7188d3a07",
+        "visible_indices_sha256": "9750a21c33c144e3386503445ad7d376bc33c32275fa86b5281a1b0d4a1fe4a2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 38,
+        "probe": "creature_rows",
+        "query": "zzzznomatch",
+        "raw_count": 1131,
+        "stored_count": 1132,
+        "row_count": 779,
+        "visible_count": 0,
+        "rows_sha256": "7cd283327e33dbbf7568fa9571649c3312db199c823cf21730a17cffc364d5de",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 1131,
+            "name": "",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 755,
+            "name": "Aardvark",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 756,
+            "name": "Aardvark man",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 564,
+            "name": "Yellow bullhead",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.hair",
+            "index": 588,
+            "name": "Yeti",
+            "visible": false
+          }
+        ]
+      }
+    ],
+    "digest_format": "SHA256 of UTF-8 JSON, ensure_ascii=true, sort_keys=true, separators comma/colon; ordered rows include native field/index/name/enabled/visible. Full oracle records remain in the protected run.",
+    "omissions": [
+      "Rendered list parity",
+      "Non-ASCII creature queries",
+      "Full regression suite after creature integration"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-040235",
+      "status": "passed",
+      "scope": "Focused modes 0,28,31,32,33,34,35,36,37,38; creation/removal; not the full regression suite",
+      "native_observations": 233,
+      "creature_reads": 30,
+      "creature_edits": 90,
+      "coverage": "Native order/search/identity; filtered All/None, individual eligible rows, short/empty-vector edits; complete settings and unrelated state compared.",
+      "diagnostics": "clean",
+      "source_save": "unchanged",
+      "owned_df": "closed without saving"
+    }
   }
 }

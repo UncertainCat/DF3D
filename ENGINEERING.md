@@ -58,6 +58,37 @@ Other-material page reads and63 edits:42 bulk actions, seven individual rows and
 edit. Owned DF closed without saving. These checks establish command effects,
 not rendered settings-panel parity or the remaining material-list branches.
 
+Animals, Corpses and the eight Refuse creature lists use owned native rows for
+names, eligibility, order and search. Animals/Corpses use native plural names;
+Refuse uses singular names. On the verified save DF includes778 of1131 creature
+raws. Filtered and individual actions use those exact native rows, preserving
+excluded entries. The native creature helpers check signed16-bit indices; stale
+tails therefore retain native behavior instead of inheriting the item/color
+raw-length rejection. Referenced null raws still fail before native entry.
+Local creature captions were removed; summary eligibility remains staged.
+
+Protected native run `build/stockpile-presets-native-20261025-035705` passed120
+list/search comparisons and240 actual All/None actions over full, short, empty
+and stale vectors. It checks exact backing-pointer identity, names, order,
+visibility, enabled state and unchanged native UI/source settings around probes.
+Source save hashes were unchanged and owned DF closed without saving. The
+fixture retains bounded digests and samples; full records remain in that run.
+Rendered and non-ASCII cases remain unverified.
+
+Focused command run `build/stockpile-initialization-20261025-040235` passed233
+native observations for these ten lists:30 page reads,90 edits, creation and
+removal. Complete settings and unrelated state checks passed, diagnostics were
+clean, source save hashes unchanged and owned DF closed without saving. This
+run does not claim the full preset/header/geometry regression suite.
+
+The initialization command lane accepts an explicit `-FilterModes` comma list
+for focused list checks. Its `filter-scope.json` records the chosen scope, and
+the driver fails if a requested mode was not exercised. Focused runs create and
+remove their own pile and retain save/diagnostic checks; they do not claim the
+full initialization, preset, header or geometry regression suite. Omitting the
+option retains the full suite. Individual-row checks choose an actually returned
+native row instead of assuming raw index0 is eligible.
+
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row

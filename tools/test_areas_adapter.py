@@ -1081,6 +1081,27 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     local creatures={[0]={'animals','enabled'},[28]={'corpses','corpses'},
+      [31]={'refuse','corpses'},[32]={'refuse','body_parts'},[33]={'refuse','skulls'},
+      [34]={'refuse','bones'},[35]={'refuse','shells'},[36]={'refuse','teeth'},
+      [37]={'refuse','horns'},[38]={'refuse','hair'}}
+     if creatures[mode] then
+      local category,field=table.unpack(creatures[mode]);local values=b.settings[category][field]
+      local raws=df.global.world.raws.creatures.all;local rows={}
+      for i,value in ipairs(values)do
+       local raw=raws[i]
+       -- Injected provider eligibility is intentionally independent of the
+       -- adapter's old raw-flag approximation.
+       if not raw or not (raw.flags.GENERATED or raw.creature_id=='EQUIPMENT_WAGON' or raw.native_excluded) then
+        local label=raw and raw.name[mode>=31 and 0 or 1] or ''
+        if mode<31 then label=label:sub(1,1):upper()..label:sub(2) end
+        rows[#rows+1]={field=category..'.'..field,index=i-1,label=label,enabled=value~=0,
+         visible=label:lower():find(query:lower(),1,true)~=nil}
+       end
+      end
+      table.sort(rows,function(a,b)return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      local items={[45]={'ammo','type','ammo'},[87]={'weapons','weapon_type','weapons'},
       [88]={'weapons','trapcomp_type','trapcomps'},[95]={'armor','body','armor'},
       [96]={'armor','head','helms'},[97]={'armor','feet','shoes'},[98]={'armor','hands','gloves'},
@@ -1512,7 +1533,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") and list_key != "refuse/type" or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1671,6 +1692,28 @@ def main():
         assert not settings_adapter(fixed_edit(key, value=2))["ok"]
         assert lua.eval(f"pile.settings.{field}[1]==0 and pile.settings.{field}[3]==9")
         lua.execute(f"make_setting('{field}',2,{{0,0}})")
+    lua.execute("saved_creatures=df.global.world.raws.creatures.all;df.global.world.raws.creatures.all={{name={[0]='bird',[1]='birds'},flags={}},{name={[0]='excluded',[1]='excluded'},flags={},native_excluded=true},{name={[0]='fish',[1]='fish'},flags={}}}")
+    for key,field in [("animals/animals","animals.enabled"),("corpses","corpses.corpses"),
+                      *[("refuse/"+name,"refuse."+name) for name in
+                        ("corpses","body_parts","skulls","bones","shells","teeth","horns","hair")]]:
+        lua.execute(f"make_setting('{field}',3,{{0,7,0}})")
+        assert settings_adapter(fixed_edit(key,value=2,query="BIRD"))["ok"]
+        assert lua.eval(f"pile.settings.{field}[1]==1 and pile.settings.{field}[2]==7 and pile.settings.{field}[3]==0")
+        assert not settings_adapter(fixed_edit(key,key+"/1"))["ok"]
+        lua.execute(f"make_setting('{field}',3,{{0}})")
+        assert settings_adapter(fixed_edit(key,value=2))["ok"]
+        assert lua.eval(f"#pile.settings.{field}==1 and pile.settings.{field}[1]==1")
+        lua.execute(f"make_setting('{field}',3,{{}})")
+        assert settings_adapter(fixed_edit(key,value=2))["ok"]
+        assert lua.eval(f"#pile.settings.{field}==0")
+        lua.execute(f"make_setting('{field}',3,{{0,7,0,9}})")
+        assert settings_adapter(fixed_edit(key,value=2))["ok"]
+        assert lua.eval(f"#pile.settings.{field}==4 and pile.settings.{field}[1]==1 and pile.settings.{field}[2]==7 and pile.settings.{field}[4]==1")
+        lua.execute("force_rows_failure=true")
+        assert not settings_adapter(fixed_edit(key,value=1))["ok"]
+        assert lua.eval(f"pile.settings.{field}[1]==1 and pile.settings.{field}[2]==7")
+        lua.execute(f"force_rows_failure=false;make_setting('{field}',3,{{0,0,0}})")
+    lua.execute("df.global.world.raws.creatures.all=saved_creatures")
     # Native colors use stored row membership, never reconstruct missing rows.
     lua.execute("df.global.world.raws.descriptors.colors={{name='Red'},{name='Blue'}}")
     for category in ["armor", "cloth", "leather", "finished_goods"]:

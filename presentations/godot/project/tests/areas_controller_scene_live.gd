@@ -16,8 +16,12 @@ func run() -> void:
 	scene = load("res://scenes/main.tscn").instantiate(); root.add_child(scene)
 	world = scene.world
 	var deadline := Time.get_ticks_msec()+120000
+	var next_progress := Time.get_ticks_msec()+10000
 	while not scene._loader.entered and Time.get_ticks_msec()<deadline:
 		await create_timer(0.05).timeout
+		if Time.get_ticks_msec() >= next_progress:
+			print("AREAS_SCENE_STARTUP phase=",scene._loader.phase," attached=",world.is_attached()," blocks=",world.known_block_count(),"/",world.map_block_count()," pending=",world.pending_block_count()," error=",world.last_error())
+			next_progress = Time.get_ticks_msec()+10000
 	if check(scene._loader.entered,"main scene did not enter fortress"):
 		actions = scene._ui.actions; host = scene._ui.host; interaction = scene._interaction
 		actions.set_process(false)
@@ -40,11 +44,16 @@ func pointer_click(position: Vector2, button := MOUSE_BUTTON_LEFT) -> void:
 		root.push_input(event,true)
 	await process_frame; await process_frame
 
-func click_control(control: Control) -> void:
+func click_control(control: Control, staged_launcher := false) -> void:
 	# This driver disables automatic controller processing. Run layout as the
 	# actual scene would before clicking controls after a mode transition.
 	for frame in 2:
 		editor._process(0); await process_frame
+	if staged_launcher:
+		# HUD availability refreshes every frame and leaves staged slots
+		# disabled. Enable only this test click after normal layout settles.
+		if not check(scene._fortress_hud.enabled,"staged launcher requires an entered playable fortress"): return
+		control.disabled = false
 	await pointer_click(control.get_global_transform_with_canvas()*(control.size/2))
 
 func capture(label: String) -> void:
@@ -63,13 +72,15 @@ func pointer_areas() -> void:
 	var origin := Vector3i(int(p.x)+8,int(p.y)+8,int(p.z))
 	world.set_top_z(origin.z)
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
-	for destination in ["Stockpiles","Zones"]:
+	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
+	var destinations := ["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"]
+	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
 		for frame in 12:
 			launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
 		# Candidate launchers are exposed only in this acceptance process.
-		launcher.show(); await click_control(launcher)
+		launcher.show(); await click_control(launcher,true)
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
 			await click_control(editor.zone_menu.buttons.Bedroom)
@@ -80,6 +91,9 @@ func pointer_areas() -> void:
 		if not check(picked == origin,"rendered picking disagrees with area fixture"): return
 		await pointer_click(position)
 		if not await wait_ui(func(): return settled() and not editor.paint_lookup,"pointer footprint lookup"): return
+		if not check(editor.dragging and editor.paint_state.cells.is_empty(),"first rectangle click must retain a corner without painting"): return
+		await pointer_click(position)
+		if not await wait_ui(func(): return settled() and not editor.paint_lookup,"pointer second corner lookup"): return
 		if not check(editor.paint_state.cells.size() == 1,"pointer painting did not retain one tile"): return
 		await elevation_round_trip(origin,destination+"_new")
 		if stopped: return
@@ -104,7 +118,7 @@ func pointer_areas() -> void:
 		if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"pointer Remove"): return
 		await native("removed",{"id":id})
 		editor.close_panel()
-	await pointer_zone_boundary_cells()
+	if not stockpiles_only: await pointer_zone_boundary_cells()
 	if stopped: return
 	await native("final")
 	if not stopped: print("AREAS_POINTER_PASS")
@@ -465,7 +479,7 @@ func pointer_repaint(origin: Vector3i, id: int, destination: String) -> void:
 				var launcher: Button = scene._fortress_hud.navigation[destination]
 				for frame in 4:
 					launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-				launcher.show(); await click_control(launcher)
+				launcher.show(); await click_control(launcher,true)
 				if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"reopen after reset"): return
 				await pointer_click(tile_screen(origin))
 				if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"reinspect after reset"): return

@@ -1,6 +1,6 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$StockpilesOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -32,6 +32,10 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  return $r
 }
 try {
+ if($StockpilesOnly) {
+  if(-not $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'StockpilesOnly requires ControllerScene without other focused scopes'}
+  Write-Lf "$out/stockpiles-only.json" '{"scope":"stockpile main-scene pointer workflow; zones excluded"}'
+ }
  if($StaffScene){$StaffOnly=$true;Write-Lf "$out/staff-scene.txt" 'viewport'}
  if($StaffOnly -and ($Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene)){throw 'StaffOnly is a separate protected semantic lane'}
  if($LocationScene -and ($Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $MultiOnly -or $PaintCountsOnly)){throw 'LocationScene is a separate protected GPU lane'}

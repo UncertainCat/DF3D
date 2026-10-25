@@ -43254,5 +43254,60 @@
       "owned_df_closed_without_saving": true,
       "scope": "Focused initial-sublist commands, complete pagination with three queries, native UI/settings guards, individual and filtered edits, short/empty storage, creation and removal; not full rendered workflow acceptance."
     }
+  },
+  "rendered_stockpile_workflow": {
+    "run": "build/areas-acceptance-20261025-074204",
+    "status": "passed_with_known_issues",
+    "driver": "presentations/godot/project/tests/areas_controller_scene_live.gd",
+    "scope": "ControllerScene StockpilesOnly; actual fortress scene viewport input, real bridge, independent native state readback",
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "native_observations": 109,
+    "operations": {
+      "category_after": 18,
+      "category_before": 18,
+      "external_hide_change": 2,
+      "external_material_change": 1,
+      "external_parchment_change": 1,
+      "final": 1,
+      "global_all_prepare": 2,
+      "global_all_verify": 2,
+      "global_none_prepare": 2,
+      "global_none_verify": 2,
+      "guard_after": 24,
+      "guard_before": 24,
+      "removed": 1,
+      "snapshot": 11
+    },
+    "screenshots": 59,
+    "categories": 17,
+    "coverage": [
+      "one-tile two-corner creation and elevation round trip",
+      "all category openings and selected sublists/captions",
+      "filtered All/None and individual raw-hide edits",
+      "paused external settings refresh and stale in-flight page recovery",
+      "Parchment pagination beyond200 rows and deep-scroll refresh",
+      "global All/None flag preservation and sublist reset",
+      "brush/erase repaint with right-click, Escape and UI-reset cancellation",
+      "accepted repaint exact extents and removal"
+    ],
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "unchanged_save_directories": 2,
+    "owned_df_closed_without_saving": true,
+    "omissions": [
+      "native scrollbar fixed-thumb appearance and full-list proportions",
+      "complete input/hover/non-ASCII and viewport-size fidelity",
+      "containers and give/take links in the rendered scene",
+      "full lifecycle and malformed/historical input acceptance",
+      "Stockpiles launcher remains staged; Zones excluded"
+    ]
   }
 }

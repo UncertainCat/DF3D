@@ -3471,7 +3471,7 @@
     {
       "path": "presentations/godot/project/tests/areas_controller_scene_live.gd",
       "status": "manual",
-      "reason": "Protected main-scene GPU workflow; areas_acceptance.ps1 -ControllerScene on a never-saved owned clone. Viewport input, rendered captures and native readbacks for stockpile/zone painting."
+      "reason": "Protected main-scene GPU workflow; areas_acceptance.ps1 -ControllerScene on a never-saved owned clone. Viewport input, rendered captures and native readbacks for stockpile/zone painting. Add -StockpilesOnly to exercise stockpile creation/settings/repaint/removal without Zones; scope is recorded in stockpiles-only.json."
     },
     {
       "path": "presentations/godot/project/tests/areas_controller_scene_boundary_live.gd",

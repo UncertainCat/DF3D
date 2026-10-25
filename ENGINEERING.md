@@ -7103,7 +7103,26 @@ stockpile/zone painting, Accept and removal through viewport input, rendered
 captures and native readbacks, including visible owner portraits, recentering and
 owner assignment/removal. This supplements rather than replaces the broader
 headless controller suite. Add `-BoundaryOnly` to `-ControllerScene` for a focused
-zone geometry regression: mixed floor/wall, wall-only and fortification creation,
+zone geometry regression, or use `-ControllerScene -StockpilesOnly` to exercise
+stockpile creation, all settings categories, filtering, refresh, repaint and
+removal without entering Zones. The stockpile scope writes
+`stockpiles-only.json` into its evidence folder. It enables the staged launcher
+only for the test click after HUD layout; product availability remains unchanged.
+Protected stockpile run `build/areas-acceptance-20261025-074204` passed109 native
+observations and captured59 screenshots. It exercises all17 settings categories,
+selected sublist captions, filtered and individual edits, external refresh,
+stale in-flight page recovery, Parchment paging past200 rows, global header
+semantics, and brush/erase repaint with right-click/Escape/UI-reset cancellation.
+Creation, accepted repaint extents and removal matched native state. Both save
+manifests were unchanged and owned DF closed unsaved. The sole diagnostic was
+the documented separate-thread notice, so this is `passed_with_known_issues`.
+Bounded coverage is in `native_stockpile_filters.json.rendered_stockpile_workflow`.
+The native fixed scrollbar thumb remains a visual gap; containers, links and full
+lifecycle/input fidelity are not established by this run. Offline gate
+`build/qa/stockpile-scene-scope` passed root CTest.
+
+These focused scopes cannot be combined. `-BoundaryOnly` covers
+mixed floor/wall, wall-only and fortification creation,
 wall addition during repaint, and native exact-extents readback and removal.
 This focused driver is not full Areas acceptance and cannot be combined with
 `-ControllerRestart`. `-ControllerRestart` checks actual producer replacement,

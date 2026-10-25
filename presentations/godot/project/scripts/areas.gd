@@ -1181,6 +1181,7 @@ func update_controls() -> void:
 	for child in content.get_children():
 		# Transitional secondary pages are replaced independently; the type panel
 		# already uses its native hierarchy and actual preset semantics.
+		if pile and child not in [stockpile_view,settings_view,paint_view]: child.hide()
 		if child not in [stockpile_view, message] and native_types: child.hide()
 		if child not in [settings_view,message] and native_settings: child.hide()
 		if child not in [paint_view,message] and native_paint: child.hide()
@@ -1229,6 +1230,10 @@ func update_controls() -> void:
 	else:
 		panel.remove_theme_stylebox_override("panel")
 	if mode == "multi": message.hide()
+	# Stockpile status strings describe transport/validation internals, not DF
+	# gameplay copy. Keep diagnostics in request state; native warnings belong
+	# to the sourced views. No generic editor may flash during asynchronous reads.
+	if pile: message.hide()
 	_layout_view = Vector2(-1,-1)
 
 

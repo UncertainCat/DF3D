@@ -46,6 +46,7 @@ func run() -> void:
 	view.edit_entry("1234")
 	check(view.entry.text == "123" and controller.storage_values.bins == 4,"three digits are retained while the semantic value clamps to native bound")
 	check(view.editing == "bins" and view.entry.editable,"pending write preserves entry")
+	check(not controller.message.visible,"pending storage write does not add an unsourced status strip")
 	accepted("bins",1)
 	check(world.calls[-1].bins == 4 and world.calls[-1].expected_revision == 12,"new explicit value continues using the accepted revision")
 	check(view.entry.text == "123" and view.editing == "bins","accepted reply preserves newer text and editing identity")

@@ -46,6 +46,7 @@ func run() -> void:
 	accepted("A")
 	check(world.calls[-1].name == "ABC" and world.calls[-1].expected_revision == pile.revision,"newest explicit text uses confirmed revision")
 	check(controller.stockpile_view.controls.remove.disabled,"following write keeps other mutations disabled")
+	check(not controller.message.visible,"pending rename does not add an unsourced status strip")
 	key(KEY_ESCAPE)
 	check(not controller.panel.visible and controller.rename_session == null,"Escape closes palette immediately")
 	accepted("ABC"); await process_frame
@@ -62,6 +63,7 @@ func run() -> void:
 	reply(11,{"status":3,"message":"Area changed; inspect again"})
 	service.poll(); check(world.calls.size() == before and controller.rename_session == null and not controller.rename_field.editing,"stale mutation drops buffered input")
 	check(controller.selected.revision == 0 and controller.stockpile_view.controls.rename.disabled,"failed write needs fresh inspection before another edit")
+	check(not controller.message.visible and not controller.message.text.is_empty(),"rejection retains diagnostics without showing unsourced gameplay copy")
 	open_name(); key(0,89); service.poll(); key(0,90)
 	before = world.calls.size(); service.poll(16)
 	check(controller.rename_session == null and not controller.rename_field.editing,"unknown outcome stops editing")

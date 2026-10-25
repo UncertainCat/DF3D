@@ -67,6 +67,16 @@ is the known separate-thread notice. The viewport text scenarios use ASCII;
 the earlier native high-byte oracle is helper evidence, not OS clipboard/IME
 acceptance. Stockpiles remains hidden while the broader completion audit proceeds.
 
+Stockpile transitions retain internal request diagnostics without displaying generic
+editor labels or authored waiting/error strips. The native no-type warning remains.
+`build/qa/stockpile-native-copy-ready` passes root CTest19/19 and area, rename,
+storage, settings and links checks. Protected
+`build/areas-acceptance-20261025-182946` captures an actual pending bin increment
+before reply polling and repeats inline rename, five viewport fits and native
+effects. The pending capture was inspected; only the known separate-thread notice
+remains. Owned DF96860 closes unsaved and both save manifests match.
+`native_stockpile_layout.json.pending_copy_acceptance` retains the evidence hashes.
+
 ## Stockpile settings ownership and protocol59
 
 Management59 retires legacy SettingsSet requests that treated category rows or

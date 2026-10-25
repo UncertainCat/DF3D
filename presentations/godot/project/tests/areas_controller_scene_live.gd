@@ -214,6 +214,8 @@ func pointer_storage_limits() -> void:
 	if not await wait_ui(func(): return settled() and editor.storage_view.visible,"storage popup inspection"): return
 	for key in ["barrels","bins","wheelbarrows"]:
 		await click_control(editor.storage_view.controls[key][1])
+		if not check(editor.request_ticket != 0 and not editor.message.visible,"pending stockpile request exposes generic status copy"): return
+		if key == "bins": await capture("stockpile_storage_pending")
 		if not await wait_ui(func(): return settled() and int(editor.selected[key]) == 1,"storage increment " + key): return
 		await native("snapshot",{"id":int(editor.selected.id),"expected":{key:1,"tile_count":1}})
 		if not check(editor.storage_view.controls[key][1].disabled,"increment remains enabled at native limit"): return

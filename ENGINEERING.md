@@ -8,17 +8,29 @@ native row formatting, sorting and filtering. Returned rows contain stable vecto
 indices, labels and booleans; native pointers remain local. Protected run
 `build/stockpile-presets-native-20261025-014925` matched all72 native Wood rows
 with an empty search, preserving native UI, row values, source Wood filters and
-RNG buffers. Nonempty search, other filter categories and gameplay integration
-remain under audit.
+RNG buffers. Run `build/stockpile-presets-native-20261025-020901` also matched
+native filtering for `maple`, `TREE` and an unmatched ASCII query, checking all72
+rows and preserving native UI bytes. Non-ASCII search, other filter categories
+and gameplay list integration remain under audit.
 
 `df3d stockpile-category-read <building-id> <category-bit>` predicts native
 category selection on owned settings. The selection prelude at `0x35fdde`
 initializes disabled categories and calls their native clear helper; selecting
 an enabled category leaves its settings intact. This diagnostic does not mutate
 the pile. The same run matched all78 vectors,29 fixed settings and flags after
-native selection of disabled Wood with populated filters. Evidence is retained in
-`fixtures/areas/native_stockpile_filters.json`. The gameplay category path still
-uses the older flag-only update; other category transitions need live comparison.
+native selection of disabled Wood with populated filters. Follow-up
+`build/stockpile-presets-native-20261025-015801` matched all17 categories in both
+disabled and enabled states. Evidence is retained in
+`fixtures/areas/native_stockpile_filters.json`.
+
+Gameplay activation now prepares category changes through these native routines
+on owned settings, then publishes once. Already-enabled categories preserve their
+filters; disabled categories receive native-sized empty selections. Deactivation
+only clears the category flag. Container edits follow successful preparation.
+Protected run `build/stockpile-initialization-20261025-020159` passed34 activation
+checks through the real bridge, including previously populated disabled filters,
+plus creation/presets/painting/removal. Its131 native observations passed, source
+save hashes stayed unchanged, diagnostics were clean and owned DF closed.
 
 Stockpile management remains staged. Preset edits call DF's clear routine at RVA
 `0x30e950` and preset initializer at `0x30dde0` on independently owned settings.

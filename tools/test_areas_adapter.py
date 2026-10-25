@@ -117,6 +117,25 @@ def main():
     df.building.find=function(id)if id==7 then return workshop end;return old_find(id) end
     workshop_link_calls=0
     settings_layout_calls=0;settings_raw_count=0
+    settings_categories_calls=0
+    function settings_categories(b,changed,desired,budget)
+     settings_categories_calls=settings_categories_calls+1
+     if force_category_error then return {ok=false,message='',steps=158,work_unknown=true} end
+     local cats={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
+      'bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
+     for i,key in ipairs(cats)do if (changed & (1 << (i-1)))~=0 then
+      local on=(desired & (1 << (i-1)))~=0
+      if on and not b.settings.flags[key] then
+       -- Dispatch stand-in only. Live native clicks establish sizing/defaults.
+       for field,value in pairs(b.settings[key] or {})do
+        if type(value)=='table' then for index in pairs(value)do value[index]=false end
+        elseif type(value)=='boolean' then b.settings[key][field]=false end
+       end
+      end
+      b.settings.flags[key]=on
+     end end
+     return {ok=true,steps=158,work_unknown=true}
+    end
     function settings_layout(b,budget)
      budget=budget or math.huge
      settings_layout_calls=settings_layout_calls+1
@@ -140,6 +159,7 @@ def main():
      r.link_areas=workshop_link
      r.settings_layout=settings_layout
      r.settings_preset=settings_preset
+     r.settings_categories=settings_categories
      r.set_location=set_location
      r.create_location=create_location
      r.create_area=create_area
@@ -281,6 +301,17 @@ def main():
     assert changed["areas"][1]["categories"] == 2
     assert lua.eval("pile.settings.food.meat[1] and not pile.settings.food.meat[2] and pile.settings.food.meat[3]")
     assert lua.eval("not pile.settings.wood.mats[1] and pile.settings.wood.mats[2]")
+    activated = call(11, {"changed_categories": 8192, "categories": 8192,
+                          "expected_revision": call(9)["areas"][1]["revision"]})
+    assert activated["ok"] and lua.eval("pile.settings.flags.wood")
+    assert lua.eval("not pile.settings.wood.mats[1] and not pile.settings.wood.mats[2]")
+    assert lua.eval("pile.settings.food.meat[1] and not pile.settings.food.meat[2] and pile.settings.food.meat[3]")
+    lua.execute("pile.settings.flags.wood=false;pile.settings.wood.mats={false,true};force_category_error=true")
+    refused = call(11, {"changed_categories": 8192, "categories": 8192, "bins": 3,
+                        "expected_revision": call(9)["areas"][1]["revision"]})
+    assert not refused["ok"] and refused["message"] == ""
+    assert lua.eval("not pile.settings.flags.wood and pile.settings.wood.mats[2] and pile.storage.max_bins==5")
+    lua.execute("force_category_error=false")
     rejected = call(11, {"bins": 10, "changed_categories": 2, "categories": 0,
                          "expected_revision": call(9)["areas"][1]["revision"]})
     assert not rejected["ok"] and lua.eval("pile.settings.flags.food and pile.storage.max_bins==5")
@@ -341,7 +372,7 @@ def main():
     scarce_update = lua.globals().request(11, lua.table_from(containers))
     scarce_update["step_budget"] = 0
     updated = adapter(scarce_update)
-    assert updated["ok"] and updated["steps"] == 36 and updated["areas"][1]["bins"] == 3
+    assert updated["ok"] and updated["steps"] == 19 and updated["areas"][1]["bins"] == 3
     assert updated["areas"][1]["barrels"] == 3 and updated["areas"][1]["wheelbarrows"] == 2
     assert updated["areas"][1]["links_only"] and updated["areas"][1]["revision"] != current_revision
     assert not call(11, {"bins": 2, "expected_revision": current_revision})["ok"]

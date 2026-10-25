@@ -74,11 +74,11 @@ require('gui.script').start(function()
    for y=0,g.dimy-1 do
     local chars={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);chars[#chars+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' ' end
     local line=table.concat(chars);screen[#screen+1]=line;local x=line:find(label,1,true)
-    if x and not px then px=x-1+(offset or 0);py=y end
+    if x and x<40 and not px then px=x-1+(offset or 0);py=y end
    end
    if px then click(px,py);return end
    local custom=df.global.game.main_interface.custom_stockpile
-   if label=='Wood' and custom.open and custom.scroll_position_main==0 then
+   if custom.open and custom.scroll_position_main==0 then
     -- Oracle-only viewport setup; selection itself still uses the native click.
     custom.scroll_position_main=4;view:render(dfhack.getTickCount())
     return label_click(label,offset)
@@ -140,6 +140,61 @@ require('gui.script').start(function()
    assert(row.enabled==(b.settings.wood.mats[row.index]~=0),'Wood row selection '..i)
   end
   records[#records+1]={probe='wood_rows',rows=predicted}
+  local categories={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
+   'bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
+  local category_labels={'Animals','Food','Furniture/siege ammo','Corpses','Refuse','Stone','Ammo','Coins',
+   'Bars/blocks','Gems','Finished goods','Leather','Cloth','Wood','Weapons/trap comps','Armor','Sheet'}
+  local modes={0,1,21,28,29,39,44,50,51,57,63,72,75,85,86,94,106}
+  local function compare_settings(expected)
+   assert(b.settings.flags.whole==expected.flags,'activation flags')
+   for kind,fields in pairs{vectors=expected.vectors,fixed=expected.fixed}do
+    for key,values in pairs(fields)do
+     local cat,name=key:match('^([^%.]+)%.(.+)$');local actual=b.settings[cat][name]
+     if kind=='vectors'then assert(#actual==#values,'activation length '..key)end
+     if kind=='fixed' and #values==1 then assert(actual==values[1],'activation '..key)
+     else for i,value in ipairs(values)do assert(actual[i-1]==value,'activation '..key..' '..i)end end
+    end
+   end
+  end
+  for bit,key in ipairs(categories)do
+   for _,enabled in ipairs{false,true}do
+    b.settings.flags[key]=enabled
+    c.scroll_position_main=0;view:render(dfhack.getTickCount())
+    local size,address=df.sizeof(df.global.game.main_interface)
+    local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+    local text,code=dfhack.run_command_silent('df3d','stockpile-category-read',tostring(b.id),tostring(1 << (bit-1)))
+    assert(code==0,text)
+    assert(dfhack.internal.memcmp(guard,address,size)==0,'activation probe changed native interface');df.delete(guard)
+    assert(b.settings.flags[key]==enabled,'activation probe published flag')
+    local expected=json.decode(text)
+    label_click(category_labels[bit])
+    assert(c.cur_main_mode==modes[bit],'wrong category selected: '..key)
+    compare_settings(expected)
+    records[#records+1]={probe='category_activation',category=key,was_enabled=enabled,predicted=expected}
+   end
+  end
+  c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Wood')
+  for _,query in ipairs{'maple','TREE','zzzznomatch'}do
+   -- Oracle-only focus setup; DF's actual text-input handler performs filtering.
+   c.spec_filter='';c.entering_spec_filter=true
+   for i=1,#query do
+    df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
+    gui.simulateInput(view,string.format('STRING_A%03d',query:byte(i)))
+   end
+   view:render(dfhack.getTickCount())
+   assert(c.spec_filter:lower()==query:lower(),'native search input differs: '..tostring(c.spec_filter)..' / '..query)
+   local size,address=df.sizeof(df.global.game.main_interface)
+   local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+   local text,code=dfhack.run_command_silent('df3d','stockpile-wood-read',tostring(b.id),query)
+   assert(code==0,text)
+   assert(dfhack.internal.memcmp(guard,address,size)==0,'search probe changed native UI');df.delete(guard)
+   local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'filtered row count')
+   for i,row in ipairs(rows)do
+    local actual=c.spec_item[i-1]
+    assert(row.name==dfhack.df2utf(actual.name) and row.visible==actual.on,'native search row differs '..i)
+   end
+   records[#records+1]={probe='wood_search',query=query,native_query=c.spec_filter,rows=rows}
+  end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)
  local f=assert(io.open(out..'/result.tmp','w'));f:write(require('json').encode{success=ok,error=tostring(why),records=records});f:close();assert(os.rename(out..'/result.tmp',out..'/result.json'))

@@ -111,7 +111,7 @@ func pointer_areas() -> void:
 
 func pointer_settings() -> void:
 	step = "viewport stockpile settings categories"
-	await native("category_before",{"id":int(editor.selected.id)})
+	await native("category_before",{"id":int(editor.selected.id),"category":"ammo"})
 	var custom := -1
 	for index in editor.menu_data.presets.size():
 		if int(editor.menu_data.presets[index].preset) == 0: custom = index
@@ -132,7 +132,7 @@ func pointer_settings() -> void:
 		if not check(index >= 0,"Missing observed settings category: "+category): return
 		var button: Control = editor.settings_view.rendered_rows[0][index]
 		editor.settings_view.scrolls[0].ensure_control_visible(button)
-		await native("category_before",{"id":int(editor.selected.id)})
+		await native("category_before",{"id":int(editor.selected.id),"category":category})
 		await click_control(button)
 		if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"settings category "+category): return
 		await native("category_after",{"id":int(editor.selected.id),"category":category})

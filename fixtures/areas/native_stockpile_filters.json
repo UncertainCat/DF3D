@@ -15,9 +15,9 @@
       "RNG buffers"
     ],
     "omissions": [
-      "Nonempty search is not yet compared.",
-      "Other categories are not yet compared for activation/list behavior.",
-      "Gameplay category and list integration is pending.",
+      "Non-ASCII search and punctuation typing are not covered.",
+      "Other category list labels/order and search are not yet compared.",
+      "Gameplay native list integration is pending.",
       "UI pixel parity is not established by this capture."
     ]
   },
@@ -998,5 +998,1427 @@
       "name": "Willows",
       "visible": true
     }
-  ]
+  ],
+  "category_comparisons": {
+    "run": "build\\stockpile-presets-native-20261025-015801",
+    "comparison": "Native clicks for all17 categories both disabled and already enabled. Every comparison checked all78 vectors,29 fixed fields and flags; retained digests below focus on the selected category. Native UI bytes were unchanged by prediction; source save unchanged and simulation paused.",
+    "records": [
+      {
+        "category": "animals",
+        "was_enabled": false,
+        "flags": 8257,
+        "vectors": {
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          }
+        },
+        "fixed": {
+          "animals.empty_cages": [
+            false
+          ],
+          "animals.empty_traps": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "animals",
+        "was_enabled": true,
+        "flags": 8257,
+        "vectors": {
+          "animals.enabled": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          }
+        },
+        "fixed": {
+          "animals.empty_cages": [
+            false
+          ],
+          "animals.empty_traps": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "food",
+        "was_enabled": false,
+        "flags": 8259,
+        "vectors": {
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 0,
+            "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 0,
+            "sha256": "f2c0d5456a983ecd12e314fcfa19879179fc8424343baeb1325457472ae85601"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 0,
+            "sha256": "2e0d2fe0abe5ed515f31233a722096d2d4061bfc8fc733df44dd1eace7ddff0b"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 0,
+            "sha256": "ae35733ac6d2081fb8dab80a6901f2d1625cb5c33974f40d54d7f8960a2b6306"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 0,
+            "sha256": "dd46c3eebb1884ff3b5258c0a2fc9398e560a29e0780d4b53869b6254aa46a96"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 0,
+            "sha256": "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 0,
+            "sha256": "8542681424ecba28d65569c3be0d3962837fdf9d6cb770620108a86cf9e8d75f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 0,
+            "sha256": "5cdcd733b8b630509bac08589db291ddbde33d79f64664cb9582e66589555257"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 0,
+            "sha256": "f802050ecbdbfba2b936e225565ee1fd10e3ad48f6dc2e72c8597ceec94d2442"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 0,
+            "sha256": "e08dd9962eedb16e12840ea2a977cc07bc5fa8d96259682edaa080573d525e4c"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 0,
+            "sha256": "5ec13d514d24aba23fd78497a131244321c5e650a1468b6e636a19a7ca1fe593"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          }
+        },
+        "fixed": {
+          "food.prepared_meals": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "food",
+        "was_enabled": true,
+        "flags": 8259,
+        "vectors": {
+          "food.cheese_animal": {
+            "count": 24,
+            "enabled": 0,
+            "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0"
+          },
+          "food.cheese_plant": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.drink_animal": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.drink_plant": {
+            "count": 76,
+            "enabled": 0,
+            "sha256": "f2c0d5456a983ecd12e314fcfa19879179fc8424343baeb1325457472ae85601"
+          },
+          "food.egg": {
+            "count": 203,
+            "enabled": 0,
+            "sha256": "2e0d2fe0abe5ed515f31233a722096d2d4061bfc8fc733df44dd1eace7ddff0b"
+          },
+          "food.fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          },
+          "food.glob": {
+            "count": 2062,
+            "enabled": 0,
+            "sha256": "ae35733ac6d2081fb8dab80a6901f2d1625cb5c33974f40d54d7f8960a2b6306"
+          },
+          "food.glob_paste": {
+            "count": 13,
+            "enabled": 0,
+            "sha256": "dd46c3eebb1884ff3b5258c0a2fc9398e560a29e0780d4b53869b6254aa46a96"
+          },
+          "food.glob_pressed": {
+            "count": 7,
+            "enabled": 0,
+            "sha256": "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"
+          },
+          "food.leaves": {
+            "count": 95,
+            "enabled": 0,
+            "sha256": "8542681424ecba28d65569c3be0d3962837fdf9d6cb770620108a86cf9e8d75f"
+          },
+          "food.liquid_animal": {
+            "count": 277,
+            "enabled": 0,
+            "sha256": "5cdcd733b8b630509bac08589db291ddbde33d79f64664cb9582e66589555257"
+          },
+          "food.liquid_misc": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "food.liquid_plant": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "food.meat": {
+            "count": 12328,
+            "enabled": 0,
+            "sha256": "f802050ecbdbfba2b936e225565ee1fd10e3ad48f6dc2e72c8597ceec94d2442"
+          },
+          "food.plants": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          },
+          "food.powder_creature": {
+            "count": 0,
+            "enabled": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "food.powder_plant": {
+            "count": 101,
+            "enabled": 0,
+            "sha256": "e08dd9962eedb16e12840ea2a977cc07bc5fa8d96259682edaa080573d525e4c"
+          },
+          "food.seeds": {
+            "count": 157,
+            "enabled": 0,
+            "sha256": "5ec13d514d24aba23fd78497a131244321c5e650a1468b6e636a19a7ca1fe593"
+          },
+          "food.unprepared_fish": {
+            "count": 75,
+            "enabled": 0,
+            "sha256": "367467f43d580c3c07040a78c7890ae4262dad4778878f9a49d5f652c81689a5"
+          }
+        },
+        "fixed": {
+          "food.prepared_meals": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "furniture",
+        "was_enabled": false,
+        "flags": 8263,
+        "vectors": {
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 0,
+            "sha256": "5322fecfc92a5e3248a297a3df3eddfb9bd9049504272e4f572b87fa36d4b3bd"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 0,
+            "sha256": "0d5535e13cc9708d0ff0289af2fae27e564b6bcbcd9242f5140d96957744a517"
+          }
+        },
+        "fixed": {
+          "furniture.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "furniture.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "category": "furniture",
+        "was_enabled": true,
+        "flags": 8263,
+        "vectors": {
+          "furniture.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "furniture.other_mats": {
+            "count": 15,
+            "enabled": 0,
+            "sha256": "5322fecfc92a5e3248a297a3df3eddfb9bd9049504272e4f572b87fa36d4b3bd"
+          },
+          "furniture.type": {
+            "count": 35,
+            "enabled": 0,
+            "sha256": "0d5535e13cc9708d0ff0289af2fae27e564b6bcbcd9242f5140d96957744a517"
+          }
+        },
+        "fixed": {
+          "furniture.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "furniture.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "category": "corpses",
+        "was_enabled": false,
+        "flags": 8271,
+        "vectors": {
+          "corpses.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "corpses",
+        "was_enabled": true,
+        "flags": 8271,
+        "vectors": {
+          "corpses.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "refuse",
+        "was_enabled": false,
+        "flags": 8287,
+        "vectors": {
+          "refuse.body_parts": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.bones": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.hair": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.horns": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.shells": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.skulls": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.teeth": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          }
+        },
+        "fixed": {
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "refuse",
+        "was_enabled": true,
+        "flags": 8287,
+        "vectors": {
+          "refuse.body_parts": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.bones": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.corpses": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.hair": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.horns": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.shells": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.skulls": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.teeth": {
+            "count": 1131,
+            "enabled": 0,
+            "sha256": "bf7956a61a1512efea5b366e00014c4597c514f88a06635a2058e3481eb060d3"
+          },
+          "refuse.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          }
+        },
+        "fixed": {
+          "refuse.fresh_raw_hide": [
+            false
+          ],
+          "refuse.rotten_raw_hide": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "stone",
+        "was_enabled": false,
+        "flags": 8319,
+        "vectors": {
+          "stone.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "stone",
+        "was_enabled": true,
+        "flags": 8319,
+        "vectors": {
+          "stone.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "ammo",
+        "was_enabled": false,
+        "flags": 8319,
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "ammo.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "category": "ammo",
+        "was_enabled": true,
+        "flags": 8319,
+        "vectors": {
+          "ammo.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "ammo.other_mats": {
+            "count": 2,
+            "enabled": 0,
+            "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+          },
+          "ammo.type": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          }
+        },
+        "fixed": {
+          "ammo.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "ammo.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      {
+        "category": "coins",
+        "was_enabled": false,
+        "flags": 8447,
+        "vectors": {
+          "coins.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "coins",
+        "was_enabled": true,
+        "flags": 8447,
+        "vectors": {
+          "coins.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "bars_blocks",
+        "was_enabled": false,
+        "flags": 8703,
+        "vectors": {
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "bars_blocks",
+        "was_enabled": true,
+        "flags": 8703,
+        "vectors": {
+          "bars_blocks.bars_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.bars_other_mats": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "bars_blocks.blocks_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "bars_blocks.blocks_other_mats": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "gems",
+        "was_enabled": false,
+        "flags": 9215,
+        "vectors": {
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "gems",
+        "was_enabled": true,
+        "flags": 9215,
+        "vectors": {
+          "gems.cut_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.cut_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          },
+          "gems.rough_mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "gems.rough_other_mats": {
+            "count": 659,
+            "enabled": 0,
+            "sha256": "fe20d43cb6c45be225cd1a7a7d7baf327d180fc619d7677f5d9731d0d516cf9e"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "finished_goods",
+        "was_enabled": false,
+        "flags": 10239,
+        "vectors": {
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          }
+        },
+        "fixed": {
+          "finished_goods.dyed": [
+            false
+          ],
+          "finished_goods.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.undyed": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "finished_goods",
+        "was_enabled": true,
+        "flags": 10239,
+        "vectors": {
+          "finished_goods.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "finished_goods.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "finished_goods.other_mats": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "finished_goods.type": {
+            "count": 113,
+            "enabled": 0,
+            "sha256": "951b1c95584b91fd8776e1d26b25d745ad5d508f6337686b9f7131d7c2f7096a"
+          }
+        },
+        "fixed": {
+          "finished_goods.dyed": [
+            false
+          ],
+          "finished_goods.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "finished_goods.undyed": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "leather",
+        "was_enabled": false,
+        "flags": 12287,
+        "vectors": {
+          "leather.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          }
+        },
+        "fixed": {
+          "leather.dyed": [
+            false
+          ],
+          "leather.undyed": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "leather",
+        "was_enabled": true,
+        "flags": 12287,
+        "vectors": {
+          "leather.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "leather.mats": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          }
+        },
+        "fixed": {
+          "leather.dyed": [
+            false
+          ],
+          "leather.undyed": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "cloth",
+        "was_enabled": false,
+        "flags": 16383,
+        "vectors": {
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          }
+        },
+        "fixed": {
+          "cloth.dyed": [
+            false
+          ],
+          "cloth.undyed": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "cloth",
+        "was_enabled": true,
+        "flags": 16383,
+        "vectors": {
+          "cloth.cloth_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.cloth_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.cloth_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.cloth_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          },
+          "cloth.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "cloth.thread_metal": {
+            "count": 1,
+            "enabled": 0,
+            "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          },
+          "cloth.thread_plant": {
+            "count": 8,
+            "enabled": 0,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+          },
+          "cloth.thread_silk": {
+            "count": 39,
+            "enabled": 0,
+            "sha256": "94c11ed3c3c73016adb92416352678e169cbe47bb48bc27e5e9d466115b06252"
+          },
+          "cloth.thread_yarn": {
+            "count": 4,
+            "enabled": 0,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+          }
+        },
+        "fixed": {
+          "cloth.dyed": [
+            false
+          ],
+          "cloth.undyed": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "wood",
+        "was_enabled": false,
+        "flags": 16383,
+        "vectors": {
+          "wood.mats": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "wood",
+        "was_enabled": true,
+        "flags": 16383,
+        "vectors": {
+          "wood.mats": {
+            "count": 225,
+            "enabled": 0,
+            "sha256": "1bee2e2cfbc827a48e51c87f3e62652dc47480bdfb2641de1987eb052c8b4b41"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "weapons",
+        "was_enabled": false,
+        "flags": 32767,
+        "vectors": {
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 0,
+            "sha256": "85759b3811ff7dc47b03792ac85317be51431a3f9e01dcafce317ed736a391b0"
+          }
+        },
+        "fixed": {
+          "weapons.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.unusable": [
+            false
+          ],
+          "weapons.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "weapons",
+        "was_enabled": true,
+        "flags": 32767,
+        "vectors": {
+          "weapons.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "weapons.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "weapons.trapcomp_type": {
+            "count": 5,
+            "enabled": 0,
+            "sha256": "8855508aade16ec573d21e6a485dfd0a7624085c1a14b5ecdd6485de0c6839a4"
+          },
+          "weapons.weapon_type": {
+            "count": 44,
+            "enabled": 0,
+            "sha256": "85759b3811ff7dc47b03792ac85317be51431a3f9e01dcafce317ed736a391b0"
+          }
+        },
+        "fixed": {
+          "weapons.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "weapons.unusable": [
+            false
+          ],
+          "weapons.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "armor",
+        "was_enabled": false,
+        "flags": 65535,
+        "vectors": {
+          "armor.body": {
+            "count": 20,
+            "enabled": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 0,
+            "sha256": "e7ecebbc590bc88b3761fa6cd03d749f87463dabb67021a5c6768c25ec68b3f2"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 0,
+            "sha256": "0a88111852095cae045340ea1f0b279944b2a756a213d9b50107d7489771e159"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 0,
+            "sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44"
+          }
+        },
+        "fixed": {
+          "armor.dyed": [
+            false
+          ],
+          "armor.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.undyed": [
+            false
+          ],
+          "armor.unusable": [
+            false
+          ],
+          "armor.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "armor",
+        "was_enabled": true,
+        "flags": 65535,
+        "vectors": {
+          "armor.body": {
+            "count": 20,
+            "enabled": 0,
+            "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
+          },
+          "armor.color": {
+            "count": 116,
+            "enabled": 0,
+            "sha256": "5b517952cbe9c4c147bc3f3434f9d82409e76d09ea58905aefe7fb5415912d9a"
+          },
+          "armor.feet": {
+            "count": 14,
+            "enabled": 0,
+            "sha256": "e7ecebbc590bc88b3761fa6cd03d749f87463dabb67021a5c6768c25ec68b3f2"
+          },
+          "armor.hands": {
+            "count": 11,
+            "enabled": 0,
+            "sha256": "71b6c1d53832f789a7f2435a7c629245fa3761ad8487775ebf4957330213a706"
+          },
+          "armor.head": {
+            "count": 16,
+            "enabled": 0,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          "armor.legs": {
+            "count": 17,
+            "enabled": 0,
+            "sha256": "0a88111852095cae045340ea1f0b279944b2a756a213d9b50107d7489771e159"
+          },
+          "armor.mats": {
+            "count": 313,
+            "enabled": 0,
+            "sha256": "8dea6b6aa16702f424f2679d756a6beb769c64ba4b1c74da279e32cfceaeb396"
+          },
+          "armor.other_mats": {
+            "count": 10,
+            "enabled": 0,
+            "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca"
+          },
+          "armor.shield": {
+            "count": 6,
+            "enabled": 0,
+            "sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44"
+          }
+        },
+        "fixed": {
+          "armor.dyed": [
+            false
+          ],
+          "armor.quality_core": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.quality_total": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "armor.undyed": [
+            false
+          ],
+          "armor.unusable": [
+            false
+          ],
+          "armor.usable": [
+            false
+          ]
+        }
+      },
+      {
+        "category": "sheet",
+        "was_enabled": false,
+        "flags": 131071,
+        "vectors": {
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          }
+        },
+        "fixed": {}
+      },
+      {
+        "category": "sheet",
+        "was_enabled": true,
+        "flags": 131071,
+        "vectors": {
+          "sheet.paper": {
+            "count": 9,
+            "enabled": 0,
+            "sha256": "3e7077fd2f66d689e0cee6a7cf5b37bf2dca7c979af356d0a31cbc5c85605c7d"
+          },
+          "sheet.parchment": {
+            "count": 839,
+            "enabled": 0,
+            "sha256": "dfc99261e8b177a3bf8c6030121782c2ec7f8d9648672bb7a9fc5df4a53e2d96"
+          }
+        },
+        "fixed": {}
+      }
+    ]
+  },
+  "search_comparisons": {
+    "run": "build\\stockpile-presets-native-20261025-020901",
+    "comparison": "Native text handler filtering versus owned Wood builder; all72 row names/order and visibility compared for each query. Native UI bytes unchanged by each probe; paused frame and source save unchanged.",
+    "records": [
+      {
+        "query": "maple",
+        "native_query": "MAPLE",
+        "row_count": 72,
+        "visible_indices": [
+          202
+        ]
+      },
+      {
+        "query": "TREE",
+        "native_query": "TREE",
+        "row_count": 72,
+        "visible_indices": [
+          132,
+          159,
+          160,
+          161,
+          143,
+          133,
+          162,
+          148,
+          223,
+          134,
+          135,
+          163,
+          146,
+          136,
+          153,
+          151,
+          137,
+          213,
+          149,
+          164,
+          138,
+          165,
+          152,
+          144,
+          155,
+          156,
+          221,
+          157,
+          147,
+          139,
+          140,
+          166,
+          167,
+          168,
+          169,
+          170,
+          158,
+          145,
+          141,
+          150,
+          222,
+          171,
+          210,
+          142,
+          172
+        ]
+      },
+      {
+        "query": "zzzznomatch",
+        "native_query": "ZZZZNOMATCH",
+        "row_count": 72,
+        "visible_indices": []
+      }
+    ]
+  }
 }

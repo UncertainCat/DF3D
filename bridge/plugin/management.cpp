@@ -906,6 +906,32 @@ bool areaPresetInventoryFits(df::building_stockpilest* pile) {
   for(const auto& entry:areaSettingVectors(pile))stored[index++]=entry.second->size();
   return df3d_area::settingsRawTotal(raw).valid && df3d_area::settingsRawTotal(stored).valid;
 }
+int areaSettingsCategories(lua_State* L) {
+  const auto result=[&](bool ok,const char* message,uint32_t steps,bool unknown=false) {
+    lua_newtable(L);field(L,"ok",ok);field(L,"message",message);field(L,"steps",steps);
+    field(L,"work_unknown",unknown);return 1;
+  };
+  auto* pile=Lua::GetDFObject<df::building_stockpilest>(L,1);
+  if(!pile || !df::global::world)return result(false,"Area no longer exists",1);
+  for(int i=2;i<=3;++i)if(!lua_isinteger(L,i) || lua_tointeger(L,i)<0 || lua_tointeger(L,i)>0x1ffff)
+    return result(false,"invalid stockpile categories",1);
+  if(!areaPresetInventoryFits(pile))return result(false,"Stockpile settings exceed 65,536 entries",158);
+  const auto changed=uint32_t(lua_tointeger(L,2)),desired=uint32_t(lua_tointeger(L,3));
+  try {
+    auto owned=pile->settings;
+    for(uint32_t bit=1;bit<=0x10000;bit<<=1)if(changed&bit) {
+      if(desired&bit) {
+        auto prepared=df3d_area::nativeStockpileCategory(owned,bit);
+        if(!prepared)return result(false,"",158,true);
+        owned=std::move(*prepared);
+      } else owned.flags.whole&=~bit;
+    }
+    static_assert(std::is_nothrow_swappable_v<df::stockpile_settings>);
+    std::swap(pile->settings,owned);
+  } catch(...) {return result(false,"",158,true);}
+  mutated=true;
+  return result(true,"",158,true);
+}
 int areaSettingsPreset(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1,bool unknownWork=false) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);
@@ -2016,6 +2042,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSettingsFill);lua_setfield(L,-2,"settings_fill");
     lua_pushcfunction(L,areaSettingsLayout);lua_setfield(L,-2,"settings_layout");
     lua_pushcfunction(L,areaSettingsPreset);lua_setfield(L,-2,"settings_preset");
+    lua_pushcfunction(L,areaSettingsCategories);lua_setfield(L,-2,"settings_categories");
     lua_pushcfunction(L,areaLocationSet);lua_setfield(L,-2,"set_location");
     lua_pushcfunction(L,areaLocationCreate);lua_setfield(L,-2,"create_location");
     lua_pushcfunction(L,areaCreate);lua_setfield(L,-2,"create_area");

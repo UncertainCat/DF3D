@@ -25,5 +25,17 @@ func exercise() -> void:
 		await native("removed", {"id":int(a.id)})
 		if stopped: return
 	await settings_and_presets()
+	var categories := ["animals","food","furniture","corpses","refuse","stone","ammo","coins",
+		"bars_blocks","gems","finished_goods","leather","cloth","wood","weapons","armor","sheet"]
+	var pile := int(fixture.pile)
+	for bit in range(categories.size()):
+		step = "activate " + categories[bit]
+		await edit(pile,0,{"operation":3,"preset":bit+2})
+		await edit(pile,0,{"changed_categories":1 << bit,"categories":0})
+		for repeat_selection in range(2):
+			await native("category_before",{"id":pile,"category":categories[bit]})
+			await edit(pile,0,{"changed_categories":1 << bit,"categories":1 << bit})
+			await native("category_after",{"id":pile,"category":categories[bit]})
+			if stopped: return
 	await paint()
 	await native("final")

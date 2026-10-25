@@ -1490,7 +1490,7 @@ local function native_operation(r)
   local links_only=default(a,'links_only',-1)
   if not integer(links_only) or links_only< -1 or links_only>1 then return reject('invalid area edit') end
   if default(a,'active',-1)~=-1 or default(a,'owner_id',-2)~=-2 then return reject('Zone-only fields on stockpile') end
-  if budget-steps<175 then return reject('Area request exceeds remaining step budget') end
+  if budget-steps<(default(a,'changed_categories',0)~=0 and 200 or 175) then return reject('Area request exceeds remaining step budget') end
  end
  local new_owner
  if legacy_zone_update then
@@ -1520,14 +1520,14 @@ local function native_operation(r)
  end
  local retired,retired_bytes
  if legacy_pile_update then
-  -- The snapshot already counted the footprint. Category toggles change only
-  -- flags: native material/quality/subtype filters are deliberately preserved.
-  clear_lists();steps=steps+21
-  for i,key in ipairs(cats) do
-   if (default(a,'changed_categories',0) & (1 << (i-1)))~=0 then
-    b.settings.flags[key]=(default(a,'categories',0) & (1 << (i-1)))~=0
-   end
+  -- Selecting a disabled category initializes and clears its native filters.
+  -- Prepare all category changes before publishing settings or container edits.
+  if default(a,'changed_categories',0)~=0 then
+   local changed,problem,unknown=invoke(r.settings_categories,reply_reserve+4,b,a.changed_categories,default(a,'categories',0))
+   if changed or unknown then clear_lists() end
+   if not changed then return reject(problem) end
   end
+  clear_lists();steps=steps+4
   if default(a,'barrels',-1)>=0 then b.storage.max_barrels=a.barrels end
   if default(a,'bins',-1)>=0 then b.storage.max_bins=a.bins end
   if default(a,'wheelbarrows',-1)>=0 then b.storage.max_wheelbarrows=a.wheelbarrows end

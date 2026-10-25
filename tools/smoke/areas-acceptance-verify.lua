@@ -82,13 +82,13 @@ local function area(b)
  end
  return r
 end
-local function fingerprint(without_flags_id)
+local function fingerprint(without_settings_id)
  local all={areas={},workshops={},cages={},units={},squads={},locations={},next_building=df.global.building_next_id}
  for _,b in ipairs(df.global.world.buildings.all) do
   if df.building_stockpilest:is_instance(b) or df.building_civzonest:is_instance(b) then
    local observed=area(b)
-   if b.id==without_flags_id then
-    observed.settings.flags=nil
+   if b.id==without_settings_id then
+    observed.settings=nil
     -- DF derives an unnamed stockpile's display name from its category flags.
     -- Its stored custom_name remains in the guard.
     if observed.custom_name=='' then observed.name=nil end
@@ -136,18 +136,27 @@ elseif request.op=='guard_after' then
 elseif request.op=='category_before' then
  assert(df.global.pause_state,'category guard requires paused fortress')
  local b=building()
- _G.df3d_category_guard={id=b.id,flags=native_value(b.settings.flags,0),other=fingerprint(b.id)}
+ local categories={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
+  'bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
+ local bit
+ for i,key in ipairs(categories)do if key==request.category then bit=1 << (i-1)end end
+ assert(bit,'category guard requires explicit category')
+ local text,code=dfhack.run_command_silent('df3d','stockpile-category-read',tostring(b.id),tostring(bit))
+ assert(code==0,text)
+ _G.df3d_category_guard={id=b.id,category=request.category,expected=json.decode(text),other=fingerprint(b.id)}
 elseif request.op=='category_after' then
  local b=building();local before=assert(_G.df3d_category_guard)
- assert(df.global.pause_state and before.id==b.id,'category guard identity changed')
- assert(b.settings.flags[request.category],'selected native category was not enabled')
- local after_flags=native_value(b.settings.flags,0)
- for key,value in pairs(before.flags) do
-  if key~='whole' and key~=request.category then
-   assert(after_flags[key]==value,'category selection changed another flag: '..key)
+ assert(df.global.pause_state and before.id==b.id and before.category==request.category,'category guard identity changed')
+ assert(b.settings.flags.whole==before.expected.flags,'category flags differ from native selection')
+ for kind,fields in pairs{vectors=before.expected.vectors,fixed=before.expected.fixed}do
+  for key,values in pairs(fields)do
+   local cat,name=key:match('^([^%.]+)%.(.+)$');local actual=b.settings[cat][name]
+   if kind=='vectors'then assert(#actual==#values,'category vector length '..key)end
+   if kind=='fixed' and #values==1 then assert(actual==values[1],'category fixed '..key)
+   else for i,value in ipairs(values)do assert(actual[i-1]==value,'category value '..key..' '..i)end end
   end
  end
- assert(before.other==fingerprint(b.id),'category selection changed filters or unrelated native state')
+ assert(before.other==fingerprint(b.id),'category selection changed unrelated native state')
 elseif request.op=='snapshot' then
  result.area=area(building());if request.expected then check_properties(result.area,request.expected,'area') end
 elseif request.op=='global_all_prepare' then

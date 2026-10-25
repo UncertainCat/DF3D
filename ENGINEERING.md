@@ -16,8 +16,7 @@ Wood gameplay pages and individual/filtered All/None actions use the owned nativ
 row service (mode85). Native TREE eligibility, formatting, sorting and search
 replace local list construction. The int32 native raw getter skips out-of-range
 indices; referenced null raws are rejected before entry. Edits preserve short,
-empty and stale vectors, touching only native visible rows. Summary counts still
-use staged membership and are not established by this leaf integration.
+empty and stale vectors, touching only native visible rows. Summary indicators use the separate native summary service described below.
 
 Protected run `build/stockpile-presets-native-20261025-041148` passed12 Wood
 list/search comparisons and24 actual native All/None actions across full, short,
@@ -84,7 +83,7 @@ raws. Filtered and individual actions use those exact native rows, preserving
 excluded entries. The native creature helpers check signed16-bit indices; stale
 tails therefore retain native behavior instead of inheriting the item/color
 raw-length rejection. Referenced null raws still fail before native entry.
-Local creature captions were removed; summary eligibility remains staged.
+Local creature captions were removed; summary indicators use the native summary service.
 
 Protected native run `build/stockpile-presets-native-20261025-035705` passed120
 list/search comparisons and240 actual All/None actions over full, short, empty
@@ -110,8 +109,7 @@ native row instead of assuming raw index0 is eligible.
 
 Furniture Type (mode22), Finished goods Type (64), and Refuse Item types (30)
 use owned native rows for gameplay labels, eligibility, sorting, search and
-individual/filtered bulk edits. Local caption tables were removed; summary
-membership remains staged. Refuse interleaves83 type-vector entries with its two
+individual/filtered bulk edits. Local caption tables were removed. Refuse interleaves83 type-vector entries with its two
 independent hide booleans. Existing semantic keys distinguish scalar fields from
 vector indices. Receipts include those identities, and bulk masks route native
 visibility to each field. Unknown fields, duplicate identities and invalid
@@ -167,7 +165,7 @@ overlapping flags. Edits use stored vector lengths and visible native rows;
 empty/short vectors are not expanded. Coins can retain a native fallback row
 for an out-of-range stored index, unlike flagged lists whose fallback lacks the
 required flag. Do not replace this behavior with a blanket raw-count rejection.
-Staged summary counts remain separate.
+Native summary indicators are queried separately from leaf membership.
 
 Protected run `build/stockpile-presets-native-20261025-044259` passed156 exact
 native list/search comparisons and312 actual All/None actions across full,
@@ -191,8 +189,8 @@ formatter, including its NP/STP markers and material-name fallback. Glass reads
 builtin material types3..5 with index-1 and flags0; these arguments bypass
 historical-material caches. The fixed glass branch receives at least six owned
 bytes, while returned rows and edits remain limited to the original stored
-vector. No source settings are resized. Staged summary membership remains
-separate from native leaf rows.
+vector. No source settings are resized. Native summary indicators remain
+separate from leaf rows and reject undefined short-glass summary storage.
 
 Protected run `build/stockpile-presets-native-20261025-045644` passed66 gem/glass
 provider comparisons and84 actual native All/None actions. Gem lists covered
@@ -265,8 +263,8 @@ meat prefixes, fish sex glyphs, seed/growth names, thread/cloth/sheet labels and
 liquid/powder/paste/pressed names. No local label approximation is used by this
 provider. Gameplay pages and individual/filtered All/None actions use native
 row identities and visibility, preserving stored vector sizes and excluded
-entries. Local organic caption reconstruction is removed. Summary membership
-remains staged and is not established by leaf integration.
+entries. Local organic caption reconstruction is removed. Summary indicators
+use the separate native routine rather than deriving state from these rows.
 
 A native parent category sorts again after building its default leaf. Identical
 Meat names can consequently have a different identity order from an explicit
@@ -292,39 +290,59 @@ matched native results. Complete settings and unrelated state checks passed;
 diagnostics were clean, source hashes unchanged and owned DF closed without
 saving. This establishes leaf command effects, not full stockpile acceptance.
 
-The read-only `df3d stockpile-summary-read <building-id>` diagnostic calls DF's
-sublist summary routine at `0x55a6d0` with independently owned settings. Its109
-mode slots return0 none/empty,1 mixed or2 all; parent modes return0 and are not
-category aggregates. The native renderer combines these results and scalar
-controls for category indicators. This diagnostic is not yet a gameplay callback.
+Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
+independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
+all; parent slots are unused. The bridge combines native sublist states and the
+specific scalar controls read by renderer `0x37e9de..0x37facd` for category
+indicators. Empty Plant Cheese and Animal Powder vectors are omitted from Food's
+aggregate. Dyed/undyed controls do not participate in root indicators. Disabled
+root categories remain none. Only enabled categories and the explicitly opened
+category are queried, so an empty initial stockpile needs no unrelated storage.
 
-The routine reads raw tables and settings, writes local strings only, and uses
-inorganic type0 for its material formatting. Historical-material cache paths are
-excluded. Reference guards cover creature/plant/inorganic pointers, Plants'
-parallel organic index table and Stone reaction-product IDs. Native glass summary
-reads fixed slots3..5 without bounds checks, so the diagnostic rejects vectors
-shorter than6. Disabled categories can legitimately have empty storage; gameplay
-integration must query only applicable modes instead of applying this diagnostic's
-all-mode admission rule to every panel. Current summary membership remains staged.
+The routine reads raw tables and settings and writes local strings only. Material
+formatting uses inorganic type0; historical-material cache paths are excluded.
+Reference guards cover creature/plant/inorganic pointers, Plants' parallel index
+table and Stone reaction-product IDs. Native glass summary reads fixed slots3..5
+without bounds checks, so a requested Gems summary rejects vectors shorter than6.
+Refuse Type reads through index92 and Finished goods Type through index89;
+requested summaries require lengths93 and90, respectively. Compatibility checks
+cover both nested type-dispatch tables as well as the main mode table.
+Unrequested short vectors do not block other categories. The diagnostic
+`df3d stockpile-summary-read <building-id> [category-mask]` returns native-mode
+states and category states; omitting the mask requests all categories.
 
-Protected `build/stockpile-presets-native-20261025-060003` passed the existing
-native row comparisons and270 summary comparisons against actual rendered native
-status artwork, including two short-glass refusals. Focused
-`build/stockpile-summaries-native-20261025-060635` repeats270 comparisons across90
-visible sublists in none/all/mixed states and records51 root-category states.
-Corpses, Coins and Wood's nine direct-root cases also match the provider. Calls
-preserved native UI bytes and source settings; both owned sessions closed without
-saving and source save hashes were unchanged. Bounded states and provenance are
-in `native_stockpile_filters.json.native_summaries`. Root aggregation, selective
-queries, further malformed-input injection and rendered DF3D acceptance remain.
+The old incremental leaf/summary builders and local summary membership scan are
+removed. Pages validate native states, preserve native empty-column visibility,
+and hash states, visibility, labels, identities, area/raw revisions and epoch for
+continuation checks. Native helper refusal has no reconstructed fallback. Only
+Plant Cheese and Animal Powder are conditionally omitted from Food's middle
+column; their native captions are `Cheese (plant)` and `Bone meal`, respectively.
+
+Protected `build/stockpile-presets-native-20261025-060003` established270 native
+rendered sublist comparisons. Expanded
+`build/stockpile-summaries-native-20261025-063519` passed450 comparisons across90
+visible sublists and85 actual native category-indicator comparisons: none, all,
+alternating vectors, and independent scalar/vector states. Four short-vector
+refusals and eight selective queries passed. Test-only nonempty optional Food
+vectors exposed both native captions through actual selection. Calls preserved
+native UI bytes and settings; the owned session closed without saving and source
+hashes were unchanged. Bounded evidence is in
+`native_stockpile_filters.json.native_summaries`.
+
+`stockpile_initialization.ps1 -SummariesOnly` selects focused command acceptance.
+Run `build/stockpile-initialization-20261025-063614` passed161 native observations,
+including79 root/middle-column page reads. It covers creation with no categories,
+activation of all17 categories, global headers, a paused leaf edit, stale receipt
+refusal and removal. Reads preserved complete settings; diagnostics were clean,
+source hashes unchanged and owned DF closed without saving. Rendered DF3D
+hierarchy/layout and the full stockpile workflow remain separate requirements.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row
 membership. The bridge bounds each stored vector against its corresponding
 item-definition raw vector and rejects missing referenced raws before native
-entry. Local item-name construction and search were removed; category summary
-membership remains staged. These branches only append raw strings to owned
+entry. Local item-name construction and search were removed. These branches only append raw strings to owned
 strings and do not enter material formatting or historical-figure cache paths.
 
 Protected native run `build/stockpile-presets-native-20261025-034410` matched81
@@ -348,7 +366,7 @@ cache path. Because DF indexes descriptors using stored settings length through
 an unchecked getter, the bridge rejects lengths beyond the color raw vector or
 missing referenced raws before entering DF. Short and empty settings remain
 valid and are never expanded by leaf All/None. Local color captions/search were
-removed; summary counting still uses staged membership logic.
+removed; summary indicators use the native summary routine.
 
 Protected run `build/stockpile-presets-native-20261025-033222` matched36 color
 list/search comparisons and72 actual All/None actions across full, short and

@@ -422,21 +422,9 @@ local function setting_state(b,d,index)
  local v=index<#values and element(values,index) or 0
  return (v==true or type(v)=='number' and v~=0) and 2 or 1
 end
-local function append_setting(job,label,index)
- if label==nil then return end -- ineligible raw; not an uncaptioned row
- label=dfhack.df2utf(label)
- if type(label)~='string' or #label>512 then job.error='Area setting label exceeds 512 bytes';return end
- if label=='' then job.omitted=job.omitted+1;return end
- local key=job.list_key..'/'..index
- if #key>64 then job.error='Area setting key exceeds 64 bytes';return end
- if job.ids[key] then job.error='Duplicate row key '..key;return end
- if #job.rows==65536 then job.error='List exceeds 65,536 entries';return end
- job.ids[key]=true
- job.rows[#job.rows+1]={key=key,index=index,label=label,kind=4,state=0,estimated=false}
-end
 -- Native display order is independent of the wire bit/preset order in cats.
--- These captions/order come from e5/e2. Uncaptured Food rows retain the pinned
--- serializer's names under the PM's departure16, without invented wording.
+-- Captured native columns supply these captions/order; optional Food labels
+-- also appear in native renderer3805c4 (Cheese) and380600 (Bone meal).
 local setting_pages={['']={}}
 local summary_nodes={}
 local function setting_node(parent,key,label,node_kind,field)
@@ -474,8 +462,8 @@ setting_columns('finished_goods',{{'type','Type'},{'stone','Stone/clay'},{'metal
  {'color','Color'},{'undyed','Undyed',true},{'dyed','Dyed',true}})
 setting_columns('food',{{'prepared_meals','Prepared meals',true},{'meat','Meat'},{'fish','Fish'},
  {'unprepared_fish','Unprepared fish'},{'egg','Egg'},{'plants','Plants'},{'drink_plant','Drink (plant)'},
- {'drink_animal','Drink (animal)'},{'cheese_plant','cheese/plant'},{'cheese_animal','Cheese (animal)'},
- {'seeds','Seeds'},{'leaves','Fruit/leaves'},{'powder_plant','Milled plant'},{'powder_creature','powder/animal'},
+ {'drink_animal','Drink (animal)'},{'cheese_plant','Cheese (plant)'},{'cheese_animal','Cheese (animal)'},
+ {'seeds','Seeds'},{'leaves','Fruit/leaves'},{'powder_plant','Milled plant'},{'powder_creature','Bone meal'},
  {'glob','Fat'},{'glob_paste','Paste'},{'glob_pressed','Pressed material'},{'liquid_plant','Extract (plant)'},
  {'liquid_animal','Extract (animal)'},{'liquid_misc','Misc. liquid'}})
 setting_columns('furniture',{{'type','Type'},{'stone','Stone/clay'},{'metal','Metal'},
@@ -663,15 +651,6 @@ local function settings_edit_plan(a,layout,available,native_rows)
  end
  return plan,nil,used
 end
-local function count_setting(counts,key,state)
- local entry=counts[key] or {on=0,off=0};counts[key]=entry
- if state==2 then entry.on=entry.on+1 else entry.off=entry.off+1 end
-end
-local function summary_state(counts,key)
- local entry=counts[key]
- if not entry or entry.on==0 then return 1 end
- return entry.off==0 and 2 or 3
-end
 local link_sources={'give_to_pile','take_from_pile','give_to_workshop','take_from_workshop'}
 local location_kinds={INN_TAVERN=1,TEMPLE=2,LIBRARY=3,GUILDHALL=4,HOSPITAL=5}
 local function location_row(v,site_id)
@@ -721,12 +700,7 @@ local function append_candidate(job,row)
 end
 local function row_less(job,a,b)
  local x,y
- if job.settings then
-  if setting_leaves[job.list_key].source=='quality' then return a.index<b.index end
-  x,y=a.label:lower(),b.label:lower()
-  if x==y then x,y=a.index,b.index end
-  return x<y
- elseif job.legacy then x,y=a.id,b.id
+ if job.legacy then x,y=a.id,b.id
  elseif job.sort==0 then x,y=a.ordinal,b.ordinal
  elseif job.sort==1 then x,y=a.name:lower(),b.name:lower()
  elseif job.sort==2 then x,y=a.mood,b.mood
@@ -742,88 +716,12 @@ local function start_sort(job)
 end
 local function start_filter(job)
  job.phase=3;job.done=0;job.total=#job.rows;job.filter_index=1;job.filtered={}
- if job.settings then
-  job.hash=hash_integer(0xcbf29ce484222325,job.epoch)
-  for index=1,#job.list_key do job.hash=hash_integer(job.hash,job.list_key:byte(index)) end
-  job.hash=hash_integer(job.hash,job.source_total);return
- end
  job.hash=hash_integer(hash_integer(0xcbf29ce484222325,job.epoch),job.area_id)
  job.hash=hash_integer(job.hash,job.candidate_kind)
  if job.locations then job.hash=hash_integer(job.hash,job.site_id) end
 end
-local function step_summary(job)
- if job.phase==1 then
-  local group=summary_groups[job.group_index]
-  if not group then
-   job.phase=2;job.done=0;job.total=#summary_nodes;job.node_index=1;return
-  end
-  local b=df.building.find(job.area_id)
-  if not b or kind(b)~=0 then job.error='Area no longer exists';return end
-  local values,count=setting_source(group)
-  if count~=job.field_counts[group.field] then job.error='List changed; refresh';return end
-  if job.raw_index==count then
-   job.raw_index=0;job.group_index=job.group_index+1;job.done=job.done+1;return
-  end
-  local label,partition=setting_caption(group,job.raw_index,values)
-  if label~=nil then
-   local state=setting_state(b,group,job.raw_index)
-   count_setting(job.categories,group.cat,state)
-   for _,view in ipairs(group.views) do
-    if not view.partition or view.partition==partition then count_setting(job.counts,view.key,state) end
-   end
-  end
-  job.raw_index=job.raw_index+1;job.done=job.done+1
- elseif job.phase==2 then
-  local node=summary_nodes[job.node_index]
-  if not node then
-   job.phase=3;job.done=0;job.total=#summary_nodes;job.node_index=1
-   job.hash=hash_integer(hash_integer(hash_integer(hash_integer(0xcbf29ce484222325,job.epoch),
-    job.area_id),job.area_revision),job.raw_revision);return
-  end
-  local state=node.kind==1 and summary_state(job.categories,node.key) or summary_state(job.counts,node.field or node.key)
-  if node.kind==1 and not job.flags[node.key] or node.parent~='' and not job.flags[node.parent] then state=1 end
-  job.node_states[job.node_index]=state
-  local counts=job.counts[node.key]
-  local empty_food=node.parent=='food' and node.kind==2 and not counts
-  if not empty_food then
-   if node.label=='' then job.omissions[node.parent]=(job.omissions[node.parent] or 0)+1
-   else
-    local identity=node.parent..':'..node.key
-    if job.ids[identity] then job.error='Duplicate row key '..node.key;return end
-    job.ids[identity]=true
-    local row={key=node.key,index=-1,label=node.label,
-     kind=node.kind,state=state,estimated=false}
-    local page=job.pages[node.parent] or {};job.pages[node.parent]=page;page[#page+1]=row
-   end
-  end
-  job.node_index=job.node_index+1;job.done=job.done+1
- else
-  if job.node_index>#summary_nodes then
-   job.revision=job.hash & 0x7fffffffffffffff;if job.revision==0 then job.revision=1 end
-   job.complete=true;job.built_tick=tick();job.phase=0
-   job.counts=nil;job.categories=nil;job.flags=nil;job.field_counts=nil;job.node_states=nil;job.ids=nil;return
-  end
-  job.hash=hash_integer(job.hash,job.node_states[job.node_index])
-  job.node_index=job.node_index+1;job.done=job.done+1
- end
-end
 local function step_list(job)
- if job.summary then return step_summary(job) end
  if job.phase==1 then
-  if job.settings then
-   local d=setting_leaves[job.list_key];local values,count=setting_source(d)
-   if count~=job.source_total then job.error='List changed; refresh';return end
-   if job.index==count then
-    local extras=embedded_settings[job.list_key] or {};local extra=extras[job.extra_index or 1]
-    if extra then
-     job.rows[#job.rows+1]={key=extra.key,index=0,label=extra.label,kind=4,descriptor=extra}
-     job.extra_index=(job.extra_index or 1)+1;job.done=job.done+1;return
-    end
-    start_sort(job);return
-   end
-   append_setting(job,setting_caption(d,job.index,values),job.index)
-   job.index=job.index+1;job.done=job.done+1;return
-  end
   if job.links then
    local b=df.building.find(job.area_id)
    if not b or kind(b)~=0 then job.error='Area no longer exists';return end
@@ -893,10 +791,10 @@ local function step_list(job)
    job.complete=true;job.built_tick=tick();job.phase=0;return
   end
   local row=job.rows[job.filter_index];job.filter_index=job.filter_index+1;job.done=job.done+1
-  local label=job.settings and row.label or row.name
-  if label:lower():find(job.query,1,true) or not job.settings and tostring(row.id)==job.query then
+  local label=row.name
+  if label:lower():find(job.query,1,true) or tostring(row.id)==job.query then
    job.filtered[#job.filtered+1]=row
-   if not job.settings then job.hash=hash_integer(job.hash,row.id) end
+   job.hash=hash_integer(job.hash,row.id)
    if job.links then job.hash=hash_integer(hash_integer(job.hash,row.kind),row.direction) end
    if job.locations then
     job.hash=hash_integer(hash_integer(hash_integer(job.hash,row.location_kind),row.guild_profession),row.location_tier)
@@ -929,46 +827,49 @@ local function advance_lists(r)
  end
  return {ok=true,message='',steps=steps,active_kinds=active_kinds()}
 end
-local function summary_page(r,a,b,area_revision,layout,available)
+local function summary_page(r,a,b,area_revision,layout,available,summary)
  local list_key=default(a,'list_key','');local cursor=default(a,'cursor',0)
  if not setting_pages[list_key] then return fail('Unknown stockpile settings list'),0 end
  if not integer(cursor) or cursor<0 or cursor>2147483647 then return fail('invalid area cursor'),0 end
- if not integer(layout.raw_revision) or layout.raw_revision<=0 or type(layout.fields)~='table' then
-  return fail('Stockpile settings layout changed'),0
+ if not integer(layout.raw_revision) or layout.raw_revision<=0 then return fail('Stockpile settings layout changed'),0 end
+ if type(summary.states)~='table' or #summary.states~=109 or type(summary.categories)~='table' or #summary.categories~=17 or
+    type(summary.plant_cheese)~='boolean' or type(summary.animal_powder)~='boolean' then return fail(''),0 end
+ for _,values in ipairs{summary.states,summary.categories}do
+  for _,value in ipairs(values)do if not integer(value) or value<0 or value>2 then return fail(''),0 end end
  end
- -- Rebuild from native state in this safe-point call. Simulation-tick TTLs do
- -- not advance while paused and cannot make external native edits coherent.
- local expected=default(a,'expected_list_revision',0);local used=0
- local counts={};local total=#summary_groups
- for _,group in ipairs(summary_groups) do
-  used=used+1;local entry=layout.fields[group.field]
-  if not entry or not integer(entry.count) or entry.count<0 or entry.count>65536 then return fail('Stockpile settings layout changed'),used end
-  counts[group.field]=entry.count;total=total+entry.count
+ local category_index={};for i,key in ipairs(cats)do category_index[key]=i end
+ local native_state={[0]=1,[1]=3,[2]=2};local pages={}
+ local hash=hash_integer(hash_integer(hash_integer(hash_integer(0xcbf29ce484222325,r.epoch),b.id),area_revision),layout.raw_revision)
+ local used=0
+ for _,node in ipairs(summary_nodes)do
+  used=used+1
+  local visible=not(node.key=='food/cheese_plant' and not summary.plant_cheese or node.key=='food/powder_creature' and not summary.animal_powder)
+  if visible then
+   local state
+   if node.kind==1 then state=native_state[summary.categories[category_index[node.key]]]
+   elseif node.kind==2 then
+    local mode=native_setting_modes[node.key];if not mode then return fail(''),used end
+    state=native_state[summary.states[mode+1]]
+   else state=setting_state(b,{field=node.field,source='toggle'},0) end
+   local page=pages[node.parent] or {};pages[node.parent]=page
+   page[#page+1]={key=node.key,index=-1,label=node.label,kind=node.kind,state=state,estimated=false}
+   hash=hash_integer(hash,state)
+   for i=1,#node.key do hash=hash_integer(hash,node.key:byte(i))end
+   for i=1,#node.label do hash=hash_integer(hash,node.label:byte(i))end
+  end
+  hash=hash_integer(hash,visible and 1 or 0)
  end
- local flags={};for _,cat in ipairs(cats) do flags[cat]=b.settings.flags[cat] and true or false;used=used+1 end
- local job={summary=true,epoch=r.epoch,area_id=b.id,area_revision=area_revision,raw_revision=layout.raw_revision,
-  field_counts=counts,flags=flags,counts={},categories={},pages={},omissions={},node_states={},ids={},
-  phase=1,done=0,total=total,group_index=1,raw_index=0}
- while not job.complete and not job.error do step_summary(job);used=used+1 end
- if job.error then return fail(job.error),used end
- local out={ok=true,message=job.complete and 'Observed stockpile setting summaries' or 'Building stockpile setting summaries',
-  list_key=list_key,query=default(a,'query',''),build_phase=job.phase,build_done=job.done,build_total=job.total,
-  captured_tick=job.built_tick or -1,omitted=job.omissions[list_key] or 0,next_cursor=0,settings={}}
- if not job.complete then return out,used end
- if used==available then return fail('Area page exceeds remaining step budget'),used end
- used=used+1
- local rows=job.pages[list_key] or {};local receipt=hash_integer(job.revision,#rows)
- for i=1,#list_key do receipt=hash_integer(receipt,list_key:byte(i)) end
- receipt=receipt & 0x7fffffffffffffff;if receipt==0 then receipt=1 end
- if expected~=0 and expected~=receipt then return fail('List changed; refresh'),used end
- out.list_revision=receipt
- if cursor<#rows and used==available then return fail('Area page exceeds remaining step budget'),used end
+ for i=1,#list_key do hash=hash_integer(hash,list_key:byte(i))end
+ local revision=hash & 0x7fffffffffffffff;if revision==0 then revision=1 end
+ if default(a,'expected_list_revision',0)~=0 and a.expected_list_revision~=revision then return fail('List changed; refresh'),used end
+ local rows=pages[list_key] or {}
+ local out={ok=true,message='',list_key=list_key,query=default(a,'query',''),list_revision=revision,
+  build_phase=0,build_done=#summary_nodes,build_total=#summary_nodes,captured_tick=tick(),omitted=0,next_cursor=0,settings={}}
  for index=cursor+1,#rows do
-  if #out.settings==128 or used==available then out.next_cursor=index-1;break end
+  if #out.settings==128 or used>=available then out.next_cursor=index-1;break end
   out.settings[#out.settings+1]=rows[index];used=used+1
  end
- out.truncated=out.next_cursor~=0
- return out,used
+ out.truncated=out.next_cursor~=0;return out,used
 end
 local function native_settings_page(r,a,b,area_revision,layout,rows)
  local key=a.list_key;local d=setting_leaves[key];local cursor=default(a,'cursor',0)
@@ -1004,48 +905,6 @@ local function native_settings_page(r,a,b,area_revision,layout,rows)
  end
  if cursor+128<#visible then out.next_cursor=cursor+128 end
  out.truncated=out.next_cursor~=0;return out
-end
-local function settings_page(r,a,b,area_revision,layout,available)
- local list_key=default(a,'list_key','');local d=setting_leaves[list_key]
- if not d then return summary_page(r,a,b,area_revision,layout,available) end
- local cursor=default(a,'cursor',0)
- if not integer(cursor) or cursor<0 or cursor>2147483647 then return fail('invalid area cursor'),0 end
- local field=layout.fields and layout.fields[d.field]
- if not field or not integer(field.count) or field.count<0 then return fail('Stockpile settings layout changed'),0 end
- if field.count>65536 then return fail('List exceeds 65,536 entries'),0 end
- local query=default(a,'query',''):lower()
- local key=table.concat({1,b.id,area_revision,list_key,field.count,#query,query},':')
- local job=area_lists[key];local expected=default(a,'expected_list_revision',0)
- if not job then
-  if expected~=0 then return fail('List changed; refresh'),0 end
-  local count=0;local oldest_key,oldest
-  for k,value in pairs(area_lists) do count=count+1;if not oldest or value.used<oldest then oldest_key=k;oldest=value.used end end
-  if count==8 then area_lists[oldest_key]=nil end
-  list_serial=list_serial+1
-  job={settings=true,builder_kind=5,epoch=r.epoch,area_id=b.id,list_key=list_key,
-   source_total=field.count,query=query,rows={},ids={},omitted=0,index=0,phase=1,done=0,total=field.count+#(embedded_settings[list_key] or {}),
-   ticket=list_serial,used=list_serial}
-  area_lists[key]=job
- end
- list_serial=list_serial+1;job.used=list_serial
- if job.error then area_lists[key]=nil;return fail(job.error),0 end
- local out={ok=true,message=job.complete and 'Observed stockpile setting items' or 'Building stockpile setting items',
-  list_key=list_key,query=default(a,'query',''),build_phase=job.phase,build_done=job.done,build_total=job.total,
-  captured_tick=job.built_tick or -1,omitted=job.omitted,next_cursor=0,settings={}}
- if not job.complete then return out,0 end
- if expected~=0 and expected~=job.revision then return fail('List changed; refresh'),0 end
- out.list_revision=job.revision
- if cursor<#job.rows and available==0 then return fail('Area page exceeds remaining step budget'),0 end
- local used=0
- for index=cursor+1,#job.rows do
-  if used==128 or used==available then out.next_cursor=index-1;break end
-  local cached=job.rows[index]
-  out.settings[#out.settings+1]={key=cached.key,index=cached.index,label=cached.label,kind=4,
-   state=setting_state(b,cached.descriptor or d,cached.index),estimated=false}
-  used=used+1
- end
- out.truncated=out.next_cursor~=0
- return out,used
 end
 local function candidate_page(r,a,b,area_revision,available)
  local legacy=default(a,'operation',0)==0
@@ -1461,7 +1320,12 @@ local function native_operation(r)
   end
   if op==1 then
    if native_rows then return finish(native_settings_page(r,a,b,before.revision,layout,native_rows)) end
-   local page,used=settings_page(r,a,b,before.revision,layout,budget-steps)
+   local selected=0;local key=default(a,'list_key','')
+   if not setting_pages[key] then return reject('Unknown stockpile settings list') end
+   for i,cat in ipairs(cats)do if key==cat then selected=1 << (i-1);break end end
+   local summary,why=invoke(r.settings_summary,0,b,selected)
+   if not summary then return reject(why) end
+   local page,used=summary_page(r,a,b,before.revision,layout,budget-steps,summary)
    steps=steps+used;return finish(page)
   end
   if op==2 then

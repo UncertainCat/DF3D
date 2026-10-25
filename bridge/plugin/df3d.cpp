@@ -1554,12 +1554,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
         if(parameters[0]=="stockpile-summary-read") {
-          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
           int32_t id{};const auto& raw=parameters[1];
           const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          uint32_t categories=0x1ffff;
+          if(parameters.size()==3) {
+            const auto& mask=parameters[2];
+            const auto value=std::from_chars(mask.data(),mask.data()+mask.size(),categories);
+            if(value.ec!=std::errc{} || value.ptr!=mask.data()+mask.size())return CR_WRONG_USAGE;
+          }
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          return df3d_management::printStockpileSummaries(out,id)?CR_OK:CR_FAILURE;
+          return df3d_management::printStockpileSummaries(out,id,categories)?CR_OK:CR_FAILURE;
         }
         if(parameters[0]=="stockpile-rows-read") {
           if(parameters.size()<3 || parameters.size()>4)return CR_WRONG_USAGE;
@@ -2188,7 +2194,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d stockpile-category-read <building-id> <category-bit> (read-only native activation)\n"
         "df3d stockpile-header-read <building-id> <category-bit-or-0-global> <1-none-or-2-all> (read-only native header action)\n"
         "df3d stockpile-wood-read <building-id> [filter] (read-only native Wood rows)\n"
-        "df3d stockpile-summary-read <building-id> (read-only native sublist indicators)\n"
+        "df3d stockpile-summary-read <building-id> [category-mask] (read-only native summary indicators)\n"
         "df3d stockpile-rows-read <building-id> <native-mode> [filter] (read-only verified list modes)\n"
         "df3d door-support-read <x> <y> <z> (read-only wall support, not full placement)\n"
         "df3d bed-choices-read <item-id> <descriptor-color-count> (owned-state appearance diagnostic)\n"

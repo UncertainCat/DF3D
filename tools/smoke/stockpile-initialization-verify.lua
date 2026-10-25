@@ -3,6 +3,49 @@ local out,index=...
 local json=require('json')
 local f=assert(io.open(out..'/request-'..index..'.json','r'))
 local request=json.decode(f:read('*a'));f:close()
+if request.op=='summary_before' or request.op=='summary_rows'then
+ assert(df.global.pause_state)
+ local b=assert(df.building.find(request.id));assert(df.building_stockpilest:is_instance(b))
+ local function snapshot(v)
+  if type(v)~='userdata'then return tostring(v)end
+  local parts={};for k,x in pairs(v)do if type(x)~='function' and tostring(k):sub(1,1)~='_'then parts[#parts+1]=tostring(k)..'='..snapshot(x)end end
+  table.sort(parts);return '{'..table.concat(parts,';')..'}'
+ end
+ if request.op=='summary_before'then _G.df3d_summary_before=snapshot(b.settings)
+ else
+  assert(_G.df3d_summary_before==snapshot(b.settings),'summary read changed settings');_G.df3d_summary_before=nil
+  local categories={'animals','food','furniture','corpses','refuse','stone','ammo','coins','bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
+  local indexes={};local mask=b.settings.flags.whole & 0x1ffff
+  for i,key in ipairs(categories)do indexes[key]=i;if key==request.list_key then mask=mask | (1 << (i-1))end end
+  local text,code=dfhack.run_command_silent('df3d','stockpile-summary-read',tostring(b.id),tostring(mask));assert(code==0,text)
+  local expected=json.decode(text);local state={[0]=1,[1]=3,[2]=2}
+  local modes={['food/meat']=2,['food/fish']=3,['food/unprepared_fish']=4,['food/egg']=5,['food/plants']=6,['food/drink_plant']=7,['food/drink_animal']=8,['food/cheese_plant']=9,['food/cheese_animal']=10,['food/seeds']=11,['food/leaves']=12,['food/powder_plant']=13,['food/powder_creature']=14,['food/glob']=15,['food/glob_paste']=16,['food/glob_pressed']=17,['food/liquid_plant']=18,['food/liquid_animal']=19,['food/liquid_misc']=20,['leather/type']=73,['cloth/thread_silk']=76,['cloth/thread_plant']=77,['cloth/thread_yarn']=78,['cloth/thread_metal']=79,['cloth/cloth_silk']=80,['cloth/cloth_plant']=81,['cloth/cloth_yarn']=82,['cloth/cloth_metal']=83,['sheet/paper']=107,['sheet/parchment']=108,['stone/metal_ores']=40,['stone/economic']=41,['stone/other_stone']=42,['stone/clay']=43,['gems/rough_glass']=58,['gems/cut_glass']=59,['gems/rough_gem']=60,['gems/cut_gem']=61,['gems/cut_stone']=62,['furniture/stone']=23,['furniture/metal']=24,['ammo/metal']=47,['coins']=50,['bars_blocks/bars_metal']=52,['bars_blocks/blocks_stone']=54,['bars_blocks/blocks_metal']=55,['finished_goods/stone']=65,['finished_goods/metal']=66,['finished_goods/gem']=67,['weapons/metal']=89,['weapons/stone']=90,['armor/metal']=101,['furniture/type']=22,['refuse/type']=30,['finished_goods/type']=64,['wood']=85,['animals/animals']=0,['corpses']=28,['refuse/corpses']=31,['refuse/body_parts']=32,['refuse/skulls']=33,['refuse/bones']=34,['refuse/shells']=35,['refuse/teeth']=36,['refuse/horns']=37,['refuse/hair']=38,['furniture/quality_core']=26,['furniture/quality_total']=27,['ammo/quality_core']=48,['ammo/quality_total']=49,['finished_goods/quality_core']=69,['finished_goods/quality_total']=70,['weapons/quality_core']=92,['weapons/quality_total']=93,['armor/quality_core']=103,['armor/quality_total']=104,['furniture/other_materials']=25,['ammo/other_materials']=46,['bars_blocks/bars_other']=53,['bars_blocks/blocks_other']=56,['finished_goods/other_materials']=68,['weapons/other_materials']=91,['armor/other_materials']=102,['ammo/type']=45,['weapons/weapons']=87,['weapons/trap_components']=88,['armor/body']=95,['armor/head']=96,['armor/feet']=97,['armor/hands']=98,['armor/legs']=99,['armor/shield']=100,['finished_goods/color']=71,['leather/color']=74,['cloth/color']=84,['armor/color']=105}
+  local seen={}
+  for _,row in ipairs(request.rows)do
+   assert(not seen[row.key],'duplicate summary key');seen[row.key]=true
+   local value
+   if row.kind==1 then value=state[expected.categories[assert(indexes[row.key])]]
+   elseif row.kind==2 then value=state[expected.states[assert(modes[row.key])+1]]
+   else
+    local cat,field=row.key:match('^([^/]+)/(.+)$')
+    if not cat then cat='misc';field=row.key=='organic' and 'allow_organic' or 'allow_inorganic'end
+    value=b.settings[cat][field] and 2 or 1
+   end
+   assert(row.state==value and not row.estimated,'native summary differs '..row.key)
+  end
+  if request.list_key==''then
+   assert(#request.rows==19,'root summary count')
+   for _,key in ipairs(categories)do assert(seen[key],'missing root category')end
+   assert(seen.organic and seen.inorganic,'missing allowances')
+  elseif request.list_key=='food'then
+   assert((seen['food/cheese_plant'] or false)==(#b.settings.food.cheese_plant>0),'plant cheese visibility')
+   assert((seen['food/powder_creature'] or false)==(#b.settings.food.powder_creature>0),'animal powder visibility')
+   assert(#request.rows==18+(seen['food/cheese_plant'] and 1 or 0)+(seen['food/powder_creature'] and 1 or 0),'Food summary count')
+  end
+ end
+ local response=assert(io.open(out..'/response-'..index..'.json','w'));response:write(json.encode{status='passed'});response:close()
+ print('SEMANTIC_PASS '..request.op);return
+end
 if request.op:match('^quality_') or request.op:match('^filter_') then
  assert(df.global.pause_state,'quality observation requires pause')
  local b=assert(df.building.find(request.id))

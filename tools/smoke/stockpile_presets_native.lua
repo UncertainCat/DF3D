@@ -369,12 +369,12 @@ require('gui.script').start(function()
    {'Food','food','plants',6,'Plants',4},
    {'Food','food','drink_plant',7,'Drink (plant)',5},
    {'Food','food','drink_animal',8,'Drink (animal)',6},
-   {'Food','food','cheese_plant',9,'cheese/plant',7},
+   {'Food','food','cheese_plant',9,'Cheese (plant)',7},
    {'Food','food','cheese_animal',10,'Cheese (animal)',8},
    {'Food','food','seeds',11,'Seeds',9},
    {'Food','food','leaves',12,'Fruit/leaves',10},
    {'Food','food','powder_plant',13,'Milled plant',11},
-   {'Food','food','powder_creature',14,'powder/animal',12},
+   {'Food','food','powder_creature',14,'Bone meal',12},
    {'Food','food','glob',15,'Fat',13},
    {'Food','food','glob_paste',16,'Paste',33},
    {'Food','food','glob_pressed',17,'Pressed material',34},
@@ -695,7 +695,7 @@ require('gui.script').start(function()
   -- Compare owned summary states with the actual native 4x3 status artwork.
   -- Template addresses are renderer inputs observed at380958/61/6a; they are
   -- oracle-only and never runtime inputs to the provider.
-  local summary_labels={[2]='Meat',[3]='Fish',[4]='Unprepared fish',[5]='Egg',[6]='Plants',[7]='Drink (plant)',[8]='Drink (animal)',[9]='cheese/plant',[10]='Cheese (animal)',[11]='Seeds',[12]='Fruit/leaves',[13]='Milled plant',[14]='powder/animal',[15]='Fat',[16]='Paste',[17]='Pressed material',[18]='Extract (plant)',[19]='Extract (animal)',[20]='Misc. liquid',[22]='Type',[23]='Stone/clay',[24]='Metal',[25]='Other materials',[26]='Core quality',[27]='Total quality',[30]='Item types',[31]='Corpses',[32]='Body parts',[33]='Skulls',[34]='Bones',[35]='Shells',[36]='Teeth',[37]='Horns/hooves',[38]='Hair/wool',[40]='Metal ores',[41]='Economic',[42]='Other stone',[43]='Clay',[45]='Type',[46]='Other materials',[47]='Metal',[48]='Core quality',[49]='Total quality',[52]='Bars: metal',[53]='Bars: other materials',[54]='Blocks: stone/clay',[55]='Blocks: metal',[56]='Blocks: other materials',[58]='Rough glass',[59]='Cut glass',[60]='Rough gem',[61]='Cut gem',[62]='Cut stone',[64]='Type',[65]='Stone/clay',[66]='Metal',[67]='Gem',[68]='Other materials',[69]='Core quality',[70]='Total quality',[71]='Color',[73]='Type',[74]='Color',[76]='Thread (silk)',[77]='Thread (plant)',[78]='Thread (yarn)',[79]='Thread (metal)',[80]='Cloth (silk)',[81]='Cloth (plant)',[82]='Cloth (yarn)',[83]='Cloth (metal)',[84]='Color',[87]='Weapons',[88]='Trap components',[89]='Metal',[90]='Stone',[91]='Other materials',[92]='Core quality',[93]='Total quality',[95]='Body',[96]='Head',[97]='Feet',[98]='Hands',[99]='Legs',[100]='Shield',[101]='Metal',[102]='Other materials',[103]='Core quality',[104]='Total quality',[105]='Color',[107]='Paper',[108]='Parchment'}
+  local summary_labels={[2]='Meat',[3]='Fish',[4]='Unprepared fish',[5]='Egg',[6]='Plants',[7]='Drink (plant)',[8]='Drink (animal)',[9]='Cheese (plant)',[10]='Cheese (animal)',[11]='Seeds',[12]='Fruit/leaves',[13]='Milled plant',[14]='Bone meal',[15]='Fat',[16]='Paste',[17]='Pressed material',[18]='Extract (plant)',[19]='Extract (animal)',[20]='Misc. liquid',[22]='Type',[23]='Stone/clay',[24]='Metal',[25]='Other materials',[26]='Core quality',[27]='Total quality',[30]='Item types',[31]='Corpses',[32]='Body parts',[33]='Skulls',[34]='Bones',[35]='Shells',[36]='Teeth',[37]='Horns/hooves',[38]='Hair/wool',[40]='Metal ores',[41]='Economic',[42]='Other stone',[43]='Clay',[45]='Type',[46]='Other materials',[47]='Metal',[48]='Core quality',[49]='Total quality',[52]='Bars: metal',[53]='Bars: other materials',[54]='Blocks: stone/clay',[55]='Blocks: metal',[56]='Blocks: other materials',[58]='Rough glass',[59]='Cut glass',[60]='Rough gem',[61]='Cut gem',[62]='Cut stone',[64]='Type',[65]='Stone/clay',[66]='Metal',[67]='Gem',[68]='Other materials',[69]='Core quality',[70]='Total quality',[71]='Color',[73]='Type',[74]='Color',[76]='Thread (silk)',[77]='Thread (plant)',[78]='Thread (yarn)',[79]='Thread (metal)',[80]='Cloth (silk)',[81]='Cloth (plant)',[82]='Cloth (yarn)',[83]='Cloth (metal)',[84]='Color',[87]='Weapons',[88]='Trap components',[89]='Metal',[90]='Stone',[91]='Other materials',[92]='Core quality',[93]='Total quality',[95]='Body',[96]='Head',[97]='Feet',[98]='Hands',[99]='Legs',[100]='Shield',[101]='Metal',[102]='Other materials',[103]='Core quality',[104]='Total quality',[105]='Color',[107]='Paper',[108]='Parchment'}
   local templates={}
   for state,rva in pairs{[0]=0x2651128,[1]=0x26510f8,[2]=0x26510c8}do
    templates[state]={};for i=0,11 do
@@ -725,14 +725,22 @@ require('gui.script').start(function()
    b.settings.flags[key]=false;c.scroll_position_main=0;c.spec_filter='';c.entering_spec_filter=false
    view:render(dfhack.getTickCount());label_click(category_labels[bit])
   end
-  for _,field in ipairs{'rough_other_mats','cut_other_mats'}do
-   local values=b.settings.gems[field];local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
+  for _,entry in ipairs{{'gems','rough_other_mats'},{'gems','cut_other_mats'},{'refuse','type'},{'finished_goods','type'}}do
+   local category,field=entry[1],entry[2]
+   local values=b.settings[category][field];local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
    values:resize(0)
    local before=settings_snapshot(b.settings)
    local _,code=dfhack.run_command_silent('df3d','stockpile-summary-read',tostring(b.id))
-   assert(code~=0 and settings_snapshot(b.settings)==before,'short glass summary not rejected unchanged')
+   assert(code~=0 and settings_snapshot(b.settings)==before,'short fixed-index summary not rejected unchanged')
+   for _,mask in ipairs{0,8192}do
+    local selected,selected_code=dfhack.run_command_silent('df3d','stockpile-summary-read',tostring(b.id),tostring(mask))
+    assert(selected_code==0 and settings_snapshot(b.settings)==before,'unrequested short vector blocked selective summary')
+    local result=json.decode(selected)
+    for mode,state in ipairs(result.states)do if mask==0 or mode~=86 then assert(state==0,'unrequested native mode was evaluated')end end
+    records[#records+1]={probe='summary_selective',field=category..'.'..field,stored_count=0,mask=mask}
+   end
    values:resize(#saved);for i,v in ipairs(saved)do values[i-1]=v end
-   records[#records+1]={probe='summary_rejection',field='gems.'..field,stored_count=0}
+   records[#records+1]={probe='summary_rejection',field=category..'.'..field,stored_count=0}
   end
   for bit,key in ipairs(categories)do
    b.settings.flags[key]=false
@@ -751,8 +759,13 @@ require('gui.script').start(function()
      end
     end
    end
-   for _,variant in ipairs{0,1,2}do
-    fill(variant)
+   for _,variant in ipairs{0,1,2,3,4}do
+    fill(variant==3 and 1 or variant==4 and 0 or variant)
+    if variant>=3 then
+     for field,value in pairs(b.settings[key])do
+      if type(value)=='boolean'then b.settings[key][field]=variant==4 end
+     end
+    end
     local before=settings_snapshot(b.settings)
     local size,address=df.sizeof(df.global.game.main_interface)
     local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
@@ -760,7 +773,7 @@ require('gui.script').start(function()
     assert(code==0,'summary service refused '..key..': '..text)
     assert(dfhack.internal.memcmp(guard,address,size)==0,'summary probe changed UI');df.delete(guard)
     assert(settings_snapshot(b.settings)==before,'summary probe changed settings')
-    local states=json.decode(text);assert(#states==109,'summary mode count')
+    local summary=json.decode(text);local states=summary.states;assert(#states==109 and #summary.categories==17,'summary mode count')
     view:render(dfhack.getTickCount())
     local root_y
     for row=9,g.dimy-1 do
@@ -769,6 +782,7 @@ require('gui.script').start(function()
     end
     assert(root_y,'root summary label absent '..key)
     local root_state=screen_state(root_y,0,35)
+    assert(root_state==summary.categories[bit],'root aggregation differs '..key..' variant '..variant)
     if key=='corpses' or key=='coins' or key=='wood'then
      assert(root_state==states[modes[bit]+1],'direct root summary differs '..key)
     end
@@ -789,6 +803,21 @@ require('gui.script').start(function()
     end
     records[#records+1]={probe='summary_render',category=key,variant=variant,root_state=root_state,states=states,compared=compared}
    end
+  end
+  -- These optional native columns are normally absent on this save. Give
+  -- their stored vectors one entry, then rebuild through native selection;
+  -- no raw/material table or product caption is supplied to the native UI.
+  b.settings.food.cheese_plant:resize(1);b.settings.food.cheese_plant[0]=1
+  b.settings.food.powder_creature:resize(1);b.settings.food.powder_creature[0]=1
+  c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Food')
+  for _,entry in ipairs{{9,'Cheese (plant)'},{14,'Bone meal'}}do
+   local ordinal
+   for i,mode in ipairs(c.sub_mode)do if mode==entry[1]then ordinal=i end end
+   assert(ordinal,'optional native Food column missing')
+   c.scroll_position_sub=math.max(0,ordinal-5);view:render(dfhack.getTickCount())
+   local pointer=label_click(entry[2],0,2)
+   assert(c.cur_sub_mode==entry[1],'optional native Food label selected wrong mode')
+   records[#records+1]={probe='optional_food_caption',mode=entry[1],label=entry[2],stored_count=1,pointer=pointer}
   end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)

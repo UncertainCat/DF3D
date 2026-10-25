@@ -919,6 +919,30 @@ std::optional<std::vector<df3d_area::NativeStockpileRow>> ownedStockpileRows(
     ranges.push_back({entry.key,entry.values,entry.count});
   return df3d_area::nativeStockpileRows(scratch->settings,mode,filter,ranges);
 }
+int areaSettingsSummary(lua_State* L) {
+  bool attempted=false;
+  const auto fail=[&]() {
+    lua_newtable(L);field(L,"ok",false);field(L,"message","");field(L,"steps",0);
+    field(L,"work_unknown",attempted);return 1;
+  };
+  auto* pile=Lua::GetDFObject<df::building_stockpilest>(L,1);
+  if(!pile || !lua_isinteger(L,2) || !lua_isnil(L,3) || !areaPresetInventoryFits(pile))return fail();
+  const auto selected=lua_tointeger(L,2);if(selected<0 || selected>0x1ffff)return fail();
+  try {
+    attempted=true;
+    const auto result=df3d_area::nativeStockpileSummaries(pile->settings,
+        (pile->settings.flags.whole&0x1ffff)|uint32_t(selected));
+    if(!result)return fail();
+    lua_newtable(L);field(L,"ok",true);field(L,"steps",0);field(L,"work_unknown",true);
+    lua_createtable(L,109,0);int index=0;
+    for(const auto state:result->states){lua_pushinteger(L,state);lua_rawseti(L,-2,++index);}
+    lua_setfield(L,-2,"states");lua_createtable(L,17,0);index=0;
+    for(const auto state:result->categories){lua_pushinteger(L,state);lua_rawseti(L,-2,++index);}
+    lua_setfield(L,-2,"categories");
+    field(L,"plant_cheese",!pile->settings.food.cheese_plant.empty());
+    field(L,"animal_powder",!pile->settings.food.powder_creature.empty());return 1;
+  } catch(...) {return fail();}
+}
 int areaSettingsRows(lua_State* L) {
   bool attempted=false;
   const auto fail=[&]() {
@@ -2101,6 +2125,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSettingsPreset);lua_setfield(L,-2,"settings_preset");
     lua_pushcfunction(L,areaSettingsCategories);lua_setfield(L,-2,"settings_categories");
     lua_pushcfunction(L,areaSettingsRows);lua_setfield(L,-2,"settings_rows");
+    lua_pushcfunction(L,areaSettingsSummary);lua_setfield(L,-2,"settings_summary");
     lua_pushcfunction(L,areaSettingsHeader);lua_setfield(L,-2,"settings_header");
     lua_pushcfunction(L,areaLocationSet);lua_setfield(L,-2,"set_location");
     lua_pushcfunction(L,areaLocationCreate);lua_setfield(L,-2,"create_location");
@@ -2726,14 +2751,16 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
-bool printStockpileSummaries(color_ostream& out,int32_t id) {
+bool printStockpileSummaries(color_ostream& out,int32_t id,uint32_t categories) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !areaPresetInventoryFits(pile))return false;
   try {
-    const auto states=df3d_area::nativeStockpileSummaries(pile->settings);
+    const auto states=df3d_area::nativeStockpileSummaries(pile->settings,categories);
     if(!states)return false;
-    Json::Value result(Json::arrayValue);
-    for(const auto state:*states)result.append(int(state));
+    Json::Value result(Json::objectValue);
+    result["states"]=Json::Value(Json::arrayValue);result["categories"]=Json::Value(Json::arrayValue);
+    for(const auto state:states->states)result["states"].append(int(state));
+    for(const auto state:states->categories)result["categories"].append(int(state));
     out.print("{}",Json::FastWriter().write(result));return true;
   } catch(...) {return false;}
 }

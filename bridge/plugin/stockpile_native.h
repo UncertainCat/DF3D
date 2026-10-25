@@ -24,9 +24,14 @@ std::optional<df::stockpile_settings> nativeStockpileCategory(
 // and flags; global None also preserves misc allowances.
 std::optional<df::stockpile_settings> nativeStockpileHeader(
     const df::stockpile_settings& source,uint32_t category,bool enabled);
-// Native sublist indicators, indexed by stockpile_list. Parent modes return0.
-std::optional<std::array<uint8_t,109>> nativeStockpileSummaries(
-    const df::stockpile_settings& source);
+struct NativeStockpileSummaries {
+    std::array<uint8_t,109> states{}; // Indexed by stockpile_list; parent slots unused.
+    std::array<uint8_t,17> categories{}; // Wire category-bit order.
+};
+// Query only the requested category bits. Disabled root indicators stay none;
+// their unrequested storage is neither interpreted nor required to be populated.
+std::optional<NativeStockpileSummaries> nativeStockpileSummaries(
+    const df::stockpile_settings& source,uint32_t categories=0x1ffff);
 struct NativeStockpileRow {
     size_t index;
     std::string name;

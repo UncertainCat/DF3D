@@ -242,56 +242,101 @@ static bool nativeListCompatible(const uint8_t* base) {
         hash(base+0x70e20,0x117)==0x9aba69f846f6c10ULL &&
         hash(base+0x71830,0x88)==0x929730bf6bcaccccULL;
 }
-std::optional<std::array<uint8_t,109>> nativeStockpileSummaries(
-    const df::stockpile_settings& source) {
-    if(!df::global::world)return std::nullopt;
+std::optional<NativeStockpileSummaries> nativeStockpileSummaries(
+    const df::stockpile_settings& source,uint32_t categories) {
+    if(!df::global::world || categories>0x1ffff)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
     // DF's renderer calls55a6d0 for sublist state:0 none,1 mixed,2 all.
     // The entire dispatch table is fingerprinted with the routine. Its only
     // writes are local strings/stack; all material calls use inorganic type0.
     static const bool compatible=nativeListCompatible(base) &&
-        hash(base+0x55a6d0,0x387c)==0xe36f6ca1446a23bcULL &&
+        hash(base+0x55a6d0,0x3934)==0xe8325494fbb505ecULL &&
         hash(base+0x6b8af0,0x96)==0x8f67f7a1b9d42698ULL;
     if(!compatible)return std::nullopt;
+    auto owned=source;
+    if(!(categories&0x1))owned.animals={};
+    if(!(categories&0x2))owned.food={};
+    if(!(categories&0x4))owned.furniture={};
+    if(!(categories&0x8))owned.corpses={};
+    if(!(categories&0x10))owned.refuse={};
+    if(!(categories&0x20))owned.stone={};
+    if(!(categories&0x40))owned.ammo={};
+    if(!(categories&0x80))owned.coins={};
+    if(!(categories&0x100))owned.bars_blocks={};
+    if(!(categories&0x200))owned.gems={};
+    if(!(categories&0x400))owned.finished_goods={};
+    if(!(categories&0x800))owned.leather={};
+    if(!(categories&0x1000))owned.cloth={};
+    if(!(categories&0x2000))owned.wood={};
+    if(!(categories&0x4000))owned.weapons={};
+    if(!(categories&0x8000))owned.armor={};
+    if(!(categories&0x10000))owned.sheet={};
     const auto& raws=df::global::world->raws;
     // Native bounds checks permit stale vector tails, but referenced raw
     // pointers and Plants' parallel organic index array are unchecked.
-    const size_t creatures=(std::max)({source.animals.enabled.size(),source.corpses.corpses.size(),
-        source.refuse.corpses.size(),source.refuse.body_parts.size(),source.refuse.skulls.size(),
-        source.refuse.bones.size(),source.refuse.shells.size(),source.refuse.teeth.size(),
-        source.refuse.horns.size(),source.refuse.hair.size()});
+    const size_t creatures=(std::max)({owned.animals.enabled.size(),owned.corpses.corpses.size(),
+        owned.refuse.corpses.size(),owned.refuse.body_parts.size(),owned.refuse.skulls.size(),
+        owned.refuse.bones.size(),owned.refuse.shells.size(),owned.refuse.teeth.size(),
+        owned.refuse.horns.size(),owned.refuse.hair.size()});
     for(size_t i=0;i<creatures && i<raws.creatures.all.size() && i<32768;++i)
         if(!raws.creatures.all[i])return std::nullopt;
-    for(size_t i=0;i<source.wood.mats.size() && i<raws.plants.all.size();++i)
+    for(size_t i=0;i<owned.wood.mats.size() && i<raws.plants.all.size();++i)
         if(!raws.plants.all[i])return std::nullopt;
     const auto& types=raws.mat_table.organic_types[4];
     const auto& indexes=raws.mat_table.organic_indexes[4];
-    const auto count=(std::min)(source.food.plants.size(),types.size());
+    const auto count=(std::min)(owned.food.plants.size(),types.size());
     if(indexes.size()<count)return std::nullopt;
     for(size_t i=0;i<count;++i)if(types[i]>=419 && types[i]<=618 && indexes[i]>=0 &&
         size_t(indexes[i])<raws.plants.all.size() && !raws.plants.all[indexes[i]])return std::nullopt;
-    const size_t inorganic=(std::max)({source.furniture.mats.size(),source.stone.mats.size(),
-        source.ammo.mats.size(),source.coins.mats.size(),source.bars_blocks.bars_mats.size(),
-        source.bars_blocks.blocks_mats.size(),source.gems.rough_mats.size(),source.gems.cut_mats.size(),
-        source.finished_goods.mats.size(),source.weapons.mats.size(),source.armor.mats.size()});
+    const size_t inorganic=(std::max)({owned.furniture.mats.size(),owned.stone.mats.size(),
+        owned.ammo.mats.size(),owned.coins.mats.size(),owned.bars_blocks.bars_mats.size(),
+        owned.bars_blocks.blocks_mats.size(),owned.gems.rough_mats.size(),owned.gems.cut_mats.size(),
+        owned.finished_goods.mats.size(),owned.weapons.mats.size(),owned.armor.mats.size()});
     for(size_t i=0;i<inorganic && i<raws.inorganics.all.size();++i) {
         const auto* raw=raws.inorganics.all[i];if(!raw)return std::nullopt;
-        if(i<source.stone.mats.size())for(const auto* id:raw->material.reaction_product.id)
+        if(i<owned.stone.mats.size())for(const auto* id:raw->material.reaction_product.id)
             if(!id)return std::nullopt;
     }
     // Native glass summary reads fixed slots3..5 without checking length.
     // A missing slot has no defined native summary; reject instead of reading
     // past storage or inventing a selected state. Ordinary vector tails remain.
-    if(source.gems.rough_other_mats.size()<6 || source.gems.cut_other_mats.size()<6)
+    if((categories&0x200) && (owned.gems.rough_other_mats.size()<6 || owned.gems.cut_other_mats.size()<6))
         return std::nullopt;
-    auto owned=source;
-    std::array<uint8_t,109> result{};
+    // The enum dispatches also read fixed slots without checking vector size:
+    // Refuse's highest selected index is92; Finished goods' is89.
+    if((categories&0x10) && owned.refuse.type.size()<93)return std::nullopt;
+    if((categories&0x400) && owned.finished_goods.type.size()<90)return std::nullopt;
+    NativeStockpileSummaries result;
     using Summarize=uint8_t (*)(df::stockpile_settings*,int32_t);
     const auto summarize=reinterpret_cast<Summarize>(base+0x55a6d0);
-    for(int32_t mode=0;mode<109;++mode) {
-        result[mode]=summarize(&owned,mode);
-        if(result[mode]>2)return std::nullopt;
+    static constexpr int first[]={0,2,22,28,30,40,45,50,52,58,64,73,76,85,87,95,107};
+    static constexpr int last[] ={0,20,27,28,38,43,49,50,56,62,71,74,84,85,93,105,108};
+    for(size_t category=0;category<17;++category) {
+        const uint32_t bit=1u<<category;if(!(categories&bit))continue;
+        bool on=false,off=false;
+        const auto include=[&](uint8_t state) {on|=state!=0;off|=state!=2;};
+        for(int mode=first[category];mode<=last[category];++mode) {
+            const auto state=summarize(&owned,mode);if(state>2)return std::nullopt;
+            result.states[mode]=state;
+            // Native renderer37ebc6/37ec92 omits these two empty Food vectors
+            // from the category aggregate; other empty lists contribute none.
+            if(mode==9 && owned.food.cheese_plant.empty())continue;
+            if(mode==14 && owned.food.powder_creature.empty())continue;
+            include(state);
+        }
+        // Renderer37e9de..37facd combines these scalar controls with the native
+        // sublist states. Dyed/undyed controls do not participate in root state.
+        const auto scalar=[&](bool value) {include(value?2:0);};
+        switch(category) {
+          case 0:scalar(owned.animals.empty_cages);scalar(owned.animals.empty_traps);break;
+          case 1:scalar(owned.food.prepared_meals);break;
+          case 4:scalar(owned.refuse.fresh_raw_hide);scalar(owned.refuse.rotten_raw_hide);break;
+          case 14:scalar(owned.weapons.usable);scalar(owned.weapons.unusable);break;
+          case 15:scalar(owned.armor.usable);scalar(owned.armor.unusable);break;
+          default:break;
+        }
+        result.categories[category]=(source.flags.whole&bit) && on ? (off?1:2) : 0;
     }
     return result;
 }

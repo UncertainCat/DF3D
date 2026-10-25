@@ -2,6 +2,7 @@
 param(
  [Parameter(Mandatory=$true)][string]$CloneEvidence,
  [string]$FilterModes='',
+ [switch]$SummariesOnly,
  [string]$DfPath='C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'
 )
 $ErrorActionPreference='Stop'
@@ -21,6 +22,9 @@ New-Item -ItemType Directory -Path $out | Out-Null
 if($FilterModes) {
  if($FilterModes -notmatch '^\d+(,\d+)*$'){throw 'FilterModes must be comma-separated native mode numbers'}
  @{filter_modes=@($FilterModes.Split(',') | ForEach-Object {[int]$_});scope='focused native filter commands'} | ConvertTo-Json | Set-Content "$out/filter-scope.json"
+}
+if($SummariesOnly) {
+ @{summary_only=$true;filter_modes=@();scope='focused native summary commands'} | ConvertTo-Json | Set-Content "$out/filter-scope.json"
 }
 $entered=$false;$summary='failed';$g=$null
 $oldInput=$env:DF3D_AREAS_ACCEPTANCE

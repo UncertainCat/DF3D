@@ -10,6 +10,9 @@ func exercise() -> void:
 	if not check(fixture.has("origin"), "missing free stockpile footprint"): return
 	if FileAccess.file_exists(directory + "/filter-scope.json"):
 		var scope: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(directory + "/filter-scope.json"))
+		if scope.get("summary_only",false):
+			await focused_summaries()
+			return
 		for mode in scope.filter_modes: filter_modes.append(int(mode))
 		await focused_filters()
 		return
@@ -204,3 +207,44 @@ func native_filter_lists(pile: int) -> void:
 	if not filter_modes.is_empty():
 		for mode in filter_modes:
 			if not check(mode in exercised,"requested native mode was not exercised"): return
+
+func summary_read(pile: int,key: String = "") -> Dictionary:
+	await native("summary_before",{"id":pile})
+	var page := await pages({"action":9,"id":pile,"operation":1,"list_key":key},"settings")
+	if stopped: return {}
+	await native("summary_rows",{"id":pile,"list_key":key,"rows":page.settings})
+	return page
+
+func focused_summaries() -> void:
+	var p: Dictionary = fixture.origin
+	var created := await request({"action":10,"operation":0,
+		"origin":Vector3i(int(p.x),int(p.y),int(p.z)),"width":2,"height":1,"categories":0})
+	if stopped: return
+	var pile: int = created.areas[0].id
+	await native("stockpile_initialization",{"id":pile,"categories":0})
+	step = "empty native summaries"
+	await summary_read(pile)
+	var categories := ["animals","food","furniture","corpses","refuse","stone","ammo","coins",
+		"bars_blocks","gems","finished_goods","leather","cloth","wood","weapons","armor","sheet"]
+	for bit in range(categories.size()):
+		step = "activate summary " + categories[bit]
+		await edit(pile,0,{"changed_categories":1 << bit,"categories":1 << bit})
+		await summary_read(pile)
+		if not categories[bit] in ["corpses","coins","wood"]: await summary_read(pile,categories[bit])
+		if stopped: return
+	for value in [2,1,2]:
+		step = "native summary header " + str(value)
+		await edit(pile,0,{"operation":2,"scope":4,"value":value})
+		await summary_read(pile)
+		for category in categories:
+			if not category in ["corpses","coins","wood"]: await summary_read(pile,category)
+			if stopped: return
+	var observed := await summary_read(pile)
+	await edit(pile,0,{"operation":2,"scope":2,"value":1,"list_key":"wood"})
+	await request({"action":9,"id":pile,"operation":1,"expected_list_revision":observed.list_revision},"List changed; refresh")
+	await summary_read(pile)
+	var current := await request({"action":9,"id":pile})
+	if stopped: return
+	await request({"action":12,"id":pile,"expected_revision":current.areas[0].revision})
+	await native("removed",{"id":pile})
+	await native("final")

@@ -165,6 +165,7 @@ def main():
      r.settings_preset=settings_preset
      r.settings_categories=settings_categories
      r.settings_rows=settings_rows
+     r.settings_summary=settings_summary
      r.settings_header=settings_header
      r.set_location=set_location
      r.create_location=create_location
@@ -336,7 +337,7 @@ def main():
         assert result["steps"] == (171 if operation == 2 else 121)
         lua.execute("settings_raw_count=65536")
         result = raw_call(action, values)
-        assert result["message"] == ("" if operation == 2 else "Stockpile settings layout changed")
+        assert result["message"] == ("" if operation == 2 else "Native area helper unavailable")
         assert result["steps"] == (171 if operation == 2 else 121)
         before_calls = lua.globals().settings_layout_calls
         result = raw_call(action, {**values, "expected_revision": 1})
@@ -346,7 +347,7 @@ def main():
         request["step_budget"] = 120
         result = adapter(request)
         if operation == 1:
-            assert result["message"] == "Stockpile settings layout changed" and result["steps"] == 121
+            assert result["message"] == "Native area helper unavailable" and result["steps"] == 121
         else:
             assert result["message"] == "" and result["steps"] == 171
     lua.execute("settings_raw_count=0")
@@ -1539,6 +1540,29 @@ def main():
       'CreatureLiquid','MiscLiquid','Silk','PlantFiber','Yarn','MetalThread','Leather','Paper','Parchment'} do
       df.organic_mat_category[name]=index;raws.mat_table.organic_types[index]={};raws.mat_table.organic_indexes[index]={}
     end
+    summary_overrides={}
+    function settings_summary(b,selected,budget)
+     assert(budget==nil);last_summary_selected=selected
+     if summary_force_failure then return {ok=false,message='',steps=0}end
+     local states,categories={},{}
+     for i=1,109 do states[i]=0 end;for i=1,17 do categories[i]=0 end
+     local function state(values,limit)
+      local on,off=false,false
+      for i=1,math.min(#values,limit or #values)do
+       if values[i]~=0 then on=true else off=true end
+      end
+      return on and (off and 1 or 2) or 0
+     end
+     -- Synthetic native responses test adapter mapping/receipts. Native
+     -- eligibility and category aggregation are covered by the rendered oracle.
+     states[86]=state(b.settings.wood.mats,2);states[3]=state(b.settings.food.meat)
+     categories[14]=b.settings.flags.wood and states[86] or 0
+     categories[2]=b.settings.flags.food and states[3]~=0 and 1 or 0
+     for mode,value in pairs(summary_overrides)do states[mode+1]=value end
+     if summary_bad_state then states[1]=3 end
+     return {ok=true,steps=0,work_unknown=true,states=states,categories=categories,
+      plant_cheese=#b.settings.food.cheese_plant>0,animal_powder=#b.settings.food.powder_creature>0}
+    end
     settings_fields={};settings_raw_count=0;fixture_raw_revision=300
     local sizes={['ammo.other_mats']=2,['armor.other_mats']=10,['weapons.other_mats']=10,
       ['bars_blocks.bars_other_mats']=5,['bars_blocks.blocks_other_mats']=4,
@@ -1591,7 +1615,7 @@ def main():
     assert initial["ok"] and initial["active_kinds"] == 0 and initial["build_phase"] == 0
     root, phases = summary_page()
     assert root["ok"] and phases == set() and len(root["settings"]) == 19
-    assert initial["steps"] > 244  # Includes the complete native summary scan.
+    assert initial["work_unknown"]  # Native summary work is synchronous and unmetered.
     assert [r["key"] for r in root["settings"].values()] == ["ammo", "animals", "armor", "bars_blocks", "cloth",
         "coins", "finished_goods", "food", "furniture", "gems", "leather", "corpses", "refuse", "sheet", "stone", "weapons", "wood", "organic", "inorganic"]
     root_rows = {r["key"]: r for r in root["settings"].values()}
@@ -1599,8 +1623,15 @@ def main():
     assert root_rows["armor"]["state"] == 1  # enabled flag with every leaf off
     assert root_rows["organic"]["state"] == 2 and not root_rows["organic"]["estimated"]
     assert all(not r["estimated"] and "DF3D estimate" not in r["label"] for r in root["settings"].values())
+    lua.execute("summary_force_failure=true")
+    assert not summary_page()[0]["ok"]
+    lua.execute("summary_force_failure=false;summary_bad_state=true")
+    assert not summary_page()[0]["ok"]
+    lua.execute("summary_bad_state=false")
     food, _ = summary_page("food", query="unmatched search")
-    assert [r["key"] for r in food["settings"].values()] == ["food/prepared_meals", "food/meat"]
+    assert len(food["settings"]) == 18
+    assert "food/cheese_plant" not in [r["key"] for r in food["settings"].values()]
+    assert "food/powder_creature" not in [r["key"] for r in food["settings"].values()]
     assert food["settings"][2]["state"] == 3 and food["settings"][1]["kind"] == 3
     assert food["query"] == "unmatched search" and food["captured_tick"] == root["captured_tick"]
     assert [r["label"] for r in summary_page("ammo")[0]["settings"].values()] == ["Type", "Metal", "Other materials", "Core quality", "Total quality"]
@@ -1624,7 +1655,7 @@ def main():
     lua.execute("fixture_raw_revision=301")
     assert not summary_page(expected_list_revision=disabled["list_revision"])[0]["ok"]
     assert summary_page("not-a-list")[0]["message"] == "Unknown stockpile settings list"
-    # PM-approved serializer names cover uncaptured middle-column captions.
+    # Optional Food captions come from the native renderer, not serializer field names.
     lua.execute(r"""
     local cat=df.organic_mat_category.PlantCheese
     df.global.world.raws.mat_table.organic_types[cat]={9};df.global.world.raws.mat_table.organic_indexes[cat]={9}
@@ -1632,21 +1663,21 @@ def main():
     """)
     missing_caption, _ = summary_page("food")
     assert missing_caption["ok"] and missing_caption["omitted"] == 0
-    assert {r["key"]: r["label"] for r in missing_caption["settings"].values()}["food/cheese_plant"] == "cheese/plant"
-    # A shared backing raw belongs to exactly its first matching partition.
+    assert {r["key"]: r["label"] for r in missing_caption["settings"].values()}["food/cheese_plant"] == "Cheese (plant)"
+    # The provider can include one backing raw in multiple native summaries.
     lua.execute(r"""
     df.global.world.raws.inorganics.all={{flags={},material={flags={IS_GEM=true,IS_METAL=true,IS_STONE=true}},
       metal_ore={mat_index={1}},economic_uses={1}}}
     for _,field in ipairs{'ammo.mats','armor.mats','bars_blocks.bars_mats','bars_blocks.blocks_mats','coins.mats',
       'finished_goods.mats','furniture.mats','gems.rough_mats','gems.cut_mats','stone.mats','weapons.mats'} do make_setting(field,1,{1}) end
-    fixture_raw_revision=303
+    fixture_raw_revision=303;summary_overrides={[65]=2,[66]=2,[67]=2}
     """)
     partitioned, _ = summary_page("finished_goods")
     states = {r["key"]: r["state"] for r in partitioned["settings"].values()}
-    assert states["finished_goods/gem"] == 2 and states["finished_goods/metal"] == 1 and states["finished_goods/stone"] == 1
-    # Inconsistent native layout fails; the next repaired read is independent.
+    assert states["finished_goods/gem"] == 2 and states["finished_goods/metal"] == 2 and states["finished_goods/stone"] == 2
+    # Native summaries no longer infer membership from the staged raw-count layout.
     lua.execute("fixture_raw_revision=304;settings_fields['ammo.mats'].count=2")
-    assert summary_page()[0]["message"] == "List changed; refresh"
+    assert summary_page()[0]["ok"]
     lua.execute("settings_fields['ammo.mats'].count=1")
     repaired, _ = summary_page()
     assert repaired["ok"]

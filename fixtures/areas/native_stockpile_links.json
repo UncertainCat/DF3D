@@ -1,0 +1,541 @@
+{
+  "source": "DF 53.16 Steam build 24557528",
+  "run": "build/stockpile-storage-native-links-20261025-123002",
+  "status": "passed",
+  "result_sha256": "4ec929d763436fc91f807c443feeff291cbb41405927d0a081893f52a8ded787",
+  "save_preservation": "Owned source unchanged",
+  "owned_df_closed_without_saving": true,
+  "scope": "Actual native pointer input: self-selection, Escape cancellation, give/take to stockpile and workshop, duplicate selection, reversal and reciprocal removal. Paused throughout. No production semantic acceptance.",
+  "behavior": {
+    "self_selection": "No mutation; picker stays open.",
+    "duplicate": "No mutation; picker stays open.",
+    "new_link": "Inserts reciprocal link, removes opposite direction at both endpoints, closes picker to list.",
+    "escape": "Cancels picker and retains link list.",
+    "removal": "Removes selected link and reciprocal endpoint.",
+    "ordering": "Observed workshop take row before stockpile take row; broader sorting unverified."
+  },
+  "observations": [
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "initial",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": false,
+      "ui_rva": 25838056
+    },
+    {
+      "adding": true,
+      "context": 0,
+      "direction": 1,
+      "name": "give-self",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 1,
+      "name": "escape",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": false,
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 1,
+      "name": "give-158-1",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [
+          158
+        ],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [
+          121
+        ],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": true,
+      "context": 0,
+      "direction": 1,
+      "name": "give-158-2",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [
+          158
+        ],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [
+          121
+        ],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "take-158-1",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [
+          121
+        ],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": true,
+      "context": 0,
+      "direction": 0,
+      "name": "take-158-2",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [
+          121
+        ],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 1,
+      "name": "give-3-1",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [
+          3
+        ],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [
+          121
+        ],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": true,
+      "context": 0,
+      "direction": 1,
+      "name": "give-3-2",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [
+          3
+        ],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [
+          121
+        ],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "take-3-1",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": [
+          3
+        ]
+      },
+      "target": {
+        "give_to_pile": [
+          121
+        ],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": true,
+      "context": 0,
+      "direction": 0,
+      "name": "take-3-2",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": [
+          3
+        ]
+      },
+      "target": {
+        "give_to_pile": [
+          121
+        ],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-1",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [
+          121
+        ],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-workshop-1",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [
+          158
+        ],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-2",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-workshop-2",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-3",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-workshop-3",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-4",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 158,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    },
+    {
+      "adding": false,
+      "context": 0,
+      "direction": 0,
+      "name": "remove-workshop-4",
+      "open": true,
+      "selected": 121,
+      "source": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 121,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "target": {
+        "give_to_pile": [],
+        "give_to_workshop": [],
+        "id": 3,
+        "take_from_pile": [],
+        "take_from_workshop": []
+      },
+      "ui_rva": 25838056
+    }
+  ],
+  "native_code": [
+    {
+      "rva": "0x3c2a70",
+      "name": "native link target UI handler, prohibited runtime input",
+      "size": 1829,
+      "sha256": "9c9c8835813ca99ab6a360408c2583dc177bcdcad443708a4693bf8b8b197a71"
+    },
+    {
+      "rva": "0xeb530",
+      "name": "sorted building pointer insert",
+      "size": 248,
+      "sha256": "530530a23a1ce74f8f5ae909bf71da73dc822531746267dff37fb83b305b5a3d"
+    },
+    {
+      "rva": "0x3c7390",
+      "name": "sorted building pointer erase",
+      "size": 186,
+      "sha256": "ba4eb5a858f104313e8691f5553bd7106dad55b02b31eb721e7d5f8fa7d07fc4"
+    },
+    {
+      "rva": "0x3c9ff0",
+      "name": "sorted building ID lookup",
+      "size": 156,
+      "sha256": "fc03714478cd3afb835641462fac2b1b2df803fef7d55028379138fea44d44e0"
+    },
+    {
+      "rva": "0x5832b0",
+      "name": "stockpile gives to workshop",
+      "size": 104,
+      "sha256": "a38d6fec1fd8981e5213876146c61027b28bb3088a6ff75d342c61fccdf8774f"
+    },
+    {
+      "rva": "0x583320",
+      "name": "stockpile takes from workshop",
+      "size": 104,
+      "sha256": "84f9f766ec8d81ae9a60cfcd4610175b195c58871bb28fa43bf3264e2ba75172"
+    },
+    {
+      "rva": "0x5b1a10",
+      "name": "remove all reciprocal links",
+      "size": 526,
+      "sha256": "e23fa432003fc0d24843a1dadf1723342fd79a906d9a8d352f4e69395dc1b49c"
+    }
+  ],
+  "audit": "3c2a70 reads native global link UI despite its interface argument; prohibited runtime. Stockpile pair branches 3c2efb..3c2fe8 inline direction logic using native lookup/insert/erase. Workshop pair helpers 5832b0/583320 update both ends and remove opposite links. Native vector routines take explicit vectors and building pointers; insert may allocate through bad30. Owned copies with reserved capacity can avoid native allocation path; wrapper and effect verification still required.",
+  "known_implementation_gaps": [
+    "Current bridge editLinks permits simultaneous opposite directions, unlike native.",
+    "Current UI exits picker on duplicate success and shows invented self-link error, unlike native no-op.",
+    "Existing linked-transfer test constructs simultaneous directions; proves cleanup of that state, not native creation parity.",
+    "Native workshop eligibility, empty/invalid target, scrolling, full ordering and scaled link UI need further acceptance."
+  ]
+}

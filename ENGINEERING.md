@@ -1,3 +1,29 @@
+## Native stockpile links (DF 53.16)
+
+Run `tools/smoke/stockpile_storage_native.ps1 -Links` for the protected pointer
+oracle. `fixtures/areas/native_stockpile_links.json` retains exact endpoint and
+picker observations plus native code hashes from the supported binary.
+Run `build/stockpile-storage-native-links-20261025-123002` verifies self-selection,
+Escape, stockpile/workshop give and take, duplicates, reversal and removal.
+Source hashes were unchanged, simulation stayed paused and owned DF closed unsaved.
+
+Native permits one direction per pair. Choosing the opposite direction replaces
+both reciprocal links; it does not create a bidirectional pair. Self-selection
+and an already-present direction leave the picker open without mutation. A new
+link returns to the list; Escape cancels the picker. Removal updates both ends.
+The staged bridge currently permits opposite links simultaneously and the picker
+does not preserve native duplicate/self behavior. These are unresolved defects;
+Stockpiles remains hidden. Earlier linked-transfer evidence proves deletion
+cleanup of its supplied state, not native parity of link creation.
+
+Native target handler `0x3c2a70` reads global link UI despite taking an interface
+pointer and is prohibited as a runtime service. Its stockpile pair branch uses
+explicit-vector lookup `0x3c9ff0`, insertion `0xeb530` and erasure `0x3c7390`.
+Workshop helpers `0x5832b0`/`0x583320` update reciprocal links and remove the
+opposite direction. A runtime wrapper still requires owned preparation, native
+compatibility checks and actual-effect acceptance. Target eligibility, broader
+ordering, scrolling and scaled link input remain unverified.
+
 ## Native stockpile storage input (DF 53.16)
 
 Run `tools/smoke/stockpile_storage_native.ps1 -CloneEvidence <verified-run-folder>`

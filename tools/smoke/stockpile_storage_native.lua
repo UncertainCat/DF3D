@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case,test_predicates=...
+local out,repaint,gestures,eligibility_case,test_predicates,test_links=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -58,6 +58,80 @@ require('gui.script').start(function()
    while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timeout');require('gui.script').sleep(1,'frames')end
   end
   capture('pile')
+  if test_links then
+   local ui=df.global.game.main_interface.stockpile_link
+   local function snapshot(name,target)
+    local function endpoint(building)
+     local ls=building:getStockpileLinks();local r={id=building.id}
+     if ls then for _,key in ipairs{'give_to_pile','take_from_pile','give_to_workshop','take_from_workshop'}do
+      r[key]={};for _,other in ipairs(ls[key])do r[key][#r[key]+1]=other.id end
+     end end
+     return r
+    end
+    local _,address=df.sizeof(ui)
+    records[#records+1]={name=name,source=endpoint(b),target=target and endpoint(target) or false,
+     open=ui.open,adding=ui.adding_new_link,direction=ui.adding_new_link_type,context=ui.context,
+     selected=ui.bld_id,ui_rva=address-dfhack.internal.getImageBase()}
+   end
+   local function mapclick(target)
+    local p={x=target.centerx,y=target.centery,z=target.z}
+    dfhack.gui.revealInDwarfmodeMap(p,true);view:render(dfhack.getTickCount())
+    for y=16,g.dimy-4 do for x=45,g.dimx-25 do
+     g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
+     local hit=dfhack.gui.getMousePos(true)
+     if hit and hit.x==p.x and hit.y==p.y and hit.z==p.z then click(x,y);return end
+    end end
+    error('link target not exposed '..target.id)
+   end
+   click(42,12);assert(ui.open and ui.bld_id==b.id)
+   capture('links');snapshot('initial')
+   click(48,6);assert(ui.adding_new_link)
+   capture('links-give-pick');mapclick(b);snapshot('give-self',b)
+   assert(ui.adding_new_link,'self-selection closed picker')
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   capture('links-give-escape');snapshot('escape')
+   local other
+   for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+    if candidate.id~=b.id and candidate.z==b.z and candidate.room.extents[(candidate.centery-candidate.room.y)*candidate.room.width+candidate.centerx-candidate.room.x]~=0 then other=candidate;break end
+   end
+   assert(other,'missing other pile')
+   local workshop
+   for _,candidate in ipairs(df.global.world.buildings.all)do
+    if candidate:getType()~=df.building_type.Stockpile and candidate.z==b.z and candidate:canLinkToStockpile() then workshop=candidate;break end
+   end
+   assert(workshop,'missing workshop')
+   for _,target in ipairs{other,workshop}do
+    for _,direction in ipairs{'give','take'}do
+     local x=direction=='give' and 48 or 52
+     for repeat_index=1,2 do
+      if ui.adding_new_link then click(79,6)end
+      click(x,6);assert(ui.adding_new_link)
+      mapclick(target);snapshot(direction..'-'..target.id..'-'..repeat_index,target)
+      local stock=df.building_stockpilest:is_instance(target)
+      local suffix=stock and '_pile' or '_workshop'
+      local function has(v,id)for _,entry in ipairs(v)do if entry.id==id then return true end end;return false end
+      local forward=direction=='give' and 'give_to' or 'take_from'
+      local opposite=direction=='give' and 'take_from' or 'give_to'
+      assert(has(b.links[forward..suffix],target.id),'forward link missing')
+      assert(not has(b.links[opposite..suffix],target.id),'opposite link retained')
+      local reverse=target:getStockpileLinks()
+      assert(has(reverse[opposite..'_pile'],b.id),'reciprocal link missing')
+      assert(not has(reverse[forward..'_pile'],b.id),'opposite reciprocal retained')
+      assert(ui.adding_new_link==(repeat_index==2),'duplicate picker lifecycle differs')
+
+      capture('links-'..direction..'-'..target.id..'-'..repeat_index)
+     end
+    end
+   end
+   if ui.adding_new_link then click(79,6)end
+   for i=1,4 do click(83,12);snapshot('remove-'..i,other);snapshot('remove-workshop-'..i,workshop);capture('links-remove-'..i)end
+   for _,key in ipairs{'give_to_pile','take_from_pile','give_to_workshop','take_from_workshop'}do assert(#b.links[key]==0,'source removal incomplete')end
+   for _,target in ipairs{other,workshop}do for _,key in ipairs{'give_to_pile','take_from_pile'}do
+    for _,entry in ipairs(target:getStockpileLinks()[key])do assert(entry.id~=b.id,'reciprocal removal incomplete')end
+   end end
+   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   return
+  end
   if repaint then
    click(38,9) -- Native pile repaint icon at304,118 in pile.png.
    local paint=df.global.game.main_interface.stockpile

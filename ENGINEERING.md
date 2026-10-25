@@ -29,8 +29,34 @@ native order and hash row identities, labels, states, visibility, query and
 area/raw revisions so same-size changes invalidate continuation receipts.
 The synchronous safe-point callback reports unknown work while Godot remains
 asynchronous. Unsupported service calls fail closed; local quality caption and
-search reconstruction have been removed. Other list branches still use the
-staged implementation and are not covered by this migration.
+search reconstruction have been removed.
+
+The seven Other-material lists also use owned native rows for gameplay labels,
+ordering, search, individual selection and list All/None. Their branches only
+read supplied byte vectors and native literal labels. Native bulk dispatch at
+`0x328000` and `0x328122` writes visible row pointers without resizing settings;
+DF3D therefore sizes these masks to the stored vector, preserving empty/short
+vectors and unknown trailing slots. Local Other-material captions, capitalization
+and search reconstruction have been removed. Category/global actions and other
+leaf branches still use staged logic and need further native migration.
+
+Protected run `build/stockpile-presets-native-20261025-024935` compared all seven
+Other-material lists against actual native clicks for empty, matching and
+unmatched ASCII searches, including exact backing-field/index pointer identity.
+All42 native All/None actions changed exactly visible rows; all seven empty-list
+cases preserved zero vector length. Probe calls preserved main-interface bytes,
+simulation remained paused and source save hashes were unchanged. The fixture
+retains native labels, search indices and action coverage. The oracle exits text
+entry before clicking buttons and reopens the sublist after test-only external
+vector changes, so those checks exercise button effects with fresh native rows.
+
+Protected command run `build/stockpile-initialization-20261025-025109` passed362
+native observations with clean engine diagnostics and an unchanged source save.
+Alongside the existing initialization/quality/paint checks, it compared21 native
+Other-material page reads and63 edits:42 bulk actions, seven individual rows and
+14 short/empty-vector actions. Complete settings snapshots matched after every
+edit. Owned DF closed without saving. These checks establish command effects,
+not rendered settings-panel parity or the remaining material-list branches.
 
 Protected run `build/stockpile-initialization-20261025-023028` passed201 native
 observations through the real Godot bridge driver. For each quality list, empty,

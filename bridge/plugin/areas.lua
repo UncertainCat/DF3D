@@ -234,6 +234,10 @@ local native_setting_modes={
  ['finished_goods/quality_core']=69,['finished_goods/quality_total']=70,
  ['weapons/quality_core']=92,['weapons/quality_total']=93,
  ['armor/quality_core']=103,['armor/quality_total']=104,
+ ['furniture/other_materials']=25,['ammo/other_materials']=46,
+ ['bars_blocks/bars_other']=53,['bars_blocks/blocks_other']=56,
+ ['finished_goods/other_materials']=68,['weapons/other_materials']=91,
+ ['armor/other_materials']=102,
 }
 for _,cat in ipairs{'armor','cloth','finished_goods','leather'} do setting_leaf(cat..'/color',cat..'.color','color') end
 for _,entry in ipairs{{'ammo/type','ammo.type','ammo'},{'armor/body','armor.body','armor'},
@@ -286,13 +290,7 @@ setting_leaf('gems/cut_glass','gems.cut_other_mats','builtin')
 setting_leaf('finished_goods/type','finished_goods.type','itemtype','finished_goods')
 setting_leaf('refuse/type','refuse.type','itemtype','refuse')
 setting_leaf('furniture/type','furniture.type','furniture')
-local other_materials={
- ammo={'WOOD','BONE'},
- armor={'WOOD','PLANT_CLOTH','BONE','SHELL','LEATHER','SILK','GREEN_GLASS','CLEAR_GLASS','CRYSTAL_GLASS','YARN'},
- furniture={'WOOD','PLANT_CLOTH','BONE','TOOTH','HORN','PEARL','SHELL','LEATHER','SILK','AMBER','CORAL','GREEN_GLASS','CLEAR_GLASS','CRYSTAL_GLASS','YARN'},
- finished_goods={'WOOD','PLANT_CLOTH','BONE','TOOTH','HORN','PEARL','SHELL','LEATHER','SILK','AMBER','CORAL','GREEN_GLASS','CLEAR_GLASS','CRYSTAL_GLASS','YARN','WAX'},
- bars={'COAL','POTASH','ASH','PEARLASH','SOAP'},blocks={'GREEN_GLASS','CLEAR_GLASS','CRYSTAL_GLASS','WOOD'}}
-other_materials.weapons=other_materials.armor
+local other_material_counts={ammo=2,armor=10,furniture=15,finished_goods=16,weapons=10,bars=5,blocks=4}
 for _,cat in ipairs{'ammo','armor','furniture','finished_goods','weapons'} do
  setting_leaf(cat..'/other_materials',cat..'.other_mats','other',cat)
 end
@@ -336,7 +334,7 @@ local function setting_source(d)
  local raws=df.global.world.raws
  if d.source=='toggle' then return nil,1
  elseif d.source=='quality' then return nil,7
- elseif d.source=='other' then return other_materials[d.selector],#other_materials[d.selector]
+ elseif d.source=='other' then return nil,other_material_counts[d.selector]
  elseif d.source=='inorganic' then return raws.inorganics.all,#raws.inorganics.all
  elseif d.source=='builtin' then return raws.mat_table.builtin,#raws.mat_table.builtin
  elseif d.source=='itemtype' then return nil,df.item_type._last_item+1
@@ -348,15 +346,10 @@ local function setting_source(d)
  elseif d.source=='creature' then return raws.creatures.all,#raws.creatures.all
  elseif d.source=='plant' then return raws.plants.all,#raws.plants.all end
 end
--- Verbatim native settings copy captured in the supported build (2011 audit).
-local other_captions={WOOD='Wood',BONE='Bone',LEATHER='Leather',SHELL='Shell',SILK='Silk',YARN='Yarn',
- PLANT_CLOTH='Plant Cloth',CLEAR_GLASS='Clear Glass',CRYSTAL_GLASS='Crystal Glass',GREEN_GLASS='Green Glass',
- AMBER='Amber',CORAL='Coral',HORN='Horn',PEARL='Pearl',TOOTH='Tooth',WAX='Wax',
- ASH='Ash',COAL='Coal',PEARLASH='Pearlash',POTASH='Potash',SOAP='Soap'}
 local function setting_caption(d,index,values)
  if d.source=='toggle' then return '' end
  -- Summary counting needs membership only. Leaf labels/search come from DF.
- if d.source=='quality' then return '' end
+ if d.source=='quality' or d.source=='other' then return '' end
  if d.source=='furniture' then
   local token=df.furniture_type[index];return furniture_captions[token] or token or ''
  end
@@ -375,15 +368,7 @@ local function setting_caption(d,index,values)
  end
  local v=element(values,index)
  if v==nil then error('Settings source changed') end
- if d.source=='other' then
-  local caption=other_captions[v] or ''
-  -- Furniture uses lower-case second words; other captured lists use title case.
-  if d.selector=='furniture' then
-   local furniture_other={PLANT_CLOTH='Plant cloth',CLEAR_GLASS='Clear glass',CRYSTAL_GLASS='Crystal glass',GREEN_GLASS='Green glass'}
-   caption=furniture_other[v] or caption
-  end
-  return caption
- elseif d.source=='inorganic' then
+ if d.source=='inorganic' then
   local f=v.material.flags;local part
   if d.selector=='any' then part='any'
   elseif d.selector=='stone' then
@@ -625,6 +610,12 @@ local function settings_edit_plan(a,layout,available,native_rows)
    fixed and (count~=(d.source=='quality' and 7 or 1) or entry.stored_count~=count) then
    return nil,'Stockpile settings layout changed',used
   end
+  -- Native leaf actions only touch existing native rows. In particular, All
+  -- and None at327fca..3281c9 never resize a short/empty backing vector.
+  if native_rows and not fixed then
+   count=entry.stored_count
+   if not integer(count) or count<0 or count>65536 then return nil,'',used end
+  end
   if index and index>=count then return nil,'Unknown stockpile settings row',used end
   local members,allowed,cost
   local leaf=scope==2 and setting_leaves[list]
@@ -634,14 +625,15 @@ local function settings_edit_plan(a,layout,available,native_rows)
   end
   if leaf and embedded then leaf=embedded end
   local query=default(a,'query',''):lower()
-  if leaf and native_rows then
+  if native_rows then
    local selected,eligible={},{}
    for i=1,count do selected[i]='\0';eligible[i]='\0' end
    for _,row in ipairs(native_rows) do
     if row.field~=d.field or row.index<0 or row.index>=count then return nil,'',used end
-    eligible[row.index+1]='\1';selected[row.index+1]=row.visible and '\1' or '\0'
+    eligible[row.index+1]='\1';selected[row.index+1]=row.visible and (not index or index==row.index) and '\1' or '\0'
    end
-   members=table.concat(selected);allowed=table.concat(eligible);cost=2
+   if index and selected[index+1]~='\1' then return nil,'Unknown stockpile settings row',used end
+   members=table.concat(selected);allowed=table.concat(eligible);cost=fixed and 2 or 1+((count+255)//256)
   elseif leaf and query~='' then
    local values,raw_count=setting_source(leaf)
    if raw_count~=count then return nil,'Stockpile settings layout changed',used end
@@ -1438,9 +1430,11 @@ local function native_operation(r)
   if not layout then return reject(problem) end
   local mode=native_setting_modes[default(a,'list_key','')]
   local native_rows
-  if mode and (op==1 or a.scope==2 and default(a,'query','')~='') then
+  local native_leaf_edit=mode and setting_leaves[a.list_key].source=='other' and (a.scope==1 or a.scope==2)
+  if mode and (op==1 or native_leaf_edit or a.scope==2 and default(a,'query','')~='') then
    local result,why=invoke(r.settings_rows,0,b,mode,default(a,'query',''))
    if not result then return reject(why) end
+   if type(result.rows)~='table' then return reject('') end
    native_rows=result.rows
   end
   if op==1 then
@@ -1454,8 +1448,8 @@ local function native_operation(r)
    steps=steps+used
    if not plan then return reject(problem) end
    -- Build all selection masks and reserve every field and the reply before
-   -- the first native write. Filtered masks use current raw captions, never a
-   -- cached/partially paged result. Their scan work is included in used above.
+   -- the first native write. Migrated masks use fresh native row membership;
+   -- remaining staged lists scan current raws, never a partially paged result.
    if budget-steps<plan.cost+reply_reserve then return reject('Area request exceeds remaining step budget') end
    if type(r.settings_fill)~='function' then return reject('Native area helper unavailable') end
    local remaining=plan.cost;local wrote=false

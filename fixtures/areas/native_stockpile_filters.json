@@ -3004,5 +3004,759 @@
         "Non-ASCII quality search not covered."
       ]
     }
+  },
+  "other_material_lists": {
+    "provenance": {
+      "run": "build/stockpile-presets-native-20261025-024935",
+      "script": "tools/smoke/stockpile_presets_native.lua",
+      "comparison": "Actual native sublist clicks in all seven Other-material lists; labels/order/search/state and exact field/index pointer identities match owned rows. Actual native third-column All/None changes exactly visible row bytes. Cold empty lists retain zero vector length after both actions.",
+      "source_save_changed": false,
+      "simulation_advanced": false,
+      "native_ui_bytes_preserved_by_probe": true,
+      "omissions": [
+        "ASCII search only.",
+        "No rendered Godot comparison.",
+        "Remaining material/item/creature/color branches are not covered."
+      ]
+    },
+    "comparisons": [
+      {
+        "mode": 25,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 9,
+            "name": "Amber",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 2,
+            "name": "Bone",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 12,
+            "name": "Clear glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 10,
+            "name": "Coral",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 13,
+            "name": "Crystal glass",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 11,
+            "name": "Green glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 4,
+            "name": "Horn",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 7,
+            "name": "Leather",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 5,
+            "name": "Pearl",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 1,
+            "name": "Plant cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 6,
+            "name": "Shell",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 8,
+            "name": "Silk",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.other_mats",
+            "index": 3,
+            "name": "Tooth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 0,
+            "name": "Wood",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.other_mats",
+            "index": 14,
+            "name": "Yarn",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              9,
+              2,
+              12,
+              10,
+              13,
+              11,
+              4,
+              7,
+              5,
+              1,
+              6,
+              8,
+              3,
+              0,
+              14
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": [
+              9,
+              12,
+              10,
+              13,
+              11,
+              7,
+              5,
+              1,
+              14
+            ]
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      },
+      {
+        "mode": 46,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "ammo.other_mats",
+            "index": 1,
+            "name": "Bone",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.other_mats",
+            "index": 0,
+            "name": "Wood",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              1,
+              0
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": []
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      },
+      {
+        "mode": 53,
+        "rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_other_mats",
+            "index": 2,
+            "name": "Ash",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_other_mats",
+            "index": 0,
+            "name": "Coal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_other_mats",
+            "index": 3,
+            "name": "Pearlash",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_other_mats",
+            "index": 1,
+            "name": "Potash",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_other_mats",
+            "index": 4,
+            "name": "Soap",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              2,
+              0,
+              3,
+              1,
+              4
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": [
+              2,
+              0,
+              3,
+              1,
+              4
+            ]
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      },
+      {
+        "mode": 56,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_other_mats",
+            "index": 1,
+            "name": "Clear Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_other_mats",
+            "index": 2,
+            "name": "Crystal Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_other_mats",
+            "index": 0,
+            "name": "Green Glass",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_other_mats",
+            "index": 3,
+            "name": "Wood",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              1,
+              2,
+              0,
+              3
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": [
+              1,
+              2,
+              0
+            ]
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      },
+      {
+        "mode": 68,
+        "rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 9,
+            "name": "Amber",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 2,
+            "name": "Bone",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 12,
+            "name": "Clear Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 10,
+            "name": "Coral",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 13,
+            "name": "Crystal Glass",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 11,
+            "name": "Green Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 4,
+            "name": "Horn",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 7,
+            "name": "Leather",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 5,
+            "name": "Pearl",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 1,
+            "name": "Plant Cloth",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 6,
+            "name": "Shell",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 8,
+            "name": "Silk",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 3,
+            "name": "Tooth",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.other_mats",
+            "index": 15,
+            "name": "Wax",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 0,
+            "name": "Wood",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.other_mats",
+            "index": 14,
+            "name": "Yarn",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              9,
+              2,
+              12,
+              10,
+              13,
+              11,
+              4,
+              7,
+              5,
+              1,
+              6,
+              8,
+              3,
+              15,
+              0,
+              14
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": [
+              9,
+              12,
+              10,
+              13,
+              11,
+              7,
+              5,
+              1,
+              15,
+              14
+            ]
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      },
+      {
+        "mode": 91,
+        "rows": [
+          {
+            "enabled": false,
+            "field": "weapons.other_mats",
+            "index": 2,
+            "name": "Bone",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.other_mats",
+            "index": 7,
+            "name": "Clear Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.other_mats",
+            "index": 8,
+            "name": "Crystal Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.other_mats",
+            "index": 6,
+            "name": "Green Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.other_mats",
+            "index": 4,
+            "name": "Leather",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.other_mats",
+            "index": 1,
+            "name": "Plant Cloth",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.other_mats",
+            "index": 3,
+            "name": "Shell",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.other_mats",
+            "index": 5,
+            "name": "Silk",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.other_mats",
+            "index": 0,
+            "name": "Wood",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.other_mats",
+            "index": 9,
+            "name": "Yarn",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              2,
+              7,
+              8,
+              6,
+              4,
+              1,
+              3,
+              5,
+              0,
+              9
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": [
+              7,
+              8,
+              6,
+              4,
+              1,
+              9
+            ]
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      },
+      {
+        "mode": 102,
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.other_mats",
+            "index": 2,
+            "name": "Bone",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.other_mats",
+            "index": 7,
+            "name": "Clear Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.other_mats",
+            "index": 8,
+            "name": "Crystal Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.other_mats",
+            "index": 6,
+            "name": "Green Glass",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.other_mats",
+            "index": 4,
+            "name": "Leather",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.other_mats",
+            "index": 1,
+            "name": "Plant Cloth",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.other_mats",
+            "index": 3,
+            "name": "Shell",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.other_mats",
+            "index": 5,
+            "name": "Silk",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.other_mats",
+            "index": 0,
+            "name": "Wood",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.other_mats",
+            "index": 9,
+            "name": "Yarn",
+            "visible": true
+          }
+        ],
+        "searches": [
+          {
+            "query": "",
+            "visible_indices": [
+              2,
+              7,
+              8,
+              6,
+              4,
+              1,
+              3,
+              5,
+              0,
+              9
+            ]
+          },
+          {
+            "query": "a",
+            "visible_indices": [
+              7,
+              8,
+              6,
+              4,
+              1,
+              9
+            ]
+          },
+          {
+            "query": "zzzznomatch",
+            "visible_indices": []
+          }
+        ]
+      }
+    ],
+    "native_actions_checked": 42,
+    "empty_lists": [
+      {
+        "mode": 25,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      },
+      {
+        "mode": 46,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      },
+      {
+        "mode": 53,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      },
+      {
+        "mode": 56,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      },
+      {
+        "mode": 68,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      },
+      {
+        "mode": 91,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      },
+      {
+        "mode": 102,
+        "probe": "other_material_empty",
+        "stored_count": 0
+      }
+    ],
+    "gameplay_acceptance": {
+      "run": "build/stockpile-initialization-20261025-025109",
+      "driver": "presentations/godot/project/tests/stockpile_initialization_live.gd",
+      "native_observations": 362,
+      "material_reads": 21,
+      "material_edits": 63,
+      "bulk_actions": 42,
+      "individual_rows": 7,
+      "short_and_empty_vectors": 14,
+      "comparison": "Real bridge rows match owned native rows. Complete settings snapshots match visible-row edits; lengths remain unchanged for short/empty vectors. Existing creation/category/preset/quality/paint/removal checks also pass.",
+      "diagnostics": "clean",
+      "source_save_changed": false,
+      "owned_process_closed": true,
+      "omissions": [
+        "No rendered panel comparison.",
+        "Non-ASCII search not covered."
+      ]
+    }
   }
 }

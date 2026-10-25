@@ -130,10 +130,12 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
     const std::vector<NativeStockpileSettingRange>& ranges) {
     if(!df::global::world || filter.size()>256)return std::nullopt;
-    // Wood and the ten quality lists have no material/historical-cache path.
+    // Wood, quality and constant Other-material lists have no historical-cache
+    // path. Constant branches read only owned byte vectors and native literals.
     switch(mode) {
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
+      case 25:case 46:case 53:case 56:case 68:case 91:case 102:break;
       default:return std::nullopt;
     }
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -147,10 +149,14 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         hash(base+0x52d650,0x2b0)==0xcf43211ff8e2c344ULL &&
         hash(base+0x52cee0,0x19e)==0xc25c2d8a6eb9fcacULL &&
         hash(base+0x3bc400,0x14d)==0x038c68edadcc2b69ULL &&
+        hash(base+0x2240f0,0x8)==0x4bfd67e9e540ffc4ULL &&
+        hash(base+0x1b9fa0,0x7)==0xa88a5a439c83b069ULL &&
+        hash(base+0x6f520,0x3d)==0xaceb003bf538dbfcULL &&
         hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL;
     if(!compatible)return std::nullopt;
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);
+    static_assert(sizeof(bool)==1); // Fixed settings ranges use byte indices.
     struct Rows {
         df::custom_stockpile_interfacest scratch;
         ~Rows(){for(auto* row:scratch.spec_item)delete row;}

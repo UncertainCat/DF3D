@@ -3,9 +3,16 @@ local out,index=...
 local json=require('json')
 local f=assert(io.open(out..'/request-'..index..'.json','r'))
 local request=json.decode(f:read('*a'));f:close()
-if request.op:match('^quality_') then
+if request.op:match('^quality_') or request.op:match('^filter_') then
  assert(df.global.pause_state,'quality observation requires pause')
  local b=assert(df.building.find(request.id))
+ if request.op=='filter_setup' then
+  local category,field=request.field:match('^([^%.]+)%.(.+)$')
+  b.settings[category][field]:resize(request.count)
+  for i=0,request.count-1 do b.settings[category][field][i]=0 end
+  f=assert(io.open(out..'/response-'..index..'.json','w'));f:write(json.encode{status='passed'});f:close()
+  print('SEMANTIC_PASS filter_setup');return
+ end
  local function snapshot(v)
   if type(v)~='userdata' then return v end
   local parts={}
@@ -18,7 +25,7 @@ if request.op:match('^quality_') then
  end
  local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(request.mode),request.query or '')
  assert(code==0,text);local rows=json.decode(text)
- if request.op=='quality_rows' then
+ if request.op=='quality_rows' or request.op=='filter_rows' then
   local visible={};for _,row in ipairs(rows)do if row.visible then visible[#visible+1]=row end end
   assert(#visible==#request.rows,'quality visible count')
   for i,row in ipairs(visible)do
@@ -26,16 +33,21 @@ if request.op:match('^quality_') then
    assert(actual.index==row.index and actual.label==row.name and actual.state==(row.enabled and 2 or 1),'bridge quality row '..i)
    assert(actual.key==request.list_key..'/'..row.index,'bridge quality identity')
   end
- elseif request.op=='quality_before' then
+ elseif request.op=='quality_before' or request.op=='filter_before' then
   -- Build an independent expected settings snapshot, then restore before the
   -- bridge mutation. The oracle never supplies settings to the product.
-  local category,field=rows[1].field:match('^([^%.]+)%.(.+)$')
+  local category,field=(request.field or rows[1].field):match('^([^%.]+)%.(.+)$')
   local values=b.settings[category][field];local original={}
   for i=0,#values-1 do original[i]=values[i]end
-  for _,row in ipairs(rows)do if row.visible then values[row.index]=request.value==2 end end
+  for _,row in ipairs(rows)do
+   if row.visible and (not request.row or row.index==request.row) then
+    if type(values[row.index])=='boolean' then values[row.index]=request.value==2
+    else values[row.index]=request.value==2 and 1 or 0 end
+   end
+  end
   _G.df3d_quality_expected=snapshot(b.settings)
   for i=0,#values-1 do values[i]=original[i]end
- elseif request.op=='quality_after' then
+ elseif request.op=='quality_after' or request.op=='filter_after' then
   assert(_G.df3d_quality_expected==snapshot(b.settings),'filtered edit changed unexpected settings')
   _G.df3d_quality_expected=nil
  else error('unknown quality operation')end

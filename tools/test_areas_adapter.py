@@ -1053,6 +1053,20 @@ def main():
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
      local fields={[26]='furniture',[48]='ammo',[69]='finished_goods',[92]='weapons',[103]='armor'}
+     local other={[25]={'furniture','other_mats'},[46]={'ammo','other_mats'},
+      [53]={'bars_blocks','bars_other_mats'},[56]={'bars_blocks','blocks_other_mats'},
+      [68]={'finished_goods','other_mats'},[91]={'weapons','other_mats'},[102]={'armor','other_mats'}}
+     if other[mode] then
+      local category,key=table.unpack(other[mode]);local values=b.settings[category][key];local rows={}
+      for i,value in ipairs(values) do
+       if mode==46 and i>2 then break end
+       local label=mode==46 and (i==1 and 'Wood' or 'Bone') or ('Native material '..i)
+       rows[#rows+1]={field=category..'.'..key,index=i-1,label=label,enabled=value~=0,
+        visible=label:lower():find(query:lower(),1,true)~=nil}
+      end
+      table.sort(rows,function(a,b)return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      local category=fields[mode] or fields[mode-1]
      local quality=fields[mode] and 'quality_core' or 'quality_total'
      local captions={'Standard','Well-crafted','Finely-crafted','Superior quality','Exceptional','Masterwork','Artifact'}
@@ -1440,7 +1454,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("query") and "/quality_" in list_key:
+        if extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1578,6 +1592,23 @@ def main():
     end
     pile.settings.wood.mats={0}
     """)
+    lua.execute("make_setting('ammo.other_mats',2,{0})")
+    assert settings_adapter(fixed_edit("ammo/other_materials", value=2))["ok"]
+    assert lua.eval("#pile.settings.ammo.other_mats==1 and pile.settings.ammo.other_mats[1]==1")
+    assert not settings_adapter(fixed_edit("ammo/other_materials", "ammo/other_materials/1"))["ok"]
+    lua.execute("make_setting('ammo.other_mats',2,{})")
+    assert settings_adapter(fixed_edit("ammo/other_materials", value=2))["ok"]
+    assert lua.eval("#pile.settings.ammo.other_mats==0")
+    lua.execute("make_setting('ammo.other_mats',2,{0,0})")
+    assert settings_adapter(fixed_edit("ammo/other_materials", value=2, query="bone"))["ok"]
+    assert lua.eval("pile.settings.ammo.other_mats[1]==0 and pile.settings.ammo.other_mats[2]==1")
+    assert settings_adapter(fixed_edit("ammo/other_materials", "ammo/other_materials/0"))["ok"]
+    assert lua.eval("pile.settings.ammo.other_mats[1]==1 and pile.settings.ammo.other_mats[2]==1")
+    lua.execute("make_setting('ammo.other_mats',2,{0,0,9})")
+    assert settings_adapter(fixed_edit("ammo/other_materials", value=2))["ok"]
+    assert lua.eval("#pile.settings.ammo.other_mats==3 and pile.settings.ammo.other_mats[1]==1 and pile.settings.ammo.other_mats[2]==1 and pile.settings.ammo.other_mats[3]==9")
+    assert not settings_adapter(fixed_edit("ammo/other_materials", "ammo/other_materials/2"))["ok"]
+    lua.execute("make_setting('ammo.other_mats',2,{0,0})")
     rejected = settings_adapter(fixed_edit("wood", "wood/2"))
     assert rejected["message"] == "Unknown stockpile settings row"
     assert lua.eval("#pile.settings.wood.mats==1 and pile.settings.wood.mats[1]==0")

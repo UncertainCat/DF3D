@@ -51,5 +51,40 @@ func exercise() -> void:
 				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":"CRAFTED"})
 				await native("quality_after",{"id":pile,"mode":mode})
 				if stopped: return
+	await other_materials(pile)
 	await paint()
 	await native("final")
+
+func other_materials(pile: int) -> void:
+	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768}
+	for entry in [["furniture/other_materials","furniture.other_mats",25],
+		["ammo/other_materials","ammo.other_mats",46],
+		["bars_blocks/bars_other","bars_blocks.bars_other_mats",53],
+		["bars_blocks/blocks_other","bars_blocks.blocks_other_mats",56],
+		["finished_goods/other_materials","finished_goods.other_mats",68],
+		["weapons/other_materials","weapons.other_mats",91],
+		["armor/other_materials","armor.other_mats",102]]:
+		var key: String = entry[0]
+		var field: String = entry[1]
+		var mode: int = entry[2]
+		step = "native materials " + key
+		var category_bit: int = category_bits[field.get_slice(".",0)]
+		await edit(pile,0,{"changed_categories":category_bit,"categories":category_bit})
+		for query in ["", "a", "zzzznomatch"]:
+			var page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query},"settings")
+			if stopped: return
+			await native("filter_rows",{"id":pile,"mode":mode,"list_key":key,"query":query,"rows":page.settings})
+			for value in [1,2]:
+				await native("filter_before",{"id":pile,"mode":mode,"field":field,"query":query,"value":value})
+				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":query})
+				await native("filter_after",{"id":pile,"mode":mode})
+				if stopped: return
+		await native("filter_before",{"id":pile,"mode":mode,"field":field,"row":0,"value":1})
+		await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/0"})
+		await native("filter_after",{"id":pile,"mode":mode})
+		for count in [1,0]:
+			await native("filter_setup",{"id":pile,"field":field,"count":count})
+			await native("filter_before",{"id":pile,"mode":mode,"field":field,"value":2})
+			await edit(pile,0,{"operation":2,"scope":2,"value":2,"list_key":key})
+			await native("filter_after",{"id":pile,"mode":mode})
+			if stopped: return

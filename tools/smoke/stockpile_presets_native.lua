@@ -73,13 +73,19 @@ require('gui.script').start(function()
    local screen={};local px,py
    for y=0,g.dimy-1 do
     local chars={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);chars[#chars+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' ' end
-    local line=table.concat(chars);screen[#screen+1]=line;local x=line:find(label,1,true)
-    local in_column=x and (column==2 and x>=40 and x<75 or column~=2 and x<40)
+    local line=table.concat(chars);screen[#screen+1]=line
+    local x=line:find(label,column==3 and 75 or column==2 and 40 or 1,true)
+    local in_column=x and (column==3 and x>=75 or column==2 and x>=40 and x<75 or not column and x<40)
     if in_column and not px then px=x-1+(offset or 0);py=y end
    end
-   if px then click(px,py);return end
+   if px then
+    if column==3 then
+     local f=assert(io.open(out..'/bulk-screen.txt','w'));f:write(table.concat(screen,'\n'));f:close()
+    end
+    click(px,py);return {x=px,y=py}
+   end
    local custom=df.global.game.main_interface.custom_stockpile
-   if column~=2 and custom.open and custom.scroll_position_main==0 then
+   if not column and custom.open and custom.scroll_position_main==0 then
     -- Oracle-only viewport setup; selection itself still uses the native click.
     custom.scroll_position_main=4;view:render(dfhack.getTickCount())
     return label_click(label,offset,column)
@@ -220,6 +226,68 @@ require('gui.script').start(function()
     end
     records[#records+1]={probe='quality_rows',mode=category[quality+2],rows=rows}
    end
+  end
+  for _,entry in ipairs{
+   {'Furniture/siege ammo','Other materials','furniture.other_mats',25},
+   {'Ammo','Other materials','ammo.other_mats',46},
+   {'Bars/blocks','Bars: other materials','bars_blocks.bars_other_mats',53},
+   {'Bars/blocks','Blocks: other materials','bars_blocks.blocks_other_mats',56},
+   {'Finished goods','Other materials','finished_goods.other_mats',68},
+   {'Weapons/trap comps','Other materials','weapons.other_mats',91},
+   {'Armor','Other materials','armor.other_mats',102}}do
+   c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
+   view:render(dfhack.getTickCount());label_click(entry[1])
+   local category,field=entry[3]:match('^([^%.]+)%.(.+)$')
+   local values=b.settings[category][field]
+   for i=0,#values-1 do values[i]=i%2 end
+   label_click(entry[2],0,2)
+   assert(c.cur_sub_mode==entry[4],'native Other-material selection differs')
+   for _,query in ipairs{'','a','zzzznomatch'}do
+    c.spec_filter='';c.entering_spec_filter=true
+    for i=1,#query do
+     df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
+     gui.simulateInput(view,string.format('STRING_A%03d',query:byte(i)))
+    end
+    view:render(dfhack.getTickCount());assert(c.spec_filter:lower()==query,'native filter differs')
+    local size,address=df.sizeof(df.global.game.main_interface)
+    local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+    local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[4]),query)
+    assert(code==0,text)
+    assert(dfhack.internal.memcmp(guard,address,size)==0,'Other-material probe changed native UI');df.delete(guard)
+    local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'Other-material row count')
+    for i,row in ipairs(rows)do
+     local actual=c.spec_item[i-1]
+     assert(row.name==dfhack.df2utf(actual.name) and row.visible==actual.on,'Other-material name/order/filter '..i)
+     assert(row.field==entry[3] and row.index>=0 and row.index<#values,'Other-material setting identity')
+     local _,expected_pointer=df.sizeof(values:_field(row.index))
+     local _,actual_pointer=df.sizeof(actual.set_pointer)
+     assert(actual_pointer==expected_pointer,'Other-material setting pointer')
+     assert(row.enabled==(values[row.index]~=0),'Other-material setting value')
+    end
+    records[#records+1]={probe='other_material_rows',mode=entry[4],query=query,rows=rows}
+    -- Leave oracle typing focus before testing actual button effects.
+    c.entering_spec_filter=false
+    for _,action in ipairs{{'All',1},{'None',0}}do
+     local expected={};for i,v in ipairs(values)do expected[i]=v end
+     for _,row in ipairs(rows)do if row.visible then expected[row.index]=action[2]end end
+     local pointer=label_click(action[1],0,3)
+     local differences={}
+     for i,v in ipairs(values)do if v~=expected[i] then differences[#differences+1]={index=i,actual=v,expected=expected[i]}end end
+     records[#records+1]={probe='other_material_action',mode=entry[4],query=query,action=action[1],pointer=pointer,differences=differences}
+     assert(#differences==0,'native filtered action changed unexpected row '..json.encode(differences))
+    end
+   end
+   local original={};for _,v in ipairs(values)do original[#original+1]=v end
+   values:resize(0);c.spec_filter='';c.entering_spec_filter=false
+   -- A repeated click on the already selected submode keeps native's cached
+   -- rows. Leave and re-enter after this test-only external vector change.
+   local alternate=(entry[4]==53 or entry[4]==56) and 'Bars: metal' or entry[4]==91 and 'Weapons' or entry[4]==102 and 'Body' or 'Type'
+   label_click(alternate,0,2)
+   label_click(entry[2],0,2);assert(c.cur_spec_item_sz==0,'native empty vector has rows')
+   label_click('All',0,3);assert(#values==0,'native All resized empty vector')
+   label_click('None',0,3);assert(#values==0,'native None resized empty vector')
+   records[#records+1]={probe='other_material_empty',mode=entry[4],stored_count=#values}
+   values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)

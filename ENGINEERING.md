@@ -154,6 +154,37 @@ creation and removal. Complete settings/unrelated-state snapshots matched;
 diagnostics were clean, source hashes unchanged and owned DF closed without
 saving. This focused scope does not claim the full stockpile regression suite.
 
+Thirteen inorganic lists use the owned native row service: Furniture Stone/clay
+and Metal; Ammo Metal; Coins; Bars metal; Blocks stone/clay and metal; Finished
+goods Stone/clay, Metal and Gem; Weapons Metal and Stone; Armor Metal. Their
+branches pass material type0, index from the stored vector, flags0, state0 and
+non-adjective formatting. The formatter bypasses its historical-material path;
+the material getter bounds-checks raw indices and retains DF's builtin fallback.
+No native menu scratch or derived historical cache is accessed.
+
+Native material flags determine membership independently for each list, including
+overlapping flags. Edits use stored vector lengths and visible native rows;
+empty/short vectors are not expanded. Coins can retain a native fallback row
+for an out-of-range stored index, unlike flagged lists whose fallback lacks the
+required flag. Do not replace this behavior with a blanket raw-count rejection.
+Staged summary counts, Stone-category lists and gem-specific lists remain separate.
+
+Protected run `build/stockpile-presets-native-20261025-044259` passed156 exact
+native list/search comparisons and312 actual All/None actions across full,
+short, empty and stale vectors. On its313-inorganic fixture, stone/clay lists
+contain89 rows, metal lists36 and Finished goods Gem127; Coins has313 rows,
+or314 with the extra stored fallback slot. Names, ordering, backing identity,
+visibility and state matched; probes preserved native UI/source settings.
+Source save hashes were unchanged and owned DF closed without saving. Bounded
+digests/samples are in `native_stockpile_filters.json.inorganic_lists`.
+Non-ASCII and rendered-panel acceptance remain unverified.
+Focused command run `build/stockpile-initialization-20261025-044859` passed315
+native observations,39 page reads and117 edits, plus creation/removal. Complete
+settings and unrelated-state snapshots matched; diagnostics were clean, source
+hashes unchanged and owned DF closed without saving. The lane restores its
+short-vector fixture after each list, allowing successive lists that share one
+backing field to run independently. Full workflow regression remains separate.
+
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row

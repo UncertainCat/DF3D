@@ -102,8 +102,14 @@ func header_actions(pile: int, categories: Array) -> void:
 
 func native_filter_lists(pile: int) -> void:
 	var exercised: Array = []
-	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192}
-	for entry in [["furniture/type","furniture.type",22],["refuse/type","refuse.type",30],["finished_goods/type","finished_goods.type",64],["wood","wood.mats",85],["furniture/other_materials","furniture.other_mats",25],
+	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192,"coins":128}
+	for entry in [["furniture/stone","furniture.mats",23],["furniture/metal","furniture.mats",24],
+		["ammo/metal","ammo.mats",47],["coins","coins.mats",50],
+		["bars_blocks/bars_metal","bars_blocks.bars_mats",52],["bars_blocks/blocks_stone","bars_blocks.blocks_mats",54],
+		["bars_blocks/blocks_metal","bars_blocks.blocks_mats",55],["finished_goods/stone","finished_goods.mats",65],
+		["finished_goods/metal","finished_goods.mats",66],["finished_goods/gem","finished_goods.mats",67],
+		["weapons/metal","weapons.mats",89],["weapons/stone","weapons.mats",90],["armor/metal","armor.mats",101],
+		["furniture/type","furniture.type",22],["refuse/type","refuse.type",30],["finished_goods/type","finished_goods.type",64],["wood","wood.mats",85],["furniture/other_materials","furniture.other_mats",25],
 		["ammo/other_materials","ammo.other_mats",46],
 		["bars_blocks/bars_other","bars_blocks.bars_other_mats",53],
 		["bars_blocks/blocks_other","bars_blocks.blocks_other_mats",56],
@@ -155,6 +161,8 @@ func native_filter_lists(pile: int) -> void:
 			await edit(pile,0,{"operation":2,"scope":2,"value":2,"list_key":key})
 			await native("filter_after",{"id":pile,"mode":mode})
 			if stopped: return
+
+		await native("filter_restore",{"id":pile,"field":field})
 
 	if not filter_modes.is_empty():
 		for mode in filter_modes:

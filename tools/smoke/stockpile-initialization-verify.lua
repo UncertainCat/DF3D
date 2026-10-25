@@ -6,12 +6,25 @@ local request=json.decode(f:read('*a'));f:close()
 if request.op:match('^quality_') or request.op:match('^filter_') then
  assert(df.global.pause_state,'quality observation requires pause')
  local b=assert(df.building.find(request.id))
- if request.op=='filter_setup' then
+ if request.op=='filter_setup' or request.op=='filter_restore' then
   local category,field=request.field:match('^([^%.]+)%.(.+)$')
-  b.settings[category][field]:resize(request.count)
-  for i=0,request.count-1 do b.settings[category][field][i]=0 end
+  local values=b.settings[category][field]
+  if request.op=='filter_restore' then
+   local saved=assert(_G.df3d_filter_saved,'missing filter fixture')
+   assert(saved.id==request.id and saved.field==request.field,'wrong filter fixture')
+   values:resize(#saved.values);for i,v in ipairs(saved.values)do values[i-1]=v end
+   _G.df3d_filter_saved=nil
+  else
+   if not _G.df3d_filter_saved then
+    local original={};for _,v in ipairs(values)do original[#original+1]=v end
+    _G.df3d_filter_saved={id=request.id,field=request.field,values=original}
+   end
+   assert(_G.df3d_filter_saved.id==request.id and _G.df3d_filter_saved.field==request.field,'unrestored filter fixture')
+   values:resize(request.count)
+   for i=0,request.count-1 do values[i]=0 end
+  end
   f=assert(io.open(out..'/response-'..index..'.json','w'));f:write(json.encode{status='passed'});f:close()
-  print('SEMANTIC_PASS filter_setup');return
+  print('SEMANTIC_PASS '..request.op);return
  end
  local function snapshot(v)
   if type(v)~='userdata' then return v end

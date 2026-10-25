@@ -361,7 +361,20 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
-  for _,entry in ipairs{{'Wood','wood','mats',85},{'Animals','animals','enabled',0},{'Corpses','corpses','corpses',28},
+  for _,entry in ipairs{{'Furniture','furniture','mats',23,'Stone/clay','inorganic','Type'},
+   {'Furniture','furniture','mats',24,'Metal','inorganic','Type'},
+   {'Ammo','ammo','mats',47,'Metal','inorganic','Type'},
+   {'Coins','coins','mats',50,nil,'inorganic'},
+   {'Bars/blocks','bars_blocks','bars_mats',52,'Bars: metal','inorganic','Bars: other materials'},
+   {'Bars/blocks','bars_blocks','blocks_mats',54,'Blocks: stone/clay','inorganic','Bars: other materials'},
+   {'Bars/blocks','bars_blocks','blocks_mats',55,'Blocks: metal','inorganic','Bars: other materials'},
+   {'Finished goods','finished_goods','mats',65,'Stone/clay','inorganic','Type'},
+   {'Finished goods','finished_goods','mats',66,'Metal','inorganic','Type'},
+   {'Finished goods','finished_goods','mats',67,'Gem','inorganic','Type'},
+   {'Weapons/trap comps','weapons','mats',89,'Metal','inorganic','Weapons'},
+   {'Weapons/trap comps','weapons','mats',90,'Stone','inorganic','Weapons'},
+   {'Armor','armor','mats',101,'Metal','inorganic','Body'},
+   {'Wood','wood','mats',85},{'Animals','animals','enabled',0},{'Corpses','corpses','corpses',28},
    {'Refuse','refuse','corpses',31,'Corpses'},{'Refuse','refuse','body_parts',32,'Body parts'},
    {'Refuse','refuse','skulls',33,'Skulls'},{'Refuse','refuse','bones',34,'Bones'},
    {'Refuse','refuse','shells',35,'Shells'},{'Refuse','refuse','teeth',36,'Teeth'},
@@ -370,17 +383,17 @@ require('gui.script').start(function()
    view:render(dfhack.getTickCount());label_click(entry[1])
    local values=b.settings[entry[2]][entry[3]];local original={}
    for _,v in ipairs(values)do original[#original+1]=v end
-   local wood=entry[4]==85
-   local raw_count=wood and #df.global.world.raws.plants.all or #df.global.world.raws.creatures.all
+   local wood=entry[4]==85;local inorganic=entry[6]=='inorganic'
+   local raw_count=inorganic and #df.global.world.raws.inorganics.all or wood and #df.global.world.raws.plants.all or #df.global.world.raws.creatures.all
    for _,count in ipairs{raw_count,1,0,raw_count+1}do
     c.spec_filter='';c.entering_spec_filter=false
     values:resize(count);for i=0,count-1 do values[i]=i%2 end
-    if entry[5] then label_click('Item types',0,2);label_click(entry[5],0,2)
+    if entry[5] then label_click(entry[7] or 'Item types',0,2);label_click(entry[5],0,2)
     else
      c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo');label_click(entry[1])
     end
     assert((entry[5] and c.cur_sub_mode or c.cur_main_mode)==entry[4],'wrong creature mode')
-    for _,query in ipairs{'',wood and 'maple' or 'aard','zzzznomatch'}do
+    for _,query in ipairs{'',inorganic and 'iron' or wood and 'maple' or 'aard','zzzznomatch'}do
      c.spec_filter='';c.entering_spec_filter=true
      for i=1,#query do
       df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
@@ -408,7 +421,7 @@ require('gui.script').start(function()
       label_click(action[1],0,3);assert(#values==count,'creature action resized vector')
       for i,v in ipairs(values)do assert(v==expected[i],'creature action changed excluded row')end
      end
-     records[#records+1]={probe=wood and 'wood_leaf_rows' or 'creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
+     records[#records+1]={probe=inorganic and 'inorganic_rows' or wood and 'wood_leaf_rows' or 'creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
     end
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end

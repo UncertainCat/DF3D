@@ -175,9 +175,13 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
     const std::vector<NativeStockpileSettingRange>& ranges) {
     if(!df::global::world || filter.size()>256)return std::nullopt;
+    // Inorganic branches pass material type0, state0 and flags0 to14d1920;
+    // bounds-checked14add70 reads raws/fallback material without historical lookup.
     // These branches have no historical-cache path. Color branches copy raw
     // descriptor names; constant branches use native labels and owned settings.
     switch(mode) {
+      case 23:case 24:case 47:case 50:case 52:case 54:case 55:
+      case 65:case 66:case 67:case 89:case 90:case 101:break;
       case 22:case 30:case 64:break;
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
@@ -252,6 +256,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
         hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
+        hash(base+0x14d1920,0x459)==0xf48e28715360ed9aULL &&
         hash(base+0x14add70,0x12f)==0x1f897b15772d540ULL &&
         hash(base+0x145bee0,0x5e)==0x6abc4e374e372eefULL &&
         hash(base+0x14e1ec0,0xb68)==0x1d38184423ba8a35ULL &&

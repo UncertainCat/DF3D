@@ -22969,5 +22969,4940 @@
       "diagnostics": "clean",
       "scope": "Modes22,30,64; individual hide scalars, filtered bulk, short/empty vectors, creation and removal"
     }
+  },
+  "inorganic_lists": {
+    "run": "build/stockpile-presets-native-20261025-044259",
+    "status": "passed",
+    "comparisons": 156,
+    "native_bulk_actions": 312,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "48aade08c3edd50bc07cfcd539ce7762d112b077b3869feb55a1975bf06cabcb",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "4c7b72a6fbb75b31bfc230f4d47461fb843091e2c563979ad8596f042a2ebef9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "4c7b72a6fbb75b31bfc230f4d47461fb843091e2c563979ad8596f042a2ebef9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "48aade08c3edd50bc07cfcd539ce7762d112b077b3869feb55a1975bf06cabcb",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "4c7b72a6fbb75b31bfc230f4d47461fb843091e2c563979ad8596f042a2ebef9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 23,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "4c7b72a6fbb75b31bfc230f4d47461fb843091e2c563979ad8596f042a2ebef9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "494c30361d550d80f6efa35c8351c5718a3dcff617923d4bf0bd8e0dc945d81d",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "15c616d6f742799687238d74b65f153970d27e26996470cf28d81b4511c7c214",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "759a171ded38e8b144ade77b484596b14f614adbabf467faf9e20d7b435338d5",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "6a640a1d26dd36f459fcc7ebb6e1daf95938a6958efa6422ba6c55fd20db59af",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "6a640a1d26dd36f459fcc7ebb6e1daf95938a6958efa6422ba6c55fd20db59af",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "d73b6d0c46decf684008fe5a09b660705c43e0d6e3159837414db702fba72a42",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "494c30361d550d80f6efa35c8351c5718a3dcff617923d4bf0bd8e0dc945d81d",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "15c616d6f742799687238d74b65f153970d27e26996470cf28d81b4511c7c214",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 24,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "759a171ded38e8b144ade77b484596b14f614adbabf467faf9e20d7b435338d5",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "337f10ae377673848fd37a306f4aec1c7f3077691640cd81078706d814171263",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "db35ff8fa552f66ccf32881d4826c52423d1004e7cf4374bb97a755719bb5c51",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "0c5e482442c331ecad3696ff89b80e69367bc1a8e5c02ae96066008cff623ba4",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "c7aa13e6bfe7e9610fc6903d30c72916862d34b0cebdcad157f28ebfa28c5e80",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "c7aa13e6bfe7e9610fc6903d30c72916862d34b0cebdcad157f28ebfa28c5e80",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "a57679b3fb32052f02ecabfe5d2dd0abd8fd57eb4c9478a20fc8835081507e68",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "337f10ae377673848fd37a306f4aec1c7f3077691640cd81078706d814171263",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "db35ff8fa552f66ccf32881d4826c52423d1004e7cf4374bb97a755719bb5c51",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 47,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "0c5e482442c331ecad3696ff89b80e69367bc1a8e5c02ae96066008cff623ba4",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "ammo.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 313,
+        "visible_count": 313,
+        "rows_sha256": "1a9024410515c887ab663536ab7f5fbc4d5fb857be2eb7b06aaf14e8331c6426",
+        "visible_indices_sha256": "b8b8a9b5889a8fe35f200d19afcdf26d3734c33a1272d18c5d8a4f454d0d11ce",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 293,
+            "name": "Abominable murk",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 313,
+        "visible_count": 3,
+        "rows_sha256": "5d77f229123a9a9b3b19ecb145e949f997ed0b22af502795b2bfb029a9036040",
+        "visible_indices_sha256": "ec0cdd42e682ad7faa8713e3dd52c96df908857d9a9e1fcc9110d9581e682458",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 293,
+            "name": "Abominable murk",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 313,
+        "visible_count": 0,
+        "rows_sha256": "39f7fef575e22daa199306019e018181f706d1b73ee1678066ddec6f4a39f49c",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 293,
+            "name": "Abominable murk",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "22c73447b190ba723a2750c251f13c49c2881495f7d55ce6c8fd0075ad3849e3",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "22c73447b190ba723a2750c251f13c49c2881495f7d55ce6c8fd0075ad3849e3",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "ba2c1ab5ef531e9ad9877919f4c693f8b865bd6d84483b348c8e7e34158d907c",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 314,
+        "visible_count": 314,
+        "rows_sha256": "df14d969e15ea93ac1e3ca187ca96b9690913cb285c2170342f7eb1c793aed6f",
+        "visible_indices_sha256": "796656138fbf8d727217a5502f6758a7b09a181a35b36971e20e9930bb545a3a",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 293,
+            "name": "Abominable murk",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "coins.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 314,
+        "visible_count": 3,
+        "rows_sha256": "18d7ba3f18b4bdbcd57c0d2c052e64d64423dee8b6c47d5993bc036ef3c5219b",
+        "visible_indices_sha256": "ec0cdd42e682ad7faa8713e3dd52c96df908857d9a9e1fcc9110d9581e682458",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 293,
+            "name": "Abominable murk",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 50,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 314,
+        "visible_count": 0,
+        "rows_sha256": "609e85ac042631eb5c92402d8e72fe2191f6cf43b522644cd252dc7d9f27a4ce",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 293,
+            "name": "Abominable murk",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "coins.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "1719cb9357bd9f83a9ab4a0ed34dfc6bb4e03ed456f61971b9d0e760bab5c2f7",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "417bc6fe9a426021c92100957d13631b95d1de2999b0312c1898c84e0e33e9e5",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "a822fa66b4034fa38893eece2565bc21502c845e872d34b13c6a847cc646bd3f",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "ba900d4f481ffd5b7f9bc5a6dfe91c27ecf562f612c06998c6082c4f47dad079",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "ba900d4f481ffd5b7f9bc5a6dfe91c27ecf562f612c06998c6082c4f47dad079",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8eba9add658688107add2ad1701e565f5f44f185d08f8fbf01824699a9a3e4ef",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "1719cb9357bd9f83a9ab4a0ed34dfc6bb4e03ed456f61971b9d0e760bab5c2f7",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.bars_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "417bc6fe9a426021c92100957d13631b95d1de2999b0312c1898c84e0e33e9e5",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 52,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "a822fa66b4034fa38893eece2565bc21502c845e872d34b13c6a847cc646bd3f",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.bars_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "eac87e76d286e50045ba09bdd8379a08b46065ae04e8796fd020ca18d40410de",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "bb94158827bb9066d3e46f86465df048a9dbd1aa41760fc82e2d4523eec9e7f9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "bb94158827bb9066d3e46f86465df048a9dbd1aa41760fc82e2d4523eec9e7f9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "eac87e76d286e50045ba09bdd8379a08b46065ae04e8796fd020ca18d40410de",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "bb94158827bb9066d3e46f86465df048a9dbd1aa41760fc82e2d4523eec9e7f9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 54,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "bb94158827bb9066d3e46f86465df048a9dbd1aa41760fc82e2d4523eec9e7f9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "5a165ce392def371dd7f66d7e4ba7816fc56afc95bfe7c71249fd644b51e8c9c",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "45d44d3dedab75bc909fe0e337811347b8b1452080df8fa44726396ce3039793",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "9e35eb1280a2aada992defa6056a9aadb1fa25d948e8ae39e4830502a1b09aa9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a5b59f139364242af5334cfcf2a24d1b6137bd3e7dec65c822c890b3fdd8e4db",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a5b59f139364242af5334cfcf2a24d1b6137bd3e7dec65c822c890b3fdd8e4db",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "eec0ada56224d48c8844a900c5961c69ca489808bb4cd9adc0ada0062926184e",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "5a165ce392def371dd7f66d7e4ba7816fc56afc95bfe7c71249fd644b51e8c9c",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "bars_blocks.blocks_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "45d44d3dedab75bc909fe0e337811347b8b1452080df8fa44726396ce3039793",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 55,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "9e35eb1280a2aada992defa6056a9aadb1fa25d948e8ae39e4830502a1b09aa9",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "bars_blocks.blocks_mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "12da00c24a6fdab52a3a235b02ce446fc657de49d77816b9085d7bd94302abad",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "664847a99a34a9653d024cdb6c23dfffd3f03bfd9eb0cc2202bc616717d74cb0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "664847a99a34a9653d024cdb6c23dfffd3f03bfd9eb0cc2202bc616717d74cb0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "12da00c24a6fdab52a3a235b02ce446fc657de49d77816b9085d7bd94302abad",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "664847a99a34a9653d024cdb6c23dfffd3f03bfd9eb0cc2202bc616717d74cb0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 65,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "664847a99a34a9653d024cdb6c23dfffd3f03bfd9eb0cc2202bc616717d74cb0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "5cf950ea0bdfee175e7e9fc003ef0c974309419c91c67aad280f9cf1b1273ef6",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "675fd41418b5d4be55a6949445ba0474c20d228d98809481fbd1d4801dc8181d",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "e01a92eaca330bf213fea18eb71cd2e8fc2ae6895eec1a8312670413331eddcb",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "c06bf5a9449d00e615acd22fe52e0ecf230068d2b82ed8fea6c71589c87da9fa",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "c06bf5a9449d00e615acd22fe52e0ecf230068d2b82ed8fea6c71589c87da9fa",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "68ef6f6178f6e20ee892a5b33febe533516c0d0a3d80071c6210144b610604c6",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "5cf950ea0bdfee175e7e9fc003ef0c974309419c91c67aad280f9cf1b1273ef6",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "675fd41418b5d4be55a6949445ba0474c20d228d98809481fbd1d4801dc8181d",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 66,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "e01a92eaca330bf213fea18eb71cd2e8fc2ae6895eec1a8312670413331eddcb",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 127,
+        "rows_sha256": "b77c8987da6d4f49f1f7576829b2714b87d7a9489d0f7616a5f55f216620fe96",
+        "visible_indices_sha256": "1c8f0f9744d539967380e49e329ea4d7b7b8507e0bb4439e88f7354039d13f39",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 113,
+            "name": "Alexandrite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 106,
+            "name": "Almandine",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 125,
+            "name": "Yellow spessartine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 1,
+        "rows_sha256": "9dffda7b1e1f50a4b7bf273c541084792b96247cb2dd7d580877973b792b4d31",
+        "visible_indices_sha256": "8fc9a0314c3333740b36e30fd1d969f107377d7c987f645b58d2975aef7938b4",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 113,
+            "name": "Alexandrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 106,
+            "name": "Almandine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 125,
+            "name": "Yellow spessartine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 127,
+        "visible_count": 0,
+        "rows_sha256": "8bed570f6fdca0095f7bbfee4e2d853dec10b7dede7f46c17eb79b7b9123307a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 113,
+            "name": "Alexandrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 106,
+            "name": "Almandine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 125,
+            "name": "Yellow spessartine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 127,
+        "rows_sha256": "b77c8987da6d4f49f1f7576829b2714b87d7a9489d0f7616a5f55f216620fe96",
+        "visible_indices_sha256": "1c8f0f9744d539967380e49e329ea4d7b7b8507e0bb4439e88f7354039d13f39",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 113,
+            "name": "Alexandrite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 106,
+            "name": "Almandine",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 125,
+            "name": "Yellow spessartine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 1,
+        "rows_sha256": "9dffda7b1e1f50a4b7bf273c541084792b96247cb2dd7d580877973b792b4d31",
+        "visible_indices_sha256": "8fc9a0314c3333740b36e30fd1d969f107377d7c987f645b58d2975aef7938b4",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 113,
+            "name": "Alexandrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 106,
+            "name": "Almandine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 125,
+            "name": "Yellow spessartine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 67,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 127,
+        "visible_count": 0,
+        "rows_sha256": "8bed570f6fdca0095f7bbfee4e2d853dec10b7dede7f46c17eb79b7b9123307a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 113,
+            "name": "Alexandrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 106,
+            "name": "Almandine",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 125,
+            "name": "Yellow spessartine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.mats",
+            "index": 123,
+            "name": "Yellow zircon",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "368a64e8e228c924bfc4570f9382069d365d66ca92850535e7644a49396374cb",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "b718d752fb3b23ab28253f29d1276f90d0379a371be673373550160e78fa3f58",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "a00b7136ec72057c6ddfcb066b4884250359f1b81e16ea0d749f6da27a5971fc",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "27e4e221b7bd9904b2e56d9384266a53de0b2f9b417e7d9e29128c70a190b68c",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "27e4e221b7bd9904b2e56d9384266a53de0b2f9b417e7d9e29128c70a190b68c",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "340f4a613a77574dd810754757f014191c70466e67d77617e60a3ada88780ccd",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "368a64e8e228c924bfc4570f9382069d365d66ca92850535e7644a49396374cb",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "b718d752fb3b23ab28253f29d1276f90d0379a371be673373550160e78fa3f58",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 89,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "a00b7136ec72057c6ddfcb066b4884250359f1b81e16ea0d749f6da27a5971fc",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "731f4b679e1d930c02dcba65bf20cb8d2c4b3ab76f250db13f0bd5160277eea7",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "de921625d7e09eec5d8a5fea26d7dc5e47ea61bc137ce081698ad1f0ad8b937a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "de921625d7e09eec5d8a5fea26d7dc5e47ea61bc137ce081698ad1f0ad8b937a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 89,
+        "rows_sha256": "731f4b679e1d930c02dcba65bf20cb8d2c4b3ab76f250db13f0bd5160277eea7",
+        "visible_indices_sha256": "d28de7842f719d67280a55a2f66ccbc58f2cf9ee76c91f575e1e7f2ccaee1b55",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "de921625d7e09eec5d8a5fea26d7dc5e47ea61bc137ce081698ad1f0ad8b937a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 90,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 89,
+        "visible_count": 0,
+        "rows_sha256": "de921625d7e09eec5d8a5fea26d7dc5e47ea61bc137ce081698ad1f0ad8b937a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "weapons.mats",
+            "index": 31,
+            "name": "Tin glaze",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "f579a08400afbeb4683ce5459f6736ed5424dbd8189be34ecdb8ef93938bf0f9",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "0ba1f495ebfdb8c317f86b108a10b40c4a9217d0fa23b052ad9f38e25b36893b",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "3d855eb49de368bbbb08781953a6a3d4b221ce61a133c66dc96d500710ebb056",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "acc3b647e4a323b6fe788ff14be557248bd8df104e53b81600e42265cf2bfcbf",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "acc3b647e4a323b6fe788ff14be557248bd8df104e53b81600e42265cf2bfcbf",
+        "visible_indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "f250763a74cb2a17439c0665bc5ef3776f9f8aba72b1ccad9a6f00359ed8a693",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 0,
+            "name": "Iron",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 36,
+        "rows_sha256": "f579a08400afbeb4683ce5459f6736ed5424dbd8189be34ecdb8ef93938bf0f9",
+        "visible_indices_sha256": "e00f7960fc63b68690d371f877d9b785c43074029db39c4e119535397f832852",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "iron",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 2,
+        "rows_sha256": "0ba1f495ebfdb8c317f86b108a10b40c4a9217d0fa23b052ad9f38e25b36893b",
+        "visible_indices_sha256": "2732b46e7c09488fa6b19de7e81cdfefc4a58ec3b8758a3edac158e2df0c904c",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 101,
+        "probe": "inorganic_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 36,
+        "visible_count": 0,
+        "rows_sha256": "3d855eb49de368bbbb08781953a6a3d4b221ce61a133c66dc96d500710ebb056",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 25,
+            "name": "Adamantine",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 17,
+            "name": "Aluminum",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 275,
+            "name": "Twinkling metal",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "armor.mats",
+            "index": 5,
+            "name": "Zinc",
+            "visible": false
+          }
+        ]
+      }
+    ],
+    "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
+    "omissions": [
+      "Non-ASCII search",
+      "Rendered settings-panel parity",
+      "Stone category and gem-specific material lists"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-044859",
+      "status": "passed",
+      "native_observations": 315,
+      "page_reads": 39,
+      "edits": 117,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "Thirteen inorganic modes; creation/removal, filtered/individual edits, short/empty backing vectors; shared fixture restored between lists"
+    }
   }
 }

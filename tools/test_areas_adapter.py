@@ -1081,6 +1081,23 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     local inorganic_modes={[23]={'furniture','mats','IS_STONE'},[24]={'furniture','mats','IS_METAL'},
+      [47]={'ammo','mats','IS_METAL'},[50]={'coins','mats'},[52]={'bars_blocks','bars_mats','IS_METAL'},
+      [54]={'bars_blocks','blocks_mats','IS_STONE'},[55]={'bars_blocks','blocks_mats','IS_METAL'},
+      [65]={'finished_goods','mats','IS_STONE'},[66]={'finished_goods','mats','IS_METAL'},
+      [67]={'finished_goods','mats','IS_GEM'},[89]={'weapons','mats','IS_METAL'},
+      [90]={'weapons','mats','IS_STONE'},[101]={'armor','mats','IS_METAL'}}
+     if inorganic_modes[mode]then
+      local category,field,flag=table.unpack(inorganic_modes[mode]);local rows={}
+      for i,value in ipairs(b.settings[category][field])do
+       local raw=df.global.world.raws.inorganics.all[i]
+       if raw and (not flag or raw.material.flags[flag]) or not raw and mode==50 then
+        local label=raw and 'Inorganic '..(i-1) or 'Native fallback'
+        rows[#rows+1]={field=category..'.'..field,index=i-1,label=label,enabled=value~=0,visible=label:lower():find(query:lower(),1,true)~=nil}
+       end
+      end
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      if mode==22 or mode==30 or mode==64 then
       local category=mode==22 and 'furniture' or mode==30 and 'refuse' or 'finished_goods'
       local rows={};local captions={CHAIN='Chains',BOOK='Codices',INSTRUMENT='Musical instruments',ANVIL='Anvils',CHAIR='Thrones',UNCAPTURED_TOOL='Native tool'}
@@ -1309,9 +1326,13 @@ def main():
         assert result["ok"], result["message"]
         return [r["index"] for r in result["settings"].values()]
     assert setting_indices("finished_goods/gem") == [0]
-    assert setting_indices("finished_goods/metal") == [1]
-    assert setting_indices("finished_goods/stone") == [2]
+    assert setting_indices("finished_goods/metal") == [0, 1]
+    assert setting_indices("finished_goods/stone") == [0, 1, 2]
     assert setting_indices("coins") == [0, 1, 2, 3]
+    lua.execute("make_setting('coins.mats',4,{0,0,0,0,9})")
+    stale_coins, _ = setting_page("coins")
+    assert stale_coins["settings"][5]["index"] == 4 and stale_coins["settings"][5]["label"] == "Native fallback"
+    lua.execute("make_setting('coins.mats',4,{0,1,0,1})")
     assert setting_indices("gems/cut_gem") == [0] and setting_indices("gems/cut_stone") == [1, 2]
     assert setting_page("gems/rough_gem")[0]["settings"][1]["label"] == "native irregular plural"
     lua.execute("df.global.world.raws.inorganics.all[1].material.gem_name1='alexandrite';df.global.world.raws.inorganics.all[1].material.gem_name2='STP'")
@@ -1557,7 +1578,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1843,7 +1864,7 @@ def main():
     assert not setting_page("wood")[0]["ok"]
     assert not settings_adapter(fixed_edit("wood", value=2))["ok"]
     lua.execute("force_rows_failure=false;make_setting('wood.mats',3,{0,0,7,9})")
-    lua.execute("make_setting('finished_goods.mats',3,{0,0,0,9});fixture_partitions['finished_goods.mats']={8,2,4}")
+    lua.execute("df.global.world.raws.inorganics.all={{flags={},material={flags={IS_GEM=true}}},{flags={},material={flags={IS_METAL=true}}},{flags={},material={flags={IS_STONE=true}}}};make_setting('finished_goods.mats',3,{0,0,0,9});fixture_partitions['finished_goods.mats']={8,2,4}")
     assert settings_adapter(fixed_edit("finished_goods/metal"))["ok"]
     assert lua.eval("pile.settings.finished_goods.mats[1]==0 and pile.settings.finished_goods.mats[2]==1 and pile.settings.finished_goods.mats[3]==0 and pile.settings.finished_goods.mats[4]==9")
     assert settings_adapter(fixed_edit("finished_goods/gem", "finished_goods/gem/1"))["message"] == "Unknown stockpile settings row"
@@ -1886,32 +1907,13 @@ def main():
     assert settings_adapter(fixed_edit("refuse/type", value=2))["ok"]
     assert lua.eval("pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide")
     assert not settings_adapter(fixed_edit("refuse", "refuse/type/fresh_raw_hide"))["ok"]
-    # Metadata for every target is checked before any field is written.
-    # Filtered shared vectors keep other eligible partitions zero on expansion;
-    # only truly ineligible slots receive the native filler value of one.
-    lua.execute(r"""
-    unfiltered_fill=settings_fill
-    df.global.world.raws.inorganics.all={
-     {flags={},material={flags={IS_GEM=true}}},
-     {flags={},material={flags={IS_METAL=true}}},
-     {flags={},material={flags={}}}}
-    make_setting('finished_goods.mats',3,{})
-    function settings_fill(b,field,members,allowed,enabled,budget)
-     if field~='finished_goods.mats' or type(members)~='string' then return unfiltered_fill(b,field,members,allowed,enabled,budget) end
-     assert(members=='\0\1\0' and allowed=='\1\1\0')
-     local values=b.settings.finished_goods.mats
-     local resize=#values<#members
-     for i=1,#members do
-      if resize and allowed:byte(i)==0 then values[i]=1
-      elseif members:byte(i)~=0 then values[i]=enabled and 1 or 0
-      elseif values[i]==nil then values[i]=0 end
-     end
-     return {ok=true,steps=2}
-    end
-    """)
+    # Native filtered leaves preserve empty backing storage and unrelated rows.
+    lua.execute("make_setting('finished_goods.mats',3,{})")
     assert settings_adapter(fixed_edit("finished_goods/metal", value=2, query="inorganic 1"))["ok"]
-    assert lua.eval("pile.settings.finished_goods.mats[1]==0 and pile.settings.finished_goods.mats[2]==1 and pile.settings.finished_goods.mats[3]==1")
-    lua.execute("settings_fill=unfiltered_fill")
+    assert lua.eval("#pile.settings.finished_goods.mats==0")
+    lua.execute("make_setting('finished_goods.mats',3,{0,0,7,9})")
+    assert settings_adapter(fixed_edit("finished_goods/metal", value=2, query="inorganic 1"))["ok"]
+    assert lua.eval("pile.settings.finished_goods.mats[1]==0 and pile.settings.finished_goods.mats[2]==1 and pile.settings.finished_goods.mats[3]==7 and pile.settings.finished_goods.mats[4]==9")
     # Header actions are a single owned native transaction, independent of the
     # old per-field fill/layout plan. Failures publish nothing and never replay.
     lua.execute("all_fill_calls={};force_header_error=true;pile.settings.ammo.other_mats={0,0}")

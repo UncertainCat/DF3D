@@ -229,6 +229,10 @@ for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
 local native_setting_modes={
+ ['furniture/stone']=23,['furniture/metal']=24,['ammo/metal']=47,['coins']=50,
+ ['bars_blocks/bars_metal']=52,['bars_blocks/blocks_stone']=54,['bars_blocks/blocks_metal']=55,
+ ['finished_goods/stone']=65,['finished_goods/metal']=66,['finished_goods/gem']=67,
+ ['weapons/metal']=89,['weapons/stone']=90,['armor/metal']=101,
  ['furniture/type']=22,['refuse/type']=30,['finished_goods/type']=64,
  ['wood']=85,
  ['animals/animals']=0,['corpses']=28,

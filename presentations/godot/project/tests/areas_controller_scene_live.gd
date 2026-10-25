@@ -124,6 +124,8 @@ func pointer_areas() -> void:
 			if stopped: return
 			await pointer_stockpile_noop(origin)
 			if stopped: return
+			await pointer_stockpile_transfer(origin)
+			if stopped: return
 		editor.close_panel()
 	if not stockpiles_only: await pointer_zone_boundary_cells()
 	if stopped: return
@@ -659,6 +661,61 @@ func pointer_stockpile_noop(origin: Vector3i) -> void:
 	await click_control(editor.paint_view.buttons.remove)
 	if not await wait_ui(func(): return settled(),"remove after no-op"): return
 	await native("removed",{"id":id})
+
+func pointer_stockpile_transfer(origin: Vector3i) -> void:
+	step = "viewport multi-donor transfer and linked donor deletion"
+	editor.close_panel()
+	var ids: Array[int] = []
+	for offset in [0,2,4]:
+		var made := await request({"action":10,"kind":0,"operation":5,"paint_mode":1,"paint_z":origin.z,
+			"spans":[{"x":origin.x+offset,"y":origin.y,"length":2 if offset==4 else 1}]})
+		if stopped: return
+		ids.append(int(made.areas[0].id))
+		await native("pile_designations",{"id":ids.back()})
+	for pair in [[ids[0],ids[1]],[ids[2],ids[1]],[ids[0],ids[2]]]:
+		for give in [true,false]:
+			var current := await inspect(pair[0])
+			await request({"action":13,"kind":0,"id":pair[0],"link_id":pair[1],"give":give,"expected_revision":current.revision})
+			if stopped: return
+			await native("pile_link",{"id":pair[0],"target_id":pair[1],"give":give,"linked":true})
+	for pile_id in [ids[1],ids[2]]:
+		for give in [true,false]:
+			var current := await inspect(pile_id)
+			await request({"action":13,"kind":2,"id":int(fixture.workshop),"operation":15,"link_id":pile_id,
+				"give":give,"expected_revision":current.revision})
+			if stopped: return
+	var launcher: Button = scene._fortress_hud.navigation.Stockpiles
+	for frame in 4:
+		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+	launcher.show(); await click_control(launcher,true)
+	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"transfer launcher"): return
+	await pointer_click(tile_screen(origin))
+	if not await wait_ui(func(): return settled() and editor.mode=="inspect" and int(editor.selected.get("id",-1))==ids[0],"select transfer recipient"): return
+	await click_control(editor.stockpile_view.controls.repaint)
+	await click_control(editor.paint_view.buttons.rectangle)
+	await pointer_click(tile_screen(origin+Vector3i(2,0,0)))
+	await pointer_click(tile_screen(origin+Vector3i(4,0,0)))
+	if not await wait_ui(func(): return settled(),"multi-donor transfer receipt"): return
+	await native("snapshot",{"id":ids[0],"expected":{"tile_count":4,"width":5,"height":1,"extents":[1,0,1,1,1]}})
+	await native("snapshot",{"id":ids[2],"expected":{"tile_count":1,"width":2,"height":1,"extents":[0,1]}})
+	await native("transfer_links",{"deleted":ids[1],"survivors":[ids[0],ids[2],int(fixture.workshop)]})
+	for give in [true,false]:
+		await native("pile_link",{"id":ids[0],"target_id":ids[2],"give":give,"linked":true})
+		await native("link",{"id":int(fixture.workshop),"pile_id":ids[2],"give":give,"linked":true})
+	await capture("stockpiles_multi_transfer")
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func(): return settled() and editor.mode=="inspect","transfer Accept"): return
+	await click_control(editor.stockpile_view.controls.links)
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"transfer surviving links"): return
+	for row in editor.observed_links:
+		if not check(int(row.id)!=ids[1],"deleted donor remains in rendered links"): return
+	await capture("stockpiles_transfer_links")
+	editor.close_panel()
+	for pile_id in [ids[0],ids[2]]:
+		var current := await inspect(pile_id)
+		await request({"action":12,"kind":0,"id":pile_id,"expected_revision":current.revision})
+		if stopped: return
+		await native("removed",{"id":pile_id})
 
 func pointer_key(key: Key) -> void:
 	for pressed in [true,false]:

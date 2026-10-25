@@ -3476,6 +3476,30 @@
       "native_observations": 136,
       "captures": 71,
       "scope": "Full stockpile main-scene pointer creation/settings/storage/repaint/empty/regrow/removal and no-op creation regression after native publication migration. Created-stockpile panel capture inspected. This run does not exercise cross-pile transfer through pointer gestures."
+    },
+    "multi_donor_viewport": {
+      "run": "build/areas-acceptance-20261025-122320",
+      "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "status": "passed_with_known_issues",
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "owned_df_closed_without_saving": true,
+      "native_observations": 45,
+      "scope": "Viewport rectangle transfers from two newly created donors, deletes empty donor, removes its reciprocal stockpile/workshop links and retains surviving give/take links. Native creation pile designation assertions, exact masks and rendered links checked. Existing paint lifecycle regression included; settings excluded.",
+      "creation_designation_source": "Native inline 0x3538b4..0x3538dd marks accepted tiles before completion; completion alone leaves occupied cells without the pile designation.",
+      "failure_evidence": [
+        "build/areas-acceptance-20261025-121640",
+        "build/areas-acceptance-20261025-122051"
+      ],
+      "failures": "Missing creation pile designation clipped both newly created donors from subsequent repaint. Fixed by applying native pre-completion designation to accepted extent cells. Both failed sessions closed unsaved with two save manifests unchanged."
+    },
+    "creation_designation_regression": {
+      "run": "build/areas-acceptance-20261025-122437",
+      "status": "passed",
+      "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "native_observations": 90,
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "owned_df_closed_without_saving": true,
+      "scope": "Semantic creation/growth/erase/container and partial/full creation/repaint transfer regression after designation fix."
     }
   }
 }

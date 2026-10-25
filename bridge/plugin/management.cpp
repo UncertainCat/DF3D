@@ -1355,6 +1355,13 @@ int areaCreate(lua_State* L) {
       stock->room.width=bounds.width;stock->room.height=bounds.height;
       stock->stockpile_number=stockpileNumber;stock->settings=std::move(*settings);
       stock->room.extents=extents.release();
+      // Native creation marks accepted cells as piles before completion
+      // (3538b4..3538dd). Completion sets occupancy but not this designation.
+      for(int y=0;y<bounds.height;++y)for(int x=0;x<bounds.width;++x) {
+        if(stock->room.extents[y*bounds.width+x]==df::building_extents_type::None)continue;
+        auto* block=Maps::getTileBlock(bounds.x+x,bounds.y+y,z);
+        block->designation[(bounds.x+x)&15][(bounds.y+y)&15].bits.pile=true;
+      }
       if(!df3d_area::nativeStockpileComplete(*stock))return "Native area construction failed; cleanup uncertain; inspect before retrying";
       transfers.clearCells();
       if(!transfers.cleanup())return "Native area construction failed; cleanup uncertain; inspect before retrying";

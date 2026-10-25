@@ -258,7 +258,10 @@ before publication. Native inline bounds/number setup is reproduced with owned
 inputs, including floor-rounded center coordinates. Zones keep their separate
 existing registration path. The DFHack `setSize`/`constructAbstract` stockpile
 path was removed: it rejects occupied cells even when native's pile designation
-permits them. Matching all317 native tile types to HighPassable was insufficient
+permits them. Accepted creation cells receive the native pile designation before
+completion, matching the inline write at `0x3538b4..0x3538dd`. Completion alone
+sets building occupancy without that designation; omitting it prevents later
+paint transfers from recognizing newly created piles. Matching all317 native tile types to HighPassable was insufficient
 to establish that helper's full eligibility parity.
 
 Protected `build/areas-acceptance-20261025-120842` passes90 independent native
@@ -271,9 +274,15 @@ regression `build/areas-acceptance-20261025-120954` passes creation, settings,
 container limits, repaint, empty/regrow, removal and all-clipped creation with
 only the known separate-thread notice. The created panel capture was inspected;
 owned DF closed unsaved and both manifests are unchanged. This regression does
-not exercise cross-pile transfer gestures. Multi-donor viewport transfer,
-relationship cleanup acceptance and legacy whole-footprint replacement
-semantics remain unverified.
+not exercise cross-pile transfer gestures. Protected pointer run
+`build/areas-acceptance-20261025-122320` verifies a rectangle transferring cells
+from two newly created donors, deleting the empty donor, cleaning its reciprocal
+stockpile/workshop links and retaining both directions of surviving links.
+Native designation checks and exact footprints pass; transfer and surviving-link
+captures were inspected. Its45 native observations pass with only the known
+separate-thread notice, unchanged save manifests and unsaved owned closure.
+This establishes deletion cleanup, not native parity of link creation/editing.
+Legacy whole-footprint replacement semantics remain unverified.
 
 The native path calls tile-type predicates `0x289050` and `0x2c2f10`. Their complete
 code/data ranges are pinned in the fixture. Both take a uint16 scalar, read only

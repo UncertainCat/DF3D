@@ -128,7 +128,22 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='creation_noop_prepare' then
+if request.op=='pile_designations' then
+ local b=building()
+ for y=0,b.room.height-1 do for x=0,b.room.width-1 do
+  if b.room.extents[y*b.room.width+x]~=0 then
+   local tx,ty=b.room.x+x,b.room.y+y
+   local block=assert(dfhack.maps.getTileBlock(tx,ty,b.z))
+   assert(block.designation[tx%16][ty%16].pile,'created stockpile missing pile designation')
+  end
+ end end
+elseif request.op=='transfer_links' then
+ assert(not df.building.find(request.deleted),'empty donor still exists')
+ for _,survivor in ipairs(request.survivors)do
+  local observed=links(assert(df.building.find(survivor)))
+  for _,rows in pairs(observed)do for _,target in ipairs(rows)do assert(target~=request.deleted,'deleted donor remains linked')end end
+ end
+elseif request.op=='creation_noop_prepare' then
  assert(df.global.pause_state)
  local block=assert(dfhack.maps.getTileBlock(request.x,request.y,request.z))
  local x,y=request.x%16,request.y%16

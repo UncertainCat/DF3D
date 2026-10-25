@@ -70,6 +70,19 @@ void categoryHeader(const uint8_t* base,df::stockpile_settings& owned,size_t ind
     reinterpret_cast<Fill>(base+(enabled?fills[index]:clears[index]))(fields[index]);
 }
 }
+std::optional<bool> nativeStockpileTileType(uint16_t tile) {
+    auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return std::nullopt;
+    // Includes both branches and all immutable jump-table bytes. These leaves
+    // are called by native create/repaint; neither reads UI nor writes memory.
+    static const bool compatible=supported(base) &&
+        hash(base+0x289050,0x2eb)==0x0d12be3ad912c079fULL &&
+        hash(base+0x2c2f10,0x20)==0xee0f7c2a6109db61ULL;
+    if(!compatible)return std::nullopt;
+    using Predicate=bool (*)(uint16_t);
+    return reinterpret_cast<Predicate>(base+0x289050)(tile) ||
+        reinterpret_cast<Predicate>(base+0x2c2f10)(tile);
+}
 std::optional<int32_t> nativeStockpileTileCount(df::building_stockpilest& pile) {
     if(!df::global::world)return std::nullopt;
     auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

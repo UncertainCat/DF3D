@@ -9,6 +9,7 @@
 #include "PluginManager.h"
 #include "construction_site_native.h"
 #include "tile_description_native.h"
+#include "stockpile_native.h"
 #include "bed_appearance_native.h"
 #include "contact_capture.h"
 #include "room_discovery_native.h"
@@ -1553,6 +1554,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             }
             out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
+        if(parameters[0]=="stockpile-tile-types-read") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          uint32_t values[2]{};
+          for(size_t i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]>65535 || values[1]==0 || values[1]>1024 || values[1]>65536-values[0])return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          Json::Value result(Json::objectValue),rows(Json::arrayValue);
+          for(uint32_t i=0;i<values[1];++i) {
+            const auto allowed=df3d_area::nativeStockpileTileType(uint16_t(values[0]+i));
+            if(!allowed)return CR_FAILURE;
+            rows.append(*allowed);
+          }
+          result["first"]=values[0];result["allowed"]=std::move(rows);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="stockpile-summary-read") {
           if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
           int32_t id{};const auto& raw=parameters[1];
@@ -2195,6 +2215,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d stockpile-header-read <building-id> <category-bit-or-0-global> <1-none-or-2-all> (read-only native header action)\n"
         "df3d stockpile-wood-read <building-id> [filter] (read-only native Wood rows)\n"
         "df3d stockpile-summary-read <building-id> [category-mask] (read-only native summary indicators)\n"
+        "df3d stockpile-tile-types-read <first-uint16> <count1..1024> (read-only native tile predicates)\n"
         "df3d stockpile-rows-read <building-id> <native-mode> [filter] (read-only verified list modes)\n"
         "df3d door-support-read <x> <y> <z> (read-only wall support, not full placement)\n"
         "df3d bed-choices-read <item-id> <descriptor-color-count> (owned-state appearance diagnostic)\n"

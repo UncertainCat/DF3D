@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case=...
+local out,repaint,gestures,eligibility_case,test_predicates=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -11,6 +11,28 @@ require('gui.script').start(function()
   assert(dfhack.run_command('disable','overlay')==0)
   local b=assert(df.global.world.buildings.other.STOCKPILE[0])
   local pile_id=b.id
+  if test_predicates then
+   local guards={}
+   local function guard(address,size)
+    local copy=df.new('uint8_t',size);dfhack.internal.memmove(copy,address,size)
+    guards[#guards+1]={copy=copy,address=address,size=size}
+   end
+   local base=dfhack.internal.getImageBase()
+   for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
+   local size,address=df.sizeof(df.global.game.main_interface);guard(address,size)
+   size,address=df.sizeof(b);guard(address,size)
+   local allowed={}
+   for first=0,65535,1024 do
+    local text,code=dfhack.run_command_silent('df3d','stockpile-tile-types-read',tostring(first),'1024');assert(code==0,text)
+    local result=json.decode(text);assert(result.first==first and #result.allowed==1024)
+    for index,value in ipairs(result.allowed)do assert(type(value)=='boolean');if value then allowed[#allowed+1]=first+index-1 end end
+   end
+   for _,args in ipairs{{'-1','1'},{'65536','1'},{'0','0'},{'0','1025'},{'65535','2'}}do
+    local _,code=dfhack.run_command_silent('df3d','stockpile-tile-types-read',args[1],args[2]);assert(code~=0,'invalid range accepted')
+   end
+   for _,g in ipairs(guards)do assert(dfhack.internal.memcmp(g.copy,g.address,g.size)==0,'predicate changed RNG/UI/source');df.delete(g.copy)end
+   records[#records+1]={name='native-tile-predicates',tested=65536,allowed=allowed,guards_unchanged=true}
+  end
   local point={x=b.centerx,y=b.centery,z=b.z}
   gui.simulateInput(view,'D_STOCKPILES');df.global.game.main_interface.bottom_mode_selected=-1
   dfhack.gui.revealInDwarfmodeMap(point,true);view:render(dfhack.getTickCount())
@@ -124,6 +146,10 @@ require('gui.script').start(function()
      if case.all_wall then
       for _,p in ipairs{first,last}do local cell=assert(dfhack.maps.getTileBlock(p));cell.tiletype[p.x%16][p.y%16]=df.tiletype.StoneWall end
      end
+     if test_predicates then
+      local text,code=dfhack.run_command_silent('df3d','stockpile-tile-types-read',tostring(block.tiletype[x][y]),'1');assert(code==0,text)
+      case.native_tile_eligible=json.decode(text).allowed[1]
+     end
      local created
      if gestures=='eligibility-create' then
       gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
@@ -149,6 +175,10 @@ require('gui.script').start(function()
       start_present=dfhack.buildings.containsTile(observed,first.x,first.y),middle_present=dfhack.buildings.containsTile(observed,middle.x,middle.y),
       end_present=dfhack.buildings.containsTile(observed,last.x,last.y),tiles=dfhack.buildings.countExtentTiles(observed,-1),
       id=observed.id,bounds={observed.x1,observed.y1,observed.x2,observed.y2}}
+     if test_predicates then
+      local expected=case.native_tile_eligible and not case.hidden and (not case.building or case.building==0)
+      assert(dfhack.buildings.containsTile(observed,middle.x,middle.y)==expected,'native UI disagrees with owned scalar predicate and occupancy/visibility')
+     end
      if created then
       capture('eligibility-created-'..case.name)
       assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')

@@ -200,13 +200,26 @@ creation runs confirm full selected bounds with holes, deep-water/magma acceptan
 and no building published for an all-wall rectangle; painting remains open.
 These are native observations, not acceptance of DF3D's current placement path.
 The bridge still rejects whole rectangles using a local shape whitelist and
-liquid/occupancy checks. DFHack `Buildings::checkFreeTiles` also reconstructs
-rules and differs on liquid depth, so it is not a substitute native service.
+liquid/occupancy checks. DFHack `Buildings::checkFreeTiles` also reconstructs shape rules and is not
+a substitute native service. Its stockpile caller passes `allow_flow=true`:
+DF3D's precheck, rather than that call, causes the current liquid rejection.
 
 The native path calls tile-type predicates `0x289050` and `0x2c2f10`. Their complete
 code/data ranges are pinned in the fixture. Both take a uint16 scalar, read only
-embedded constants/tables, return AL, make no calls and write no memory. They
-have not yet been exposed or live-compared through a DF3D service. UI handler
+embedded constants/tables, return AL, make no calls and write no memory. The read-only wrapper `nativeStockpileTileType` pins the PE identity and both
+complete code/table digests before invoking them. Diagnostic command
+`df3d stockpile-tile-types-read <first-uint16> <count1..1024>` exposes bounded
+ranges, refusing invalid ranges and unsupported native code.
+
+Protected `build/stockpile-storage-native-gestures-eligibility-all-20261025-111702`
+compared every uint16 input: all65536 results match an independent decode of the
+immutable tables, with317 eligible values. The native pointer cases agree after
+visibility/occupancy gating, including liquid and all-wall repaint. UI, RNG and
+source-building memory guards remain unchanged. Owned DF closed unsaved and the
+source manifest is unchanged. Reproduce with `-PaintGestures -GestureCase
+eligibility -TilePredicates`; the fixture retains the accepted IDs and exact
+pointer observations. This establishes the native primitive, not migrated mutation
+behavior. UI handler
 `0x311c10` is not callable by the bridge. Its inline occupancy and overlapping
 stockpile effects still require an ownership audit; scalar tile eligibility alone
 does not establish full placement parity. Clipped/no-op replies must also be

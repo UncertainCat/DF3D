@@ -1,4 +1,4 @@
-param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint,[switch]$PaintGestures,[ValidateSet("partial-escape","partial-right","complete-escape","complete-right","brush","eligibility","eligibility-create")][string]$GestureCase="partial-escape",[ValidateSet("all","floor","wall","water1","water2","water7","magma1","building1","building2","hidden","ramp","open","all-wall")][string]$EligibilityCase="all")
+param([string]$CloneEvidence='build/native-save-effects-20260930-081415',[switch]$Repaint,[switch]$PaintGestures,[switch]$TilePredicates,[ValidateSet("partial-escape","partial-right","complete-escape","complete-right","brush","eligibility","eligibility-create")][string]$GestureCase="partial-escape",[ValidateSet("all","floor","wall","water1","water2","water7","magma1","building1","building2","hidden","ramp","open","all-wall")][string]$EligibilityCase="all")
 $ErrorActionPreference='Stop'
 if($GestureCase -eq 'eligibility-create' -and $EligibilityCase -eq 'all'){throw 'Creation cases require a fresh owned session per EligibilityCase'}
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
@@ -63,8 +63,9 @@ try {
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'Source load failed'}
  $repaintArg=if($Repaint -or $PaintGestures){'true'}else{'false'}
+ $predicateArg=if($TilePredicates){'true'}else{'false'}
  $gestureArg=if($PaintGestures){"'$GestureCase'"}else{'false'}
- $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg,$gestureArg,'$EligibilityCase')")
+ $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_storage_native.lua]==]))([==[$out]==],$repaintArg,$gestureArg,'$EligibilityCase',$predicateArg)")
  $r | ConvertTo-Json | Set-Content "$out/native.log"
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)

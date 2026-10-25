@@ -7,6 +7,8 @@
 namespace df {struct building_stockpilest;}
 
 namespace df3d_area {
+// Scalar native placement predicates; no map, UI or mutable scratch inputs.
+std::optional<bool> nativeStockpileTileType(uint16_t tile);
 // Safe-point diagnostic/service building block. The caller bounds raw counts.
 // Returns independently owned settings; never edits the source or native UI.
 std::optional<df::stockpile_settings> nativeStockpilePreset(

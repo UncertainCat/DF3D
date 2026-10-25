@@ -695,7 +695,7 @@
       "fnv1a64": "0xe80bd90267e67b53"
     }
   ],
-  "predicate_ownership_audit": "Both scalar predicates take a uint16 tile type. First reads only embedded immutable dispatch tables, second uses four scalar comparisons. Both return AL and write no memory, make no calls, read no UI state. Audit only: not yet invoked through DF3D.",
+  "predicate_ownership_audit": "Both scalar predicates take a uint16 tile type. First reads only embedded immutable dispatch tables, second uses four scalar comparisons. Both return AL and write no memory, make no calls, read no UI state. The native wrapper validates PE identity and complete code/table digests before invocation.",
   "findings": [
     "Mixed rectangles retain full selected bounds with holes for wall, hidden, building occupancy and open-space cells.",
     "Repaint allows water depths1,2,7 and magma1; fresh creation independently confirms water7 and magma1.",
@@ -703,10 +703,812 @@
     "Native repaint uses scalar predicates289050 and2c2f10 after hidden check; building occupancy gate follows. The inline path also handles overlap with another stockpile, requiring a separate ownership/effects audit."
   ],
   "omissions": [
-    "Runtime native-predicate wrapper and compatibility rejection",
-    "All tiletype values, vegetation and stairs",
     "Real building occupancy combinations and multi-pile overlap transfer/erase",
     "Full native inline call-graph audit beyond scalar predicates",
-    "DF3D clipping/no-op receipt reconciliation and live acceptance"
-  ]
+    "DF3D clipping/no-op receipt reconciliation and live acceptance",
+    "Compatibility refusal is code-inspected; no live executable mutation used to simulate mismatch.",
+    "All uint16 scalar inputs tested; live terrain vegetation/stair and occupancy combinations still incomplete."
+  ],
+  "native_wrapper_acceptance": {
+    "run": "build/stockpile-storage-native-gestures-eligibility-all-20261025-111702",
+    "result_sha256": "a0ece8af87dd9760b184f90aeb46efbf722cc1a50a2f020dc29867e3078535b1",
+    "status": "passed",
+    "source_preservation": "Owned source unchanged",
+    "owned_df_closed_without_saving": true,
+    "scalar_results": {
+      "allowed": [
+        4,
+        5,
+        6,
+        19,
+        25,
+        26,
+        27,
+        34,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        43,
+        44,
+        45,
+        46,
+        47,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        70,
+        72,
+        73,
+        75,
+        76,
+        227,
+        229,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        254,
+        255,
+        256,
+        257,
+        258,
+        263,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        377,
+        378,
+        379,
+        380,
+        383,
+        384,
+        385,
+        386,
+        388,
+        389,
+        390,
+        391,
+        392,
+        393,
+        394,
+        395,
+        396,
+        397,
+        398,
+        399,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        407,
+        408,
+        409,
+        410,
+        411,
+        412,
+        437,
+        438,
+        439,
+        440,
+        441,
+        442,
+        443,
+        444,
+        445,
+        473,
+        474,
+        475,
+        476,
+        477,
+        478,
+        479,
+        489,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        518,
+        519,
+        520,
+        521,
+        522,
+        523,
+        524,
+        525,
+        526,
+        527,
+        528,
+        529,
+        530,
+        531,
+        532,
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577,
+        578,
+        579,
+        580,
+        581,
+        582,
+        583,
+        584,
+        585,
+        586,
+        587,
+        588,
+        589,
+        590,
+        591,
+        592,
+        593,
+        594,
+        595,
+        596,
+        597,
+        598,
+        599,
+        600,
+        601,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        629,
+        630,
+        631,
+        632,
+        633,
+        634,
+        635,
+        636,
+        637,
+        638,
+        639,
+        640,
+        641,
+        642,
+        643,
+        644,
+        645,
+        646,
+        647,
+        648,
+        649,
+        650,
+        651,
+        652,
+        653,
+        654,
+        655,
+        656,
+        657,
+        658,
+        659,
+        660,
+        661,
+        662,
+        663,
+        664,
+        665,
+        666,
+        667,
+        668,
+        669,
+        670,
+        671,
+        672,
+        673,
+        674,
+        675,
+        676,
+        677,
+        678,
+        679,
+        680,
+        681,
+        682,
+        683,
+        684,
+        685,
+        686,
+        687,
+        688,
+        689,
+        690,
+        691,
+        692,
+        693,
+        694
+      ],
+      "guards_unchanged": true,
+      "name": "native-tile-predicates",
+      "tested": 65536
+    },
+    "independent_static_table_comparison": "All65536 values match;317 accepted.",
+    "pointer_comparisons": [
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561160,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": true,
+        "name": "floor",
+        "occupancy": 34,
+        "setup": {
+          "name": "floor",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 272,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561152,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": false,
+        "name": "wall",
+        "occupancy": 32,
+        "setup": {
+          "name": "wall",
+          "native_tile_eligible": false,
+          "tile": "StoneWall"
+        },
+        "start_present": true,
+        "tiles": 271,
+        "tiletype": "StoneWall"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561161,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": true,
+        "name": "water1",
+        "occupancy": 34,
+        "setup": {
+          "depth": 1,
+          "name": "water1",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 272,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561162,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": true,
+        "name": "water2",
+        "occupancy": 34,
+        "setup": {
+          "depth": 2,
+          "name": "water2",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 272,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561167,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": true,
+        "name": "water7",
+        "occupancy": 34,
+        "setup": {
+          "depth": 7,
+          "name": "water7",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 272,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 2658313,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": true,
+        "name": "magma1",
+        "occupancy": 34,
+        "setup": {
+          "depth": 1,
+          "magma": true,
+          "name": "magma1",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 272,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561152,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": false,
+        "name": "building1",
+        "occupancy": 33,
+        "setup": {
+          "building": 1,
+          "name": "building1",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 271,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561152,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": false,
+        "name": "building2",
+        "occupancy": 34,
+        "setup": {
+          "building": 2,
+          "name": "building2",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 271,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561664,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": false,
+        "name": "hidden",
+        "occupancy": 32,
+        "setup": {
+          "hidden": true,
+          "name": "hidden",
+          "native_tile_eligible": true
+        },
+        "start_present": true,
+        "tiles": 271,
+        "tiletype": "StoneFloor1"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561160,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": true,
+        "name": "ramp",
+        "occupancy": 34,
+        "setup": {
+          "name": "ramp",
+          "native_tile_eligible": true,
+          "tile": "StoneRamp"
+        },
+        "start_present": true,
+        "tiles": 272,
+        "tiletype": "StoneRamp"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561152,
+        "end_present": true,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": false,
+        "name": "open",
+        "occupancy": 32,
+        "setup": {
+          "name": "open",
+          "native_tile_eligible": false,
+          "tile": "OpenSpace"
+        },
+        "start_present": true,
+        "tiles": 271,
+        "tiletype": "OpenSpace"
+      },
+      {
+        "bounds": [
+          111,
+          61,
+          123,
+          84
+        ],
+        "designation": 561152,
+        "end_present": false,
+        "first": {
+          "x": 111,
+          "y": 61,
+          "z": 165
+        },
+        "id": 121,
+        "last": {
+          "x": 113,
+          "y": 61,
+          "z": 165
+        },
+        "middle": {
+          "x": 112,
+          "y": 61,
+          "z": 165
+        },
+        "middle_present": false,
+        "name": "all-wall",
+        "occupancy": 32,
+        "setup": {
+          "all_wall": true,
+          "name": "all-wall",
+          "native_tile_eligible": false,
+          "tile": "StoneWall"
+        },
+        "start_present": false,
+        "tiles": 269,
+        "tiletype": "StoneWall"
+      }
+    ],
+    "rejected_ranges": [
+      [
+        -1,
+        1
+      ],
+      [
+        65536,
+        1
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1025
+      ],
+      [
+        65535,
+        2
+      ]
+    ],
+    "scope": "Read-only native wrapper and native UI oracle. Production mutation path not yet migrated."
+  }
 }

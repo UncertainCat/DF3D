@@ -137,6 +137,16 @@ if request.op=='pile_designations' then
    assert(block.designation[tx%16][ty%16].pile,'created stockpile missing pile designation')
   end
  end end
+elseif request.op=='link_rows' then
+ local b=building();local expected={}
+ -- Order verified by native renderer and four-group pointer oracle.
+ for _,group in ipairs{{'take_from_workshop',2,2},{'give_to_workshop',2,1},{'take_from_pile',0,2},{'give_to_pile',0,1}} do
+  for _,target in ipairs(b.links[group[1]])do
+   expected[#expected+1]={id=target.id,kind=group[2],direction=group[3],name=dfhack.df2utf(B.getName(target))}
+  end
+ end
+ assert(#expected==#request.rows,'link row count')
+ for index,row in ipairs(expected)do check_properties(request.rows[index],row,'link row '..index)end
 elseif request.op=='link_overlap_prepare' then
  assert(df.global.pause_state and not _G.df3d_link_overlap)
  local saved={}

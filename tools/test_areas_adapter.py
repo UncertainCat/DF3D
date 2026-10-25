@@ -730,8 +730,8 @@ def main():
     links = call(9, link_selector)
     assert links["ok"] and links["list_revision"] > 0 and links["next_cursor"] == 0
     assert [(v["id"], v["kind"], v["direction"], v["name"]) for v in links["links"].values()] == [
-        (30, 0, 1, "Supply pile"), (30, 0, 2, "Supply pile"),
-        (40, 2, 1, "Carpenter"), (40, 2, 2, "Carpenter")]
+        (40, 2, 2, "Carpenter"), (40, 2, 1, "Carpenter"),
+        (30, 0, 2, "Supply pile"), (30, 0, 1, "Supply pile")]
     assert links["candidates"] is None and links["choices"] is None
     exhausted = lua.globals().request(9, lua.table_from(link_selector))
     exhausted["step_budget"] = 13
@@ -766,8 +766,8 @@ def main():
     maximum_links = call(9, link_selector)
     assert maximum_links["ok"] and len(maximum_links["links"]) == 128 and maximum_links["next_cursor"] == 128
     end_links = call(9, dict(link_selector, cursor=3968, expected_list_revision=maximum_links["list_revision"]))
-    assert len(end_links["links"]) == 128 and end_links["links"][128]["id"] == 3024
-    assert end_links["next_cursor"] == 0 and end_links["links"][128]["direction"] == 2
+    assert len(end_links["links"]) == 128 and end_links["links"][128]["id"] == 1124
+    assert end_links["next_cursor"] == 0 and end_links["links"][128]["direction"] == 1
     assert len(call(9, dict(link_selector, cursor=4096))["links"]) == 0
     lua.execute("table.insert(pile.links.give_to_pile,linked_pile)")
     assert not call(9, link_selector)["ok"]

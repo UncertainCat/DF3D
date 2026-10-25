@@ -97,11 +97,25 @@ known separate-thread notice remains. Offline
 controller, including stale/cancelled lookups and disconnect/new-epoch late
 results that dispatch no mutation or replay.
 
-Native renderer `0x33616d..0x33633b` indexes link vectors in reverse struct
-order: offsets0x48,0x30,0x18,0, corresponding to workshop take, workshop give,
-pile take, pile give. The current Lua list producer still emits the opposite
-group order. Correct this after a four-group native pointer oracle; ordering,
-scrolling/scaled input and broader live lifecycle remain unfinished.
+Native link-list handler `0x33616d..0x33633b` indexes link vectors in reverse
+struct order: offsets0x48,0x30,0x18,0, corresponding to workshop take, workshop
+give, pile take, pile give. The Lua list producer preserves this order and each
+native vector's ID order. It does not sort by translated names or click order.
+Protected native run `build/stockpile-storage-native-links-20261025-131841`
+verifies all four groups with two endpoints each, reverse ID insertion and
+opposing label order. Exact screen row labels and repeated first-row removal
+identify the native order. Names were restored, source unchanged and owned
+DF119156 closed unsaved. The four-group capture was inspected.
+
+Production `build/areas-acceptance-20261025-132105` passes77 native observations
+including all four rendered groups and actual first-row removal with reciprocal
+readback. Both save manifests are unchanged and owned DF115244 closed unsaved;
+only the known separate-thread notice remains. Offline
+`build/qa/stockpile-link-order` passes root CTest19/19, controller and adapter
+checks, including4096-row pagination. The production four-group capture was
+inspected: workshop-row icons and row backgrounds still differ from the native
+capture. Those graphics, scrolling/scaled input and broader live lifecycle
+remain unfinished.
 
 ## Native stockpile storage input (DF 53.16)
 

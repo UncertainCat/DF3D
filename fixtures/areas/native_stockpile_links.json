@@ -12,7 +12,7 @@
     "new_link": "Inserts reciprocal link, removes opposite direction at both endpoints, closes picker to list.",
     "escape": "Cancels picker and retains link list.",
     "removal": "Removes selected link and reciprocal endpoint.",
-    "ordering": "Observed workshop take row before stockpile take row; broader sorting unverified."
+    "ordering": "Workshop take, workshop give, pile take, pile give; each native vector in ascending ID order (reverse insertion/name order verified)."
   },
   "observations": [
     {
@@ -949,6 +949,89 @@
       "Unloaded in-map tile",
       "Malformed link vectors and capacity refusal",
       "Native link list grouping/scrolling/scaled input"
+    ]
+  },
+  "list_order_oracle": {
+    "run": "build/stockpile-storage-native-links-20261025-131841",
+    "status": "passed",
+    "result_sha256": "867e6234b145ac294dda8fdcf4427ba895fd2cbfb8028c50079d16014a9e3609",
+    "observation": {
+      "insertion": "reverse ID order; pile groups before workshop groups",
+      "name": "four-group-order",
+      "rows": [
+        {
+          "direction": 2,
+          "id": 3,
+          "kind": 2,
+          "name": "Order14"
+        },
+        {
+          "direction": 2,
+          "id": 4,
+          "kind": 2,
+          "name": "Order13"
+        },
+        {
+          "direction": 1,
+          "id": 5,
+          "kind": 2,
+          "name": "Order12"
+        },
+        {
+          "direction": 1,
+          "id": 6,
+          "kind": 2,
+          "name": "Order11"
+        },
+        {
+          "direction": 2,
+          "id": 158,
+          "kind": 0,
+          "name": "Order24"
+        },
+        {
+          "direction": 2,
+          "id": 163,
+          "kind": 0,
+          "name": "Order23"
+        },
+        {
+          "direction": 1,
+          "id": 230,
+          "kind": 0,
+          "name": "Order22"
+        },
+        {
+          "direction": 1,
+          "id": 231,
+          "kind": 0,
+          "name": "Order21"
+        }
+      ],
+      "scroll": 0
+    },
+    "capture_inspected": "links-four-group-order.png",
+    "scope": "Eight native map clicks, two endpoints per group, reverse ID insertion; exact native row text order and repeated first-row removal identity assertions. Names restored; source unchanged; owned DF119156 closed unsaved.",
+    "native_handler": "33616d..33633b indexes link vectors at offsets48,30,18,0 preserving each vector order.",
+    "omissions": [
+      "Scrolling",
+      "Scaled input",
+      "Row graphics parity"
+    ]
+  },
+  "list_order_acceptance": {
+    "run": "build/areas-acceptance-20261025-132105",
+    "status": "passed_with_known_issues",
+    "known_issue": "separate-thread notice",
+    "native_observations": 77,
+    "owned_df_pid": 115244,
+    "save_preservation": "Two unchanged save manifests; closed unsaved",
+    "capture_inspected": "scene_stockpiles_links_four_groups.png",
+    "scope": "One endpoint in each group; exact names/order from native structures and rendered labels; actual first-row removal with reciprocal native readback for each group. Existing target/paint regressions retained.",
+    "offline": "build/qa/stockpile-link-order",
+    "omissions": [
+      "Scrolling/scaled input",
+      "Row icon/background parity (observed differences remain)"
     ]
   }
 }

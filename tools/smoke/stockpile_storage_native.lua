@@ -159,6 +159,49 @@ require('gui.script').start(function()
    for _,target in ipairs{other,workshop}do for _,key in ipairs{'give_to_pile','take_from_pile'}do
     for _,entry in ipairs(target:getStockpileLinks()[key])do assert(entry.id~=b.id,'reciprocal removal incomplete')end
    end end
+   -- Distinct endpoints preserve native one-direction-per-pair semantics.
+   -- Reverse insertion and distinct names separate ID ordering from click/name order.
+   local order_piles,order_workshops={},{}
+   for _,candidate in ipairs(df.global.world.buildings.all)do
+    local stock=df.building_stockpilest:is_instance(candidate)
+    local group=stock and order_piles or order_workshops
+    local block=dfhack.maps.getTileBlock(candidate.centerx,candidate.centery,candidate.z)
+    if candidate.id~=b.id and candidate.z==b.z and #group<4 and block and
+       not block.designation[candidate.centerx%16][candidate.centery%16].hidden and
+       (stock or candidate:canLinkToStockpile()) and
+       (not candidate.room.extents or candidate.room.extents[(candidate.centery-candidate.room.y)*candidate.room.width+candidate.centerx-candidate.room.x]~=0) then
+     group[#group+1]=candidate
+    end
+   end
+   assert(#order_piles==4 and #order_workshops==4,'four piles and workshops required for ordering oracle')
+   local saved_names={};local expected_order={}
+   for group_index,group in ipairs{order_workshops,order_piles}do
+    for index,target in ipairs(group)do
+     saved_names[target.id]=target.name
+     target.name='Order'..tostring(group_index)..tostring(5-index)
+     expected_order[#expected_order+1]={id=target.id,name=target.name,kind=group_index==1 and 2 or 0,direction=index<=2 and 2 or 1}
+    end
+   end
+   for _,group in ipairs{order_piles,order_workshops}do for index=4,1,-1 do
+    click(index<=2 and 52 or 48,6);mapclick(group[index],group[index].id)
+    assert(not ui.adding_new_link,'ordered target did not create link')
+   end end
+   capture('links-four-group-order')
+   local visible={}
+   for index,expected in ipairs(expected_order)do
+    local chars={}
+    for x=54,80 do local tile=dfhack.screen.readTile(x,12+(index-1)*3);chars[#chars+1]=tile.ch>=32 and tile.ch<127 and string.char(tile.ch) or ' ' end
+    local label=table.concat(chars):match('^%s*(.-)%s*$')
+    assert(label==expected.name,'native group/within-vector order: '..label..' / '..expected.name)
+    visible[#visible+1]={id=expected.id,name=label,kind=expected.kind,direction=expected.direction}
+   end
+   records[#records+1]={name='four-group-order',rows=visible,scroll=ui.scroll_position_link_list,insertion='reverse ID order; pile groups before workshop groups'}
+   for _,expected in ipairs(expected_order)do
+    click(83,12)
+    local key=(expected.direction==1 and 'give_to' or 'take_from')..(expected.kind==0 and '_pile' or '_workshop')
+    for _,target in ipairs(b.links[key])do assert(target.id~=expected.id,'first-row removal selected wrong endpoint')end
+   end
+   for id,name in pairs(saved_names)do df.building.find(id).name=name end
    -- Controlled overlap is confined to this disposable paused oracle. Native
    -- map target selection uses building bounds/extents, not drawn occupancy.
    local overlaps={}

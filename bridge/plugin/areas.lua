@@ -661,7 +661,11 @@ local function settings_edit_plan(a,layout,available,native_rows)
  end
  return plan,nil,used
 end
-local link_sources={'give_to_pile','take_from_pile','give_to_workshop','take_from_workshop'}
+-- Native33616d..33633b indexes these vectors in this order, preserving each
+-- vector's native ID order. Neither click order nor translated names sorts it.
+local link_sources={{key='take_from_workshop',kind=2,direction=2},
+ {key='give_to_workshop',kind=2,direction=1},
+ {key='take_from_pile',kind=0,direction=2},{key='give_to_pile',kind=0,direction=1}}
 local location_kinds={INN_TAVERN=1,TEMPLE=2,LIBRARY=3,GUILDHALL=4,HOSPITAL=5}
 local function location_row(v,site_id)
  local k=location_kinds[df.abstract_building_type[v:getType()]]
@@ -735,16 +739,17 @@ local function step_list(job)
   if job.links then
    local b=df.building.find(job.area_id)
    if not b or kind(b)~=0 then job.error='Area no longer exists';return end
-   for group,key in ipairs(link_sources) do
-    if #b.links[key]~=job.link_counts[group] then job.error='List changed; refresh';return end
+   for group,source in ipairs(link_sources) do
+    if #b.links[source.key]~=job.link_counts[group] then job.error='List changed; refresh';return end
    end
    if job.index==job.source_total then start_sort(job);return end
    local offset=job.index;local group=1
    while offset>=job.link_counts[group] do offset=offset-job.link_counts[group];group=group+1 end
-   local target=element(b.links[link_sources[group]],offset)
+   local source=link_sources[group]
+   local target=element(b.links[source.key],offset)
    if not target or df.building.find(target.id)~=target then job.error='Area no longer exists';return end
-   if group<=2 and kind(target)~=0 then job.error='Area kind changed; inspect again';return end
-   append_candidate(job,{id=target.id,kind=group<=2 and 0 or 2,direction=group%2==1 and 1 or 2,name=name(target)})
+   if source.kind==0 and kind(target)~=0 then job.error='Area kind changed; inspect again';return end
+   append_candidate(job,{id=target.id,kind=source.kind,direction=source.direction,name=name(target)})
    job.index=job.index+1;job.done=job.done+1;return
   end
   if job.assign_index<job.assign_total then
@@ -953,8 +958,8 @@ local function candidate_page(r,a,b,area_revision,available)
   if job.assign_total>4096 then return fail('Zone exceeds 4,096 assigned units'),0 end
   if links then
    job.link_counts={};job.source_total=0
-   for group,key in ipairs(link_sources) do
-    local count=#b.links[key]
+   for group,source in ipairs(link_sources) do
+    local count=#b.links[source.key]
     if count>1024 then return fail('Link limit reached; no endpoints changed'),0 end
     job.link_counts[group]=count;job.source_total=job.source_total+count
    end

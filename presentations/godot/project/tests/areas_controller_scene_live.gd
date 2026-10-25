@@ -796,6 +796,29 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 		await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
 		if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"overlap unlink"): return
 	await native("link_overlap_restore")
+	step = "native four-group link list order"
+	var groups := [{"id":overlap_ids[0],"kind":0,"direction":1},{"id":overlap_ids[1],"kind":0,"direction":2},
+		{"id":int(fixture.workshop),"kind":2,"direction":1},{"id":int(fixture.second_workshop),"kind":2,"direction":2}]
+	for row in groups:
+		var current := await inspect(ids[0])
+		var edit := {"action":13,"kind":0,"id":ids[0],"link_id":int(row.id),"give":int(row.direction)==1,"expected_revision":current.revision}
+		if int(row.kind)==2:
+			edit.merge({"operation":15,"kind":2,"id":int(row.id),"link_id":ids[0],"give":int(row.direction)==2},true)
+		await request(edit)
+		if stopped: return
+	editor.use_area(await inspect(ids[0])); editor.stockpile_control("links")
+	if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"four-group rows"): return
+	await native("link_rows",{"id":ids[0],"rows":editor.observed_links})
+	for index in editor.observed_links.size():
+		if not check(editor.links_view.rows_box.get_child(index).get_child(1).text==str(editor.observed_links[index].name),"rendered link row order differs"): return
+	await capture("stockpiles_links_four_groups")
+	for index in 4:
+		var first: Dictionary = editor.observed_links[0].duplicate()
+		await click_control(editor.links_view.rows_box.get_child(0).get_child(2))
+		if not await wait_ui(func(): return settled() and editor.links_pending.is_empty(),"ordered first-row removal"): return
+		if int(first.kind)==0: await native("pile_link",{"id":ids[0],"target_id":int(first.id),"give":int(first.direction)==1,"linked":false})
+		else: await native("link",{"id":int(first.id),"pile_id":ids[0],"give":int(first.direction)==2,"linked":false})
+		await native("link_rows",{"id":ids[0],"rows":editor.observed_links})
 	editor.close_panel()
 	for pile_id in [ids[0],ids[2]]+overlap_ids:
 		var current := await inspect(pile_id)

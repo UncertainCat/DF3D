@@ -8,7 +8,7 @@ class PaletteWorld:
 	func ui_texture(token, index = -1): return assets.ui_texture(token,index)
 	func ui_font_path(): return assets.ui_font_path()
 	func ui_palette_color(index): return overrides.get(index,assets.ui_palette_color(index))
-	func construction_item_icon(kind, appearance): return assets.construction_item_icon(kind,appearance)
+	func construction_item_icon(kind, appearance, group=false, item_id=-1): return assets.construction_item_icon(kind,appearance,group,item_id)
 var failures := 0
 var picks: Array = []
 var pages: Array = []

@@ -74,7 +74,9 @@ func label(text: String, at: Vector2, color: Color = Color.WHITE) -> Label:
 func weight(value: int, upper: bool, at: Vector2) -> void:
 	# Native character226 is the CP437 weight glyph (mapped to U+0393 by DF2UTF).
 	var text := "Any" if upper and value == 2000 else str(value) + String.chr(0x393)
-	var control := label(text,at); control.size.x = 48; control.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Native cart_weight_alignment captures place values on whole cells by digit width.
+	var cells := 2 if (upper and value == 2000) or value < 100 else (1 if value < 1000 else 0)
+	label(text,at + Vector2(cells * 8,0))
 
 func reset_button(text: String, resets: bool, at: Vector2, dimensions: Vector2) -> void:
 	var control := Button.new(); control.text = text; control.position = at; control.size = dimensions

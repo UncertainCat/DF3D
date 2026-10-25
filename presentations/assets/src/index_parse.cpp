@@ -427,6 +427,15 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
         }
         continue;
       }
+      if (n == "SHAPE_GRAPHICS_SMALL_GEM") {
+        if(t.argc()>=5) {
+          if(auto sprite=spriteAt(index,t.args,2,pending)) {
+            index.tileGraphics["GEM_SHAPE:"+t.args[1]]={*sprite};
+            ++index.stats.tileGraphics;++consumed;
+          } else diag(t,"Gem shape coordinates are not numbers");
+        } else diag(t,"Gem shape needs SHAPE:PAGE:x:y");
+        continue;
+      }
       if (n == "TILE_GRAPHICS") {
         // PAGE:x:y:NAME[:variant[:frame]]
         if (t.argc() < 5) {

@@ -106,7 +106,7 @@ public:
     godot::Dictionary pick_building(const godot::Vector3& origin, const godot::Vector3& direction, int z) const;
     // Original interface art, resolved only through the verified parsed index.
     godot::Ref<godot::Texture2D> ui_texture(const godot::String& name, int variant = -1);
-    godot::Ref<godot::Texture2D> construction_item_icon(int item_type, const godot::Dictionary& appearance);
+    godot::Ref<godot::Texture2D> construction_item_icon(int item_type, const godot::Dictionary& appearance, bool generic_group=false, int64_t item_id=-1);
     godot::Dictionary elevation_overview(int x, int y) const;
     godot::String ui_font_path() const;
     godot::Vector3i item_tile(int64_t id) const;
@@ -450,8 +450,22 @@ private:
     MeshBatches terrainBatches_{0,"terrain",true,true};
     MeshBatches buildingBatches_{30,"building"};
     std::map<SurfaceKey, godot::Ref<godot::ShaderMaterial>> buildingPieceMaterials_;
+    std::map<SurfaceKey, godot::Ref<godot::ShaderMaterial>> buildingPumpMaterials_;
+    // Stable, reusable slots; 256 positions per texture page. Batch materials
+    // share the texture object, so updates do not replace uniforms or geometry.
+    struct MachinePhasePage { godot::Ref<godot::Image> image; godot::Ref<godot::ImageTexture> texture; bool dirty=false; };
+    std::vector<MachinePhasePage> machinePhasePages_;
+    std::map<wm::BuildingId,uint32_t> machinePhaseSlots_;
+    std::vector<uint32_t> machinePhaseFreeSlots_;
+    std::map<wm::BuildingId,wm::Building> machinePhaseSources_;
+    std::map<std::pair<SurfaceKey,uint32_t>,godot::Ref<godot::ShaderMaterial>> buildingMachineMaterials_;
+    uint32_t updateMachinePosition(const wm::Building& building);
+    void releaseMachinePosition(wm::BuildingId id);
+    void flushMachinePositions();
+    int32_t machineryCalendarSeen_ = -2;
     double nowSeconds() const;
     int slotFor(int page, int paletteRow, bool fill);
+    int bedSlot(std::string_view material, const wm::BeddingFacts& bedding);
     int wallTopSlotFor(const df3d::assets::TerrainSprite& wall, uint8_t neighbors);
     int shadowedFloorSlotFor(const df3d::assets::TerrainSprite& floor, uint8_t neighbors);
     godot::Ref<godot::Image> pageImage(int page);
@@ -561,6 +575,8 @@ private:
     using PerfScope = df3d::profiling::Scope;
     struct BuildingDrawFootprint {
         uint64_t version = 0;
+        uint8_t completedTrack = 0;
+        std::vector<uint8_t> completedTracks;
         df3d::assets::BuildingSprites artwork;
         std::vector<std::pair<int,int>> cells, foreground;
     };
@@ -612,7 +628,8 @@ private:
     std::map<wm::UnitId, df3d::mesher::DepthInterval> unitDepthById_;
     std::map<wm::ItemId, std::vector<int>> itemInstanceIndices_;
     std::vector<std::tuple<int64_t,int,int,int>> depthUnitContents_;
-    int compositeBuildingTile(const std::vector<std::pair<int, godot::Color>>& layers);
+    int buildingSlotFor(wm::BuildingKind kind, wm::BuildingStage stage, int page, int paletteRow, uint16_t subtype, bool plannedHalfAlpha=false);
+    int compositeBuildingTile(const std::vector<std::pair<int, godot::Color>>& layers,bool floorHalfAlpha=false,bool nativeItemBlend=false,bool nativeLayoutBlend=false);
     godot::PackedVector3Array unitCutoutPositions_;
     std::vector<float> unitDepthBottoms_;
     godot::PackedFloat32Array unitThicknesses_;

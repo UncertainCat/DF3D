@@ -1,0 +1,1924 @@
+{
+  "native_build": "DF 53.16 Steam 24557528",
+  "native_run": "build/construction-refusal-native-20261022-213312",
+  "cases": [
+    {
+      "errors": [
+        "Needs adjacent wall"
+      ],
+      "site": {
+        "name": "door-wall-refusal",
+        "x": 128,
+        "y": 62,
+        "z": 165
+      },
+      "tile": "NEED_WALL"
+    },
+    {
+      "errors": [],
+      "site": {
+        "name": "door-valid",
+        "x": 127,
+        "y": 61,
+        "z": 165
+      },
+      "tile": "FINE"
+    },
+    {
+      "errors": [
+        "Building present"
+      ],
+      "site": {
+        "name": "door-occupied",
+        "x": 132,
+        "y": 66,
+        "z": 165
+      },
+      "tile": "BUILDING_PRESENT"
+    },
+    {
+      "errors": [
+        "Blocked at this location"
+      ],
+      "site": {
+        "name": "door-blocked",
+        "x": 127,
+        "y": 73,
+        "z": 165
+      },
+      "tile": "BLOCKED"
+    }
+  ],
+  "presentation": {
+    "position": "Orange line beneath Keep building in the existing placement panel",
+    "color": "ff9900",
+    "displayed": {
+      "Door": [
+        "Needs adjacent wall",
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Well": [
+        "Needs open space",
+        "Surrounded by empty space",
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Hatch": [
+        "Surrounded by empty space",
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "GrateFloor": [
+        "Surrounded by empty space",
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "BarsFloor": [
+        "Surrounded by empty space",
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Leatherworks": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Loom": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Clothiers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Dyers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Still": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Butchers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Tanners": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Fishery": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Kitchen": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Farmers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Quern": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Kennels": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "NestBox": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Hive": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:GlassFurnace": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:Kiln": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:MagmaGlassFurnace": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:MagmaKiln": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:MagmaSmelter": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:Smelter": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Furnace:WoodFurnace": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Ashery": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Bowyers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Carpenters": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Craftsdwarfs": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Jewelers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:MagmaForge": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Mechanics": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:MetalsmithsForge": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Custom:SCREW_PRESS": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Siege": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Custom:SOAP_MAKER": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Workshop:Masons": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Bed": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge",
+        "Must be inside"
+      ],
+      "Chair": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge",
+        "Must be inside"
+      ],
+      "Table": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge",
+        "Must be inside"
+      ],
+      "Box": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Cabinet": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Coffin": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge",
+        "Must be inside"
+      ],
+      "Slab": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Statue": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "TractionBench": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge",
+        "Must be inside"
+      ],
+      "Bookcase": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "DisplayFurniture": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "OfferingPlace": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Instrument": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Construction:Wall": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Cannot build at highest level",
+        "Too close to edge"
+      ],
+      "Construction:ReinforcedWall": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Cannot build at highest level",
+        "Too close to edge"
+      ],
+      "Construction:Floor": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction"
+      ],
+      "Construction:Ramp": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Cannot build at highest level"
+      ],
+      "Construction:Stairs": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Cannot build at highest level"
+      ],
+      "Bridge": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs to be anchored on edge",
+        "Needs walkable perimeter"
+      ],
+      "RoadPaved": [
+        "Building present",
+        "Blocked at this location",
+        "Water at this location",
+        "Disconnected",
+        "Need soil at location"
+      ],
+      "Construction:Fortification": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "GrateWall": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "BarsVertical": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "WindowGlass": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "WindowGem": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Support": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Construction:Track": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location"
+      ],
+      "Trap:TrackStop": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Trap:Lever": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Floodgate": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "ScrewPump": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "WaterWheel": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "Windmill": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "GearAssembly": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "AxleHorizontal": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "AxleVertical": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "Workshop:Millstone": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "Rollers": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs ground or near machine",
+        "Too close to edge"
+      ],
+      "Chain": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Cage": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "AnimalTrap": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Lava/Magma at this location",
+        "Must remove construction",
+        "Needs walkable perimeter",
+        "Too close to edge"
+      ],
+      "Trap:PressurePlate": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Need trigger type",
+        "Too close to edge"
+      ],
+      "Trap:StoneFallTrap": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Trap:WeaponTrap": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Trap:CageTrap": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Weapon": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "ArcheryTarget": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Weaponrack": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "Armorstand": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "SiegeEngine:Ballista": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "SiegeEngine:Catapult": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "SiegeEngine:BoltThrower": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "TradeDepot": [
+        "Building present",
+        "Hidden, cannot build at this location",
+        "Blocked at this location",
+        "Water at this location",
+        "Must remove construction",
+        "Too close to edge"
+      ],
+      "FarmPlot": [
+        "Blocked at this location",
+        "Need soil or mud at location",
+        "Water at this location",
+        "Disconnected",
+        "Building present",
+        "Too close to edge"
+      ],
+      "RoadDirt": [
+        "Blocked at this location",
+        "Need soil at location",
+        "Water at this location",
+        "Disconnected",
+        "Building present"
+      ]
+    },
+    "scope": "Exact native gameplay strings only for rejected Preview/Place replies. Occupancy scope comes from the 93-key catalog oracle (91 keys emit Building present); FarmPlot and RoadDirt excluded. Transport/draft diagnostics remain hidden. Generic terrain/liquid mapping remains pending. Hidden-tile refusal is exposed for90 keys from the same oracle; FarmPlot/RoadDirt/RoadPaved excluded. Unloaded/out-of-map data stays hidden diagnostic text.",
+    "layout_limits": "Existing footer uses a square compact frame and tighter vertical spacing than native rounded frame; observed refusal baseline is 12 pixels higher. These presentation differences remain recorded.",
+    "additional_sources": {
+      "Disconnected": "farm_road_terrain.json.native_area_connectivity.runtime (FarmPlot/RoadDirt/RoadPaved)",
+      "Needs ground or near machine": "compound_fixed_footprint.runtime_rule; native hookup-vector guard, appended after tile errors",
+      "FarmPlot Building present": "farm_road_terrain.json.native_farm_warning.cases occupied_soil",
+      "RoadDirt Building present": "farm_road_terrain.json.native_mixed_area_click occupied and partial_occupied",
+      "FarmPlot Too close to edge": "extent_tile_native.json.gz priority dataset",
+      "RoadPaved Need soil at location": "extent_tile_native.json.gz tile_types dataset; boulder tiles398/399/400/441",
+      "Weaponrack Too close to edge": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Cage Too close to edge": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Statue Too close to edge": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Door Too close to edge": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Chair Too close to edge": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Bed Too close to edge": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Chair Must be inside": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Bed Must be inside": "furniture_tile_native.json.gz priority and tile_types datasets",
+      "Table Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Box Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Cabinet Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Coffin Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Slab Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "TractionBench Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Bookcase Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "DisplayFurniture Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "OfferingPlace Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Instrument Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "GrateWall Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "BarsVertical Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "WindowGlass Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "WindowGem Too close to edge": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Table Must be inside": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "Coffin Must be inside": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "TractionBench Must be inside": "furniture_tile_native.json.gz extra_priority and extra_tile_types datasets",
+      "ArcheryTarget Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Armorstand Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Chain Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Floodgate Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Furnace:GlassFurnace Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Furnace:Kiln Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Furnace:Smelter Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Furnace:WoodFurnace Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Hive Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "NestBox Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "SiegeEngine:Ballista Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "SiegeEngine:BoltThrower Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "SiegeEngine:Catapult Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "TradeDepot Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:CageTrap Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:Lever Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:PressurePlate Need trigger type": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:PressurePlate Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:StoneFallTrap Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:TrackStop Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Trap:WeaponTrap Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Weapon Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Ashery Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Bowyers Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Butchers Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Carpenters Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Clothiers Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Craftsdwarfs Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Custom:SCREW_PRESS Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Custom:SOAP_MAKER Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Dyers Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Farmers Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Fishery Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Jewelers Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Kennels Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Kitchen Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Leatherworks Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Loom Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Masons Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Mechanics Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:MetalsmithsForge Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Quern Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Siege Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Still Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "Workshop:Tanners Too close to edge": "ordinary_tile_native.json.gz priority and tile_types datasets",
+      "opening_tile": "opening_tile_native.json.gz: baseline/priority records edge refusals for six families",
+      "special_tile": "special_tile_native.json.gz: edge sweep records twelve machine/magma recipes"
+    }
+  },
+  "verification": {
+    "headless": "construction_test.gd passed with known startup notice; new target and cancellation clear stale refusals; unsourced diagnostics stay hidden",
+    "main_run": "build/construction-refusal-main-20261022-213519",
+    "status": "passed_with_known_issues",
+    "completed_frames": 575,
+    "exact_item": 48520,
+    "source_preserved": true,
+    "screenshots_inspected": [
+      "door-placement.png",
+      "door-expanded.png from prior material validation",
+      "door-complete.png from prior completion validation"
+    ]
+  },
+  "catalog_oracle": {
+    "run": "build/refusal-catalog-native-20261022-222336",
+    "source_preserved": true,
+    "limits": "Synthetic terrain; one occupied site; default request dimensions. Oracle uses global build request only in disposable native reference session. Does not establish full footprint/error precedence parity.",
+    "cases": {
+      "occupied": [
+        {
+          "errors": [
+            "Building present"
+          ],
+          "keys": [
+            "Workshop:Leatherworks",
+            "Workshop:Loom",
+            "Workshop:Clothiers",
+            "Workshop:Dyers",
+            "Workshop:Still",
+            "Workshop:Butchers",
+            "Workshop:Tanners",
+            "Workshop:Fishery",
+            "Workshop:Kitchen",
+            "Workshop:Farmers",
+            "Workshop:Quern",
+            "Workshop:Kennels",
+            "NestBox",
+            "Hive",
+            "Furnace:GlassFurnace",
+            "Furnace:Kiln",
+            "Furnace:MagmaGlassFurnace",
+            "Furnace:MagmaKiln",
+            "Furnace:MagmaSmelter",
+            "Furnace:Smelter",
+            "Furnace:WoodFurnace",
+            "Workshop:Ashery",
+            "Workshop:Bowyers",
+            "Workshop:Carpenters",
+            "Workshop:Craftsdwarfs",
+            "Workshop:Jewelers",
+            "Workshop:MagmaForge",
+            "Workshop:Mechanics",
+            "Workshop:MetalsmithsForge",
+            "Workshop:Custom:SCREW_PRESS",
+            "Workshop:Siege",
+            "Workshop:Custom:SOAP_MAKER",
+            "Workshop:Masons",
+            "Bed",
+            "Chair",
+            "Table",
+            "Box",
+            "Cabinet",
+            "Coffin",
+            "Slab",
+            "Statue",
+            "TractionBench",
+            "Bookcase",
+            "DisplayFurniture",
+            "OfferingPlace",
+            "Instrument",
+            "Door",
+            "Hatch",
+            "Construction:Wall",
+            "Construction:ReinforcedWall",
+            "Construction:Floor",
+            "Construction:Ramp",
+            "Construction:Stairs",
+            "Bridge",
+            "RoadPaved",
+            "Construction:Fortification",
+            "GrateWall",
+            "GrateFloor",
+            "BarsVertical",
+            "BarsFloor",
+            "WindowGlass",
+            "WindowGem",
+            "Support",
+            "Construction:Track",
+            "Trap:TrackStop",
+            "Trap:Lever",
+            "Well",
+            "Floodgate",
+            "Chain",
+            "Cage",
+            "AnimalTrap",
+            "Trap:StoneFallTrap",
+            "Trap:WeaponTrap",
+            "Trap:CageTrap",
+            "Weapon",
+            "ArcheryTarget",
+            "Weaponrack",
+            "Armorstand",
+            "SiegeEngine:Ballista",
+            "SiegeEngine:Catapult",
+            "SiegeEngine:BoltThrower",
+            "TradeDepot"
+          ]
+        },
+        {
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "keys": [
+            "FarmPlot"
+          ]
+        },
+        {
+          "errors": [
+            "Need soil at location"
+          ],
+          "keys": [
+            "RoadDirt"
+          ]
+        },
+        {
+          "errors": [
+            "Building present",
+            "Needs ground or near machine"
+          ],
+          "keys": [
+            "ScrewPump",
+            "WaterWheel",
+            "Windmill",
+            "GearAssembly",
+            "AxleHorizontal",
+            "AxleVertical",
+            "Workshop:Millstone",
+            "Rollers"
+          ]
+        },
+        {
+          "errors": [
+            "Need trigger type",
+            "Building present"
+          ],
+          "keys": [
+            "Trap:PressurePlate"
+          ]
+        }
+      ],
+      "hidden": [
+        {
+          "errors": [
+            "Hidden, cannot build at this location"
+          ],
+          "keys": [
+            "Workshop:Leatherworks",
+            "Workshop:Loom",
+            "Workshop:Clothiers",
+            "Workshop:Dyers",
+            "Workshop:Still",
+            "Workshop:Butchers",
+            "Workshop:Tanners",
+            "Workshop:Fishery",
+            "Workshop:Kitchen",
+            "Workshop:Farmers",
+            "Workshop:Quern",
+            "Workshop:Kennels",
+            "NestBox",
+            "Hive",
+            "Furnace:GlassFurnace",
+            "Furnace:Kiln",
+            "Furnace:MagmaGlassFurnace",
+            "Furnace:MagmaKiln",
+            "Furnace:MagmaSmelter",
+            "Furnace:Smelter",
+            "Furnace:WoodFurnace",
+            "Workshop:Ashery",
+            "Workshop:Bowyers",
+            "Workshop:Carpenters",
+            "Workshop:Craftsdwarfs",
+            "Workshop:Jewelers",
+            "Workshop:MagmaForge",
+            "Workshop:Mechanics",
+            "Workshop:MetalsmithsForge",
+            "Workshop:Custom:SCREW_PRESS",
+            "Workshop:Siege",
+            "Workshop:Custom:SOAP_MAKER",
+            "Workshop:Masons",
+            "Bed",
+            "Chair",
+            "Table",
+            "Box",
+            "Cabinet",
+            "Coffin",
+            "Slab",
+            "Statue",
+            "TractionBench",
+            "Bookcase",
+            "DisplayFurniture",
+            "OfferingPlace",
+            "Instrument",
+            "Door",
+            "Hatch",
+            "Construction:Wall",
+            "Construction:ReinforcedWall",
+            "Construction:Floor",
+            "Construction:Ramp",
+            "Construction:Stairs",
+            "Bridge",
+            "Construction:Fortification",
+            "GrateWall",
+            "GrateFloor",
+            "BarsVertical",
+            "BarsFloor",
+            "WindowGlass",
+            "WindowGem",
+            "Support",
+            "Construction:Track",
+            "Trap:TrackStop",
+            "Trap:Lever",
+            "Well",
+            "Floodgate",
+            "Chain",
+            "Cage",
+            "AnimalTrap",
+            "Trap:StoneFallTrap",
+            "Trap:WeaponTrap",
+            "Trap:CageTrap",
+            "Weapon",
+            "ArcheryTarget",
+            "Weaponrack",
+            "Armorstand",
+            "SiegeEngine:Ballista",
+            "SiegeEngine:Catapult",
+            "SiegeEngine:BoltThrower",
+            "TradeDepot"
+          ]
+        },
+        {
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "keys": [
+            "FarmPlot"
+          ]
+        },
+        {
+          "errors": [],
+          "keys": [
+            "RoadPaved"
+          ]
+        },
+        {
+          "errors": [
+            "Need soil at location"
+          ],
+          "keys": [
+            "RoadDirt"
+          ]
+        },
+        {
+          "errors": [
+            "Hidden, cannot build at this location",
+            "Needs ground or near machine"
+          ],
+          "keys": [
+            "ScrewPump",
+            "WaterWheel",
+            "Windmill",
+            "GearAssembly",
+            "AxleHorizontal",
+            "AxleVertical",
+            "Workshop:Millstone",
+            "Rollers"
+          ]
+        },
+        {
+          "errors": [
+            "Need trigger type",
+            "Hidden, cannot build at this location"
+          ],
+          "keys": [
+            "Trap:PressurePlate"
+          ]
+        }
+      ],
+      "water": [
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Workshop:Leatherworks",
+            "Workshop:Loom",
+            "Workshop:Clothiers",
+            "Workshop:Dyers",
+            "FarmPlot",
+            "Workshop:Still",
+            "Workshop:Butchers",
+            "Workshop:Tanners",
+            "Workshop:Fishery",
+            "Workshop:Kitchen",
+            "Workshop:Farmers",
+            "Workshop:Quern",
+            "Workshop:Kennels",
+            "NestBox",
+            "Hive",
+            "Furnace:GlassFurnace",
+            "Furnace:Kiln",
+            "Furnace:Smelter",
+            "Furnace:WoodFurnace",
+            "Workshop:Ashery",
+            "Workshop:Bowyers",
+            "Workshop:Carpenters",
+            "Workshop:Craftsdwarfs",
+            "Workshop:Jewelers",
+            "Workshop:Mechanics",
+            "Workshop:MetalsmithsForge",
+            "Workshop:Custom:SCREW_PRESS",
+            "Workshop:Siege",
+            "Workshop:Custom:SOAP_MAKER",
+            "Workshop:Masons",
+            "Bed",
+            "Chair",
+            "Table",
+            "Box",
+            "Cabinet",
+            "Coffin",
+            "Slab",
+            "Statue",
+            "TractionBench",
+            "Bookcase",
+            "DisplayFurniture",
+            "OfferingPlace",
+            "Instrument",
+            "Door",
+            "RoadPaved",
+            "RoadDirt",
+            "GrateWall",
+            "BarsVertical",
+            "WindowGlass",
+            "WindowGem",
+            "Support",
+            "Trap:TrackStop",
+            "Trap:Lever",
+            "Floodgate",
+            "Chain",
+            "Cage",
+            "Trap:StoneFallTrap",
+            "Trap:WeaponTrap",
+            "Trap:CageTrap",
+            "Weapon",
+            "ArcheryTarget",
+            "Weaponrack",
+            "Armorstand",
+            "SiegeEngine:Ballista",
+            "SiegeEngine:Catapult",
+            "SiegeEngine:BoltThrower",
+            "TradeDepot"
+          ]
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Furnace:MagmaGlassFurnace",
+            "Furnace:MagmaKiln",
+            "Furnace:MagmaSmelter",
+            "Workshop:MagmaForge"
+          ]
+        },
+        {
+          "errors": [
+            "Water at this location"
+          ],
+          "keys": [
+            "Hatch",
+            "Construction:Wall",
+            "Construction:ReinforcedWall",
+            "Construction:Floor",
+            "Construction:Ramp",
+            "Construction:Stairs",
+            "Bridge",
+            "Construction:Fortification",
+            "GrateFloor",
+            "BarsFloor",
+            "Construction:Track",
+            "Well",
+            "AnimalTrap"
+          ]
+        },
+        {
+          "errors": [
+            "Blocked at this location",
+            "Needs ground or near machine"
+          ],
+          "keys": [
+            "ScrewPump",
+            "WaterWheel",
+            "Windmill",
+            "GearAssembly",
+            "AxleHorizontal",
+            "AxleVertical",
+            "Workshop:Millstone",
+            "Rollers"
+          ]
+        },
+        {
+          "errors": [
+            "Need trigger type",
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Trap:PressurePlate"
+          ]
+        }
+      ],
+      "magma": [
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Workshop:Leatherworks",
+            "Workshop:Loom",
+            "Workshop:Clothiers",
+            "Workshop:Dyers",
+            "FarmPlot",
+            "Workshop:Still",
+            "Workshop:Butchers",
+            "Workshop:Tanners",
+            "Workshop:Fishery",
+            "Workshop:Kitchen",
+            "Workshop:Farmers",
+            "Workshop:Quern",
+            "Workshop:Kennels",
+            "NestBox",
+            "Hive",
+            "Furnace:GlassFurnace",
+            "Furnace:Kiln",
+            "Furnace:Smelter",
+            "Furnace:WoodFurnace",
+            "Workshop:Ashery",
+            "Workshop:Bowyers",
+            "Workshop:Carpenters",
+            "Workshop:Craftsdwarfs",
+            "Workshop:Jewelers",
+            "Workshop:Mechanics",
+            "Workshop:MetalsmithsForge",
+            "Workshop:Custom:SCREW_PRESS",
+            "Workshop:Siege",
+            "Workshop:Custom:SOAP_MAKER",
+            "Workshop:Masons",
+            "Bed",
+            "Chair",
+            "Table",
+            "Box",
+            "Cabinet",
+            "Coffin",
+            "Slab",
+            "Statue",
+            "TractionBench",
+            "Bookcase",
+            "DisplayFurniture",
+            "OfferingPlace",
+            "Instrument",
+            "Door",
+            "RoadPaved",
+            "RoadDirt",
+            "GrateWall",
+            "BarsVertical",
+            "WindowGlass",
+            "WindowGem",
+            "Support",
+            "Trap:TrackStop",
+            "Trap:Lever",
+            "Floodgate",
+            "Chain",
+            "Cage",
+            "Trap:StoneFallTrap",
+            "Trap:WeaponTrap",
+            "Trap:CageTrap",
+            "Weapon",
+            "ArcheryTarget",
+            "Weaponrack",
+            "Armorstand",
+            "SiegeEngine:Ballista",
+            "SiegeEngine:Catapult",
+            "SiegeEngine:BoltThrower",
+            "TradeDepot"
+          ]
+        },
+        {
+          "errors": [
+            "Lava/Magma at this location",
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Furnace:MagmaGlassFurnace",
+            "Furnace:MagmaKiln",
+            "Furnace:MagmaSmelter",
+            "Workshop:MagmaForge"
+          ]
+        },
+        {
+          "errors": [
+            "Lava/Magma at this location"
+          ],
+          "keys": [
+            "Hatch",
+            "Construction:Wall",
+            "Construction:ReinforcedWall",
+            "Construction:Floor",
+            "Construction:Ramp",
+            "Construction:Stairs",
+            "Bridge",
+            "Construction:Fortification",
+            "GrateFloor",
+            "BarsFloor",
+            "Construction:Track",
+            "Well",
+            "AnimalTrap"
+          ]
+        },
+        {
+          "errors": [
+            "Blocked at this location",
+            "Needs ground or near machine"
+          ],
+          "keys": [
+            "ScrewPump",
+            "WaterWheel",
+            "Windmill",
+            "GearAssembly",
+            "AxleHorizontal",
+            "AxleVertical",
+            "Workshop:Millstone",
+            "Rollers"
+          ]
+        },
+        {
+          "errors": [
+            "Need trigger type",
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Trap:PressurePlate"
+          ]
+        }
+      ],
+      "wall": [
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Workshop:Leatherworks",
+            "Workshop:Loom",
+            "Workshop:Clothiers",
+            "Workshop:Dyers",
+            "FarmPlot",
+            "Workshop:Still",
+            "Workshop:Butchers",
+            "Workshop:Tanners",
+            "Workshop:Fishery",
+            "Workshop:Kitchen",
+            "Workshop:Farmers",
+            "Workshop:Quern",
+            "Workshop:Kennels",
+            "NestBox",
+            "Hive",
+            "Furnace:GlassFurnace",
+            "Furnace:Kiln",
+            "Furnace:MagmaGlassFurnace",
+            "Furnace:MagmaKiln",
+            "Furnace:MagmaSmelter",
+            "Furnace:Smelter",
+            "Furnace:WoodFurnace",
+            "Workshop:Ashery",
+            "Workshop:Bowyers",
+            "Workshop:Carpenters",
+            "Workshop:Craftsdwarfs",
+            "Workshop:Jewelers",
+            "Workshop:MagmaForge",
+            "Workshop:Mechanics",
+            "Workshop:MetalsmithsForge",
+            "Workshop:Custom:SCREW_PRESS",
+            "Workshop:Siege",
+            "Workshop:Custom:SOAP_MAKER",
+            "Workshop:Masons",
+            "Bed",
+            "Chair",
+            "Table",
+            "Box",
+            "Cabinet",
+            "Coffin",
+            "Slab",
+            "Statue",
+            "TractionBench",
+            "Bookcase",
+            "DisplayFurniture",
+            "OfferingPlace",
+            "Instrument",
+            "Door",
+            "Hatch",
+            "Construction:Wall",
+            "Construction:ReinforcedWall",
+            "Construction:Floor",
+            "Construction:Ramp",
+            "Construction:Stairs",
+            "Bridge",
+            "RoadPaved",
+            "RoadDirt",
+            "Construction:Fortification",
+            "GrateWall",
+            "GrateFloor",
+            "BarsVertical",
+            "BarsFloor",
+            "WindowGlass",
+            "WindowGem",
+            "Support",
+            "Construction:Track",
+            "Trap:TrackStop",
+            "Trap:Lever",
+            "Well",
+            "Floodgate",
+            "Chain",
+            "Cage",
+            "AnimalTrap",
+            "Trap:StoneFallTrap",
+            "Trap:WeaponTrap",
+            "Trap:CageTrap",
+            "Weapon",
+            "ArcheryTarget",
+            "Weaponrack",
+            "Armorstand",
+            "SiegeEngine:Ballista",
+            "SiegeEngine:Catapult",
+            "SiegeEngine:BoltThrower",
+            "TradeDepot"
+          ]
+        },
+        {
+          "errors": [
+            "Blocked at this location",
+            "Needs ground or near machine"
+          ],
+          "keys": [
+            "ScrewPump",
+            "WaterWheel",
+            "Windmill",
+            "GearAssembly",
+            "AxleHorizontal",
+            "AxleVertical",
+            "Workshop:Millstone",
+            "Rollers"
+          ]
+        },
+        {
+          "errors": [
+            "Need trigger type",
+            "Blocked at this location"
+          ],
+          "keys": [
+            "Trap:PressurePlate"
+          ]
+        }
+      ]
+    }
+  },
+  "occupancy_verification": {
+    "native_visual_reference": "Existing Door occupied capture in native_run establishes common placement refusal layout. Bed capture build/occupied-refusal-native-20261022-222807 is black under overlay and excluded from visual evidence. Earlier 222705 failed coord.name harness input before capture.",
+    "main_run": "build/occupancy-hover-main-20261022-222851",
+    "status": "passed_with_known_issues",
+    "family": "Hatch",
+    "input": "Actual viewport hover/click on occupied tile, valid hover recovery, exact material pointer selection",
+    "completed_frames": 300,
+    "exact_item": 48520,
+    "source_preserved": true,
+    "screenshots_inspected": [
+      "door-placement.png",
+      "hatch-valid-hover.png",
+      "door-complete.png"
+    ],
+    "headless": "construction_test.gd and catalog evidence scope check passed"
+  },
+  "hidden_verification": {
+    "run": "build/hidden-refusal-main-20261022-223355",
+    "status": "passed_with_known_issues",
+    "family": "Hatch",
+    "refusal_input": "Semantic target for loaded hidden terrain; not a visible surface pointer hit",
+    "recovery_input": "Actual viewport pointer on valid terrain and exact item48520 selection",
+    "completed_frames": 575,
+    "source_preserved": true,
+    "screenshots_inspected": [
+      "door-placement.png",
+      "door-complete.png"
+    ],
+    "limitation": "DF re-paused at frame1 after observer started; manually resumed disposable session once (resume.log), then construction completed. Cause of pause not established; no uninterrupted-completion claim.",
+    "tests": "79 adapter cases, catalog evidence check, construction Godot headless,19 CTest checks passed. Missing flags/occupancy and hidden-after-preview reject safely."
+  },
+  "wall_verification": {
+    "run": "build/wall-refusal-main-20261022-231147",
+    "status": "passed_with_known_issues",
+    "invalid_families": [
+      "Construction:Wall",
+      "Construction:Floor",
+      "Construction:Ramp",
+      "Construction:Fortification",
+      "FarmPlot",
+      "RoadDirt",
+      "RoadPaved"
+    ],
+    "recovery": "Four terrain construction families retain mixed mask [0,1,1,1] and clear refusal",
+    "input": "Semantic 2x2 rectangle targets; not pointer gesture or construction completion acceptance",
+    "source_preserved": true,
+    "no_building_or_frame_mutation": true,
+    "screenshots_inspected": [
+      "FarmPlot-invalid.png",
+      "Construction-Wall-mixed.png"
+    ],
+    "tests": "81 adapter tests, catalog evidence, construction headless and 19 CTest checks passed; only documented engine diagnostics"
+  },
+  "compound_fixed_footprint": {
+    "native_build": "DF53.16 Steam24557528",
+    "runtime_rule": "Native per-tile decisions; 3c1930 x-major/y-minor scan, first occurrence per result; 3c1c4e appends ground/machine reason when any error and native hookup vector nonempty",
+    "literal_dispatch": {
+      "5": {
+        "target": "0x3c1a43",
+        "rva": "0x162cfe8",
+        "length": 28,
+        "text": "Needs to be anchored on edge"
+      },
+      "6": {
+        "target": "0x3c1a5c",
+        "rva": "0x162cec8",
+        "length": 24,
+        "text": "Blocked at this location"
+      },
+      "7": {
+        "target": "0x3c19eb",
+        "rva": "0x162d008",
+        "length": 37,
+        "text": "Hidden, cannot build at this location"
+      },
+      "8": {
+        "target": "0x3c1a91",
+        "rva": "0x162cf00",
+        "length": 19,
+        "text": "Needs adjacent wall"
+      },
+      "9": {
+        "target": "0x3c1ac9",
+        "rva": "0x162cf30",
+        "length": 7,
+        "text": "Off map"
+      },
+      "10": {
+        "target": "0x3c1ae5",
+        "rva": "0x162cf18",
+        "length": 22,
+        "text": "Water at this location"
+      },
+      "11": {
+        "target": "0x3c1b01",
+        "rva": "0x162cf50",
+        "length": 27,
+        "text": "Lava/Magma at this location"
+      },
+      "12": {
+        "target": "0x3c1b1d",
+        "rva": "0x162cf38",
+        "length": 16,
+        "text": "Building present"
+      },
+      "13": {
+        "target": "0x3c1b55",
+        "rva": "0x162cdd8",
+        "length": 14,
+        "text": "Must be inside"
+      },
+      "14": {
+        "target": "0x3c1b71",
+        "rva": "0x162ce18",
+        "length": 17,
+        "text": "Too close to edge"
+      },
+      "15": {
+        "target": "0x3c1b8d",
+        "rva": "0x162ce08",
+        "length": 15,
+        "text": "Must be outside"
+      },
+      "16": {
+        "target": "0x3c1aad",
+        "rva": "0x162cee8",
+        "length": 16,
+        "text": "Needs open space"
+      },
+      "17": {
+        "target": "0x3c1a75",
+        "rva": "0x162cea8",
+        "length": 25,
+        "text": "Surrounded by empty space"
+      },
+      "18": {
+        "target": "0x3c1ba9",
+        "rva": "0x162ce50",
+        "length": 29,
+        "text": "Cannot build at highest level"
+      },
+      "19": {
+        "target": "0x3c1b39",
+        "rva": "0x162cde8",
+        "length": 24,
+        "text": "Must remove construction"
+      },
+      "20": {
+        "target": "0x3c1bc5",
+        "rva": "0x162ce30",
+        "length": 28,
+        "text": "Need soil or mud at location"
+      },
+      "21": {
+        "target": "0x3c1be1",
+        "rva": "0x162ce90",
+        "length": 21,
+        "text": "Need soil at location"
+      }
+    },
+    "existing_windmill_replay": {
+      "cases": 69,
+      "matched": 69
+    },
+    "run": "build/construction-message-ui-20261023-042552",
+    "native": {
+      "rows": [
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location",
+            "Blocked at this location",
+            "Needs ground or near machine"
+          ],
+          "key": "Windmill",
+          "message": "Water at this location\nBlocked at this location\nNeeds ground or near machine",
+          "tiles": [
+            0,
+            10,
+            0,
+            6,
+            1,
+            0,
+            0,
+            0,
+            6
+          ],
+          "valid": false,
+          "x": 100
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Hidden, cannot build at this location",
+            "Building present",
+            "Blocked at this location",
+            "Needs ground or near machine"
+          ],
+          "key": "Windmill",
+          "message": "Hidden, cannot build at this location\nBuilding present\nBlocked at this location\nNeeds ground or near machine",
+          "tiles": [
+            7,
+            12,
+            0,
+            6,
+            6,
+            0,
+            0,
+            0,
+            6
+          ],
+          "valid": false,
+          "x": 106
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location",
+            "Blocked at this location"
+          ],
+          "key": "Workshop:Carpenters",
+          "message": "Water at this location\nBlocked at this location",
+          "tiles": [
+            0,
+            10,
+            0,
+            6,
+            0,
+            0,
+            0,
+            0,
+            6
+          ],
+          "valid": false,
+          "x": 100
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Hidden, cannot build at this location",
+            "Building present",
+            "Blocked at this location"
+          ],
+          "key": "Workshop:Carpenters",
+          "message": "Hidden, cannot build at this location\nBuilding present\nBlocked at this location",
+          "tiles": [
+            7,
+            12,
+            0,
+            6,
+            6,
+            0,
+            0,
+            0,
+            6
+          ],
+          "valid": false,
+          "x": 106
+        }
+      ]
+    },
+    "viewer": {
+      "failure": "",
+      "observations": [
+        {
+          "copy": "Water at this location\nBlocked at this location\nNeeds ground or near machine",
+          "family": "Windmill",
+          "valid": false,
+          "x": 100.0
+        },
+        {
+          "copy": "Hidden, cannot build at this location\nBuilding present\nBlocked at this location\nNeeds ground or near machine",
+          "family": "Windmill",
+          "valid": false,
+          "x": 106.0
+        },
+        {
+          "copy": "Water at this location\nBlocked at this location",
+          "family": "Workshop:Carpenters",
+          "valid": false,
+          "x": 100.0
+        },
+        {
+          "copy": "Hidden, cannot build at this location\nBuilding present\nBlocked at this location",
+          "family": "Workshop:Carpenters",
+          "valid": false,
+          "x": 106.0
+        }
+      ],
+      "status": "passed"
+    },
+    "no_mutation": {
+      "ExitCode": 0,
+      "Output": [
+        "NO_MUTATION_PASS"
+      ]
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "source_preservation": "Owned source unchanged",
+    "scope": "Prepared mixed-error sites, semantic Preview via main viewer; no placement effects claimed. Farm/road and area construction aggregation remain separate."
+  },
+  "farm_occupancy": {
+    "source": "farm_road_terrain.json.native_farm_warning",
+    "case": "occupied_soil",
+    "meaning": "Native FarmPlot reports Building present on occupied eligible soil; the original occupied stone catalog sweep reports soil refusal first."
+  }
+}

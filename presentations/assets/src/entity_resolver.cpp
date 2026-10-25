@@ -23,6 +23,7 @@
 #include <string>
 
 #include "df3d_assets/resolver.h"
+#include "df3d_assets/gem.h"
 
 namespace df3d::assets {
 
@@ -153,14 +154,17 @@ LayoutMap mapLayout(const AssetIndex& idx, const std::string& name, const Buildi
   return m;
 }
 
-// The layout stage for a building stage: the highest stage present is
-// the complete one, the one below it stands for InProgress (stageArt),
-// Planned takes the complete art (the presentation draws it as a ghost).
-int layoutStage(const BuildingLayout& l, BuildingStage stage, bool& stageArt) {
+// Exact native stages select matching raw art. Older recordings retain the
+// coarse fallback; an unknown value must not invent an intermediate stage.
+int layoutStage(const BuildingLayout& l, const BuildingQuery& q, bool& stageArt) {
   stageArt = false;
   if (l.stages.empty()) return kLayoutNoStage;
   const int complete = l.stages.rbegin()->first;
-  if (stage != BuildingStage::InProgress || l.stages.size() < 2) return complete;
+  if (q.constructionStage >= 0 && l.stages.count(q.constructionStage)) {
+    stageArt = q.stage != BuildingStage::Complete;
+    return q.constructionStage;
+  }
+  if (q.stage != BuildingStage::InProgress || l.stages.size() < 2) return complete;
   stageArt = true;
   return std::next(l.stages.rbegin())->first;
 }
@@ -191,7 +195,7 @@ bool layoutTiles(const AssetIndex& idx, const std::string& name, const BuildingQ
                  BuildingSprites& r) {
   const LayoutMap m = mapLayout(idx, name, q);
   if (m.layout) {
-    const int stage = layoutStage(*m.layout, q.stage, r.stageArt);
+    const int stage = layoutStage(*m.layout, q, r.stageArt);
     const Footprint fp{q};
     for (int ly = -m.oy; ly < q.height; ++ly) {
       for (int lx = 0; lx < q.width; ++lx) {
@@ -201,7 +205,7 @@ bool layoutTiles(const AssetIndex& idx, const std::string& name, const BuildingQ
         if (const SpriteRef* s = m.layout->tile(stage, tx, ty)) r.tiles.push_back({lx, ly, *s});
       }
     }
-    if (!r.tiles.empty()) return true;
+    if (!r.tiles.empty()) { r.gridLayout = true; return true; }
     r.stageArt = false;
   }
   return columnTiles(idx, name, q, r);
@@ -217,11 +221,23 @@ bool fillTiles(const BuildingQuery& q, const SpriteRef* s, BuildingSprites& r) {
   return !r.tiles.empty();
 }
 
+std::string slabArtworkName(int engraving) {
+      static constexpr const char* names[]={"SECRET","IMPORTS_FOOD","IMPORTS_CLOTHING","IMPORTS_GENERAL",
+        "SHOP_CLOTH","SHOP_TANNING","SHOP_CLOTHING_CLOTH","SHOP_CLOTHING_LEATHER","SHOP_BONE_CARVER",
+        "SHOP_GEM_CUTTER","SHOP_WEAPONSMITH_METAL","SHOP_WEAPONSMITH_WOOD","SHOP_BLACKSMITH","SHOP_ARMORSMITH",
+        "SHOP_METAL_CRAFTER","SHOP_LEATHER_ACCESSORIES","SHOP_FURNITURE_WOOD","SHOP_FURNITURE_STONE",
+        "SHOP_FURNITURE_METAL","TAVERN","TRUE_NAME"};
+  if(engraving==0)return "ITEM_SLAB_ENGRAVED_MEMORIAL";
+  if(engraving>=6 && engraving<=26)return std::string("ITEM_SLAB_ENGRAVED_")+names[engraving-6];
+  return "ITEM_SLAB_BLANK";
+}
+
 }  // namespace
 
 MaterialClass materialClassOf(const AssetIndex& idx, std::string_view token) {
   if (token.empty()) return MaterialClass::Unknown;
   if (isWoodToken(token)) return MaterialClass::Wood;
+  if(token=="GLASS_GREEN" || token=="GLASS_CLEAR" || token=="GLASS_CRYSTAL")return MaterialClass::Glass;
   const uint32_t f = idx.materialFlags(token);
   if (f & kMatWood) return MaterialClass::Wood;
   if (f & kMatMetal) return MaterialClass::Metal;
@@ -261,7 +277,7 @@ std::string buildingLayoutName(BuildingKind kind, uint16_t subtype, std::string_
       return n;
     }
     case BuildingKind::TradeDepot: return "TRADE_DEPOT";
-    case BuildingKind::SiegeEngine: return subtype == 1 ? "BALLISTA_N" : "CATAPULT_N";
+    case BuildingKind::SiegeEngine: return subtype == 2 ? "BOLT_THROWER_READY_N" : subtype == 1 ? "BALLISTA_N" : "CATAPULT_N";
     case BuildingKind::Wagon: return "WAGON_BLD";
     case BuildingKind::Windmill: return "WINDMILL_S_1";
     default: break;
@@ -292,20 +308,28 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
     return done(rule);
   };
   auto tool = [&](const char* rawId, const char* variant, const char* rule) -> BuildingSprites& {
-    const ItemDefGraphics* d = idx.itemDef(rawId);
+    const ItemDefGraphics* d = idx.itemDef(q.constructionToolRaw.empty()?std::string_view(rawId):q.constructionToolRaw);
+    const bool complete=q.stage==BuildingStage::Complete;
+    const bool owned=complete && q.constructionItemIsLog>=0;
+    const auto toolClass=owned?materialClassOf(idx,q.constructionItemMaterial):cls;
     const SpriteRef* s = nullptr;
     if (d) {
       if (variant && *variant) {
         auto it = d->variants.find(variant);
         if (it != d->variants.end()) s = &it->second;
-      } else if (cls != MaterialClass::Unknown) {
-        auto it = d->variants.find(materialClassToken(cls));
+      } else if (complete && toolClass != MaterialClass::Unknown) {
+        auto it = d->variants.find(materialClassToken(toolClass));
         if (it != d->variants.end()) s = &it->second;
       }
       if (!s && d->base.valid()) s = &d->base;
     }
-    fillTiles(q, s, r);
-    return done(rule);
+    fillTiles(q, s, r);done(rule);
+    if(q.kind==BuildingKind::Hive){r.paletteRow=-1;r.colorName.clear();}
+    else if(owned) {
+      colourise(idx,r,q.constructionItemMaterial);
+      if(!q.constructionItemSolidColor.empty()){r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+    }
+    return r;
   };
 
   switch (q.kind) {
@@ -332,8 +356,7 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
     case BuildingKind::Workshop:
     case BuildingKind::Furnace:
     case BuildingKind::TradeDepot:
-    case BuildingKind::Wagon:
-    case BuildingKind::Windmill: {
+    case BuildingKind::Wagon: {
       const std::string name = buildingLayoutName(q.kind, q.subtype, q.custom);
       auto withOverlay = [&](const std::string& selected) {
         BuildingSprites overlay;
@@ -347,7 +370,7 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
         if (const auto* base = idx.layout(selected)) {
           if (const auto* front = idx.layout(overlayName)) {
             bool ignored = false;
-            const int stage = layoutStage(*base, q.stage, ignored);
+            const int stage = layoutStage(*base, q, ignored);
             const int oy = std::max(0, base->height - q.height);
             for (const auto& t : r.tiles) {
               if (const auto* s = front->tile(stage, t.lx, t.ly + oy))
@@ -359,44 +382,107 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
           for (auto& t : overlay.tiles) t.foreground = true;
         r.tiles.insert(r.tiles.end(), overlay.tiles.begin(), overlay.tiles.end());
       };
+      auto finishLayout = [&](const char* rule) {
+        auto result = done(rule);
+        if(q.kind==BuildingKind::Workshop && q.stage!=BuildingStage::Complete &&
+           (q.subtype==17 || q.subtype==22 || (q.subtype==23 && q.custom=="SCREW_PRESS"))) {
+          result.plannedHalfAlpha=true;result.stageArt=true;
+        }
+        // Native base color comes from construction contents, not b.mat_type.
+        // With no component the base retains its painted palette at every stage.
+        if (result.gridLayout || (q.kind==BuildingKind::Workshop && (q.subtype==17 || q.subtype==22))) {
+          result.paletteRow = -1; result.colorName.clear();
+          if (q.constructionItemIsLog >= 0) {
+            colourise(idx, result, q.constructionItemMaterial);
+            if (!q.constructionItemSolidColor.empty()) {
+              result.colorName = std::string(q.constructionItemSolidColor);
+              result.paletteRow = idx.paletteRow(result.colorName);
+            }
+          }
+        }
+        return result;
+      };
       if (!name.empty() && layoutTiles(idx, name, q, r)) {
-        withOverlay(name); return done("layout");
+        withOverlay(name); return finishLayout("layout");
       }
       // A custom shop the graphics raws never named, or a workshop type
       // the raws have no art for (the 53.x tool workshop): the generic
       // custom workshop art.
       if (q.kind != BuildingKind::TradeDepot && layoutTiles(idx, "WORKSHOP_CUSTOM", q, r)) {
-        withOverlay("WORKSHOP_CUSTOM"); return done("layout.custom-generic");
+        withOverlay("WORKSHOP_CUSTOM"); return finishLayout("layout.custom-generic");
       }
       r.rule = "no-layout";
       return r;
     }
     case BuildingKind::SiegeEngine: {
-      const bool ballista = q.subtype == 1;
-      if (q.stage == BuildingStage::InProgress) {
-        BuildingQuery cq = q;
-        cq.stage = BuildingStage::Complete;
-        if (layoutTiles(idx, ballista ? "BALLISTA_CONST_1" : "CATAPULT_CONST_1", cq, r)) {
-          r.stageArt = true;
-          return done("layout.siege.construction");
+      if(q.subtype>2) {r.rule="no-layout";return r;}
+      const bool complete=q.stage==BuildingStage::Complete;
+      const bool bolt=q.subtype==2;
+      const std::string base=bolt?"BOLT_THROWER":q.subtype==1?"BALLISTA":"CATAPULT";
+      static constexpr const char* directions[]={"N","NE","E","SE","S","SW","W","NW"};
+      const char* facing=directions[q.siegeFacing>=0 && q.siegeFacing<8?q.siegeFacing:0];
+      std::string name;
+      if(!complete && !bolt && q.containedItemCount>=0 && q.constructionStage>=0 && q.constructionStage<=2) {
+        name=base+"_CONST_"+std::to_string(q.containedItemCount? q.constructionStage+1:0);
+      } else if(!complete && !bolt && q.stage==BuildingStage::InProgress) {
+        // Older recordings lack exact construction facts; retain their coarse fallback.
+        name=base+"_CONST_1";
+      } else {
+        const bool firing=complete && ((q.siegeFireTimer>=1 && q.siegeFireTimer<=(bolt?2:5)) ||
+                                      (q.subtype==1 && q.containedItemCount==3));
+        name=bolt?base+(firing?"_FIRING_":"_READY_")+facing:
+                  base+"_"+facing+(firing?"_FIRING":"");
+      }
+      if(bolt) fillTiles(q,idx.tile(name),r);
+      else layoutTiles(idx,name,q,r);
+      r.found=!r.tiles.empty();r.rule=r.found?"layout.siege":"no-layout";
+      r.stageArt=!complete;
+      if(complete && q.constructionItemIsLog>=0) {
+        colourise(idx,r,q.constructionItemMaterial);
+        if(!q.constructionItemSolidColor.empty()) {
+          r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);
         }
       }
-      if (layoutTiles(idx, buildingLayoutName(q.kind, q.subtype, q.custom), q, r))
-        return done("layout.siege");
-      r.rule = "no-layout";
       return r;
     }
+    case BuildingKind::Windmill:
+      // Orientation and rotation select atlas cells in the machinery shader.
+      if(layoutTiles(idx,"WINDMILL_S_1",q,r)) {
+        r.found=true;r.rule="layout.windmill";
+        if(q.stage==BuildingStage::Complete && q.constructionItemIsLog>=0)colourise(idx,r,q.constructionItemMaterial);
+      } else r.rule="no-layout";
+      return r;
     case BuildingKind::WaterWheel:
-      if (layoutTiles(idx, q.width > q.height ? "WATER_WHEEL_WE_1" : "WATER_WHEEL_NS_1", q, r))
-        return done("layout.waterwheel");
+      // Resident art uses frame one; the presentation applies native machine phase.
+      if (layoutTiles(idx, q.width > q.height ? "WATER_WHEEL_WE_1" : "WATER_WHEEL_NS_1", q, r)) {
+        r.found=true;r.rule="layout.waterwheel";
+        if(q.stage==BuildingStage::Complete && q.constructionItemIsLog>=0)
+          colourise(idx,r,q.constructionItemMaterial);
+        return r;
+      }
       r.rule = "no-layout";
       return r;
-    case BuildingKind::ScrewPump:
-      // Orientation is not mirrored (historical gap record); the north-facing
-      // pump stands in.
-      if (layoutTiles(idx, "SCREWPUMP_N_1", q, r)) return done("layout.screwpump.approx");
-      r.rule = "no-layout";
+    case BuildingKind::ScrewPump: {
+      // Captured stationary art faces the output, opposite DF's intake enum.
+      // Old recordings without direction retain their historical north artwork.
+      static constexpr const char* names[]={"SCREWPUMP_S_1","SCREWPUMP_W_1",
+                                           "SCREWPUMP_N_1","SCREWPUMP_E_1"};
+      if (q.pumpDirection<0) {
+        layoutTiles(idx,"SCREWPUMP_N_1",q,r);
+      } else if (q.pumpDirection<4) {
+        const bool horizontal=(q.pumpDirection%2)!=0;
+        if (q.width==(horizontal?2:1) && q.height==(horizontal?1:2)) {
+          for (int i=0;i<2;++i) {
+            const int x=horizontal?i:0,y=horizontal?0:i;
+            if (const auto* sprite=idx.tile(names[q.pumpDirection],size_t(i));
+                sprite && fp.occupies(x,y)) r.tiles.push_back({x,y,*sprite});
+          }
+        }
+      }
+      // Native stationary pumps use the painted palette, not their material color.
+      r.found=!r.tiles.empty();r.rule=r.found?"layout.screwpump":"no-layout";
       return r;
+    }
 
     // --- floor decals ---
     case BuildingKind::Stockpile: {
@@ -439,17 +525,36 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
       return done("zone");
     }
     case BuildingKind::FarmPlot:
-      r.decal = true;
-      return single("FARMPLOT", "farmplot");
     case BuildingKind::RoadDirt:
-      r.decal = true;
-      return single("BLD_DIRT_ROAD", "road.dirt");
-    case BuildingKind::RoadPaved:
-      r.decal = true;
-      return single("BLD_PAVED_ROAD", "road.paved");
+    case BuildingKind::RoadPaved: {
+      const bool farm=q.kind==BuildingKind::FarmPlot;
+      // Native uses the paved token for both road classes. Progress is local
+      // to the bounding rectangle; holes do not shift its 4/2/1-cell spacing.
+      // Recorded cells and palettes: farm_road_rendering.json.gz.
+      const auto* sprite=idx.tile(farm?"FARMPLOT":"BLD_PAVED_ROAD");
+      r.decal=true;r.stageArt=true;r.found=sprite!=nullptr;
+      r.rule=sprite?(farm?"farmplot":"road"):"missing-tile";
+      if (!sprite) return r;
+      const int stage=q.stage==BuildingStage::Complete?3:
+          q.constructionStage>=0?std::clamp(int(q.constructionStage),0,3):
+          q.stage==BuildingStage::Planned?0:1;
+      const int spacing=1<<(3-stage);
+      for(int y=0;y<q.height;++y)for(int x=0;x<q.width;++x) {
+        if(!fp.occupies(x,y))continue;
+        const bool finished=stage>0 && x%spacing==0 && y%spacing==0;
+        if(!farm && stage>0 && !finished)continue;
+        r.tiles.push_back({x,y,*sprite,false,true,!finished});
+      }
+      // An extent mask may exclude every currently drawn road cell.
+      return r;
+    }
 
-    // --- bridges: the retracted deck, edge-dressed ---
+    // Bridge direction/state select installed graphics; see native capture in
+    // fixtures/construction/bridge_rendering.json. Hinge wins on a thin span.
     case BuildingKind::Bridge: {
+      if(q.bridgeDirection==-1 && q.bridgeRaised) {
+        r.found=true;r.rule="bridge.retracted";return r;
+      }
       const std::string family = std::string("BLD_BRIDGE_") +
                                  materialClassToken(cls == MaterialClass::Unknown
                                                         ? MaterialClass::Stone
@@ -457,6 +562,27 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
       for (int ly = 0; ly < q.height; ++ly) {
         for (int lx = 0; lx < q.width; ++lx) {
           if (!fp.occupies(lx, ly)) continue;
+          if(q.bridgeDirection>=0 && q.bridgeDirection<=3) {
+            const bool horizontal=q.bridgeDirection<2;
+            const bool reverse=q.bridgeDirection==1 || q.bridgeDirection==3;
+            const int along=horizontal?lx:ly, length=horizontal?q.width:q.height;
+            const int across=horizontal?ly:lx, breadth=horizontal?q.height:q.width;
+            const bool hinge=along==(reverse?length-1:0);
+            const bool end=along==(reverse?0:length-1);
+            const std::string direction=std::string(1,"WENS"[q.bridgeDirection]);
+            const std::string side=breadth==1?"1":across==0?(horizontal?"N":"W"):
+                across==breadth-1?(horizontal?"S":"E"):"CENTER";
+            std::string name;
+            if(q.bridgeRaised) {
+              if(!hinge)continue;
+              name="RAISED_"+direction+"_"+side;
+            } else if(q.width==1 && q.height==1)name="1x1_RAISE_"+direction;
+            else if(hinge)name="RAISE_"+direction+"_"+side;
+            else if(end)name="RAISE_"+direction+"_END_"+side;
+            else name=std::string(horizontal?"WE_":"NS_")+side;
+            if(const auto* s=idx.tile(family+"_"+name))r.tiles.push_back({lx,ly,*s});
+            continue;
+          }
           const uint8_t b = fp.borders(lx, ly);
           std::string member;
           if (b == (kWallN | kWallS | kWallW | kWallE)) member = "1x1";
@@ -467,16 +593,48 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
           if (s) r.tiles.push_back({lx, ly, *s});
         }
       }
-      return done("bridge.retract");
+      done("bridge.retract");
+      if(!q.materialSolidColor.empty()){r.colorName=std::string(q.materialSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+      return r;
     }
 
     // --- furniture: the item pages' building members ---
-    case BuildingKind::Bed: return member("ITEM_BED", "", "furniture.bed");
-    case BuildingKind::Chair: return member("ITEM_CHAIR", "", "furniture.chair");
-    case BuildingKind::Table: return member("ITEM_TABLE", "", "furniture.table");
-    case BuildingKind::Box: return member("ITEM_BOX", "", "furniture.box");
-    case BuildingKind::Cabinet: return member("ITEM_CABINET", "", "furniture.cabinet");
-    case BuildingKind::Coffin: return member("ITEM_COFFIN", "", "furniture.coffin");
+    case BuildingKind::Bed:
+      if(q.stage!=BuildingStage::Complete)return single("ITEM_BED", "furniture.bed.planned");
+      return member("ITEM_BED", "", "furniture.bed");
+    case BuildingKind::Chair:
+    case BuildingKind::Table:
+    case BuildingKind::Box:
+    case BuildingKind::Cabinet: {
+      const char* family=q.kind==BuildingKind::Chair?"ITEM_CHAIR":q.kind==BuildingKind::Table?"ITEM_TABLE":q.kind==BuildingKind::Box?"ITEM_BOX":"ITEM_CABINET";
+      const char* rule=q.kind==BuildingKind::Chair?"furniture.chair":q.kind==BuildingKind::Table?"furniture.table":q.kind==BuildingKind::Box?"furniture.box":"furniture.cabinet";
+      if(q.stage!=BuildingStage::Complete)return single(family,rule);
+      const bool owned=q.constructionItemId>=0;
+      fillTiles(q,classMember(idx,family,owned?materialClassOf(idx,q.constructionItemMaterial):cls,""),r);
+      if(owned && !r.tiles.empty() && q.kind!=BuildingKind::Cabinet) {
+        const bool legs=q.kind==BuildingKind::Chair || q.kind==BuildingKind::Table;
+        const auto variant=legs?0:gemVariant(uint32_t(q.constructionItemId));
+        if(const auto* overlay=idx.tile(std::string(family)+(legs?"_LEG_VARIANT":"_VARIANT"),variant))r.tiles.push_back({0,0,*overlay});
+      }
+      done(rule);
+      if(owned) {
+        colourise(idx,r,q.constructionItemMaterial);
+        if(!q.constructionItemSolidColor.empty()){r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+      }
+      return r;
+    }
+    case BuildingKind::Coffin: {
+      if(q.stage!=BuildingStage::Complete)return member("ITEM_COFFIN", "", "furniture.coffin");
+      const bool owned=q.constructionItemId>=0;
+      fillTiles(q,classMember(idx,"ITEM_COFFIN",owned?materialClassOf(idx,q.constructionItemMaterial):cls,
+                             q.containedItemCount==1?"_UNUSED":""),r);
+      done("furniture.coffin");
+      if(owned) {
+        colourise(idx,r,q.constructionItemMaterial);
+        if(!q.constructionItemSolidColor.empty()){r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+      }
+      return r;
+    }
     case BuildingKind::Statue: {
       std::string baseName;
       const auto* base=classMember(idx,"ITEM_STATUE",cls,"",&baseName);
@@ -513,68 +671,255 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
       }
       return done("furniture.statue");
     }
-    case BuildingKind::Armorstand: return member("ITEM_ARMOR_STAND", "_EMPTY", "furniture.armorstand");
-    case BuildingKind::Weaponrack: return member("ITEM_WEAPON_RACK", "_EMPTY", "furniture.weaponrack");
+    case BuildingKind::Armorstand:
+    case BuildingKind::Weaponrack:
+      // DF uses the stone member for glass equipment furniture.
+      fillTiles(q,classMember(idx,q.kind==BuildingKind::Armorstand?"ITEM_ARMOR_STAND":"ITEM_WEAPON_RACK",
+                             cls==MaterialClass::Glass?MaterialClass::Stone:cls,
+                             q.stage==BuildingStage::Complete && q.containedItemCount>1?"_FULL":"_EMPTY"),r);
+      done(q.kind==BuildingKind::Armorstand?"furniture.armorstand":"furniture.weaponrack");
+      if(!q.materialSolidColor.empty()) {
+        r.colorName=std::string(q.materialSolidColor);r.paletteRow=idx.paletteRow(r.colorName);
+      }
+      return r;
     case BuildingKind::Door: {
-      fillTiles(q, classMember(idx, "ITEM_DOOR", cls, "_CLOSED"), r);
+      if(q.stage!=BuildingStage::Complete)return member("ITEM_DOOR", "", "furniture.door.planned");
+      const bool owned=q.constructionItemId>=0;
+      const auto itemClass=owned?materialClassOf(idx,q.constructionItemMaterial):cls;
+      fillTiles(q, classMember(idx, "ITEM_DOOR", itemClass, "_CLOSED"), r);
+      if(owned && !r.tiles.empty())
+        if(const auto* overlay=idx.tile("ITEM_DOOR_VARIANT",gemVariant(uint32_t(q.constructionItemId))))r.tiles.push_back({0,0,*overlay});
       if (!r.tiles.empty() && (q.flags & wm::kBuildingForbidden))
         if (const SpriteRef* f = idx.tile("ITEM_DOOR_FORBIDDEN")) r.tiles.push_back({0, 0, *f});
-      return done("furniture.door");
+      done("furniture.door");
+      if(owned) {
+        colourise(idx,r,q.constructionItemMaterial);
+        if(!q.constructionItemSolidColor.empty()){r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+      }
+      return r;
     }
     case BuildingKind::Floodgate: return member("ITEM_FLOODGATE", "_CLOSED", "furniture.floodgate");
     case BuildingKind::Hatch: {
-      fillTiles(q, classMember(idx, "ITEM_HATCH_COVER", cls, "_CLOSED"), r);
+      if(q.stage!=BuildingStage::Complete)return single("ITEM_HATCH_COVER_GLASS", "furniture.hatch.planned");
+      const bool owned=q.constructionItemId>=0;
+      const auto itemClass=owned?materialClassOf(idx,q.constructionItemMaterial):cls;
+      fillTiles(q, classMember(idx, "ITEM_HATCH_COVER", itemClass, "_CLOSED"), r);
+      if(owned && !r.tiles.empty())
+        if(const auto* overlay=idx.tile("ITEM_HATCH_COVER_VARIANT",gemVariant(uint32_t(q.constructionItemId))))r.tiles.push_back({0,0,*overlay});
       if (!r.tiles.empty() && (q.flags & wm::kBuildingForbidden))
         if (const SpriteRef* f = idx.tile("ITEM_HATCH_COVER_FORBIDDEN"))
           r.tiles.push_back({0, 0, *f});
-      return done("furniture.hatch");
+      done("furniture.hatch");
+      if(owned) {
+        colourise(idx,r,q.constructionItemMaterial);
+        if(!q.constructionItemSolidColor.empty()){r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+      }
+      return r;
     }
-    case BuildingKind::GrateWall: return member("ITEM_GRATE", "_WALL_CLOSED", "furniture.grate.wall");
-    case BuildingKind::GrateFloor: return member("ITEM_GRATE", "_FLOOR_CLOSED", "furniture.grate.floor");
-    case BuildingKind::BarsVertical: return single("BLD_VERTICAL_BARS_S", "bars.vertical");
-    case BuildingKind::BarsFloor: return single("BLD_FLOOR_BARS", "bars.floor");
-    case BuildingKind::WindowGlass: return single("ITEM_WINDOW_GLASS", "window.glass");
+    case BuildingKind::GrateWall:
+      if(q.stage!=BuildingStage::Complete)return single("ITEM_GRATE_METAL", "furniture.grate.wall.planned");
+      return member("ITEM_GRATE", "_WALL_CLOSED", "furniture.grate.wall");
+    case BuildingKind::GrateFloor:
+      if(q.stage!=BuildingStage::Complete)return single("ITEM_GRATE_METAL_FLOOR_CLOSED", "furniture.grate.floor.planned");
+      return member("ITEM_GRATE", "_FLOOR_CLOSED", "furniture.grate.floor");
+    case BuildingKind::BarsVertical: {
+      // Recorded native composites, ordered back-to-front. Unknown recordings
+      // retain the historical south face without inventing adjacency facts.
+      if(q.verticalBarsConnections<0)return single("BLD_VERTICAL_BARS_S", "bars.vertical.unknown");
+      if(q.verticalBarsConnections>15)return r;
+      static constexpr unsigned faces[]={12,3,3,3,12,5,6,7,12,9,10,11,12,13,14,15};
+      const auto mask=faces[q.verticalBarsConnections];
+      const char* names[]={"BLD_VERTICAL_BARS_N_BACK","BLD_VERTICAL_BARS_W","BLD_VERTICAL_BARS_E","BLD_VERTICAL_BARS_S"};
+      const unsigned bits[]={1,4,8,2};
+      for(int i=0;i<4;++i)if(mask&bits[i]) {
+        const auto* sprite=idx.tile(names[i]);if(!sprite)return BuildingSprites{};
+        r.tiles.push_back({0,0,*sprite});
+      }
+      if(mask&1) {
+        const auto* upper=idx.tile("BLD_VERTICAL_BARS_N_UP");if(!upper)return BuildingSprites{};
+        r.tiles.push_back({0,-1,*upper});
+      }
+      r.found=true;r.rule="bars.vertical.native";
+      if(q.stage!=BuildingStage::Complete)colourise(idx,r,q.material);
+      else if(q.constructionItemIsLog>=0)colourise(idx,r,q.constructionItemMaterial);
+      return r;
+    }
+    case BuildingKind::BarsFloor:
+    case BuildingKind::Support: {
+      const auto* sprite=q.kind==BuildingKind::BarsFloor ? idx.tile("BLD_FLOOR_BARS") : classMember(idx,"BLD_SUPPORT",cls,"");
+      fillTiles(q,sprite,r);r.found=!r.tiles.empty();r.rule=r.found?"structure.native":"missing-tile";
+      if(q.stage!=BuildingStage::Complete)colourise(idx,r,q.material);
+      else if(q.constructionItemIsLog>=0)colourise(idx,r,q.constructionItemMaterial);
+      return r;
+    }
+    case BuildingKind::WindowGlass:
+      single("ITEM_WINDOW_GLASS", "window.glass");
+      if(!q.materialSolidColor.empty()) {
+        r.colorName=std::string(q.materialSolidColor);r.paletteRow=idx.paletteRow(r.colorName);
+      }
+      return r;
     case BuildingKind::WindowGem: return single("ITEM_WINDOW_GEM", "window.gem");
-    case BuildingKind::Well: return single("BLD_WELL", "well");
-    case BuildingKind::ArcheryTarget: return member("BLD_ARCHERY_TARGET", "", "archery-target");
-    case BuildingKind::Support: return member("BLD_SUPPORT", "", "support");
+    case BuildingKind::Well: {
+      const char* name=q.stage!=BuildingStage::Complete || q.wellChainIsMetal<0 ? "BLD_WELL" : q.wellChainIsMetal==1 ? "BLD_WELL_WITH_CHAIN" : "BLD_WELL_WITH_ROPE";
+      fillTiles(q,idx.tile(name),r);r.found=!r.tiles.empty();r.rule=r.found?"well.native":"missing-tile";
+      return r; // Native well artwork retains its painted palette.
+    }
+    case BuildingKind::ArcheryTarget:
+      fillTiles(q,classMember(idx,"BLD_ARCHERY_TARGET",cls==MaterialClass::Glass?MaterialClass::Metal:cls,""),r);
+      r.found=!r.tiles.empty();r.rule=r.found?"archery-target":"missing-tile";
+      return r; // Native target artwork keeps its painted palette at every stage.
     case BuildingKind::Chain:
-      return single(cls == MaterialClass::Metal ? "BLD_CHAIN_METAL" : "BLD_CHAIN_ROPE", "chain");
-    case BuildingKind::Cage: return member("ITEM_CAGE", "", "cage");
-    case BuildingKind::AnimalTrap: return member("ITEM_ANIMAL_TRAP", "", "animal-trap");
-    case BuildingKind::Slab: return single("ITEM_SLAB_ENGRAVED_MEMORIAL", "slab.memorial");
+      fillTiles(q,idx.tile(cls == MaterialClass::Metal ? "BLD_CHAIN_METAL" : "BLD_CHAIN_ROPE"),r);
+      r.found=!r.tiles.empty();r.rule="chain";
+      return r; // Native restraints retain the painted palette in both stages.
+    case BuildingKind::Cage:
+    case BuildingKind::AnimalTrap: {
+      const bool cage=q.kind==BuildingKind::Cage;
+      const char* family=cage?"ITEM_CAGE":"ITEM_ANIMAL_TRAP";
+      const char* rule=cage?"cage":"animal-trap";
+      if(q.stage!=BuildingStage::Complete)return single(cage?"ITEM_CAGE_METAL":"ITEM_ANIMAL_TRAP_METAL",rule);
+      const bool owned=q.constructionItemId>=0;
+      const auto itemClass=owned?materialClassOf(idx,q.constructionItemMaterial):cls;
+      fillTiles(q,classMember(idx,family,cage?itemClass:MaterialClass::Metal,""),r);done(rule);
+      if(owned) {
+        colourise(idx,r,q.constructionItemMaterial);
+        if(!q.constructionItemSolidColor.empty()){r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);}
+      }
+      return r;
+    }
+    case BuildingKind::Slab: {
+      // Native unused intents1..5 and absent items retain raw blank artwork.
+      const bool known=q.stage==BuildingStage::Complete && q.constructionItemIsLog>=0 &&
+          (q.slabEngraving==-1 || q.slabEngraving==0 || (q.slabEngraving>=6 && q.slabEngraving<=26));
+      const std::string name=slabArtworkName(known?q.slabEngraving:-1);
+      fillTiles(q,idx.tile(name),r);r.found=!r.tiles.empty();r.rule=r.found?"slab.native":"missing-tile";
+      if(known)colourise(idx,r,q.constructionItemMaterial);
+      return r;
+    }
     case BuildingKind::TractionBench: {
-      // The bench page names wood WOODEN.
-      const char* c = cls == MaterialClass::Stone   ? "STONE"
-                      : cls == MaterialClass::Metal ? "METAL"
-                      : cls == MaterialClass::Glass ? "GLASS"
-                                                    : "WOODEN";
-      return single((std::string("ITEM_TRACTION_BENCH_") + c + "_ROPE").c_str(), "traction-bench");
+      // The supported install aliases CHAIN/ROPE artwork. DF's glass uses metal.
+      const char* c=cls==MaterialClass::Stone?"STONE":cls==MaterialClass::Wood?"WOODEN":"METAL";
+      fillTiles(q,idx.tile(std::string("ITEM_TRACTION_BENCH_")+c+"_ROPE"),r);
+      r.found=!r.tiles.empty();r.rule="traction-bench";return r;
     }
     case BuildingKind::Bookcase: return tool("ITEM_TOOL_BOOKCASE", "", "tool.bookcase");
     case BuildingKind::DisplayFurniture: return tool("ITEM_TOOL_DISPLAY_CASE", "", "tool.display-case");
     case BuildingKind::OfferingPlace: return tool("ITEM_TOOL_ALTAR", "", "tool.altar");
     case BuildingKind::NestBox: return tool("ITEM_TOOL_NEST_BOX", "", "tool.nest-box");
     case BuildingKind::Hive: return tool("ITEM_TOOL_HIVE", "HIVE_BLD", "tool.hive");
-    case BuildingKind::Instrument:
-      // The mirror carries no instrument class; the stringed building
-      // instrument stands for all of them (historical gap record).
-      return single("ITEM_INSTRUMENT_STRINGED_BUILDING", "instrument.approx");
+    case BuildingKind::Instrument: {
+      const bool complete=q.stage==BuildingStage::Complete;
+      const bool known=q.instrumentFamily>=0 && q.instrumentFamily<=3 && q.instrumentPlaced>=0;
+      const char* families[]={"KEYBOARD","STRINGED","WIND","PERCUSSION"};
+      const auto name=std::string("ITEM_INSTRUMENT_")+families[complete && known?q.instrumentFamily:0]+
+          (complete && known && q.instrumentPlaced==0?"_HANDHELD":"_BUILDING");
+      single(name.c_str(), "instrument.native");
+      r.paletteRow=-1;
+      if(!complete)colourise(idx,r,q.material);
+      else if(known)colourise(idx,r,q.constructionItemMaterial);
+      return r;
+    }
     case BuildingKind::Nest: return single("NATURAL_NEST", "nest");
-    case BuildingKind::Weapon: return single("UPRIGHT_WEAPON_RETRACTED_1", "upright-weapon");
+    case BuildingKind::Weapon: {
+      const bool complete=q.stage==BuildingStage::Complete;
+      if(complete && q.weaponCount<0)return single("UPRIGHT_WEAPON_RETRACTED_1", "upright-weapon.unknown");
+      const int count=std::clamp(q.weaponCount,1,10);
+      if(!complete || q.weaponCount==0 || q.weaponRetracted!=0) {
+        const auto name=std::string("UPRIGHT_WEAPON_RETRACTED_")+std::to_string(!complete || q.weaponCount==0?10:count);
+        fillTiles(q,idx.tile(name),r);
+      } else if(const auto* definition=idx.itemDef(q.constructionWeaponRaw)) {
+        const auto prefix=std::string("UPRIGHT_")+std::to_string(count);
+        const auto top=definition->variants.find(prefix+"T");
+        const auto bottom=definition->variants.find(prefix+"B");
+        if(top!=definition->variants.end() && bottom!=definition->variants.end() && top->second.valid() && bottom->second.valid()) {
+          // Use the declared lower spike artwork, including counts5..10:
+          // the maintainer approved correcting DF53.16's selector-mask bug.
+          r.tiles.push_back({0,0,bottom->second});
+          r.tiles.push_back({0,-1,top->second});r.tiles.back().foreground=true;
+          colourise(idx,r,q.constructionItemMaterial);
+          if(!q.constructionItemSolidColor.empty()) {
+            r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);
+          }
+        }
+      }
+      r.found=!r.tiles.empty();r.rule=r.found?"upright-weapon.native":"missing-tile";
+      if(!complete){r.stageArt=true;r.plannedHalfAlpha=true;}
+      return r;
+    }
 
     // --- traps by trap_type ---
     case BuildingKind::Trap:
       switch (q.subtype) {
-        case 0: return single("LEVER_SET", "trap.lever");
-        case 1: return single("TRAP_PLATE_READY", "trap.plate");
-        case 2: return single("TRAP_CAGE", "trap.cage");
-        case 3: return single("TRAP_STONE", "trap.stone");
-        case 4: return single("TRAP_WEAPON", "trap.weapon");
-        case 5:
-          // Track direction is not mirrored; a N-S stop stands in.
-          return single(cls == MaterialClass::Wood ? "TRACK_STOP_WOOD_NS" : "TRACK_STOP_STONE_NS",
-                        "trap.track-stop.approx");
+        case 0: case 1: case 2: case 3: {
+          const bool complete=q.stage==BuildingStage::Complete;
+          // A known completed trap without a mechanism intentionally has no art.
+          // Mark the selection resolved so the host does not substitute a glyph.
+          if(complete && q.containedItemCount>=0 && q.constructionItemIsLog<0) {
+            r.found=true;r.rule="trap.no-mechanism";return r;
+          }
+          const bool active=q.trapState>0;
+          const bool loaded=q.subtype>=2 && complete && q.containedItemCount>=2 && !active;
+          std::string name;
+          if(q.subtype==0)name=complete && active?"LEVER_PULLED":"LEVER_SET";
+          else if(q.subtype==1) {
+            const bool pressed=complete && (active || q.trapReadyTimeout>0 || q.trapFillTimer>0);
+            name=pressed?"TRAP_PLATE_PRESSED":"TRAP_PLATE_READY";
+            if(complete && q.trapTriggerFlags>=0) {
+              if(q.trapTriggerFlags&4)name+="_MAGMA";
+              else if(q.trapTriggerFlags&2)name+="_WATER";
+              else if(q.trapTriggerFlags&32)name+="_MINECART";
+            }
+          } else {
+            name=q.subtype==2?"TRAP_CAGE":"TRAP_STONE";
+            if(complete && q.containedItemCount>=0 && !loaded)name+="_UNLOADED";
+          }
+          fillTiles(q,idx.tile(name),r);r.found=!r.tiles.empty();r.rule=r.found?"trap.native":"missing-tile";
+          if(loaded) {
+            if(const auto* top=idx.tile(q.subtype==2?"TRAP_CAGE_TOP":"TRAP_STONE_TOP"))
+              r.tiles.push_back({0,-1,*top,true,true});
+          }
+          if(!complete){r.plannedHalfAlpha=true;r.stageArt=true;}
+          else if(q.constructionItemIsLog>=0) {
+            colourise(idx,r,q.constructionItemMaterial);
+            if(!q.constructionItemSolidColor.empty()) {
+              r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);
+            }
+          } else if(q.containedItemCount<0)colourise(idx,r,q.material); // older recordings
+          return r;
+        }
+        case 4: {
+          const bool complete=q.stage==BuildingStage::Complete;
+          const SpriteRef* weapon=nullptr;
+          if(complete && q.containedItemCount>=2 && q.trapState>=-128 && q.trapState<=0 && q.weaponCount>0) {
+            if(const auto* definition=idx.itemDef(q.constructionWeaponRaw)) {
+              const auto variant=definition->variants.find("WEAPON_TRAP");
+              if(variant!=definition->variants.end() && variant->second.valid())weapon=&variant->second;
+            }
+          }
+          fillTiles(q,weapon?weapon:idx.tile("TRAP_WEAPON"),r);
+          r.found=!r.tiles.empty();r.rule=r.found?"trap.weapon.native":"missing-tile";
+          if(!complete){r.stageArt=true;r.plannedHalfAlpha=true;}
+          else if(weapon) {
+            colourise(idx,r,q.constructionItemMaterial);
+            if(!q.constructionItemSolidColor.empty()) {
+              r.colorName=std::string(q.constructionItemSolidColor);r.paletteRow=idx.paletteRow(r.colorName);
+            }
+          }
+          return r;
+        }
+        case 5: {
+          // Native completed stops follow underlying track; single-ended track
+          // uses straight art. Planned stops and bare floors use the crossing.
+          static constexpr const char* suffix[]={"NSWE","NS","NS","NS","WE","NE","SE","NSE",
+            "WE","NW","SW","NSW","WE","NWE","SWE","NSWE"};
+          const unsigned mask=q.stage==wm::BuildingStage::Complete ? q.completedTrack&15 : 0;
+          const bool complete=q.stage==wm::BuildingStage::Complete;
+          const auto name=std::string(complete && q.constructionItemIsLog==1?"TRACK_STOP_WOOD_":"TRACK_STOP_STONE_")+suffix[mask];
+          fillTiles(q,idx.tile(name),r);
+          r.found=!r.tiles.empty();r.rule=r.found?"trap.track-stop":"missing-tile";
+          if(complete && q.constructionItemIsLog!=-1)colourise(idx,r,q.constructionItemMaterial);
+          return r; // Planned and unknown-item art retain the painted palette.
+        }
         default: break;
       }
       r.rule = "trap.unknown-subtype";
@@ -582,16 +927,45 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& idx, const BuildingQuery&
 
     // --- machines ---
     case BuildingKind::AxleHorizontal:
-      return single(q.width > q.height ? "AXLE_HORIZONTAL_WE_1" : "AXLE_HORIZONTAL_NS_1",
-                    "machine.axle");
-    case BuildingKind::AxleVertical: return single("AXLE_VERTICAL_1", "machine.axle.vertical");
-    case BuildingKind::GearAssembly: return single("GEAR_ASSEMBLY_1", "machine.gear");
-    case BuildingKind::Rollers:
-      return single((std::string("ROLLERS_") +
-                     (cls == MaterialClass::Wood ? "WOOD" : "STONE") +
-                     (q.width > q.height ? "_WE_1" : "_NS_1"))
-                        .c_str(),
-                    "machine.rollers.approx");
+    case BuildingKind::AxleVertical:
+    case BuildingKind::GearAssembly: {
+      const bool vertical=q.horizontalAxleVertical<0 ? q.width<=q.height : q.horizontalAxleVertical==1;
+      const char* name=q.kind==BuildingKind::GearAssembly ? "GEAR_ASSEMBLY_1" : q.kind==BuildingKind::AxleVertical ? "AXLE_VERTICAL_1"
+          : vertical ? "AXLE_HORIZONTAL_NS_1" : "AXLE_HORIZONTAL_WE_1";
+      fillTiles(q,idx.tile(name),r);r.found=!r.tiles.empty();r.rule=r.found?"machine.transmission":"missing-tile";
+      // The presentation composites uncolored axle fittings over these shafts.
+      if(q.stage==BuildingStage::Complete && q.constructionItemIsLog>=0)colourise(idx,r,q.constructionItemMaterial);
+      return r;
+    }
+    case BuildingKind::Rollers: {
+      // DF53.16 draw: per-cell track shape, first item kind/material, and
+      // direction-dependent absolute coordinate against linked machine position.
+      static constexpr const char* suffix[]={"NSWE","NS","NS","NS","WE","NE","SE","NSE",
+        "WE","NW","SW","NSW","WE","NWE","SWE","NSWE"};
+      const bool complete=q.stage==BuildingStage::Complete;
+      const int direction=q.rollerDirection;
+      const bool knownDirection=direction>=0 && direction<=3;
+      const int phase=q.rollerMachinePosition==-129 ? 0 : q.rollerMachinePosition%3;
+      const Footprint footprint{q};
+      for(int y=0;y<q.height;++y)for(int x=0;x<q.width;++x) {
+        if(!footprint.occupies(x,y))continue;
+        const size_t cell=size_t(y)*size_t(q.width)+size_t(x);
+        const unsigned mask=q.completedTracks && cell<q.completedTracks->size() ? (*q.completedTracks)[cell]&15 : 0;
+        const char* shape=complete ? suffix[mask] : (knownDirection && (direction&1) ? "WE" : "NS");
+        int frame=1;
+        if(complete && knownDirection) {
+          const int coordinate=(direction&1) ? q.x1+x : q.y1+y;
+          const int target=direction==1 || direction==2 ? phase : 2-phase;
+          frame=coordinate%3==target ? 1 : 2;
+        }
+        const auto name=std::string(complete && q.constructionItemIsLog==1 ? "ROLLERS_WOOD_" : "ROLLERS_STONE_")+
+          shape+"_"+std::to_string(frame);
+        if(const auto* sprite=idx.tile(name))r.tiles.push_back({x,y,*sprite});
+      }
+      r.found=!r.tiles.empty();r.rule=r.found?"machine.rollers":"missing-tile";
+      if(complete && q.constructionItemIsLog!=-1)colourise(idx,r,q.constructionItemMaterial);
+      return r;
+    }
 
     case BuildingKind::Shop:
     case BuildingKind::Unknown:
@@ -780,14 +1154,12 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       if (q.material.find(":SOAP") != std::string_view::npos) return single("ITEM_BARS_SOAP", "bar.soap");
       return single("ITEM_BARS", "bar");
     }
-    case ItemKind::SmallGem:
-    case ItemKind::Gem:
+    case ItemKind::SmallGem: return single("ITEM_GEMS", "gem.small.generic");
+    case ItemKind::Gem: return single("ITEM_LARGE_GEM", "gem.large.generic");
     case ItemKind::Rough: {
       auto it = idx.roughGemGraphics.find(std::string(rawId));
       if (it != idx.roughGemGraphics.end()) return done(&it->second, "gem.material");
-      // Cut gems have no page of their own in vanilla; the rough gem
-      // sprite (recoloured) stands in (historical gap record).
-      return single("ITEM_ROUGH_GEM", q.kind == ItemKind::Rough ? "gem.rough" : "gem.cut->rough");
+      return single("ITEM_ROUGH_GEM", "gem.rough");
     }
     case ItemKind::Blocks: return single("ITEM_BLOCKS", "blocks");
     case ItemKind::Boulder: {
@@ -821,9 +1193,17 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
                                                   : "ITEM_FLASK_LEATHER",
                     "flask");
     case ItemKind::Goblet: return member("ITEM_GOBLET", "", "goblet");
-    case ItemKind::Instrument:
-      // Instrument class is not mirrored (historical gap record).
+    case ItemKind::Instrument: {
+      if(q.instrumentFamily>=0 && q.instrumentFamily<=3 && q.instrumentPlaced>=0 && q.instrumentPlaced<=1) {
+        const char* families[]={"KEYBOARD","STRINGED","WIND","PERCUSSION"};
+        const auto name=std::string("ITEM_INSTRUMENT_")+families[q.instrumentFamily]+
+            (q.instrumentPlaced?"_BUILDING":"_HANDHELD");
+        return single(name.c_str(), "instrument.native");
+      }
+      // Older item streams lack generated definition facts. Retain their legacy
+      // approximation until the map-item contract supplies those facts too.
       return single("ITEM_INSTRUMENT_STRINGED_HANDHELD", "instrument.approx");
+    }
     case ItemKind::Toy: return def("", "ITEM_TOY", "toy");
     case ItemKind::Window: return single("ITEM_WINDOW_GLASS", "window");
     case ItemKind::Cage: return member("ITEM_CAGE", "", "cage");
@@ -953,6 +1333,7 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Quiver: return single("ITEM_QUIVER", "quiver");
     case ItemKind::CatapultParts: return single("ITEM_CATAPULT_PARTS", "siege-parts");
     case ItemKind::BallistaParts: return single("ITEM_BALLISTA_PARTS", "siege-parts");
+    case ItemKind::BoltThrowerParts: return single("ITEM_BOLT_THROWER_PARTS", "siege-parts");
     case ItemKind::TrapParts: return single("ITEM_MECHANISMS", "mechanisms");
     case ItemKind::TrapComp: return def("", "ITEM_TRAP_COMPONENT", "trapcomp");
     case ItemKind::Drink:
@@ -982,7 +1363,11 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       return single((std::string("ITEM_TRACTION_BENCH_") + c + "_ROPE").c_str(), "traction-bench");
     }
     case ItemKind::Tool: return def("", "ITEM_TOOL", "tool");
-    case ItemKind::Slab: return single("ITEM_SLAB_BLANK", "slab");
+    case ItemKind::Slab: {
+      single(slabArtworkName(q.slabEngraving).c_str(), "slab.native");
+      if(q.slabEngraving>=1 && q.slabEngraving<=5)r.paletteRow=-1;
+      return r;
+    }
     case ItemKind::Egg: return single("ITEM_EGG_SIZE2", "egg");
     case ItemKind::Book: return member("ITEM_BOOK", "", "book");
     case ItemKind::Sheet: return single("ITEM_SHEET", "sheet");

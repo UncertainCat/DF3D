@@ -86,9 +86,9 @@ func _style(color: Color) -> StyleBoxFlat:
 	style.bg_color = color
 	return style
 
-func _row_style(light: bool) -> StyleBox:
-	var texture: Texture2D = art.texture("BUTTON_RECTANGLE_LIGHT" if light else "BUTTON_RECTANGLE_DARK")
-	if texture == null: return _style(Color("252525") if light else Color("1c1c1c"))
+func _row_style(token: String) -> StyleBox:
+	var texture: Texture2D = art.texture(token)
+	if texture == null: return _style(Color("1c1c1c"))
 	var style := StyleBoxTexture.new(); style.texture = texture
 	style.set_texture_margin(SIDE_LEFT, 8); style.set_texture_margin(SIDE_RIGHT, 8)
 	style.set_texture_margin(SIDE_TOP, 12); style.set_texture_margin(SIDE_BOTTOM, 12)
@@ -115,6 +115,9 @@ func _render() -> void:
 	position = Vector2(clampf(anchor.x - total / 2.0, 0.0, maxf(0.0, viewport_size.x - total - 24.0)), maxf(0.0, anchor.y - size.y))
 	var x := 0.0
 	for level in groups.size():
+		# Native e2 menus dim ancestors, highlight the selected ancestor, and
+		# use the regular rectangle for every current-level row (including blanks).
+		var row_token := "BUTTON_RECTANGLE_DARK" if level < path.size() else "BUTTON_RECTANGLE"
 		if level > 0:
 			var separator := TextureRect.new(); separator.texture = art.texture("BUTTON_RECTANGLE_DIVIDER")
 			separator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; separator.stretch_mode = TextureRect.STRETCH_TILE
@@ -130,7 +133,7 @@ func _render() -> void:
 				var band := Panel.new()
 				band.position = Vector2(x + column * width, stripe * ROW_HEIGHT)
 				band.size = Vector2(width, ROW_HEIGHT)
-				band.add_theme_stylebox_override("panel", _row_style(stripe % 2 == 0))
+				band.add_theme_stylebox_override("panel", _row_style(row_token))
 				band.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				add_child(band)
 		var controls: Array = []
@@ -146,10 +149,10 @@ func _render() -> void:
 			button.tooltip_text = str(row.label)
 			# Catalog reasons describe unfinished adapter work, not native tooltip
 			# copy. Keep them in semantic diagnostics, never in the visible menu.
-			button.add_theme_stylebox_override("normal", _row_style(selected or index % row_count % 2 == 0))
-			button.add_theme_stylebox_override("hover", _row_style(true))
-			button.add_theme_stylebox_override("pressed", _row_style(true))
-			button.add_theme_stylebox_override("disabled", _row_style(index % row_count % 2 == 0))
+			button.add_theme_stylebox_override("normal", _row_style("BUTTON_RECTANGLE_LIGHT" if selected else row_token))
+			button.add_theme_stylebox_override("hover", _row_style("BUTTON_RECTANGLE_LIGHT"))
+			button.add_theme_stylebox_override("pressed", _row_style("BUTTON_RECTANGLE_LIGHT"))
+			button.add_theme_stylebox_override("disabled", _row_style(row_token))
 			button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 			button.pressed.connect(activate.bind(level, index))
 			button.gui_input.connect(_gui_input)

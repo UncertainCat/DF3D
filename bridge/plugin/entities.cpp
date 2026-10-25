@@ -1,3 +1,25 @@
+#include "modules/Materials.h"
+#include "df/material.h"
+#include "df/material_flags.h"
+#include "df/item_slabst.h"
+#include "bed_appearance_native.h"
+#include "construction_site_native.h"
+#include "df/building_bridgest.h"
+#include "df/building_siegeenginest.h"
+#include "df/building_trapst.h"
+#include "df/building_weaponst.h"
+#include "df/itemdef_weaponst.h"
+#include "df/itemdef_trapcompst.h"
+#include "df/building_screw_pumpst.h"
+#include "df/building_rollersst.h"
+#include "df/building_water_wheelst.h"
+#include "df/building_windmillst.h"
+#include "df/building_axle_horizontalst.h"
+#include "df/machine.h"
+#include "df/itemdef_instrumentst.h"
+#include "df/itemdef_toolst.h"
+#include "df/instrument_flags.h"
+#include "df/job_skill.h"
 #include "entities.h"
 
 #include "modules/Items.h"
@@ -83,16 +105,19 @@ mir::BuildingKind mapBuildingKind(df::building_type t) {
     return mir::BuildingKind::Unknown;  // a value newer than the schema (append it, never renumber)
 }
 
-// ItemKind = item_type + 1 up to Branch; later values (BOLT_THROWER_PARTS
-// in 53.x) are Unknown until the schema appends them.
+// ItemKind = item_type + 1 through the supported DF 53.x item types.
+// Append future values to the schema before admitting them here.
 static_assert(static_cast<int>(df::enums::item_type::BAR) == 0 && static_cast<int>(mir::ItemKind::Bar) == 1,
               "ItemKind anchor: Bar");
 static_assert(static_cast<int>(df::enums::item_type::BRANCH) + 1 == static_cast<int>(mir::ItemKind::Branch),
-              "ItemKind anchor: Branch (last in the schema)");
+              "ItemKind anchor: Branch");
+static_assert(static_cast<int>(df::enums::item_type::BOLT_THROWER_PARTS) + 1 ==
+                  static_cast<int>(mir::ItemKind::BoltThrowerParts),
+              "ItemKind anchor: BoltThrowerParts (last in the schema)");
 
 mir::ItemKind mapItemKind(df::item_type t) {
     const int v = static_cast<int>(t);
-    if (v < 0 || v > static_cast<int>(df::enums::item_type::BRANCH)) return mir::ItemKind::Unknown;
+    if (v < 0 || v > static_cast<int>(df::enums::item_type::BOLT_THROWER_PARTS)) return mir::ItemKind::Unknown;
     return static_cast<mir::ItemKind>(v + 1);
 }
 
@@ -137,6 +162,13 @@ flatbuffers::Offset<mir::StatueFacts> writeStatue(flatbuffers::FlatBufferBuilder
         s.caste ? s.caste->c_str() : nullptr,s.event);
 }
 
+flatbuffers::Offset<mir::BeddingFacts> writeBedding(flatbuffers::FlatBufferBuilder& fbb,const df3d_bed::Facts& b) {
+    if (b.sheet<0 || b.pillow<0) return 0;
+    return mir::CreateBeddingFactsDirect(fbb,b.sheet,b.pillow,
+        b.baseColor.empty() ? nullptr : b.baseColor.c_str(),
+        b.sheetColor.empty() ? nullptr : b.sheetColor.c_str());
+}
+
 struct BuildingRec {
     uint8_t kind = 0;
     uint8_t stage = 0;
@@ -147,12 +179,44 @@ struct BuildingRec {
     const std::string* custom = nullptr;  // building_def::code (DF memory, stable for the session)
     std::vector<uint8_t> extents;          // empty = whole rectangle
     StatueRec statue;
+    df3d_bed::Facts bedding;
+    int8_t pumpDirection=-1, pumpRunning=-1;
+  int8_t rollerDirection=-1;
+  int16_t rollerMachinePosition=-129;
+  int16_t waterwheelMachinePosition=-129;
+  int8_t windmillOrientX=-2, windmillOrientY=-2;
+  int16_t windmillRotation=-129;
+  int16_t gearAxleMachinePosition=-129;
+  int8_t horizontalAxleVertical=-1;
+  int8_t slabEngraving=-2;
+  int8_t verticalBarsConnections=-1;
+  int8_t wellChainIsMetal=-1;
+  std::string materialSolidColor;
+  int32_t constructionItemId=-1;
+  std::string constructionItemSolidColor;
+  int32_t containedItemCount=-1;
+  std::string constructionToolRaw;
+  int32_t constructionStage = -1;
+  int8_t siegeFacing = -1;
+  int16_t siegeFireTimer = -129;
+  int16_t trapState = -129;
+  int32_t trapReadyTimeout = -32769;
+  int32_t trapFillTimer = -32769;
+  int16_t trapTriggerFlags = -1;
+  int32_t weaponCount = -1;
+  int8_t weaponRetracted = -1;
+  std::string constructionWeaponRaw;
+  int8_t instrumentFamily=-1, instrumentPlaced=-1;
+    int8_t constructionItemIsLog=-1;
+    uint16_t constructionItemMaterial=0xffff;
+    int8_t bridgeDirection=-2;
+    uint8_t bridgeFlags=0;
 };
 
 bool sameRec(const BuildingRec& a, const BuildingRec& b) {
     return a.kind == b.kind && a.stage == b.stage && a.flags == b.flags && a.subtype == b.subtype &&
            a.material == b.material && a.x1 == b.x1 && a.y1 == b.y1 && a.x2 == b.x2 && a.y2 == b.y2 &&
-           a.z == b.z && a.cx == b.cx && a.cy == b.cy && a.custom == b.custom && a.extents == b.extents && a.statue==b.statue;
+           a.z == b.z && a.cx == b.cx && a.cy == b.cy && a.custom == b.custom && a.extents == b.extents && a.statue==b.statue && a.bedding==b.bedding && a.bridgeDirection==b.bridgeDirection && a.bridgeFlags==b.bridgeFlags && a.pumpDirection==b.pumpDirection && a.pumpRunning==b.pumpRunning && a.constructionItemIsLog==b.constructionItemIsLog && a.constructionItemMaterial==b.constructionItemMaterial && a.rollerDirection==b.rollerDirection && a.rollerMachinePosition==b.rollerMachinePosition && a.waterwheelMachinePosition==b.waterwheelMachinePosition && a.windmillOrientX==b.windmillOrientX && a.windmillOrientY==b.windmillOrientY && a.windmillRotation==b.windmillRotation && a.gearAxleMachinePosition==b.gearAxleMachinePosition && a.horizontalAxleVertical==b.horizontalAxleVertical && a.slabEngraving==b.slabEngraving && a.verticalBarsConnections==b.verticalBarsConnections && a.wellChainIsMetal==b.wellChainIsMetal && a.materialSolidColor==b.materialSolidColor && a.constructionItemId==b.constructionItemId && a.constructionItemSolidColor==b.constructionItemSolidColor && a.containedItemCount==b.containedItemCount && a.constructionToolRaw==b.constructionToolRaw && a.constructionStage==b.constructionStage && a.siegeFacing==b.siegeFacing && a.siegeFireTimer==b.siegeFireTimer && a.trapState==b.trapState && a.trapReadyTimeout==b.trapReadyTimeout && a.trapFillTimer==b.trapFillTimer && a.trapTriggerFlags==b.trapTriggerFlags && a.weaponCount==b.weaponCount && a.weaponRetracted==b.weaponRetracted && a.constructionWeaponRaw==b.constructionWeaponRaw && a.instrumentFamily==b.instrumentFamily && a.instrumentPlaced==b.instrumentPlaced;
 }
 
 struct BuildingShadow {
@@ -181,6 +245,7 @@ struct ItemShadow {
     const std::string* containedSubtypeRaw = nullptr;
     const std::string* containedColor = nullptr;
     StatueRec statue;
+    df3d_bed::Facts bedding;
     int16_t x = 0, y = 0, z = 0;
     uint32_t stack = 1;
     const std::string* subtypeRaw = nullptr;  // itemdef::id (DF memory)
@@ -309,6 +374,196 @@ bool extractBuilding(df::building* b, df::building_type type, BuildingRec& rec, 
     }
 
     rec.material = gm(b->mat_type, b->mat_index);
+    rec.materialSolidColor.clear();
+    if(type==df::building_type::WindowGlass || type==df::building_type::Bridge || type==df::building_type::Armorstand || type==df::building_type::Weaponrack) {
+        MaterialInfo material(b->mat_type,b->mat_index);
+        if(material.isValid() && material.material) {
+            const int color=material.material->state_color[0];
+            const auto& colors=world->raws.descriptors.colors;
+            if(color>=0 && size_t(color)<colors.size() && colors[color] && colors[color]->id.size()<=128)
+                rec.materialSolidColor=colors[color]->id;
+        }
+    }
+    rec.instrumentFamily=-1;rec.instrumentPlaced=-1;rec.slabEngraving=-2;
+    rec.verticalBarsConnections=type==df::building_type::BarsVertical ? int8_t(df3d_construction::verticalBarsConnections(b->centerx,b->centery,b->z)) : -1;
+    rec.wellChainIsMetal=-1;
+    if(type==df::building_type::Well) {
+        rec.wellChainIsMetal=0;
+        for(const auto* entry:static_cast<df::building_actual*>(b)->contained_items) {
+            if(!entry || !entry->item || entry->item->getType()!=df::item_type::CHAIN)continue;
+            MaterialInfo material(entry->item->getActualMaterial(),entry->item->getActualMaterialIndex());
+            if(!material.isValid() || !material.material)rec.wellChainIsMetal=-1;
+            else if(material.material->flags.is_set(df::material_flags::IS_METAL)){rec.wellChainIsMetal=1;break;}
+        }
+    }
+    rec.constructionToolRaw.clear();
+    if(type==df::building_type::Bookcase || type==df::building_type::DisplayFurniture || type==df::building_type::OfferingPlace || type==df::building_type::NestBox || type==df::building_type::Hive) {
+        df::item* tool=nullptr;
+        if(b->getBuildStage()<b->getMaxBuildStage()) {
+            for(const auto* job:b->jobs)if(job && job->job_type==df::job_type::ConstructBuilding) {
+                for(const auto* ref:job->items)if(ref && ref->item && ref->item->getType()==df::item_type::TOOL){tool=ref->item;break;}
+                if(tool)break;
+            }
+        } else {
+            const auto& items=static_cast<df::building_actual*>(b)->contained_items;
+            if(!items.empty() && items.front())tool=items.front()->item;
+        }
+        if(tool && tool->getType()==df::item_type::TOOL) {
+            const auto subtype=tool->getSubtype();const auto& raws=world->raws.itemdefs.tools;
+            if(subtype>=0 && size_t(subtype)<raws.size() && raws[subtype] && raws[subtype]->id.size()<=128)rec.constructionToolRaw=raws[subtype]->id;
+        }
+    }
+    rec.siegeFacing=-1;rec.siegeFireTimer=-129;
+    if(type==df::building_type::SiegeEngine) {
+        const auto* siege=static_cast<const df::building_siegeenginest*>(b);
+        const int facing=static_cast<int>(siege->facing);
+        if(facing>=0 && facing<8)rec.siegeFacing=int8_t(facing);
+        rec.siegeFireTimer=siege->fire_timer;
+    }
+    const bool mechanismTrap=type==df::building_type::Trap && b->getSubtype()>=0 && b->getSubtype()<=3;
+    const bool weaponBuilding=type==df::building_type::Weapon || (type==df::building_type::Trap && b->getSubtype()==4);
+    rec.weaponCount=-1;rec.weaponRetracted=-1;rec.constructionWeaponRaw.clear();
+    df::item* weaponComponent=nullptr;
+    if(weaponBuilding) {
+        rec.weaponCount=0;
+        for(const auto* held:static_cast<const df::building_actual*>(b)->contained_items) {
+            if(!held || !held->item)continue;
+            const auto itemType=held->item->getType();
+            if(itemType!=df::item_type::WEAPON && itemType!=df::item_type::TRAPCOMP)continue;
+            if(!weaponComponent)weaponComponent=held->item;
+            if(rec.weaponCount<INT32_MAX)++rec.weaponCount;
+        }
+        if(type==df::building_type::Weapon)rec.weaponRetracted=static_cast<const df::building_weaponst*>(b)->gate_flags.bits.retracted?1:0;
+        if(weaponComponent) {
+            const int subtype=weaponComponent->getSubtype();
+            if(weaponComponent->getType()==df::item_type::WEAPON) {
+                const auto& defs=world->raws.itemdefs.weapons;
+                if(subtype>=0 && size_t(subtype)<defs.size() && defs[subtype] && defs[subtype]->id.size()<=128)rec.constructionWeaponRaw=defs[subtype]->id;
+            } else {
+                const auto& defs=world->raws.itemdefs.trapcomps;
+                if(subtype>=0 && size_t(subtype)<defs.size() && defs[subtype] && defs[subtype]->id.size()<=128)rec.constructionWeaponRaw=defs[subtype]->id;
+            }
+        }
+    }
+    rec.trapState=-129;rec.trapReadyTimeout=-32769;rec.trapFillTimer=-32769;rec.trapTriggerFlags=-1;
+    if(mechanismTrap) {
+        const auto* trap=static_cast<const df::building_trapst*>(b);
+        rec.trapState=trap->state;rec.trapReadyTimeout=trap->ready_timeout;
+        rec.trapFillTimer=trap->fill_timer;rec.trapTriggerFlags=int16_t(trap->plate_info.flags.whole & 63);
+    }
+    if(type==df::building_type::Trap && b->getSubtype()==4)rec.trapState=static_cast<const df::building_trapst*>(b)->state;
+    rec.containedItemCount=-1;
+    if(mechanismTrap || weaponBuilding || type==df::building_type::SiegeEngine || type==df::building_type::Coffin || type==df::building_type::Armorstand || type==df::building_type::Weaponrack) {
+        const auto count=static_cast<df::building_actual*>(b)->contained_items.size();
+        if(count<=INT32_MAX)rec.containedItemCount=int32_t(count);
+    }
+    rec.constructionItemIsLog=-1;rec.constructionItemMaterial=0xffff;rec.constructionItemId=-1;rec.constructionItemSolidColor.clear();
+    const bool gridComponent = type==df::building_type::Workshop || type==df::building_type::Furnace || type==df::building_type::TradeDepot;
+    if(mechanismTrap || weaponBuilding || gridComponent || type==df::building_type::SiegeEngine || type==df::building_type::Door || type==df::building_type::Hatch || type==df::building_type::Chair || type==df::building_type::Table || type==df::building_type::Box || type==df::building_type::Cabinet || type==df::building_type::Coffin || type==df::building_type::Cage || type==df::building_type::AnimalTrap || type==df::building_type::Bookcase || type==df::building_type::DisplayFurniture || type==df::building_type::OfferingPlace || type==df::building_type::NestBox || type==df::building_type::Bed || type==df::building_type::BarsFloor || type==df::building_type::Support || type==df::building_type::BarsVertical || type==df::building_type::Slab || type==df::building_type::Instrument || type==df::building_type::Rollers || type==df::building_type::WaterWheel || type==df::building_type::Windmill || type==df::building_type::GearAssembly || type==df::building_type::AxleHorizontal || type==df::building_type::AxleVertical || (type==df::building_type::Trap && b->getSubtype()==5)) {
+        // Native Track Stop, Roller, Water Wheel, Windmill, Gear, Axle, Slab, Vertical Bars and Instrument draw uses entry zero, without filtering use_mode.
+        const auto& items=static_cast<df::building_actual*>(b)->contained_items;
+        df::item* component = !items.empty() && items.front() ? items.front()->item : nullptr;
+        // Layout bases prefer the first permanent construction component,
+        // falling back to entry zero when the building only has temporary contents.
+        if(gridComponent) for(const auto* held : items) {
+            if(held && held->item && held->use_mode==df::building_item_role_type::PERM) {
+                component=held->item; break;
+            }
+        }
+        if(mechanismTrap) {
+            component=nullptr;
+            for(const auto* held:items) if(held && held->item && held->item->getType()==df::item_type::TRAPPARTS) {
+                component=held->item;break;
+            }
+        }
+        if(weaponBuilding)component=weaponComponent;
+        if(component) {
+            auto* item=component;
+            rec.constructionItemIsLog=item->getType()==df::item_type::WOOD ? 1 : 0;
+            rec.constructionItemMaterial=gm(item->getActualMaterial(),item->getActualMaterialIndex());
+            if(mechanismTrap || weaponBuilding || gridComponent || type==df::building_type::SiegeEngine || type==df::building_type::Door || type==df::building_type::Hatch || type==df::building_type::Chair || type==df::building_type::Table || type==df::building_type::Box || type==df::building_type::Cabinet || type==df::building_type::Coffin || type==df::building_type::Cage || type==df::building_type::AnimalTrap || type==df::building_type::Bookcase || type==df::building_type::DisplayFurniture || type==df::building_type::OfferingPlace || type==df::building_type::NestBox) {
+                rec.constructionItemId=item->id;
+                MaterialInfo material(item->getActualMaterial(),item->getActualMaterialIndex());
+                if(material.isValid() && material.material) {
+                    const int color=material.material->state_color[0];
+                    const auto& colors=world->raws.descriptors.colors;
+                    if(color>=0 && size_t(color)<colors.size() && colors[color] && colors[color]->id.size()<=128)
+                        rec.constructionItemSolidColor=colors[color]->id;
+                }
+            }
+            if(type==df::building_type::Slab && item->getType()==df::item_type::SLAB) {
+                const int engraving=static_cast<df::item_slabst*>(item)->engraving_type;
+                if(engraving>=-1 && engraving<=26)rec.slabEngraving=int8_t(engraving);
+            }
+            if(type==df::building_type::Instrument && item->getType()==df::item_type::INSTRUMENT) {
+                const int subtype=item->getSubtype();
+                const auto& definitions=world->raws.itemdefs.instruments;
+                if(subtype>=0 && size_t(subtype)<definitions.size() && definitions[subtype]) {
+                    const auto* definition=definitions[subtype];
+                    switch(definition->music_skill) {
+                    case df::job_skill::PLAY_KEYBOARD_INSTRUMENT: rec.instrumentFamily=0;break;
+                    case df::job_skill::PLAY_STRINGED_INSTRUMENT: rec.instrumentFamily=1;break;
+                    case df::job_skill::PLAY_WIND_INSTRUMENT: rec.instrumentFamily=2;break;
+                    case df::job_skill::PLAY_PERCUSSION_INSTRUMENT: rec.instrumentFamily=3;break;
+                    default: break;
+                    }
+                    if(rec.instrumentFamily!=-1)
+                        rec.instrumentPlaced=definition->flags.is_set(df::instrument_flags::PLACED_AS_BUILDING)?1:0;
+                }
+            }
+        }
+    }
+    rec.gearAxleMachinePosition=-129;rec.horizontalAxleVertical=-1;
+    if(type==df::building_type::GearAssembly || type==df::building_type::AxleHorizontal || type==df::building_type::AxleVertical) {
+        const auto* info=b->getMachineInfo();
+        const auto* machine=info ? df::machine::find(info->machine_id) : nullptr;
+        rec.gearAxleMachinePosition=machine ? int16_t(machine->visual_phase) : 0;
+        if(type==df::building_type::AxleHorizontal)rec.horizontalAxleVertical=static_cast<df::building_axle_horizontalst*>(b)->is_vertical ? 1:0;
+    }
+    rec.windmillOrientX=-2;rec.windmillOrientY=-2;rec.windmillRotation=-129;
+    if(type==df::building_type::Windmill) {
+        const auto* windmill=static_cast<df::building_windmillst*>(b);
+        if(windmill->orient_x>=-1 && windmill->orient_x<=1 && windmill->orient_y>=-1 && windmill->orient_y<=1) {
+            rec.windmillOrientX=int8_t(windmill->orient_x);rec.windmillOrientY=int8_t(windmill->orient_y);
+        }
+        rec.windmillRotation=windmill->rotation;
+    }
+    rec.waterwheelMachinePosition=-129;
+    if(type==df::building_type::WaterWheel) {
+        const auto* wheel=static_cast<df::building_water_wheelst*>(b);
+        const auto* machine=df::machine::find(wheel->machine.machine_id);
+        rec.waterwheelMachinePosition=machine ? int16_t(machine->visual_phase) : 0;
+    }
+    rec.rollerDirection=-1;rec.rollerMachinePosition=-129;
+    if(type==df::building_type::Rollers) {
+        const auto* roller=static_cast<df::building_rollersst*>(b);
+        const int direction=roller->direction;
+        if(direction>=0 && direction<=3) rec.rollerDirection=int8_t(direction);
+        // Simulation-owned position; absent machinery uses zero in native draw.
+        const auto* machine=df::machine::find(roller->machine.machine_id);
+        rec.rollerMachinePosition=machine ? int16_t(machine->visual_phase) : 0;
+    }
+    rec.pumpDirection=-1;rec.pumpRunning=-1;
+    if(type==df::building_type::ScrewPump) {
+        const int direction=static_cast<df::building_screw_pumpst*>(b)->direction;
+        if(direction>=0 && direction<=3) rec.pumpDirection=int8_t(direction);
+        rec.pumpRunning=static_cast<df::building_screw_pumpst*>(b)->pump_energy!=0 ? 1 : 0;
+    }
+    rec.bridgeDirection=-2;rec.bridgeFlags=0;
+    if(type==df::building_type::Bridge) {
+        const auto* bridge=static_cast<df::building_bridgest*>(b);
+        const int direction=bridge->direction;
+        if(direction>=-1 && direction<=3) {
+            rec.bridgeDirection=int8_t(direction);rec.bridgeFlags=uint8_t(bridge->gate_flags.whole & 15);
+        }
+    }
+    rec.bedding={};
+    if (type==df::building_type::Bed) {
+        for (const auto* contained : static_cast<df::building_actual*>(b)->contained_items)
+            if (contained && contained->item && contained->item->getType()==df::item_type::BED) {
+                rec.bedding=df3d_bed::facts(contained->item); break;
+            }
+    }
     rec.statue={};
     if (type==df::building_type::Statue) {
         for (const auto* contained : static_cast<df::building_actual*>(b)->contained_items)
@@ -317,8 +572,9 @@ bool extractBuilding(df::building* b, df::building_type type, BuildingRec& rec, 
             }
     }
 
+    rec.constructionStage = b->getBuildStage();
     if (b->flags.bits.exists) rec.stage = static_cast<uint8_t>(mir::BuildingStage::Complete);
-    else if (b->getBuildStage() > 0) rec.stage = static_cast<uint8_t>(mir::BuildingStage::InProgress);
+    else if (rec.constructionStage > 0) rec.stage = static_cast<uint8_t>(mir::BuildingStage::InProgress);
     else rec.stage = static_cast<uint8_t>(mir::BuildingStage::Planned);
 
     uint8_t flags = 0;
@@ -619,6 +875,8 @@ void visitItem(df::item* it, int32_t frame, int32_t mx, int32_t my, int32_t mz, 
         ItemShadow& sh = s.items[found->second];
         sh.lastPass = s.itemPass;
         bool changed = updateContents(it,sh,gm);
+        const auto bedding=df3d_bed::facts(it);
+        if (sh.bedding!=bedding) { sh.bedding=bedding; changed=true; }
         const auto statue=statueFacts(it);
         if (sh.statue!=statue) { sh.statue=statue; changed=true; }
         if (sh.corpse) {
@@ -652,6 +910,7 @@ void visitItem(df::item* it, int32_t frame, int32_t mx, int32_t my, int32_t mz, 
     sh.kind = static_cast<uint8_t>(mapItemKind(type));
     updateContents(it,sh,gm);
     sh.statue=statueFacts(it);
+    sh.bedding=df3d_bed::facts(it);
     sh.corpse = isCorpseKind(type);
     if (sh.corpse) {
         sh.corpseFlags = corpseFlagsOf(it);
@@ -866,10 +1125,14 @@ void build(flatbuffers::FlatBufferBuilder& fbb, int32_t frame, bool full, LocalM
         flatbuffers::Offset<flatbuffers::Vector<uint8_t>> extents;
         if (!r.extents.empty()) extents = fbb.CreateVector(r.extents);
         const uint16_t mat = r.material == 0xFFFF ? mir::kNoMaterial : localMaterial(fbb, r.material);
+        const uint16_t constructionMat = r.constructionItemMaterial == 0xFFFF
+            ? mir::kNoMaterial : localMaterial(fbb,r.constructionItemMaterial);
         s.bOffsets.push_back(mir::CreateBuilding(
             fbb, static_cast<uint32_t>(sh.id), static_cast<mir::BuildingKind>(r.kind), r.subtype, custom,
             r.x1, r.y1, r.x2, r.y2, r.z, r.cx, r.cy, extents, mat, static_cast<mir::BuildingStage>(r.stage),
-            static_cast<mir::BuildingFlags>(r.flags),writeStatue(fbb,r.statue)));
+            static_cast<mir::BuildingFlags>(r.flags),writeStatue(fbb,r.statue),writeBedding(fbb,r.bedding),
+            r.bridgeDirection==-2 ? 0 : mir::CreateBridgeState(fbb,r.bridgeDirection,
+                (r.bridgeFlags&1)!=0,(r.bridgeFlags&2)!=0,(r.bridgeFlags&4)!=0,(r.bridgeFlags&8)!=0),r.pumpDirection,r.pumpRunning,r.constructionItemIsLog,constructionMat,r.rollerDirection,r.rollerMachinePosition,r.instrumentFamily,r.instrumentPlaced,r.waterwheelMachinePosition,r.windmillOrientX,r.windmillOrientY,r.windmillRotation,r.gearAxleMachinePosition,r.horizontalAxleVertical,r.slabEngraving,r.verticalBarsConnections,r.wellChainIsMetal,r.materialSolidColor.empty()?0:fbb.CreateString(r.materialSolidColor),r.constructionItemId,r.constructionItemSolidColor.empty()?0:fbb.CreateString(r.constructionItemSolidColor),r.containedItemCount,r.constructionToolRaw.empty()?0:fbb.CreateString(r.constructionToolRaw),r.constructionStage,r.siegeFacing,r.siegeFireTimer,r.trapState,r.trapReadyTimeout,r.trapFillTimer,r.trapTriggerFlags,r.weaponCount,r.weaponRetracted,r.constructionWeaponRaw.empty()?0:fbb.CreateString(r.constructionWeaponRaw)));
         ++out.count;
         if (full && ring) sh.sendUntil = 0;
     }
@@ -909,7 +1172,7 @@ void build(flatbuffers::FlatBufferBuilder& fbb, int32_t frame, bool full, LocalM
                                                 sh.containedMaterial == 0xFFFF ? mir::kNoMaterial : localMaterial(fbb,sh.containedMaterial),
                                                 sh.containedSubtypeRaw ? fbb.CreateString(*sh.containedSubtypeRaw) : 0,
                                                 writeStatue(fbb,sh.statue),
-                                                sh.containedColor ? fbb.CreateString(*sh.containedColor) : 0));
+                                                sh.containedColor ? fbb.CreateString(*sh.containedColor) : 0,writeBedding(fbb,sh.bedding)));
         if (sh.corpse && g_hooks.encodeLayer) {
             s.layerBuf.clear();
             for (const app::Layer& l : sh.layers) s.layerBuf.push_back(g_hooks.encodeLayer(fbb, l));

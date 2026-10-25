@@ -8,13 +8,11 @@
 namespace wm {
 
 enum class TrackTileEligibility { Eligible, Ineligible, Unverified };
-enum class TrackSiteOccupancy { None, PendingTrack, BlockingBuilding, Unknown };
+enum class TrackSiteOccupancy { None, PendingConstruction, BlockingBuilding, Unknown };
 struct TrackSiteFacts {
-  // Native shape classification for eligibility, not an unchecked copy of a
-  // normalized display tile (e.g. brook bed/top are displayed as Wall/Floor).
-  // Known brook/tree classes use equivalent eligibility shapes; support/open
-  // facts remain separate so this cannot invent ramp support from a brook bed.
-  // Native shapes without established rules must remain Unknown.
+  // Shape is retained for directed movement and linked ramp/top bookkeeping.
+  // Site approval comes from the native coordinate predicate, independently of shape.
+  std::optional<bool> nativeEligible;
   TileShape shape = TileShape::Unknown;
   TrackSiteOccupancy occupancy = TrackSiteOccupancy::Unknown;
   bool loaded = false;
@@ -23,12 +21,8 @@ struct TrackSiteFacts {
   bool magma = false;
   bool endpointOnly = false; // Ordinary/dead twigs; burning twigs differ.
 };
-// Preview eligibility from semantic terrain facts. Hidden endpoints differ from
-// hidden intermediate tiles. PendingTrack must identify an actual compatible
-// construction job, not merely an occupancy bit. BlockingBuilding requires an
-// established blocking family/state; unclassified buildings remain Unknown.
-// Unverified facts must not be
-// silently presented as a native refusal or used to authorize placement.
+// Compose native site approval with route-only hidden/endpoint policy. Unknown
+// pending-job identity remains unverified even if terrain itself is approved.
 // Does not validate directed movement, materials, job stage or current targets.
 TrackTileEligibility trackSiteEligibility(const TrackSiteFacts& facts, bool endpoint);
 
@@ -108,11 +102,13 @@ struct TrackPathPiece {
 std::optional<std::vector<TrackPathPiece>> trackPathPieces(
     std::span<const TilePos> path, const std::function<bool(TilePos)>& isRamp);
 
-struct PendingTrack {
+// A queued construction may have no track connections yet.
+struct PendingConstruction {
   TilePos position;
   int32_t buildingId = -1;
   uint8_t connections = 0;
   bool ramp = false;
+  bool track = true;
 };
 enum class TrackTerrainKind { None, Carved, Constructed };
 struct TrackTerrain {
@@ -143,10 +139,11 @@ struct TrackConstructionPlan {
 // stages and expected connections before committing. No mutation or material
 // reservation occurs here. Terrain gets a new job even when unchanged unless a
 // pending job already exists. Job and terrain expectations remain separate.
-// Shape comes from independent terrain facts. Conflicting shapes and pending
-// jobs omitting existing terrain connections reject pending native evidence.
+// Shape includes a ramp from either terrain or an existing ramp-track job.
+// Route, queued job and completed terrain connections merge independently.
+// A non-track job has track=false and mask0.
 std::optional<TrackConstructionPlan> planTrackConstruction(
-    std::span<const TilePos> path, std::span<const PendingTrack> existing,
+    std::span<const TilePos> path, std::span<const PendingConstruction> existing,
     std::span<const TrackTerrain> terrain, const std::function<bool(TilePos)>& isRamp);
 
 } // namespace wm

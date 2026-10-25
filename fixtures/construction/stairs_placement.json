@@ -50191,5 +50191,3662 @@
       }
     },
     "harness_note": "The second result.json presentation building_id repeats first cached placed_sites ID1490. Authoritative native initial-stairs2.json records new IDs1493/1494/1495 and their jobs/items before simulation; distinct IDs explicitly checked. No completion assertion relies on that stale display metadata."
+  },
+  "native_terrain_main_completion": {
+    "run": "build/construction-native-stairs-main-20261023-022024",
+    "input": "Pointer launcher/category/leaf, map anchors on three elevations, exact item selection.",
+    "result": {
+      "failure": "",
+      "observations": [
+        {
+          "input": "three individual item pointer clicks",
+          "selected_ids": [
+            48520,
+            48521,
+            48522
+          ]
+        },
+        {
+          "building_id": 1490,
+          "input": "launcher/category/leaf/map/material through viewport pointer",
+          "site": "(128, 62, 170)"
+        },
+        {
+          "elapsed": 3675.0,
+          "frame": 3675.0,
+          "status": "passed",
+          "tiles": [
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 170.0
+              },
+              "tile": "ConstructedStairU"
+            },
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 171.0
+              },
+              "tile": "ConstructedStairUD"
+            },
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 172.0
+              },
+              "tile": "ConstructedStairD"
+            }
+          ]
+        }
+      ],
+      "status": "passed"
+    },
+    "initial_jobs": [
+      {
+        "id": 1490,
+        "items": [
+          48520
+        ],
+        "position": {
+          "x": 128,
+          "y": 62,
+          "z": 170
+        },
+        "subtype": 3
+      },
+      {
+        "id": 1491,
+        "items": [
+          48521
+        ],
+        "position": {
+          "x": 128,
+          "y": 62,
+          "z": 171
+        },
+        "subtype": 5
+      },
+      {
+        "id": 1492,
+        "items": [
+          48522
+        ],
+        "position": {
+          "x": 128,
+          "y": 62,
+          "z": 172
+        },
+        "subtype": 4
+      }
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "known engine only",
+    "screenshot_inspected": "stairs-complete.png",
+    "limits": "New staircase completion; not replacement of existing construction."
+  },
+  "native_terrain_replacement_completion": {
+    "run": "build/construction-native-replacement-20261023-022359",
+    "result": {
+      "failure": "",
+      "observations": [
+        {
+          "input": "three individual item pointer clicks",
+          "selected_ids": [
+            48520,
+            48521,
+            48522
+          ]
+        },
+        {
+          "building_id": 1490,
+          "input": "launcher/category/leaf/map/material through viewport pointer",
+          "site": "(128, 62, 170)"
+        },
+        {
+          "elapsed": 1775.0,
+          "frame": 1775.0,
+          "status": "passed",
+          "tiles": [
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 170.0
+              },
+              "tile": "ConstructedStairU"
+            },
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 171.0
+              },
+              "tile": "ConstructedStairUD"
+            },
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 172.0
+              },
+              "tile": "ConstructedStairD"
+            }
+          ]
+        },
+        {
+          "input": "three individual item pointer clicks",
+          "selected_ids": [
+            48523,
+            48524,
+            48525
+          ]
+        },
+        {
+          "building_id": 1490,
+          "input": "launcher/category/leaf/map/material through viewport pointer",
+          "site": "(128, 62, 170)"
+        },
+        {
+          "elapsed": 1250.0,
+          "frame": 3025.0,
+          "status": "passed",
+          "tiles": [
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 170.0
+              },
+              "tile": "ConstructedStairU"
+            },
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 171.0
+              },
+              "tile": "ConstructedStairUD"
+            },
+            {
+              "complete": true,
+              "jobs": 0.0,
+              "mat_index": 172.0,
+              "mat_type": 0.0,
+              "position": {
+                "x": 128.0,
+                "y": 62.0,
+                "z": 172.0
+              },
+              "tile": "ConstructedStairD"
+            }
+          ]
+        }
+      ],
+      "status": "passed"
+    },
+    "initial_jobs": [
+      [
+        {
+          "id": 1490,
+          "items": [
+            48520
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 170
+          },
+          "subtype": 3
+        },
+        {
+          "id": 1491,
+          "items": [
+            48521
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 171
+          },
+          "subtype": 5
+        },
+        {
+          "id": 1492,
+          "items": [
+            48522
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 172
+          },
+          "subtype": 4
+        }
+      ],
+      [
+        {
+          "id": 1493,
+          "items": [
+            48523
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 170
+          },
+          "subtype": 3
+        },
+        {
+          "id": 1494,
+          "items": [
+            48524
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 171
+          },
+          "subtype": 5
+        },
+        {
+          "id": 1495,
+          "items": [
+            48525
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 172
+          },
+          "subtype": 4
+        }
+      ]
+    ],
+    "completion": [
+      {
+        "elapsed": 1775,
+        "frame": 1775,
+        "status": "passed",
+        "tiles": [
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 170
+            },
+            "tile": "ConstructedStairU"
+          },
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 171
+            },
+            "tile": "ConstructedStairUD"
+          },
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 172
+            },
+            "tile": "ConstructedStairD"
+          }
+        ]
+      },
+      {
+        "elapsed": 1250,
+        "frame": 3025,
+        "status": "passed",
+        "tiles": [
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 170
+            },
+            "tile": "ConstructedStairU"
+          },
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 171
+            },
+            "tile": "ConstructedStairUD"
+          },
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 172
+            },
+            "tile": "ConstructedStairD"
+          }
+        ]
+      }
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "known engine only",
+    "screenshot_inspected": "stairs-complete-2.png",
+    "scope": "Pointer UI exact-item placement, natural completion, then pointer UI exact-item replacement of the same completed staircase and natural completion again. Replacement records exist when new jobs are observed.",
+    "limits": "Viewer harness building_id observations reuse the oldest placed_sites key; authoritative replacement identities come from initial_jobs[1] (1493..1495), with items48523..48525. Other replacement families remain separate."
+  },
+  "queued_replacement": {
+    "source": "build/construction-queued-stairs-20261023-030824",
+    "scope": "32 native pointer placements: eight existing queued subtypes, two endpoint terrains and two click directions; all building, job and item IDs retained. Paused frame0; source preserved and owned session closed.",
+    "cases": [
+      {
+        "after": [
+          {
+            "id": 1490,
+            "items": [
+              48532
+            ],
+            "jobs": [
+              382794
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1491,
+            "items": [
+              48533
+            ],
+            "jobs": [
+              382795
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1492,
+            "items": [
+              48534
+            ],
+            "jobs": [
+              382796
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1490,
+            "items": [
+              48532
+            ],
+            "jobs": [
+              382794
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1491,
+            "items": [
+              48533
+            ],
+            "jobs": [
+              382795
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1492,
+            "items": [
+              48534
+            ],
+            "jobs": [
+              382796
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          }
+        ],
+        "created": [],
+        "existing": "Floor",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1493,
+            "items": [
+              48535
+            ],
+            "jobs": [
+              382797
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1494,
+            "items": [
+              48536
+            ],
+            "jobs": [
+              382798
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1495,
+            "items": [
+              48537
+            ],
+            "jobs": [
+              382799
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1493,
+            "items": [
+              48535
+            ],
+            "jobs": [
+              382797
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1494,
+            "items": [
+              48536
+            ],
+            "jobs": [
+              382798
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1495,
+            "items": [
+              48537
+            ],
+            "jobs": [
+              382799
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          }
+        ],
+        "created": [],
+        "existing": "Floor",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1496,
+            "items": [
+              48538
+            ],
+            "jobs": [
+              382800
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1497,
+            "items": [
+              48539
+            ],
+            "jobs": [
+              382801
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1498,
+            "items": [
+              48540
+            ],
+            "jobs": [
+              382802
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1496,
+            "items": [
+              48538
+            ],
+            "jobs": [
+              382800
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1497,
+            "items": [
+              48539
+            ],
+            "jobs": [
+              382801
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1498,
+            "items": [
+              48540
+            ],
+            "jobs": [
+              382802
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          }
+        ],
+        "created": [],
+        "existing": "Floor",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Up Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1499,
+            "items": [
+              48541
+            ],
+            "jobs": [
+              382803
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1500,
+            "items": [
+              48542
+            ],
+            "jobs": [
+              382804
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1501,
+            "items": [
+              48543
+            ],
+            "jobs": [
+              382805
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1499,
+            "items": [
+              48541
+            ],
+            "jobs": [
+              382803
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1500,
+            "items": [
+              48542
+            ],
+            "jobs": [
+              382804
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          },
+          {
+            "id": 1501,
+            "items": [
+              48543
+            ],
+            "jobs": [
+              382805
+            ],
+            "stage": 0,
+            "subtype": "Floor"
+          }
+        ],
+        "created": [],
+        "existing": "Floor",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1502,
+            "items": [
+              48544
+            ],
+            "jobs": [
+              382806
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1503,
+            "items": [
+              48545
+            ],
+            "jobs": [
+              382807
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1504,
+            "items": [
+              48546
+            ],
+            "jobs": [
+              382808
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1502,
+            "items": [
+              48544
+            ],
+            "jobs": [
+              382806
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1503,
+            "items": [
+              48545
+            ],
+            "jobs": [
+              382807
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1504,
+            "items": [
+              48546
+            ],
+            "jobs": [
+              382808
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          }
+        ],
+        "created": [],
+        "existing": "Wall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1505,
+            "items": [
+              48547
+            ],
+            "jobs": [
+              382809
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1506,
+            "items": [
+              48548
+            ],
+            "jobs": [
+              382810
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1507,
+            "items": [
+              48549
+            ],
+            "jobs": [
+              382811
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1505,
+            "items": [
+              48547
+            ],
+            "jobs": [
+              382809
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1506,
+            "items": [
+              48548
+            ],
+            "jobs": [
+              382810
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1507,
+            "items": [
+              48549
+            ],
+            "jobs": [
+              382811
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          }
+        ],
+        "created": [],
+        "existing": "Wall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1508,
+            "items": [
+              48550
+            ],
+            "jobs": [
+              382812
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1509,
+            "items": [
+              48551
+            ],
+            "jobs": [
+              382813
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1510,
+            "items": [
+              48552
+            ],
+            "jobs": [
+              382814
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1508,
+            "items": [
+              48550
+            ],
+            "jobs": [
+              382812
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1509,
+            "items": [
+              48551
+            ],
+            "jobs": [
+              382813
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1510,
+            "items": [
+              48552
+            ],
+            "jobs": [
+              382814
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          }
+        ],
+        "created": [],
+        "existing": "Wall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1511,
+            "items": [
+              48553
+            ],
+            "jobs": [
+              382815
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1512,
+            "items": [
+              48554
+            ],
+            "jobs": [
+              382816
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1513,
+            "items": [
+              48555
+            ],
+            "jobs": [
+              382817
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1511,
+            "items": [
+              48553
+            ],
+            "jobs": [
+              382815
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1512,
+            "items": [
+              48554
+            ],
+            "jobs": [
+              382816
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          },
+          {
+            "id": 1513,
+            "items": [
+              48555
+            ],
+            "jobs": [
+              382817
+            ],
+            "stage": 0,
+            "subtype": "Wall"
+          }
+        ],
+        "created": [],
+        "existing": "Wall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1514,
+            "items": [
+              48556
+            ],
+            "jobs": [
+              382818
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1515,
+            "items": [
+              48557
+            ],
+            "jobs": [
+              382819
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1516,
+            "items": [
+              48558
+            ],
+            "jobs": [
+              382820
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1514,
+            "items": [
+              48556
+            ],
+            "jobs": [
+              382818
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1515,
+            "items": [
+              48557
+            ],
+            "jobs": [
+              382819
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1516,
+            "items": [
+              48558
+            ],
+            "jobs": [
+              382820
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          }
+        ],
+        "created": [],
+        "existing": "Ramp",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1517,
+            "items": [
+              48559
+            ],
+            "jobs": [
+              382821
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1518,
+            "items": [
+              48560
+            ],
+            "jobs": [
+              382822
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1519,
+            "items": [
+              48561
+            ],
+            "jobs": [
+              382823
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1517,
+            "items": [
+              48559
+            ],
+            "jobs": [
+              382821
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1518,
+            "items": [
+              48560
+            ],
+            "jobs": [
+              382822
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1519,
+            "items": [
+              48561
+            ],
+            "jobs": [
+              382823
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          }
+        ],
+        "created": [],
+        "existing": "Ramp",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1520,
+            "items": [
+              48562
+            ],
+            "jobs": [
+              382824
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1521,
+            "items": [
+              48563
+            ],
+            "jobs": [
+              382825
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1522,
+            "items": [
+              48564
+            ],
+            "jobs": [
+              382826
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1520,
+            "items": [
+              48562
+            ],
+            "jobs": [
+              382824
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1521,
+            "items": [
+              48563
+            ],
+            "jobs": [
+              382825
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1522,
+            "items": [
+              48564
+            ],
+            "jobs": [
+              382826
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          }
+        ],
+        "created": [],
+        "existing": "Ramp",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Up Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1523,
+            "items": [
+              48565
+            ],
+            "jobs": [
+              382827
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1524,
+            "items": [
+              48566
+            ],
+            "jobs": [
+              382828
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1525,
+            "items": [
+              48567
+            ],
+            "jobs": [
+              382829
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1523,
+            "items": [
+              48565
+            ],
+            "jobs": [
+              382827
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1524,
+            "items": [
+              48566
+            ],
+            "jobs": [
+              382828
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          },
+          {
+            "id": 1525,
+            "items": [
+              48567
+            ],
+            "jobs": [
+              382829
+            ],
+            "stage": 0,
+            "subtype": "Ramp"
+          }
+        ],
+        "created": [],
+        "existing": "Ramp",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1526,
+            "items": [
+              48568
+            ],
+            "jobs": [
+              382830
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1527,
+            "items": [
+              48569
+            ],
+            "jobs": [
+              382831
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1528,
+            "items": [
+              48570
+            ],
+            "jobs": [
+              382832
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1526,
+            "items": [
+              48568
+            ],
+            "jobs": [
+              382830
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1527,
+            "items": [
+              48569
+            ],
+            "jobs": [
+              382831
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1528,
+            "items": [
+              48570
+            ],
+            "jobs": [
+              382832
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          }
+        ],
+        "created": [],
+        "existing": "Fortification",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1529,
+            "items": [
+              48571
+            ],
+            "jobs": [
+              382833
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1530,
+            "items": [
+              48572
+            ],
+            "jobs": [
+              382834
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1531,
+            "items": [
+              48573
+            ],
+            "jobs": [
+              382835
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1529,
+            "items": [
+              48571
+            ],
+            "jobs": [
+              382833
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1530,
+            "items": [
+              48572
+            ],
+            "jobs": [
+              382834
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1531,
+            "items": [
+              48573
+            ],
+            "jobs": [
+              382835
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          }
+        ],
+        "created": [],
+        "existing": "Fortification",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1532,
+            "items": [
+              48574
+            ],
+            "jobs": [
+              382836
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1533,
+            "items": [
+              48575
+            ],
+            "jobs": [
+              382837
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1534,
+            "items": [
+              48576
+            ],
+            "jobs": [
+              382838
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1532,
+            "items": [
+              48574
+            ],
+            "jobs": [
+              382836
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1533,
+            "items": [
+              48575
+            ],
+            "jobs": [
+              382837
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1534,
+            "items": [
+              48576
+            ],
+            "jobs": [
+              382838
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          }
+        ],
+        "created": [],
+        "existing": "Fortification",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1535,
+            "items": [
+              48577
+            ],
+            "jobs": [
+              382839
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1536,
+            "items": [
+              48578
+            ],
+            "jobs": [
+              382840
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1537,
+            "items": [
+              48579
+            ],
+            "jobs": [
+              382841
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1535,
+            "items": [
+              48577
+            ],
+            "jobs": [
+              382839
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1536,
+            "items": [
+              48578
+            ],
+            "jobs": [
+              382840
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          },
+          {
+            "id": 1537,
+            "items": [
+              48579
+            ],
+            "jobs": [
+              382841
+            ],
+            "stage": 0,
+            "subtype": "Fortification"
+          }
+        ],
+        "created": [],
+        "existing": "Fortification",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1538,
+            "items": [
+              48580
+            ],
+            "jobs": [
+              382842
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1539,
+            "items": [
+              48581
+            ],
+            "jobs": [
+              382843
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1540,
+            "items": [
+              48582
+            ],
+            "jobs": [
+              382844
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1538,
+            "items": [
+              48580
+            ],
+            "jobs": [
+              382842
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1539,
+            "items": [
+              48581
+            ],
+            "jobs": [
+              382843
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1540,
+            "items": [
+              48582
+            ],
+            "jobs": [
+              382844
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          }
+        ],
+        "created": [],
+        "existing": "ReinforcedWall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1541,
+            "items": [
+              48583
+            ],
+            "jobs": [
+              382845
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1542,
+            "items": [
+              48584
+            ],
+            "jobs": [
+              382846
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1543,
+            "items": [
+              48585
+            ],
+            "jobs": [
+              382847
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1541,
+            "items": [
+              48583
+            ],
+            "jobs": [
+              382845
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1542,
+            "items": [
+              48584
+            ],
+            "jobs": [
+              382846
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1543,
+            "items": [
+              48585
+            ],
+            "jobs": [
+              382847
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          }
+        ],
+        "created": [],
+        "existing": "ReinforcedWall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1544,
+            "items": [
+              48586
+            ],
+            "jobs": [
+              382848
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1545,
+            "items": [
+              48587
+            ],
+            "jobs": [
+              382849
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1546,
+            "items": [
+              48588
+            ],
+            "jobs": [
+              382850
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1544,
+            "items": [
+              48586
+            ],
+            "jobs": [
+              382848
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1545,
+            "items": [
+              48587
+            ],
+            "jobs": [
+              382849
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1546,
+            "items": [
+              48588
+            ],
+            "jobs": [
+              382850
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          }
+        ],
+        "created": [],
+        "existing": "ReinforcedWall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Up Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1547,
+            "items": [
+              48589
+            ],
+            "jobs": [
+              382851
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1548,
+            "items": [
+              48590
+            ],
+            "jobs": [
+              382852
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1549,
+            "items": [
+              48591
+            ],
+            "jobs": [
+              382853
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1547,
+            "items": [
+              48589
+            ],
+            "jobs": [
+              382851
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1548,
+            "items": [
+              48590
+            ],
+            "jobs": [
+              382852
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          },
+          {
+            "id": 1549,
+            "items": [
+              48591
+            ],
+            "jobs": [
+              382853
+            ],
+            "stage": 0,
+            "subtype": "ReinforcedWall"
+          }
+        ],
+        "created": [],
+        "existing": "ReinforcedWall",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1550,
+            "items": [
+              48592
+            ],
+            "jobs": [
+              382854
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1551,
+            "items": [
+              48593
+            ],
+            "jobs": [
+              382855
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1552,
+            "items": [
+              48594
+            ],
+            "jobs": [
+              382856
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1550,
+            "items": [
+              48592
+            ],
+            "jobs": [
+              382854
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1551,
+            "items": [
+              48593
+            ],
+            "jobs": [
+              382855
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1552,
+            "items": [
+              48594
+            ],
+            "jobs": [
+              382856
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1553,
+            "items": [
+              48595
+            ],
+            "jobs": [
+              382857
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1554,
+            "items": [
+              48596
+            ],
+            "jobs": [
+              382858
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1555,
+            "items": [
+              48597
+            ],
+            "jobs": [
+              382859
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1553,
+            "items": [
+              48595
+            ],
+            "jobs": [
+              382857
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1554,
+            "items": [
+              48596
+            ],
+            "jobs": [
+              382858
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1555,
+            "items": [
+              48597
+            ],
+            "jobs": [
+              382859
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Up/Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      dolomite Upward Stairway",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1556,
+            "items": [
+              48598
+            ],
+            "jobs": [
+              382860
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1557,
+            "items": [
+              48599
+            ],
+            "jobs": [
+              382861
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1558,
+            "items": [
+              48600
+            ],
+            "jobs": [
+              382862
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1556,
+            "items": [
+              48598
+            ],
+            "jobs": [
+              382860
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1557,
+            "items": [
+              48599
+            ],
+            "jobs": [
+              382861
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1558,
+            "items": [
+              48600
+            ],
+            "jobs": [
+              382862
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1559,
+            "items": [
+              48601
+            ],
+            "jobs": [
+              382863
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1560,
+            "items": [
+              48602
+            ],
+            "jobs": [
+              382864
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1561,
+            "items": [
+              48603
+            ],
+            "jobs": [
+              382865
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1559,
+            "items": [
+              48601
+            ],
+            "jobs": [
+              382863
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1560,
+            "items": [
+              48602
+            ],
+            "jobs": [
+              382864
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          },
+          {
+            "id": 1561,
+            "items": [
+              48603
+            ],
+            "jobs": [
+              382865
+            ],
+            "stage": 0,
+            "subtype": "UpStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Up/Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      dolomite Downward Stairway",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1562,
+            "items": [
+              48604
+            ],
+            "jobs": [
+              382866
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1563,
+            "items": [
+              48605
+            ],
+            "jobs": [
+              382867
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1564,
+            "items": [
+              48606
+            ],
+            "jobs": [
+              382868
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1562,
+            "items": [
+              48604
+            ],
+            "jobs": [
+              382866
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1563,
+            "items": [
+              48605
+            ],
+            "jobs": [
+              382867
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1564,
+            "items": [
+              48606
+            ],
+            "jobs": [
+              382868
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "created": [],
+        "existing": "DownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1565,
+            "items": [
+              48607
+            ],
+            "jobs": [
+              382869
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1566,
+            "items": [
+              48608
+            ],
+            "jobs": [
+              382870
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1567,
+            "items": [
+              48609
+            ],
+            "jobs": [
+              382871
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1565,
+            "items": [
+              48607
+            ],
+            "jobs": [
+              382869
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1566,
+            "items": [
+              48608
+            ],
+            "jobs": [
+              382870
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1567,
+            "items": [
+              48609
+            ],
+            "jobs": [
+              382871
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "created": [],
+        "existing": "DownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1568,
+            "items": [
+              48610
+            ],
+            "jobs": [
+              382872
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1569,
+            "items": [
+              48611
+            ],
+            "jobs": [
+              382873
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1570,
+            "items": [
+              48612
+            ],
+            "jobs": [
+              382874
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1568,
+            "items": [
+              48610
+            ],
+            "jobs": [
+              382872
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1569,
+            "items": [
+              48611
+            ],
+            "jobs": [
+              382873
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1570,
+            "items": [
+              48612
+            ],
+            "jobs": [
+              382874
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "created": [],
+        "existing": "DownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1571,
+            "items": [
+              48613
+            ],
+            "jobs": [
+              382875
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1572,
+            "items": [
+              48614
+            ],
+            "jobs": [
+              382876
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1573,
+            "items": [
+              48615
+            ],
+            "jobs": [
+              382877
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1571,
+            "items": [
+              48613
+            ],
+            "jobs": [
+              382875
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1572,
+            "items": [
+              48614
+            ],
+            "jobs": [
+              382876
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          },
+          {
+            "id": 1573,
+            "items": [
+              48615
+            ],
+            "jobs": [
+              382877
+            ],
+            "stage": 0,
+            "subtype": "DownStair"
+          }
+        ],
+        "created": [],
+        "existing": "DownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1574,
+            "items": [
+              48616
+            ],
+            "jobs": [
+              382878
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1575,
+            "items": [
+              48617
+            ],
+            "jobs": [
+              382879
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1576,
+            "items": [
+              48618
+            ],
+            "jobs": [
+              382880
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1574,
+            "items": [
+              48616
+            ],
+            "jobs": [
+              382878
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1575,
+            "items": [
+              48617
+            ],
+            "jobs": [
+              382879
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1576,
+            "items": [
+              48618
+            ],
+            "jobs": [
+              382880
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpDownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1577,
+            "items": [
+              48619
+            ],
+            "jobs": [
+              382881
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1578,
+            "items": [
+              48620
+            ],
+            "jobs": [
+              382882
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1579,
+            "items": [
+              48621
+            ],
+            "jobs": [
+              382883
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1577,
+            "items": [
+              48619
+            ],
+            "jobs": [
+              382881
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1578,
+            "items": [
+              48620
+            ],
+            "jobs": [
+              382882
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1579,
+            "items": [
+              48621
+            ],
+            "jobs": [
+              382883
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpDownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 38",
+            "y": 16
+          }
+        ],
+        "reverse": false,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      },
+      {
+        "after": [
+          {
+            "id": 1580,
+            "items": [
+              48622
+            ],
+            "jobs": [
+              382884
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1581,
+            "items": [
+              48623
+            ],
+            "jobs": [
+              382885
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1582,
+            "items": [
+              48624
+            ],
+            "jobs": [
+              382886
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1580,
+            "items": [
+              48622
+            ],
+            "jobs": [
+              382884
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1581,
+            "items": [
+              48623
+            ],
+            "jobs": [
+              382885
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1582,
+            "items": [
+              48624
+            ],
+            "jobs": [
+              382886
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpDownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                      Up/Down Stair",
+            "y": 5
+          },
+          {
+            "text": "                                                      Smooth dolomite Floor",
+            "y": 6
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "floor"
+      },
+      {
+        "after": [
+          {
+            "id": 1583,
+            "items": [
+              48625
+            ],
+            "jobs": [
+              382887
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1584,
+            "items": [
+              48626
+            ],
+            "jobs": [
+              382888
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1585,
+            "items": [
+              48627
+            ],
+            "jobs": [
+              382889
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "before": [
+          {
+            "id": 1583,
+            "items": [
+              48625
+            ],
+            "jobs": [
+              382887
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1584,
+            "items": [
+              48626
+            ],
+            "jobs": [
+              382888
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          },
+          {
+            "id": 1585,
+            "items": [
+              48627
+            ],
+            "jobs": [
+              382889
+            ],
+            "stage": 0,
+            "subtype": "UpDownStair"
+          }
+        ],
+        "created": [],
+        "existing": "UpDownStair",
+        "lines": [
+          {
+            "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          }
+        ],
+        "reverse": true,
+        "stage": "STAGES",
+        "terrain": "opposite_stairs"
+      }
+    ],
+    "viewer": {
+      "source": "build/construction-queued-stairs-main-20261023-031319",
+      "fixture": {
+        "item_ids": [
+          48520,
+          48521,
+          48522,
+          48523,
+          48524,
+          48525
+        ],
+        "material_index": 172,
+        "material_position": {
+          "x": 131,
+          "y": 65,
+          "z": 170
+        },
+        "material_type": 0,
+        "queued": [
+          {
+            "id": 1490,
+            "item": 48520,
+            "job": 382794
+          },
+          {
+            "id": 1491,
+            "item": 48521,
+            "job": 382795
+          },
+          {
+            "id": 1492,
+            "item": 48522,
+            "job": 382796
+          }
+        ],
+        "site": {
+          "x": 128,
+          "y": 62,
+          "z": 170
+        },
+        "source_unit": 988
+      },
+      "initial": [
+        {
+          "id": 1490,
+          "items": [
+            48520
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 170
+          },
+          "subtype": 5
+        },
+        {
+          "id": 1491,
+          "items": [
+            48521
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 171
+          },
+          "subtype": 5
+        },
+        {
+          "id": 1492,
+          "items": [
+            48522
+          ],
+          "position": {
+            "x": 128,
+            "y": 62,
+            "z": 172
+          },
+          "subtype": 4
+        }
+      ],
+      "completion": {
+        "elapsed": 3850,
+        "frame": 3850,
+        "status": "passed",
+        "tiles": [
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 170
+            },
+            "tile": "ConstructedStairUD"
+          },
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 171
+            },
+            "tile": "ConstructedStairUD"
+          },
+          {
+            "complete": true,
+            "jobs": 0,
+            "mat_index": 172,
+            "mat_type": 0,
+            "position": {
+              "x": 128,
+              "y": 62,
+              "z": 172
+            },
+            "tile": "ConstructedStairD"
+          }
+        ]
+      },
+      "input": "Pointer launcher/category/leaf/map endpoints with PageUp; no material picker for reused jobs.",
+      "diagnostics": "known engine only",
+      "screenshot_inspected": "stairs-complete.png",
+      "source_preserved": true,
+      "owned_df_closed": true
+    }
   }
 }

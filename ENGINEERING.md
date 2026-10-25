@@ -1,3 +1,1663 @@
+## Native construction site support (DF 53.16)
+
+The captures below document the native-service migration. For the current
+verified construction scope, see [Construction coverage boundary](#construction-coverage-boundary).
+
+Construction preview and placement now delegate Door wall support to DF's
+coordinate-only routine at RVA `0xa827b0`. The plugin verifies the supported PE
+and fingerprints the routine and its support-tile classifier before calling it
+at a safe point. Unknown builds/inputs fail closed. It returns owned scalar
+results and the sourced refusal `Needs adjacent wall`; Godot remains asynchronous.
+No native build request, menu, cursor or redraw scratch is borrowed or changed.
+The old Lua wall/fortification adjacency approximation is removed. Generic floor,
+occupancy, liquid and DFHack construction checks remain; this is not full native
+placement parity. Sourced Door refusal presentation is described below.
+
+The same module, `bridge/plugin/construction_site_native.cpp`, delegates Well
+support to RVA `0xa829a0` and Hatch/GrateFloor/BarsFloor adjacency to `0xa82890`,
+with separate fingerprints. This removes the Lua Well approximation and supplies
+the missing floor-opening support check. Preview and commit both recheck support.
+Native refusals are `Needs open space` and `Surrounded by empty space`.
+`df3d site-support-read <family> x y z` exposes this narrow predicate
+(0 supported, 8/16/17 refusal, -1 unknown); `door-support-read` remains a Door alias.
+
+`fixtures/construction/site_support.json` records 16 synthetic terrain cases from
+protected oracle `build/construction-support-oracle-20261022-214726`. Matching
+request, closed menu and Bed selected all agree without request/redraw changes.
+This is support validation, not full placement parity or exhaustive terrain coverage.
+Native captures `build/site-refusal-native-20261022-214839` and
+`build/site-refusal-native-20261022-214912` establish the four families' copy.
+Viewer `build/hatch-refusal-main-20261022-215003` passed visible refusal, recovery,
+exact item48520 selection and natural hatch completion (+575 frames). The rejected
+empty-space target in that initial run used a controller intent.
+Screenshots were inspected. Source manifests stayed unchanged; no sessions saved.
+Diagnostics were known engine issues only. Bridge build/install, 78 adapter cases,
+construction headless suite, catalog validation and all 19 CTest checks passed.
+Follow-up `build/hatch-hover-main-20261022-215558` verified actual viewport hover
+and click on isolated empty space at the selected elevation. The picker already
+supports this; no alternate picking algorithm was needed. Recovery exposed a
+panel-height defect: hiding the refusal retained184px. The placement panel now
+resets to its new minimum size and recovers168px. Headless regression and live
+hover/recovery/exact selection/natural completion (+750 frames) passed, with known
+engine diagnostics only. Source stayed unchanged; recovered screenshot inspected.
+The obsolete Lua adjacency helper is removed. Existing frame/spacing differences
+and broader terrain/camera coverage remain open.
+
+Construction terrain remains under migration. `area_refusals.json.native_terrain_probe`
+records 1,512 dry, single-tile cases from protected capture
+`build/construction-terrain-oracle-20261023-020029`: nine explicit subtypes,
+21 tile types, two perimeter terrains and four below terrains. All native tile
+results match the existing FloorTerrain/OpenTerrain/SinglePerimeter predicates
+composed with the native mode4 below-stair and subtype replacement branches.
+Natural stairs may accept walls/floors with support; constructed stairs only
+pass the replacement branch for subtype5 (UpDownStair). The current Lua shape
+rules do not yet reproduce this. This probe changed tile types, not actual
+construction records; replacement jobs, liquids, area placement and multi-z
+behavior still require verification before migration. Source remained unchanged,
+the owned session closed, and simulation stayed paused at frame0.
+
+The read-only diagnostic `df3d construction-terrain-read x y z subtype` now
+accepts an explicit construction subtype (0..37). It composes the verified native
+terrain helpers and replacement table with the mode4 below-stair classification.
+It calls native water depth (`0x247d80`) and magma depth (`0x2c3a90`) in native
+refusal order; each 0xbf-byte leaf routine is fingerprinted and reads only map
+state. Neither routine has callees. No build-menu state is accessed.
+`area_refusals.json.native_terrain_service` references compressed captures in
+`construction_terrain.json.gz`: 2,646 dry cases and 9,072 terrain/liquid cases,
+each compared with Construction selected, Bed selected and menus closed.
+Installed captures `build/construction-terrain-service-20261023-020419` and
+`build/construction-terrain-liquid-20261023-020740` matched every native tile
+result (accepted states0..3 normalized to0); sampled request, redraw and
+pathfinding state stayed unchanged. Both sessions remained at frame0, preserved
+the source and closed. Construction preview/commit now calls this query through the existing Lua binding,
+with the selected subtype and full rectangle. Unknown results fail closed.
+Stairs uses recipe subtype UpDownStair for eligibility; endpoint job subtype
+selection remains separate. Connected Track keeps its dedicated route pipeline.
+The local construction shape and existing-tile replacement lists are removed.
+
+The query also accepts `[x1 y1 width height]` as explicit selection bounds.
+Native construction checks the whole selection perimeter, so using each tile's
+neighbors incorrectly counts other tiles inside the selection as support.
+`build/construction-terrain-area-20261023-021242` records 1,944 area cases
+(2x2,3x3,1x3): all9,216 non-track tile decisions match the rectangle-aware
+query. The18 apparent track differences were a harness error: native footprint helper
+`0x3c1e60` excludes TrackNSEW/TrackRampNSEW from selection rectangles at
+`0x3c1edf`. `build/construction-track-footprint-20261023-022547` confirms216
+TrackNSEW destination-tile comparisons match while a sentinel outside[0][0]
+remains untouched. Other rectangle entries were stale; they do not establish
+track route or placement behavior. `build/construction-record-oracle-20261023-021321`
+checks 387 actual construction records (two occupied/hidden records excluded)
+across nine subtypes: all3,483 comparisons match, including constructed stairs
+and a top-of-wall floor. Both captures are retained in `construction_terrain.json.gz`,
+preserved the source, remained at frame0 and closed the owned session.
+These are eligibility queries, not replacement-job effects. Multi-z placement,
+remaining eligibility stages and track route issues remain open for full
+construction acceptance. Live viewer `build/construction-native-refusal-main-20261023-021900`
+passed25 semantic previews against native expected results across Wall, Floor,
+Ramp, Fortification and ReinforcedWall, including liquid/removal refusal and
+valid-site recovery. The removal screenshot was inspected. Source was preserved,
+owned DF closed, and diagnostics were known engine issues only. Adapter94,
+catalog, headless construction and CTest19 checks passed; headless diagnostics
+contained only the known startup notice.
+Live `build/construction-native-stairs-main-20261023-022024` exercised pointer
+menu/map anchors across three elevations and exact items48520/48521/48522.
+Initial jobs retained those IDs; DF naturally completed Up/UpDown/Down stairs
+at +3,675 frames with no remaining jobs. Screenshot inspected, known engine
+diagnostics only, source preserved and owned DF closed. This proves new-stair
+completion through the migrated query; existing-construction replacement
+completion remains separate.
+Follow-up `build/construction-native-replacement-20261023-022359` naturally
+completed a staircase (+1,775 frames), then replaced those completed records
+through the UI using exact items48523/48524/48525. New jobs1493/1494/1495 finished
+naturally after another1,250 frames with Up/UpDown/Down tiles and zero jobs.
+The source was preserved, owned DF closed, screenshot inspected and diagnostics
+were known engine issues only. The authoritative IDs are in the native job
+observations; the viewer harness logged an old placed_sites key for its receipt.
+This establishes matching-stair replacement, not every replacement family.
+`build/construction-floor-wall-20261023-022824` additionally built a floor
+naturally using exact item48520 (+1,225 frames), then replaced its existing
+record with wall job1491 using item48521 (+300 frames). Semantic recipe
+selection and pointer map/material selection were used. The final wall screenshot
+was inspected; source preserved, owned DF closed, known engine diagnostics only.
+
+The native highest-level guard (`a82061..a8208a`, subtype mask0x200000006a)
+is now included before terrain/liquid checks. It returns sourced refusal18,
+`Cannot build at highest level`, for Wall, ReinforcedWall, Ramp and the Stairs
+recipe. Captures `build/construction-top-oracle-20261023-023000` and
+`build/construction-top-service-20261023-023246` verify378 cases across the top
+two levels and21 terrains. Live `build/construction-top-ui-20261023-023615`
+passed25 native comparisons, including unaffected Floor/Fortification controls;
+Wall screenshot inspected. A prior run023313 timed out because the harness sent
+preview before the elevation-change event settled; waiting15process frames
+resolved it. The failed run is excluded from acceptance. All source manifests
+were preserved and owned sessions closed. Adapter94/catalog/headless/CTest19
+passed; headless had only the known startup notice. Two unused Lua shape tables
+were removed with this change. The five-tile surface edge restriction is now included for Wall,
+Fortification and ReinforcedWall. Native designation reader `0x07dc40`
+(0x86bytes, fingerprint396b58fb95c29f02) supplies the underground exemption;
+the selected subtype and edge ordering follow `a81fbf..a8205b`. Exact native
+copy is `Too close to edge`. `build/construction-priority-oracle-20261023-023915`
+records7,776 combinations of position, level, terrain, underground/hidden flags,
+occupancy bits and liquids. For this matrix, native refusal priority is hidden,
+edge, height, terrain, liquid, occupancy. The occupied cases use bits, not actual
+construction jobs, so they do not establish the existing-job exception.
+`build/construction-edge-service-20261023-024343` matches all1,944 visible,
+unoccupied cases. Live `build/construction-edge-ui-20261023-024422` matches25
+native previews across five recipes, with Wall refusal screenshot inspected.
+Source preserved, owned sessions closed, known engine diagnostics only.
+Adapter94/catalog/headless/CTest19 passed. Construction occupancy priority is now native: fingerprinted map reader
+`0x068010` (0x86bytes, hash388d6b4f5c5f658e) runs after liquid and before the
+replacement dispatch. DF's construction-job exception is reproduced by scanning
+all buildings and calling their native type query, matching Construction at
+`centerx/centery/z` as in `a82460..a82497`. Hidden rejection precedes edge/height.
+Lua now calls this stage before its occupancy guard. Native terrain checks may
+accept a queued construction. Floor, Wall, Ramp and Fortification now reuse
+queued stage-zero construction jobs after the native terrain check, preserving
+the job and original input. New tiles alone contribute to the material quantity;
+a selection containing only reused jobs needs no material picker. Reinforced-wall
+conversion retains its separately verified rectangle behavior. Queued stairs
+also reuse existing jobs, preserving connections from both the terrain and the
+queued subtype. The piece is recalculated before creation after incremental
+work. `stairs_placement.json.queued_replacement` records32 native pointer cases
+(eight original subtypes, two endpoint terrains, both click directions), with
+unchanged building/job/material IDs. Protected viewer
+`build/construction-queued-stairs-main-20261023-031319` uses menu/map pointers
+and PageUp to convert three queued down stairs to up/down, up/down, down.
+All original jobs/materials survive and complete naturally in3,850 frames.
+Screenshot inspected, known engine diagnostics only, source preserved and owned
+session closed. Adapter99/catalog/CTest19 pass; regression covers a queued
+connection changing between incremental scan and creation.
+Track terrain validation has a separate diagnostic query, `track-terrain-read`,
+which composes fingerprinted coordinate-only native checks without native menu
+inputs. Routing uses modes0/1/4 of `a81f40`; unlike rectangle placement, mode1
+has no perimeter requirement. Hidden endpoint/intermediate policy belongs to the
+route caller. `track-terrain-oracle-read` is protected reference capture only,
+requires paused native Track selection, and must never serve runtime adapters.
+`track_terrain_query.json.gz` retains 3,024 liquid/hidden/occupancy/support cases,
+5,576 cases covering all697 tile types, and387 actual construction records.
+All acceptance results match native checks; Track/Bed selection agrees in the
+first two matrices and closed-menu results agree for existing records. Sampled
+UI/pathfinding fields remain unchanged by the independent query in the matrices.
+The routing reader now injects this service and supplies an owned optional
+`native_eligible` fact. The world model no longer infers site approval from
+shape, liquid depth or occupancy classes. Missing native verification remains
+unknown; hidden/intermediate and twig endpoint policy, movement facts and job
+identity checks remain separate. Callback replay covers36 native terrain and96
+queued-construction cases; adapter99 and core19 pass. Protected viewer
+`build/construction-track-merge-main-20261023-040642` exercised menu/map placement
+over four completed tracks with queued wall replacements. Original jobs and
+materials survive, all four finish naturally after425 additional frames, and
+the source save remains unchanged. Screenshot inspected; only classified engine
+startup/shutdown diagnostics occurred. This does not resolve cold-route ordering
+or the separate negative material-distance discrepancy.
+The refreshed offline gate `build/qa/construction-native-eligibility-offline-20261023`
+passes171 selected checks/builds;40 unselected GPU/live/bridge checks are not
+covered by that result. A separate protected viewer run,
+`build/construction-queued-track-ramp-main-20261023-041523`, extends four queued
+TrackRampNS jobs over natural floors. The final pieces are ramp NSE/NSEW/NSEW/NSW,
+retaining their original building/job/material identities and completing naturally
+in575 frames. `connected_track.json.queued_ramp_conversion_live` retains the
+fixture and readback. Screenshot inspected; source unchanged, owned session
+closed, only classified engine diagnostics. This closes the queued-ramp conversion
+case without implying cold-route or material-distance parity.
+Queued track conversion is now covered by
+`connected_track.json.queued_construction_conversion`:48 native pointer cases
+across12 original subtypes, floor/ramp terrain and both click directions. Tracks
+merge existing track connections; a ramp track is retained over flat ground,
+whereas a queued ordinary ramp over flat ground becomes a flat track. All cases
+retain job/material IDs. The engine-independent PendingConstruction plan can
+represent a queued job with no track connections. The bridge retains the exact
+native subtype in its owned snapshot identity and checks it before mutation.
+When every tile reuses a job, Preview omits material filters and Place builds a
+fresh validated plan without reading stock or needing a material snapshot.
+Non-construction buildings with occupancy are blocked sites under the verified
+native occupancy branch, including passable workshops. Their presence near a
+route no longer turns that route into an unverified result.
+Protected viewer `build/construction-queued-track-main-20261023-033959` converts
+four queued walls through menu/map pointers, without a material picker, retaining
+building1490..1493 and items48520..48523. All four tracks complete naturally in575
+frames. Screenshot inspected; source unchanged, owned session closed, known
+engine diagnostics only. Callback replay covers36 existing terrain and48 queued
+conversion cases; adapter99 and CTest19 pass. The earlier three viewer attempts
+failed on an unverified workshop below the route; diagnostic033738 identifies
+the actual rejection. They are retained as failures, not completion evidence.
+`connected_track.json.queued_construction_terrain_merge` adds48 native pointer
+cases with actual construction records and varied completed floor/ramp track
+terrain. DF merges connections from route, queued job and completed track;
+requiring the queued job to already contain the terrain's connections was wrong.
+That rejection is removed; expected terrain and exact job subtype remain part of
+the snapshot identity. Callback replay now covers96 queued-conversion cases and36
+existing terrain cases. Core/CTest19 pass in
+`build/qa/construction-track-terrain-merge-20261023`.
+Protected viewer `build/construction-track-merge-main-20261023-034718` first lets
+four NS tracks complete naturally at frame725, then converts queued walls over
+them through menu/map pointers. The reused jobs preserve their inputs and finish
+as NSE/NSEW/NSEW/NSW after475 more frames. Screenshot inspected; source unchanged,
+owned session closed, known engine diagnostics only. The native matrix uses a
+controlled completed-record fixture; the viewer proves this flat crossing's
+natural completion. Cold-route/negative-
+distance ordering remain outside this proof.
+`build/construction-queued-commit-20261023-025649` verifies20 ordinary native
+conversions across five initial subtypes; five reinforced single-point selections
+do not exercise its perimeter. Viewer `build/construction-queued-paint-20261023-030421`
+changes the same job through Floor/Ramp/Fortification/Wall via map pointer clicks,
+retaining building1490, job382794 and item48520. The final wall completes naturally
+in1,225 frames. Screenshot inspected, source unchanged, owned session closed,
+known engine diagnostics only. Adapter97/catalog/CTest19 pass; adapter coverage
+also includes mixed new/reused material counts and stale liquid rejection.
+`build/construction-occupancy-service-20261023-025144` matches all7,776 overlap
+cases, including hidden/occupied cases. `build/construction-queued-service-20261023-025219`
+adds243 matches with actual planned floors, walls and chairs over dry, wet and
+constructed-stair terrain. `build/construction-occupancy-ui-20261023-025316`
+passed25 native UI comparisons, including water taking priority over synthetic
+occupancy and clear-site recovery. Screenshot inspected; known engine diagnostics
+only, source preserved and owned sessions closed. Adapter95/catalog/CTest19 passed.
+
+
+
+
+Full construction remains open; the current offline gate result is recorded below.
+
+The hidden dependency in `buildreq::evaluate_buildability` is its tile validator
+at RVA `0xa81f40`: it reads building type/subtype from global buildreq at
+`0x1418a0468`/`0x1418a046c`, even when the outer request is independently owned.
+Its Door branch at `0xa8257a` invokes the coordinate-only support routine.
+The outer wrapper remains unsuitable: it accepted a missing-wall site with menus
+closed (`build/native-door-main-20261022-194749/setup.log`) despite passing the
+native-menu oracle (`build/native-door-oracle-20261022-193903`). Do not use native
+UI state to work around this limitation for other building families.
+
+`fixtures/construction/door_support.json` records the native support oracle:
+valid and missing-wall sites produce identical answers with menus closed, Bed
+selected and Door selected (`build/door-support-oracle-20261022-212606`). Native
+request type/subtype/position and redraw counter stayed unchanged. The read-only diagnostic
+is `df3d door-support-read x y z` (0 supported, 8 needs wall, -1 unknown); it is not
+a complete site validator. Two sites in one fortress do not establish exhaustive
+terrain coverage. Protected sessions preserve source manifests and never save.
+
+Verification: bridge build/install, 77 adapter tests (including refusal after an
+accepted preview), catalog validation and all 19 CTest checks passed. Protected
+main-screen run `build/door-support-main-20261022-212434` exercised rejection,
+exact material selection, placement and natural completion (+575 frames, selected
+item 48520 retained). Captures were inspected. It is `passed_with_known_issues`
+for the documented rendering-thread notice and shutdown diagnostics; no new
+unclassified errors. Source manifest stayed unchanged and the owned session closed.
+Earlier `build/door-support-main-20261022-212227` reached placement but timed out
+at 5100 frames with an unfinished job. The later run does not erase that failure
+or establish deterministic worker timing. Packaged builds remain unchanged.
+
+## Native farm and road terrain validation
+
+FarmPlot/RoadDirt/RoadPaved Preview and Place now call `extentTile` through
+the native Lua binding. The diagnostic is `extent-tile-read family x y z`.
+It returns the owned final tile result and the separate raw terrain result
+needed for area SKIP handling. `site-support-read` retains the narrow raw query:
+FarmPlot calls RVA14b1460 (soil/mud predicate14d2130); roads call14b0b00 with
+an explicit dirt flag. Raw refusals precede general tile errors in the native
+outer validator. Qualifying tiles use the native mode0 floor predicates,
+underground-aware farm edge restriction, water247d80, magma2c3a90 and
+occupancy68010, in that order. Roads are exempt from the farm edge restriction.
+The native family dispatch routes all three to success after those checks.
+
+The query fingerprints the outer validator, general validator and family dispatch
+in addition to its called leaves. It never calls the menu-dependent whole
+validator or borrows global buildreq. The shared surface routine14adea0 uses
+movement=false/flags=0, bypassing lazy walkability rebuilding. Lua retains owned
+mask aggregation and fresh commit checking, but its farm/road shape, liquid and
+occupancy approximations are removed. Unknown native answers fail the request;
+raw-invalid cells may be skipped while later eligibility errors refuse placement.
+
+`extent_tile_native.json.gz` retains864 soil/edge/hidden/subterranean/liquid/
+occupancy cases from protected `build/construction-extent-tile-20261023-054059`,
+each matching DF with the requested menu, Bed selected and menus closed. The
+native tile sweep `build/construction-extent-types-20261023-054230` adds4,182
+matches across all697 tile types with and without mud. Its sampled UI/path state
+is unchanged;36 full comparisons preserve all ten RNG buffers, indices and
+current stream. These are metadata terrain cases, not constructed-building
+replacement records. Both runs stay at frame0, preserve the source and close.
+
+Main-viewer `build/construction-extent-tile-ui-20261023-054847` matches21 native
+previews, including surface/underground edge sites, water-over-occupancy priority,
+shallow water, magma and boulders. It checks warning text and cancellation and
+allocates no buildings. Farm edge screenshot inspected, source unchanged,
+frame0, owned session closed; only known engine diagnostics. RoadPaved boulders
+398/399/400/441 supply the newly exposed native Need soil at location refusal;
+FarmPlot supplies Too close to edge. Adapter111 replays all5,046 captured tile
+results through Preview and checks unknown/missing raw facts fail closed.
+Paved-road run `build/native-road-paved-main-20261023-054940` verifies actual
+reverse-corner viewport placement, semantic exact material selection, and natural
+completion at frame2425: road1490 uses exactly blocks1714/1716/1717, excludes its
+invalid center, reaches stage3/3 and has no jobs left. Source unchanged and owned
+session closed; only known engine diagnostics. Completed screenshot inspected;
+this is effect verification, not acceptance of every menu/material pointer path.
+
+`fixtures/construction/farm_road_terrain.json` retains30 protected comparisons
+from `build/farm-road-terrain-oracle-20261022-232337`: matching request, menus
+closed and Bed selected agree on soil, grass, stone, wall, open space, ramp, mud,
+water2/7 and magma1. Request fields, redraw counter, reindex flag and pathfinder
+generations stayed unchanged around each diagnostic. Source stayed unchanged;
+frame remained0. This is terrain evidence, not full liquid/placement acceptance:
+water2 soil returns terrain0 while the complete validator returns water error10.
+
+The dirt-road geological path14e100 can call RNGeb68b0 when geology is missing.
+The bridge preserves the active stream's2496-byte buffer and index around this
+call, including a full buffer refill. Native stream push eb6c80 establishes ten
+streams; invalid stream/index and fingerprint mismatches fail closed. The active
+stream selector is read only. No menu or cursor state is borrowed.
+
+Protected `build/farm-road-rng-oracle-20261022-233303` forces missing geology and
+verifies16 cases: Shrub/ShrubDead/Sapling/SaplingDead, streams0/9, indices0/2496.
+The diagnostic reports a native RNG advance before restoration; all ten streams'
+624 words and indices, plus the active selector, compare equal afterwards.
+The region entry and original RNG state are restored by the harness; source
+manifest unchanged, paused frame0. Earlier233142 did not actually trigger the
+fallback and is not restoration evidence. The temporary plant-tile diagnostic
+guard is removed. Plugin build/install and native diagnostic checks pass. Product adoption
+verification is recorded below.
+Follow-up `build/farm-road-terrain-oracle-20261022-233410` passes42 cases across
+the same three menu states, adding all four plant variants for each family.
+Source unchanged; this validates the installed restoration path on ordinary
+terrain alongside the deliberately forced fallback probe.
+
+Product adoption passes82 adapter tests,19CTest, catalog evidence checks and the
+Godot construction suite. Adapter coverage injects native decisions, replays
+recorded masks, rechecks at Place, and aborts on unknown/missing native service.
+Protected main-viewer runs confirm natural effects with source saves unchanged:
+`build/native-farm-main-20261022-234000` completed FarmPlot at frame1825;
+`build/native-road-dirt-main-20261022-234124` retired the dirt-road building at
+frame675 and left the expected furrowed-soil cells. Both used actual pointer
+navigation, invalid first corners and valid reverse corners; refusal images were
+inspected. `build/native-road-paved-main-20261022-234338` completed at2525 with
+exact selected blocks1717/1716/1714 retained and footprint `[1,1,1,1,0,1,1,1,1]`.
+Paved-road menu/invalid anchor/material selection used semantic controller calls;
+valid corners used the viewport pointer. Its completion image was inspected.
+All runs have only documented engine diagnostics. Earlier paved run234230 has a
+harness SCRIPT ERROR (nonexistent row.index) and is excluded despite its partial
+result claiming passed; the corrected harness also requires all observations.
+These are construction effects, not crop/road operation or every terrain case.
+
+FarmPlot also exposes the native Closest material mode even though it needs no
+material items. Native pointer capture `build/farm-material-mode-native-20261023-055944`
+verifies Closest/After/Closest toggling, retention across reopening, and creation
+of a partial farm with no material inputs. Its owned job is deconstructed without
+saving. The viewer uses its existing local strategy and empty-filter placement
+flow; no native menu state is read at runtime. Main-viewer
+`build/farm-closest-main-20261023-060118` clicks the launcher, category, leaf and
+mode buttons, rejects an unsuitable anchor, then places via reverse viewport
+corners. Farm1490 completes naturally at frame700, stage3/3, with no items/jobs
+and the dry center excluded. Closest remains selected. Placement screenshot
+inspected; source unchanged, owned sessions closed, only known engine diagnostics.
+`farm_road_terrain.json.native_farm_material_mode` retains the evidence. Headless
+coverage checks toggle/reselect retention and that no material-list request is
+made for this zero-input recipe.
+
+Farm/road water refusals now display `Water at this location` after the native
+terrain predicate accepts a tile and the separate liquid stage rejects it.
+`liquid_refusals.json` retains96 native/bridge area comparisons:32 per family,
+water/magma depths0..7 at a first corner or center. Protected runs are
+`build/liquid-area-farm-20261022-234914`,
+`build/liquid-area-road-dirt-20261022-235236`, and
+`build/liquid-area-road-paved-20261022-235330`. All compare actual installed
+planned buildings and masks at paused frame0, using native simulated clicks
+versus headless semantic bridge requests. Source saves stayed unchanged; known
+startup notice only. Water2..6 rejects the rectangle; water7/positive magma can
+leave a usable footprint around a skipped center. Wet first corners reject.
+This is planned-building equivalence, not natural completion or main-screen
+pointer proof. The farm run predates the message-only change. Earlier farm234703
+handoff failure and dirt235122 stale case-count failure remain excluded.
+83 adapter cases,19CTest, catalog scope and Godot construction checks pass.
+Main viewer `build/extent-water-main-20261022-235443` verifies all three families
+show the water refusal and clear it for mixed dry/depth7 terrain, retaining mask
+`[0,1,1,1]`. Inputs were semantic rectangles, not pointer gestures. No building or
+frame mutation; source unchanged; known engine diagnostics only. RoadPaved refusal
+image inspected. Other families' liquid-message mapping remains open.
+
+The full offline gate predates this integration; general liquid-message mapping
+and other construction requirements remain open.
+
+## Construction placement refusal display
+
+The placement panel displays sourced refusals in orange beneath Keep building.
+`panels/construction_refusals.json` defines exact message/key scope, backed by
+`fixtures/construction/placement_refusals.json`: Door wall support, Well/opening
+support, and `Building present` for all93 catalog keys. The occupied-stone
+catalog sweep returns soil refusals for FarmPlot and RoadDirt; later native
+occupied-soil captures prove Building present for both families.
+Loaded hidden tiles return `Hidden, cannot build at this location` for90 keys;
+FarmPlot/RoadDirt/RoadPaved retain their verified hidden-terrain behavior. Missing
+flags/occupancy or out-of-map coordinates stay separate hidden diagnostics.
+Natural solid-wall targets return `Blocked at this location` for all93 keys,
+matching the catalog oracle. Existing-construction replacement stays separate.
+Farm/road extents aggregate native refusals in x-major order, deduplicating
+messages and placing Disconnected first. Raw terrain refusals become skipped
+cells when any terrain qualifies; water and occupancy errors on qualifying
+terrain refuse the entire placement. Raw terrain checks precede occupancy. Native FarmPlot
+`Need soil or mud at location` is FarmPlot-only; `Need soil at location` is
+verified for RoadDirt and the RoadPaved boulder cases described above.
+Transport/draft diagnostics stay hidden. New targets, cancellation, session changes
+and detached late replies cannot retain an obsolete refusal. Generic liquid and
+terrain messages still need native mapping; water/magma copy varies by family.
+
+Protected oracle `build/refusal-catalog-native-20261022-222336` evaluated93 keys
+across5 synthetic cases. This establishes copy scope, not full footprint/error
+precedence parity. Native request state is used only in the disposable oracle.
+Viewer `build/occupancy-hover-main-20261022-222851` verified actual occupied-tile
+hover/click, valid-site recovery, exact hatch item48520 and natural completion300.
+Screenshots inspected; source unchanged; known engine diagnostics only. Headless
+construction and catalog evidence checks passed. The additional native Bed
+capture222807 is black under its overlay and excluded; existing Door occupied
+capture remains the visual reference for the shared refusal line.
+
+Hidden-target viewer run `build/hidden-refusal-main-20261022-223355` verified
+semantic hidden-target rejection, pointer recovery, exact hatch48520 and completion575.
+The hidden target was supplied by the harness, not a visible surface hit. DF
+re-paused at frame1; the disposable session was resumed once before completion.
+Cause remains unestablished, so this does not prove uninterrupted completion.
+Refusal/completion screenshots inspected; source unchanged; known diagnostics only.
+Bridge build/install,79 adapter cases, catalog evidence test, construction headless
+and19 CTest checks passed. Adapter coverage distinguishes missing map data and
+rechecks visibility after an accepted preview.
+
+`fixtures/construction/placement_refusals.json` records four native Door states
+and the visible scope. Native capture `build/construction-refusal-native-20261022-213312`
+and viewer `build/construction-refusal-main-20261022-213519` were inspected. The
+viewer passed visible rejection, recovery, exact selection and natural completion
+(+575 frames), with documented engine diagnostics only; source manifests remained
+unchanged. The headless construction suite covers cancellation, pending-site
+clearing and hidden unsourced failures. Existing square frame and tighter vertical
+spacing differ from the native rounded panel (refusal baseline 12 pixels higher);
+this is retained presentation work, not pixel-parity acceptance.
+
+`fixtures/construction/liquid_refusals.json` records1488 native evaluations
+(93keys, water/magma depths0..7) from protected run
+`build/liquid-depth-native-20261022-224635`. On the flat test patch, water2..6
+reports `Water at this location` for non-soil recipes; full-depth water and magma
+use family-dependent blocked/liquid errors. This is reference evidence only;
+the generic liquid diagnostic has not yet been replaced. Default dimensions and
+flat terrain do not prove full footprint/error precedence parity. Changing only
+the tiletype to SoilFloor in follow-up224821 still returned soil errors when dry,
+so that run does not establish valid farm/road terrain. Source manifests remained
+unchanged and all sessions ended without saving.
+The corrected soil follow-up `build/liquid-valid-soil-native-20261022-231620`
+uses asserted SoilFloor1 for FarmPlot/RoadDirt and verifies a dry baseline of
+native tile result0 before testing depths. Water2..6 yields the water refusal;
+water7 and positive magma yield blocked. RoadPaved on smooth stone agrees.
+These48 evaluations establish tile refusals, not material-stage or completion
+acceptance. The earlier SoilFloor run remains invalid soil evidence.
+A separate natural-wall sweep `build/liquid-wall-native-20261022-231711` returned
+blocked for all1488 recipe/depth combinations. The bridge therefore checks
+natural solid walls before liquid, while keeping hidden/occupancy checks and
+existing-construction policy separate. Both sources remained unchanged.
+Viewer `build/liquid-wall-refusal-main-20261022-231905` confirms water2/wall
+refusal for seven families and mixed recovery for four terrain families, using
+semantic targets. No building/frame mutation; source unchanged; FarmPlot refusal
+image inspected. Known engine diagnostics only.81 adapter tests,19CTest and
+catalog check pass. Plugin rebuilt/installed; no completion or pointer claim.
+
+Terrain area validation preserves the first refused tile's reason across budgeted
+scans. A rectangle with no usable cells now rejects Preview/Place instead of
+reporting valid with zero materials. Mixed masks remain usable; reinforced-wall
+upgrades can still reuse existing jobs with a zero new-material count.
+`fixtures/construction/area_refusals.json` records native tile refusals and their
+limits. Main run `build/area-refusal-main-20261022-225644` verified hidden-area
+refusal/recovery for Wall/Floor/Ramp/Fortification with semantic rectangle inputs;
+mixed masks retain `[0,1,1,1]`. This is not pointer-gesture or natural-completion
+acceptance. Native building count/frame stayed unchanged, source manifests were
+preserved, representative refusal/recovery images inspected, and only known
+engine diagnostics occurred.80 adapter tests and19 CTest checks pass. The prior
+full offline gate predates this area fix; it is not a full gate for the newer code.
+
+Solid-wall viewer run `build/wall-refusal-main-20261022-231147` verified semantic
+2x2 rejection for the four terrain families plus FarmPlot/RoadDirt/RoadPaved, and
+mixed-area recovery for the four terrain families. Representative images were
+inspected. Building count/frame and source save stayed unchanged. This is not
+pointer-gesture or construction-completion acceptance.81 adapter tests, catalog
+evidence checks, construction headless and19 CTest checks passed; only documented
+engine diagnostics occurred. The full offline gate predates this change.
+
+## Native surface predicate investigation
+
+`df3d site-support-read Surface x y z` exposes the coordinate surface predicate
+RVA0x14adea0 with movement=false/flags=0. PE/function fingerprints fail closed;
+this mode bypasses lazy walkability reindexing. It returns0 for accepted surface,
+6 for rejected surface, and-1 for unknown. These are diagnostic surface results,
+not complete building eligibility. Product construction has not adopted this
+mode: ordinary furniture applies additional tile exclusions after the predicate.
+
+Protected `build/native-surface-oracle-20261023-001655` covers60 terrain/liquid
+combinations and180 calls with Bed selected, Well selected and menus closed.
+Answers agree; request fields, redraw, reindex and pathfinder generations remained
+unchanged around each call. Water7 and positive magma reject at this stage;
+water2 passes surface but later returns native water error10. Dry ramps/stairs
+pass surface but furniture rejects them. The retained liquid-refusal fixture
+records this boundary so future integration does not mistake surface acceptance
+for placement acceptance. This is bounded diagnostic evidence, not exhaustive
+callees or terrain validation. Source preserved, paused frame0, owned DF closed.
+Bridge build/install and19 CTest checks passed. No product placement rule changed.
+
+`site-support-read FloorTerrain` adds the ordinary validator's exclusions to
+Surface. The complete validator cannot be called safely because it reads global
+buildreq. This diagnostic composes native surface14adea0, ramp256170 and existing
+construction14abf60 predicates, plus fingerprinted stair dispatch data and small
+branch glue from a82112. Fingerprints include classifier lookup tables and the
+construction lookup a46d90. It stops before water, occupancy and family support;
+the64 ordinary-floor recipes below use it before liquid and support checks. Unknown
+versions fail closed.
+
+Protected `build/native-floor-oracle-20261023-002026` compared96 terrain/liquid
+cases against native Bed validation, with288 calls across Bed/Well/closed-menu
+contexts. All matched the terrain stage (native water10 means terrain accepted).
+Request/redraw/reindex/generations stayed unchanged around calls. Constructed
+stairs return19, `Must remove construction`;14abf60 is an existing-construction
+predicate, correcting the earlier tree-predicate hypothesis. Natural tree tiles
+were also included. This bounded comparison does not prove every tile or every
+family's choice of validation branch. Source preserved, frame0, owned DF closed;
+bridge build/install and19 CTest checks passed. Evidence is retained with the
+liquid-refusal fixture for subsequent production integration.
+
+## Native furniture terrain integration
+
+The diagnostic `df3d furniture-tile-read <family> x y z` composes the full
+mode0 tile refusal sequence for Bed, Chair, Door, Statue, Cage, Weaponrack,
+Table, Box, Cabinet, Coffin, Slab, TractionBench, Bookcase, DisplayFurniture,
+OfferingPlace, Instrument, GrateWall, BarsVertical, WindowGlass and WindowGem.
+It uses verified native terrain, designation, liquid, occupancy and support
+helpers plus the fingerprinted family dispatch with an owned family value.
+It does not read buildreq. Hidden precedes the underground-aware five-tile edge,
+terrain, water, magma, occupancy and family support/indoor restriction.
+The supported dispatch applies `Must be inside` to Bed, Chair, Table, Coffin and
+TractionBench. The runtime delegates these twenty families before local occupancy checks and removes
+the obsolete Bed-only indoor rule and separate Door support call.
+
+`fixtures/construction/furniture_tile_native.json.gz` retains4320 native
+mixed-condition cases from `build/construction-furniture-tile-20261023-061110`,
+with matching, Well and closed menus (12960 service comparisons), and4182 cases
+covering all697 tile types from `build/construction-furniture-types-20261023-061151`.
+All acceptance/refusal results match. Native FINE_BLOCKED for Statue is normalized
+to success; the diagnostic does not represent footprint presentation. The type
+sweep preserves tracked UI/path state, with36 sampled guards over all ten random
+buffers, indices and active stream. Both runs stayed paused at frame0, preserved
+the source manifest and closed owned DF; captured command diagnostics were empty.
+The plugin build/install passed. Preview and Place now call this service through
+nativeSiteSupport and require a verified result; commit rechecks it before allocation.
+Native visual `build/furniture-inside-native-20261023-061612` verifies the indoor
+copy and placement for Bed/Chair. Viewer `build/furniture-tile-main-20261023-061653`
+passed32 semantic preview/refusal/recovery observations, including water before
+occupancy, with no allocations at frame0. Chair-outside screenshots were inspected
+in both native and viewer captures. `build/furniture-floor-main-20261023-061757`
+passed actual pointer navigation, invalid Door support, recovery, exact item48520
+selection and natural Door1490 completion at frame350 (stage1/1, no jobs).
+The completion screenshot was inspected. Source manifests stayed unchanged and
+owned sessions closed; viewer diagnostics were the three known engine signatures
+with no unclassified entries. Extension build, construction headless and112 adapter
+cases passed; catalog passed on targeted recheck after its mock was updated to
+return the required verification flag. No full offline rerun is claimed.
+The Keep-building checkbox label is present. A pixel comparison of its exact
+rectangle in the original capture and subsequent captures confirms identical
+rendering; an earlier visual interpretation claiming a missing label was incorrect.
+No font workaround is needed or retained.
+`build/construction-keep-main-20261023-062701` additionally verifies the actual
+Keep-building checkbox click, native Door refusal/recovery, exact item48520
+placement, retained placement mode and natural completion at frame575. Escape
+key events then release construction input. The checked-label screenshot was
+inspected; source stayed unchanged, owned DF closed, and both viewer logs contain
+only the three known engine diagnostics. An earlier keep-mode harness incorrectly
+expected placement to close; it is excluded from acceptance. These checks do not prove natural
+completion for all furniture families; remaining ordinary recipes still need full tile migration.
+
+The fourteen-family extension is retained in the same compressed fixture:
+`build/construction-furniture-extra-20261023-062951` passed10080 mixed-condition
+cases in three menu contexts (30240 comparisons), and
+`build/construction-furniture-extra-types-20261023-063039` passed9758 cases over
+all697 tile types, with84 sampled all-stream random guards. Tracked UI/path state
+was unchanged; all ran paused at frame0 and preserved source saves. Native visual
+`build/furniture-extra-native-20261023-063507` confirms indoor copy for Table,
+Coffin and TractionBench. Viewer `build/furniture-extra-main-20261023-063316`
+passed87 refusal/recovery observations across the fourteen families without
+allocation. Native and viewer Table-outside screenshots were inspected.
+`build/furniture-table-main-20261023-063418` passed actual pointer menu/map/material
+selection, outdoor refusal and valid-site recovery, then natural Table1490
+completion at frame375 with exact item48520, stage1/1 and no jobs. Its completion
+screenshot was inspected. All owned sessions closed, sources stayed unchanged,
+and viewer diagnostics contained only the three known engine signatures.
+The focused furniture-extra-runtime gate passed extension build, construction
+headless, catalog and112 adapter tests (including28340 recorded native tile rows).
+Natural completion for every furniture family and the final full gate remain open.
+
+## Native ordinary building tile validation
+
+The44 remaining explicitly admitted ordinary floor recipe keys now delegate
+Preview and Place tile decisions through `<key>OrdinaryTile`; commit rechecks the
+verified native result. `df3d ordinary-tile-read <key> x y z` exposes the same
+query. It shares the native mode0 sequence with furniture, using an owned type
+and exact recipe whitelist that excludes magma, machinery and opening variants.
+The fingerprinted family dispatch adds TradeDepot's ten-tile edge restriction,
+including underground sites, after terrain/liquid/occupancy checks. Local floor,
+liquid and occupancy decisions for these recipes are bypassed. Native global
+buildreq remains prohibited as a runtime input. Support, machinery, magma and
+opening recipes still need their remaining full-tile ordering work.
+
+`fixtures/construction/ordinary_tile_native.json.gz` retains1100 mixed-condition
+placements (7900 footprint cells) from
+`build/ordinary-tile-service-20261023-064039`, plus30668 placements over all697
+tile types (220252 footprint cells) from
+`build/ordinary-tile-types-20261023-064331`. Every cell's acceptance/refusal matches
+native DF; FINE_BLOCKED is normalized to accepted. The first cell was additionally
+queried with the selected recipe, Well and closed menus; tracked UI/path state
+was unchanged around those queries. The sweep is uniform terrain per footprint;
+it does not establish every mixed-footprint combination or whole-placement rule.
+Both runs stayed at paused frame0, preserved source saves, closed owned DF and
+had no captured command diagnostics. An earlier sweep exceeded the initial RPC
+limit; it is excluded. The successful harness yields before starting and between
+batches so the normal protected completion monitor owns the long run.
+
+`build/ordinary-tile-main-20261023-065336` passed88 semantic edge/refusal/recovery
+observations across all44 recipe keys without allocation. The custom Screw Press
+refusal screenshot was inspected. The earlier065139 run had screenshot filename
+errors and is excluded from clean acceptance. `build/ordinary-floor-main-20261023-065235`
+passed actual pointer menu/profile/map/exact mechanism selection and natural
+PressurePlate1490 completion at frame650, stage1/1, no jobs and exact item48520.
+Native readback verified water3 and one-use settings. The completion screenshot
+was inspected. Sources stayed unchanged, owned sessions closed and both viewer
+logs contain only the three known engine diagnostics. Extension build, construction
+headless and catalog passed;113 adapter cases passed on targeted recheck after
+test requests supplied their required footprints/profiles. No full offline gate
+or natural completion of every recipe is claimed.
+
+Pressure Plate preview and commit now reject profiles without a trigger using
+DF's fingerprinted inline TEST mask at RVA `0x3c0eac`. The containing validator
+and instruction block are checked before applying that mask to caller-owned
+flags. This is an extracted native predicate, not a callable native function:
+the original instruction reads global build-menu state and cannot be invoked
+by the runtime. Citizens/reset flags alone do not qualify. Unknown fingerprints
+fail closed. `df3d pressure-trigger-read <flags>` exposes the diagnostic.
+`pressure_plate.json.native_trigger` records192 native combinations (all64 flag
+sets on dry, water and hidden-water terrain),576 independent service comparisons
+with matching/other/closed menus, and unchanged global flags. Preview preserves
+native intent-before-tile message order and commit rechecks before job creation.
+Protected viewer `build/pressure-trigger-main-20261023-070708` passed actual pointer
+no-trigger refusal, water-trigger recovery and exact mechanism48520 selection.
+DF readback verified water depth3 and one-use settings; building1490 completed
+naturally at frame650, stage1/1 with no jobs. Keep-building remains open and resets
+options, matching the recorded native lifecycle. Refusal/completion screenshots
+were inspected. Source remained unchanged and owned DF closed; both viewer logs
+contain only the three known engine diagnostics. Focused extension, construction
+headless, catalog and114 adapter tests passed in `build/qa/pressure-trigger-runtime`.
+Actual activation/link effects and broader construction acceptance remain open.
+
+## Opening and support tile migration
+
+`df3d opening-tile-read <family> x y z` exposes the query for Support, Well,
+Hatch, GrateFloor, BarsFloor and AnimalTrap. It composes the fingerprinted native
+terrain/liquid/occupancy leaves and family dispatch using owned coordinates and
+family identity. Support uses mode0 terrain; the other five use mode1 terrain.
+Hidden and underground-aware edge checks precede terrain, liquids and occupancy;
+Well/Hatch-family support follows. No native menu state supplies runtime inputs.
+`fixtures/construction/opening_tile_native.json.gz` retains150 baseline cases,
+4,320 priority cases and4,182 cases covering all697 tile types for all six families.
+Priority/type captures compare the independent query with matching, other and
+closed native menus; every tile result matches (native accepted code1 normalizes
+to0). Sampled UI/path state stays unchanged. All three protected sources remained
+unchanged, sessions closed and simulation stayed at frame0. Preview and commit now use the same query through `<family>OpeningTile`, with
+unknown results failing closed. Their former Lua terrain/liquid/occupancy/support
+branches are removed. AnimalTrap's native perimeter query runs after accepted
+tiles and again at commit; its refusal preserves the valid tile mask. The binding
+already supplied `Needs walkable perimeter` before this migration; the earlier
+claim that it displayed a blocked-tile refusal confused its numeric diagnostic
+with its Lua result. Legacy Kennels retains its separate floor fallback.
+Protected viewer `build/opening-runtime-main-20261023-071833` passed30 semantic
+refusal/recovery checks across all six families, including edge, water/occupancy,
+magma and valid-site recovery. No buildings were allocated and simulation stayed
+at frame0. The Hatch edge screenshot was inspected. Source remained unchanged
+and owned DF closed; both viewer logs contain only the three known engine
+signatures. Focused extension, construction headless, catalog and115 adapter tests
+passed in `build/qa/opening-tile-runtime-final`. A subsequent targeted test verifies
+AnimalTrap's accepted tile mask survives perimeter refusal and commit rechecks
+that perimeter before creating a job (116 adapter tests now).
+`build/opening-hatch-main-20261023-071920` passed actual pointer menu, invalid
+hover/click, valid hover recovery, exact item48520 selection and natural Hatch1490
+completion at frame575, stage1/1 with no jobs. Completion screenshot inspected;
+source preserved, owned session closed and only the same known diagnostics.
+Natural completion of every family and broader construction acceptance remain open.
+
+## Machinery and magma full-tile validation
+
+`df3d special-tile-read <key> x y z <open_mode>` validates the tile for the eight
+machine recipes (including Windmill and Millstone) and four magma recipes.
+Mode0 uses native FloorTerrain and mode1 uses OpenTerrain; the caller supplies
+an independently computed native machine-connection result or magma off-center
+position. It then applies native edge, liquid, occupancy and family dispatch
+rules through the shared fingerprinted helper. It does not borrow build-menu state.
+Preview and commit use `<key>SpecialTile` with an explicitly typed boolean mode.
+Unknown results fail closed. The former Lua terrain/liquid/occupancy checks for
+these twelve recipes are removed; native hookup calculation and warning
+aggregation remain separate.
+Whole-placement hookup warnings, footprint behavior and job effects are separate.
+`fixtures/construction/special_tile_native.json.gz` records5,184 ground cases,
+2,592 planned-gear hookup cases (2,286 actually connected),648 magma cases and
+300 edge/priority cases. Ground checks the first tile; connected/magma compare
+whole native footprints against representative queries on uniform terrain;
+the edge sweep independently queries every footprint cell. Both native terrain
+modes are checked with matching/other/closed menus in the first three captures,
+and the selected first-cell mode in the edge sweep. Sampled UI/path state stays
+unchanged. All four protected sources remained unchanged, sessions closed and
+simulation stayed at frame0. These comparisons establish tile-query behavior,
+not exhaustive tile types, rendered parity or natural construction effects.
+
+Protected viewer `build/special-runtime-main-20261023-072959` passed84 semantic
+comparisons against freshly captured native errors across all twelve recipes,
+including edge, combined liquid/occupancy, mixed support and valid-site recovery.
+No buildings were allocated after setup and simulation stayed at frame0. The
+Windmill edge/connection refusal screenshot was inspected. Source remained
+unchanged and owned DF closed; both viewer logs contain only the three known
+engine diagnostics. Extension, construction headless and catalog checks passed.
+The new adapter replay initially used incorrect mock footprint sizes; after
+supplying the captured sizes, its300 per-cell cases, unknown result and commit
+recheck passed. The other116 adapter tests passed in the original focused run.
+`build/special-hookup-main-20261023-073107` passed actual menu/map/material pointer
+input over open space with a planned corner gear. Windmill1491 completed naturally
+at frame825, stage1/1, no jobs, retaining exact logs48520..48523. The completion
+screenshot was inspected; source preserved, owned DF closed, known diagnostics only.
+
+`build/special-magma-main-20261023-073220` passed pointer menu/map/material input
+and natural MagmaForge1490 completion at frame1450, stage3/3 with no jobs,
+retaining selected block1714 and iron anvil48524. Completion screenshot inspected;
+source preserved, owned DF closed and only the same known diagnostics. These
+runs establish construction effects for these two recipes, not power generation,
+reaction execution or natural completion of every machine/magma recipe.
+
+## Bridge full-tile validation
+
+`df3d bridge-tile-read x y z <anchor>` composes the verified native Bridge tile
+check with caller-owned raising-edge membership. Bridge skips the general
+five-tile edge restriction. Mode1 terrain, water, magma and occupancy are checked
+before an anchor's mode0 result; anchor failure maps to native code5. Unknown
+helper results fail closed. This diagnostic does not read native menu inputs.
+`fixtures/construction/bridge_tile_native.json.gz` records960 priority placements
+(5,520 individually queried cells) across all five orientations, four rectangle
+sizes, eight uniform/mixed terrain patterns and six designation/liquid/occupancy
+profiles. A further3,485 placements cover all697 tile types on3x3 bridges across
+all orientations (31,365 cells). Every result matches; first-cell queries also
+match with Bridge selected, Well selected and menus closed. Sampled UI/path state
+stays unchanged. Both protected runs preserved their source, stayed at frame0
+and closed the owned session. Preview and commit now call the same query through
+`BridgeTile` with an explicitly typed, caller-owned anchor boolean. Unknown
+results fail closed. The former Lua bridge terrain/liquid/occupancy and anchor
+checks are removed.
+The mixed cases expose a separate aggregation gap: DF may prepend
+`Needs walkable perimeter` before earlier `Needs to be anchored on edge` tile
+refusals when the final footprint tile is accepted. Ten priority cases show this;
+preview now checks that condition and preserves the native message order.
+Native `3c1618` gates the perimeter on the last coordinate in the accepted branch.
+All118 adapter tests pass in `build/qa/bridge-tile-adapter-final`, including all
+4,445 captured placements, native anchor membership, compound ordering, unknown
+results and commit revalidation. Initial replay scaffolding wrongly excluded
+boulders/pebbles from anchor floor mocks; that was corrected to existing native
+evidence. Extension, construction headless and catalog checks passed separately.
+Protected viewer `build/bridge-runtime-main-20261023-074032` matched30 freshly
+captured native previews across all five orientations, including mixed terrain,
+edge exemption and compound perimeter/anchor refusal. No new buildings after
+setup, frame0, source preserved and owned DF closed. The compound screenshot
+was inspected. Both viewer logs contain only the three known engine signatures.
+
+`build/bridge-full-main-20261023-074136` passed actual pointer menu/orientation,
+rectangle corners, group/individual material selection and natural Bridge1490
+completion at frame8475, stage3/3 with no jobs. Exact materials48520..48522 were
+retained. Completion screenshot inspected; source preserved, owned DF closed
+and only the same known engine diagnostics. Lever linking and bridge activation
+are separate from this construction proof.
+
+## Bridge native perimeter
+
+Bridge preview and placement use DF's coordinate-only rectangle predicate at
+RVA `0xaa93e0`, replacing the Lua perimeter terrain/liquid/occupancy approximation.
+`BridgePerimeter` accepts explicit width/height (1..31), checks map bounds and
+fingerprints the routine and its surface dependency. It borrows no native menu
+state. Unknown answers fail closed without presenting a fabricated refusal.
+`df3d site-support-read BridgePerimeter x y z width height` exposes the same stage;
+Animal Trap retains its single-tile use. Bridge anchor/footprint validation uses
+the separate native terrain composition below.
+
+`bridge_placement.json.native_perimeter_service` retains720 comparisons from
+protected `build/bridge-perimeter-oracle-20261023-005936`: six dimensions, cardinal
+edges/corner-only/empty perimeter, five terrains and four liquids. All match the
+native Bridge validator with Bridge selected, Well selected and menus closed.
+Sampled request/redraw/pathfinding state stayed unchanged, paused frame0; source
+manifest was preserved. Adapter tests inject recorded native perimeter answers;
+they no longer certify a duplicated Lua perimeter algorithm.
+
+Installed bridge build,89 adapter tests, catalog, construction headless and19
+CTest checks pass. Protected viewer `build/bridge-perimeter-main-20261023-010129`
+passed pointer menu/orientation/corners, group and individual material selection,
+and natural bridge completion at7975 frames with exact items48520/48521/48522.
+Completion screenshot inspected; source unchanged and owned session closed.
+Diagnostics contain only the documented engine startup/shutdown issues. Earlier
+010027 stopped on an obsolete harness hidden-footer assertion, superseded by
+existing native placement-hover evidence; it remains recorded as a failed run.
+
+## Bridge footprint and anchor terrain
+
+Bridge uses OpenTerrain before liquid validation and FloorTerrain on the hinged
+edge after liquid validation. This follows evaluate_buildability's explicit
+orientation branches at3c1586..3c15ea, using native coordinate predicates without
+borrowing global buildreq. Retracting bridges have no hinged edge. Unknown
+native results abort; known rejected anchor terrain maps to native `Needs to be
+anchored on edge`. The Lua bridge shape/floor lists are removed. Verified bridge
+water, magma, existing-construction, anchor and perimeter refusals are displayed.
+Machinery still has its separate unfinished terrain checks.
+
+`bridge_placement.json.native_terrain_service` retains540 uniform3x3 cases from
+`build/bridge-terrain-oracle-20261023-010714`: five directions,18 terrain types,
+six liquid variants, all nine tile results matching the composition. OpenTerrain
+answers agree with Bridge selected, Well selected and menus closed; sampled UI
+and pathfinding state stayed unchanged. Source preserved, paused frame0. This is
+terrain/anchor evidence, not every occupancy or mixed-footprint case. Earlier
+010521 passed the wrong orientation argument;010607 failed to invalidate native
+last-position caching. Both failed harness runs are excluded from acceptance.
+
+Product verification passes90 adapter tests, catalog, construction headless and19
+CTest checks; plugin installed. Viewer `build/bridge-terrain-main-20261023-010940`
+passes five semantic refusal previews and dry recovery. Anchor screenshot inspected.
+`build/bridge-perimeter-main-20261023-011037` verifies pointer placement, exact
+material selection and natural bridge completion with the terrain migration.
+Both preserve source manifests and close owned sessions; diagnostics are limited
+to the known engine startup/shutdown issues. Completion screenshot inspected.
+
+## Native windmill machinery hookups
+
+Windmill support calls the native `building_handler::get_machine_hookup_list`
+(RVA5ab260) with explicit type, bounds, elevation and direction and an owned
+`machine_tile_set`. It then follows evaluate_buildability's reverse scan of
+`world.buildings.all`, calling native `canConnectToMachine` for each building.
+The vector lifetime is bounded by `with_finalize`; no buildreq/menu state is used.
+The hookup generator writes its output vectors and calls vector append helpers,
+without reading gameplay UI globals. These are DF virtual methods exposed by
+DFHack, rather than reimplementations in a DFHack helper.
+
+The old five-entry Lua list and `findAtTile` candidate shortlist are removed.
+Native DF returns nine windmill hookup entries, including corner masks that the
+old list missed. `windmill.json.native_hookup_service` retains14 protected cases
+from `build/machine-hookup-oracle-20261023-011516`: each lateral corner gear is
+accepted, while a purely diagonal gear is rejected. Existing planned/completed,
+above/below/side, axle and non-machine cases remain covered. Windmill selected,
+Bed selected and closed menus agree; sampled request/redraw/pathfinding state
+stays unchanged, paused frame0, source manifest preserved. The earlier011412 run
+covers the initial nine cases. These support fixtures deliberately prepare terrain
+and support buildings; they are not evidence of natural construction completion.
+Windmill terrain/liquid validation follows the native composition below.
+
+Installed bridge,90 adapter tests, catalog, construction headless and19 CTest
+checks pass. Protected viewer `build/machine-hookup-main-20261023-011808` placed a
+windmill over a prepared open center using a planned lateral corner gear. Pointer
+menu/material controls and a semantic empty-center target led to natural completion
+at825 frames, retaining exact logs48520..48523. No completion stage was forced.
+Completion screenshot inspected; source preserved and owned session closed.
+Diagnostics contain only the documented engine startup/shutdown issues. This
+verifies construction admission/effect, not downstream machine operation.
+
+## Native farm and road connectivity
+
+`area-connectivity-read` calls native3c2640 with an allocated, owned buildreq and
+explicit rectangle. Only FarmPlot/RoadDirt/RoadPaved are accepted; their3c1e60
+footprint branches read owned corners. Both functions are fingerprinted. Native
+farm/road terrain leaves supply eligibility; the helper uses a local31x31 visited
+grid. Its shared two-frontier coordinate buffer and random state are restored.
+The961-cell bound is below the120000-entry frontier capacity. No global buildreq,
+cursor or viewscreen is read or changed by this query.
+
+`farm_road_terrain.json.native_area_connectivity` retains protected043640:
+24 farm/road cases agree across selected, Bed and closed menus. Sampled UI/path
+fields remain unchanged; an explicit guard compares every frontier byte and all
+ten RNG buffers/indices plus selected stream before/after. All match. The same
+capture records56 native area error/warning sets. The raw helper returns true for
+empty qualifying terrain as well as disconnected regions; native outer3c0d62
+suppresses the Disconnected message unless some raw terrain qualifies. Liquid
+and occupancy restrictions are later stages and must not replace that precondition.
+The wrapper now includes native3c0d62's precondition: visit every tile through
+Road then Farm predicates, select acceptance by the requested family, and call
+connectivity only if some raw terrain qualifies. The entire sequence preserves
+RNG state. Thus empty terrain reports its own refusal rather than Disconnected.
+Normal farm/road Preview and Place use this query; Place repeats it immediately
+before creation, so a changed connectivity result cannot create a stale building.
+Unknown results refuse without fabricated copy.
+
+Protected044617 verifies24 cases in three menu states, matching the exact native
+Disconnected decision, with eight full frontier/RNG byte comparisons. Native
+pointer run044111 verifies all three families reject separated regions, accept
+connected partial footprints, and refuse all-wall areas. Farm/dirt-road partial
+clicks create buildings; paved road reaches materials. Those oracle-created jobs
+are cleaned up without saving; no natural-completion claim follows. Main-viewer
+044652 matches six separated/partial previews and displays the native refusal.
+Screenshot inspected, no construction allocated, paused frame0 and source unchanged;
+only classified engine diagnostics. Adapter102 includes a connectivity change
+between initial checking and creation. Mixed farm/road error
+aggregation is covered below; construction-paint rectangles are described below. Earlier044042 stopped at an incorrect native menu
+path and is not acceptance. All owned sessions closed.
+
+The diagnostic `farm-warning-read FarmPlot x y z width height mask` accepts an
+owned x-major/y-minor eligibility mask (ASCII0/1). It returns1 for the native
+warning pair,0 when suppressed, and-1 when unknown. It calls the fingerprinted
+soil/mud and designation readers and accumulates only accepted underground tiles,
+matching3c1789..3c188a. It never reads native build-menu state. Eligibility remains
+a separate input; this does not establish an independent farm placement validator.
+Protected `build/construction-farm-warning-20261023-050021` matches16 native
+rectangles across selected/Bed/closed menus (48 queries), including liquids,
+occupancy, soil walls and mixed surface/underground plots. All16 full frontier/RNG
+byte guards and sampled UI/path fields remained unchanged. Source preserved,
+frame0, owned session closed, no unclassified diagnostics. Captures and copy are
+retained in `farm_road_terrain.json.native_farm_warning`. Earlier045720 exposed
+that soil alone is insufficient when all soil tiles have placement errors; that
+failed probe is not acceptance.
+
+Farm Preview/Place now passes the completed owned eligibility mask into that
+query, transposing the Lua y-major mask into native x-major order. Known deep-water
+refusals finish scanning to collect warnings while still prohibiting creation;
+unknown native results fail immediately. Management54 carries bounded native
+warning text separately from validity and refusal messages. Missing old-recording
+warnings remain unavailable. The viewer exposes only the captured farm warning
+pair and clears it on draft/site/session changes. Native visual capture
+`build/farm-warning-native-20261023-050506` places yellow warnings below orange
+refusals; the supported palette's yellow is255,225,17. Screenshot inspected.
+Main-viewer `build/construction-farm-warning-ui-20261023-051450` matches six
+native semantic previews: surface soil, underground soil, stone, water, occupied
+soil and disconnected ground. It verifies cancellation clearing; no buildings
+were allocated. Source unchanged, paused frame0, owned sessions closed; only
+classified engine diagnostics. Water screenshot inspected. Adapter105 covers
+mask transposition, incomplete scans, unknown warning results, accepted/refused
+previews and deep-water refusal without jobs. Earlier051051 exposed early water
+return;051255 exposed the missing FarmPlot Building present display entry. Those
+failed viewer runs are not acceptance. The final proof and copy are retained in
+`farm_road_terrain.json.native_farm_warning.runtime`.
+
+Farm/road mixed-area refusal behavior is recorded in
+`farm_road_terrain.json.native_mixed_area_click`. Protected native pointer run
+`build/construction-area-mixed-click-20261023-052515` covers27 family/terrain
+combinations. Mixed water and occupancy start from a valid opposite corner;
+those rectangles refuse entirely. Raw-invalid ground can be skipped; native
+farm/dirt-road jobs are created and cleaned up without saving, while paved roads
+reach materials. The earlier052357 mixed cases never established a valid anchor
+and do not establish rectangle behavior. Lua preserves the native terrain
+predicate result separately from the final placement mask, uses it for native
+SKIP handling, and collects all remaining errors after native connectivity.
+Commit rechecks also reject a formerly skipped cell that becomes occupied
+qualifying terrain, even when its final mask bit remains zero.
+
+Main-viewer `build/construction-area-aggregation-ui-20261023-053024` matches15
+native previews including Disconnected/Water, Water/Building present, and
+Disconnected/Water/Building present. It checks warning text and cancellation,
+allocates no buildings and stays at frame0. Paved-road screenshot inspected.
+`build/native-farm-main-20261023-053146` exercises actual viewport clicks through
+invalid-anchor rejection and reverse-corner placement, then naturally completes
+farm1490 at frame700 with the dry center excluded and zero remaining jobs.
+Completed screenshot inspected. Both sources unchanged, owned sessions closed,
+and only known engine diagnostics. Adapter109 includes incremental aggregation,
+partial-occupancy rejection, raw terrain precedence and stale skipped-cell changes.
+This verifies those cases, not every same-tile error priority or map-edge rule;
+non-Construction general tile validation remains under migration.
+
+## Construction native route coverage
+
+The placement adapter has no generic local terrain/liquid/occupancy fallback.
+A recipe without a verified native route refuses placement with no invented
+visible explanation. Existing family-specific native checks remain authoritative;
+this does not certify material selection, visuals or all construction effects.
+`fixtures/construction/catalog_native_routes.json.gz` records the supported-build
+catalog from protected `build/construction-catalog-routes-20261023-085903`:
+96 entries,93 supported, every supported key covered by an existing native route,
+and every viewer menu key present. This inventory uses callback placeholders only
+to represent installed service availability; native predicate evidence lives in
+the family fixtures. Source preserved, frame0, owned session closed.
+
+An earlier audit incorrectly treated standalone Kennels as a legacy runtime
+family. It existed only in synthetic tests: supported building_type7 is Shop,
+which the catalog excludes, and actual Kennels is Workshop:Kennels. Tests now
+use the captured SCREW_PRESS/SOAP_MAKER custom keys for successful raw-ID
+resolution and separately require unknown custom recipes/families to fail closed.
+The obsolete local floor-shape table and terrain/liquid/occupancy branch are
+removed. All122 adapter cases, the catalog check and construction headless suite
+pass after removal; this inventory establishes route coverage, not full release
+acceptance. Installed cleanup live check
+`build/construction-paint-runtime-main-20261023-083106` matches35 native previews,
+including compound refusals and recovery; no allocations, frame0, source preserved,
+owned session closed. Floor compound screenshot inspected; only the documented
+engine diagnostics occurred.
+
+The legacy UpStair/DownStair/UpDownStair catalog entries are removed: the native
+menu exposes the Stairs workflow, which still creates those three actual building
+subtypes. Inspection and removal derive subtype identity from the building rather
+than the build catalog; a regression verifies all three remain available there.
+All current supported recipes with material inputs use explicit furniture/native
+footprint ordering or the dedicated Track path. Unknown recipes cannot publish
+an invented ordering. The squared geometric metric and local merge-sort fallback
+are removed. Furniture route selection uses the verified family key rather than
+inferring a recipe from its input item's enum. This is routing coverage, not
+acceptance of every material eligibility/grouping detail or Track's retained issues.
+
+`build/qa/construction-material-cleanup` passes the extension build, construction
+headless suite, catalog check and all123 adapter tests. Synthetic tests now supply
+owned navigation results and exercise native-list payload limits; none relies on
+the deleted geometric ordering. The installed bridge passes protected
+`build/construction-stairs-recovery-main-20261023-085929`: invalid middle-level
+water refusal with no allocation, recovery, exact individual48520/48521/48522
+selection, and natural completion of all three stair subtypes at frame3675 with
+zero jobs. Source unchanged, owned session closed, material/completed screenshots
+inspected. Both viewer streams contain only the three documented engine diagnostics;
+status is passed_with_known_issues. This is focused cleanup verification, not the
+full release gate or completion of the construction goal.
+
+Queued stair replacement now has native evidence for mixed old/new columns in
+`construction_paint_area.json.gz.queued_stairs`. Protected
+`build/construction-stairs-queued-native-20261023-090843` covers90 combinations:
+five queued subtypes, each of three elevations, both endpoint directions, and
+manual cancel/manual commit/Closest. Cancellation retains the original building,
+job, subtype and bound item; both commit modes retain its job/item identity and
+create exactly two additional jobs with the recorded endpoint connections.
+The adapter regression replays all90 subtype/reuse outcomes successfully. This
+checks replacement and cancellation, not automatic material-order equivalence or
+natural completion of the mixed column. Source unchanged, frame0, owned session
+closed. Failed probe attempts used the full material label after native truncation;
+they are excluded. The final probe uses its stable visible prefix for both clicks.
+
+Protected viewer `build/construction-stairs-queued-main-20261023-091411`
+completes the mixed queued/new stair workflow. The exposed launcher, map endpoints,
+PageUp/PageDown and two individual material picks use input events; cancellation
+and recipe reselection use controller calls. The picker requires exactly two new
+inputs. Cancellation preserves Wall1490/job382794/item48520 without allocation;
+retry retains that job/item, converts it to UpStair and adds two jobs using clicked
+items48521/48522. Ordinary DF simulation completes Up/UpDown/Down stairs at
+frame1675 with no remaining jobs. Source unchanged, owned session closed. Picker
+and completed screenshots inspected; both viewer streams contain only documented
+engine diagnostics (passed_with_known_issues). Earlier091219 omitted reopening
+the panel after cancellation, timed out, and is excluded from acceptance.
+
+`single_level_stairs` retains ten native checks across five floor/stair terrains
+and widths1/3 from `build/construction-stairs-single-native-20261023-090259`.
+All display `Must span multiple elevations` on hover and create no jobs after
+same-level endpoint selection. The existing restriction needs no product change.
+Source unchanged, frame0, owned session closed.
+
+## Construction paint rectangle refusals
+
+Construction Preview and Place reject a rectangle containing a known tile refusal;
+accepted tiles do not turn a mixed blocked, hidden, flooded or occupied selection
+into partial paint. They collect native tile results in x-major/y-minor order per
+elevation and deduplicate sourced messages. Queued construction replacements
+retain their separate reuse path. Unknown tile results abort immediately.
+Before each creation batch, the bridge rechecks the remaining rectangle; a newly
+invalid tile stops further work without silently skipping it. Earlier completed
+batches remain completed, and the response reports that partial outcome.
+
+`fixtures/construction/construction_paint_area.json.gz` records392 native evaluated
+rectangles across eight construction subtypes and49 terrain pairs in protected
+`build/construction-paint-mixed-native-20261023-074847`. Native pointer run
+`build/construction-paint-mixed-click-20261023-074943` confirms20 selections across
+Wall/Floor/Ramp/Fortification: four valid rectangles advance to materials and16
+mixed invalid rectangles remain in placement with no buildings created. The valid
+fixtures lack accessible stock; they establish material-stage entry, not completion.
+Both native runs stayed paused at frame0, preserved the source and closed.
+
+Viewer `build/construction-paint-runtime-main-20261023-075245` matches35 semantic
+previews across Wall/Floor/Ramp/Fortification/ReinforcedWall, including compound
+error ordering and dry-site recovery. The compound Floor screenshot was inspected.
+No construction IDs were allocated, the source stayed unchanged and the owned
+session closed. Diagnostics were the three documented engine signatures only.
+All119 adapter tests, the construction headless suite and catalog check pass.
+Coverage includes incremental scanning,392 recorded native expectations,
+Place rejection before allocation, and stopping after a site changes between batches.
+The previous partial-paint test expectations were incorrect and have been removed.
+Protected `build/construction-stairs-mixed-native-20261023-075818` adds36 native
+pointer cases over three elevations, with invalid initial anchors distinguished
+from completed selections. Second-click validation rejects bad intermediate
+levels, even when endpoint hover has no error. Six four-level comparisons in
+`build/construction-stairs-compound-native-20261023-080145` establish forward
+z-major error collection and per-level x-major ordering. The adapter replays
+forward valid-anchor cases and compound refusals without allocation.
+Protected `build/construction-stairs-refusal-events-20261023-091706` resolves the
+reverse validation-order question with snapshots immediately after input and after
+rendering. All six compound cases return identical ordered full-volume errors for
+both endpoint directions immediately after the click. Validation leaves cached
+request.pos.z at the upper level168. Forward rendering keeps that position and
+error list; reverse rendering changes it to hovered level165 and replaces the
+errors with only that level's results, sometimes empty. This supports endpoint
+revalidation on redraw rather than different volume eligibility. The adapter
+regression now checks both directions against native click-time results for
+Preview and Place with no allocations. `stairs_refusal_events` retains the capture;
+source unchanged, frame0, owned session closed. These are instrumented snapshots
+with explicit viewscreen rendering, not proof of normally rendered refusal text.
+The fixture retains failed hidden-capture probes rather than treating their missing
+panels as fidelity evidence. Subsequent `parent_render_capture` uses a diagnostic
+DFHack Screen's `onRender`/`renderParent` callback and preserves the native pointer,
+matching the established Door capture method. Runs
+`build/stairs-refusal-visual-20261023-141352` and `141547` recover the actual initial
+placement panel and reverse water refusal. The native heading is
+`Click a tile to place the Stairs.` with ` (spans 4 levels)` on the next line.
+DF3D now uses that wording and updates the span from the local selection; cancelling
+clears it. `build/qa/stair-heading` passes the headless construction regression.
+Viewer `build/stairs-refusal-viewer-main-20261023-142233` verifies the heading and
+all six forward/reverse full-volume refusals via controller selection intents.
+No building IDs were allocated; frame0/source save remained unchanged, owned DF
+closed, and both streams had only documented Godot signatures. The reverse
+three-level-invalid screenshot was inspected. That run used controller intents.
+Protected `build/stairs-refusal-pointer-main-20261023-152228` additionally verifies
+all six cases through the public Build/category/Stairs controls, exact viewport
+map clicks and three PageUp/PageDown elevation changes. The first corner survives
+each elevation change; the full-span refusal appears on hover and after the ending
+click, with the four-level heading. Escape releases modal input between cases.
+No building IDs are allocated, frame0/source remain unchanged, and owned DF closes.
+Both streams contain only documented Godot signatures. Reverse compound preview
+and rejection screenshots were inspected. `stairs_refusal_events.viewer_pointer`
+records this rejection/input coverage; successful construction is separate evidence.
+A persistent diagnostic overlay and normal `onRender`/`renderParent` callbacks
+recover visible post-click panels in `build/stairs-refusal-middle_pair-20261023-145856`
+and `build/stairs-refusal-three_levels-20261023-145934`. Both assert first corner
+and endpoint before capture. Four forward/reverse cases confirm identical
+full-volume click validation, but reverse redraw replaces errors with only the
+hovered level's errors (sometimes none); moving away and back also clears
+intermediate errors in the forward direction. Thus absent panels in older
+captures are not evidence that placement exits. All four cases allocate no
+buildings, remain paused at frame0, preserve the source and close owned DF.
+`persistent_render_capture` retains data and limitations. DF3D currently keeps
+full-volume errors during preview and rejection; the maintainer approved retaining that
+full-span error display on2026-10-23. This display-only exception leaves validation
+and native refusal wording unchanged. Runtime never borrows
+native request cache/menu state; placement validation remains unchanged.
+Mixed queued/new selection is recorded in
+`construction_paint_area.json.gz.queued_mixed`: protected native pointer run
+`build/construction-queued-mixed-native-20261023-081216` covers24 cases with queued
+Floor/Wall originals, Floor/Wall/Ramp/Fortification targets, and manual cancel,
+manual commit or Closest. Each two-tile selection requests one new input. Manual
+picker cancellation preserves the old subtype, building/job/item IDs and creates
+nothing; commit changes the old subtype in place and creates one new job. The
+adapter replays those counts and identities. Source stayed unchanged, frame0,
+owned session closed. Mixed queued multi-level stairs remain outside this evidence.
+
+Viewer `build/construction-queued-mixed-main-20261023-082032` verifies one queued
+Wall plus three new tiles converted to Floor. Its picker requests three inputs;
+cancel preserves the original subtype and IDs with no allocation. Commit keeps
+building1490/job382794/item48520 and adds exactly three jobs with items48521..48523.
+All four ConstructedFloor tiles naturally complete at frame725 with zero jobs.
+Launcher/map/material actions use pointer input; recipe choice and cancellation
+use controller calls. A native mandate paused frame1; the owned session was
+explicitly resumed, without changing job suspension. Picker and completion
+screenshots were inspected, source preserved and session closed; diagnostics were
+known engine signatures only. Earlier081354/081805 are excluded: fixture stock
+on the original construction tile left that job suspended. The successful fixture
+places stock on separate reachable ground. The24-case adapter replay passes;
+no runtime changes were needed for this mixed-job flow.
+
+The viewer retains Stairs when browsing elevations before selecting its first
+anchor. Previously its generic elevation cancellation cleared the recipe; native
+pointer captures retain it. Headless coverage checks upward and downward changes
+before anchoring, alongside the existing anchored multi-level selection checks.
+Live `build/construction-stairs-recovery-main-20261023-080824` verifies a flooded
+middle-level refusal without allocation, followed by fixture recovery, downward
+navigation before anchoring, upward navigation with an anchor, and exact pointer
+selection of items48520/48521/48522. All three stairs naturally complete at
+frame3850 as ConstructedStairU/UD/D, with zero remaining jobs. Recovery back and
+recipe reselection use controller calls; menu, map and materials use pointer input.
+Refusal and completion screenshots were inspected. Source preserved, owned
+session closed, only known engine diagnostics. Earlier075948/080214/080419/080622
+recovery attempts failed and are excluded; the final diagnostic run identified
+pre-anchor elevation cancellation after initial harness-reset mistakes.
+
+## Native windmill terrain
+
+Windmill preview and commit use native FloorTerrain when no machine connection
+exists and OpenTerrain when native machinery support is present. The composed
+terrain check precedes liquid refusals, matching DF's ordinary/machine-supported
+validator branches. Unknown native results abort. The remaining Lua windmill
+shape list is removed; water, magma and existing-construction refusals are shown
+only with the recorded native copy. Fixed-footprint refusal collection preserves
+native x-major/y-minor order and deduplicates per-tile reasons. The native hookup
+query also returns whether its output vector is nonempty; if any tile failed,
+that fact appends “Needs ground or near machine”, including when a machine
+connection exists, matching native3c1c4e. The UI displays multiline refusals only
+when every line is sourced for the selected recipe. Unknown copy stays hidden.
+`placement_refusals.json.compound_fixed_footprint` retains literal-dispatch evidence,
+69 matching existing windmill cases and four fresh main-viewer comparisons for
+windmills and carpenter workshops with mixed water/hidden/occupied/blocked tiles.
+Protected042552 matches complete native lists and order; four-line screenshot
+inspected, no construction IDs allocated, paused frame0, source preserved and
+owned session closed. Known engine diagnostics only. Adapter100 and focused
+construction UI checks pass. Earlier042455 stopped during fixture setup because
+its millstone case did not produce multiple refusals; it is not acceptance.
+Construction-paint aggregation is described below; farm/road extents and warnings are described above.
+
+`windmill.json.native_terrain_service` retains216 cases from protected
+`build/windmill-terrain-oracle-20261023-012121`:18 terrain types, six liquids,
+with/without a planned side gear. All nine footprint tiles match the composition.
+OpenTerrain answers agree with Windmill selected, Well selected and menus closed;
+sampled request/redraw/pathfinding state remains unchanged. Paused frame0 and
+source manifest preserved. This covers uniform footprints; existing shape and
+hookup fixtures provide separate mixed-footprint evidence.
+
+Installed bridge,91 adapter tests, catalog, construction headless and19 CTest
+checks pass. Viewer `build/windmill-terrain-main-20261023-012641` passes five
+semantic refusals and dry-floor/supported-ramp recovery. Its earlier012525 harness
+incorrectly expected Blocked for supported deep water; the native oracle and
+product both return Water. That failed run is retained. Completion viewer
+`build/machine-hookup-main-20261023-012729` naturally completed the corner-supported
+windmill at650 frames with four exact logs. Screenshots inspected; successful
+runs contain only known engine diagnostics, preserve source and close owned DF.
+
+## Native machinery terrain
+
+Screw Pump, Water Wheel, Gear Assembly, Horizontal/Vertical Axle, Rollers and
+Millstone now share the native hookup query with Windmill. The query passes
+explicit building type/subtype, footprint and `direction > 0`, matching the
+native buildability caller; native methods own hookup geometry and connection
+admission. Preview and commit independently resolve support. Connected machinery
+uses OpenTerrain; unconnected machinery uses FloorTerrain. Support uses
+FloorTerrain without a machinery query. The Lua machinery/Support shape lists
+are removed. Unknown predicates abort; sourced water, magma and construction
+removal refusals are exposed only for families with native evidence.
+
+`liquid_refusals.json.machinery_terrain` retains ground/attached evidence:
+`build/machine-ground-oracle-20261023-013002` compares3456 first-tile cases on
+uniform terrain, including four diagnostic orientation values per family.
+`build/machine-connected-oracle-20261023-013438` compares all footprint tiles in
+1728 cases over supported orientations with a planned gear at a native hookup
+where available. Actual support is checked per terrain. Both use18 terrains and
+six liquids. `build/axle-below-oracle-20261023-013747` adds108 vertical-axle cases
+with a gear below;12 connect, while floor-blocked combinations remain unsupported.
+OpenTerrain selected-family/Well/closed queries agree and sampled native state
+stays unchanged. All preserve source manifests and remain paused at frame0.
+
+Two excluded attached-fixture attempts are retained:013213 used the helper's
+Screw Pump pointer anchor instead of the native output-tile anchor;013337 included
+an unsupported Water Wheel orientation. Product anchor/orientation handling was
+already correct. Variable-length machinery and mixed-terrain geometry retain
+their separate existing evidence; these new comparisons do not certify every
+possible footprint or downstream machine operation.
+
+Installed bridge,92 adapter tests, catalog, construction headless and19 CTest
+checks pass. Viewer `build/machinery-refusal-main-20261023-014429` matches40
+semantic refusal/recovery previews across all eight families against same-map
+native captures. Earlier014155 used the wrong default orientation in the harness
+for Water Wheel/Horizontal Axle; it is retained as failed. Completion run
+`build/axle-terrain-main-20261023-014651` naturally built a vertical axle over open
+space with a planned gear below, retaining one exact selected log at325
+frames. Earlier014542 failed before placement on a fixture filename mismatch;
+its partial passed field is invalid. Successful screenshots were inspected;
+source manifests unchanged, owned sessions closed, known engine diagnostics only.
+
+## Native magma-building terrain
+
+Magma Forge, Magma Smelter, Magma Glass Furnace and Magma Kiln call FloorTerrain
+at the center and OpenTerrain at the eight outer cells, before liquid checks.
+Preview and commit use the same native predicates; unknown results abort. The
+Lua magma footprint shape whitelist is removed. Sourced water, magma and existing
+construction refusal messages are displayed for these four recipes. Magma supply
+below the building concerns operation and is not required to admit construction.
+
+`magma_placement.json.native_terrain_service` retains432 uniform3x3 cases from
+protected `build/magma-terrain-oracle-20261023-014829`: four recipes,18 terrain
+types and six liquids. All nine native tile results match the center/outer
+composition. OpenTerrain selected-family/Well/closed results agree; sampled UI
+and pathfinder state remains unchanged. Paused frame0, source manifest preserved.
+Existing magma placement fixtures separately cover mixed center/outer terrain.
+
+Installed bridge,93 adapter tests, catalog, construction headless and19 CTest
+checks pass. Viewer `build/magma-refusal-main-20261023-015132` matches20 semantic
+refusal/recovery previews across the four recipes against same-map native results.
+`build/magma-terrain-main-20261023-015235` passes pointer menu/map/material
+selection and natural Magma Forge completion at1550 frames with an exact anvil
+and petrified-wood block. Screenshots inspected; source manifests preserved and owned sessions
+closed. Diagnostics are the documented engine startup/shutdown issues only.
+This verifies construction, not operation supplied by magma.
+
+## Animal Trap terrain and perimeter
+
+AnimalTrap Preview and Place use OpenTerrain before liquids, then SinglePerimeter.
+This removes its incorrect floor-only rejection of ramps/stairs and supplies the
+missing native `Needs walkable perimeter` refusal for isolated open space.
+Water/magma and existing-construction messages are scoped to native evidence.
+OpenTerrain composes surface14adea0 and open-tile14aa830/classifier1436f30 with
+the supported validator's fortification exclusions and construction refusal.
+SinglePerimeter calls coordinate-only aa93e0(x,x,y,y,z), which checks cardinal
+neighbors through surface14adea0 with movement=false/flags=0. Fingerprints include
+code and classifier tables; neither routine borrows buildreq or reindexes paths.
+The open-terrain composition is the loaded-tile branch, not native unloaded-map
+fallback behavior; product unloaded positions remain rejected separately.
+
+Protected `build/native-open-oracle-20261023-003721` compared108 terrain/liquid
+cases against AnimalTrap native validation. Three menu contexts agree for terrain;
+perimeter matches on admitted dry sites. Tracked request/redraw/reindex/generations
+stayed unchanged. Source preserved, paused frame0. The fixture records the results.
+`build/animal-trap-main-20261023-004500` accepted a ramp, selected exact trap48520
+and completed naturally at frame375. Recipe/target used semantic intents; material
+selection used a pointer. `build/animal-trap-refusal-main-20261023-004552` passed
+five semantic refusal/recovery checks. Completion and perimeter screenshots were
+inspected. Saves stayed unchanged, owned sessions closed; successful runs had only
+known engine diagnostics.87 adapter tests, catalog, Godot construction suite and
+19 CTest checks passed; bridge built/installed. Full offline gate predates this.
+The earlier004009 run created a job but stayed paused and timed out; it remains a
+failed run. The follow-up added a frame-level pause observer and ran normally;
+the pause cause is unresolved. No pause-guard settlement change actually applied,
+so do not claim that the second run proves a pause fix.
+
+## Native opening terrain integration
+
+Well/Hatch/GrateFloor/BarsFloor now use OpenTerrain before liquid and their native
+family-support predicates. The Lua floor/open/ramp-top/stair shape whitelist is
+removed for these recipes. This admits native-supported ramps for floor openings
+while preserving Well's separate `Needs open space` requirement. Constructed
+fortifications return the sourced `Must remove construction` refusal.
+
+`build/opening-terrain-oracle-20261023-004828` compared432 cases across four
+families and18 terrain types. OpenTerrain was checked with the requested family,
+Well selected and menus closed (the first two coincide for Well). Dry0/1 terrain
+plus family support matched native tile results. Tracked state stayed unchanged;
+source preserved, frame0, owned DF closed. Liquid fixture retains the comparison.
+`build/hatch-ramp-main-20261023-005032` accepted a semantic ramp target and exact
+hatch48520 selected by pointer; construction completed naturally at frame300.
+The harness explicitly waited for pause-guard settlement before starting its
+completion observer. This successful run does not resolve the earlier AnimalTrap
+paused timeout. `build/opening-terrain-main-20261023-005129` passed20 semantic
+refusal/recovery observations across all four families: water/magma, existing
+construction, isolated open terrain and valid dry recovery. Completion and Hatch
+removal captures inspected; source saves unchanged, owned sessions closed, known
+engine diagnostics only.88 adapter tests, catalog, Godot construction suite and
+19 CTest checks passed; bridge built/installed. Full offline gate predates this.
+
+## Liquid refusals for floor openings
+
+Well/Hatch/GrateFloor/BarsFloor now return sourced `Water at this location` and
+`Lava/Magma at this location` from both Preview and Place, before their separate
+support check. Natural solid walls retain the earlier blocked refusal. Other
+families retain their existing liquid behavior; floor-only recipes need different
+terrain precedence and are not covered by this presentation mapping.
+
+`fixtures/construction/liquid_refusals.json` records protected native sweep
+`build/liquid-terrain-native-20261023-001122`:5580 evaluations across93 keys,
+ten uniform terrain patches and water0/1/2/7,magma1/7. Opening recipes report
+liquid on all nine non-wall terrains; walls report blocked. This extends the
+existing all-depth flat-floor capture, not arbitrary mixed-footprint precedence.
+Main viewer `build/opening-liquid-main-20261023-001409` passed16 observations:
+water2/water7/magma1 refusals and valid dry recovery for all four families.
+These used semantic preview intents, not pointer placement or new construction.
+Hatch magma screenshot inspected; source unchanged, frame0, owned DF closed.
+Only known engine diagnostics occurred.84 adapter tests, catalog, construction
+headless suite and19 CTest checks passed; bridge built/installed. The initial
+adapter run had52 errors from a missing mock initialization, corrected before
+acceptance. The full offline gate above predates this message-only extension.
+
+## Construction coverage boundary
+
+The installed catalog audit finds93 supported menu entries. All91 entries with
+material filters are admitted by `native_material_family`; FarmPlot and RoadDirt
+have no material picker. Normal C++ ConstructionMaterials/Place requests always
+bind `nativeMaterialCandidates`, and Preview/Place bind native material quantities.
+The construction workflow is verified for this installed catalog: menu navigation,
+native eligibility/refusal copy, footprints/orientations/elevations, grouped and
+individual material selection, native-supported Closest/Last/Keep behavior,
+creation and natural completion, cancellation and stale/session recovery. Retained
+natural completion records cover every one of the93 entries. Terrain construction
+uses final native tiles and zero jobs; dirt roads use temporary-building retirement
+and the resulting soil tiles. Building families use final stage and zero jobs.
+These are representative workflows, not every combination of stock and terrain.
+
+Native-reference rendering covers the enumerated furniture, opening, machinery,
+workshop/furnace, trap and siege families; farm/road stages; all38 pending terrain
+subtypes;150 constructed-ramp material/support/mask cases; and417 upright-weapon
+states. Installed artwork is resolved locally. The approved exceptions are fresh
+Track distances, stable first-preview Track routes, persistent full-span stair
+errors, and correct lower artwork for five-to-ten raised spikes. Existing small
+panel spacing differences and the documented Godot diagnostics remain.
+
+Final offline verification is `build/qa/construction-upright-final-offline`:
+187 selected checks,189 results, clean pass. The full GPU baseline
+`build/qa/construction-current-integration-gpu` passed every check except an
+intermittent last-row pressure-picker click. Two diagnostic reruns passed; the
+test now waits for rendered layout and asserts row bounds before clicking.
+`build/qa/upright-weapon-approved-verified` passes that capture, core tests and
+all417 upright GPU cases plus reloads, with known engine diagnostics only. This
+is combined full-baseline and focused-follow-up coverage, not a clean full-GPU
+rerun. Runtime pressure controls were unchanged; the original miss has no proven
+runtime root cause. The separately rebuilt MSVC Track callback passes36 terrain
+and96 queued-construction cases.
+
+Removal/cancel/requeue and natural material release are verified for terrain,
+furniture and a multi-tile WaterWheel, including entity/outline retirement.
+Post-construction production, minecart stopping/dumping, trap activation and the
+rest of the building inspector belong to their respective screens. Arbitrary
+modded recipes and unsupported DF builds are outside this installed-catalog
+acceptance and fail closed. Native quantity wrappers that borrow menu route data
+or have unguarded side effects remain excluded; their verified owned scalar/route
+inputs are retained. No menu-driven fallback is used.
+
+The shared copied Lua `screen()` is removed. Material lookup for an admitted
+family requires a callable native collector; placement rechecks native admission.
+Missing, failed or malformed callbacks cannot fall back to copied item screening.
+Unknown custom recipes still reject material lookup: their previous fallback
+always failed at the missing material-ordering service, so it supplied no usable
+additional workflow. SCREW_PRESS and SOAP_MAKER retain their native paths.
+Direct-Lua protocol tests inject an explicitly synthetic stock service; native
+collector captures and explicit admission regressions establish eligibility.
+`build/qa/native-candidate-required` passes construction headless, catalog and138
+adapter tests. Protected repeats `build/native-bolt-completion-main-20261023-145043`
+and `build/native-material-soap-main-20261023-145211` complete the four-filter
+Bolt Thrower and two-filter Soap Maker naturally, at frames2225 and1975, with
+exact selected inputs and zero jobs. Both cover pointer menu/material selection,
+cancel/reopen and public Play. Picker/completion images were inspected. Both
+preserved the source and closed owned DF; both streams classify as
+`passed_with_known_issues`, with no unclassified diagnostics. Detailed completion
+records are in `material_collector_native_study.json.gz:candidate_gate_removal`.
+The Track copied gate and recipe modules are already removed. The historical
+negative-distance release-defect record now points to the approved fresh-distance
+policy and its verification rather than claiming that cause is still unknown.
+
+The complete offline gate `build/qa/construction-candidate-cleanup-full` passes
+on the candidate-gate removal runtime/test sources. Subsequent approval and
+capture metadata do not change runtime behavior. This is not full visual acceptance.
+Protected menu captures `build/construction-menu-visual-review-20261023-150805`
+and `150942` traverse all categories and workshop subgroups via pointer input,
+then release modal input. Simulation/building IDs and source remain unchanged;
+owned sessions close, with only documented Godot diagnostics. All twelve menu
+images were compared with native e2 references: hierarchy, labels and icons are
+present, with minor anchor and compact-ancestor width differences. An initially
+suspected full-scene painting problem is disproven: the aligned Workshops menu
+matches the standalone capture at all254,016 pixels. Build-menu rows now use
+DF's regular rectangle for the current level, dark rectangles for ancestors,
+and light rectangles for the selected ancestor, removing the invented alternating
+row colors. The shared material-picker caller preserves its existing light/dark
+selection explicitly. Installed texture pixels establish each menu state.
+Focused `build/qa/construction-menu-styles-final` passes construction and material
+checks. Protected repeat `build/construction-menu-visual-review-20261023-152014`
+passes all twelve menu navigation captures and modal release, preserves paused
+simulation/building IDs and source, and closes owned DF. Both streams contain only
+known Godot diagnostics. The Workshops screenshot was inspected; thirteen aligned
+background crops across current, ancestor and selected states match native e2 at
+all57,936 pixels. This is menu-background verification, not whole-screen pixel
+identity. Runtime styling changed after the earlier full offline gate.
+
+Protected `build/furnaces-completion-main-20261023-152458` covers all four
+fuel-fired furnace recipes through public Build/Workshops/Furnaces controls,
+verified map-center clicks and expanded individual material controls. Glass
+furnace1490, Kiln1491, Smelter1492 and Wood furnace1493 naturally reach stage3/3
+with zero jobs at frame3025, retaining exact granite boulders48520..48523.
+Keep, Escape release and public Play are exercised. All four completed captures
+were inspected and show the constructed graphics. The source remains unchanged,
+owned DF closes and both streams contain only known Godot diagnostics.
+`material_collector_native_study.json.gz:fuel_furnace_completion` retains results
+and provenance. This proves construction effects and displayed completion, not
+reaction execution, magma variants or native sprite pixel parity.
+
+Protected `build/magma-furnaces-completion-main-20261023-152825` extends this
+construction flow to Magma glass furnace1490, Magma kiln1491 and Magma smelter1492.
+All three naturally reach stage3/3 with zero jobs at frame3700, retaining selected
+bauxite48525..48527. Four fixture granite IDs are absent from each candidate list.
+The initial run152717 incorrectly expected granite and failed its harness assertion;
+installed raws specify granite melting11440 and bauxite13600. Correcting the fixture
+required no product change. Public menu, map, individual materials, Keep/Escape and
+Play pass. All three completed captures were inspected; source preserved, owned
+DF closed, and only known Godot diagnostics remain. The study fixture's
+`magma_furnace_completion` records provenance and results. These are construction
+sites without magma supply, so this does not establish operational reactions or
+native sprite pixel parity.
+
+Protected `build/workshops-completion-main-20261023-153110` extends exact-input
+natural completion to Bowyer1490, Carpenter1491, Jeweler1492 and Mechanic1493.
+Public workshop menu controls, exact viewport centers, expanded individual granite
+selection, Keep/Escape and public Play pass. All four finish at frame2225,
+stage3/3 with zero jobs, retaining selected boulders48520..48523. Their completed
+captures were inspected and show the constructed graphics. Source unchanged,
+owned DF closed, and both streams contain only known Godot diagnostics.
+`material_collector_native_study.json.gz:ordinary_workshop_completion` records
+these results; production jobs and native sprite pixel parity are not claimed.
+
+Protected `build/clothing-workshops-completion-main-20261023-153534` covers
+Leather1490, Loom1491, Clothes1492 and Dyer1493 through the public nested menu,
+map, individual material controls, Keep/Escape and Play. Dyer exercises both
+barrel and bucket stages. All four naturally reach stage3/3 with zero jobs at
+frame3625, retaining granite48520..48522 and Dyer barrel48525/bucket48526.
+The observer compares native `PERM` building materials and records all contents
+separately: Loom cloth48601 is `TEMP`. The initial run153338 completed buildings
+but failed an invalid all-contents comparison after the Loom produced cloth.
+All four final captures were inspected; source preserved, owned DF closed, and
+only known Godot diagnostics remain. The study fixture's
+`clothing_workshop_completion` stores results and observer provenance. This does
+not establish every material, production job or native sprite pixel parity.
+
+Protected `build/craft-siege-completion-main-20261023-154903` verifies Crafts1490,
+Stoneworker1491 and Siege Workshop1492 through public menu/map controls, typed
+material search and exact individual selection. DF reports the actual footprints
+as3x3,3x3 and5x5. Siege selects three distinct granite boulders from one group.
+All three naturally complete at frame5725, stage3/3 with zero jobs, retaining
+48520,48521 and48522/48523/48525 respectively as permanent materials. Keep/Escape
+and public Play pass; all three completed captures were inspected. Source unchanged,
+owned DF closed, and only known Godot diagnostics remain. The study fixture's
+`craft_siege_workshop_completion` records provenance. Earlier partial runs exposed
+fixture errors: a3x3 Siege site, virtualized rows below the viewport, and material
+staging inside the Stoneworker footprint. Native announcements confirmed the latter
+suspended construction with `Item blocking site`; the final fixture reserves each
+actual footprint away from its material staging tile. No product rule was changed.
+
+Protected `build/farming-workshops-completion-main-20261023-155215` verifies
+Butcher1490, Tanner1491, Fishery1492 and Kitchen1493 through the public Farming
+submenu, viewport placement, typed material search and individual selection.
+All four naturally complete at frame2100, stage3/3 with zero jobs, retaining
+the exact selected granite48520..48523 as permanent materials. Keep/Escape and
+public Play pass. All four completion captures were inspected; source unchanged,
+owned DF closed, and only known Godot diagnostics remain. The study fixture's
+`farming_workshop_completion` records results and harness provenance. This covers
+construction and displayed completion, not production or native sprite pixel parity.
+
+Protected `build/remaining-farming-completion-main-20261023-155621` extends this
+to Still1490, Farmer's Workshop1491, Vermin Catcher1492 (native Kennels) and
+Quern1493. Public submenu, exact viewport centers, material search, individual
+selection, Keep/Escape and Play pass. Native catalog footprints are3x3,3x3,5x5
+and1x1 respectively. Natural completion at frame2275 leaves zero jobs: the first
+three reach stage3/3 with granite48520..48522; Quern reaches stage1/1 with the
+selected granite quern48525. All four completion captures were inspected.
+Source remained unchanged, owned DF closed, and diagnostics contain only known
+Godot issues. `remaining_farming_workshop_completion` stores the results and
+harness hashes in the study fixture, with the same construction-only scope.
+
+Protected `build/forge-press-completion-main-20261023-155857` verifies the
+Metalsmith's Forge and Screw Press through public Workshops menu routes,
+viewport placement, typed material search and exact individual selection.
+Forge uses two successive filters (iron anvil48524 and granite48520); Press
+selects mechanisms48525/48526 in one filter, matching its installed custom raw.
+Both naturally complete at frame2575 with zero jobs and exact permanent inputs:
+Forge1490 stage3/3, Press1491 stage1/1. Keep/Escape and public Play pass.
+Both completion captures were inspected. Source unchanged, owned DF closed,
+known Godot diagnostics only. The study fixture's `forge_press_workshop_completion`
+records results and provenance; workshop production and pixel parity remain
+outside this construction-effects check.
+
+## Rollers placement and offline verification
+
+`fixtures/construction/roller_speed.json` records protected viewer run
+`build/rollers-main-20261022-221434`: pointer menu/speed/endpoints created a
+1x3 Rollers building at speed10000/direction0. Both material phases selected exact
+mechanism48520 and chain48524; native fields and contained items were checked after
+natural completion775. Screenshots inspected; source unchanged; known engine
+startup/shutdown diagnostics only. This extends prior speed-control and semantic
+coverage, not powered minecart operation or every size/orientation combination.
+
+`roller_speed.json.native_material_integration` adds the owned native collector
+and the length threshold. Native `build/native-rollers-length-five-20261023-142815`
+uses a five-tile horizontal intent and confirms two mechanisms plus one chain;
+closed/menu queries preserve observed request/world/item state. The native picker
+screenshot shows Amount needed2. Viewer runs
+`build/native-rollers-completion-main-20261023-142610` and
+`build/native-rollers-five-completion-main-20261023-142935` use public controls for
+direction1 and speed30000, endpoint picking, cancel/reopen, exact individual
+selection, Keep and public Play. Three tiles naturally complete at frame975 with
+mechanism48525/chain48527; five tiles complete at frame1625 with mechanisms48525/
+48526 and chain48528. Native readback verifies both extents, direction, speed,
+zero remaining jobs and exact contained inputs. All inputs were fresh, native-
+admitted rotten-flagged items with alternatives. Picker/completion images were
+inspected, both streams contain only documented Godot signatures, sources stayed
+unchanged and owned sessions closed without saving. This verifies the existing
+quantity behavior across the threshold, not a new native quantity wrapper or
+powered minecart operation.
+
+The current full offline gate
+`build/qa/construction-current-offline-20261023/summary.json` passed169 selected
+checks and both builds (171 passing result rows), including construction checks
+after native farm/road terrain and scoped liquid-refusal integration. Source
+identity stayed stable throughout the run.40 other checks were unselected; this
+does not establish live/GPU/manual/package acceptance. The earlier
+`build/qa/construction-stable-offline-20261022/summary.json` is also retained.
+
+The earlier `build/qa/construction-goal-offline-20261022` remains a failed historical
+run (Info frame assertions, missing mesh-test dependency, source instability).
+The mesh test now links df3d_assets. The Info fixture expected manual1x pixels but
+left adaptive scaling enabled, which correctly chose1.25x at1920x1080. The fixture
+now explicitly disables automatic scaling and asserts1x; all exact frame assertions
+remain. `build/qa/info-manual-scale-20261022` independently passed the Info and HUD
+scaling suites before the full gate. No Info product behavior changed.
+
+## Pressure Plate placement acceptance
+
+Cart-weight labels use native whole-cell positions rather than continuous text
+centering. `pressure_plate.json.cart_weight_alignment` records all 41 minimum
+choices and 40 numeric maximum choices plus Any from protected native capture
+`build/pressure-weight-alignment-20261024-014532`. The source stayed unchanged
+and the owned session closed. `build/qa/pressure-weight-alignment` compares
+17,534 foreground glyph pixels across all 81 states and passes with only known
+Godot diagnostics; the retained 50/Any screenshot was inspected. This verifies
+number/glyph positions, not whole-panel pixel identity.
+
+`fixtures/construction/pressure_plate.json` records live viewer run
+`build/pressure-plate-main-20261022-220616`: viewport menu, one-use mode, water
+trigger/depth3, exact mechanism48520 selection and natural completion650.
+Native building fields retain the requested mode/range; Keep building resets the
+next draft as recorded by the existing native oracle. Screenshots were inspected,
+source manifests stayed unchanged, and only known engine diagnostics occurred.
+Earlier220425 clicked behind the option panel and timed out without submitting a
+placement; the corrected harness moves the camera to expose the map target.
+This verifies construction of one profile, not linked-device activation.
+
+QA catalog inventory now explicitly classifies setup_launcher_test.gd,
+setup_session_test.gd and setup_mock.gd as manual workflows under their existing
+`tools/release` runners. They require disposable installations/package inputs or
+interactive capture and are not standalone offline tests. Catalog validation and
+its14 tests pass; this classification does not claim those workflows ran.
+
+## Track Stop placement and option persistence
+
+`fixtures/construction/track_stop.json` now records a complete viewer placement:
+`build/track-stop-main-20261022-220134` selected Track Stop, west auto-dump and
+friction10 through viewport controls, selected exact log48520, and naturally
+completed building1490 after325 simulation frames. Native fields retained the
+requested profile; Keep building reset the next draft to no dump/friction50000.
+The native oracle `build/track-stop-persistence-native-20261022-220055` confirms
+that reset and material-picker Escape returning to the map. No global request
+fields are used by the product. This supplements the existing25 profile effect
+and25 option-control combinations; minecart operation is not tested here.
+
+The fixed-recipe placement string incorrectly included the separate right-panel
+heading from a whole-screen text capture. It now contains only the left prompt;
+the existing option panel supplies its own native heading. Headless construction
+regression passes. Viewer captures were inspected; known startup/shutdown issues
+only. Source manifests stayed unchanged and owned sessions ended without saving.
+The final native oracle's placement screenshot is black under its capture overlay
+and is excluded from visual evidence; prior native option/picker captures remain.
+Existing frame/spacing differences remain open, as does full construction.
+
 ## Native removal workflows (2026-10-04)
 
 Maintainer direction is to match native removal semantics. In the mining toolbar,
@@ -31,6 +1691,40 @@ These are `passed_with_known_issues` for the pinned engine startup/shutdown
 diagnostics, with no unclassified errors. Source manifests stayed unchanged and
 owned sessions ended without saving. This does not establish every building kind
 or every multi-level removal shape.
+
+Protected `build/waterwheel-removal-main-20261024-012258` adds a naturally
+completed three-tile WE WaterWheel selected through the real build/material UI.
+Map-click inspection, removal, explicit cancellation and requeue were each
+verified against paused DF state. Native workers dismantled the wheel in 300
+ticks; all three exact selected logs remained registered and were released from
+the building, and the viewer retired its entity. Screenshots were inspected;
+only the known three engine diagnostics occurred. The source was unchanged and
+owned DF closed. This is a dry supported wheel, not powered-machine graph
+teardown or general building-inspector layout acceptance. Scoped provenance is
+in `removal.json.machinery_acceptance`.
+Construction placement no longer owns a hidden inspection/removal mode. The
+player inspector's selection-owned `building_removal.gd` state uses the shared
+action service; the bridge Inspect/Remove/RemoveConstruction API remains intact.
+Diagnostic controller acceptance scripts perform cleanup directly through that
+service and validate exact native identity/key receipts. Focused construction,
+material, removal and service tests passed in
+`build/qa/construction-inspector-cleanup`. Both migrated manual scripts pass
+Godot parsing; their broad live scenarios were not rerun for this cleanup.
+Protected player workflow `build/waterwheel-removal-main-20261024-013507` repeats
+natural exact-input completion, removal/cancellation/requeue and material release
+with the obsolete mode deleted. It passed with only known diagnostics and
+preserved the source save.
+
+Construction placement receipts are bookkeeping only. Preview geometry contains
+only the active draft; confirmed buildings and jobs render from the DF-backed
+model. Closing also clears the draft mesh. Historical receipts therefore cannot
+resurrect removed buildings' outlines when Build is reopened.
+Focused construction, Track and material tests pass in
+`build/qa/construction-receipt-geometry`. Protected
+`build/waterwheel-removal-main-20261024-013800` repeats exact-input construction,
+removal/cancellation/requeue, material release and viewer retirement, then reopens
+Build and checks that the retained receipt produces no outline. The reopened
+screenshot was inspected, source preserved, and only known diagnostics occurred.
 
 Earlier run `build/removal-live-20261004-134433` timed out in the construction
 setup's stress reopen loop before reaching removal; its cause remains unresolved.
@@ -184,12 +1878,573 @@ manifest. The unrelated Godot editor in the pf2 project was left running. The
 native bridge is unchanged by this presentation fix. Development extension/source
 are updated; the existing packaged RC5 executable is unchanged. Keep the residual
 frame cost and unexplained earlier QA failure visible when assessing the next RC.
+## Native material candidate collection study
+
+Bed, Chair, Table, Coffin, Cabinet, Box, Statue, Slab, Cage, Chain, Door, Hatch,
+GrateWall, GrateFloor, Floodgate, Armorstand, Weaponrack, TractionBench, Bookcase,
+DisplayFurniture, OfferingPlace, Instrument, NestBox, Hive, AnimalTrap, WindowGlass,
+Well, ScrewPump, WaterWheel, Windmill, GearAssembly, AxleVertical, AxleHorizontal,
+Rollers, non-Track construction, and the 23 standard Workshop/7 standard Furnace
+recipes now use the owned native collector for candidate admission. Other shared picker families still reconstruct screening
+in Lua (`screen`); connected Track now also uses the owned native collector. Placement
+connectivity and distance ordering are separate from candidate admission. `fixtures/construction/material_collector_native_study.json.gz`
+retains supported-build boundaries/fingerprints and ownership findings for the
+next migration, including the constrained diagnostic captures described below.
+Collection diagnostics alone do not establish complete picker parity; scoped
+product integration evidence follows.
+
+Recipe builder RVA0xaae4b0 accepts a buildreq pointer; collector0xa29630 accepts a
+job_item_filter and separate candidate output vector. Suitability0xa27c60 and
+container gate0xc93380 are subordinate routines. The inspected bodies contain no
+direct buildreq-range RIP reference or RIP-relative global write, which does not
+prove transitive safety. The collector mutates owned filter counters and may
+update context-dependent burrow/stockpile fields. Both collector and suitability
+can reach lazy walkable-group reader0x10afe0, so a wrapper must prove those paths
+excluded or restore their complete effects. Native constructor0x1fb050 initializes
+an unset position, null unit/job/building/site/stockpile context and empty vectors;
+context-free building recipes are a promising constrained entry point. Native
+requirement construction0xa69bf0 supplies owned filters; their cleanup follows
+DFHack generated destructors. Broader lifecycle acceptance remains separate.
+The whole UI caller0x406170
+must not be wrapped. Candidate population remains distinct from later placement
+enablement and material grouping.
+
+The diagnostic `df3d material-recipe-read <type> <subtype> [custom-id] [plate-flags]` calls the fingerprinted
+recipe builder with an independently allocated request, restricted to those
+verified standard families, Construction and guarded custom recipes described below.
+It returns copied scalar fields and releases native requirements
+and the owned request; it never calls the candidate collector or reads global
+build-menu state. Protected run `build/native-material-recipe-20261023-093606`
+compares Bed, Wall, Floor, Ramp, Stairs, Fortification and Track against the native
+menu. Filter fields match; candidate count, total dimension count and required
+quantity are excluded because later native stages populate them. Repeated queries
+for all 39 admitted recipes match closed-menu baselines under each of those menus.
+Observed request/menu fields, item/building/job counters, navigation generation
+and reindex flags, window/cursor/mouse state remain unchanged by the queries.
+The session stayed paused at frame0, preserved its source and closed. The same
+compressed study fixture retains these results and input hashes. This establishes
+recipe initialization only: candidate collection, transitive side effects and
+allocation lifetime instrumentation remain separate acceptance work. There is
+product integration for the verified family sets, including Track, described below.
+
+Recipe initialization is not necessarily the final picker quantity. Protected
+`build/native-pressure-quantity-20261023-125332` compares all64 constructor flag
+masks and60 valid native Pressure Plate picker configurations. Trigger controls
+are operated in DF; requested, configured and picker flags match. The picker
+retains `count_required=1` after configuration, while initializing a fresh recipe
+with the final flags returns1..4. Product quantity therefore remains1. Do not
+replace it with that intermediate constructor result. The diagnostic optional
+`plate-flags` accepts0..63, with nonzero values restricted to Pressure Plate;
+runtime candidate queries leave this diagnostic input unset. The same optional
+argument is accepted by candidate and cold-cache diagnostics.
+
+`pressure_plate.json.native_quantity` retains the complete phase comparison,
+input hashes and corrected harness boundaries. Owned queries preserve observed
+menu/counters/navigation and full-map path/walkability/item digests; native picker
+activity is excluded from query-only digest comparisons. The source stayed
+unchanged, frame stayed0 and owned DF closed without saving. The recorded-profile
+adapter regression now checks item count against this native evidence. Headless
+construction, catalog and131 adapter cases pass in `build/qa/native-pressure-quantity`.
+No Pressure Plate runtime quantity or UI change is made from this investigation.
+
+Fixed recipe Preview and Place now obtain required counts from the owned native
+initializer through `nativeMaterialRequirements`. The callback accepts semantic
+type/subtype/custom ID only, does not collect candidates and does not take final
+Pressure Plate flags. The adapter reads it once per operation, validates recipe
+arity and count bounds, and rejects missing/non-callable callbacks as well as
+failed native results instead of falling back to the helper quantity. Adapter
+tests inject an explicit synthetic quantity boundary; these defaults are not
+evidence of native quantity parity. DFHack still supplies catalog/filter metadata.
+Construction, Bridge, RoadPaved, AxleHorizontal and Rollers are excluded because
+their final quantities are calculated at later native stages. Variable weapon
+selection retains its separately verified1..10 selection bounds.
+
+The collector fixture's `fixed_quantity_integration` records38 prior native
+comparisons and the phase exclusions. Headless construction, catalog and133
+adapter cases pass in `build/qa/native-fixed-quantity`. Regressions cover native
+counts overriding legacy helper values, invalid native results, unchanged area
+quantities and Pressure Plate's default recipe inputs. Protected viewer
+`build/native-fixed-quantity-main-20261023-130122` shows a three-gem requirement,
+exercises group/individual addition and subtraction, and selects exact rotten-
+flagged rubies48525/48526/48527 from four alternatives. DF completes the window at
+frame1525, stage1/1, retaining those inputs with zero jobs. Picker and completion
+images were inspected; a unit obscures the completed window, so rendered-window
+parity remains unproven. Both viewer logs contain only known engine diagnostics.
+The source stayed unchanged and owned DF closed without saving.
+
+Missing-callback enforcement is covered by `build/qa/native-callback-required-final`
+(construction headless, catalog and135 adapter tests). Protected repeat
+`build/native-fixed-quantity-main-20261023-144429` verified the normal native
+three-gem flow, group/individual add and subtract, and natural completion at
+frame1575 with exactly rubies48525/48526/48527 and zero jobs. Picker/completion
+captures were inspected; both logs contain only known Godot diagnostics
+(`passed_with_known_issues`). The source stayed unchanged and owned DF closed.
+This run verifies the fixed-quantity boundary; full construction acceptance
+remains separate work.
+
+The companion diagnostic `material-candidates-read <type> <subtype> [custom-id]` invokes
+collector0xa29630 on owned requirements and copies candidate IDs. It verifies
+collector/suitability/container/material-lookup fingerprints. Contextual filters,
+flags1 other than empty, flags4/5, flags3 other than metal, reaction strings and
+contextual containment constraints
+are rejected. Unset position and null unit/building contexts bypass the inspected
+lazy navigation-reader branches; burrow and stockpile restrictions are disabled.
+
+Paved-road quantity diagnostic: `material-recipe-read <RoadPaved-type> -1 -1 0
+<eligible-tiles>` accepts0..961 and runs native0xaafd10 on the owned recipe request.
+Collection/cold-cache calls and other families reject this argument. The RoadPaved
+branch uses owned total_sq and an empty owned group vector, avoids native Track
+route vectors and lazy walkability queries, and produces a temporary No access
+string that the owner releases. Native functions and their guarded footprint,
+empty-vector-copy and string helpers are fingerprinted. Protected
+`build/native-road-quantity-20261023-132427` matches five actual road pickers,
+including an excluded center tile, and repeats13 counts across closed/open menu
+states without changing query snapshots or full-map/item digests. It stays paused
+at frame0, preserves the source and closes owned DF. Evidence is in
+`material_collector_native_study.json.gz.paved_road_quantity`. Production preview
+and placement now pass their accepted-tile count as the optional fourth semantic
+argument to nativeMaterialRequirements. The helper forwards it to the guarded
+RoadPaved stage with neutral pressure flags and candidate collection disabled.
+Lua requires the callback, validates a single positive integer quantity and
+recomputes it for each operation; the copied paved-road quantity formula is removed.
+An adapter regression verifies masked count6, commit count9 after terrain changes,
+and failure without a valid native response. Other area/route quantity stages
+remain separate. Final guarded build56644 installed successfully; protected
+`build/native-road-quantity-guard-20261023-132956` accepts13 valid counts and
+rejects7 invalid range/family/subtype/collection inputs, with source unchanged,
+paused frame0 and owned session closed. Three focused adapter quantity/material
+regressions passed for that diagnostic step. Integration build76796 and focused
+headless construction/catalog/adapter checks passed in `build/qa/native-road-integration`.
+Viewer `build/native-road-integration-main-20261023-133329` uses public menu and
+map pointer input for a3x3 road, displays Amount needed3, exercises group and
+individual add/subtract, reserves exact granite48525/48526/48527 from four native
+candidates, releases placement ownership and resumes using public Play. Natural
+frame7300 completion reaches stage3/3 with zero jobs and those exact three inputs.
+Expanded picker and visible completed-road screenshots were inspected. Both
+viewer streams classify only the known startup/finalize/paired-ObjectDB issues;
+no unclassified diagnostics. Source stayed unchanged and owned DF closed. This
+accepts the scoped road workflow, not every irregular extent or full artwork parity.
+
+The full offline gate `build/qa/construction-native-full` passes all171 results
+(169 selected checks plus two builds), including construction/Track/material,
+consumer, lifecycle and rendering checks. This does not establish live UI parity.
+Additional viewer `build/native-bolt-completion-main-20261023-134621` verifies
+Bolt Thrower's four-filter workflow: public cancel/reopen, exact parts48525,
+mechanism48527, chain48529 and bin48531, Keep placement and absent Last control,
+then public Play and natural frame2200 stage3/3 completion with zero jobs and all
+four inputs retained. Both streams have only known engine signatures, source is
+unchanged and owned DF is closed. Picker and completion images were inspected.
+`material_collector_native_study.json.gz.trap_siege_extension.bolt_thrower_viewer`
+retains the evidence. Native capture `build/native-bolt-icon-20261023-135351`
+confirms the parts sprite beside the picker group. The mirror/model now append
+`BoltThrowerParts` (93), admitting DF item_type92 through bridge and selection
+bounds and resolving installed `ITEM_BOLT_THROWER_PARTS` at ITEM_CONSTRUCTION
+(2,9). Existing enum values remain unchanged; generated validators admit the new
+value. No DF art is shipped. Classic tile evidence is absent, so that path retains
+an explicit unknown-glyph fallback. The synthetic resolver regression distinguishes
+these parts from Ballista Parts. Gate `build/qa/bolt-parts-final` passed all
+19 CTest checks plus construction headless, catalog and adapter checks against
+unchanged sources. Viewer `build/native-bolt-completion-main-20261023-140230`
+shows the matching group and two individual icons, passes cancel/reopen and all
+four exact selections, then naturally completes at frame2225 with zero jobs and
+all four selected inputs retained. Both streams contain known Godot signatures
+only; source save stayed unchanged and the owned session closed without saving.
+Picker/completion screenshots were inspected. The fixture's
+`trap_siege_extension.bolt_thrower_parts_icon` retains this evidence. This closes
+the parts-icon omission, not the remaining full-screen visual audit.
+
+
+
+Material resolver0x14add70 can call creature lookup0x701e70. Historical-figure
+materials can populate `creature_handler.hist_fig_to_creature_map` on a cache miss
+(0x701ff6..0x702023). A scoped copy/swap preserves the original cache nodes and
+buckets while the collector uses a private copy, then restores the original
+before Lua allocation. Returned material pointers do not point into cache nodes.
+This permits the reinforced-wall metal filter. Diagnostic command
+`material-candidates-cold-read <type> <subtype> [custom-id]` clears only the private copy and
+checks restoration using original map header bytes, node addresses, keys and
+values. Protected `build/native-material-cold-20261023-100836` forces a miss using
+a synthetic bar with historical-figure bone material (type222, figure8490).
+All20 calls insert one private entry, match ordinary query IDs/filter counters,
+and restore the original cache. Full map/item hashes and scalar snapshots remain
+unchanged, the source is preserved, simulation stays paused at frame0 and owned
+DF closes. This tests cache lifetime, not ordinary bone-bar gameplay.
+
+Protected full capture `build/native-material-collector-full-20261023-095957`
+passes eight native picker comparisons: Bed (one candidate), Wall, Floor, Ramp,
+Stairs, Fortification and Track (2,153 each), and ReinforcedWall (2,153 building
+materials plus1,202 metal bars). Complete IDs/order and total dimensions match.
+All39 recipes repeat identically with menus closed and each picker open. Native
+menu-selection vectors can be empty before placement, so they are not a candidate
+oracle. Track uses a two-tile route in this capture. Earlier incomplete probes
+are retained in the study fixture with their failure status; this full capture
+supersedes them for these eight comparisons.
+
+`build/native-material-collector-matrix-20261023-095521` additionally passes44
+Bed/Wall comparisons using synthetic flags, actual bin containment and hidden
+ground. It exposes differences from the Lua `screen` approximation: for these
+items DF admits garbage_collect, hostile, rotten, trader and spider_web flags,
+rejects melt/location_reserved, admits missing on_ground and a dumped outer bin,
+and admits hidden ground at this stage. These are observed fixture semantics,
+not a blanket policy for other item families or real hauling/job lifecycles.
+Native candidate enablement is recorded separately from collection.
+
+Full-capture query batches preserve hashes of every map path-cost/walkability
+cell and item IDs/flags/positions/reference counts, plus the scalar state listed
+above. Sources remain unchanged, sessions stay paused at frame0 and owned
+processes close. Reference contents and every world field are not covered by
+these hashes; the44-case matrix checks scalar snapshots per query. The study
+fixture retains results and input hashes. The family extensions below establish
+native candidate collection and product integration beyond this original matrix;
+that matrix alone does not prove placement enablement or grouping. Wrapper0xaafd10
+reads global Track route vectors in its Track branch, so unrestricted use is
+prohibited. RoadPaved has a separately guarded owned-request branch, described
+above. Bridge/AxleHorizontal/Rollers visit lazy group reader0x10afe0 before their
+quantity calculation; pending reindexing can rebuild world walkability and alter
+shared path costs. No side-effect restoration contract has been established for
+those branches, so their native-matched quantity behavior remains in the adapter.
+Calling an internal basic block or suppressing reindexing is not a supported API.
+
+Connected Track also consumes that collector for every fresh snapshot, including
+synchronous Place revalidation before creating jobs. The copied flags/containment
+and recipe modules and their embedded wiring have been removed. Failed, missing,
+duplicate or malformed native IDs fail closed. Route-based group enablement and
+fresh native distance ordering remain separate stages. Protected
+`build/track-native-collector-20261023-114207` compares all 2157 IDs and enablement
+with the actual Track picker across three menu histories: all match, with 2105
+enabled items and 32 groups. Full-map path/walkability and item digests, observed
+menu/counters/navigation and the source save stay unchanged. The owned session
+closed without saving. `material_collector_native_study.json.gz.track_integration`
+retains records, hashes and limits. All 23 remaining candidate/group/copy/ordering
+checks and 128 adapter tests pass; six tests of deleted approximations are retired.
+Viewer `build/track-native-collector-main-20261023-115038` subsequently verifies
+public Track placement over a natural ramp, search/expand/scroll/exact selection
+of items4917/4981/5024, released modal/pause ownership, and public Play. Native
+readback matches subtypes7/26/8; all three tiles complete in dolomite at frame1650
+with zero jobs. Both viewer streams contain only known startup/finalize/ObjectDB
+diagnostics. The source stayed unchanged and the owned session closed. Exact
+picker and completion screenshots were inspected; the completion view obscures
+lower tiles and is not full rendering-parity evidence. Construction headless and
+catalog QA also pass. The fixture retains all results and hashes.
+
+The first viewer attempt failed because the harness searched only instantiated
+rows; scrolling fixed that. A second attempt placed the exact items but timed out
+with DF paused after diagnostic unpause. Its pause transition remains unexplained.
+The successful run uses explicit public Play from a paused fixture and does not
+claim automatic resume from a running starting state. Neither failed run counts
+as completion evidence; their unclassified harness diagnostics remain retained.
+
+For those thirty-four families and non-Track Construction, the bridge injects
+this collector into
+Materials and Place. The scanner iterates returned IDs instead of applying Lua
+flags/containment/suitability/visibility approximations. Reservation and final
+creation use fresh membership once per Place safe-point invocation, so a yield
+between reservation and creation cannot retain stale admission. Local placement
+walkable-group checks remain a distinct stage. Native-query failure stops the
+operation with blank player text; no approximate list is published. Standalone
+synthetic tests can omit the callback to exercise legacy families, while runtime
+always injects it. Recipe quantities and other families are not migrated by this.
+
+Focused headless construction, catalog and adapter checks pass. Regressions cover
+native-admitted flags, native-query failure and membership changing before
+reservation or after reservation yields. Protected viewer
+`build/construction-stairs-recovery-main-20261023-101757` verifies no-allocation
+water refusal/recovery, exact items48520..48522 and natural three-level completion
+at1,675 frames. `build/native-material-bed-main-20261023-102051` completes a Bed
+using Closest and exact item48520 at575 frames. The flagged-bed regression
+`build/native-material-bed-flag-20261023-102753` sets rotten, which native collection
+admits and the old Lua screen rejected; it places the same item and completes
+naturally at350 frames. Its trace required no additional simulation resume.
+Two earlier flagged-bed attempts timed out without completion-progress snapshots;
+they remain excluded and their cause is unproven. Sources are preserved and owned
+sessions close. Successful viewer runs have known startup/finalize/shutdown
+diagnostics only; both log streams were classified and completion screenshots
+inspected. These are scoped integration checks, not full construction acceptance.
+
+Machinery capture `build/native-material-machines-20261023-112032` compares
+complete native lists/order and counters for Well (803/10/19/13 candidates),
+ScrewPump (803/4/7), WaterWheel135, Windmill135, GearAssembly13, both axle types135,
+and Rollers (13/19). Horizontal axle and roller intents span three tiles; required
+quantity remains a later-stage field. Repeated queries for all eight recipes
+match closed-menu baselines under each native picker and preserve observed
+map/item hashes and menu/counter/navigation state. The paused frame0 source is
+preserved and owned DF closes. These families now use native collection.
+
+The screw filter's virtual slot0x1b0 resolves to0xc620d0 and reads the trap-component
+definition. Well bucket flag bit27 reads containment references and classifies
+contents through0xc91b60, which uses the existing isolated material lookup and
+string-vector membership0x6b8af0. That helper calls the VCRUNTIME140.dll memcmp
+import. These routines are fingerprinted; inspected persistent mutation remains
+covered by the existing material-cache isolation. The study records addresses,
+fingerprints, complete lists and scoped observations.
+
+Native material cache identity includes family and requirement index in scanning,
+preview invalidation and Place lookup. DFHack metadata alone can be identical for
+distinct native requirements. A three-input regression reproduced first-list
+aliasing before this fix; now it preserves disjoint candidate lists and refuses
+construction when the third input becomes stale. This protects candidate mapping;
+quantities and powered/liquid gameplay effects still need their own evidence.
+Focused headless/catalog/128 adapter checks pass and the bridge is rebuilt and
+installed. Protected viewer `build/native-material-pump-main-20261023-112707`
+uses public controls, cancels/reopens the picker and selects all three inputs
+explicitly. Native-oracle IDs48526/48528/48530 are marked rotten after cancelling
+the oracle build; the viewer retains them through Keep building and natural
+completion atframe1625 with zero jobs. Exit releases the temporary pause before
+the observer resumes simulation. Both log streams contain only known engine
+diagnostics; picker/completion screenshots were inspected. Source preservation
+and owned-process cleanup pass. This proves construction, not powered pumping.
+
+The remaining single-item furniture capture
+`build/native-material-tools-20261023-110859` compares complete native lists/order
+and counters for TractionBench1, Bookcase4, DisplayFurniture2, OfferingPlace2,
+Instrument6, NestBox1, Hive1, AnimalTrap1 and WindowGlass1. All nine recipes match
+the closed-menu baseline under every picker; query batches preserve full map
+path/walkability and item-state hashes plus observed menu/counter/navigation
+state. The paused frame0 session preserves its source and closes. These nine
+families now use native collection in Materials and Place.
+
+Tool-use suitability invokes virtual slot0xe0. For item_toolst this resolves to
+RVA0x28a180, which reads the raw definition and searches its tool-use vector via
+0xec0d0. The inspected helper reads that vector and writes only its caller-owned
+result; both routines are fingerprinted. AnimalTrap uses the already admitted
+empty-container flag. The compressed study retains branch/getter addresses,
+fingerprints, exact comparisons and input hashes. These checks do not prove
+animal capture, nest/hive production, instrument performance or book storage.
+Focused headless/catalog/127 adapter checks pass; admission/stale membership now
+covers26 families (52 scenarios). Bridge build/install passes. Protected viewer
+`build/native-material-bookcase-main-20261023-111426` uses public controls and
+expanded exact selection of rotten-flagged48520, with an unflagged alternative
+available. DF naturally completes the Bookcase at650 frames with no remaining
+jobs. Both viewer streams classify only known engine diagnostics; expanded-picker
+and completion screenshots were inspected. The source is preserved and owned
+DF closes. Book storage and the other listed interactions remain separate.
+
+Door, Hatch, GrateWall, GrateFloor, Floodgate, Armorstand and Weaponrack use
+native candidate collection as well. Protected capture
+`build/native-material-openings-20261023-110028` compares all candidate IDs/order
+and filter counters against their native pickers:18 Door,1 Hatch,2 of each grate,
+3 Floodgate,1 Armorstand and1 Weaponrack. All seven recipes also match the closed
+baseline under every picker. Full map path/walkability and item-state hashes,
+observed menu/counters/navigation/window/cursor state remain unchanged by query
+batches. The source is preserved and the paused frame0 session closes. Static
+recipe branches all allocate owned requirements and join the previously verified
+common initialization path; no collection guard was relaxed. The compressed
+study retains branch addresses and exact lists. Broader interaction effects are
+separate from this material-selection evidence.
+Focused headless/catalog/127 adapter checks pass, with native admission/stale
+membership exercised across all17 families. Bridge build/install passes.
+Protected viewer `build/native-material-hatch-main-20261023-110514` verifies
+public-control empty-space hover/click refusal (`Surrounded by empty space`),
+recovery with the footer shrinking, and exact selection of rotten-flagged48520
+with an unflagged alternative present. DF completes the Hatch naturally at375
+frames with zero jobs. Both viewer streams contain only known engine diagnostics;
+refusal/completion screenshots were inspected. The source is preserved and owned
+DF closes. This does not establish linked operation of grates/floodgates or the
+remaining full-construction interaction matrix.
+
+Cage and Chain also use the native collector. Protected capture
+`build/native-material-restraints-20261023-105355` compares all15 cage and12
+restraint candidates, including ordering and filter counters, under both pickers
+and with the menu closed. Map/item hashes and observed scalar state are unchanged;
+the source is preserved and the owned session closes. Recipe branches0xaae95c
+and0xaae935 share the already verified context-free path. Unlike Box, Cage does
+not add the empty-container filter: a cage containing a real Blocks item remains
+in both lists. This does not establish creature-containing cage behavior.
+Two initial fixture failures (an incorrect empty-cage assumption and category
+navigation) are retained as excluded attempts. Stale-selection regressions cover
+both added families; focused headless/catalog/127 adapter checks pass.
+Protected viewer `build/native-material-cage-main-20261023-105657` uses public
+launcher/category/Cage/Closest/map controls and naturally completes exact
+rotten-flagged item48520 at325 frames with no remaining jobs. Both logs classify
+only known engine diagnostics, and the completion screenshot was inspected.
+The source is preserved and owned DF closes. This verifies empty-cage construction;
+animal assignment and restraint attachment effects remain separate coverage.
+
+Core furniture capture `build/native-material-furniture-20261023-103738`
+compares complete native candidate lists and counters for Bed1, Chair27, Table26,
+Coffin1, Cabinet1, Box29, Statue3 and Slab3. Repeated queries under each picker
+match closed-menu results and preserve full map/item hashes and observed scalar
+state. Box adds native flags1.empty: branch0xa28004..0xa2803d checks containment
+reference types. The guard admits that bit; a real filled-box control is excluded.
+An earlier probe stopped at this guard and is not acceptance evidence.
+
+The runtime family dispatch and stale-selection regression now cover all eight
+families. Focused headless/catalog/127 adapter checks and bridge build/install pass.
+Protected `build/native-material-table-main-20261023-104354` verifies Table native
+inside refusal/recovery and exact flagged-item selection with an unflagged
+alternative available. DF naturally completes rotten-flagged item48520 at400
+frames with no remaining jobs, demonstrating an admission rejected by the old
+Lua approximation. Public controls are used without forcing launcher visibility.
+Both viewer logs contain only known engine diagnostics; the completion screenshot
+was inspected. Both protected captures preserve their source and close owned DF.
+The compressed study fixture retains these comparisons and their scope. This does
+not migrate the remaining furniture, machinery, trap or variable-size families.
+
+Standard workshops and furnaces now use native collection for Materials and
+fresh Place validation. Native recipe branches are Workshop0xaaf194 and
+Furnace0xaaee84; custom raw-defined recipes and Workshop Tool remain separate.
+Temperature safety adds fingerprinted item getters0xcb1ec0/0xcb1f00 (53 bytes
+each) and helper0x149ef80 (296 bytes). The getters pass native11000/12000 limits;
+the helper reads material thresholds through the already isolated historical-
+figure material cache. No new global UI inputs or filter guard relaxations are
+introduced. Native filter quantities remain distinct from candidate admission.
+
+`build/native-material-workshops-20261023-115710` verifies all30 recipe results
+with menus closed and under ten representative native pickers. Exact native
+candidate IDs/order/filter counters match Carpenters2181, Forge[10,2059], Magma
+Forge[10,1094], Quern4, Millstone[11,5], Ashery[799,106,14], Dyer[106,14], Still2181,
+WoodFurnace2059 and MagmaSmelter1094. Full-map path/walkability and item digests,
+plus observed menu/counters/navigation stay unchanged. Source preservation and
+owned-session closure pass. This covers representative branches, not each of the
+30 native menu routes. The durable collector fixture's `workshop_furnace_extension`
+retains all results, branch mappings, temperature traces/fingerprints and limits.
+
+Headless construction/catalog and128 adapter cases pass in
+`build/qa/native-material-workshops-final`; added standard-workshop/furnace cases
+verify native-admitted flags and fresh stale-item rejection. Initial new test
+fixtures supplied wrong family dimensions; the corrected final run passes.
+Protected viewer `build/native-material-ashery-main-20261023-120336` verifies
+public cancellation/reopen, all three exact native-reference items48526/17160/
+48530 with rotten set, Keep building, Escape ownership release and public Play.
+The Ashery completes naturally at frame1400, stage3/3, with those same inputs
+and zero jobs. Picker/completion screenshots were inspected; both viewer streams
+contain only known startup/finalize/ObjectDB diagnostics. Source stayed unchanged
+and the owned session closed without saving. Ashery production, other workshop
+use effects, custom recipes and full presentation coverage remain unverified.
+
+Installed custom Screw Press and Soap Maker recipes now use the native collector.
+Materials and Place resolve the semantic raw code to its stable raw ID and pass
+that ID through a shared candidate callback; no native menu selection is read.
+The optional diagnostic `custom-id` is validated against the correct workshop or
+furnace raw vector before initialization. Missing/wrong-family IDs fail closed,
+as does a custom ID supplied for a standard recipe. Raw filters with unreviewed
+flags, ore constraints or nonempty reaction strings are rejected before native
+recipe construction. Empty-string copy helper0x6f8d0 is fingerprinted over256
+bytes; its admitted path copies zero bytes through VCRUNTIME140 `memmove` and
+writes only the owned string length/terminator. No allocation branch is reached.
+
+Protected `build/native-material-custom-20261023-120959` matches native Screw
+Press5 and Soap Maker[10,2157] candidate IDs/order/filter counters. Both baselines
+repeat under both native pickers while full-map path/walkability, item digests
+and observed menu/counters/navigation remain unchanged. Source preservation and
+owned-session closure pass. The collector fixture's `custom_recipe_extension`
+retains all records and the helper/import trace. Guarded custom Furnace input is
+available diagnostically, but no custom Furnace has native picker acceptance;
+other custom raw codes remain on the existing runtime path pending evidence.
+
+Headless construction/catalog and129 adapter cases pass in
+`build/qa/native-material-custom`. A new regression keeps two raw IDs distinct
+with identical requirement metadata and rejects stale admission before creation.
+Viewer `build/native-material-soap-main-20261023-121408` verifies public picker
+cancel/reopen, exact rotten-flagged bucket48526 and granite boulder48528, Keep
+building, Escape ownership release and public Play. The workshop completes at
+frame2300, stage3/3 with both inputs and zero jobs. Four invalid raw-ID cases
+reject without candidate output. Picker/completion images were inspected;
+both logs contain only known startup/finalize/ObjectDB diagnostics. The source
+stayed unchanged and the owned process closed. This does not establish soap
+production, Screw Press completion, arbitrary custom filters or full UI parity.
+
+All six Trap and three SiegeEngine subtypes now use native candidates for
+Materials and fresh Place validation. Their recipe branches use the already
+verified owned constructor/allocation/vector helpers; no filter guard relaxation
+or global menu input is added. Weapon Trap retains separate mechanism and weapon
+requirements, and Bolt Thrower retains native parts/mechanism/chain/bin order.
+Required quantities, placement connectivity and subsequent building use remain
+separate from candidate admission.
+
+Protected `build/native-material-traps-20261023-122357` matches all nine native
+pickers: Lever25, PressurePlate25, CageTrap25, StoneFallTrap25, WeaponTrap[25,60],
+TrackStop2157, Catapult4, Ballista4 and BoltThrower[4,25,15,76]. Closed-menu
+results repeat under every picker. Full-map path/walkability and item digests,
+plus observed menu/counters/navigation remain unchanged at frame0. The source
+was preserved and the owned session closed. The collector fixture's
+`trap_siege_extension` retains the complete comparisons and branch review.
+Headless construction, catalog and131 adapter cases pass in
+`build/qa/native-material-traps`, including separate requirement identities,
+variable weapon selection and stale-input rejection before any building creation.
+This does not establish trap activation, pressure-plate linking or siege firing.
+
+Viewer `build/native-material-weapon-main-20261023-123217` verifies public
+Closest selection, cancellation/reopen, three weapon groups, adding two weapons
+and Done. DF naturally completes the trap at frame3550, stage1/1 with no jobs,
+retaining the exact native-reference mechanism48580 and weapons48536/48537/
+48538/48552/48566, all marked rotten in the fixture. The harness waits for the
+released host and enabled Play button before resuming; an earlier run clicked
+without that readiness check and timed out. No production pause change was made.
+Both final logs contain only known startup/finalize/ObjectDB diagnostics. Picker
+and completion images were inspected, though a unit obscures the completed trap
+tile, so this does not establish full trap-art parity. Source preservation and
+owned-session cleanup pass; no session was saved.
+
+BarsVertical, BarsFloor, WindowGem, Support, ArcheryTarget, TradeDepot, Weapon,
+Bridge and RoadPaved now also use native candidates for Materials and fresh
+Place validation. Their branches require only the existing owned constructor,
+allocation and vector-append helpers. No filter guards or native state ownership
+rules change. FarmPlot and RoadDirt have empty native recipes and do not need a
+material collector. Custom recipes outside the two installed workshop codes
+remain separate; native quantities and placement connectivity are not migrated
+by this change.
+
+Protected `build/native-material-remaining-20261023-123605` matches all nine
+native pickers: both bars1210, gem window4, support/target/depot2181 each,
+upright spikes15, bridge2181 and paved road2181. Bridge and road use3x3 selections.
+Closed baselines repeat under every picker with full-map path/walkability, item
+digests and observed menu/counters/navigation unchanged at frame0. Source
+preservation and owned-session closure pass. The collector fixture's
+`remaining_standard_extension` retains the complete comparisons and branch map.
+Headless construction, catalog and131 adapter cases pass in
+`build/qa/native-material-remaining`; the native-admission/stale-reservation
+regression now covers each of these nine families.
+
+Viewer `build/native-material-bridge-main-20261023-124108` verifies a public3x3
+Bridge placement, expanded material list, group and individual addition/removal,
+then exact boulder48525/48526/48527 selection from four rotten-flagged candidates.
+After pause ownership releases and public Play resumes DF, the bridge completes
+naturally at frame6475, stage3/3, retaining those three inputs with zero jobs.
+Expanded-picker and completed-bridge images were inspected. Both viewer streams
+contain only known startup/finalize/ObjectDB diagnostics. The source stayed
+unchanged and owned DF closed without saving. This does not establish bridge
+linking/raising/lowering, full rendering parity or effects for every new family.
+
 ## Native material navigation integration (2026-10-04)
 
 Construction material distance lookups call DF53.16's native flood through
 `bridge/plugin/construction_material_native.cpp`, including connected Track.
 Candidate admission, grouping, placement geometry and construction commands have
 separate owners; this callback computes material-navigation distances only.
+
+The internal distance callback accepts owned seed/target arrays and an optional
+construction subtype. The unused Lua material-terrain reader chain and search
+bounds/limit parameters have been removed from the callback and its callers.
+The separate Track routing terrain reader remains. Developer console commands
+retain their legacy trailing argument for compatibility with captured harnesses;
+it does not impose a native flood work limit. Native frontier/storage limits
+remain enforced by the wrapper.
+
+Material selection has one implementation in `construction_draft.gd`. Its
+`construction_exact_selection_test.gd` exercises all 558 recorded native kernel
+transitions plus recorded group clicks, final reserved IDs and exact-item repeat
+clicks. The test-only Lua selection copy and tests of the unused terrain reader
+were removed; native evidence fixtures retain their historical provenance.
+
+Cleanup verification (2026-10-22): bridge build/install, 76 adapter cases, 28
+candidate/order cases, catalog/embedding checks and all 19 root CTest checks
+passed. Godot draft and exact-selection suites passed with the known rendering
+thread notice. Protected run `build/construction-native-cleanup-20261022-094556`
+passed six cancel/reopen cycles, 22 material clicks and natural completion of
+four walls after 425 simulation frames. Its picker capture was inspected; the
+owned source manifest was unchanged and the session ended without saving.
+The run is `passed_with_known_issues` for the documented rendering-thread,
+render-device shutdown and two-object diagnostics. Installed development plugin
+SHA256: `98ca87ae03d80d8ce20ecd7bb3b1939f0f3efc9f897349dc0b7f236a902f7605`.
+
+The older `build/construction-acceptance-20261022-094424` run failed at the
+TradeDepot material oracle: `construction-acceptance-verify.lua` still compares
+squared geometric distance and tuple ties, superseded by native navigation.
+Its source was preserved; that harness needs a separate oracle update and is
+not a passing check. The QA gate also remains blocked by unregistered
+`setup_launcher_test.gd`, `setup_mock.gd` and `setup_session_test.gd`; the focused
+checks above ran directly. No full offline-gate or packaged-release pass is claimed.
 
 The callback runs synchronously at the bridge safe point. Godot still sends and
 receives asynchronous semantic requests. It validates the supported PE identity
@@ -627,7 +2882,7 @@ Other retained construction evidence:
   real Lua reader. Track is now available in the staged catalog when all semantic
   services are installed. Main-scene natural ramp completion passes through that
   catalog entry without a harness support override; the public construction
-  launcher remains gated with the rest of this unfinished release.
+  launcher is exposed for RC2 verification; full construction remains unfinished.
 
 Track's callback regression requires the separately built MSVC target
 `df3d_track_callback_test`: run `python tools/test_track_shape_callback.py <exe>`.
@@ -644,8 +2899,8 @@ session. The maintainer explicitly accepted this simplification on 2026-10-02.
 It is not a claim of native-parity evidence. Explicit toggle behavior is verified;
 do not reopen initialization matching as a release blocker or read native widgets.
 
-Other current defects include Track Closest choosing different items when native
-search reports negative distances (cause unresolved), cold-first-preview routing,
+Track Closest may differ from native stale-distance ordering under the narrow
+maintainer exception below. Current defects include cold-first-preview routing,
 and incomplete furniture icon composition (notably bed bedding and generic group
 icons). Manual natural-ramp exact selection works. These limitations do not remove
 project requirements. Generic construction material semantics, remaining recipe
@@ -968,12 +3223,13 @@ Terrain eligibility evidence remains separate from production implementation:
 
 `wm::trackSiteEligibility` now classifies semantic shape, occupancy, visibility and
 liquid facts as Eligible, Ineligible or Unverified. Hidden endpoints are allowed;
-hidden intermediate tiles are not. PendingTrack requires a compatible native job
-classification, and BlockingBuilding requires an established blocking family/state;
-unclassified buildings remain Unknown. Unknown shapes and malformed liquid data
+hidden intermediate tiles are not. PendingConstruction identifies a stage-zero
+construction job; it may have no track connections yet. Occupied non-construction
+buildings are BlockingBuilding under the verified native occupancy branch.
+Unresolved occupancy and transient construction stages remain Unknown. Unknown shapes and malformed liquid data
 remain Unverified, not native refusal. Callers must not use this result alone to
 authorize placement: directed movement, current job stages and material effects
-remain separate checks. Bridge fact extraction is not implemented yet.
+remain separate checks. The bridge reader supplies these facts at safe points.
 The fixture regression now uses this predicate to reproduce 224 retained native
 terrain/liquid/occupancy routes, including exact detours, alongside the previous
 342 flat and154 elevation cases and placement-planner checks.
@@ -1272,6 +3528,16 @@ are visible. Native jobs/reservations and source saves remain unchanged at frame
 with only known engine diagnostics. See `pending_visual_capture.production_capture`.
 This accepts initial streaming/rendering for the captured flat Track pieces, not
 pixel identity, live removal/completion, reconnects, ramps or other construction types.
+The broader pending-art reference is now `pending_tile_rendering.json`: 76 paused
+native cases cover all 38 construction subtype IDs with granite and oak. Every
+native maximum stage is one; the only pending stage is zero. All 38 textures
+match the corresponding installed PLANNED_CONSTRUCTION token without palette
+or alpha modification. `pending_tile_render_gpu` verifies uploaded RGBA, cell
+position, white vertices and fresh-source reloads for all 76 cases. Core passes;
+`build/qa/pending-tile-native` passes GPU checks with the three documented Godot
+diagnostics. ReinforcedWall is diagnostic coverage, not authorization to expose
+an additional menu entry. These paused cases establish pending source artwork,
+not completed terrain, natural labor or final composited-pixel equivalence.
 Protected025536 exposed stale pending markers after native cancellation while paused:
 no simulation tick or DF3D command triggered publication. The bridge now compares
 the native building pointer sequence while paused and requests an entity Full when
@@ -1430,6 +3696,28 @@ palette swaps. Constructed background index0 in these controlled fixtures remain
 unresolved: complete a genuine ramp job before inferring a native absence rule.
 See `ramp_reference`. Both owned sessions end paused with unchanged source saves;
 this is neither ramp viewer acceptance nor construction/traversal acceptance.
+`constructed_ramp_rendering.json.gz` resolves the missing constructed background
+reference with 150 paused cases: actual bituminous-coal boulder and willow-log
+constructions completed through `build-now`, each with 15 track directions and
+lone/N/S/E/W support. Native `completeBuild` creates the construction records;
+direction and support are then controlled diagnostic mutations. The background
+texture is held in the descriptor ramp-graphics cache keyed by the viewport ramp
+flag, not the background texture slot. All five backgrounds match installed
+STONE_RAMP artwork; its pixels are palette-insensitive. All 30 rail textures
+match the constructed STONE/WOOD tokens with material palettes, including the
+WOOD four-way crossing for coal. Diagnostic cache reads remain outside runtime.
+The native pending building layer retained by accelerated completion is recorded
+and excluded from these terrain references. This closes the native source-art
+question, not natural completion cleanup or final compositing. Both protected
+captures preserve the source save and close DF. `constructed_ramp_render_gpu`
+now verifies all 150 cases and three fresh-source reloads: model materials,
+uploaded background/rail RGBA, correct texture-array layers, support orientation,
+matching footprints and rail planes immediately above their ramp surfaces.
+Core passes; `build/qa/constructed-ramp-native-verified` passes with the three
+documented Godot diagnostics. The initial test incorrectly sampled the bank's
+first texture instead of each triangle's selected layer; the renderer required
+no change. These checks cover constructed ramps with these two materials and
+cardinal/lone support, not arbitrary multi-wall arrangements or carved ramps.
 Ramp rail geometry is now implemented: a feature quad follows each supported
 slope at a small vertical offset, or sits at the lone ramp's top height. Resolver
 rail selection accepts ramp top/slope faces while retaining existing ramp backing.
@@ -1553,6 +3841,34 @@ Old recordings without these facts keep appearance absent; do not infer raw toke
 from translated captions or invent a fallback. Validators reject malformed UTF-8,
 invalid lengths, stack counts and flags. Appearance participates in snapshot identity.
 Native texture IDs and screen anchors remain oracle-only.
+
+Cut-gem candidate snapshots additionally publish the optional descriptor raw ID
+`gem_shape_raw`. It is valid only for SMALLGEM and participates in snapshot
+identity and payload limits. The picker uses installed
+`SHAPE_GRAPHICS_SMALL_GEM` definitions, with the native item-ID arrangement and
+native compositing/palette order. Asset cache format9 invalidates earlier indexes
+that omitted these definitions. Generic groups use `ITEM_GEMS`; absent shape
+facts keep that generic icon rather than guessing a cut. An empty item color
+uses the material color. This change does not publish individual map-item shapes.
+
+Generic gem group and Last names come from DF's native item-description method
+on an owned, unregistered `item_smallgemst` containing only the material, default
+stack and unspecified shape. The temporary is deleted on success or error;
+live items, IDs, menu state and graphics caches remain untouched. Individual
+rows use their actual item descriptions. Native capture
+`build/gem-generic-name-native-20261024-034149` matches ruby, emerald and all three
+glass group names and verifies unchanged world item count and next ID.
+`material_candidates.json.cut_gem_native_reference` records all88 native cut
+composites plus four colored picker references. The icon regression matches
+these hashes and checks material-color fallback. Protected viewer
+`build/cut-gem-picker-main-20261024-034511` verifies four candidate shapes,
+generic/history names, pointer group/individual selection and natural completion
+at frame1575 using exact items48525/48526/48527, with zero jobs. The expanded
+picker screenshot was inspected; source save unchanged, owned DF closed, known
+engine diagnostics only. Core, adapter138, material UI, icon and group-helper24
+checks pass in the fixture's referenced gates. Earlier033353 did not establish
+completion: its screenshot exposed color/name defects and Public Play timed out.
+The corrected run waits for rendered frames before clicking Play.
 
 The presentation resolves candidate icons through the existing installed-asset
 resolver without terrain residency. The actual extension matches48 canonical RGBA
@@ -1919,12 +4235,9 @@ primary/secondary flags. Bin ownership and dumping do not exclude its contents;
 forbid, on_fire, in_building, construction, in_job, removed and encased do.
 Location_reserved excludes either the bin or block, while the other five tested
 secondary flags do not. The source save and paused frame remain unchanged.
-`construction_material_candidate_gate.lua` implements this partial Track flag/bin
-predicate using copied facts, with unknown results for missing facts and unsupported
-containers. The registered core check `test_construction_material_candidate_gate`
-replays all 29 observations and checks malformed/unsupported inputs. This helper
-is not yet embedded or used by production Materials. Recipe suitability, positions,
-site reachability, other containment and stale-item validation remain separate work.
+The former copied Track flag/bin predicate is removed. These captures remain
+native behavioral evidence; current runtime admission comes from the owned native
+collector described above. Candidate grouping and route enablement stay separate.
 Protected `212023` adds twelve controlled site-group/hidden-tile observations.
 Recipe candidate membership remains unchanged; enablement matches nonzero raw
 site/item group equality, including a site group without any citizen/resident.
@@ -1965,28 +4278,10 @@ Protected `213447` verifies 42 Track recipe probes: fourteen ground items over
 thirteen fixture types plus blocks made from the same stone as a boulder, with
 economic-stone restriction off/on/restored. Native membership matches isBuildMat
 and applies that restriction only to the raw inorganic boulder; matching blocks
-remain allowed. `construction_track_material_recipe.lua` implements this partial
-recipe predicate with unknown results for missing policy facts, and the registered
-candidate test replays all 42 probes. The recipe source vector contains13369 items
-of many types. The initial pointer/ordered-content comparison did not enumerate
-the fixed vector container correctly; the subsequent source capture below resolves
-this gap. BAR subtypes/materials, artifacts and full candidate integration remain
-open. Initial213248/213322/213410
-oracle attempts failed setup assumptions;213447 is the accepted capture. The game
-stayed paused and the owned source save remained unchanged.
-Protected `213738` explicitly indexes all135 named item vectors and compares every
-ordered item ID. Native recipe source uniquely matches `world.items.other.IN_PLAY`
-in all three policy states (13369 entries). Runtime can enumerate that semantic
-collection; it must not read the native recipe/filter vector. Protected `213836`
-adds baseline/melt/restored flag evidence: the melt designation excludes the block.
-The Track gate mask is now0xe90c32 and short-circuits known primary exclusions
-without requiring unrelated missing facts. The registered candidate check includes
-that native exclusion. Both captures remained paused and preserved the owned save.
-Protected `214209` adds twelve BAR material probes: iron, platinum, tin, steel,
-copper and silver are accepted; coke, charcoal, ash, potash, pearlash and soap
-are rejected. All twelve match native isBuildMat and the existing partial recipe
-predicate without additional token rules. Soap comes from an installed creature
-material explicitly flagged SOAP. The registered recipe replay now covers54
+remain allowed. The former copied recipe predicate is removed in favor of the
+owned native recipe and collector. Captures `213738` and `213836` establish the
+IN_PLAY source vector and melt exclusion; `214209` adds twelve BAR probes,
+including accepted metals and rejected fuel/ash/soap, for 54 retained recipe
 probes. All items are controlled fixture creations; natural manufacturing and
 hauling are not established. The paused frame and owned save are unchanged.
 Artifact behavior and remaining containment/production integration stay open.
@@ -2074,11 +4369,11 @@ separately invokes native generic-group select/deselect methods in an oracle:
 558 transitions across99 groups establish nearest-unselected selection and
 farthest-selected deselection, both breaking ties toward highest candidate ID.
 Remaining group distance, selected counts and exhausted/no-op states are recorded.
-`construction_material_selection.lua` implements that pure kernel;17 candidate
-tests replay it and the expanded ordering captures. It is not embedded or connected
-to picker actions yet. Direct method evidence does not establish actual button
-behavior, post-click list sorting, stack consumption or placement. Both owned
-captures remain paused with source saves unchanged and processes ended.
+The native select/deselect captures establish the selection ordering now
+exercised by the Godot exact-selection tests. The former standalone Lua selection
+kernel and its comparison-only tests were removed; they are not an alternate
+runtime implementation. Those direct-method captures alone did not establish
+button behavior, stack consumption or placement; subsequent evidence follows.
 Protected `222535` adds actual native picker mouse interactions, retained in
 `picker_interaction_capture`. Row clicks select one item; None clears the group.
 Partial selection changes the nearest-remaining distance without reordering the
@@ -2126,120 +4421,32 @@ paused frame and native generation remain unchanged. Selecting one seven-item
 stack provides one candidate in this picker; actual stack consumption on placement
 has not been measured. Production transport/controller integration remains open.
 Do not infer a general post-selection sorting rule from these initial captures.
-Production integration of independent navigation and enumeration remains unfinished.
-The existing visible-workflow material scanner remains an approximation and must not be accepted as native
-Track behavior. See `native_material_order_audit` in the Track fixture.
+These early captures predate native distance integration. Current behavior and
+remaining candidate/route limitations are described above; the retained
+`native_material_order_audit` fixture does not imply a second runtime flood.
 
-`bridge/plugin/construction_material_terrain.lua` implements the separate native
-material-flood destination predicate. It reads semantic map/building state only
-and remains unconnected to the material query. Its native table fixture covers
-all 697 pinned tile identities, including Campfire, tree-trunk and twig exceptions
-that prevent reuse of normalized display shapes. The predicate checks
-`designation.flow_forbid` (not the hidden bit), static occupancy, and the traced
-closed hatch/grate/bar branches. It is not a complete movement edge, liquid-depth
-rule or item eligibility decision. Missing loaded terrain or dynamic-building
-facts remain unknown. `test_construction_material_terrain` is registered in the
-core gate and checks 18122 tile/occupancy/flow/dynamic combinations plus missing
-facts against `fixtures/construction/material_destination.json` and the traced
-branches. Full movement rules and protected live integration remain required.
+Material-navigation runtime now uses `construction_material_native.cpp` with
+owned requests and restored scratch. The former Lua terrain/opening/facts helpers,
+the independent model flood and their comparison-only tests have been removed.
+Do not restore them or follow old scratch scripts that import them. Candidate
+admission and recipe seed selection remain separate from native distance search.
 
-`wm::materialEnvironmentAllowed` implements the liquid/temperature portion of
-native material movement flags `0x901020` (AllowUnrevealed, ShallowWater, WalkLand,
-LevelMapless). Protected native captures `195106` and `195236` verify a controlled
-floor corridor: water depths 0..6 pass, depth 7 fails, nonzero magma fails,
-temperature_1 10199 passes and 10200 fails. Hidden and zero-walkable-group barrier
-tiles remain traversable; flow_forbid blocks them in the separate destination
-predicate. The fixture test compares 22 floor cases against native reachability;
-`fixtures/construction/material_environment.json` retains all 23 observations.
-For water over a vertical opening, the environment helper requires verified lower
-opening/depth facts and rejects a full lower tile. That branch is traced and unit
-tested, but still needs native live coverage. DFHack `canStepBetween` rejects
-water depth >=4 and is not equivalent to this material search.
-In these deliberately controlled fixtures, unreachable items can remain native
-picker choices with negative distances derived from stale path scratch. Those
-history-dependent values are diagnostic evidence, not valid distance results or
-proof of natural candidate availability. Production candidate filtering and
-unreachable-item behavior remain to be established independently.
+Retained native provenance in `material_destination.json`,
+`material_environment.json` and `material_movement.json` covers the supported
+build's tile identities, liquid/temperature boundaries, stair/ramp transitions,
+building states and Track endpoint seeds. These captures are historical oracle
+evidence; they are not proof that a retired model helper still exists or that
+all current candidate/placement flows are accepted. In particular, negative
+costs observed for unreachable controlled targets remain diagnostic values,
+not valid material distances. Current runtime reports reachability relative to
+its own native search generation and restores the prior search scratch.
 
-`construction_material_opening.lua` supplies three vertical-opening modes used
-by material navigation. Liquid and ramp-clearance modes accept only the four native
-open-space/ramp-top identities; stair movement additionally accepts down/up-down
-stairs, branches and twigs. All reject floored, obstacle and impassable occupancy, while Well
-occupancy does not itself close the opening. A closed hatch blocks liquid; both movement modes
-blocks it only when forbidden, complete and setting occupancy. Closed floor grates
-and floor bars block all three. These rules have native binary-table and synthetic
-building-state coverage in `test_construction_material_terrain`; full directed
-movement and protected live opening acceptance remain unfinished. The helper is
-embedded with the construction closure, but not yet used by production material queries.
+The `material-distances-read` diagnostic remains available through protected
+DFHack lane helpers, but now calls the native implementation. Its retained
+legacy tile-limit argument is not a work bound on the native search. Current
+ownership and frontier-capacity checks are in that implementation.
 
-`fixtures/construction/material_movement.json` retains 48 protected native
-material-search observations (`202830`): all dry floor/stair pairings, cardinal
-and diagonal stair controls, and RampTop/OpenSpace ramp crossings in both
-elevation directions. Search seed/source costs prove the isolated flood ran;
-negative stale target costs are diagnostics, never usable material distances.
-The paused clone stayed unchanged. An initial oracle assertion incorrectly
-required a nonempty choices list and was corrected; an empty picker is possible.
-`materialMovementGeometry` in the independent model matches all 48 observations
-through the recorded-fixture CTest. It preserves unknown opening/support facts,
-handles integer boundaries, and distinguishes pure stair transitions from
-cardinal/diagonal ramp transitions. Protected `203254` adds 64 destination-water
-cases (depths 0 through 7, both directions). Geometry plus destination environment
-classification matches these cases: depths 0–6 retain valid crossings; depth 7
-rejects. Native material flags `0x901020` have no intersection with the swim/fly
-fallback mask `0x20012800` at RVAs `dc1bad` and `dc1ef0`, so those branches are
-inactive. The CTest now compares all 112 retained cases. The paused clone remained
-unchanged. The geometry helper is not wired into production material queries.
-Lower-liquid opening integration, seed selection and full candidate filtering
-remain separate gaps; controlled dynamic-building evidence is described below.
-
-`construction_material_facts.lua` composes the destination, opening and raw-tile
-classification helpers through injected functions. At a safe point it observes
-native shape, ramp/support/open facts, stair/ramp clearance, temperature, liquids
-and the extra destination predicate. Lower liquid depth is read only when
-nonzero, non-full water has a known downward opening. Missing blocks and unknown
-dynamic state remain unknown. `destination_allowed` alone is not full movement
-approval; compose it with environment and geometry using `materialMovementAllowed`.
-For fixed material flags `0x901020`, all 697 native general surface classifications
-match the extra destination predicate, and the active building branches reduce
-to the same obstructions/support. The table and branch hashes are retained in
-`material_destination.json`. Protected `204118` matches 28 controlled building
-cases through the composed model check: floor/open-space Door, Hatch, vertical
-and floor Grate/Bars states. With flow-forbid cleared, closed/forbidden doors
-remain traversable; closed vertical grates/bars block; closed hatches and floor
-grates/bars provide surfaces over open space. This does not establish natural
-building-state transitions. The paused clone remained unchanged and fixture
-buildings were removed. Native flags for other movement contexts differ. Protected native-only `203703` retains these actual reader
-outputs at 48 controlled movement cases; direct model replay matches every native
-outcome. The paused clone stayed unchanged. Reader tests additionally cover
-unknown dynamic buildings and unavailable lower blocks. These Lua helpers are
-embedded and owned by the cached construction closure. Production Materials
-queries still use the unfinished older implementation.
-The safe-point command `df3d material-distances-read <sx> <sy> <sz> <tx> <ty> <tz>
-<tile-limit>` uses the same cached construction closure and its embedded reader,
-with actual map bounds. It returns numeric status and ordered reachable/distance
-rows; it selects no materials and creates no jobs. Invoke it through the protected
-lane's DFHack helpers. Protected `205901` compares 48 installed-callback queries
-to native material-search reachability/distances, with unchanged native search
-generation and paused clone. Build and installed plugin hashes match. An initial
-loader error returned the reader factory instead of calling it; the accepted run
-uses the corrected initialization. Protected Track Preview regression `205933`
-still matches four native ordered paths/counts and preserves pending jobs; it is
-`passed_with_known_issues` for the pinned startup notice. These checks do not prove
-production material seed/candidate selection or the full picker workflow.
-
-Protected `210320` verifies the Track material seed for fourteen controlled
-five-tile same-level drafts: both endpoint directions and seven target identities
-(floor, ramp, three stairs, OpenSpace and RampTop). Each has exactly one observed
-zero-cost cell at the second endpoint in the bounded oracle window. All requests
-retain subtype TrackNSEW, and all 56 installed-callback distance probes from that
-endpoint match native. The native search generation, paused frame and owned save
-remain unchanged. `material_movement.json` retains `track_seed_capture` and input
-hashes. This establishes the tested endpoint rule, not multi-level draft coverage
-or production integration. Runtime must derive its seed from the semantic draft;
-native buildreq and pathfinder scratch remain oracle-only. Candidate enumeration,
-group copy, selection effects and the complete material picker remain unfinished.
-
-`construction_material_shapes.lua` classifies native movement ramps and ramp
+The Track site reader in `construction_track.lua` classifies native movement ramps and ramp
 support from raw tile identity. All 697 pinned identities are compared with the
 supported binary's predicates: four live/dead root/trunk slopes are excluded from
 the ramp class; trunk walls, SemiMoltenRock and GlowingBarrier are excluded from
@@ -2270,8 +4477,8 @@ missing or malformed facts remain unverified when needed. Core and callback
 regressions cover the start exception and false versus unknown behavior. The
 follow-up is `passed_with_known_issues` for the pinned startup notice, with the
 paused clone unchanged. Natural tree/hazard integration and the remaining native
-source eligibility conditions still need acceptance. The standalone material shape
-helper remains unconnected to production material queries.
+source eligibility conditions still need acceptance. The former standalone material shape helper has been removed; production uses
+the native material flood described above.
 
 The wall capture also exposes a known Preview defect: the first eastward route
 detours north in native DF and south in DF3D, despite equal length. Protected runs
@@ -2337,6 +4544,72 @@ with unchanged saves. These interventions are diagnostic-only: they do not permi
 product suppression of reindexing, native search-state reads, or acceptance of the
 cold-reindex mismatch. Ordinary settling behavior and the mechanism by which the
 rebuild affects routing still need verification before a runtime correction.
+Further tracing identifies lazy group reader RVA0x10afe0 and rebuild0x103e8d0;
+the latter resets pathstart to1, sets pathclear and updates shared tile costs and
+next_levelmap. The dynamic capture below confirms the surface-reader call chain
+executes inside the discrepant route; the subsequent cost capture proves a
+causal overwrite in this fixture. `rebuild_mechanism_probe` records
+protected230508: replacing the fixture stair pair with floors does not remove the
+first/reindexed north route or warm south route. This rejects stair-pair necessity.
+Protected230256 queried the installed native material flood three times with
+reindex true: distance8 each time, flag unchanged, sampled costs and generation
+scratch restored. That probe alone does not explain native negative distances; the projected-validation evidence below narrows that separate issue. Both runs stayed
+paused, preserved source saves and closed owned sessions. No runtime workaround,
+search-state borrowing or route-parity acceptance follows from these probes.
+Protected `build/track-history-upper-walls-20261023-000557` changes only the
+upper9x9 floor patch to walls, preserving the lower no-stairs fixture. Cases1,9,
+10 and11 all choose south, and reindex stays true at every captured transition.
+Thus upper terrain affects whether the rebuild/discrepancy occurs even without
+a stair pair. This narrows the trigger; it does not identify the executing callee
+or justify a runtime workaround. Paused frame0, source unchanged, owned DF closed.
+Single-tile probes000715/000815 further isolate this trigger. With upper walls
+except a floor at start+(-1,0,1), obstacle routes remain south and reindex first
+clears on the later westward route. Moving the sole upper floor to start+(2,0,1),
+beside the obstacle route destination, restores north on cases1/9 and south on
+cases10/11; reindex clears during both cold obstacle searches. Static routing
+code checks candidate surface eligibility before vertical connectivity through
+RVA0xdc1a10, using flags0x101000 for changed elevation versus0x901800 for flat
+Track edges. The former can reach lazy group lookup0x10afe0. The dynamic capture
+below confirms that chain executes; the terrain intervention does not prove
+intermediate scratch corruption or authorize replicating it in production.
+Both protected sessions preserved source saves and ended at paused frame0.
+
+Protected `build/track-rebuild-stack-20261023-131317` confirms the executing
+call chain during the first producing reveal render. A one-shot debugger stopped
+at fingerprinted rebuild entry0x103e8d0 after fixture preparation. The stack is
+Track search return0x26a7d9 -> connectivity0xdc1af8 -> surface0x14ae6b4 -> lazy
+group reader0x10b011 -> rebuild0x103e8d0. The original instruction and RIP were
+restored before continuation, and the debugger detached. Native case1 routes
+north; identical cases9-11 route south. No reindex flags were written. All11
+native cases completed paused at frame0; source stayed unchanged and owned DF
+closed. `rebuild_mechanism_probe.dynamic_call_chain` retains the stack, paths,
+transitions and hashes. The earlier131240 capture obtained the same stack but
+failed afterward in an obsolete terrain-export helper; it is not a passing run.
+That stack capture establishes rebuild execution inside an active search. The
+subsequent paired capture below isolates its cost overwrite; neither establishes
+a safe runtime wrapper or acceptance of the cold-route mismatch.
+
+Protected `build/track-rebuild-cost-20261023-131617` captures1323 tiles'
+cost/tag/walkable fields immediately before rebuild and at return0x10b011.
+The rebuild changes155 sampled costs and162 walkable groups. The two already
+tagged search tiles change cost1 and257 to302690; all sampled direction tags
+stay unchanged. Pathstart stays1, pathclear changes0->1, next_levelmap5417->5420,
+and reindex clears. The first native route remains north. In the paired protected
+`build/track-rebuild-cost-restore-20261023-131733`, the debugger restores only
+those1323 sampled costs after rebuild; rebuilt groups and all scalar changes
+remain. The first route becomes south and exactly matches later identical native
+previews. Both runs complete11 cases paused at frame0, preserve source saves,
+remove diagnostic breakpoints, detach, and close owned DF. See
+`rebuild_mechanism_probe.active_cost_overwrite` for full sampled values, paths,
+stacks and hashes. This establishes the overwrite as causal for this fixture.
+It does not authorize runtime debugger hooks, global native search-state borrowing,
+or other departures. The maintainer separately approved keeping the stable
+first-preview Track route on2026-10-23 ("Yes, keep the stable route"). Product
+routing remains unchanged; no global cost restoration, suppressed reindexing,
+or debugger instrumentation is introduced. Eligibility and the remaining native
+routing/terrain coverage requirements remain. The material-ordering exception
+is independent.
+
 Protected010407 establishes ordinary settling without flag writes: a four-cell
 native Track preview and cancellation clears pending reindexing, changing the
 level-map counter5417->5420. All11 subsequent ordered native paths match production
@@ -2345,6 +4618,58 @@ bridge/Godot Preview under the unchanged strict comparator. See
 save and owned process ended. This accepts those settled-state paths, not the
 first search with reindex pending. Product warmup/suppression is not authorized
 by this test; the cold-search mismatch remains open.
+
+The interior-ramp negative material-distance case is narrowed by protected
+`build/track-negative-distance-native-20261023-084550`, retained in
+`fixtures/construction/track_negative_distance_probe.json.gz`. Native caller
+RVA0x3bcb50 validates destination x/y at `selection_pos.z` before calling the
+material flood, then validates again at window z. Here the visible destination
+(62,46,171) is a floor, but its projection (62,46,170) is SoilWall. Native
+validation at that projection returns tile6, `Blocked at this location`, whereas
+the restored visible request contains tile0. Track's footprint is one tile and
+flood0x8d4f20 admits only mask0/1: the temporary blocked mask leaves no seed while
+the generation advances. Group distance code0x8d69a9 subtracts the generation
+without checking reachability. Event snapshots show generation1250001 with
+sampled old costs0,1,513 after the click; six enabled candidates report-1250001.
+Both independently owned actual-destination and projected-coordinate queries
+return reachable distance99, with sampled costs/generation restored. Thus merely
+changing seed elevation misses the temporary validation mask. Static call order
+and the native projected evaluation support this mechanism; no instruction-level
+trace of the flood call was captured. The run preserved the source and closed its
+owned session. This diagnostic did not change runtime behavior. The maintainer
+decision below removes reproduction of stale ordering as a requirement; cold
+routing initialization remains unresolved.
+
+The history probe `build/track-material-history-native-20261023-084910`
+confirms an observable dependence on unrelated native menu activity. Repeating
+Track preserves the all2105-candidate tie, but opening and cancelling a Floor
+picker before the identical Track selection produces53 distinct distances and
+changes material group order and preferred items. For example, the first dolomite
+group selects5024/4981/4917 initially versus5024/4863/4254 after Floor. No intervening
+construction was placed. Both Floor origin and destination variants show this
+change. Retained `history_probe` records the rows; source unchanged and owned
+session closed. Exact ordering here cannot be inferred from current stock and
+Track intent alone. On 2026-10-23 the maintainer authorized fresh DF-calculated
+distances instead of reproducing this apparent stale-distance bug. The existing
+Track ordering path already calls the owned native distance query at the actual
+destination and rejects unreachable or invalid distances. This decision covers
+material ordering only, not placement, eligibility or cold-route initialization.
+It adds no new runtime implementation or live acceptance evidence. Broader
+construction work and verification remain active.
+
+Protected `build/track-fresh-history-native-20261023-113644` verifies this policy
+through the installed production ordering diagnostic. Repeating Track, opening
+and cancelling Floor at the origin, and doing the same at the destination return
+identical 2157 candidate records, 2105 fresh distances and 32 ordered groups.
+Native menu costs change from one distinct distance to 53 across those histories.
+Each query preserves full-map path/walkability and item-state digests, plus the
+observed menu, counters, cursor and navigation state. The source manifest remains
+unchanged and the owned session closed without saving. The fixture's
+`fresh_order_verification` retains full records and hashes; the candidate-gate
+suite replays the fresh distances through ordering and passes all 29 tests.
+This is ordering/query-restoration evidence, not viewer or construction effects,
+and does not establish the separate Track candidate eligibility pipeline's parity.
+The first harness attempt failed on a missing diagnostic local; it is not counted.
 
 Independent pending-job Preview acceptance now covers flat and ramp joins:
 `build/connected-track-pending-preview-20260930-192241` and
@@ -4650,10 +6975,12 @@ change existing binaries or contracts. See AGENT_INSTRUCTIONS.md section 2.
 
 ### Versioning
 
-DF3D uses [Semantic Versioning 2.0.0](https://semver.org/), starting with **0.1.0**.
+DF3D uses [Semantic Versioning 2.0.0](https://semver.org/). The current feature
+release is **0.2.0**, following the published0.1.0 experimental preview.
 The application version lives in `presentations/godot/project/project.godot`
 (`config/version`); release tags use `v` plus that exact version, such as `v0.1.0`.
-Version 0.1.0 is the next release target, not a claim that a package has been published.
+GitHub Releases is the authoritative published-artifact list; local RC packages
+do not establish publication.
 
 The compatibility surface includes documented launcher options and environment variables,
 configuration and recording formats, and the public core/consumer interfaces. During `0.x`,
@@ -4738,9 +7065,1271 @@ Native acceptance on DF 53.16 used a verified, owned save clone without saving:
 matched independent native observations. Evidence is in ignored
 `build/notes/visual-polish/native-20261013-111306`; the 256-shadow oracle is in
 `native-20261013-103947`. These comparisons cover the captured scene, not all
-possible content, artifact or depiction variants. Bed bedding and directional
-bridge artwork remain separate unimplemented visual semantics; this polish pass
-does not claim those features.
+possible content, artifact or depiction variants. Bed bedding has separate
+integration and acceptance below. Directional bridge evidence follows.
+
+`fixtures/construction/bridge_rendering.json` records protected native capture
+`build/bridge-art-native-20261023-164737`: a synthetic completed granite3x3 bridge,
+five directions, each lowered and raised, paused at frame0. All lowered states
+draw nine cells. Raised retracting draws none; Left/Right/Up/Down draws only the
+west/east/north/south hinge edge. Lowered directional art distinguishes hinge,
+far end and NS/WE interior. All51 exported
+native textures exactly match installed source art after CLEAR recoloring. The
+initial comparison incorrectly let the last duplicate palette key win; retaining
+the first occurrence, as DF does, resolves every color and alpha difference.
+Protected `build/bridge-art-shapes-native-20261023-165140` adds1x1,1x3,3x1,2x2,
+2x4 and4x2 footprints across all directions and both states. All73 exported textures
+match exactly. The pure asset resolver now accepts direction/raised inputs and
+matches all70 captured layouts using `bridge_render_tiles.txt`; core gate
+`build/qa/bridge-direction-resolver-verified` passes. Hinge artwork takes precedence
+over far-end artwork on one-tile spans. Raised retracting resolves successfully to
+zero tiles, which must not trigger classic fallback. Further state transport,
+viewer and movement evidence follows below. The synthetic stage/state
+changes establish rendering evidence only, not natural construction or lever
+effects. Screenshot inspected, source unchanged, owned DF closed without saving.
+
+Optional `Building.bridge` now transports direction and raised/raising/lowering/
+collapsing flags directly from `building_bridgest`. Missing tables remain unknown
+in old recordings; validators reject non-bridge contexts and invalid directions.
+Bridge shadow equality and model revisions include all five values. World and
+selection artwork queries use direction/raised state; no native graphics state
+crosses the boundary. Schema/model serialization and revision tests, root core and
+construction-material checks pass in `build/qa/bridge-state-transport-fixed`.
+Bridge build/install passed. Protected `build/bridge-state-native-20261023-170742`
+records57 observations covering all10 direction/raised combinations; the inspector
+accepts the recording. The fixture uses diagnostic state edits, a one-tick building
+scan period and50 simulation ticks per state (500 total), not lever interactions.
+An earlier frame0-only capture published only the initial state and is excluded
+from transport acceptance. Source unchanged, owned session closed without saving.
+GPU viewer replay `build/bridge-viewer-replay-verified` now checks the rendered
+cell coordinates for all10 direction/raised states against native observations.
+All match, including zero cells for retracted and restoration of the full deck.
+The ten captured images were inspected together for directional artwork. Its
+source `build/bridge-state-native-20261023-171146` adds300 initial simulation ticks
+to finish terrain streaming before the state cycle;67 bridge observations cover
+all10 states. The initial viewer harness looked for building nodes outside their
+elevation parent and attempted the first render before terrain had arrived; that
+failed run is excluded. Final replay diagnostics contain only the three known
+engine signatures. This verifies recorded state updates through GPU rendering,
+not real lever effects or screenshot-wide pixel equality. Source save unchanged,
+owned DF closed. Construction-stage artwork is covered below.
+Construction-stage capture `build/bridge-stage-native-20261023-171446` resolves
+that artwork gap: native stages0,1,2 use the same directional RGB as completed
+bridges, with alpha `(a+1)/2` rounded down. All138,240 pixels across135 cells match
+this rule. The viewer uses white tint and cached ceil-half RGBA artwork for
+both planned and in-progress bridges. Alpha rounding happens before mipmap
+generation, preserving the native byte values instead of multiplying alpha in
+the shader. Core/extension/material checks pass in `build/qa/bridge-stage-render`.
+Recorded-stage GPU replay `build/bridge-stage-viewer`, sourced from protected
+`build/bridge-stage-record-20261023-171915`, verifies all three model stages, cell
+footprints and vertex tint. Planned/completed images were inspected; diagnostics
+are known engine issues only. Source unchanged and owned session closed.
+Synthetic fixtures must set both construction stage and `flags.exists` consistently:
+setting the stage alone left the earlier ten-state recording classified as
+in-progress. Its cell-layout evidence remains valid, but it does not establish
+completed-building opacity.
+Native-trigger capture `build/bridge-movement-20261023-172417` exercises a completed
+west-facing granite bridge through DF's `setTriggerState`, the same virtual call
+used by DFHack's instant lever action. DF advances the timer naturally: raising
+runs from0 to100, then changes raised state on tick101; lowering runs from100 to0,
+then changes raised state on tick101. All300 per-tick observations match. Eleven
+art samples, including movement ticks50 and100, exactly match the settled artwork
+for the current raised bit. No intermediate artwork or timer-based animation is
+needed for this case. All four raised/raising/lowering combinations appear in38
+recorded observations. The fixture needed a warmup resume at frame1 before the
+trigger sequence; source remained unchanged and the owned session closed. This
+is native movement and transport evidence for one synthetic completed bridge,
+not acceptance of player lever jobs or natural bridge construction.
+
+Protected `build/bridge-material-native-20261024-064810` independently varies
+building material with a fixed granite component. All408 textures across160
+paused states (four materials, four stages, five directions, raised/lowered)
+exactly match installed artwork. Bridges use building material class and color,
+including GLASS artwork with DARK_GREEN for green glass. The existing
+`Building.material_solid_color` publication now includes Bridge, so built-in
+materials do not depend on absent raw material definitions. The resolver uses
+that native descriptor when present and retains the old-recording fallback.
+
+`bridge_material_gpu` checks80 planned/completed states against captured RGBA
+hashes, white vertex tint and reload reset. Core and GPU pass in
+`build/qa/bridge-material-pixels`, with only documented Godot diagnostics; the
+rendered scene was inspected. Installed bridge capture
+`build/bridge-color-native-20261024-065327` verifies six material descriptor
+states including all three glass types. Both owned probes closed without saving
+and preserved the source clone. These are rendering and publication tests,
+not new natural-construction claims.
+
+`fixtures/construction/roller_rendering.json` records native Roller evidence.
+Protected `build/roller-art-native-20261023-190300` covers128single-tile cases:
+sixteen underlying track masks, four movement directions and planned/completed
+stages with no contained items. All16 distinct textures match installed art.
+Completed shape follows track connectivity; bare floor uses the crossing.
+Planned art instead follows the movement axis (0/2 NS,1/3 WE), always using the
+uncolored stone first frame at half alpha rounded down.
+`build/roller-phase-native-20261023-190445` adds216 cases with oak logs, oak
+blocks and granite blocks, three coordinate residues and three synthetic machine
+positions. Every expected RGBA image matches. Completed logs select wood art;
+blocks select stone art, recolored by the first item's actual material using
+first18 palette keys and first-match duplicate precedence. If p is the linked
+machine position modulo3 (0 without a machine), use y for directions0/2 or x
+for1/3. Frame1 applies when that coordinate modulo3 equals p for directions1/2
+or2-p for0/3; all other cells use frame2. Native draw RVA0x5922a0 supplies these
+rules. The simulation-owned field is `machine.visual_phase` in DFHack, original
+name `position`; its timer is original `position_counter`. Renderer/menu scratch
+must not be read at runtime. Protected
+`build/roller-multitile-native-20261023-190746` verifies216 additional cell images
+across1x3/3x1 footprints, all four directions, three first-item types, three
+machine positions and both stages. Individual cells have N, NE and EW track
+shapes; all match the same per-cell rule exactly. The native screenshot was
+inspected. All three paused diagnostics closed owned sessions and preserved the
+source save. The bridge now publishes native Roller direction and linked machine
+position, with unknown defaults -1 and -129 respectively. Position preserves the
+native signed byte (-128..127); no linked machine publishes0. First-contained-item
+facts also apply to Rollers, preserving snapshot-local material indexing.
+`build/roller-state-native-20261023-191706` verifies55 updates across13 states,
+including direction changes, signed positions, first-item order/removal and machine
+detachment. The inspector accepts the recording, the source remained unchanged,
+and the owned process closed. The machine was synthetic and inactive; its position
+was assigned diagnostically. Root build and all19 CTest checks pass in
+`build/qa/roller-native-state`; the plugin was rebuilt and installed. Natural
+powered-machine lifecycle and viewer acceptance remain pending. The asset
+resolver now uses per-cell track masks, first-item material, native direction and
+the signed machine-position/coordinate rule above. Its regression covers all16
+masks, four directions, three positions, three item-kind states, mixed three-cell
+footprints and planned/completed stages, plus unknown/signed boundary inputs.
+Root build and all19 CTest checks pass in `build/qa/roller-art-resolver`.
+The viewer supplies per-cell track dependencies and first-item material. Planned
+Rollers use painted half-alpha art along their native movement axis. Completed
+meshes retain frame1 geometry; `machine_surface.gdshader` selects the second row
+from native position, direction and absolute cell residue. Reusable256-entry float
+texture pages are shared by source and batch materials. Position-only events update
+these textures and cache versions; structural changes retain normal invalidation.
+Entity resets clear pages/slots, and removal releases the ID's slot. Signed remainder
+is explicit because shader modulo semantics differed from native C++ for negative
+positions in the first GPU regression.
+`build/qa/roller-viewer-integration` passes root/extension/core19 and Pump/Track Stop
+GPU regressions. Registered `roller_render_gpu`, backed by `make_roller_fixture`,
+passes in `build/qa/roller-render-final`:17 snapshots cover three-cell track masks,
+exact atlas columns/base rows/tint, stable mesh identities during phase changes,
+independent machines, paused/unknown/signed positions, unrelated/owned terrain
+edits, planned stages, material changes, removal/readdition and fixture reload.
+`build/roller-native-viewer` replays all13 states from the live recording, checking
+shader input values, source rows, batch ownership, unchanged meshes and item-order
+images. The full log-state image was inspected. Both GPU workflows contain only
+the documented engine diagnostics. Native selection capture
+`build/roller-icon-native-20261023-193222` selects completed three-cell Rollers in
+all four directions. Each header matches all488 opaque pixels of the installed
+`BUILDING_ICON_ROLLERS` tile (column2,row10); the first screenshot was inspected.
+The paused diagnostic preserved the source and closed its owned process.
+`selection_icon` now returns this fixed icon before its multi-tile rejection,
+retaining identity and visibility checks. Exact header RGBA comparisons across
+planned/completed states and four directions pass with the existing Roller GPU
+regression in `build/qa/roller-header-icon-verified`, with known engine diagnostics
+only. Natural powered-machine lifecycle, broader resource-page/disconnect coverage
+and minecart operation are not established by these rendering checks.
+Two additional protected diagnostics, `build/roller-power-native-20261023-193634`
+and `build/roller-power-settled-native-20261023-193746`, connect synthetic completed
+Windmill/Gear/Rollers through native `machine_handler::add_to_machine` and toggle
+the gear with native `setTriggerState`. DF advances normally; no machine position
+or power is assigned. Both remain unpowered (windmill output0, position/timer0),
+including after5,000 settling ticks in the second run. Each records360 samples
+and1,080 exact native cell images;373/372 published position observations match.
+Disengaging the gear splits the Roller machine and lowers its required power
+from11 to6. Reengaging does not merge it back in these probes, even after1,000
+ticks. These are observations of the synthetic setup, not evidence of a product
+bug or of powered animation. Whether the setup omitted native completion
+initialization remains unresolved. Both owned sessions closed without saving and
+preserved the source; the longer recording passes the inspector. Powered lifecycle
+acceptance still requires a working power source and verified native initialization.
+Follow-up viewer construction checks in `build/windmill-natural-power-20261023-194237`
+and `build/windmill-natural-power-settled-20261023-194359` naturally complete the
+Windmill with exact selected logs, yet report0power immediately and after2,000
+additional ticks. Their indoor source site had prepared outdoor flags.
+`build/windmill-outdoor-power-20261023-194935` instead uses existing reachable
+outdoor floor at21,26,170. Native construction finishes at frame10,450 with the
+four UI-selected logs48168/48170/48171/48173; frame12,450 still reports0produced
+power and `is_working=0`. The completion screenshot was inspected. All three
+sessions preserve the source and close; diagnostics are known engine issues only.
+The outdoor harness was corrected to select native-offered individual logs across
+material groups instead of assuming the indoor fixture's first group contains
+exactly four logs. Earlier outdoor runs194559/194808 provide no power acceptance.
+This confirms a naturally completed Windmill at this site is unsuitable as the
+powered reference, without attributing a bug to DF3D or DF. A flowing-water source
+supplies the powered rendering reference below.
+`build/roller-water-power-native-20261023-195434` places synthetic completed
+Water Wheel/Gear/Rollers above existing permanent river flow at25,137,169, prepares
+only adjacent upper-level support, and uses native machine attachment. River water,
+`gives_power`, machine power and positions are not assigned. Natural simulation
+supplies100power against21required and advances positions0..5 with timers0..19.
+Disengaging the gear leaves the Roller on a separate unpowered machine at position0.
+All1,080 sampled native cell images and379 published position observations match;
+the inspector accepts the recording. The owned session closed and source stayed
+unchanged. `build/roller-water-viewer` replays the six powered positions and stopped
+state: images repeat modulo3, the stopped image matches position0, and every state
+retains one mesh identity. The rendered image was inspected; diagnostics are known
+engine issues only. Initial harness attempts selected targets out of chronological
+order and then aimed at level170 while first-load initialization selected165; the
+corrected run uses ordered targets and sets the level after the first snapshot.
+This establishes powered/stopped animation from natural DF machine updates, not
+natural construction of this machinery or minecart motion. Gear reengagement in
+the synthetic setup did not reconnect the separated Roller; no runtime power or
+connection logic was changed or inferred from that observation.
+
+
+
+Protected `build/furniture-nine-completion-main-20261023-210355` verifies natural
+construction of Chair, Box, Cabinet, Slab, Statue, GrateWall, Floodgate,
+Weaponrack and Armorstand through actual menu/map/search/expanded exact-item
+pointer controls and public Play. Existing reachable floors were unchanged;
+only input items were created. All nine finished by frame1425 with no jobs and
+retained their exact selected granite items48520..48528. Completed screenshots
+were inspected together; exhaustive artwork parity is a separate requirement.
+The owned session closed without saving and preserved the source; diagnostics
+were the three known Godot issues only. Evidence is retained in
+`furniture_material_copy.json.nine_family_natural_completion`.
+
+Protected `build/furniture-tools-completion-main-20261023-210622` applies the
+same real pointer/exact-item/public-Play flow to DisplayFurniture, OfferingPlace,
+Hive, NestBox, GrateFloor, WindowGlass and TractionBench. Tool subtypes come from
+native tool-use definitions; sites are existing reachable floors. All seven
+completed by frame725 with no jobs and exact selected items48520..48526. The
+window uses green glass; the other inputs use granite. Completed screenshots
+were inspected together. Source preservation and owned-session cleanup passed,
+with only the three known Godot diagnostics. This establishes installation,
+not subsequent furniture operation or exhaustive artwork parity. Evidence is in
+`furniture_material_copy.json.tool_opening_natural_completion`.
+
+Protected `build/construction-recipes-completion-main-20261023-211339` verifies
+ArcheryTarget, BarsFloor, BarsVertical, Chain, GearAssembly, Support, CageTrap,
+Lever and StoneFallTrap through actual menu/map/expanded exact-item pointer
+controls and public Play. All nine naturally completed by frame4000, with no
+jobs and their exact permanent inputs48520..48528. Bars and chain use iron;
+other inputs use granite. Completed screenshots were inspected together.
+The first210834 run is excluded: DF suspended CageTrap construction on the
+fixture citizen/input tile, while eight others completed. Swapping that site
+with the archery-target site let the full batch finish; no job stages or
+suspensions were forced. Both owned sessions closed and preserved the source.
+Successful-run diagnostics contain only the three known Godot issues. Evidence
+is in `material_candidates.json.remaining_single_recipe_completion`; this is
+installation evidence, not powered operation, trap triggering or lever linking.
+
+Protected `build/large-recipes-completion-main-20261023-212006` verifies actual
+menu/map/expanded exact-item selection and public Play for TradeDepot, Ballista
+and Catapult. All three naturally reached stage3/3 with no jobs by frame5400,
+retaining exactly three selected granite boulders or cherry siege parts each.
+Sites are existing reachable floors outside the fixture citizen/input area.
+Completed screenshots were inspected together; only the three known Godot
+diagnostics occurred. The first211656 run is excluded: DF suspended Ballista
+construction over the source-item tile, while Depot and Catapult completed.
+The observer ended that run as failed after confirming the native suspension.
+Both sessions closed without saving and preserved the source. Evidence in
+`material_candidates.json.large_recipe_natural_completion` proves construction,
+not siege firing, caravan access or trade operations.
+
+Protected `build/construction-ramp-completion-20261023-212337` and
+`build/construction-fortification-completion-20261023-212532` verify plain Ramp
+and Fortification through actual launcher/category/leaf, map corner clicks and
+individual material selection. Native jobs reserved the selected granite block
+48520; each completed naturally at frame3100 as ConstructedRamp or
+ConstructedFortification with no remaining job. The existing natural floor was
+unchanged by setup. Fortification paused at frame1 with an unsuspended job; the
+diagnostic resumed that same owned session without modifying construction state.
+Completed views were inspected. Both sessions closed without saving and preserved
+the source; only the three known Godot diagnostics occurred. Evidence is in
+`area_refusals.json.native_terrain_service.ramp_fortification_completion`.
+These are single-tile construction effects, not exhaustive rectangle coverage.
+
+Protected `build/well-natural-completion-main-20261023-222931` verifies Well
+through actual menu/map and all four expanded individual material stages. It
+naturally completed at frame2250, stage1/1 with no jobs, retaining exactly the
+selected granite block/mechanism and iron bucket/chain48520..48523. Setup opens
+one dry floor tile with adjacent floors unchanged; this is installation evidence,
+not water availability or hauling.
+`build/waterwheel-natural-completion-main-20261023-223326` verifies the native NS
+default, actual WE orientation button, map target and three exact log selections.
+The wheel naturally completed at frame1325, stage1/1 with no jobs, retaining
+cherry logs48520..48522. Setup prepares a dry three-cell opening and a planned
+native gear; neither machinery nor construction stages are force-completed.
+The first223112 attempt left NS orientation against a WE opening and is excluded.
+Both accepted completed views were inspected. Owned sessions closed, source saves
+were preserved and diagnostics were only the three known Godot issues. This does
+not claim flowing-water power. Evidence is retained in
+`material_candidates.json.well_waterwheel_natural_completion`.
+
+Protected `build/waterwheel-animation-native-20261023-224208` establishes the
+WaterWheel animation rule: native completed NS wheels select frame1/2 by
+even/odd machine visual phase.
+Across360 natural tick observations, all1080 cell images match installed artwork
+exactly (six exported textures). The phase spans0..5;343 observations produce
+100 power and17 produce zero, with both output states retaining phase-selected
+art. Output alone is therefore not the frame selector. The fixture uses synthetic
+completed machinery over unchanged flowing river water, not natural construction.
+The screenshot was inspected; source preservation and owned cleanup passed.
+`machinery_directions.json.waterwheel_animation_native` retains the evidence.
+Protected `build/waterwheel-states-native-20261023-224729` extends this to312
+paused controlled states: both orientations, signed phases-128,-3..6,127 and
+absent machine, planned/complete, output flag on/off, and no item/oak/iron first
+item. All1560 footprint and signpost-top-row cells match70 installed textures
+exactly. Completed frame2 requires signed remainder `phase % 2 == 1`; negative
+odd values use frame1. Absent machine uses frame1. Planned art always uses painted
+frame1 at half opacity; completed art uses the contained item's actual material
+palette or painted artwork when empty. Output flags do not change this rule.
+The first224546 capture omitted the signpost layer; its42 footprint textures
+matched, but only the224729 run establishes the entire wheel. Both sessions
+closed at frame0 and preserved the source; the final screenshot was inspected.
+The bridge exports `waterwheel_machine_position` (signed byte, absent machine0,
+unknown-129) and the first construction item material. The shared machinery
+phase texture updates wheel and roller shaders without rebuilding resident
+geometry. Wheels retain frame1 base geometry, painted planned/empty artwork,
+and the first item palette when completed. `waterwheel_render_gpu` covers both
+orientations, top-row geometry, signed phases, planned stability, material
+changes, removal, independent machines and reload; the existing roller/page
+regressions also pass. `build/qa/waterwheel-rendering` passed core19 and these
+three GPU checks (only documented Godot diagnostics). Visual inspection exposed
+an inherited roller shader defect: pixel cell dimensions were used as UV offsets.
+`machine_surface.gdshader` now normalizes them by texture dimensions for both
+families. `build/qa/machinery-frame-native-cells` passes wheel, roller and page
+GPU checks, including pixel comparisons against static meshes selecting native
+atlas cells; both wheel frame captures were inspected. Only known Godot
+diagnostics remain. Protected `build/waterwheel-transport-native-20261023-230326`
+compares64 observations across15 phase/item states with DF, including signed
+limits, absent machinery, reordered first items and removal. All match; the source
+was preserved and owned DF closed. Multiple-item artwork precedence is not
+independently covered by these single-item diagnostic cases.
+
+Placed-slab rendering consumes the first contained item's engraving and material.
+Protected `build/slab-states-native-20261024-002133` verifies 168 paused diagnostic
+states (all engraving values -1..26, planned/complete, empty/granite/iron first
+item). All 48 native textures match installed artwork. Empty slabs and unused
+intents 1..5 use raw blank art; planned slabs use raw blank art with half alpha
+rounded upward before filtering. Semantic captures and matches are retained in
+`slab_rendering.json.gz`. The material picker publishes engraving in candidate
+appearance and revision identity. Individual icons use that engraving; generic
+group icons use raw memorial art, as established by protected native picker
+`build/slab-picker-native-20261024-003914`.
+
+`slab_render_gpu` checks all engraving artwork, material changes, planned alpha,
+UVs, removal and reload. Core, adapter, material and icon checks passed in
+`build/qa/slab-picker-rendering`; GPU diagnostics were the known three signatures.
+Protected transport `build/slab-transport-native-20261024-005222` matched 151
+observations across 33 engraving/first-item states. Protected viewer workflow
+`build/slab-picker-completion-main-20261024-005607` selected exact blank, memorial
+and secret slab items through the material picker and observed natural completion
+with those same items and engravings. Picker and completed screenshots were
+inspected. Both sessions preserved their source and closed owned DF; the viewer
+had only the known engine diagnostics. These checks do not establish every other
+construction family's visual or lifecycle acceptance.
+
+Well rendering uses the additive `well_chain_is_metal` fact (-1 unknown,
+0 no metal chain,1 metal chain present), derived from contained CHAIN items and
+native material flags. Any metal chain selects the chain artwork regardless of
+component order. Model identity includes the fact so insertion/removal updates
+appearance. Planned Wells use raw `BLD_WELL` with rounded-up half alpha before
+mipmaps; completed Wells use raw `BLD_WELL_WITH_ROPE` or `BLD_WELL_WITH_CHAIN`.
+Unknown old recordings retain `BLD_WELL`. No graphics/menu state is read at runtime.
+`bars_rendering.json.well` records the reference and acceptance. Core/schema/model
+checks passed in `build/qa/well-rendering`; GPU checks in `build/qa/well-native-art`
+match native planned/complete textures, rope/chain changes, removal and reload.
+The completed screenshot was inspected. Protected live run
+`build/well-transport-native-20261024-025257` matches25 observations across six
+component states and matches native artwork in all six, including rope before
+metal. Source stayed unchanged and the owned session closed. An earlier probe
+incorrectly placed the Well on solid floor; a second exposed the first-chain
+assumption, which was corrected to any metal chain. These checks cover idle
+Wells; they do not establish lowering-bucket animation or new natural-build effects.
+
+Gem windows retain the building material palette and installed `ITEM_WINDOW_GEM`
+artwork for valid gem materials. Planned alpha is truncated to half before mipmaps.
+`bars_rendering.json.gem_window` records protected natural completion in
+`build/gem-window-natural-art-20261024-021733` (three exact rubies, frame1550,
+stage1/1, no jobs), native comparisons of24 shape choices over planned/complete
+states in `build/gem-window-ruby-shapes-native-20261024-022336`, and empty/single/
+three/mixed/reordered-color components in `build/valid-component-art-native-20261024-022441`.
+All use the same building material palette. Earlier synthetic granite-material
+windows are not valid gem-window recipes and do not establish normal rendering.
+`build/qa/gem-window-rendering` passes exact native planned/completed texture
+comparisons with known Godot diagnostics only; the planned screenshot was inspected.
+No cut-shape field or first-item color override is needed for this building.
+
+Planned Door, Hatch, GrateWall, GrateFloor and Floodgate artwork uses native raw
+palette and rounded-up half alpha before filtering. Door/floodgate choose their
+material class; native Hatch uses the abstract glass hatch, and grates use the
+abstract metal wall/floor art. This replaces the generic40% preview tint for
+these families. `bars_rendering.json.planned_openings` records protected
+`build/opening-natural-art-20261024-042329`: six exact registered components
+naturally completed in1350 frames, including a green-glass window. The capture
+uses diagnostic job submission rather than public UI actions. Source remained
+unchanged and owned DF closed. Five granite planned-art hashes pass in
+`build/qa/opening-planned-pixels` with known engine diagnostics; core checks pass
+in `build/qa/opening-planned-art`. The first GPU attempt used the wrong shader
+texture parameter in its test and is excluded. Planned screenshot inspected.
+Natural GrateWall completion matches wall art; the earlier unregistered-item
+synthetic result showing floor art is not a runtime rule.
+
+Completed Door/Hatch artwork publishes the first contained item's identity,
+actual material and native solid-color token through optional
+`construction_item_id` and `construction_item_solid_color` fields plus the
+existing item material facts. Identity/color changes invalidate model artwork;
+absent older facts retain the previous base-art fallback. The renderer selects
+the installed variant using the first SplitMix64(item ID) upper32 bits masked
+with3, recolors base and overlay separately, then uses the engine-independent
+integer alpha compositor before filtering. Closed Hatch base1 is independent
+of tested item qualities0..6; no quality field is introduced. Built-in glass
+material tokens resolve to the glass art class.
+`bars_rendering.json.completed_opening_native_reference` records68 exact native
+comparisons from `build/opening-variants-native-20261024-043112` and
+`build/opening-quality-native-20261024-043220`. Protected transport capture
+`build/opening-transport-native-20261024-044433` adds362 matching observations
+across64 component replacements in granite, iron, green glass and oak. All63
+closed native frames match the compositor; three naturally opened doors are
+excluded from the closed-art comparison. This does not verify open-door or
+wear/damage rendering. Source manifests were unchanged and owned sessions closed.
+Core/schema/model checks pass in `build/qa/completed-opening-variants`;
+`build/qa/completed-opening-materials` passes99 native pixel hashes, repeated
+component changes and reload reset, with documented Godot diagnostics only.
+The completed scene was inspected. These diagnostic component replacements
+supplement the earlier natural completion reference; they do not claim public
+UI placement for every variant.
+
+Chair, Table, Box and Cabinet use the same owned first-component identity,
+actual material and solid-color facts. Native captures
+`build/furniture-variants-native-20261024-045021` and
+`build/furniture-planned-native-20261024-045228` establish132 completed comparisons
+and16 planned material states over granite, iron, green glass and oak. The four
+original buildings completed naturally at1700 frames; subsequent registered
+component replacements are diagnostic. For the supported install, chairs and
+tables use the first leg overlay, boxes use the ID-selected four-way overlay,
+and cabinet variant tiles are empty. Tested quality values0..6 keep the same
+base. These checks do not establish generated-artifact or improvement rendering.
+Planned art uses the generic family sprite, uncolored with rounded-up half alpha,
+independent of the selected material. Completed layers use the integer compositor.
+Protected `build/furniture-transport-native-20261024-050535` verifies725 published
+observations across128 replacements and132 exact native texture comparisons;
+the source stayed unchanged and owned DF closed. Core checks pass in
+`build/qa/furniture-native-variants`; its first GPU attempt used the wrong planned
+shader parameter and is excluded. Corrected `build/qa/furniture-native-pixels`
+passes all132 furniture references alongside99 opening references, planned art
+and reload cleanup, with documented Godot diagnostics only. Scene inspected.
+`bars_rendering.json` retains the native hashes and verification scope.
+
+Coffin, Cage, Chain and AnimalTrap planned artwork uses the installed raw palette
+with rounded-up half alpha before filtering. Coffins select the material-class
+sprite; restraints select metal or rope; cages and animal traps use the fixed
+metal sprite even for wooden components. Protected native capture
+`build/ordinary-art-native-20261024-051057` includes six natural completions at
+frame1400,38 diagnostic registered component replacements and19 diagnostic
+planned-stage material comparisons. All35 distinct textures match installed
+artwork and palettes exactly. Completed behavior is specified below.
+`bars_rendering.json.planned_ordinary_furniture` records the four initial planned
+references. Core passes in `build/qa/ordinary-planned-native`; its GPU attempt
+used the wrong restraint texture parameter and is excluded. Corrected
+`build/qa/ordinary-planned-pixels` passes the new planned references,231 existing
+completed references and reload checks with documented Godot diagnostics only.
+The planned scene was inspected. Native source saves stayed unchanged and the
+owned DF process closed.
+
+Armor stand and weapon rack previews use material-colored empty artwork with
+truncated half alpha before filtering. Glass selects the stone member, as native
+DF does, rather than the generic material-class fallback. The bridge supplies
+its existing owned `Building.material_solid_color` descriptor for these two
+families as well as glass windows; no schema fields were added. The resolver uses this token in both planned and completed states, including
+for built-in glass.
+`bars_rendering.json.planned_equipment_furniture` retains eight native hashes
+from the paused material comparisons in `ordinary-art-native-20261024-051057`.
+Core and GPU `build/qa/equipment-planned-pixels` pass the eight new cases,
+existing references and reload reset, with documented Godot diagnostics only;
+the rendered scene was inspected. The earlier `equipment-planned-native` GPU
+run identified the incorrect glass sprite fallback and is excluded.
+Installed bridge capture `build/equipment-transport-native-20261024-053109`
+verifies39 published material/color observations across eight completed-state
+material replacements after two natural completions. Color publication is
+stage-independent; this live check complements the paused preview reference.
+The source save stayed unchanged and owned DF closed. Earlier diagnostic runs
+052801 and052908 are excluded: advancing a forced incomplete building without
+a construction job invalidated that test setup;052908 exited DF without a native
+result. The successful probe does not advance those forced preview states.
+
+Buildings publish the exact native `getBuildStage()` value through the additive
+`Building.construction_stage` field, separately from Planned/InProgress/Complete.
+The owned model invalidates changes between intermediate stages; the rendering
+query receives the scalar without native menu or renderer state. Older recordings
+retain -1 (unknown); do not infer an exact stage from coarse InProgress.
+`fixtures/construction/layout_stages.json` retains the live transport regression:
+28 observations across six synthetic Carpenter transitions, including repeated
+1-to-2 transitions, match native values. The protected source was unchanged and
+the owned process closed. Core tests and the existing building GPU regression
+pass (GPU with the three documented engine diagnostics).
+
+Grid layouts now select an available exact stage for both base and overlay,
+retaining the coarse fallback only when the exact stage is unknown or absent
+from the installed layout. Construction-stage art supplies its own opacity;
+the viewer no longer applies the generic ghost/dim multiplier to that art.
+Workshop, Furnace and TradeDepot publish their first permanent construction
+component, falling back to entry zero if no permanent entry exists. Its ID,
+actual material and native solid color use the existing construction-item
+fields; the model owns these values and invalidates changes. Layout bases use
+that component color at every stage, or raw colors when no component is present.
+The separate native descriptor handles builtin glass colors; building material
+is not a substitute. Foreground overlays retain their original palette.
+
+Layout overlays use native split /256 channel truncation with a copied base.
+Transparent destinations seed alpha from the overlay before blending, both
+inside the footprint and on north overhangs. Layout and furniture composites
+have separate cache keys; the furniture blend is unchanged. Captures in `layout_stages.json` compare
+144 stage/material/order cases plus independent TEMP-only/two-PERM cases and
+114 cells from eight existing completed buildings. Native pixels stayed identical
+after independently replacing building material. Two protected transport runs
+each match44 observations, including real temporary contents moved before the
+permanent entry in two workshops. Source saves stayed unchanged and owned
+sessions closed; these are rendering/transport checks, not new construction effects.
+
+`layout_stage_gpu` compares all four component-free Carpenter stages and48
+component/material/stage cases across Carpenter, Smelter and TradeDepot,
+including overhangs, white tint, repeated stages and reload restoration. Core
+and bridge-material regressions also pass; GPU diagnostics are the three known
+engine signatures. The synthetic screenshot overlaps installations and is not
+main-scene acceptance. The broader family and siege comparisons below extend
+this rendering coverage.
+
+Quern column artwork uses the selected construction component's native color,
+with raw colors when no component is present. Its planned page cache applies
+ceil(source alpha/2) before mipmaps and retains a white vertex multiplier;
+completed pages retain full alpha. `quern_rendering.json` records32 native
+component-count/stage cases and24 component-order cases. `quern_render_gpu`
+checks ten component/material/stage pixel cases, mesh refresh and reload,
+alongside the existing layout regression. The standalone planned image was
+inspected; GPU checks pass with the documented engine diagnostics. These are
+rendering checks, not new natural construction or Quern job effects.
+
+Siege rendering evidence is retained in `siege_rendering.json.gz`:828 paused
+synthetic cases, including636 with explicit facing/timer facts. Captured textures
+match installed artwork; explicit-state cases also match artwork, palette and
+alpha rules. Catapult/Ballista construction uses raw CONST_0 without contents,
+otherwise CONST_1/2/3 at exact stages0/1/2. Completed color comes from entry zero
+regardless of TEMP/PERM role. All eight facings select directional artwork.
+Firing artwork uses timer1..5 for Catapult/Ballista and1..2 for Bolt Thrower;
+exactly three Ballista contents also select firing art at every tested timer.
+Unfinished Bolt Thrower uses directional READY artwork, raw color and floor-half
+alpha. The older192 cases omit orientation/timer facts; these stay unknown.
+No firing or ammunition effects are claimed. The bridge now publishes optional
+`siege_facing` and `siege_fire_timer` fields, with unknown defaults for older
+recordings, and siege contents count/component facts from entry zero. The owned
+model copies these fields and invalidates appearance changes. The resolver uses
+the captured direction, timer, stage and color rules, including Bolt Thrower's
+own artwork and planned floor-half alpha. Schema/model/selector tests and the
+bridge build pass. `siege_render_gpu` compares all828 uploaded RGBA references,
+white vertex colors and three fresh-source reload targets; it passes with the
+three documented Godot diagnostics. Fixture replay is forward-only, so an earlier
+target requires reopening the source. The final Bolt Thrower image was inspected.
+Protected `siege-transport-native-20261024-093005` matches71 observations across66
+native states, including TEMP oak before PERM iron. Normal entity-full requests
+publish the state while DF stays paused at frame zero. The source save was
+unchanged and the owned session closed. These checks establish rendering and
+semantic transport; natural firing and ammunition effects remain outside them.
+
+`trap_rendering.json.gz` retains546 paused native cases for Lever, Pressure
+Plate, Cage Trap and Stone-Fall Trap, including state, timers, all64 plate flag
+combinations, contents count and mechanism ordering. The bridge publishes
+`trap_state`, `trap_ready_timeout`, `trap_fill_timer` and `trap_trigger_flags`
+as owned facts for Trap subtypes0..3. Unknown defaults lie outside the native
+signed-byte/signed-short ranges; older recordings remain unknown. Trigger flags
+retain the six native bits (units1, water2, magma4, citizens8, resets16, track32).
+Contained entry count and component identity/material/solid-color facts also
+cover these four subtypes. Their component is the first TRAPPARTS item regardless
+of TEMP/PERM role or preceding non-mechanism entries. No mechanism means absent
+component facts. Model changes include each field independently. Native menu and
+renderer scratch are not runtime inputs. Core checks and the bridge build pass;
+`trap_render_gpu` verifies all546 native pixel references, white vertices,
+empty-art visibility and fresh-source reloads. It passes with only the three
+documented Godot diagnostics. Completed traps without a mechanism intentionally
+draw no art. Levers use pulled art when state is positive; pressure plates use
+pressed art when state or either timer is positive, with trigger artwork priority
+magma, water, minecart, then generic. Cage/Stone-Fall traps use loaded art with
+at least two contents and nonpositive state. Their north top layer retains raw
+colors independently of the mechanism-colored base. All four planned trap types
+retain raw colors and ceil-half source alpha. This is per-layer palette metadata,
+not a grid-layout classification. Older recordings retain unknown-fact fallbacks.
+These captures establish artwork inputs, not activation or natural construction effects.
+Protected `trap-transport-native-20261024-101431` matches70 observations across59
+native states, including a boulder before the selected iron mechanism. It also
+checks empty/no-mechanism contents and independent timer/flag changes through
+normal entity-full publication. DF remained paused at frame zero; the source
+save was unchanged and the owned process closed. This verifies semantic
+transport; the separate GPU gate establishes the rendering coverage above.
+
+`weapon_rendering.json.gz` retains578 paused native Weapon/Trap4 cases, including
+component types/order, roles, count, state, retraction and timer boundaries.
+The bridge publishes `weapon_count` (WEAPON/TRAPCOMP entries only),
+`weapon_retracted` (Weapon only) and `construction_weapon_raw` (first eligible
+item definition regardless of role). Component ID/material/solid-color facts
+and total contained-entry count cover Weapon and Trap4; `trap_state` also covers
+Trap4. Other pressure-plate facts remain restricted to Trap0..3. Unknown defaults
+preserve older recordings. Each new fact participates in owned-model changes.
+Core checks and bridge build pass. Protected
+`weapon-transport-native-20261024-105340` matches130 observations across44 distinct
+states through ordinary entity-full publication at paused frame zero. The source
+save was unchanged and the owned session closed. These are semantic and artwork
+references, not activation or natural construction effects. WeaponTrap rendering
+now uses the first weapon definition's WEAPON_TRAP variant and component color
+when at least two total contents are present and native state is nonpositive;
+otherwise it retains raw empty-trap art. Planned art keeps raw colors with
+ceil-half alpha. `weapon_trap_render_gpu` passes163 native references and reloads
+with only the three documented Godot diagnostics. Upright weapons use owned
+count/retraction/component facts: retracted art retains its raw palette; raised
+upper and lower item-definition variants use the component color. Planned and
+empty upright buildings use RETRACTED_10, with ceil-half alpha while planned.
+`upright_weapon_render_gpu` verifies417 supported Spear/spike references, white
+vertices and source reloads0/416/1; `build/qa/upright-weapon-approved-verified`
+passes core and GPU checks with only documented Godot diagnostics. The ten-spike
+render was inspected. Unsupported axe/short-sword ordering probes remain diagnostic
+only; no new bridge contract or gameplay behavior was needed.
+
+The supported native trap-component graphics decoder at RVA0xd007b0 masks the
+shifted artwork selector with0x2f at RVA0xd00970, dropping bit4. For five-to-ten
+raised spikes this selects an inventory icon, weapon-trap artwork or upper rows
+instead of the declared lower rows. A fresh session with different item IDs and
+count order reproduces all12 comparisons exactly. Raw definition texture
+references are correct. The maintainer approved the declared lower artwork on
+2026-10-24, changing appearance only. Corrected lower-image hashes are explicitly
+separate from the observed native hashes in the fixture. The ordinary-weapon
+decoder at RVA0xcffa00 uses0x1f instead. All44 iron/oak Spear count/retraction
+captures match the declared artwork. Diagnostic native graphics data is evidence
+only and is not read by the runtime bridge.
+
+`farm_road_rendering.json.gz` retains 300 native stage references: 108 material
+variations on 3x3 rectangles and 192 cases spanning six additional dimensions,
+full rectangles and allocated native extent masks with a center or corner
+excluded. Stage zero uses raw ceil-half artwork. Stages one, two and three draw
+completed cells at local spacing four, two and one respectively; holes do not
+shift this pattern. Farms retain faint unfinished cells while roads leave them
+empty. Both native road classes select BLD_PAVED_ROAD. Independent building and
+component materials do not change the four native texture hashes.
+
+The resolver supplies per-tile half-alpha metadata to both mesh and footprint
+resolution, with white vertices and raw palette. An entirely empty intermediate
+road retains a successful resolution to suppress fallback glyphs. Farm/road
+component facts are not published because the artwork does not consume them.
+`farm_road_render_gpu` checks every cell's uploaded RGBA and position, native
+empty visibility and fresh-source reloads. Core checks pass; the GPU run
+`build/qa/farm-road-native-verified` passes with only the three documented Godot
+diagnostics. The initial probe's attempted-hole duplicates are excluded; real
+mask coverage comes from the separate shape capture. No cultivation, traffic or
+natural construction effects are established by these paused references.
+
+`layout_families_rendering.json.gz` adds560 native stage/material cases across
+the remaining23 workshop and6 furnace routes. `layout_families_render_gpu`
+compares their uploaded RGBA, white vertices and fresh-source reloads. This
+identified and corrected transparent-base overlay alpha inside seven workshop
+families, plus planned Millstone/Screw Press alpha and Millstone component color.
+Quern, Millstone and Screw Press use ceil-half source alpha for their planned
+artwork; this is resolver metadata used consistently for meshes, depth and
+selection. Their completed artwork retains full alpha. A separate48-case native
+probe confirms Millstone/Screw Press prefer the first PERM component, including
+TEMP entries before it. Both native sessions preserved the source save and
+closed their owned DF process. Core, the560-case GPU comparison and the earlier
+layout/Quern regressions pass; GPU runs retain only the documented diagnostics.
+These are rendering checks, not new natural construction or workshop-job effects.
+
+Archery targets retain their painted palette at every stage. Their building
+material selects stone, wood or metal artwork; native glass targets use metal
+artwork. Planned targets use ceil-half source alpha through the raw-furniture
+page cache and white vertices. `archery_target_rendering.json` records eight
+pixel cases from18 native comparisons that varied component and building
+materials independently. Core and `archery_target_gpu` pass, including planned
+oak reload; GPU diagnostics are the three known signatures. The planned image
+was inspected. No bridge/schema change was needed. The broader126-case native
+capture is retained in `simple_construction_rendering.json.gz`; it establishes
+initial trap/upright references but does not verify their pending contents/state
+rendering. The source save stayed unchanged and the owned native process closed.
+
+Tool-backed construction publishes the selected tool raw ID from the construction
+job while planned and the first contained tool when complete. The additive
+`Building.construction_tool_raw` field is bounded to128 bytes and restricted to
+Bookcase, DisplayFurniture, OfferingPlace, Hive and NestBox. The owned model
+copies it and invalidates changes; old recordings retain the family fallback.
+This distinguishes display cases from pedestals without reading native menus.
+
+Completed Bookcase, DisplayFurniture, OfferingPlace and NestBox use the actual
+component material/color. Hive keeps the raw HIVE_BLD palette. TractionBench
+uses building material and its raw palette: wood selects WOODEN, stone STONE,
+and glass the METAL fallback. Supported CHAIN and ROPE definitions alias the
+same cells, so no extra chain discriminator is needed for installed artwork.
+Planned beds use the generic ITEM_BED; completed beds use component material
+and published bedding facts. Native item/material getters select STONE frames
+for glass beds; the shared bed compositor follows that selection. Planned tool
+furniture uses raw artwork with ceil-half alpha and a white ghost multiplier.
+
+Protected captures `build/tool-furniture-art-native-20261024-060022` and
+`build/tool-furniture-source-native-20261024-060329` establish planned art and
+independently distinguish building/component material sources. Forced planned
+tool states without jobs are excluded from reference acceptance. Protected
+`build/traction-improvement-native-20261024-060731` and native draw inspection
+confirm the supported traction artwork aliases. All owned processes closed
+without saving and preserved the source clones.
+
+Installed bridge capture `build/tool-state-transport-native-20261024-062138`
+verifies328 exact observations across63 states, including suspended natural
+jobs, natural completions, registered component replacements and building-only
+material changes. It supplies seven completed-bed references with native
+bedding facts. The fixture retains62 tool-furniture references and those seven
+bed references as hashes only. `build/qa/tool-furniture-bed-glass` passes core,
+all69 GPU references and reload reset, with only documented Godot diagnostics.
+The rendered scene was inspected. Native exported textures remain ignored.
+
+Completed ordinary furniture uses native data sources appropriate to each
+family. Coffin, Cage and AnimalTrap use the first contained component's actual
+material and solid descriptor token. Their existing component identity/color
+contract is now supported for these three families. Armorstand and Weaponrack
+use the building material and its native color in both stages; glass uses the
+stone member. Completed animal traps use the metal member even for wood.
+
+The additive `Building.contained_item_count` field is an owned signed count of
+DF's building entries for Coffin, Armorstand, Weaponrack, SiegeEngine and Trap
+subtypes0..3, including TEMP and
+PERM roles. Unknown is-1; negative values below-1 and other building contexts are
+rejected. It participates in model change detection and reset. A coffin with
+one entry uses `_UNUSED`; a second entry selects the generic used artwork.
+Equipment furniture with more than one entry uses `_FULL`, otherwise `_EMPTY`.
+Component-internal contents are not included. Old recordings retain their
+existing unknown-fact fallback. No native rendering or menu scratch is read by
+this runtime publication.
+
+Protected `build/ordinary-material-source-native-20261024-053520` independently
+changes building and component materials after six natural completions; all17
+exported textures match installed artwork exactly. Protected
+`build/ordinary-contents-native-20261024-053340` adds a registered boulder in
+TEMP and PERM roles and then inside the component, with removals between cases;
+all15 exported textures match. These tests establish artwork discriminators,
+not normal burial, equipment-assignment or captured-creature gameplay.
+`bars_rendering.json.completed_ordinary_native_reference` retains41 distinct
+native material/contents references with their source runs and labels.
+
+Core and the initial32 references pass in `build/qa/ordinary-completed-native`.
+Installed bridge capture `build/ordinary-state-transport-native-20261024-055345`
+verifies380 exact published observations across75 states: component material,
+identity and color for three families, building color for equipment, and count
+changes and removals for all three count-bearing families. Six buildings first
+complete naturally; later registered replacements and TEMP/PERM contents
+changes advance50 ticks per state without forcing construction stages.
+The source save stayed unchanged and owned DF closed. Nine additional distinct
+full-material references from that run extend the GPU checks to41. All pass in
+`build/qa/ordinary-full-materials`, alongside the existing equipment/chain cases
+and reload reset, with documented Godot diagnostics only. Scenes inspected.
+
+Restraints select metal/rope artwork from the building material and retain its
+painted palette. `build/chain-material-source-native-20261024-053630` separately
+changes building and component materials between iron and cotton after natural
+completion; all three exported textures match. Completed recoloring is removed.
+Six native states are retained in `bars_rendering.json.completed_chain_native_reference`.
+All three owned probes closed without saving and preserved their source saves.
+Core passes in `build/qa/chain-native-palette`; its combined GPU run reached the
+120-second limit after the growing fixture reached251 snapshots, so is excluded.
+The eight equipment previews and six restraint references now run in
+`equipment_furniture_gpu`, which reuses the source-texture assertion helpers and
+checks reload reset. The original bars/opening/furniture cases remain in
+`bars_render_gpu`. Both pass in `build/qa/equipment-furniture-split`, with known
+Godot diagnostics only. The focused rendered scene was inspected. Future
+completed ordinary-furniture references belong in the focused check.
+
+Glass windows use the optional semantic `Building.material_solid_color` descriptor
+published from DF's building material. The bridge supplies it for glass
+windows and equipment furniture, including built-in glass materials absent from raw-file material definitions.
+The string is bounded to128 bytes, participates in entity/model change detection,
+and is copied into owned model storage. Older recordings retain the existing raw
+material fallback. Planned window alpha is truncated to half before mipmap generation.
+`bars_rendering.json.glass_window` records24 paused opening-art cases in
+`build/opening-art-native-20261024-040050`; matching glass building/component
+materials establish green/crystal planned and completed artwork. Protected
+`build/glass-color-native-20261024-041625` verifies17 published observations over
+green/clear/crystal material changes against native descriptor tokens. This is
+transport evidence, not natural construction. The owned session closed and source
+manifest was unchanged. `build/qa/glass-native-color-core-fixed` passes core/consumer
+checks; `build/qa/glass-window-native-color` passes green-glass native pixel hashes
+for planned/complete/reload with known Godot diagnostics only. Preview inspected.
+The initial alpha-only test correctly failed because built-in color was missing;
+its results are excluded. Door/hatch/grate synthetic findings need separate state
+review and are not adopted as runtime rules by this glass-window change.
+
+Floor bars and supports publish their first contained construction item's actual
+material through the existing optional item facts. Planned artwork uses building
+material with truncated half alpha before mipmaps; completed artwork uses the
+first item material, or the original palette when no item is present. Support
+shape still follows building material class. `bars_rendering.json.floor_and_support`
+records native capture `build/simple-building-art-native-20261024-020638` and
+focused GPU/core checks in `build/qa/floor-bars-support-rendering`. The shared
+fixture checks exact native RGBA for completed iron, planned granite and empty
+states, including reload. The completed screenshot was inspected. Protected
+`build/floor-support-transport-native-20261024-021409` matches 50 observations
+across12 item insertion/order/removal states; source remained unchanged and the
+owned session closed. This synthetic transport check does not replace the
+separate natural-construction effect evidence.
+
+Vertical-bar rendering composes the native faces and northward spill from the
+DF-supplied adjacency mask. Protected `build/bars-states-native-20261024-002223` checks64
+paused states over16 cardinal wall masks, planned/complete and empty/iron first
+item, with granite building material. All33 textures match ordered composites
+of installed W/E/N-back/S layers and the separate N-upper spill. Planned art uses
+building material and truncated half alpha; completed empty art is raw, while a
+first bar item supplies its actual material. `bars_rendering.json.gz` retains
+these captures and matches. Protected neighbor probe
+`build/bars-neighbors-native-20261024-005752` adds 252 paused cases across four
+sides, terrain-shape representatives, six fortification types, occupancy values
+and seven synthetic neighboring building types/stages/closed states. All seven
+textures match installed composites. With controlled Dynamic occupancy, closed
+Doors and wall grates connect, and vertical bars connect regardless of closed
+state; the tested floodgates, floor grates/bars and chairs do not. This does not
+establish normal occupancy transitions or exhaustive terrain/boundary behavior.
+`verticalBarsConnections` in `construction_site_native.cpp` supplies a semantic
+N/S/W/E mask using fingerprinted native open-terrain and closed Door/wall-grate/
+vertical-bar helpers, plus the native inline occupancy and bar-list checks.
+It does not call the draw routine or access menu/graphics scratch. The diagnostic
+`df3d bars-connections-read x y z` returns this mask, or -1 on unsupported input.
+Protected `build/bars-helper-native-20261024-010250` matched all 252 masks against
+the independent native wall-mask artwork captures. This checks the base cell,
+not upper spill or mirror publication. An attempted exhaustive synthetic tile
+render (`build/bars-terrain-native-20261024-005935`) exited before results and is
+excluded from acceptance; the protected source was unchanged.
+The additive `vertical_bars_connections` field uses -1 for unknown old recordings
+and 0..15 for the native mask. Model revisions include adjacency; changed masks
+rebuild the affected artwork. Planned opacity is applied after composition and
+before mipmaps. Core checks passed in `build/qa/bars-semantic-contract` and
+`build/qa/bars-rendering`; `build/qa/bars-native-pixels` passed exact native RGBA
+checks for all 16 masks, upper spill, planned material/alpha, completed iron/raw
+empty artwork, changed adjacency, removal and reload. GPU diagnostics were only
+the known three signatures; completed/planned screenshots were inspected.
+Protected `build/bars-transport-native-20261024-011510` matched 95 observations
+across 21 states, including all wall masks and first-item order/removal changes.
+These sessions preserved their source and closed. Diagnostic probes do not
+establish natural construction or removal effects for every building family.
+
+Gear/axle rendering consumes native signed machine phase, horizontal axis and
+first-item material. Stable resident geometry uses cached shaft/fitting composites;
+the shared machinery shader changes frames without rebuilding geometry. Planned
+textures preserve native alpha rounding before filtering and mipmap generation.
+Protected `build/axles-gears-states-native-20261023-233123` records546 controlled
+cases across horizontal axes/orientations/lengths, vertical axles and gears,
+signed phases, absent machinery, planned/complete, first-item materials and gear
+disengagement. All858 footprint cells match28 native textures exactly when axle
+shafts are material-colored and overlaid with uncolored fittings. Complete art
+uses frame2 only for positive odd machine phase; planned art uses painted frame1.
+Completed empty buildings retain painted pixels; otherwise the first item's
+actual material supplies the shaft/gear palette. Horizontal axles need native
+`is_vertical` even at1x1; dimensions alone are insufficient. Planned gear alpha
+rounds half upward, while planned axle alpha truncates half. Gear disengagement
+alone does not change these frames when machine phase is held constant.
+`build/gear-neighbors-native-20261023-233800` checks648 neighbor combinations;
+the gear tile retains ordinary gear art. Native graph-connected south NS axle
+probe `build/gear-connected-native-20261023-234108` confirms reciprocal machine
+nodes and ordinary artwork across the full vicinity before/after250 ticks.
+The latter needed a recorded resume after native paused at frame1. No tested
+case selects the south-axle artwork token; this does not prove it globally unused.
+All sessions closed and preserved source manifests; screenshots were inspected.
+`axles_gears_rendering.json.gz` retains the scalar captures and exact texture
+matches, indexed by `machinery_directions.json`. These are diagnostic art/graph
+observations, not natural construction or powered-operation acceptance.
+Protected `build/transmission-transport-native-20261024-000532` verifies256
+bridge observations across60 controlled states for horizontal WE/NS1x1 axles,
+vertical axles and gears. Signed phases, absent/detached machinery, first-item
+order and removals match native facts exactly. The source manifest stayed
+unchanged and the owned session closed. This transport diagnostic uses synthetic
+completed buildings and registered seed items; it does not prove recipe effects.
+`build/qa/transmission-native-alpha` passes all five machinery GPU checks with
+known engine diagnostics only. Transmission coverage compares uploaded RGBA
+against native textures, including planned alpha, raw/oak/iron materials and both
+frames; it also checks phase-only geometry stability, axis changes, removal and
+reload. Completed/planned screenshots were inspected. Core checks passed in
+`build/qa/transmission-rendering`.
+
+Windmill rendering consumes native orientation, signed rotation and first-item
+material facts. `WINDMILL_S_1` supplies stable resident geometry; the shared
+machinery shader selects orientation and frame without rebuilding that geometry.
+Protected `build/windmill-states-native-20261023-231110` establishes its native
+replacement rules:1,080 paused controlled cases across nine orientation vectors,
+ten signed rotations, planned/complete, working0/1 and none/oak/iron first items.
+All12,960 footprint/signpost cells match672 installed textures exactly. Orientation
+uses the eight compass directions (east-positive x, south-positive y); zero vector
+uses south. Planned art retains orientation, painted pixels and half opacity,
+but always frame1. Completed art uses frame2 for any nonzero rotation, including
+negative values, and the first item's material palette or painted pixels when
+empty. The working flag does not select the frame. Source preservation and owned
+cleanup passed at frame0; screenshot inspected. Detailed scalar evidence lives in
+`windmill_rendering.json.gz`, indexed from `machinery_directions.json`.
+This is diagnostic artwork evidence, not natural completion or wind-power effects;
+orientations outside-1..1 and multiple-item artwork precedence remain untested.
+Out-of-range native vectors publish paired unknown values. The additive mirror
+fields use-2 for unknown vector components and-129 for unknown rotation. Planned
+windmills use the shared frame sampler through an alpha-blended ghost shader.
+`build/qa/windmill-rendering/core.log` passes all19 core checks. The initial GPU
+run caught a helper-function builtin-scope error; it is excluded. After passing
+UV/color explicitly, `build/qa/windmill-shader-cells` passes all four machinery
+GPU checks, including72 windmill orientation/rotation/stage cases against static
+native-cell render references, unchanged mesh identity, material changes, removal
+and reload. `build/qa/windmill-visual` passes the final capture version. Both
+complete and planned images were inspected; only documented Godot diagnostics
+remain. Protected `build/windmill-transport-native-20261023-232719` compares231
+observations across50 states with DF, including all nine vectors, signed rotations
+and first-item reordering/removal. All match; owned DF closed and source manifests
+were unchanged. This transport probe controls windmill timers and simulation
+fields; it does not establish natural wind-power effects.
+
+Instrument material-picker artwork consumes owned instrument-definition facts.
+Native protected captures
+`build/instrument-picker-native-20261023-204630` and `...-204740` establish eight
+registered candidates across keyboard/stringed/wind/percussion and oak/iron.
+Controlled `PLACED_AS_BUILDING` flags were restored before exit. All eight
+exported textures per capture exactly match the corresponding BUILDING sprite
+and actual material palette. The expanded percussion group and individual each
+match665 opaque texture pixels in the inspected screenshot. Both owned sessions
+closed at paused frame0 and preserved the source. The earlier204542 probe failed
+an ASCII-text expansion helper on an accented generated name; it is excluded.
+Candidate appearance carries the definition's music-skill family and placement
+flag through the bridge, mirror, model and Godot dictionary. Both are optional
+for older data, validated together, and included in material-list revisions and
+wire estimates. The resolver selects family-specific BUILDING/HANDHELD artwork;
+runtime never consumes the diagnostic graphics cache. Adapter138 and all19 core
+checks pass; `build/qa/instrument-picker-facts` also verifies all eight native
+candidate texture hashes using installed art.
+Protected `build/native-material-instrument-main-20261023-205940` verifies the
+actual launcher/category/Instrument/map/group/individual pointer flow. Keyboard
+facts reached the candidate dictionary; selected cherry instrument48520 completed
+naturally in575 frames, stage1/1 with no jobs, retaining exactly that item. The
+expanded picker and completed screenshots were inspected. Source preservation
+and owned-session cleanup passed, with only the three documented Godot issues.
+This natural completion covers one real generated definition; the eight texture
+references cover artwork across all four families. Map-item streams still lack
+these definition facts and retain their legacy approximation.
+`instrument_rendering.json.native_material_picker` records this evidence.
+
+Roller resource ownership is covered by registered `roller_pages_fixture` and
+`roller_pages_gpu`:300 independent Rollers span two256-slot pages. Tests verify
+unique slots and signed positions, stable geometry for phase updates, released
+slot reuse across half/full population churn, unchanged surviving geometry and
+fresh texture identities after fixture reload. `build/qa/roller-pages` passes
+with the documented three Godot diagnostics. Protected
+`build/roller-lifecycle-native-20261023-203509` verifies live detach clears the
+Roller node/session and reconnect creates a fresh page containing a phase changed
+in DF while detached. This uses a synthetic completed Roller and inactive machine;
+it establishes publication/resource lifecycle, not construction or power effects.
+Owned DF96140 closed at frame836, source remained unchanged, viewer assertions
+passed and diagnostics were known only. Evidence is in `roller_rendering.json`.
+
+`fixtures/construction/instrument_rendering.json` establishes Instrument artwork
+rules from paused protected captures200157/200456/200604 on2026-10-23. The initial
+34 cases use unmodified generated definitions;66 controlled cases vary their
+`PLACED_AS_BUILDING` flag (restored after each class), four materials and both
+stages. Another18 cases vary building material independently of a constant iron
+instrument. Every exported RGBA image matches installed artwork/palette rules.
+Planned Instruments use a keyboard BUILDING placeholder, recolored by building
+material with half alpha. Completed nonempty buildings use the instrument raw's
+`music_skill` (keyboard/stringed/wind/percussion) and `PLACED_AS_BUILDING` to choose
+BUILDING versus HANDHELD art, with actual item material color. Completed empty
+buildings use painted keyboard BUILDING art. The controlled native screenshot was
+inspected after item cleanup. Sources stayed unchanged and owned sessions closed.
+The separate placed-only probe200329 had no generated placed Wind definition and
+is excluded; the controlled/restored flag probe covers that combination.
+These are semantic fields on item definitions and actual materials; renderer/menu
+scratch must not be used at runtime. Capture200823 adds14 exact first-entry
+ordering cases with two families/materials and use_mode0/1/2. The bridge publishes
+the first instrument definition's semantic family and placement flag, plus its
+actual material. Unknown facts remain explicit. The building resolver now uses
+these facts and the planned keyboard placeholder. Native planned alpha is now
+rounded down in the cached RGBA bytes before filtering, with white vertex tint.
+
+Protected `build/instrument-state-native-20261023-201924` verifies84 observations
+across18 states: all four families, both controlled/restored placement flags,
+planned/complete stages and empty-after-removal. Registered items were created
+for this diagnostic; it does not establish natural construction. Inspector passed,
+source remained unchanged and owned DF73156 closed. Actual recording replay in
+`build/instrument-native-viewer` checks all18 sprite regions/tints and uploaded
+RGBA cells exactly, distinct portable/placed images, invariant planned images
+and empty-state recovery. The rendered percussion screenshot was inspected.
+Only documented Godot diagnostics remain. An earlier test harness used the wrong
+shader parameter; that failed harness run is excluded from acceptance.
+
+The shared first-construction-item material now passes through the world model's
+snapshot-local material remap. A regression verifies table reorderings preserve
+color and actual material changes update it for Instruments, Rollers and Track
+Stops. `instrument-semantic-remap` passes all19 CTest checks; installed plugin
+build and `instrument-viewer-integration` Roller/Track Stop GPU checks pass
+(GPU with known issues). Native capture
+`build/instrument-icon-native-20261023-202515` verifies the fixed
+`BUILDING_ICON_INSTRUMENT` header for all four families:716 opaque pixels per
+capture match the installed icon exactly, selected IDs match, frame0/source
+preservation passed and owned DF71052 closed. The percussion header image was
+inspected. Selection now uses that fixed icon.
+
+Registered `instrument_fixture` / `instrument_render_gpu` cover all four
+families, portable/placed definitions, planned/completed art and tint, fixed
+headers, empty recovery, removal/reused ID and fixture reload. Base-level RGBA
+hashes retain the independently verified native artwork rules without shipping
+art. `build/qa/instrument-render-final` passes with the three documented Godot
+diagnostics. Two prior harness failures used a graphic-variant argument as a
+palette row and included generated mipmaps in base-image hashes; corrected tests
+exclude both attempts from acceptance. Live disconnect/resource coverage remains
+part of the broader construction audit. Handheld map-item Instruments still use
+their separate approximation; the placed-building path is corrected.
+
+`fixtures/construction/track_stop_rendering.json` records protected capture
+`build/track-stop-art-native-20261023-182731`: 160 synthetic granite Track Stop
+cases spanning sixteen underlying track masks, five dumping settings and both
+construction stages. Completed art follows finished track connections, with
+single endpoints using straight art and bare floor using the crossing. Planned
+stops always use four-way artwork with painted RGB and half alpha rounded down.
+Dump settings do not affect these sprites. All13 exported textures match the
+installed artwork byte-for-byte. The source save stayed unchanged, the owned
+session closed and the native screenshot was inspected.
+The asset query now consumes the existing semantic completed-track mask; no new
+native field or graphics-cache access is needed. Terrain changes invalidate the
+affected stop's cached artwork independently of building versions. World ghosts
+use cached floor-half source alpha with white vertex tint. Resolver tests cover
+all sixteen masks and both stages;
+root/core and extension/item-icon gates pass in `build/qa/track-stop-core` and
+`build/qa/track-stop-render`. Registered `track_stop_render_gpu` generates19
+snapshots covering all16 masks with empty building deltas, an unrelated tile
+change, planned state and track removal. It verifies native sprite coordinates,
+white tint, batched completed stops, unchanged mesh identity for unrelated
+changes, half-alpha separately sorted planned ghosts and exact restoration of
+the original rendered image after removing track.
+`build/qa/track-stop-lifecycle-final` passes with known engine diagnostics only;
+core checks also pass in `build/qa/track-stop-lifecycle-fixed`.
+Protected material probes `build/track-stop-material-native-20261023-183623` and
+`build/track-stop-floor-material-native-20261023-183759` vary granite, iron, green
+glass and oak across128 cases each. Stops have no contained construction items;
+changing building or underlying construction material leaves stone artwork
+unchanged. Static inspection of native trap draw RVA0x5a6c70 explains this:
+Track Stop branch0x5a6f26 reads the first contained item's actual material/color
+and selects wood art only for item type WOOD (log), not arbitrary wooden material.
+Planned art uses a fixed sprite key. Runtime must not read the renderer scratch.
+Protected `build/track-stop-items-native-20261023-184132` supplies a first
+contained item (oak log, oak block, granite block, iron block or green glass
+block) over16track masks and2stages. All160 exported-image comparisons match:
+completed logs select wood artwork; blocks select stone artwork even when made
+of oak. Completed sprites use the first item's actual-material solid-state
+color, replacing the first18 palette keys with first-match duplicate precedence.
+Planned art ignores these inputs and uses the uncolored half-alpha stone
+crossing. The diagnostic stays paused at frame0, closes its owned session and
+leaves the source save unchanged; synthetic item combinations do not establish
+build eligibility. Additive `Building.construction_item_is_log` (-1 unknown,
+0 non-log,1 log) and `construction_item_material` (actual material or65535 unknown)
+now carry these facts. The plugin reads exactly `contained_items[0]` at a safe
+point using native item getters; no item-role search or graphics state is used.
+Validation rejects non-Track-Stop contexts, invalid log facts and material ranges.
+The model clears unknown observations and revises artwork when either fact changes.
+Completed rendering uses log status for the sheet and actual-item material for
+palette; planned stops always use uncolored stone crossing artwork.
+Core/serialization/model/resolver tests pass in `build/qa/track-stop-item-facts`.
+Plugin build/install passes (`build/notes/pm/track-stop-item-build.log`).
+`build/qa/track-stop-item-render` extends the GPU replay to23states, verifying
+log-to-wood-block sheet changes, actual-material recoloring and unknown-state
+palette clearing, with known engine diagnostics only. Protected
+`build/track-stop-transport-native-20261023-185746` verifies25published observations
+across six states using real seed logs/blocks: empty, log, log before block,
+block before log, log after removal and empty after removal. Every first-item
+fact and actual-material token matches native state; the inspector accepts the
+recording. This caught and fixed a missing global-to-snapshot-local material
+index remapping in the new field. The rejected earlier recording is not evidence
+of acceptance. Plugin rebuild/install passes in
+`build/notes/pm/track-stop-item-local-material-build.log`.
+`build/track-stop-native-viewer` replays all six states through published batches,
+checks sheet rows and visible transitions, confirms second-item addition keeps
+the same mesh, and restores the original image when the stop becomes empty.
+Uncropped frames were inspected; only known engine diagnostics remain. The owned
+native session closed at frame600 and the source save stayed unchanged. Item
+insertion/order/removal are diagnostic fixture operations, not a gameplay UI or
+natural construction/minecart-effects claim.
+Four clicked native headers match all709 opaque pixels of
+`BUILDING_ICON_TRACK_STOP`. Selection now returns that fixed icon. Registered
+`build/qa/track-stop-selection` passes exact icon RGBA checks across19 terrain/stage
+states, with known engine diagnostics only. Both native sessions closed without
+changing the source save. These synthetic captures do not establish natural
+construction or minecart operation.
+
+`fixtures/construction/pump_rendering.json` records protected capture
+`build/pump-art-native-20261023-173325`: four synthetic stationary granite screw
+pumps, each at stages0 and1, paused at frame0. All16 exported textures match the
+installed source artwork exactly: native intake directions0/1/2/3 use S/W/N/E
+output-facing art respectively. Completed pixels are not material-recolored;
+planned pixels retain RGB with alpha divided by two and rounded down. Each pump
+occupies two cells along its flow axis. Screenshot inspected, source unchanged,
+owned session closed. Optional scalar `Building.pump_direction` now carries DF's
+intake direction directly, with -1 for unknown old recordings. Validation rejects
+out-of-range values and non-pump contexts; shadow equality and model revisions
+include direction. World and selection queries use the captured output-facing
+art and keep its painted palette. Unfinished world pumps use cached floor-half
+source RGBA and white vertex tint. Unknown old recordings retain historical north artwork. Schema transport,
+model revision/clearing and all four sprite layouts pass with the core, material
+and item-icon checks in `build/qa/pump-direction`. Plugin build/install passed.
+Protected `build/pump-state-native-20261023-174335` publishes all four directions
+and planned/completed stages; inspector accepts the recording, source stays
+unchanged and the owned session closes. GPU replay `build/pump-viewer-final`,
+using `build/pump-state-native-20261023-174702`, checks all eight planned/completed
+orientation cases against native cell positions and verifies vertex opacity.
+All eight images were inspected; diagnostics contain known engine signatures
+only. The source fixture reveals all sites before300-tick terrain warmup and the
+replay visits samples chronologically; earlier harness failures lacked those
+conditions and are excluded. This verifies stationary world artwork, not
+screenshot-wide pixel equality.
+Protected `build/pump-motion-native-20261023-175106` clicks all four completed
+pump directions. Every native header uses `BUILDING_ICON_SCREW_PUMP`: all902
+opaque pixels agree per capture. The selection icon API now returns that installed
+asset for pumps, including multi-tile ones. Gate `build/qa/pump-selection-icon`
+passes; GPU replay `build/pump-icon-viewer` checks byte-identical icon RGBA in all
+eight planned/completed cases, with known engine diagnostics only.
+The same native probe initializes pump energy100 and lets DF advance16ticks per
+pump (64 total), observing natural energy decay and both animation frames. All16
+exported textures match source art. Paused energy-only changes in the preceding
+probe kept the first frame; animation cannot be inferred from energy alone.
+Native follow-up `build/pump-phase-native-20261023-175603` checks424 samples,
+including rows40..43 and natural energy decay to zero. All match variant2 when
+energy is nonzero and `(cur_year_tick + 10*y1) % 20 >= 10`, otherwise variant1.
+Static draw trace at RVA0x594a56 derives that phase from renderer scratch; its
+writer at RVA0xe8fab1 copies `cur_year_tick % 10080`. Since10080 is divisible by20,
+the semantic calendar tick is sufficient for fortress rendering. The scratch
+counter was read only by the diagnostic; it must not become a runtime input.
+Owned session closed and source stayed unchanged. Additive
+`Snapshot.calendar_year_tick` transports DF's
+calendar position, with -1 for unavailable old recordings. `Building.pump_running`
+uses -1 unknown,0 idle,1 active from native nonzero pump energy. Validators check
+calendar range and pump-only activity; model clock updates do not alter building
+revisions, while activity changes do. Unknown observations and session resets
+clear prior facts. Core/schema/model tests pass in `build/qa/pump-activity-transport`.
+Plugin build/install passed; protected `build/pump-activity-native-20261023-180720`
+matches all845 calendar samples and1098 activity observations, including each
+natural stop transition. Inspector accepts the recording; source remains unchanged
+and the owned session closes. A dedicated pump shader now selects the alternate
+atlas frame from that semantic calendar and an immutable per-vertex displacement
+encoding activity and base-row parity. Calendar-only updates change one global
+shader uniform without rebuilding geometry; unknown clock/activity stays stationary.
+The batching path preserves this payload and texture-array sampling.
+Root/extension builds, item-icon and mesh-batching checks pass in
+`build/qa/pump-animation`. GPU `build/pump-animation-batched-layers` checks32
+cases across all four directions from protected recording
+`build/pump-activity-native-20261023-181413` (845 calendar samples and1098 activity
+observations match native state). Active/idle frames, native phase, paused replay,
+unknown-clock fallback and published batch rendering pass. Source mesh identity
+stays unchanged across clock-only updates. Diagnostics contain known engine issues
+only. Registered `pump_animation_gpu` generates a semantic synthetic fixture and
+checks all directions, row parity, published batches, stable clock-only geometry,
+pause, activity restart, idle/unknown activity, unknown/backward calendar, and
+fixture reload into a new session. `build/qa/pump-animation-lifecycle-final` passes
+with known engine diagnostics only. Fixture replay advances forward; returning
+to the beginning requires reload. Protected
+`build/pump-reconnect-main-20261024-070017` separately verifies explicit live
+detach/reattach with a synthetic completed active pump. Detach removes the node
+and building batches and changes session generation. Reattach creates new node
+and mesh resources; its image matches DF's newer calendar tick157609 after
+initial tick157599. An independently set opposite half-cycle changes the image,
+and restoring the current phase restores identical pixels. Initial energy50
+and natural decay keep activity valid. Source preservation and owned DF cleanup
+passed; the reconnected image was inspected. Only three known Godot diagnostics
+remain. This is explicit viewer detach, not process-crash acceptance. These
+synthetic captures do not
+prove natural construction, mechanical power supply, liquid transfer or full
+pump-operation UI. No native graphics cache is used as a runtime input.
+
+Pump preview alpha is rounded down in cached source RGBA before filtering,
+with white vertex tint; completed pump pages retain their original bytes.
+Protected `build/pump-material-native-20261024-070243` compares32 paused states
+across four directions, planned/completed stages and granite/iron/green glass/oak
+building materials. All16 distinct native textures exactly match installed
+painted artwork, unchanged by these material choices. Source preservation and
+owned DF cleanup passed. `pump_material_gpu` checks all32 cases against native
+texture hashes and reload reset. Core, that regression and existing completed
+pump animation/lifecycle checks pass in `build/qa/pump-material-native`, with
+only documented Godot diagnostics. The rendered scene was inspected. This is
+rendering evidence, not another natural-construction claim.
+
+Instrument, Track Stop, Roller, Water Wheel and Windmill previews also round
+source alpha down before filtering, using the shared immutable building-page
+cache and white vertex tint. Track Stop is selected by its Trap subtype5; other
+traps do not enter this path. World geometry and selection artwork supply the
+same subtype. Completed pages and animation/resource ownership are unchanged.
+The separate bridge/gear ceil-half and axle floor-half rules remain intact.
+
+`fixtures/construction/planned_machine_pixels.json` retains native planned-cell
+hash sets from the existing Track Stop, Roller, Water Wheel and Windmill captures.
+The shared test helper checks uploaded cells against these sets; existing family
+tests independently assert cell positions, orientation, phase and draw ownership.
+The Instrument test uses the directly captured planned keyboard texture hash.
+`build/qa/planned-machinery-verified` passes core and nine GPU checks: those five
+families, Roller resource pages, transmission, bridge materials and pump materials.
+Only documented Godot diagnostics remain. The planned Windmill image was inspected.
+The first build attempt omitted subtype propagation in the selection caller;
+that failed run is excluded. No bridge/schema changes or native scratch access
+are required for these presentation corrections.
+
+`fixtures/construction/bed_bedding.json` records a later native investigation
+on the same supported build. Protected `build/bed-native-observe-20261023-160803`
+renders24 new granite beds while paused. Their24 unique native cache entries
+match the item-ID-seeded sheet, pillow and sheet-color choices traced in
+`0xc80546..0xc80768`; the screenshot was inspected and the source preserved.
+The native generator at `0x2471c0` is a75-byte leaf that accesses only its supplied
+state pointer, making independently owned state a candidate integration path.
+The compositor at `0xcee8d0` mutates global graphics caches and is excluded from
+the semantic runtime path. It uses descriptor palettes for base/sheet recoloring
+and overlays pillow above sheet above base. This evidence covers loose granite
+beds. Follow-up `build/bed-native-picker-20261023-161049` shows that the generic
+granite group uses default sheet/pillow variants and no descriptor recoloring;
+expanded individual rows show the distinct item-specific bedding. The native
+picker screenshot was inspected. `build/bed-native-installed-20261023-161304`
+selects item48525 through the native picker and naturally completes Bed1490
+at frame425, stage1/1 with zero jobs and that exact input. Its capture is partly
+occluded by a dwarf and does not establish pixel parity. Both runs preserve the
+source and close their owned sessions. An earlier installed test used disconnected
+display floor and is excluded. Generic group defaults must stay distinct from
+item facts. `bed_appearance_native.cpp` now provides fingerprint-gated native
+choices using independently owned generator state. The diagnostic command
+`df3d bed-choices-read <item-id> <descriptor-color-count>` returns sheet, pillow
+and zero-based descriptor color (-1 when no colors exist). Protected
+`build/bed-native-wrapper-20261023-161613` matches all24 native-rendered choices,
+verifies repeatability, invalid inputs, empty/single-color handling and the native
+254-color limit, with unchanged graphics cache, paused frame0 and preserved source.
+Bridge build/install passed. Optional `BeddingFacts` now carries native sheet and
+pillow choices plus base/sheet descriptor color names on `Building` and `MapItem`.
+The base color comes from the material's solid-state pattern, not an item dye
+override. Missing facts remain unknown in old recordings; no graphics cache IDs
+cross the bridge. The additive fields retain the schema version. Validators reject
+out-of-range variants and facts on non-bed entities. Model equality and revision
+tracking include bedding, including clearing known choices on a later unknown
+observation. Core/schema/model tests pass in `build/qa/bedding-transport`.
+Protected `build/bed-transport-native-20261023-162516` records23 observations
+across loose item48525 and naturally completed Bed1490: sheet0, pillow1,
+base CLEAR, sheet CHARTREUSE all match native rendering choices. The inspector
+accepts the recording; source preserved and owned DF closed. Construction candidate
+appearance now also carries optional bedding through the Lua adapter, wire codec,
+world model and Godot dictionary. The adapter calls the owned-state native helper;
+response-size accounting and revision hashes include these facts. Validators reject
+non-bed contexts, invalid variants and oversized color names. The icon API accepts
+valid optional bedding. The shared `df3d_assets/bed.h` compositor resolves installed
+material, sheet and pillow artwork, replaces the first18 palette keys on base and
+sheet, and lets each nontransparent upper-layer pixel replace the lower pixel.
+Picker individuals, loose items, installed buildings and selection icons use this
+compositor. Grouped picker rows use sheet0/pillow0 without descriptor recoloring,
+matching the native generic icon. Unknown bedding remains unknown. Composite
+resources share the existing asset-lifetime cache; item cache keys include bedding.
+Core and material checks pass in `build/qa/bedding-picker`; the focused icon check
+passes in `build/qa/bedding-picker-icon`, including existing native pixel comparisons
+and malformed bedding cases. Bridge build/install passes (`bed-picker-build.log`
+under ignored working notes). Procedural compositor tests pass in
+`build/qa/bedding-renderer` (its initial extension type error was fixed); extension
+and picker checks pass in `build/qa/bedding-renderer-fixed`. Native-capture regression
+`build/qa/bedding-native-icons` matches all3,290 opaque pixels across the default
+group and four individual icons. `bed_bedding.json.renderer` retains their native
+pixel hashes and inputs. The65 partial-alpha pixels per icon are excluded from
+this initial comparison. Protected live run
+`build/bed-render-live-main-20261023-164452` verifies four candidate bedding
+payloads against native choices, public exact-item48525 selection and natural
+Bed1490 completion at frame425 with zero jobs and the exact permanent input.
+The completed selection icon was inspected. The world screenshot is partly
+occluded by a citizen, so full world pixel parity remains unproven.
+Its group icon now matches all723 visible native pixels, including65 partial-alpha
+pixels. This exposed and corrected the material-row picture frame from36x36 to
+native40x36; the narrower frame changed20 translucent right-edge pixels.
+`build/qa/bed-frame-width` passes; source save was unchanged and the owned session
+closed. Diagnostics contain only the three documented engine signatures.
+`bed_bedding.json.live_renderer` records the evidence and remaining material/world
+coverage limits. An initial live comparison failed because the harness compared
+JSON floats with integer dictionary values; explicit field comparisons resolved it.
 
 Terrain atlas sampling uses per-face cell centers in CUSTOM2 (terrain in xy,
 ground spatter in zw); furniture fragments also retain their atlas center in xy.

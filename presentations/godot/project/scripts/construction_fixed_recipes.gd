@@ -456,7 +456,7 @@ const RECIPES = {
   ]
  },
  "Trap:TrackStop": {
-  "placement": "Click a tile to place the Track Stop.                                   Set the friction and auto-dump direction.",
+  "placement": "Click a tile to place the Track Stop.",
   "heading": "Select materials for the Track Stop.",
   "last": true,
   "history_class": "building material",

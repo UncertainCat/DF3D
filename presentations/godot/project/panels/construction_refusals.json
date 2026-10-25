@@ -1,0 +1,788 @@
+{
+  "Door": [
+    "Needs adjacent wall",
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Well": [
+    "Needs open space",
+    "Surrounded by empty space",
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Hatch": [
+    "Surrounded by empty space",
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "GrateFloor": [
+    "Surrounded by empty space",
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "BarsFloor": [
+    "Surrounded by empty space",
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Leatherworks": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Loom": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Clothiers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Dyers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Still": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Butchers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Tanners": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Fishery": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Kitchen": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Farmers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Quern": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Kennels": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "NestBox": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Hive": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:GlassFurnace": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:Kiln": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:MagmaGlassFurnace": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:MagmaKiln": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:MagmaSmelter": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:Smelter": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Furnace:WoodFurnace": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Ashery": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Bowyers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Carpenters": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Craftsdwarfs": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Jewelers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:MagmaForge": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Mechanics": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:MetalsmithsForge": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Custom:SCREW_PRESS": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Siege": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Custom:SOAP_MAKER": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Workshop:Masons": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Bed": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge",
+    "Must be inside"
+  ],
+  "Chair": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge",
+    "Must be inside"
+  ],
+  "Table": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge",
+    "Must be inside"
+  ],
+  "Box": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Cabinet": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Coffin": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge",
+    "Must be inside"
+  ],
+  "Slab": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Statue": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "TractionBench": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge",
+    "Must be inside"
+  ],
+  "Bookcase": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "DisplayFurniture": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "OfferingPlace": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Instrument": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Construction:Wall": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Cannot build at highest level",
+    "Too close to edge"
+  ],
+  "Construction:ReinforcedWall": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Cannot build at highest level",
+    "Too close to edge"
+  ],
+  "Construction:Floor": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction"
+  ],
+  "Construction:Ramp": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Cannot build at highest level"
+  ],
+  "Construction:Stairs": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Cannot build at highest level"
+  ],
+  "Bridge": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs to be anchored on edge",
+    "Needs walkable perimeter"
+  ],
+  "RoadPaved": [
+    "Building present",
+    "Blocked at this location",
+    "Water at this location",
+    "Disconnected",
+    "Need soil at location"
+  ],
+  "Construction:Fortification": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "GrateWall": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "BarsVertical": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "WindowGlass": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "WindowGem": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Support": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Construction:Track": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location"
+  ],
+  "Trap:TrackStop": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Trap:Lever": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Floodgate": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "ScrewPump": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "WaterWheel": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "Windmill": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "GearAssembly": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "AxleHorizontal": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "AxleVertical": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "Workshop:Millstone": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "Rollers": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs ground or near machine",
+    "Too close to edge"
+  ],
+  "Chain": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Cage": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "AnimalTrap": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Lava/Magma at this location",
+    "Must remove construction",
+    "Needs walkable perimeter",
+    "Too close to edge"
+  ],
+  "Trap:PressurePlate": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Need trigger type",
+    "Too close to edge"
+  ],
+  "Trap:StoneFallTrap": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Trap:WeaponTrap": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Trap:CageTrap": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Weapon": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "ArcheryTarget": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Weaponrack": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "Armorstand": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "SiegeEngine:Ballista": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "SiegeEngine:Catapult": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "SiegeEngine:BoltThrower": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "TradeDepot": [
+    "Building present",
+    "Hidden, cannot build at this location",
+    "Blocked at this location",
+    "Water at this location",
+    "Must remove construction",
+    "Too close to edge"
+  ],
+  "FarmPlot": [
+    "Blocked at this location",
+    "Need soil or mud at location",
+    "Water at this location",
+    "Disconnected",
+    "Building present",
+    "Too close to edge"
+  ],
+  "RoadDirt": [
+    "Blocked at this location",
+    "Need soil at location",
+    "Water at this location",
+    "Disconnected",
+    "Building present"
+  ]
+}

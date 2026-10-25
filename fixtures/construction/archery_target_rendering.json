@@ -1,0 +1,71 @@
+{
+  "scope": "Native archery-target stage/material artwork. Independent component and building materials in18 native cases establish raw palette and building-material class. Glass uses METAL art. Planned alpha is ceil-half. No natural construction effects claimed.",
+  "version": "DF53.16 Steam24557528",
+  "capture": "build/simple-construction-native-20261024-095158",
+  "rows": [
+    {
+      "material": "INORGANIC:GRANITE",
+      "stage": 0,
+      "hashes": [
+        "d8e6127acb98b7fcc7d961340b34b2308cd963c8d2f3a86aff3b57b3d2e395a4"
+      ]
+    },
+    {
+      "material": "INORGANIC:GRANITE",
+      "stage": 1,
+      "hashes": [
+        "a79a7fcba2e39e6daa20a98c2f73ad1dd987ff94fa6aa3a6b4af8cc6d88cce54"
+      ]
+    },
+    {
+      "material": "INORGANIC:IRON",
+      "stage": 0,
+      "hashes": [
+        "8994b1ac4d414e4f7f698499d1cd4bef570dac8c1991cefe971cf5992eb47031"
+      ]
+    },
+    {
+      "material": "INORGANIC:IRON",
+      "stage": 1,
+      "hashes": [
+        "52fb0befced7ae718d31a8028b6938b0aca56334080f5fed7f25803b96c42e6c"
+      ]
+    },
+    {
+      "material": "GLASS_GREEN",
+      "stage": 0,
+      "hashes": [
+        "8994b1ac4d414e4f7f698499d1cd4bef570dac8c1991cefe971cf5992eb47031"
+      ]
+    },
+    {
+      "material": "GLASS_GREEN",
+      "stage": 1,
+      "hashes": [
+        "52fb0befced7ae718d31a8028b6938b0aca56334080f5fed7f25803b96c42e6c"
+      ]
+    },
+    {
+      "material": "PLANT:OAK:WOOD",
+      "stage": 0,
+      "hashes": [
+        "c5e918d9c671e7da02002ec987b38547b5f1a777485c3437d1f2ed7abaa2cd5d"
+      ]
+    },
+    {
+      "material": "PLANT:OAK:WOOD",
+      "stage": 1,
+      "hashes": [
+        "dde414f824ba5323c2edb584d5f05bff07f7ddac6b8c2ba1e411e8088e254ebf"
+      ]
+    }
+  ],
+  "acceptance": {
+    "run": "build/qa/archery-target-verified",
+    "status": "passed_with_known_issues",
+    "cases": 8,
+    "reload": "planned oak",
+    "core": "build/qa/archery-target-native core passed",
+    "limits": "Uploaded RGBA/white vertices and reload; not new natural construction effects."
+  }
+}

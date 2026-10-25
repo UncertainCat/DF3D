@@ -6,15 +6,12 @@ class Fallback:
 	func _init(value): world = value
 	func tile_hover_info(tile): return world.tile_hover_info(tile)
 var failures: Array[String] = []
-var started: int
 func check(value: bool, message: String):
 	if not value: failures.append(message); push_error(message)
 func _initialize(): call_deferred("run")
 func advance(world, index: int):
-	var elapsed = float(Time.get_ticks_usec() - started) / 1000000.0
-	world.set_replay_speed((10.0 * index + 5.0) / elapsed)
+	world.set_replay_elapsed(10.0 * index + 5.0)
 	world.poll()
-	world.set_replay_speed(0)
 	check(world.bridge_tick() == 100 + index, "exact replay frame " + str(index) + " got " + str(world.bridge_tick()))
 func run():
 	var world = Df3dWorld.new()
@@ -22,7 +19,6 @@ func run():
 	world.set_replay_speed(0)
 	var fixture = ProjectSettings.globalize_path("res://../../../build/render-cache.df3dfix")
 	check(world.load_fixture(fixture), "fixture loads")
-	started = Time.get_ticks_usec()
 	world.poll()
 	world.set_top_z(2)
 	world.set_window_depth(3)
@@ -31,7 +27,6 @@ func run():
 	var revision = world.door_orientation_revision()
 	var tile = Vector3i(1, 2, 2)
 	world.door_orientation(tile)
-	await create_timer(0.5).timeout
 	for frame in range(1, 14):
 		advance(world, frame)
 		# Direct query BEFORE revision check cannot erase older evidence.

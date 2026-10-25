@@ -1,0 +1,377 @@
+{
+  "provenance": {
+    "build": "DF 53.16 Steam 24557528",
+    "run": "build/construction-support-oracle-20261022-214726",
+    "method": "Paused protected clone; synthetic 3x3 terrain patches. Compare native global request oracle to coordinate-only callback with matching request, menus closed and Bed selected. Verify request type/subtype/position and redraw counter unchanged.",
+    "source_preserved": true,
+    "source_sha256": "4c8107fe2e5501b97dba8de638bf361788b8a20757bb74655ab072280725ab4a",
+    "routines": {
+      "floor_openings": {
+        "rva": "0xa82890",
+        "bytes": 272,
+        "fnv1a64": "ae2e718156f7299e"
+      },
+      "well": {
+        "rva": "0xa829a0",
+        "bytes": 344,
+        "fnv1a64": "320796f07bcbaf91"
+      }
+    },
+    "limitations": [
+      "Support predicates only; generic terrain, occupancy, liquid and DFHack construction validation remain separate.",
+      "Four terrain arrangements per family in one fortress do not establish exhaustive coverage.",
+      "Native FINE_BLOCKED (1) is a traversability result, normalized to supported (0) for this predicate."
+    ]
+  },
+  "cases": [
+    {
+      "case": "open_with_floor",
+      "closed": 0,
+      "code": 1,
+      "errors": [],
+      "family": "Well",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_isolated",
+      "closed": 17,
+      "code": 17,
+      "errors": [
+        "Surrounded by empty space"
+      ],
+      "family": "Well",
+      "other": 17,
+      "selected": 17,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "solid_floor",
+      "closed": 16,
+      "code": 16,
+      "errors": [
+        "Needs open space"
+      ],
+      "family": "Well",
+      "other": 16,
+      "selected": 16,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp_top_with_floor",
+      "closed": 0,
+      "code": 1,
+      "errors": [],
+      "family": "Well",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_with_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "Hatch",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_isolated",
+      "closed": 17,
+      "code": 17,
+      "errors": [
+        "Surrounded by empty space"
+      ],
+      "family": "Hatch",
+      "other": 17,
+      "selected": 17,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "solid_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "Hatch",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp_top_with_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "Hatch",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_with_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "GrateFloor",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_isolated",
+      "closed": 17,
+      "code": 17,
+      "errors": [
+        "Surrounded by empty space"
+      ],
+      "family": "GrateFloor",
+      "other": 17,
+      "selected": 17,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "solid_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "GrateFloor",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp_top_with_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "GrateFloor",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_with_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "BarsFloor",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open_isolated",
+      "closed": 17,
+      "code": 17,
+      "errors": [
+        "Surrounded by empty space"
+      ],
+      "family": "BarsFloor",
+      "other": 17,
+      "selected": 17,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "solid_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "BarsFloor",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp_top_with_floor",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "BarsFloor",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    }
+  ],
+  "native_visuals": [
+    {
+      "run": "build/site-refusal-native-20261022-214839",
+      "cases": [
+        {
+          "errors": [
+            "Surrounded by empty space"
+          ],
+          "site": {
+            "name": "hatch-isolated",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "SURROUNDED_BY_AIR"
+        },
+        {
+          "errors": [],
+          "site": {
+            "name": "hatch-supported",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "FINE"
+        }
+      ],
+      "inspected": true,
+      "source_preserved": true
+    },
+    {
+      "run": "build/site-refusal-native-20261022-214912",
+      "cases": [
+        {
+          "errors": [
+            "Needs open space"
+          ],
+          "site": {
+            "name": "well-floor",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "NEED_OPEN_AIR"
+        },
+        {
+          "errors": [
+            "Surrounded by empty space"
+          ],
+          "site": {
+            "name": "well-isolated",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "SURROUNDED_BY_AIR"
+        },
+        {
+          "errors": [
+            "Surrounded by empty space"
+          ],
+          "site": {
+            "name": "grate-isolated",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "SURROUNDED_BY_AIR"
+        },
+        {
+          "errors": [
+            "Surrounded by empty space"
+          ],
+          "site": {
+            "name": "bars-isolated",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "SURROUNDED_BY_AIR"
+        }
+      ],
+      "inspected": true,
+      "source_preserved": true
+    }
+  ],
+  "viewer_verification": {
+    "run": "build/hatch-refusal-main-20261022-215003",
+    "status": "passed_with_known_issues",
+    "family": "Hatch",
+    "exact_item": 48520,
+    "building_id": 1490,
+    "completion_frames": 575,
+    "source_preserved": true,
+    "scope": "Rejected empty-space controller intent, visible native refusal, valid-site map click, exact item pointer selection and natural completion. Empty-space map picking is not verified.",
+    "inspected": [
+      "door-placement.png",
+      "door-materials.png",
+      "door-complete.png"
+    ],
+    "diagnostics": "Known separate-render-thread notice, finalize and two ObjectDB instances; no unclassified diagnostics."
+  },
+  "pointer_hover_verification": {
+    "run": "build/hatch-hover-main-20261022-215558",
+    "status": "passed_with_known_issues",
+    "source_preserved": true,
+    "scope": "Actual viewport motion/click targets empty-space tile100,40,165 at selected elevation. Native refusal appears on hover and click; valid floor hover clears it and shrinks panel184 to168px; exact item48520 placement naturally completes at750 frames.",
+    "screenshots_inspected": [
+      "hatch-valid-hover.png"
+    ],
+    "known_limitations": [
+      "This covers one isolated open-space patch and one supported floor in one fortress, not every camera/terrain combination.",
+      "Existing square frame and tighter vertical spacing still differ from native."
+    ]
+  }
+}

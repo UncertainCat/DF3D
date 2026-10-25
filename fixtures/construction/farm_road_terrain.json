@@ -1,0 +1,7984 @@
+{
+  "native_build": "DF53.16 Steam24557528",
+  "native_run": "build/farm-road-terrain-oracle-20261022-232337",
+  "source_preserved": true,
+  "routines": {
+    "FarmPlot": "RVA14b1460; calls soil/mud predicate14d2130",
+    "RoadDirt_RoadPaved": "RVA14b0b00; explicit dirt flag",
+    "surface": "RVA14adea0 movement=false,flags=0; branch14ae675 bypasses walkability-group getter"
+  },
+  "cases": [
+    {
+      "case": "soil",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "FarmPlot",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "grass",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "FarmPlot",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "stone",
+      "closed": 20,
+      "code": 20,
+      "errors": [
+        "Need soil or mud at location"
+      ],
+      "family": "FarmPlot",
+      "other": 20,
+      "selected": 20,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "wall",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "FarmPlot",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "FarmPlot",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "FarmPlot",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "mud",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "FarmPlot",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "water2_soil",
+      "closed": 0,
+      "code": 10,
+      "errors": [
+        "Water at this location"
+      ],
+      "family": "FarmPlot",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "water7_soil",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "FarmPlot",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "magma1_soil",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "FarmPlot",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "soil",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "RoadDirt",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "grass",
+      "closed": 21,
+      "code": 21,
+      "errors": [
+        "Need soil at location"
+      ],
+      "family": "RoadDirt",
+      "other": 21,
+      "selected": 21,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "stone",
+      "closed": 21,
+      "code": 21,
+      "errors": [
+        "Need soil at location"
+      ],
+      "family": "RoadDirt",
+      "other": 21,
+      "selected": 21,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "wall",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadDirt",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadDirt",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadDirt",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "mud",
+      "closed": 21,
+      "code": 21,
+      "errors": [
+        "Need soil at location"
+      ],
+      "family": "RoadDirt",
+      "other": 21,
+      "selected": 21,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "water2_soil",
+      "closed": 0,
+      "code": 10,
+      "errors": [
+        "Water at this location"
+      ],
+      "family": "RoadDirt",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "water7_soil",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadDirt",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "magma1_soil",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadDirt",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "soil",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "RoadPaved",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "grass",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "RoadPaved",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "stone",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "RoadPaved",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "wall",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadPaved",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "open",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadPaved",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "ramp",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadPaved",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "mud",
+      "closed": 0,
+      "code": 0,
+      "errors": [],
+      "family": "RoadPaved",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "water2_soil",
+      "closed": 0,
+      "code": 10,
+      "errors": [
+        "Water at this location"
+      ],
+      "family": "RoadPaved",
+      "other": 0,
+      "selected": 0,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "water7_soil",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadPaved",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    },
+    {
+      "case": "magma1_soil",
+      "closed": 6,
+      "code": 6,
+      "errors": [
+        "Blocked at this location"
+      ],
+      "family": "RoadPaved",
+      "other": 6,
+      "selected": 6,
+      "site": {
+        "x": 100,
+        "y": 40,
+        "z": 165
+      }
+    }
+  ],
+  "verification": "Matching request, closed menus and Bed selected return the same terrain result. Request fields, redraw counter, reindex flag and pathfinder generations unchanged around each diagnostic. Paused frame0 unchanged.",
+  "limits": [
+    "Water2 soil returns terrain0 while full native validator returns10; liquid validation remains a separate stage.",
+    "Native terrain predicates are used by Preview/Place. Generic occupancy/hidden/liquid handling remains separate; this is not full native buildability parity."
+  ],
+  "guard_verification": {
+    "run": "build/farm-road-terrain-oracle-20261022-232711",
+    "cases": [
+      {
+        "code": -1,
+        "name": "Shrub",
+        "tile": 34
+      },
+      {
+        "code": -1,
+        "name": "ShrubDead",
+        "tile": 389
+      },
+      {
+        "code": -1,
+        "name": "Sapling",
+        "tile": 227
+      },
+      {
+        "code": -1,
+        "name": "SaplingDead",
+        "tile": 388
+      }
+    ],
+    "source_preserved": true,
+    "repeated_terrain_cases": 30,
+    "historical": "Temporary guard removed after verified RNG preservation."
+  },
+  "random_state_preservation": {
+    "run": "build/farm-road-rng-oracle-20261022-233303",
+    "source_preserved": true,
+    "cases": [
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "Shrub"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "Shrub"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "Shrub"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "Shrub"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "ShrubDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "ShrubDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "ShrubDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "ShrubDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "Sapling"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "Sapling"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "Sapling"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "Sapling"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "SaplingDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 0,
+        "tile": "SaplingDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 0,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "SaplingDead"
+      },
+      {
+        "all_ten_streams_preserved": true,
+        "position": 2496,
+        "result": {
+          "random_advanced_before_restore": true,
+          "support": 21
+        },
+        "stream": 9,
+        "tile": "SaplingDead"
+      }
+    ],
+    "method": "Set target region geo_index=-1 in disposable paused fortress, restoring it afterwards. Compare all624 words and index of all10 streams plus active stream before/after each query. Test streams0/9, index0/2496, all4 plant variants. Native diagnostic confirms RNG actually advanced before scoped restoration.",
+    "native_rng": {
+      "entry": "RVAeb68b0",
+      "length": "0x1e3",
+      "fingerprint": "4bcd46a418e7a7bb",
+      "stream_count": 10,
+      "active_stream_rva": "0x2159084",
+      "indices_rva": "0x2131b30",
+      "buffers_rva": "0x234e990",
+      "bytes_per_stream": 2496
+    },
+    "earlier_failed_probe": "build/farm-road-rng-oracle-20261022-233142 preserved state but geolayer15 alone did not trigger fallback; excluded as restoration proof."
+  },
+  "extended_verification": {
+    "run": "build/farm-road-terrain-oracle-20261022-233410",
+    "source_preserved": true,
+    "cases": [
+      {
+        "case": "shrub",
+        "closed": 20,
+        "code": 20,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "family": "FarmPlot",
+        "other": 20,
+        "selected": 20,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "shrub_dead",
+        "closed": 20,
+        "code": 20,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "family": "FarmPlot",
+        "other": 20,
+        "selected": 20,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "sapling",
+        "closed": 20,
+        "code": 20,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "family": "FarmPlot",
+        "other": 20,
+        "selected": 20,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "sapling_dead",
+        "closed": 20,
+        "code": 20,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "family": "FarmPlot",
+        "other": 20,
+        "selected": 20,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "soil",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "FarmPlot",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "grass",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "FarmPlot",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "stone",
+        "closed": 20,
+        "code": 20,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "family": "FarmPlot",
+        "other": 20,
+        "selected": 20,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "wall",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "FarmPlot",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "open",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "FarmPlot",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "ramp",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "FarmPlot",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "mud",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "FarmPlot",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "water2_soil",
+        "closed": 0,
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "FarmPlot",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "water7_soil",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "FarmPlot",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "magma1_soil",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "FarmPlot",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "shrub",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "shrub_dead",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "sapling",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "sapling_dead",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "soil",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadDirt",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "grass",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "stone",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "wall",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadDirt",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "open",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadDirt",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "ramp",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadDirt",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "mud",
+        "closed": 21,
+        "code": 21,
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "other": 21,
+        "selected": 21,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "water2_soil",
+        "closed": 0,
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "RoadDirt",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "water7_soil",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadDirt",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "magma1_soil",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadDirt",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "shrub",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "shrub_dead",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "sapling",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "sapling_dead",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "soil",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "grass",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "stone",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "wall",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadPaved",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "open",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadPaved",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "ramp",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadPaved",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "mud",
+        "closed": 0,
+        "code": 0,
+        "errors": [],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "water2_soil",
+        "closed": 0,
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "water7_soil",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadPaved",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      },
+      {
+        "case": "magma1_soil",
+        "closed": 6,
+        "code": 6,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadPaved",
+        "other": 6,
+        "selected": 6,
+        "site": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        }
+      }
+    ],
+    "scope": "Repeats prior30 cases and adds four plant variants for each family, with selected/closed/Bed menu independence after RNG restoration was installed."
+  },
+  "product_adoption": {
+    "adapter_tests": 82,
+    "ctest": 19,
+    "catalog_scope": "passed",
+    "godot_headless": "passed_with_known_issues",
+    "lua_rules_removed": [
+      "FarmPlot soil/mud classification",
+      "RoadDirt soil classification",
+      "RoadPaved floor classification"
+    ],
+    "runs": [
+      {
+        "family": "FarmPlot",
+        "run": "build/native-farm-main-20261022-234000",
+        "status": "passed_with_known_issues",
+        "source_preserved": true,
+        "input": "Actual launcher/category/leaf, unsuitable first corner and reverse valid corners through viewport pointer",
+        "completed_frame": 1825,
+        "native_effect": {
+          "definition": "FarmPlot",
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1490,
+          "items": [],
+          "jobs": 0,
+          "maximum": 3,
+          "stage": 3
+        },
+        "screenshots_inspected": [
+          "native-terrain-refusal.png"
+        ],
+        "scope": "Native terrain refusal, recovery, irregular footprint and natural completion. Not crop selection, farming operation or every terrain combination."
+      },
+      {
+        "family": "RoadDirt",
+        "run": "build/native-road-dirt-main-20261022-234124",
+        "status": "passed_with_known_issues",
+        "source_preserved": true,
+        "input": "Actual launcher/category/leaf, unsuitable first corner and reverse valid corners through viewport pointer",
+        "completed_frame": 675,
+        "native_effect": {
+          "definition": "RoadDirt",
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1490,
+          "items": [],
+          "retired": true,
+          "tiles": [
+            "FurrowedSoil",
+            "FurrowedSoil",
+            "FurrowedSoil",
+            "FurrowedSoil",
+            "StoneFloorSmooth",
+            "FurrowedSoil",
+            "FurrowedSoil",
+            "FurrowedSoil",
+            "FurrowedSoil"
+          ]
+        },
+        "screenshots_inspected": [
+          "native-terrain-refusal.png"
+        ],
+        "scope": "Native terrain refusal, recovery, irregular footprint and natural completion. Not crop selection, farming operation or every terrain combination."
+      },
+      {
+        "family": "RoadPaved",
+        "run": "build/native-road-paved-main-20261022-234338",
+        "status": "passed_with_known_issues",
+        "source_preserved": true,
+        "input": "Semantic menu/invalid anchor and exact material selection through main controller; valid reverse corners via viewport pointer",
+        "completed_frame": 2525,
+        "native_effect": {
+          "definition": "RoadPaved",
+          "extents": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "id": 1490,
+          "items": [
+            {
+              "id": 1717,
+              "material": "INORGANIC:PETRIFIED_WOOD",
+              "type": "BLOCKS"
+            },
+            {
+              "id": 1716,
+              "material": "INORGANIC:PETRIFIED_WOOD",
+              "type": "BLOCKS"
+            },
+            {
+              "id": 1714,
+              "material": "INORGANIC:PETRIFIED_WOOD",
+              "type": "BLOCKS"
+            }
+          ],
+          "jobs": 0,
+          "maximum": 3,
+          "stage": 3
+        },
+        "screenshots_inspected": [
+          "farm-complete.png"
+        ],
+        "scope": "Refusal/recovery, irregular footprint, selected exact items1717/1716/1714 retained after natural completion; not full pointer material selection or every terrain combination."
+      }
+    ],
+    "failed_harness_run": "build/native-road-paved-main-20261022-234230: used nonexistent row.index; SCRIPT ERROR and missing placement handshake, despite partial result.json incorrectly saying passed. Excluded as acceptance. Corrected harness indexes rows and requires complete observation count."
+  },
+  "native_area_connectivity": {
+    "native_build": "DF53.16 Steam24557528",
+    "run": "build/construction-area-connectivity-20261023-043640",
+    "helper": {
+      "rva": "0x3c2640",
+      "bytes": "0x427",
+      "fingerprint": "f375f61cace77e62",
+      "footprint_rva": "0x3c1e60",
+      "footprint_bytes": "0x7b7",
+      "footprint_fingerprint": "fcbc3593568b4f03"
+    },
+    "cases": [
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "scratch_restored": true,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Need soil at location"
+        ],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Need soil at location"
+        ],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21,
+          21
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          10,
+          10,
+          10,
+          4,
+          4,
+          4,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          10,
+          10,
+          10,
+          4,
+          4,
+          4,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          10,
+          10,
+          10,
+          4,
+          4,
+          4,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Need soil or mud at location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          20,
+          20,
+          20,
+          6,
+          6,
+          6,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Need soil at location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          21,
+          21,
+          21,
+          6,
+          6,
+          6,
+          21,
+          21,
+          21
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": []
+      },
+      {
+        "closed": 22,
+        "errors": [
+          "Disconnected",
+          "Water at this location",
+          "Building present"
+        ],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 22,
+        "selected": 22,
+        "tiles": [
+          10,
+          10,
+          10,
+          4,
+          4,
+          4,
+          12,
+          12,
+          12
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location",
+          "Building present"
+        ],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          12,
+          12,
+          12
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location",
+          "Building present"
+        ],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          12,
+          12,
+          12
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location",
+          "Building present"
+        ],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          12,
+          12,
+          12
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Water at this location",
+          "Blocked at this location",
+          "Building present"
+        ],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          10,
+          10,
+          10,
+          6,
+          6,
+          6,
+          12,
+          12,
+          12
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Hidden, cannot build at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Hidden, cannot build at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Hidden, cannot build at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "errors": [
+          "Hidden, cannot build at this location"
+        ],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadDirt",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "RoadPaved",
+        "other": 0,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Floor",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Wall",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:Fortification",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": []
+      },
+      {
+        "errors": [],
+        "fine": 0,
+        "key": "Construction:ReinforcedWall",
+        "tiles": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": []
+      }
+    ],
+    "source_preservation": "Owned source unchanged",
+    "scope": "Diagnostic owned-request helper, not yet runtime placement. 24 farm/road cases queried in selected/Bed/closed menus; 56 native area error/warning rows including construction. Whole shared frontier and all10 random buffers/indices/current-stream restored in one explicit guard comparison. Raw helper returns22 for empty usable terrain too; native outer validator emits Disconnected only if some raw terrain qualifies.",
+    "runtime": {
+      "run": "build/construction-area-connectivity-20261023-044617",
+      "cases": [
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Need soil at location"
+          ],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            21,
+            21,
+            21,
+            21,
+            21,
+            21,
+            21,
+            21,
+            21
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "stone",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Need soil at location"
+          ],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            21,
+            21,
+            21,
+            21,
+            21,
+            21,
+            21,
+            21,
+            21
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "total": 0,
+          "variant": "water",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "total": 0,
+          "variant": "wall",
+          "warnings": []
+        },
+        {
+          "closed": 22,
+          "errors": [
+            "Disconnected",
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 22,
+          "scratch_restored": true,
+          "selected": 22,
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "closed": 22,
+          "errors": [
+            "Disconnected",
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 22,
+          "selected": 22,
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "closed": 22,
+          "errors": [
+            "Disconnected",
+            "Water at this location"
+          ],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 22,
+          "selected": 22,
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "mixed",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Need soil or mud at location",
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            20,
+            20,
+            20,
+            6,
+            6,
+            6,
+            20,
+            20,
+            20
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        },
+        {
+          "closed": 0,
+          "errors": [
+            "Need soil at location",
+            "Blocked at this location"
+          ],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            21,
+            21,
+            21,
+            6,
+            6,
+            6,
+            21,
+            21,
+            21
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": []
+        },
+        {
+          "closed": 22,
+          "errors": [
+            "Disconnected",
+            "Water at this location",
+            "Building present"
+          ],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 22,
+          "selected": 22,
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            12,
+            12,
+            12
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location",
+            "Building present"
+          ],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            12,
+            12,
+            12
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location",
+            "Building present"
+          ],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            12,
+            12,
+            12
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location",
+            "Building present"
+          ],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            12,
+            12,
+            12
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Water at this location",
+            "Blocked at this location",
+            "Building present"
+          ],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            10,
+            10,
+            10,
+            6,
+            6,
+            6,
+            12,
+            12,
+            12
+          ],
+          "total": 0,
+          "variant": "bad_mixed",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Hidden, cannot build at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Hidden, cannot build at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Hidden, cannot build at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Hidden, cannot build at this location"
+          ],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7
+          ],
+          "total": 0,
+          "variant": "hidden_soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "FarmPlot",
+          "other": 0,
+          "scratch_restored": true,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadDirt",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": []
+        },
+        {
+          "closed": 0,
+          "errors": [],
+          "fine": 0,
+          "key": "RoadPaved",
+          "other": 0,
+          "selected": 0,
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Floor",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Wall",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:Fortification",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": []
+        },
+        {
+          "errors": [],
+          "fine": 0,
+          "key": "Construction:ReinforcedWall",
+          "tiles": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "total": 0,
+          "variant": "surface_soil",
+          "warnings": []
+        }
+      ],
+      "precondition_fingerprint": {
+        "rva": "0x3c0c30",
+        "bytes": "0x11ac",
+        "fnv64": "4e65d6bc9dfce908"
+      },
+      "native_clicks": {
+        "run": "build/construction-area-click-20261023-044111",
+        "cases": [
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Farm Plot.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Disconnected",
+                "y": 18
+              }
+            ],
+            "created": [],
+            "errors": [
+              "Disconnected"
+            ],
+            "family": "FarmPlot",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Farm Plot.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Disconnected",
+                "y": 18
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "separated",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "created": [
+              {
+                "id": 1490,
+                "type": "FarmPlot"
+              }
+            ],
+            "errors": [],
+            "family": "FarmPlot",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Farm Plot.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "partial",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "created": [],
+            "errors": [
+              "Blocked at this location"
+            ],
+            "family": "FarmPlot",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to be a corner of the Farm Plot.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Blocked at this location",
+                "y": 18
+              },
+              {
+                "text": "      No mud/soil for farm",
+                "y": 19
+              },
+              {
+                "text": "      Mud is left by water",
+                "y": 20
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "empty",
+            "warnings": [
+              "No mud/soil for farm",
+              "Mud is left by water"
+            ]
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Dirt Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Disconnected",
+                "y": 18
+              }
+            ],
+            "created": [],
+            "errors": [
+              "Disconnected"
+            ],
+            "family": "RoadDirt",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Dirt Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Disconnected",
+                "y": 18
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "separated",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "created": [
+              {
+                "id": 1491,
+                "type": "RoadDirt"
+              }
+            ],
+            "errors": [],
+            "family": "RoadDirt",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Dirt Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "partial",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "created": [],
+            "errors": [
+              "Blocked at this location"
+            ],
+            "family": "RoadDirt",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to be a corner of the Dirt Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Blocked at this location",
+                "y": 18
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "empty",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Paved Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Disconnected",
+                "y": 18
+              }
+            ],
+            "created": [],
+            "errors": [
+              "Disconnected"
+            ],
+            "family": "RoadPaved",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Paved Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Disconnected",
+                "y": 18
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "separated",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                    No access to 2 building material non-economic items",
+                "y": 5
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "created": [],
+            "errors": [],
+            "family": "RoadPaved",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to place the Paved Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              }
+            ],
+            "stage": "STAGES",
+            "variant": "partial",
+            "warnings": []
+          },
+          {
+            "after_lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to be a corner of the Paved Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Blocked at this location",
+                "y": 18
+              }
+            ],
+            "created": [],
+            "errors": [
+              "Blocked at this location"
+            ],
+            "family": "RoadPaved",
+            "lines": [
+              {
+                "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "      Click a tile to be a corner of the Paved Road.",
+                "y": 6
+              },
+              {
+                "text": "        Select material after placement",
+                "y": 9
+              },
+              {
+                "text": "        Use closest material",
+                "y": 12
+              },
+              {
+                "text": "            Keep building after placement",
+                "y": 15
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "      Blocked at this location",
+                "y": 18
+              }
+            ],
+            "stage": "PLACING",
+            "variant": "empty",
+            "warnings": []
+          }
+        ]
+      },
+      "viewer": {
+        "run": "build/construction-connectivity-ui-20261023-044652",
+        "native": {
+          "rows": [
+            {
+              "direction": 0,
+              "errors": [
+                "Disconnected"
+              ],
+              "key": "FarmPlot",
+              "message": "Disconnected",
+              "tiles": [
+                0,
+                0,
+                0,
+                4,
+                4,
+                4,
+                0,
+                0,
+                0
+              ],
+              "valid": false,
+              "x": 100
+            },
+            {
+              "direction": 0,
+              "errors": [],
+              "key": "FarmPlot",
+              "message": "",
+              "tiles": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                4,
+                4,
+                4
+              ],
+              "valid": true,
+              "x": 106
+            },
+            {
+              "direction": 0,
+              "errors": [
+                "Disconnected"
+              ],
+              "key": "RoadDirt",
+              "message": "Disconnected",
+              "tiles": [
+                0,
+                0,
+                0,
+                4,
+                4,
+                4,
+                0,
+                0,
+                0
+              ],
+              "valid": false,
+              "x": 100
+            },
+            {
+              "direction": 0,
+              "errors": [],
+              "key": "RoadDirt",
+              "message": "",
+              "tiles": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                4,
+                4,
+                4
+              ],
+              "valid": true,
+              "x": 106
+            },
+            {
+              "direction": 0,
+              "errors": [
+                "Disconnected"
+              ],
+              "key": "RoadPaved",
+              "message": "Disconnected",
+              "tiles": [
+                0,
+                0,
+                0,
+                4,
+                4,
+                4,
+                0,
+                0,
+                0
+              ],
+              "valid": false,
+              "x": 100
+            },
+            {
+              "direction": 0,
+              "errors": [],
+              "key": "RoadPaved",
+              "message": "",
+              "tiles": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                4,
+                4,
+                4
+              ],
+              "valid": true,
+              "x": 106
+            }
+          ]
+        },
+        "result": {
+          "failure": "",
+          "observations": [
+            {
+              "copy": "Disconnected",
+              "family": "FarmPlot",
+              "valid": false,
+              "x": 100.0
+            },
+            {
+              "copy": "",
+              "family": "FarmPlot",
+              "valid": true,
+              "x": 106.0
+            },
+            {
+              "copy": "Disconnected",
+              "family": "RoadDirt",
+              "valid": false,
+              "x": 100.0
+            },
+            {
+              "copy": "",
+              "family": "RoadDirt",
+              "valid": true,
+              "x": 106.0
+            },
+            {
+              "copy": "Disconnected",
+              "family": "RoadPaved",
+              "valid": false,
+              "x": 100.0
+            },
+            {
+              "copy": "",
+              "family": "RoadPaved",
+              "valid": true,
+              "x": 106.0
+            }
+          ],
+          "status": "passed"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "no_mutation": {
+          "ExitCode": 0,
+          "Output": [
+            "NO_MUTATION_PASS"
+          ]
+        }
+      },
+      "scope": "Preview connectivity and immediate pre-creation recheck; all-empty eligibility is not Disconnected; 8 full scratch guards. Additional area error aggregation and farm warnings are not included."
+    }
+  },
+  "native_farm_warning": {
+    "run": "build/construction-farm-warning-20261023-050021",
+    "source_preserved": true,
+    "paused_frame": 0,
+    "owned_session_closed": true,
+    "native_routines": {
+      "warning_branch": "3c1789..3c188a; only eligible tiles (edi==0)",
+      "soil_mud": "14d2130 length1b0 fingerprint3bc8af42e9b7e7c1",
+      "designation": "7dc40 length86 fingerprint396b58fb95c29f02; subterranean bit15",
+      "footprint_farm_bypass": "54c3c0 length6b fingerprintdc232cdf5ce19964"
+    },
+    "contract": "Caller supplies owned native eligibility mask, x-major/y-minor. 1 warns, 0 suppresses, -1 unknown. This verifies warning aggregation, not independent eligibility or runtime/UI integration.",
+    "queries": 48,
+    "full_scratch_guards": 16,
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "cases": [
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "scratch_restored": true,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "stone",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "water",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "wall",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 0,
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "scratch_restored": true,
+        "selected": 0,
+        "tiles": [
+          10,
+          10,
+          10,
+          4,
+          4,
+          4,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "mixed",
+        "warnings": []
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Need soil or mud at location",
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          20,
+          20,
+          20,
+          6,
+          6,
+          6,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "bad_mixed",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "scratch_restored": true,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "hidden_soil",
+        "warnings": []
+      },
+      {
+        "closed": 1,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "surface_soil",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "soil_wall",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ],
+        "total": 0,
+        "variant": "water_soil",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Building present"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12,
+          12
+        ],
+        "total": 0,
+        "variant": "occupied_soil",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Blocked at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "total": 0,
+        "variant": "lava_soil",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "total": 0,
+        "variant": "surface_stone",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "scratch_restored": true,
+        "selected": 0,
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "total": 0,
+        "variant": "mixed_surface",
+        "warnings": []
+      },
+      {
+        "closed": 0,
+        "errors": [],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 0,
+        "scratch_restored": true,
+        "selected": 0,
+        "tiles": [
+          4,
+          4,
+          4,
+          4,
+          0,
+          4,
+          4,
+          4,
+          4
+        ],
+        "total": 0,
+        "variant": "one_valid_soil",
+        "warnings": []
+      },
+      {
+        "closed": 1,
+        "errors": [
+          "Water at this location"
+        ],
+        "fine": 0,
+        "key": "FarmPlot",
+        "other": 1,
+        "scratch_restored": true,
+        "selected": 1,
+        "tiles": [
+          4,
+          4,
+          4,
+          4,
+          10,
+          4,
+          4,
+          4,
+          4
+        ],
+        "total": 0,
+        "variant": "one_rejected_soil",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      }
+    ],
+    "visual": {
+      "run": "build/farm-warning-native-20261023-050506",
+      "screenshot_inspected": "stone.png",
+      "source_preserved": true,
+      "frame": 0,
+      "owned_session_closed": true,
+      "palette": "data/init/colors.txt YELLOW:255,225,17",
+      "cases": [
+        {
+          "errors": [],
+          "lines": [
+            {
+              "text": "      No mud/soil for farm",
+              "y": 18,
+              "warning_colors": [
+                {
+                  "text": "No mud/soil for farm",
+                  "x": 6,
+                  "bg": 0,
+                  "bold": true,
+                  "fg": 6
+                }
+              ]
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 19,
+              "warning_colors": [
+                {
+                  "text": "Mud is left by water",
+                  "x": 6,
+                  "bg": 0,
+                  "bold": true,
+                  "fg": 6
+                }
+              ]
+            }
+          ],
+          "site": {
+            "name": "surface-soil",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "FINE",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        },
+        {
+          "errors": [],
+          "lines": [],
+          "site": {
+            "name": "underground-soil",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "FINE",
+          "warnings": []
+        },
+        {
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "lines": [
+            {
+              "text": "      Need soil or mud at location",
+              "y": 18,
+              "warning_colors": []
+            },
+            {
+              "text": "      No mud/soil for farm",
+              "y": 19,
+              "warning_colors": [
+                {
+                  "text": "No mud/soil for farm",
+                  "x": 6,
+                  "bg": 0,
+                  "bold": true,
+                  "fg": 6
+                }
+              ]
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 20,
+              "warning_colors": [
+                {
+                  "text": "Mud is left by water",
+                  "x": 6,
+                  "bg": 0,
+                  "bold": true,
+                  "fg": 6
+                }
+              ]
+            }
+          ],
+          "site": {
+            "name": "stone",
+            "x": 100,
+            "y": 40,
+            "z": 165
+          },
+          "tile": "NEEDS_SOIL_OR_MUD",
+          "warnings": [
+            "No mud/soil for farm",
+            "Mud is left by water"
+          ]
+        }
+      ]
+    },
+    "runtime": {
+      "management_version": 54,
+      "run": "build/construction-farm-warning-ui-20261023-051450",
+      "source_preserved": true,
+      "frame": 0,
+      "owned_session_closed": true,
+      "no_buildings_allocated": true,
+      "screenshot_inspected": "FarmPlot-118.0.png",
+      "native_expected": [
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "FarmPlot",
+          "message": "",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": true,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 100
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "FarmPlot",
+          "message": "",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 106
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "key": "FarmPlot",
+          "message": "Need soil or mud at location",
+          "tiles": [
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20,
+            20
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 112
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location"
+          ],
+          "key": "FarmPlot",
+          "message": "Water at this location",
+          "tiles": [
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 118
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "FarmPlot",
+          "message": "Building present",
+          "tiles": [
+            12,
+            12,
+            12,
+            12,
+            12,
+            12,
+            12,
+            12,
+            12
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 124
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Disconnected"
+          ],
+          "key": "FarmPlot",
+          "message": "Disconnected",
+          "tiles": [
+            0,
+            0,
+            0,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 130
+        }
+      ],
+      "viewer": {
+        "failure": "",
+        "observations": [
+          {
+            "copy": "",
+            "family": "FarmPlot",
+            "valid": true,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 100.0
+          },
+          {
+            "copy": "",
+            "family": "FarmPlot",
+            "valid": true,
+            "warnings": "",
+            "x": 106.0
+          },
+          {
+            "copy": "Need soil or mud at location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 112.0
+          },
+          {
+            "copy": "Water at this location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 118.0
+          },
+          {
+            "copy": "Building present",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 124.0
+          },
+          {
+            "copy": "Disconnected",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "",
+            "x": 130.0
+          }
+        ],
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "scope": "Main-viewer semantic previews, including cancel clearing. No new construction-effect claim."
+    }
+  },
+  "native_mixed_area_click": {
+    "run": "build/construction-area-mixed-click-20261023-052515",
+    "source_preserved": true,
+    "frame": 0,
+    "owned_session_closed": true,
+    "scope": "Native pointer clicks. Mixed water/occupancy use a valid opposite corner; all-invalid sites refuse the initial anchor. Created jobs deconstructed without saving; no completion claim.",
+    "cases": [
+      {
+        "created": [
+          {
+            "id": 1490,
+            "type": "FarmPlot"
+          }
+        ],
+        "errors": [],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Need soil or mud at location"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "stone",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "created": [],
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "water",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "created": [],
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "magma",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "created": [],
+        "errors": [
+          "Building present"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "occupied",
+        "warnings": [
+          "No mud/soil for farm",
+          "Mud is left by water"
+        ]
+      },
+      {
+        "created": [
+          {
+            "id": 1491,
+            "type": "FarmPlot"
+          }
+        ],
+        "errors": [],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "partial",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "partial_water",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Building present"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "partial_occupied",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "family": "FarmPlot",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "separated_water",
+        "warnings": []
+      },
+      {
+        "created": [
+          {
+            "id": 1492,
+            "type": "RoadDirt"
+          }
+        ],
+        "errors": [],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Need soil at location"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "magma",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Building present"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "occupied",
+        "warnings": []
+      },
+      {
+        "created": [
+          {
+            "id": 1493,
+            "type": "RoadDirt"
+          }
+        ],
+        "errors": [],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "partial",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "partial_water",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Building present"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "partial_occupied",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "family": "RoadDirt",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "separated_water",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "STAGES",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "soil",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "STAGES",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "stone",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "water",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Blocked at this location"
+        ],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "magma",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Building present"
+        ],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": -30000,
+          "y": -30000,
+          "z": -30000
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "occupied",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "selection": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "stage": "STAGES",
+        "start": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "variant": "partial",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Water at this location"
+        ],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "partial_water",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Building present"
+        ],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "partial_occupied",
+        "warnings": []
+      },
+      {
+        "created": [],
+        "errors": [
+          "Disconnected",
+          "Water at this location"
+        ],
+        "family": "RoadPaved",
+        "finish": {
+          "x": 100,
+          "y": 40,
+          "z": 165
+        },
+        "selection": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "stage": "PLACING",
+        "start": {
+          "x": 102,
+          "y": 42,
+          "z": 165
+        },
+        "variant": "separated_water",
+        "warnings": []
+      }
+    ],
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "runtime": {
+      "run": "build/construction-area-aggregation-ui-20261023-053024",
+      "native_expected": [
+        {
+          "direction": 0,
+          "errors": [
+            "Disconnected",
+            "Water at this location"
+          ],
+          "key": "FarmPlot",
+          "message": "Disconnected\nWater at this location",
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 100
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "FarmPlot",
+          "message": "Building present",
+          "tiles": [
+            12,
+            12,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 106
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Need soil or mud at location",
+            "Blocked at this location"
+          ],
+          "key": "FarmPlot",
+          "message": "Need soil or mud at location\nBlocked at this location",
+          "tiles": [
+            20,
+            20,
+            20,
+            6,
+            6,
+            6,
+            20,
+            20,
+            20
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 112
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "FarmPlot",
+          "message": "",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            4,
+            4
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 118
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location",
+            "Building present"
+          ],
+          "key": "FarmPlot",
+          "message": "Water at this location\nBuilding present",
+          "tiles": [
+            0,
+            10,
+            0,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 124
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Disconnected",
+            "Water at this location"
+          ],
+          "key": "RoadDirt",
+          "message": "Disconnected\nWater at this location",
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 100
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "RoadDirt",
+          "message": "Building present",
+          "tiles": [
+            12,
+            12,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 106
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Need soil at location",
+            "Blocked at this location"
+          ],
+          "key": "RoadDirt",
+          "message": "Need soil at location\nBlocked at this location",
+          "tiles": [
+            21,
+            21,
+            21,
+            6,
+            6,
+            6,
+            21,
+            21,
+            21
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 112
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "RoadDirt",
+          "message": "",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            4,
+            4
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 118
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location",
+            "Building present"
+          ],
+          "key": "RoadDirt",
+          "message": "Water at this location\nBuilding present",
+          "tiles": [
+            0,
+            10,
+            0,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 124
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Disconnected",
+            "Water at this location"
+          ],
+          "key": "RoadPaved",
+          "message": "Disconnected\nWater at this location",
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 100
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "RoadPaved",
+          "message": "Building present",
+          "tiles": [
+            12,
+            12,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 106
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Disconnected",
+            "Water at this location",
+            "Building present"
+          ],
+          "key": "RoadPaved",
+          "message": "Disconnected\nWater at this location\nBuilding present",
+          "tiles": [
+            10,
+            10,
+            10,
+            4,
+            4,
+            4,
+            12,
+            12,
+            12
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 112
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "RoadPaved",
+          "message": "",
+          "tiles": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            4,
+            4,
+            4
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 118
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location",
+            "Building present"
+          ],
+          "key": "RoadPaved",
+          "message": "Water at this location\nBuilding present",
+          "tiles": [
+            0,
+            10,
+            0,
+            12,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 124
+        }
+      ],
+      "viewer": {
+        "failure": "",
+        "observations": [
+          {
+            "copy": "Disconnected\nWater at this location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "",
+            "x": 100.0
+          },
+          {
+            "copy": "Building present",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "",
+            "x": 106.0
+          },
+          {
+            "copy": "Need soil or mud at location\nBlocked at this location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 112.0
+          },
+          {
+            "copy": "",
+            "family": "FarmPlot",
+            "valid": true,
+            "warnings": "",
+            "x": 118.0
+          },
+          {
+            "copy": "Water at this location\nBuilding present",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "",
+            "x": 124.0
+          },
+          {
+            "copy": "Disconnected\nWater at this location",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 100.0
+          },
+          {
+            "copy": "Building present",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 106.0
+          },
+          {
+            "copy": "Need soil at location\nBlocked at this location",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 112.0
+          },
+          {
+            "copy": "",
+            "family": "RoadDirt",
+            "valid": true,
+            "warnings": "",
+            "x": 118.0
+          },
+          {
+            "copy": "Water at this location\nBuilding present",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 124.0
+          },
+          {
+            "copy": "Disconnected\nWater at this location",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 100.0
+          },
+          {
+            "copy": "Building present",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 106.0
+          },
+          {
+            "copy": "Disconnected\nWater at this location\nBuilding present",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 112.0
+          },
+          {
+            "copy": "",
+            "family": "RoadPaved",
+            "valid": true,
+            "warnings": "",
+            "x": 118.0
+          },
+          {
+            "copy": "Water at this location\nBuilding present",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 124.0
+          }
+        ],
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "frame": 0,
+      "owned_session_closed": true,
+      "scope": "15 main-viewer semantic previews with native ordered refusals, warning text and validity; no construction allocated.",
+      "screenshot_inspected": "RoadPaved-112.0.png"
+    },
+    "farm_effects": {
+      "run": "build/native-farm-main-20261023-053146",
+      "result": {
+        "failure": "",
+        "observations": [
+          {
+            "unsuitable_first_corner_rejected": true
+          },
+          {
+            "building_id": 1490,
+            "input": "launcher/category/leaf/invalid anchor/reverse corners through viewport pointer",
+            "site": "(121, 46, 165)"
+          },
+          {
+            "buildings": [
+              {
+                "definition": "FarmPlot",
+                "extents": [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  0.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "id": 1490.0,
+                "items": [],
+                "jobs": 0.0,
+                "maximum": 3.0,
+                "stage": 3.0
+              }
+            ],
+            "frame": 700.0,
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      },
+      "completion": {
+        "buildings": [
+          {
+            "definition": "FarmPlot",
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1490,
+            "items": [],
+            "jobs": 0,
+            "maximum": 3,
+            "stage": 3
+          }
+        ],
+        "frame": 700,
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "owned_session_closed": true,
+      "screenshot_inspected": "farm-complete.png",
+      "scope": "Main-viewer launcher/category/leaf/invalid anchor/reverse corners through viewport pointer; natural completion of partial farm with dry center excluded."
+    }
+  },
+  "native_extent_tile": {
+    "fixture": "extent_tile_native.json.gz",
+    "priority_cases": 864,
+    "priority_queries": 2592,
+    "tile_type_cases": 4182,
+    "tile_types": 697,
+    "mud_states": 2,
+    "random_state_guards": 36,
+    "query": "extentTile; owned family/coordinates; native raw terrain first, then mode0 floor, farm edge designation, liquid and occupancy leaves. Separate raw result retained for area SKIP.",
+    "scope": "Tile-type sweep uses terrain metadata with mud events; no actual completed construction records are created. Runtime separately verified below.",
+    "runtime": {
+      "run": "build/construction-extent-tile-ui-20261023-054847",
+      "native_expected": [
+        {
+          "direction": 0,
+          "errors": [
+            "Too close to edge"
+          ],
+          "key": "FarmPlot",
+          "message": "Too close to edge",
+          "tiles": [
+            14
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 3,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "FarmPlot",
+          "message": "",
+          "tiles": [
+            0
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 3,
+          "y": 46
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location"
+          ],
+          "key": "FarmPlot",
+          "message": "Water at this location",
+          "tiles": [
+            10
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 100,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "FarmPlot",
+          "message": "Building present",
+          "tiles": [
+            12
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 106,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Blocked at this location"
+          ],
+          "key": "FarmPlot",
+          "message": "Blocked at this location",
+          "tiles": [
+            6
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 112,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Need soil or mud at location"
+          ],
+          "key": "FarmPlot",
+          "message": "Need soil or mud at location",
+          "tiles": [
+            20
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 118,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "FarmPlot",
+          "message": "Building present",
+          "tiles": [
+            12
+          ],
+          "valid": false,
+          "warnings": "No mud/soil for farm\nMud is left by water",
+          "x": 124,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "RoadDirt",
+          "message": "",
+          "tiles": [
+            0
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 3,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "RoadDirt",
+          "message": "",
+          "tiles": [
+            0
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 3,
+          "y": 46
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location"
+          ],
+          "key": "RoadDirt",
+          "message": "Water at this location",
+          "tiles": [
+            10
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 100,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "RoadDirt",
+          "message": "Building present",
+          "tiles": [
+            12
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 106,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Blocked at this location"
+          ],
+          "key": "RoadDirt",
+          "message": "Blocked at this location",
+          "tiles": [
+            6
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 112,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Need soil at location"
+          ],
+          "key": "RoadDirt",
+          "message": "Need soil at location",
+          "tiles": [
+            21
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 118,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "RoadDirt",
+          "message": "Building present",
+          "tiles": [
+            12
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 124,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "RoadPaved",
+          "message": "",
+          "tiles": [
+            0
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 3,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [],
+          "key": "RoadPaved",
+          "message": "",
+          "tiles": [
+            0
+          ],
+          "valid": true,
+          "warnings": "",
+          "x": 3,
+          "y": 46
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Water at this location"
+          ],
+          "key": "RoadPaved",
+          "message": "Water at this location",
+          "tiles": [
+            10
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 100,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "RoadPaved",
+          "message": "Building present",
+          "tiles": [
+            12
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 106,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Blocked at this location"
+          ],
+          "key": "RoadPaved",
+          "message": "Blocked at this location",
+          "tiles": [
+            6
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 112,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Need soil at location"
+          ],
+          "key": "RoadPaved",
+          "message": "Need soil at location",
+          "tiles": [
+            21
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 118,
+          "y": 40
+        },
+        {
+          "direction": 0,
+          "errors": [
+            "Building present"
+          ],
+          "key": "RoadPaved",
+          "message": "Building present",
+          "tiles": [
+            12
+          ],
+          "valid": false,
+          "warnings": "",
+          "x": 124,
+          "y": 40
+        }
+      ],
+      "viewer": {
+        "failure": "",
+        "observations": [
+          {
+            "copy": "Too close to edge",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 3.0,
+            "y": 40.0
+          },
+          {
+            "copy": "",
+            "family": "FarmPlot",
+            "valid": true,
+            "warnings": "",
+            "x": 3.0,
+            "y": 46.0
+          },
+          {
+            "copy": "Water at this location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 100.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Building present",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 106.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Blocked at this location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 112.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Need soil or mud at location",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 118.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Building present",
+            "family": "FarmPlot",
+            "valid": false,
+            "warnings": "No mud/soil for farm\nMud is left by water",
+            "x": 124.0,
+            "y": 40.0
+          },
+          {
+            "copy": "",
+            "family": "RoadDirt",
+            "valid": true,
+            "warnings": "",
+            "x": 3.0,
+            "y": 40.0
+          },
+          {
+            "copy": "",
+            "family": "RoadDirt",
+            "valid": true,
+            "warnings": "",
+            "x": 3.0,
+            "y": 46.0
+          },
+          {
+            "copy": "Water at this location",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 100.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Building present",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 106.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Blocked at this location",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 112.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Need soil at location",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 118.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Building present",
+            "family": "RoadDirt",
+            "valid": false,
+            "warnings": "",
+            "x": 124.0,
+            "y": 40.0
+          },
+          {
+            "copy": "",
+            "family": "RoadPaved",
+            "valid": true,
+            "warnings": "",
+            "x": 3.0,
+            "y": 40.0
+          },
+          {
+            "copy": "",
+            "family": "RoadPaved",
+            "valid": true,
+            "warnings": "",
+            "x": 3.0,
+            "y": 46.0
+          },
+          {
+            "copy": "Water at this location",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 100.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Building present",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 106.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Blocked at this location",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 112.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Need soil at location",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 118.0,
+            "y": 40.0
+          },
+          {
+            "copy": "Building present",
+            "family": "RoadPaved",
+            "valid": false,
+            "warnings": "",
+            "x": 124.0,
+            "y": 40.0
+          }
+        ],
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "frame": 0,
+      "owned_session_closed": true,
+      "no_buildings_allocated": true,
+      "screenshot_inspected": "FarmPlot-3.0-40.0.png"
+    },
+    "paved_road_effects": {
+      "run": "build/native-road-paved-main-20261023-054940",
+      "completion": {
+        "buildings": [
+          {
+            "definition": "RoadPaved",
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1490,
+            "items": [
+              {
+                "id": 1717,
+                "material": "INORGANIC:PETRIFIED_WOOD",
+                "type": "BLOCKS"
+              },
+              {
+                "id": 1716,
+                "material": "INORGANIC:PETRIFIED_WOOD",
+                "type": "BLOCKS"
+              },
+              {
+                "id": 1714,
+                "material": "INORGANIC:PETRIFIED_WOOD",
+                "type": "BLOCKS"
+              }
+            ],
+            "jobs": 0,
+            "maximum": 3,
+            "stage": 3
+          }
+        ],
+        "frame": 2425,
+        "status": "passed"
+      },
+      "viewer": {
+        "failure": "",
+        "observations": [
+          {
+            "unsuitable_first_corner_rejected": true
+          },
+          {
+            "material_input": "semantic exact item selection through main controller",
+            "required": 3,
+            "selected_items": [
+              {
+                "id": 1714,
+                "row": 0
+              },
+              {
+                "id": 1716,
+                "row": 0
+              },
+              {
+                "id": 1717,
+                "row": 0
+              }
+            ]
+          },
+          {
+            "building_id": 1490,
+            "input": "semantic menu/invalid anchor; valid reverse corners via viewport pointer",
+            "site": "(121, 46, 165)"
+          },
+          {
+            "buildings": [
+              {
+                "definition": "RoadPaved",
+                "extents": [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  0.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "id": 1490.0,
+                "items": [
+                  {
+                    "id": 1717.0,
+                    "material": "INORGANIC:PETRIFIED_WOOD",
+                    "type": "BLOCKS"
+                  },
+                  {
+                    "id": 1716.0,
+                    "material": "INORGANIC:PETRIFIED_WOOD",
+                    "type": "BLOCKS"
+                  },
+                  {
+                    "id": 1714.0,
+                    "material": "INORGANIC:PETRIFIED_WOOD",
+                    "type": "BLOCKS"
+                  }
+                ],
+                "jobs": 0.0,
+                "maximum": 3.0,
+                "stage": 3.0
+              }
+            ],
+            "frame": 2425.0,
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "owned_session_closed": true,
+      "scope": "Semantic menu/invalid anchor, valid reverse corners through viewport pointer, semantic exact item selection. Natural completion verifies selected IDs and partial extents.",
+      "screenshot_inspected": "farm-complete.png"
+    }
+  },
+  "native_farm_material_mode": {
+    "run": "build/farm-material-mode-native-20261023-055944",
+    "capture": {
+      "created": [
+        {
+          "id": 1490,
+          "inputs": 0,
+          "jobs": 1,
+          "type": "FarmPlot"
+        }
+      ],
+      "rows": [
+        {
+          "after": false,
+          "closest": false,
+          "last": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to be a corner of the Farm Plot.",
+              "y": 6
+            },
+            {
+              "text": "        Select material after placement",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material",
+              "y": 12
+            },
+            {
+              "text": "            Keep building after placement",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "      Blocked at this location",
+              "y": 18
+            },
+            {
+              "text": "      No mud/soil for farm",
+              "y": 19
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 20
+            }
+          ],
+          "name": "initial",
+          "same": false,
+          "stage": "PLACING"
+        },
+        {
+          "after": false,
+          "closest": true,
+          "last": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to be a corner of the Farm Plot.",
+              "y": 6
+            },
+            {
+              "text": "        Select material after placement",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material",
+              "y": 12
+            },
+            {
+              "text": "            Keep building after placement",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "      Blocked at this location",
+              "y": 18
+            },
+            {
+              "text": "      No mud/soil for farm",
+              "y": 19
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 20
+            }
+          ],
+          "name": "closest",
+          "same": false,
+          "stage": "PLACING"
+        },
+        {
+          "after": false,
+          "closest": false,
+          "last": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to be a corner of the Farm Plot.",
+              "y": 6
+            },
+            {
+              "text": "        Select material after placement",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material",
+              "y": 12
+            },
+            {
+              "text": "            Keep building after placement",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "      Blocked at this location",
+              "y": 18
+            },
+            {
+              "text": "      No mud/soil for farm",
+              "y": 19
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 20
+            }
+          ],
+          "name": "after",
+          "same": false,
+          "stage": "PLACING"
+        },
+        {
+          "after": false,
+          "closest": true,
+          "last": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to be a corner of the Farm Plot.",
+              "y": 6
+            },
+            {
+              "text": "        Select material after placement",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material",
+              "y": 12
+            },
+            {
+              "text": "            Keep building after placement",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "      Blocked at this location",
+              "y": 18
+            },
+            {
+              "text": "      No mud/soil for farm",
+              "y": 19
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 20
+            }
+          ],
+          "name": "closest_again",
+          "same": false,
+          "stage": "PLACING"
+        },
+        {
+          "after": false,
+          "closest": true,
+          "last": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "      Click a tile to be a corner of the Farm Plot.",
+              "y": 6
+            },
+            {
+              "text": "        Select material after placement",
+              "y": 9
+            },
+            {
+              "text": "        Use closest material",
+              "y": 12
+            },
+            {
+              "text": "            Keep building after placement",
+              "y": 15
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "      Blocked at this location",
+              "y": 18
+            },
+            {
+              "text": "      No mud/soil for farm",
+              "y": 19
+            },
+            {
+              "text": "      Mud is left by water",
+              "y": 20
+            }
+          ],
+          "name": "reopen",
+          "same": false,
+          "stage": "PLACING"
+        },
+        {
+          "after": false,
+          "closest": true,
+          "last": false,
+          "lines": [
+            {
+              "text": "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+              "y": 0
+            },
+            {
+              "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+              "y": 1
+            },
+            {
+              "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+              "y": 2
+            },
+            {
+              "text": "                                                                                                                                    Elevation 36",
+              "y": 16
+            }
+          ],
+          "name": "placed",
+          "same": false,
+          "stage": "PLACING"
+        }
+      ]
+    },
+    "source_preserved": true,
+    "frame": 0,
+    "owned_session_closed": true,
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "scope": "Actual native button clicks: Closest/After/Closest, reopen retains Closest, native pointer creates a partial farm with no material items. Owned job deconstructed without saving; no completion claim.",
+    "runtime": {
+      "run": "build/farm-closest-main-20261023-060118",
+      "viewer": {
+        "failure": "",
+        "observations": [
+          {
+            "input": "actual Closest/After/Closest button clicks",
+            "material_mode": "closest"
+          },
+          {
+            "unsuitable_first_corner_rejected": true
+          },
+          {
+            "building_id": 1490,
+            "input": "launcher/category/leaf/invalid anchor/reverse corners through viewport pointer",
+            "site": "(121, 46, 165)"
+          },
+          {
+            "buildings": [
+              {
+                "definition": "FarmPlot",
+                "extents": [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  0.0,
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "id": 1490.0,
+                "items": [],
+                "jobs": 0.0,
+                "maximum": 3.0,
+                "stage": 3.0
+              }
+            ],
+            "frame": 700.0,
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      },
+      "completion": {
+        "buildings": [
+          {
+            "definition": "FarmPlot",
+            "extents": [
+              1,
+              1,
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ],
+            "id": 1490,
+            "items": [],
+            "jobs": 0,
+            "maximum": 3,
+            "stage": 3
+          }
+        ],
+        "frame": 700,
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "owned_session_closed": true,
+      "scope": "Actual launcher/category/leaf and Closest/After/Closest button clicks, invalid anchor rejection, reverse corners via viewport pointer, natural farm completion.",
+      "screenshot_inspected": "farm-placement.png"
+    }
+  }
+}

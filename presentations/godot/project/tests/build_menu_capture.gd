@@ -5,27 +5,22 @@ var directory: String
 func _initialize() -> void:
 	call_deferred("run")
 
-func catalog(rows: Array, result: Array) -> void:
-	for row in rows:
-		if row.has("children"): catalog(row.children, result)
-		else:
-			var key := str(row.catalog_key)
-			var reason := ""
-			if "Magma" in key: reason = "Magma placement rule not captured"
-			elif key == "Windmill": reason = "Windmill placement rule not captured"
-			result.append({"key":key,"supported":reason.is_empty(),"reason":reason})
-
 func capture(name: String) -> bool:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	return root.get_texture().get_image().save_png(directory.path_join(name + ".png")) == OK
 
 func pressure_pointer(controller, kind: String, value: int) -> bool:
+	# Scroll/rebuild callbacks can precede deferred container layout. Click the
+	# rendered row, as a player would, instead of retaining a pre-layout point.
+	await RenderingServer.frame_post_draw
 	var target: BaseButton
 	for control in controller.pressure_view.find_children("*","BaseButton",true,false):
 		if control.get_meta("pressure_kind","") == kind and control.get_meta("pressure_value",-999) == value: target = control
 	if target == null or target.disabled: push_error("Pressure pointer target absent: " + kind); return false
 	var point := target.get_global_rect().get_center()
+	if kind == "creature" and not controller.pressure_view.rows.get_global_rect().encloses(target.get_global_rect()):
+		push_error("Pressure row extends beyond its input area: " + str(target.get_global_rect())); return false
 	var motion := InputEventMouseMotion.new(); motion.position = point
 	root.push_input(motion,true); await process_frame
 	for pressed in [true,false]:
@@ -45,7 +40,15 @@ func run() -> void:
 	var assets := Df3dWorld.new(); root.add_child(assets)
 	if not assets.load_assets(OS.get_environment("DF3D_DF_PATH")): quit(1); return
 	var menu := Menu.new(); root.add_child(menu); menu.configure(assets)
-	var rows: Array = []; catalog(menu.entries, rows); menu.set_catalog(rows)
+	# Use the recorded installed catalog, including now-supported Windmill/magma routes.
+	var compressed := FileAccess.get_file_as_bytes("res://../../../fixtures/construction/catalog_native_routes.json.gz")
+	var native_catalog: Dictionary = JSON.parse_string(compressed.decompress_dynamic(8*1024*1024,FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
+	var rows: Array = native_catalog.rows
+	menu.set_catalog(rows)
+	var supported := 0
+	for row in rows:
+		if row.supported: supported += 1
+	if supported != int(native_catalog.supported_count): push_error("Native catalog support count differs"); quit(1); return
 	menu.layout(Vector2(1200,800),Vector2(568,760))
 	var captures := {"top":[],"workshops":[0],"clothing_leather":[0,0],"farming":[0,1],"furnaces":[0,2],"furniture":[1],"doors_hatches":[2],"constructions":[3],"machines_fluids":[4],"cages_restraints":[5],"traps":[6],"military":[7]}
 	for name in captures:
@@ -146,6 +149,31 @@ func run() -> void:
 		if not await pressure_pointer(controller,"creature",186000): quit(1); return
 	if controller.draft.pressure_plate.unit_min != 186000 or controller.draft.pressure_plate.unit_max != 186999: push_error("Unnamed band pointer selection differs"); quit(1); return
 	if not await capture("controller_pressure_unnamed"): quit(1); return
+	# Native cell positions, including the weight glyph and Any, across all choices.
+	var font := Image.load_from_file(assets.ui_font_path())
+	var compared := 0
+	for sample in pressure_fixture.cart_weight_alignment.cases:
+		controller.draft.pressure_plate.track_min = int(sample.minimum)
+		controller.draft.pressure_plate.track_max = int(sample.maximum)
+		controller.rebuild_orientation()
+		await process_frame; await RenderingServer.frame_post_draw
+		await process_frame; await RenderingServer.frame_post_draw
+		var rendered := root.get_texture().get_image()
+		var origin: Vector2i = Vector2i(controller.pressure_view.global_position)
+		for cell in sample.cells:
+			var ch := int(cell.ch)
+			for y in 12:
+				for x in 8:
+					var ink := font.get_pixel((ch % 16)*8+x,(ch / 16)*12+y)
+					if ink.a < 0.99 or minf(ink.r,minf(ink.g,ink.b)) < 0.99: continue
+					var actual := rendered.get_pixel(origin.x+(int(cell.x)-73)*8+x,origin.y+120+y)
+					if absf(actual.r-1)+absf(actual.g-1)+absf(actual.b-1) > 0.035:
+						push_error("Native cart weight glyph alignment differs: " + str(sample.name)); quit(1); return
+					compared += 1
+		if sample.name in ["weight-1","weight-50","weight-100","weight-1000","weight-2000"]:
+			if not await capture("controller_pressure_"+str(sample.name)): quit(1); return
+	if compared == 0: push_error("Cart glyph comparison empty"); quit(1); return
+	print("PRESSURE_WEIGHT_PIXELS_PASS cases=",pressure_fixture.cart_weight_alignment.cases.size()," pixels=",compared)
 	print("PRESSURE_CONTROLS_POINTER_PASS")
 	controller.choose_definition("TradeDepot"); controller.target_tile(Vector3i(10,10,1),true); service.poll()
 

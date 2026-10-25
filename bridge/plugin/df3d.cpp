@@ -7,6 +7,8 @@
 #endif
 
 #include "PluginManager.h"
+#include "construction_site_native.h"
+#include "bed_appearance_native.h"
 #include "contact_capture.h"
 #include "room_discovery_native.h"
 #include "room_mutation_native.h"
@@ -106,6 +108,7 @@ DFHACK_PLUGIN("df3d");
 DFHACK_PLUGIN_IS_ENABLED(is_enabled);
 
 REQUIRE_GLOBAL(world);
+REQUIRE_GLOBAL(cur_year_tick);
 
 namespace {
 
@@ -1045,7 +1048,8 @@ void buildAndPublishSnapshot(color_ostream& out, int32_t frame) {
             glyphs.materials, glyphs.itemdefs, state.resultOffsets.empty() ? 0 : resultsVec, combatVec, projectileVec,
             spatterScope,spatterVec,reportVec,df3d_events::reports().dropped,
             contactVec,df3d_contact::dropped(),df3d_contact::available(),
-            attackVec,df3d_contact::attacksDropped(),df3d_contact::available(),projectileCombatVec,df3d_contact::projectilesDropped(),df3d_contact::available());
+            attackVec,df3d_contact::attacksDropped(),df3d_contact::available(),projectileCombatVec,df3d_contact::projectilesDropped(),df3d_contact::available(),
+            df::global::cur_year_tick ? *df::global::cur_year_tick : -1);
         // Size-prefixed on purpose — see the shm convention in the header comment.
         state.fbb.FinishSizePrefixed(snap, mir::SnapshotIdentifier());
 
@@ -1159,7 +1163,8 @@ bool writeFullToRecording(color_ostream& out) {
                                     glyphs.creatures, glyphs.materials, glyphs.itemdefs, 0, combatVec, projectileVec,
                                     mir::ChangeScope::Full,spatterVec,reportVec,df3d_events::reports().dropped,
                                     contactVec,df3d_contact::dropped(),df3d_contact::available(),
-                                    attackVec,df3d_contact::attacksDropped(),df3d_contact::available(),projectileCombatVec,df3d_contact::projectilesDropped(),df3d_contact::available());
+                                    attackVec,df3d_contact::attacksDropped(),df3d_contact::available(),projectileCombatVec,df3d_contact::projectilesDropped(),df3d_contact::available(),
+            df::global::cur_year_tick ? *df::global::cur_year_tick : -1);
     fbb.FinishSizePrefixed(snap, mir::SnapshotIdentifier());
     recordBuffer(fbb.GetBufferPointer(), fbb.GetSize());
     // The Full's appearances are now the last published stack of every unit.
@@ -1402,6 +1407,140 @@ command_result cmdRecordStart(color_ostream& out, const string& path) {
 command_result df3d_command(color_ostream& out, vector<string>& parameters) {
     if (parameters.empty() || parameters[0] == "status")
         return cmdStatus(out);
+      if(parameters[0]=="pressure-trigger-read") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          uint32_t flags=0;const auto& v=parameters[1];
+          const auto parsed=std::from_chars(v.data(),v.data()+v.size(),flags);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          out.print("{{\"support\":{}}}\n",df3d_construction::pressureTrigger(flags));return CR_OK;
+      }
+      if(parameters[0]=="bridge-tile-read") {
+          if(parameters.size()!=5)return CR_WRONG_USAGE;
+          int32_t p[4]{};
+          for(size_t i=0;i<4;++i) {
+              const auto& v=parameters[i+1];const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(p[3]<0 || p[3]>1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          out.print("{{\"support\":{}}}\n",df3d_construction::bridgeTile(p[0],p[1],p[2],p[3]!=0));return CR_OK;
+      }
+      if(parameters[0]=="special-tile-read") {
+          if(parameters.size()!=6)return CR_WRONG_USAGE;
+          int32_t p[4]{};
+          for(size_t i=0;i<4;++i) {
+              const auto& v=parameters[i+2];const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(p[3]<0 || p[3]>1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          out.print("{{\"support\":{}}}\n",df3d_construction::specialTile(parameters[1],p[0],p[1],p[2],p[3]!=0));return CR_OK;
+      }
+      if(parameters[0]=="opening-tile-read" || parameters[0]=="extent-tile-read" || parameters[0]=="furniture-tile-read" || parameters[0]=="ordinary-tile-read") {
+          if(parameters.size()!=5)return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i) {
+              const auto& v=parameters[i+2];const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int raw=-1;const auto code=parameters[0]=="opening-tile-read"?df3d_construction::openingTile(parameters[1],p[0],p[1],p[2]):parameters[0]=="ordinary-tile-read"?df3d_construction::ordinaryTile(parameters[1],p[0],p[1],p[2]):parameters[0]=="furniture-tile-read"?df3d_construction::furnitureTile(parameters[1],p[0],p[1],p[2]):df3d_construction::extentTile(parameters[1],p[0],p[1],p[2],&raw);
+          out.print("{{\"support\":{},\"raw\":{}}}\n",code,raw);return CR_OK;
+      }
+      if(parameters[0]=="area-connectivity-read" || parameters[0]=="farm-warning-read") {
+          if(parameters.size()!=(parameters[0]=="farm-warning-read"?8:7))return CR_WRONG_USAGE;
+          int32_t p[5]{};
+          for(size_t i=0;i<5;++i) {
+              const auto& v=parameters[i+2];const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          if(parameters[0]=="farm-warning-read" && parameters[1]!="FarmPlot")return CR_WRONG_USAGE;
+          std::vector<uint8_t> eligible;
+          if(parameters[0]=="farm-warning-read")for(char v:parameters[7]) {
+              if(v!='0' && v!='1')return CR_WRONG_USAGE;eligible.push_back(uint8_t(v-'0'));
+          }
+          const int answer=parameters[0]=="farm-warning-read"?df3d_construction::farmWarning(p[0],p[1],p[2],p[3],p[4],eligible):df3d_construction::areaConnectivity(parameters[1],p[0],p[1],p[2],p[3],p[4]);
+          out.print("{{\"support\":{}}}\n",answer);return CR_OK;
+      }
+      if(parameters[0]=="track-terrain-read" || parameters[0]=="track-terrain-oracle-read") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i) {
+              const auto& v=parameters[i+1];const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const int answer=parameters[0]=="track-terrain-read"?df3d_construction::trackTerrain(p[0],p[1],p[2]):df3d_construction::trackTerrainOracle(p[0],p[1],p[2]);
+          out.print("{{\"support\":{}}}\n",answer);return CR_OK;
+      }
+      if(parameters[0]=="construction-terrain-read") {
+          if(parameters.size()!=5 && parameters.size()!=9)return CR_WRONG_USAGE;
+          int32_t values[8]={0,0,0,0,-1,-1,1,1};
+          for(size_t i=0;i<parameters.size()-1;++i) {
+              const auto& v=parameters[i+1];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),values[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          out.print("{{\"support\":{}}}\n",df3d_construction::constructionTerrain(values[0],values[1],values[2],values[3],values[4],values[5],values[6],values[7]));
+          return CR_OK;
+      }
+      if(parameters[0]=="bed-choices-read") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t values[2]{};
+          for(size_t i=0;i<2;++i) {
+              const auto& v=parameters[i+1];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),values[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          df3d_bed::Choices result;
+          const bool valid=df3d_bed::choices(values[0],values[1],result);
+          out.print("{{\"valid\":{},\"sheet\":{},\"pillow\":{},\"color\":{}}}\n",valid,result.sheet,result.pillow,result.color);
+          return CR_OK;
+      }
+      if(parameters[0]=="bars-connections-read") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i) {
+              const auto& v=parameters[i+1];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          out.print("{{\"connections\":{}}}\n",df3d_construction::verticalBarsConnections(p[0],p[1],p[2]));
+          return CR_OK;
+      }
+      if(parameters[0]=="door-support-read" || parameters[0]=="site-support-read") {
+          const bool typed=parameters[0]=="site-support-read";
+          const bool rectangle=typed && parameters.size()==7 && parameters[1]=="BridgePerimeter";
+          if(!rectangle && parameters.size()!=(typed?5:4))return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i){const auto& v=parameters[i+(typed?2:1)];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          int32_t dimensions[2]={1,1};
+          if(rectangle)for(size_t i=0;i<2;++i) {
+              const auto& v=parameters[i+5];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),dimensions[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          bool randomAdvanced=false;
+          const auto support=df3d_construction::siteSupport(typed?parameters[1]:"Door",p[0],p[1],p[2],&randomAdvanced,dimensions[0],dimensions[1]);
+          out.print("{{\"support\":{},\"random_advanced_before_restore\":{}}}\n",support,randomAdvanced);return CR_OK;
+      }
+      if (parameters[0] == "material-recipe-read" || parameters[0] == "material-candidates-read" || parameters[0] == "material-candidates-cold-read") {
+          if(parameters.size()!=3 && parameters.size()!=4 && parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
+          int32_t values[5]{0,0,-1,0,-1};
+          for(size_t i=0;i<parameters.size()-1;++i){const auto& v=parameters[i+1];const auto r=std::from_chars(v.data(),v.data()+v.size(),values[i]);
+              if(r.ec!=std::errc{} || r.ptr!=v.data()+v.size())return CR_WRONG_USAGE;}
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          return df3d_management::printMaterialRecipe(out,values[0],values[1],parameters[0]!="material-recipe-read",parameters[0]=="material-candidates-cold-read",values[2],values[3],values[4])?CR_OK:CR_FAILURE;
+      }
       if (parameters[0] == "material-distances-read" || parameters[0] == "track-material-candidates-read" || parameters[0] == "track-material-order-read") {
           if(parameters.size()!=8)return CR_WRONG_USAGE;
           std::array<int32_t,6> positions{};int32_t limit=0;
@@ -1945,6 +2084,10 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d location-details-refresh <site id> <location id> (refresh semantic caches; protected acceptance)\n"
         "df3d location-details-read <site id> <location id> (partial semantic Details facts; read-only)\n"
         "df3d location-guilds-read (ordered native guild professions and workers; read-only)\n"
+        "df3d site-support-read <family> <x> <y> <z> (read-only support, not full placement)\n"
+        "df3d bars-connections-read <x> <y> <z> (read-only native vertical-bar adjacency)\n"
+        "df3d door-support-read <x> <y> <z> (read-only wall support, not full placement)\n"
+        "df3d bed-choices-read <item-id> <descriptor-color-count> (owned-state appearance diagnostic)\n"
         "df3d material-distances-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
         "df3d track-material-order-read <sx> <sy> <sz> <tx> <ty> <tz> <tile-limit> (read-only)\n"
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"

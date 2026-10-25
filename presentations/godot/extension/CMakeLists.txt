@@ -122,7 +122,7 @@ set_target_properties(df3d_godot PROPERTIES
 add_library(df3d_mesh_batches_test SHARED EXCLUDE_FROM_ALL
   src/mesh_batches.cpp tests/mesh_batches_lifecycle_tests.cpp)
 target_include_directories(df3d_mesh_batches_test PRIVATE src)
-target_link_libraries(df3d_mesh_batches_test PRIVATE godot-cpp)
+target_link_libraries(df3d_mesh_batches_test PRIVATE godot-cpp df3d_assets)
 df3d_godot_warnings(df3d_mesh_batches_test)
 set_target_properties(df3d_mesh_batches_test PROPERTIES PREFIX ""
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/mesh-batches-test")

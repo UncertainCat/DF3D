@@ -1,0 +1,112 @@
+{
+  "scope": "Native Quern stage/material artwork; paused synthetic components, not natural construction effects.",
+  "version": "DF53.16 Steam24557528",
+  "capture": "build\\quern-siege-native-20261024-083502",
+  "ordering_capture": "build/quern-order-native-20261024-083628",
+  "rule": "First PERM construction component supplies base color; absent component retains raw palette. Planned alpha is ceil(source_alpha/2), completed full alpha.",
+  "rows": [
+    {
+      "component_material": null,
+      "stage": 0,
+      "hashes": [
+        "006cdbffbe78714175e7f616bf9b782bf998cddf1f178c66b5ecd8809eba3602",
+        "12568e3d784d6aa6bb26391f109b43bff360374080cdabf867f9f7b961a07889"
+      ]
+    },
+    {
+      "component_material": null,
+      "stage": 1,
+      "hashes": [
+        "3ccc38c4a96a7b06e06de2bb4695632ae1c996b2e8f686b577ab887f5f301cdf",
+        "c5651944b232d43f5f76db863d1f45cf3c44094519dba59bde5257690a8ce5f8"
+      ]
+    },
+    {
+      "component_material": "INORGANIC:GRANITE",
+      "stage": 0,
+      "hashes": [
+        "7113cb06fe3950c7a03a5e5ab244c12131ebfb3b09ff5454b2119bc6a0d8719b",
+        "7d10a98ec12a15eb9992bc42709c0d3171ed2376b919cea05b814e6c10af5647"
+      ]
+    },
+    {
+      "component_material": "INORGANIC:GRANITE",
+      "stage": 1,
+      "hashes": [
+        "00f533413b03b43f6244ab3d58157ed19834097cbdbd6e5d5f7de5aa04dd1f32",
+        "16fa24a3275415528f2ea59531c0a4109425f774d4564957c098943c6b179d06"
+      ]
+    },
+    {
+      "component_material": "INORGANIC:IRON",
+      "stage": 0,
+      "hashes": [
+        "3ab3958cceba61a74d8a2dea5c09d26e83e7b95ba30e6b7a962fc178e75cd010",
+        "9fd2ab48f7cc115adcb5522acec4c97c4cb62f745326a98b54a5f2ece900dda3"
+      ]
+    },
+    {
+      "component_material": "INORGANIC:IRON",
+      "stage": 1,
+      "hashes": [
+        "50896387c7e817b9aa39eb2b277095201fc5d498afdcfe09f5aeed70303c1ead",
+        "9f7982ecb4bf9ecee571c7eaab0965f2315082e41fdcef002747cf76d466ee95"
+      ]
+    },
+    {
+      "component_material": "GLASS_GREEN",
+      "stage": 0,
+      "hashes": [
+        "2f55351bb2f7ef246c67c09cd15828bb35c835e613fdb99420823b975ccef180",
+        "f28169443139db971bae13606a8b49a68308a9b7b4ca89564e076e2dbcc3a36a"
+      ]
+    },
+    {
+      "component_material": "GLASS_GREEN",
+      "stage": 1,
+      "hashes": [
+        "9419523d12b273b6a4916edf7c3435309528e6320ecc66be7fadeca62d4d54db",
+        "c1e7841ae46d8fb1fb5a324f08dd10a3d00fdc22a1c24aa98e0cc6c280bf29eb"
+      ]
+    },
+    {
+      "component_material": "PLANT:OAK:WOOD",
+      "stage": 0,
+      "hashes": [
+        "2637d9cba7c827c9169e2b6020ad0cfb6e6c78e572086fbfdc5831a0cc394846",
+        "a5a0f5cac61e5c595f7acf271b913c0f50734950ef7a103095cbeaab1ac2475c"
+      ]
+    },
+    {
+      "component_material": "PLANT:OAK:WOOD",
+      "stage": 1,
+      "hashes": [
+        "63abc4f0afd389afb0074b03ec2dc88bc9ed26938cc664811b36fc675d995627",
+        "c09ff44a29e9d38757150d2cd917ab0ba09ad616d57fe23064f8e670bb7c2e05"
+      ]
+    }
+  ],
+  "verification": {
+    "gate": "build/qa/quern-native-verified",
+    "status": "passed_with_known_issues",
+    "checks": [
+      "core",
+      "layout_stage_gpu",
+      "quern_render_gpu"
+    ],
+    "pixel_cases": 10,
+    "coverage": "No component and granite/iron/green glass/oak components, planned/completed uploaded RGBA, white tint, mesh refresh and planned-glass reload. Standalone planned screenshot inspected.",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ]
+  },
+  "native_scope": {
+    "stage_count_capture_cases": 32,
+    "ordering_capture_cases": 24,
+    "source_preserved": true,
+    "owned_sessions_closed": true,
+    "scope": "Paused synthetic Quern components and stages; no new natural construction or management effect claim."
+  }
+}

@@ -49,7 +49,7 @@ func configure(art, cancel: Callable) -> void:
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE; line.add_child(label)
 	distance.name = "Distance"
 	frame.name = "ItemFrame"; frame.texture = art.texture("BUTTON_PICTURE_BOX")
-	frame.position = Vector2(16,0); frame.size = Vector2(36,36)
+	frame.position = Vector2(16,0); frame.size = Vector2(40,36)
 	frame.patch_margin_left = 8; frame.patch_margin_right = 8
 	frame.patch_margin_top = 12; frame.patch_margin_bottom = 12
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; line.add_child(frame)
@@ -138,7 +138,10 @@ func apply(view, entry: Dictionary, context: Dictionary) -> Dictionary:
 	distance.position = Vector2(240+column,0); distance.size = Vector2(104,36)
 	_color(distance,"font_color",view._palette(10))
 	var source: Array = [int(row.item_type),item.get("appearance",{})]
-	icon.texture = view.art.world.construction_item_icon(source[0],source[1]) if not source[1].is_empty() and view.art.world.has_method("construction_item_icon") else null
+	if group and source[0] == 8 and not source[1].is_empty():
+		source[1] = source[1].duplicate(true)
+		source[1].bedding = {"sheet":0,"pillow":0,"base_color":"","sheet_color":""}
+	icon.texture = view.art.world.construction_item_icon(source[0],source[1],group,int(item.get("id",-1))) if not source[1].is_empty() and view.art.world.has_method("construction_item_icon") else null
 	icon.visible = exact and icon.texture != null
 	frame.visible = icon.visible and context.frame
 	if child or standalone: controls.id = int(item.id)

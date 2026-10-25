@@ -8,15 +8,28 @@
 #include <string>
 #include <tuple>
 
+// Fixed synthetic inputs for the retained route fixtures; production eligibility
+// is supplied by DF, never inferred from these fixture shapes.
+wm::TrackSiteFacts site(wm::TileShape shape,wm::TrackSiteOccupancy occupancy,bool loaded,
+                       bool hidden=false,uint8_t depth=0,bool magma=false) {
+  wm::TrackSiteFacts f;
+  f.shape=shape;f.occupancy=occupancy;f.loaded=loaded;f.hidden=hidden;
+  f.liquidDepth=depth;f.magma=magma;
+  if(depth<=7 && shape!=wm::TileShape::Unknown && occupancy!=wm::TrackSiteOccupancy::Unknown)
+    f.nativeEligible=depth<=1 && !(magma && depth>0) && occupancy!=wm::TrackSiteOccupancy::BlockingBuilding &&
+        shape!=wm::TileShape::Wall && shape!=wm::TileShape::TreeTrunk && shape!=wm::TileShape::Fortification;
+  return f;
+}
+
 int main(int argc, char** argv) {
   if (argc==2 && std::string(argv[1])=="--site-route") {
     wm::TilePos start,goal,probe; int shape,occupancy,depth; bool loaded,hidden,magma;
     while (std::cin>>start.x>>start.y>>goal.x>>goal.y>>probe.x>>probe.y>>shape>>occupancy>>loaded>>hidden>>depth>>magma) {
       start.z=goal.z=probe.z=0;
       if (shape<0 || shape>255 || occupancy<0 || occupancy>255 || depth<0 || depth>255) return 2;
-      const wm::TrackSiteFacts facts{static_cast<wm::TileShape>(shape),static_cast<wm::TrackSiteOccupancy>(occupancy),loaded,hidden,uint8_t(depth),magma};
+      const auto facts=site(static_cast<wm::TileShape>(shape),static_cast<wm::TrackSiteOccupancy>(occupancy),loaded,hidden,uint8_t(depth),magma);
       const auto result=wm::routeTrackConstruction(start,goal,{-7,-7,0},{7,7,0},[&](wm::TilePos p){
-        const auto f=p==probe ? facts : wm::TrackSiteFacts{wm::TileShape::Floor,wm::TrackSiteOccupancy::None,true};
+        const auto f=p==probe ? facts : site(wm::TileShape::Floor,wm::TrackSiteOccupancy::None,true);
         return wm::TrackRoutingTile{f,false,f.shape==wm::TileShape::Wall || f.shape==wm::TileShape::Fortification,f.shape==wm::TileShape::Empty,f.shape==wm::TileShape::Ramp,true};
       });
       if (result.status==wm::TrackPathStatus::UnverifiedTerrain) { std::cout<<"unverified\n"; continue; }
@@ -39,7 +52,7 @@ int main(int argc, char** argv) {
         if (p.x < -7 || p.x>7 || p.y < -7 || p.y>7 || p.z < -1 || p.z>1) return wm::TrackRoutingTile{};
         const auto it=shapes.find({p.x,p.y,p.z}); const int kind=it==shapes.end()?0:it->second;
         const wm::TileShape kinds[]={wm::TileShape::Floor,wm::TileShape::Ramp,wm::TileShape::RampTop,wm::TileShape::Wall,wm::TileShape::Empty};
-        return wm::TrackRoutingTile{{kind>=0 && kind<5 ? kinds[kind] : wm::TileShape::Unknown,wm::TrackSiteOccupancy::None,true},false,kind==3,kind==4,kind==1,true};
+        return wm::TrackRoutingTile{site(kind>=0 && kind<5 ? kinds[kind] : wm::TileShape::Unknown,wm::TrackSiteOccupancy::None,true),false,kind==3,kind==4,kind==1,true};
       };
       const auto result=wm::routeTrackConstruction(start,goal,{-7,-7,-1},{7,7,1},lookup);
       std::cout<<int(result.status)<<' '<<result.tiles.size();
@@ -54,7 +67,7 @@ int main(int argc, char** argv) {
     while (std::cin>>count>>jobs>>builtCount) {
       if (count<0 || count>1024 || jobs<0 || jobs>1024 || builtCount<0 || builtCount>1024) return 2;
       std::vector<wm::TilePos> path(count);
-      std::vector<wm::PendingTrack> existing(jobs);
+      std::vector<wm::PendingConstruction> existing(jobs);
       std::set<std::tuple<int,int,int>> ramps;
       for (auto& p : path) {
         if (!(std::cin>>p.x>>p.y>>p.z)) return 2;
@@ -113,7 +126,7 @@ int main(int argc, char** argv) {
   std::map<std::tuple<int,int,int>,int> samples;
   const auto snapshot=[&](wm::TilePos p) {
     ++samples[{p.x,p.y,p.z}];
-    return wm::TrackRoutingTile{{wm::TileShape::Floor,wm::TrackSiteOccupancy::None,true},{},false,false};
+    return wm::TrackRoutingTile{site(wm::TileShape::Floor,wm::TrackSiteOccupancy::None,true),{},false,false};
   };
   if (wm::routeTrackConstruction({0,0,0},{2,0,0},{0,0,0},{2,0,0},snapshot).status!=Status::Found) return 3;
   for (const auto& [key,count] : samples) if (count!=1) return 3;
@@ -121,7 +134,7 @@ int main(int argc, char** argv) {
   // could instead be traversable once its missing facts arrive.
   const auto partial=[](wm::TilePos p) {
     if (p==wm::TilePos{1,0,0}) return wm::TrackRoutingTile{};
-    return wm::TrackRoutingTile{{wm::TileShape::Floor,wm::TrackSiteOccupancy::None,true},false,false,false};
+    return wm::TrackRoutingTile{site(wm::TileShape::Floor,wm::TrackSiteOccupancy::None,true),false,false,false};
   };
   const auto uncertain=wm::routeTrackConstruction({0,0,0},{2,0,0},{0,-1,0},{2,1,0},partial);
   if (uncertain.status!=Status::UnverifiedTerrain || !uncertain.tiles.empty()) return 3;
@@ -129,7 +142,7 @@ int main(int argc, char** argv) {
     const auto rampSnapshot=[&](wm::TilePos p) {
       using Shape=wm::TileShape;
       const auto shape=p.z==0 ? (p.x==0?Shape::Ramp:Shape::Wall) : (p.x==0?Shape::RampTop:Shape::Floor);
-      return wm::TrackRoutingTile{{shape,wm::TrackSiteOccupancy::None,true},
+      return wm::TrackRoutingTile{site(shape,wm::TrackSiteOccupancy::None,true),
           clearance==0 ? std::optional<bool>{} : std::optional<bool>{clearance==2},shape==Shape::Wall,false,shape==Shape::Ramp};
     };
     const auto route=wm::routeTrackConstruction({0,0,0},{1,0,1},{0,0,0},{1,0,1},rampSnapshot);
@@ -143,7 +156,7 @@ int main(int argc, char** argv) {
       using Shape=wm::TileShape;
       const auto shape=p.z==0 ? (p.x==0?Shape::Ramp:Shape::Wall) : (p.x==0?Shape::RampTop:Shape::Floor);
       const std::optional<bool> fact=support==0 ? std::optional<bool>{} : std::optional<bool>{support==2};
-      return wm::TrackRoutingTile{{shape,wm::TrackSiteOccupancy::None,true},false,fact,false,shape==Shape::Ramp};
+      return wm::TrackRoutingTile{site(shape,wm::TrackSiteOccupancy::None,true),false,fact,false,shape==Shape::Ramp};
     };
     const auto route=wm::routeTrackConstruction({0,0,0},{1,0,1},{0,0,0},{1,0,1},snapshot);
     if (route.status!=(support==0?Status::UnverifiedTerrain:support==1?Status::NoPath:Status::Found)) return 3;
@@ -155,7 +168,7 @@ int main(int argc, char** argv) {
       using Shape=wm::TileShape;
       const auto shape=p.z==0 ? (p.x==0?Shape::Ramp:Shape::Wall) : (p.x==0?Shape::RampTop:Shape::Floor);
       const std::optional<bool> ramp=nativeRamp==0 ? std::optional<bool>{} : std::optional<bool>{nativeRamp==2};
-      return wm::TrackRoutingTile{{shape,wm::TrackSiteOccupancy::None,true},false,shape==Shape::Wall,false,ramp};
+      return wm::TrackRoutingTile{site(shape,wm::TrackSiteOccupancy::None,true),false,shape==Shape::Wall,false,ramp};
     };
     const auto route=wm::routeTrackConstruction({0,0,0},{1,0,1},{0,0,0},{1,0,1},snapshot);
     if (route.status!=(nativeRamp==0?Status::UnverifiedTerrain:nativeRamp==1?Status::NoPath:Status::Found)) return 3;
@@ -168,7 +181,7 @@ int main(int argc, char** argv) {
       using Shape=wm::TileShape;
       const auto shape=p.z==0 ? (p.x==0?Shape::Floor:p.x==1?Shape::Ramp:Shape::Wall)
           : (p.x==1?Shape::RampTop:p.x>=2?Shape::Floor:Shape::Wall);
-      return wm::TrackRoutingTile{{shape,wm::TrackSiteOccupancy::None,true},false,
+      return wm::TrackRoutingTile{site(shape,wm::TrackSiteOccupancy::None,true),false,
           shape==Shape::Wall,false,shape==Shape::Ramp,walkable};
     };
     const auto expected=state==0?Status::UnverifiedTerrain:state==1?Status::NoPath:Status::Found;

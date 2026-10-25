@@ -1068,19 +1068,6 @@
       ]
     },
     {
-      "id": "test_construction_material_terrain",
-      "kind": "python",
-      "lane": "core",
-      "command": [
-        "tools/test_construction_material_terrain.py"
-      ],
-      "completion": "^CONSTRUCTION_MATERIAL_TERRAIN_PASS$",
-      "timeout": 45,
-      "prerequisites": [
-        "python_lupa"
-      ]
-    },
-    {
       "id": "test_lua_embedding",
       "kind": "python",
       "lane": "core",
@@ -1793,7 +1780,11 @@
       "script": "res://tests/container_contents_test.gd",
       "completion": "^CONTAINER_CONTENTS_PASS",
       "timeout": 60,
-      "prerequisites": ["extension_build", "df_assets", "item_updates_fixture"]
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "item_updates_fixture"
+      ]
     },
     {
       "id": "item_upload_probe_test",
@@ -2278,17 +2269,23 @@
       "script": "res://tests/world_color_pipeline_test.gd",
       "completion": "^WORLD_COLOR_PIPELINE_PASS$",
       "timeout": 90,
-      "prerequisites": ["extension_build", "real_renderer"]
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
     },
-      {
-        "id": "furniture_order_test",
-        "lane": "gpu",
-        "kind": "godot",
-        "script": "res://tests/furniture_order_test.gd",
-        "completion": "^FURNITURE_ORDER_PASS$",
-        "timeout": 90,
-        "prerequisites": ["extension_build", "real_renderer"]
-      },
+    {
+      "id": "furniture_order_test",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/furniture_order_test.gd",
+      "completion": "^FURNITURE_ORDER_PASS$",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "real_renderer"
+      ]
+    },
     {
       "id": "native_pixel_parity_test",
       "lane": "gpu",
@@ -2692,6 +2689,610 @@
         "recorded_mature_fixture",
         "real_renderer"
       ]
+    },
+    {
+      "id": "pump_animation_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_pump_animation_fixture",
+        "{root}/build/pump-animation.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS pump\\-animation\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "pump_animation_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/pump_animation_test.gd",
+      "completion": "^PUMP_ANIMATION_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "pump_animation_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "track_stop_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_track_stop_fixture",
+        "{root}/build/track-stop.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS track\\-stop\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "track_stop_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/track_stop_render_test.gd",
+      "completion": "^TRACK_STOP_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "track_stop_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "roller_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_roller_fixture",
+        "{root}/build/roller.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS roller\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "roller_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/roller_render_test.gd",
+      "completion": "^ROLLER_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "roller_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "instrument_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_instrument_fixture",
+        "{root}/build/instrument.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS instrument\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "instrument_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/instrument_render_test.gd",
+      "completion": "^INSTRUMENT_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "instrument_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "roller_pages_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_roller_pages_fixture",
+        "{root}/build/roller-pages.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS roller\\-pages\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "roller_pages_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/roller_pages_test.gd",
+      "completion": "^ROLLER_PAGES_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "roller_pages_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "waterwheel_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_waterwheel_fixture",
+        "{root}/build/waterwheel.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS waterwheel\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "waterwheel_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/waterwheel_render_test.gd",
+      "completion": "^WATERWHEEL_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "waterwheel_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "windmill_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_windmill_fixture",
+        "{root}/build/windmill.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS windmill\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "windmill_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/windmill_render_test.gd",
+      "completion": "^WINDMILL_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "windmill_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "transmission_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_transmission_fixture",
+        "{root}/build/transmission.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS transmission\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "transmission_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/transmission_render_test.gd",
+      "completion": "^TRANSMISSION_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "transmission_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "slab_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_slab_fixture",
+        "{root}/build/slab.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS slab\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "slab_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/slab_render_test.gd",
+      "completion": "^SLAB_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "slab_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "bars_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_fixture.py",
+        "make_bars_fixture",
+        "{root}/build/bars.df3dfix"
+      ],
+      "completion": "^QA_FIXTURE_PASS bars\\.df3dfix$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "tool_furniture_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/tool_furniture_render_test.gd",
+      "completion": "^TOOL_FURNITURE_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "equipment_furniture_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/equipment_furniture_render_test.gd",
+      "completion": "^EQUIPMENT_FURNITURE_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "bars_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/bars_render_test.gd",
+      "completion": "^BARS_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "bridge_material_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/bridge_material_render_test.gd",
+      "completion": "^BRIDGE_MATERIAL_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "layout_stage_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/layout_stage_render_test.gd",
+      "completion": "^LAYOUT_STAGE_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "quern_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/quern_render_test.gd",
+      "completion": "^QUERN_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "pump_material_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/pump_material_render_test.gd",
+      "completion": "^PUMP_MATERIAL_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "pump_animation_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "siege_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_siege_fixture.py"
+      ],
+      "completion": "^QA_SIEGE_FIXTURE_PASS 828$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "siege_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/siege_render_test.gd",
+      "completion": "^SIEGE_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "siege_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "trap_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_trap_fixture.py"
+      ],
+      "completion": "^QA_TRAP_FIXTURE_PASS 546$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "trap_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/trap_render_test.gd",
+      "completion": "^TRAP_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "trap_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "constructed_ramp_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_constructed_ramp_fixture.py"
+      ],
+      "completion": "^QA_CONSTRUCTED_RAMP_FIXTURE_PASS 150$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "constructed_ramp_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/constructed_ramp_render_test.gd",
+      "completion": "^CONSTRUCTED_RAMP_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "constructed_ramp_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "pending_tile_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_pending_tile_fixture.py"
+      ],
+      "completion": "^QA_PENDING_TILE_FIXTURE_PASS 76$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "pending_tile_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/pending_tile_render_test.gd",
+      "completion": "^PENDING_TILE_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "pending_tile_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "farm_road_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_farm_road_fixture.py"
+      ],
+      "completion": "^QA_FARM_ROAD_FIXTURE_PASS 300$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "farm_road_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/farm_road_render_test.gd",
+      "completion": "^FARM_ROAD_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "farm_road_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "weapon_trap_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_weapon_trap_fixture.py"
+      ],
+      "completion": "^QA_WEAPON_TRAP_FIXTURE_PASS 163$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "weapon_trap_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/weapon_trap_render_test.gd",
+      "completion": "^WEAPON_TRAP_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "weapon_trap_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "layout_families_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_layout_families_fixture.py"
+      ],
+      "completion": "^QA_LAYOUT_FAMILIES_FIXTURE_PASS 560$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "layout_families_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/layout_families_render_test.gd",
+      "completion": "^LAYOUT_FAMILIES_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "layout_families_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "archery_target_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/archery_target_render_test.gd",
+      "completion": "^ARCHERY_TARGET_RENDER_PASS$",
+      "timeout": 120,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "bars_fixture",
+        "real_renderer"
+      ]
+    },
+    {
+      "id": "upright_weapon_fixture",
+      "kind": "python",
+      "lane": "core",
+      "command": [
+        "tools/qa/make_upright_weapon_fixture.py"
+      ],
+      "completion": "^QA_UPRIGHT_WEAPON_FIXTURE_PASS 417$",
+      "timeout": 30,
+      "prerequisites": [
+        "root_build"
+      ]
+    },
+    {
+      "id": "upright_weapon_render_gpu",
+      "kind": "godot",
+      "lane": "gpu",
+      "script": "res://tests/upright_weapon_render_test.gd",
+      "completion": "^UPRIGHT_WEAPON_RENDER_PASS$",
+      "timeout": 600,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "upright_weapon_fixture",
+        "real_renderer"
+      ]
     }
   ],
   "exclusions": [
@@ -2989,6 +3590,31 @@
       "path": "presentations/godot/project/tests/source_mesh.gd",
       "status": "helper",
       "reason": "Inspect retained CPU source surfaces and active GPU surfaces in terrain rendering regressions."
+    },
+    {
+      "path": "presentations/godot/project/tests/setup_launcher_test.gd",
+      "status": "manual",
+      "reason": "tools/release/test_setup_ui.ps1 -Payload <package> -Game <disposable copy under build>. Requires isolated C# controller, disposable installation, profile and package; installs/restores only that copy."
+    },
+    {
+      "path": "presentations/godot/project/tests/setup_session_test.gd",
+      "status": "manual",
+      "reason": "tools/release/test_setup_session.ps1 -Payload <package> -Game <disposable copy under build>. Protected live handoff/crash/teardown cases require Df3dLane and isolated installation/profile; never run directly against the user installation."
+    },
+    {
+      "path": "presentations/godot/project/tests/setup_mock.gd",
+      "status": "manual",
+      "reason": "tools/release/mock_setup.ps1 -Test. Interactive setup-art mock with installed assets and native window capture; not a headless standalone gate assertion."
+    },
+    {
+      "path": "presentations/godot/project/tests/machine_frame_oracle.gd",
+      "status": "helper",
+      "reason": "Shared static native-cell GPU reference for wheel and roller frame selection checks."
+    },
+    {
+      "path": "presentations/godot/project/tests/native_planned_pixels.gd",
+      "status": "helper",
+      "reason": "Shared native RGBA assertion helper invoked by Track Stop, Roller, Water Wheel and Windmill GPU checks; not a standalone test."
     }
   ]
 }

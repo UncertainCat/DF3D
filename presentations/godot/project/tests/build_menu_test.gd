@@ -54,11 +54,16 @@ func run() -> void:
 	check(menu.row_controls[0][7].position.x == 176, "native root column width at 1200x800")
 	check(menu.row_controls[0][0].get_node("Icon").texture == assets.ui_texture("BUILDING_ICON_WORKSHOPS"), "icons resolve through installed art")
 	check(menu.row_controls[0][0].get_node("Frame").texture == assets.ui_texture("BUTTON_PICTURE_BOX"), "icon frame uses installed native art")
-	check(menu.row_controls[0][0].get_theme_stylebox("normal").texture == assets.ui_texture("BUTTON_RECTANGLE_LIGHT"), "row hatching uses installed native art")
+	# Protected native capture construction-menu-visual-review-20261023-152014:
+	# current rows use the regular rectangle; only selected ancestors are light.
+	check(menu.row_controls[0][0].get_theme_stylebox("normal").texture == assets.ui_texture("BUTTON_RECTANGLE"), "current row uses native regular background")
 	for code in ["SCREW_PRESS", "SOAP_MAKER"]:
 		check(assets.ui_texture("CUSTOM_WORKSHOP_LIST_ICON:" + code) != null, "raw-defined workshop list icon resolves: " + code)
 	menu.activate(0, 0); menu.activate(1, 1)
 	check(menu.levels().size() == 3 and menu.path == [0, 1], "workshop subgroup cascades")
+	check(menu.row_controls[0][0].get_theme_stylebox("normal").texture == assets.ui_texture("BUTTON_RECTANGLE_LIGHT"), "selected ancestor uses native light background")
+	check(menu.row_controls[0][1].get_theme_stylebox("normal").texture == assets.ui_texture("BUTTON_RECTANGLE_DARK"), "other ancestor uses native dark background")
+	check(menu.row_controls[2][0].get_theme_stylebox("normal").texture == assets.ui_texture("BUTTON_RECTANGLE"), "current submenu retains native regular background")
 	check(menu.compact_levels[0], "oldest ancestor compacts at native narrow cascade")
 	menu.activate(2, 0); check(picked == ["FarmPlot"], "supported native leaf emits its stable catalog key")
 	menu.activate(0, 4)

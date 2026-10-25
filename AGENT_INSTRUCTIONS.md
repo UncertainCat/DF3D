@@ -98,6 +98,33 @@ copy, fabricated progress percentages or broader native-UI departures.
   frame responsiveness takes priority over simulation throughput during these
   interactive actions. Keep Godot asynchronous and validate native behavior
   before release. Do not drive or borrow the global native build-menu state.
+- Maintainer decision, 2026-10-23: Track material ordering may use fresh
+  DF-calculated distances instead of reproducing the observed stale-distance
+  bug, where opening and cancelling an unrelated Floor picker changes suggested
+  materials for identical Track intent and stock. This exception covers that
+  ordering quirk only. It does not authorize borrowing native menu/search scratch,
+  changing placement or eligibility rules, or bypassing cold-route initialization.
+- Maintainer decision, 2026-10-23: keep the stable Track route on the first
+  preview instead of reproducing the confirmed native active-search cost
+  overwrite during lazy walkability rebuilding. This is a separate, narrowly
+  scoped first-preview routing exception. It does not authorize runtime menu
+  scratch access, debugger hooks, suppressed reindexing or changed eligibility.
+- Maintainer decision, 2026-10-23: keep all errors for the selected stair span
+  visible during preview and after rejection. Do not reproduce native redraw's
+  loss of intermediate-floor errors when the hovered level is revalidated.
+  This is a display-only exception; placement validation and refusal wording
+  remain unchanged. It does not authorize native menu/cache access.
+- Maintainer decision, 2026-10-24: use the correct installed artwork for five-to-ten
+  raised spikes instead of reproducing the confirmed native graphics-selector
+  mask bug. This is an appearance-only exception; construction and trap behavior
+  remain unchanged. It does not authorize native rendering-cache access.
+- Before extending an incomplete gameplay UI, locate the DF routine or existing
+  semantic API that supplies its choices, eligibility, ordering and actions.
+  Prefer exposing that behavior over reconstructing it in Godot or the bridge.
+  A DFHack helper or a file named `native` may itself reconstruct rules; inspect
+  its implementation before treating it as a call into DF. Record unresolved
+  entry points and ownership constraints rather than assuming an API exists.
+  Local navigation, drafts and rendering remain presentation responsibilities.
 - Maintainer clarification, 2026-10-03: prioritize prompt responses to explicit
   gameplay actions over simulation throughput during those actions. Larger safe-point
   batches are allowed when measurements justify them; keep the viewer responsive.

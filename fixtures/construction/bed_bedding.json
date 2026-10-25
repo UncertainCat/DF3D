@@ -1,0 +1,2620 @@
+{
+  "native_version": "DF53.16 Steam build24557528",
+  "status": "Native choices, candidate transport, shared renderer and exact live bed completion verified for granite; broader construction acceptance remains open",
+  "source": "build/bed-native-observe-20261023-160803",
+  "owned_df_pid": 78656,
+  "owned_df_closed": true,
+  "source_save_unchanged": true,
+  "frame": 0,
+  "scope": "24 newly created granite loose beds rendered normally on prepared floor. Exact set of24 native generated cache records matches item-ID-seeded selection. No picker group, placed building, other material or production-native-callback acceptance yet.",
+  "native_cache_observation": {
+    "after": [
+      {
+        "color": 25,
+        "flags": 49957,
+        "material": 1,
+        "pillow": 0,
+        "sheet": true,
+        "sheet_color": 6,
+        "texpos": 161822
+      },
+      {
+        "color": 25,
+        "flags": 107313,
+        "material": 1,
+        "pillow": 2,
+        "sheet": false,
+        "sheet_color": 13,
+        "texpos": 161829
+      },
+      {
+        "color": 25,
+        "flags": 115501,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 14,
+        "texpos": 161839
+      },
+      {
+        "color": 25,
+        "flags": 140081,
+        "material": 1,
+        "pillow": 2,
+        "sheet": false,
+        "sheet_color": 17,
+        "texpos": 161823
+      },
+      {
+        "color": 25,
+        "flags": 172841,
+        "material": 1,
+        "pillow": 1,
+        "sheet": false,
+        "sheet_color": 21,
+        "texpos": 161821
+      },
+      {
+        "color": 25,
+        "flags": 172845,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 21,
+        "texpos": 161824
+      },
+      {
+        "color": 25,
+        "flags": 271137,
+        "material": 1,
+        "pillow": 0,
+        "sheet": false,
+        "sheet_color": 33,
+        "texpos": 161830
+      },
+      {
+        "color": 25,
+        "flags": 271145,
+        "material": 1,
+        "pillow": 1,
+        "sheet": false,
+        "sheet_color": 33,
+        "texpos": 161833
+      },
+      {
+        "color": 25,
+        "flags": 295729,
+        "material": 1,
+        "pillow": 2,
+        "sheet": false,
+        "sheet_color": 36,
+        "texpos": 161816
+      },
+      {
+        "color": 25,
+        "flags": 320289,
+        "material": 1,
+        "pillow": 0,
+        "sheet": false,
+        "sheet_color": 39,
+        "texpos": 161832
+      },
+      {
+        "color": 25,
+        "flags": 328501,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 40,
+        "texpos": 161826
+      },
+      {
+        "color": 25,
+        "flags": 385841,
+        "material": 1,
+        "pillow": 2,
+        "sheet": false,
+        "sheet_color": 47,
+        "texpos": 161836
+      },
+      {
+        "color": 25,
+        "flags": 426785,
+        "material": 1,
+        "pillow": 0,
+        "sheet": false,
+        "sheet_color": 52,
+        "texpos": 161825
+      },
+      {
+        "color": 25,
+        "flags": 516917,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 63,
+        "texpos": 161838
+      },
+      {
+        "color": 25,
+        "flags": 533301,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 65,
+        "texpos": 161819
+      },
+      {
+        "color": 25,
+        "flags": 615213,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 75,
+        "texpos": 161827
+      },
+      {
+        "color": 25,
+        "flags": 664365,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 81,
+        "texpos": 161817
+      },
+      {
+        "color": 25,
+        "flags": 754465,
+        "material": 1,
+        "pillow": 0,
+        "sheet": false,
+        "sheet_color": 92,
+        "texpos": 161820
+      },
+      {
+        "color": 25,
+        "flags": 803637,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 98,
+        "texpos": 161837
+      },
+      {
+        "color": 25,
+        "flags": 852781,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 104,
+        "texpos": 161828
+      },
+      {
+        "color": 25,
+        "flags": 860981,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 105,
+        "texpos": 161818
+      },
+      {
+        "color": 25,
+        "flags": 885545,
+        "material": 1,
+        "pillow": 1,
+        "sheet": false,
+        "sheet_color": 108,
+        "texpos": 161835
+      },
+      {
+        "color": 25,
+        "flags": 893741,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 109,
+        "texpos": 161831
+      },
+      {
+        "color": 25,
+        "flags": 926509,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 113,
+        "texpos": 161834
+      }
+    ],
+    "beds": [
+      {
+        "id": 48520,
+        "x": 100,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48521,
+        "x": 101,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48522,
+        "x": 102,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48523,
+        "x": 103,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48524,
+        "x": 104,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48525,
+        "x": 105,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48526,
+        "x": 106,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48527,
+        "x": 107,
+        "y": 40,
+        "z": 165
+      },
+      {
+        "id": 48528,
+        "x": 100,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48529,
+        "x": 101,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48530,
+        "x": 102,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48531,
+        "x": 103,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48532,
+        "x": 104,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48533,
+        "x": 105,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48534,
+        "x": 106,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48535,
+        "x": 107,
+        "y": 41,
+        "z": 165
+      },
+      {
+        "id": 48536,
+        "x": 100,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48537,
+        "x": 101,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48538,
+        "x": 102,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48539,
+        "x": 103,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48540,
+        "x": 104,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48541,
+        "x": 105,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48542,
+        "x": 106,
+        "y": 42,
+        "z": 165
+      },
+      {
+        "id": 48543,
+        "x": 107,
+        "y": 42,
+        "z": 165
+      }
+    ],
+    "before": [],
+    "colors": [
+      {
+        "b": 0.0,
+        "g": 0.74901962280273,
+        "id": "AMBER",
+        "index": 0,
+        "r": 1.0
+      },
+      {
+        "b": 0.80000001192093,
+        "g": 0.40000000596046,
+        "id": "AMETHYST",
+        "index": 1,
+        "r": 0.60000002384186
+      },
+      {
+        "b": 1.0,
+        "g": 1.0,
+        "id": "AQUA",
+        "index": 2,
+        "r": 0.0
+      },
+      {
+        "b": 0.83137255907059,
+        "g": 1.0,
+        "id": "AQUAMARINE",
+        "index": 3,
+        "r": 0.49803921580315
+      },
+      {
+        "b": 0.70980393886566,
+        "g": 0.74509805440903,
+        "id": "ASH_GRAY",
+        "index": 4,
+        "r": 0.69803923368454
+      },
+      {
+        "b": 0.10196078568697,
+        "g": 0.20784313976765,
+        "id": "AUBURN",
+        "index": 5,
+        "r": 0.43529412150383
+      },
+      {
+        "b": 1.0,
+        "g": 0.49803921580315,
+        "id": "AZURE",
+        "index": 6,
+        "r": 0.0
+      },
+      {
+        "b": 0.86274510622025,
+        "g": 0.96078431606293,
+        "id": "BEIGE",
+        "index": 7,
+        "r": 0.96078431606293
+      },
+      {
+        "b": 0.0,
+        "g": 0.0,
+        "id": "BLACK",
+        "index": 8,
+        "r": 0.0
+      },
+      {
+        "b": 1.0,
+        "g": 0.0,
+        "id": "BLUE",
+        "index": 9,
+        "r": 0.0
+      },
+      {
+        "b": 0.258823543787,
+        "g": 0.65098041296005,
+        "id": "BRASS",
+        "index": 10,
+        "r": 0.70980393886566
+      },
+      {
+        "b": 0.19607843458652,
+        "g": 0.49803921580315,
+        "id": "BRONZE",
+        "index": 11,
+        "r": 0.80392158031464
+      },
+      {
+        "b": 0.0,
+        "g": 0.29411765933037,
+        "id": "BROWN",
+        "index": 12,
+        "r": 0.58823531866074
+      },
+      {
+        "b": 0.50980395078659,
+        "g": 0.86274510622025,
+        "id": "BUFF",
+        "index": 13,
+        "r": 0.94117647409439
+      },
+      {
+        "b": 0.31764706969261,
+        "g": 0.45490196347237,
+        "id": "BURNT_SIENNA",
+        "index": 14,
+        "r": 0.91372549533844
+      },
+      {
+        "b": 0.14117647707462,
+        "g": 0.20000000298023,
+        "id": "BURNT_UMBER",
+        "index": 15,
+        "r": 0.54117649793625
+      },
+      {
+        "b": 0.22745098173618,
+        "g": 0.1176470592618,
+        "id": "CARDINAL",
+        "index": 16,
+        "r": 0.76862746477127
+      },
+      {
+        "b": 0.094117648899555,
+        "g": 0.0,
+        "id": "CARMINE",
+        "index": 17,
+        "r": 0.58823531866074
+      },
+      {
+        "b": 0.65490198135376,
+        "g": 0.48235294222832,
+        "id": "CERULEAN",
+        "index": 18,
+        "r": 0.0
+      },
+      {
+        "b": 0.3098039329052,
+        "g": 0.27058824896812,
+        "id": "CHARCOAL",
+        "index": 19,
+        "r": 0.21176470816135
+      },
+      {
+        "b": 0.0,
+        "g": 1.0,
+        "id": "CHARTREUSE",
+        "index": 20,
+        "r": 0.49803921580315
+      },
+      {
+        "b": 0.36078432202339,
+        "g": 0.36078432202339,
+        "id": "CHESTNUT",
+        "index": 21,
+        "r": 0.80392158031464
+      },
+      {
+        "b": 0.1176470592618,
+        "g": 0.41176471114159,
+        "id": "CHOCOLATE",
+        "index": 22,
+        "r": 0.82352942228317
+      },
+      {
+        "b": 0.0,
+        "g": 0.24705882370472,
+        "id": "CINNAMON",
+        "index": 23,
+        "r": 0.48235294222832
+      },
+      {
+        "b": 0.50196081399918,
+        "g": 0.50196081399918,
+        "id": "CLEAR",
+        "index": 24,
+        "r": 0.50196081399918
+      },
+      {
+        "b": 0.67058825492859,
+        "g": 0.27843138575554,
+        "id": "COBALT",
+        "index": 25,
+        "r": 0.0
+      },
+      {
+        "b": 0.20000000298023,
+        "g": 0.45098039507866,
+        "id": "COPPER",
+        "index": 26,
+        "r": 0.72156864404678
+      },
+      {
+        "b": 0.81568628549576,
+        "g": 0.99215686321259,
+        "id": "CREAM",
+        "index": 27,
+        "r": 1.0
+      },
+      {
+        "b": 0.2352941185236,
+        "g": 0.078431375324726,
+        "id": "CRIMSON",
+        "index": 28,
+        "r": 0.86274510622025
+      },
+      {
+        "b": 0.54509806632996,
+        "g": 0.0,
+        "id": "DARK_BLUE",
+        "index": 29,
+        "r": 0.0
+      },
+      {
+        "b": 0.1294117718935,
+        "g": 0.26274511218071,
+        "id": "DARK_BROWN",
+        "index": 30,
+        "r": 0.39607843756676
+      },
+      {
+        "b": 0.37647059559822,
+        "g": 0.41176471114159,
+        "id": "DARK_CHESTNUT",
+        "index": 31,
+        "r": 0.59607845544815
+      },
+      {
+        "b": 0.12549020349979,
+        "g": 0.19607843458652,
+        "id": "DARK_GREEN",
+        "index": 32,
+        "r": 0.0039215688593686
+      },
+      {
+        "b": 0.38431373238564,
+        "g": 0.0,
+        "id": "DARK_INDIGO",
+        "index": 33,
+        "r": 0.19215686619282
+      },
+      {
+        "b": 0.19607843458652,
+        "g": 0.40784314274788,
+        "id": "DARK_OLIVE",
+        "index": 34,
+        "r": 0.33333334326744
+      },
+      {
+        "b": 0.72549021244049,
+        "g": 0.85490196943283,
+        "id": "DARK_PEACH",
+        "index": 35,
+        "r": 1.0
+      },
+      {
+        "b": 0.50196081399918,
+        "g": 0.32941177487373,
+        "id": "DARK_PINK",
+        "index": 36,
+        "r": 0.90588235855103
+      },
+      {
+        "b": 0.098039217293262,
+        "g": 0.011764706112444,
+        "id": "DARK_SCARLET",
+        "index": 37,
+        "r": 0.33725491166115
+      },
+      {
+        "b": 0.31764706969261,
+        "g": 0.50588238239288,
+        "id": "DARK_TAN",
+        "index": 38,
+        "r": 0.5686274766922
+      },
+      {
+        "b": 0.53725492954254,
+        "g": 0.19215686619282,
+        "id": "DARK_VIOLET",
+        "index": 39,
+        "r": 0.258823543787
+      },
+      {
+        "b": 0.50196081399918,
+        "g": 0.69803923368454,
+        "id": "ECRU",
+        "index": 40,
+        "r": 0.76078432798386
+      },
+      {
+        "b": 0.31764706969261,
+        "g": 0.25098040699959,
+        "id": "EGGPLANT",
+        "index": 41,
+        "r": 0.38039216399193
+      },
+      {
+        "b": 0.4705882370472,
+        "g": 0.7843137383461,
+        "id": "EMERALD",
+        "index": 42,
+        "r": 0.3137255012989
+      },
+      {
+        "b": 0.258823543787,
+        "g": 0.4745098054409,
+        "id": "FERN_GREEN",
+        "index": 43,
+        "r": 0.3098039329052
+      },
+      {
+        "b": 0.50980395078659,
+        "g": 0.86274510622025,
+        "id": "FLAX",
+        "index": 44,
+        "r": 0.93333333730698
+      },
+      {
+        "b": 0.63137257099152,
+        "g": 0.0,
+        "id": "FUCHSIA",
+        "index": 45,
+        "r": 0.95686274766922
+      },
+      {
+        "b": 0.21568627655506,
+        "g": 0.68627452850342,
+        "id": "GOLD",
+        "index": 46,
+        "r": 0.83137255907059
+      },
+      {
+        "b": 0.0,
+        "g": 0.87450981140137,
+        "id": "GOLDEN_YELLOW",
+        "index": 47,
+        "r": 1.0
+      },
+      {
+        "b": 0.12549020349979,
+        "g": 0.64705884456635,
+        "id": "GOLDENROD",
+        "index": 48,
+        "r": 0.85490196943283
+      },
+      {
+        "b": 0.50196081399918,
+        "g": 0.50196081399918,
+        "id": "GRAY",
+        "index": 49,
+        "r": 0.50196081399918
+      },
+      {
+        "b": 0.0,
+        "g": 1.0,
+        "id": "GREEN",
+        "index": 50,
+        "r": 0.0
+      },
+      {
+        "b": 0.1843137294054,
+        "g": 1.0,
+        "id": "GREEN-YELLOW",
+        "index": 51,
+        "r": 0.678431391716
+      },
+      {
+        "b": 1.0,
+        "g": 0.45098039507866,
+        "id": "HELIOTROPE",
+        "index": 52,
+        "r": 0.87450981140137
+      },
+      {
+        "b": 0.50980395078659,
+        "g": 0.0,
+        "id": "INDIGO",
+        "index": 53,
+        "r": 0.29411765933037
+      },
+      {
+        "b": 0.94117647409439,
+        "g": 1.0,
+        "id": "IVORY",
+        "index": 54,
+        "r": 1.0
+      },
+      {
+        "b": 0.419607847929,
+        "g": 0.65882354974747,
+        "id": "JADE",
+        "index": 55,
+        "r": 0.0
+      },
+      {
+        "b": 0.98039215803146,
+        "g": 0.90196079015732,
+        "id": "LAVENDER",
+        "index": 56,
+        "r": 0.90196079015732
+      },
+      {
+        "b": 0.96078431606293,
+        "g": 0.94117647409439,
+        "id": "LAVENDER_BLUSH",
+        "index": 57,
+        "r": 1.0
+      },
+      {
+        "b": 0.062745101749897,
+        "g": 0.91372549533844,
+        "id": "LEMON",
+        "index": 58,
+        "r": 0.99215686321259
+      },
+      {
+        "b": 0.90196079015732,
+        "g": 0.84705883264542,
+        "id": "LIGHT_BLUE",
+        "index": 59,
+        "r": 0.678431391716
+      },
+      {
+        "b": 0.24705882370472,
+        "g": 0.52156865596771,
+        "id": "LIGHT_BROWN",
+        "index": 60,
+        "r": 0.80392158031464
+      },
+      {
+        "b": 0.7843137383461,
+        "g": 0.63529413938522,
+        "id": "LILAC",
+        "index": 61,
+        "r": 0.7843137383461
+      },
+      {
+        "b": 0.0,
+        "g": 1.0,
+        "id": "LIME",
+        "index": 62,
+        "r": 0.80000001192093
+      },
+      {
+        "b": 0.0,
+        "g": 0.25098040699959,
+        "id": "MAHOGANY",
+        "index": 63,
+        "r": 0.75294119119644
+      },
+      {
+        "b": 0.0,
+        "g": 0.0,
+        "id": "MAROON",
+        "index": 64,
+        "r": 0.50196081399918
+      },
+      {
+        "b": 0.40000000596046,
+        "g": 0.20000000298023,
+        "id": "MAUVE",
+        "index": 65,
+        "r": 0.60000002384186
+      },
+      {
+        "b": 0.42745098471642,
+        "g": 0.37254902720451,
+        "id": "MAUVE_TAUPE",
+        "index": 66,
+        "r": 0.5686274766922
+      },
+      {
+        "b": 0.40000000596046,
+        "g": 0.20000000298023,
+        "id": "MIDNIGHT_BLUE",
+        "index": 67,
+        "r": 0.0
+      },
+      {
+        "b": 0.59607845544815,
+        "g": 1.0,
+        "id": "MINT_GREEN",
+        "index": 68,
+        "r": 0.59607845544815
+      },
+      {
+        "b": 0.678431391716,
+        "g": 0.87450981140137,
+        "id": "MOSS_GREEN",
+        "index": 69,
+        "r": 0.678431391716
+      },
+      {
+        "b": 0.13333334028721,
+        "g": 0.46666666865349,
+        "id": "OCHRE",
+        "index": 70,
+        "r": 0.80000001192093
+      },
+      {
+        "b": 0.0,
+        "g": 0.50196081399918,
+        "id": "OLIVE",
+        "index": 71,
+        "r": 0.50196081399918
+      },
+      {
+        "b": 0.0,
+        "g": 0.64705884456635,
+        "id": "ORANGE",
+        "index": 72,
+        "r": 1.0
+      },
+      {
+        "b": 0.93333333730698,
+        "g": 0.93333333730698,
+        "id": "PALE_BLUE",
+        "index": 73,
+        "r": 0.68627452850342
+      },
+      {
+        "b": 0.32941177487373,
+        "g": 0.46274510025978,
+        "id": "PALE_BROWN",
+        "index": 74,
+        "r": 0.59607845544815
+      },
+      {
+        "b": 0.68627452850342,
+        "g": 0.678431391716,
+        "id": "PALE_CHESTNUT",
+        "index": 75,
+        "r": 0.86666667461395
+      },
+      {
+        "b": 0.86666667461395,
+        "g": 0.85490196943283,
+        "id": "PALE_PINK",
+        "index": 76,
+        "r": 0.98039215803146
+      },
+      {
+        "b": 0.70588237047195,
+        "g": 0.89803922176361,
+        "id": "PEACH",
+        "index": 77,
+        "r": 1.0
+      },
+      {
+        "b": 0.839215695858,
+        "g": 0.91764706373215,
+        "id": "PEARL",
+        "index": 78,
+        "r": 0.94117647409439
+      },
+      {
+        "b": 1.0,
+        "g": 0.80000001192093,
+        "id": "PERIWINKLE",
+        "index": 79,
+        "r": 0.80000001192093
+      },
+      {
+        "b": 0.43529412150383,
+        "g": 0.4745098054409,
+        "id": "PINE_GREEN",
+        "index": 80,
+        "r": 0.0039215688593686
+      },
+      {
+        "b": 0.79607844352722,
+        "g": 0.75294119119644,
+        "id": "PINK",
+        "index": 81,
+        "r": 1.0
+      },
+      {
+        "b": 0.40000000596046,
+        "g": 0.0,
+        "id": "PLUM",
+        "index": 82,
+        "r": 0.40000000596046
+      },
+      {
+        "b": 0.60000002384186,
+        "g": 0.53333336114883,
+        "id": "PUCE",
+        "index": 83,
+        "r": 0.80000001192093
+      },
+      {
+        "b": 0.094117648899555,
+        "g": 0.45882353186607,
+        "id": "PUMPKIN",
+        "index": 84,
+        "r": 1.0
+      },
+      {
+        "b": 0.60000002384186,
+        "g": 0.0,
+        "id": "PURPLE",
+        "index": 85,
+        "r": 0.40000000596046
+      },
+      {
+        "b": 0.070588238537312,
+        "g": 0.29019609093666,
+        "id": "RAW_UMBER",
+        "index": 86,
+        "r": 0.45098039507866
+      },
+      {
+        "b": 0.0,
+        "g": 0.0,
+        "id": "RED",
+        "index": 87,
+        "r": 1.0
+      },
+      {
+        "b": 0.29411765933037,
+        "g": 0.0,
+        "id": "RED_PURPLE",
+        "index": 88,
+        "r": 0.69803923368454
+      },
+      {
+        "b": 0.76078432798386,
+        "g": 0.76078432798386,
+        "id": "ROSE",
+        "index": 89,
+        "r": 0.95686274766922
+      },
+      {
+        "b": 0.34117648005486,
+        "g": 0.35294118523598,
+        "id": "RUSSET",
+        "index": 90,
+        "r": 0.45882353186607
+      },
+      {
+        "b": 0.054901961237192,
+        "g": 0.2549019753933,
+        "id": "RUST",
+        "index": 91,
+        "r": 0.71764707565308
+      },
+      {
+        "b": 0.18823529779911,
+        "g": 0.76862746477127,
+        "id": "SAFFRON",
+        "index": 92,
+        "r": 0.95686274766922
+      },
+      {
+        "b": 0.0,
+        "g": 0.14117647707462,
+        "id": "SCARLET",
+        "index": 93,
+        "r": 1.0
+      },
+      {
+        "b": 0.34117648005486,
+        "g": 0.54509806632996,
+        "id": "SEA_GREEN",
+        "index": 94,
+        "r": 0.1803921610117
+      },
+      {
+        "b": 0.078431375324726,
+        "g": 0.258823543787,
+        "id": "SEPIA",
+        "index": 95,
+        "r": 0.43921568989754
+      },
+      {
+        "b": 0.75294119119644,
+        "g": 0.75294119119644,
+        "id": "SILVER",
+        "index": 96,
+        "r": 0.75294119119644
+      },
+      {
+        "b": 0.92156863212585,
+        "g": 0.80784314870834,
+        "id": "SKY_BLUE",
+        "index": 97,
+        "r": 0.52941179275513
+      },
+      {
+        "b": 0.56470590829849,
+        "g": 0.50196081399918,
+        "id": "SLATE_GRAY",
+        "index": 98,
+        "r": 0.43921568989754
+      },
+      {
+        "b": 0.49803921580315,
+        "g": 1.0,
+        "id": "SPRING_GREEN",
+        "index": 99,
+        "r": 0.0
+      },
+      {
+        "b": 0.54901963472366,
+        "g": 0.70588237047195,
+        "id": "TAN",
+        "index": 100,
+        "r": 0.82352942228317
+      },
+      {
+        "b": 0.19607843458652,
+        "g": 0.2352941185236,
+        "id": "TAUPE_DARK",
+        "index": 101,
+        "r": 0.28235295414925
+      },
+      {
+        "b": 0.53725492954254,
+        "g": 0.52156865596771,
+        "id": "TAUPE_GRAY",
+        "index": 102,
+        "r": 0.54509806632996
+      },
+      {
+        "b": 0.27843138575554,
+        "g": 0.29803922772408,
+        "id": "TAUPE_MEDIUM",
+        "index": 103,
+        "r": 0.40392157435417
+      },
+      {
+        "b": 0.30196079611778,
+        "g": 0.25098040699959,
+        "id": "TAUPE_PURPLE",
+        "index": 104,
+        "r": 0.3137255012989
+      },
+      {
+        "b": 0.49411764740944,
+        "g": 0.59607845544815,
+        "id": "TAUPE_PALE",
+        "index": 105,
+        "r": 0.73725491762161
+      },
+      {
+        "b": 0.3647058904171,
+        "g": 0.3647058904171,
+        "id": "TAUPE_ROSE",
+        "index": 106,
+        "r": 0.56470590829849
+      },
+      {
+        "b": 0.090196080505848,
+        "g": 0.44313725829124,
+        "id": "TAUPE_SANDY",
+        "index": 107,
+        "r": 0.58823531866074
+      },
+      {
+        "b": 0.50196081399918,
+        "g": 0.50196081399918,
+        "id": "TEAL",
+        "index": 108,
+        "r": 0.0
+      },
+      {
+        "b": 0.7843137383461,
+        "g": 0.83529412746429,
+        "id": "TURQUOISE",
+        "index": 109,
+        "r": 0.18823529779911
+      },
+      {
+        "b": 0.20392157137394,
+        "g": 0.258823543787,
+        "id": "VERMILION",
+        "index": 110,
+        "r": 0.8901960849762
+      },
+      {
+        "b": 1.0,
+        "g": 0.0,
+        "id": "VIOLET",
+        "index": 111,
+        "r": 0.54509806632996
+      },
+      {
+        "b": 1.0,
+        "g": 1.0,
+        "id": "WHITE",
+        "index": 112,
+        "r": 1.0
+      },
+      {
+        "b": 0.0,
+        "g": 1.0,
+        "id": "YELLOW",
+        "index": 113,
+        "r": 1.0
+      },
+      {
+        "b": 0.19607843458652,
+        "g": 0.80392158031464,
+        "id": "YELLOW_GREEN",
+        "index": 114,
+        "r": 0.60392159223557
+      },
+      {
+        "b": 0.88627451658249,
+        "g": 0.79215687513351,
+        "id": "BLUE-GRAY",
+        "index": 115,
+        "r": 0.7294117808342
+      }
+    ],
+    "frame": 0
+  },
+  "comparison": [
+    {
+      "id": 48520,
+      "sheet": 0,
+      "pillow": 2,
+      "sheet_color": 36,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 295729,
+          "material": 1,
+          "pillow": 2,
+          "sheet": false,
+          "sheet_color": 36,
+          "texpos": 161816
+        }
+      ]
+    },
+    {
+      "id": 48521,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 81,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 664365,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 81,
+          "texpos": 161817
+        }
+      ]
+    },
+    {
+      "id": 48522,
+      "sheet": 1,
+      "pillow": 2,
+      "sheet_color": 105,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 860981,
+          "material": 1,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 105,
+          "texpos": 161818
+        }
+      ]
+    },
+    {
+      "id": 48523,
+      "sheet": 1,
+      "pillow": 2,
+      "sheet_color": 65,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 533301,
+          "material": 1,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 65,
+          "texpos": 161819
+        }
+      ]
+    },
+    {
+      "id": 48524,
+      "sheet": 0,
+      "pillow": 0,
+      "sheet_color": 92,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 754465,
+          "material": 1,
+          "pillow": 0,
+          "sheet": false,
+          "sheet_color": 92,
+          "texpos": 161820
+        }
+      ]
+    },
+    {
+      "id": 48525,
+      "sheet": 0,
+      "pillow": 1,
+      "sheet_color": 21,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 172841,
+          "material": 1,
+          "pillow": 1,
+          "sheet": false,
+          "sheet_color": 21,
+          "texpos": 161821
+        }
+      ]
+    },
+    {
+      "id": 48526,
+      "sheet": 1,
+      "pillow": 0,
+      "sheet_color": 6,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 49957,
+          "material": 1,
+          "pillow": 0,
+          "sheet": true,
+          "sheet_color": 6,
+          "texpos": 161822
+        }
+      ]
+    },
+    {
+      "id": 48527,
+      "sheet": 0,
+      "pillow": 2,
+      "sheet_color": 17,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 140081,
+          "material": 1,
+          "pillow": 2,
+          "sheet": false,
+          "sheet_color": 17,
+          "texpos": 161823
+        }
+      ]
+    },
+    {
+      "id": 48528,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 21,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 172845,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 21,
+          "texpos": 161824
+        }
+      ]
+    },
+    {
+      "id": 48529,
+      "sheet": 0,
+      "pillow": 0,
+      "sheet_color": 52,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 426785,
+          "material": 1,
+          "pillow": 0,
+          "sheet": false,
+          "sheet_color": 52,
+          "texpos": 161825
+        }
+      ]
+    },
+    {
+      "id": 48530,
+      "sheet": 1,
+      "pillow": 2,
+      "sheet_color": 40,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 328501,
+          "material": 1,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 40,
+          "texpos": 161826
+        }
+      ]
+    },
+    {
+      "id": 48531,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 75,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 615213,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 75,
+          "texpos": 161827
+        }
+      ]
+    },
+    {
+      "id": 48532,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 104,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 852781,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 104,
+          "texpos": 161828
+        }
+      ]
+    },
+    {
+      "id": 48533,
+      "sheet": 0,
+      "pillow": 2,
+      "sheet_color": 13,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 107313,
+          "material": 1,
+          "pillow": 2,
+          "sheet": false,
+          "sheet_color": 13,
+          "texpos": 161829
+        }
+      ]
+    },
+    {
+      "id": 48534,
+      "sheet": 0,
+      "pillow": 0,
+      "sheet_color": 33,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 271137,
+          "material": 1,
+          "pillow": 0,
+          "sheet": false,
+          "sheet_color": 33,
+          "texpos": 161830
+        }
+      ]
+    },
+    {
+      "id": 48535,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 109,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 893741,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 109,
+          "texpos": 161831
+        }
+      ]
+    },
+    {
+      "id": 48536,
+      "sheet": 0,
+      "pillow": 0,
+      "sheet_color": 39,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 320289,
+          "material": 1,
+          "pillow": 0,
+          "sheet": false,
+          "sheet_color": 39,
+          "texpos": 161832
+        }
+      ]
+    },
+    {
+      "id": 48537,
+      "sheet": 0,
+      "pillow": 1,
+      "sheet_color": 33,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 271145,
+          "material": 1,
+          "pillow": 1,
+          "sheet": false,
+          "sheet_color": 33,
+          "texpos": 161833
+        }
+      ]
+    },
+    {
+      "id": 48538,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 113,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 926509,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 113,
+          "texpos": 161834
+        }
+      ]
+    },
+    {
+      "id": 48539,
+      "sheet": 0,
+      "pillow": 1,
+      "sheet_color": 108,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 885545,
+          "material": 1,
+          "pillow": 1,
+          "sheet": false,
+          "sheet_color": 108,
+          "texpos": 161835
+        }
+      ]
+    },
+    {
+      "id": 48540,
+      "sheet": 0,
+      "pillow": 2,
+      "sheet_color": 47,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 385841,
+          "material": 1,
+          "pillow": 2,
+          "sheet": false,
+          "sheet_color": 47,
+          "texpos": 161836
+        }
+      ]
+    },
+    {
+      "id": 48541,
+      "sheet": 1,
+      "pillow": 2,
+      "sheet_color": 98,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 803637,
+          "material": 1,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 98,
+          "texpos": 161837
+        }
+      ]
+    },
+    {
+      "id": 48542,
+      "sheet": 1,
+      "pillow": 2,
+      "sheet_color": 63,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 516917,
+          "material": 1,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 63,
+          "texpos": 161838
+        }
+      ]
+    },
+    {
+      "id": 48543,
+      "sheet": 1,
+      "pillow": 1,
+      "sheet_color": 14,
+      "matches": [
+        {
+          "color": 25,
+          "flags": 115501,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 14,
+          "texpos": 161839
+        }
+      ]
+    }
+  ],
+  "selection_rva": "0xc80546..0xc80768",
+  "generator": {
+    "rva": "0x2471c0",
+    "length": 75,
+    "sha256": "7c74da9d2c3f3fecadf4f398448005ad3ba85a7635c862b7c791da05c7ac8cd3",
+    "ownership": "Static leaf accesses only supplied uint64 state. Native callback with owned state not yet implemented or live-tested."
+  },
+  "compositor": {
+    "rva": "0xcee8d0",
+    "semantics": "Pillow nonzero alpha overrides sheet, sheet overrides base. Base and sheet replace matching colors from18-entry standard palette with descriptor palette; pillow unchanged. No conventional alpha blending at overlaps.",
+    "evidence": "build/notes/pm/bed-compositor-tail.txt",
+    "runtime_use": "Do not call compositor or borrow its global cache."
+  },
+  "screenshot_inspected": "native-picker.png (filename inherited from harness; actual loose-bed map capture)",
+  "hashes": {
+    "beds.json": "df62194d553280a06f13acf7664c2cd63dd35a7e609939553a3fc797b21cd921",
+    "selection-comparison.json": "1f58049a14a11d8f8559dae10906fc9337e81993b3893d9e62b6fe4a6aa02271",
+    "native-picker.png": "92e5f773fa8450142cef6f96b468ce4e274a10eb2f91530754347c303eaaee9d",
+    "capture-inputs.json": "b3dcc3b668081d65c6ea8f875ce8135440c1b45128dec40de80795adbdbc97ca",
+    "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+  },
+  "next": [
+    "Implement owned-state native generator callback and pointer-free semantic bedding variants/descriptor identity",
+    "Keep group default composition distinct from individual selection",
+    "Implement installed asset palette/layer rendering and verify pixel comparisons; installed screenshot has partial unit occlusion",
+    "Verify complete picker/placement flow after integration"
+  ],
+  "picker": {
+    "source": "build/bed-native-picker-20261023-161049",
+    "source_save_unchanged": true,
+    "owned_df_closed": true,
+    "screenshot_inspected": "native-picker.png",
+    "group_cache": [
+      {
+        "color": 0,
+        "flags": 1,
+        "material": 1,
+        "pillow": 0,
+        "sheet": false,
+        "sheet_color": 0,
+        "texpos": 161823
+      },
+      {
+        "color": 25,
+        "flags": 295729,
+        "material": 1,
+        "pillow": 2,
+        "sheet": false,
+        "sheet_color": 36,
+        "texpos": 161819
+      },
+      {
+        "color": 25,
+        "flags": 533301,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 65,
+        "texpos": 161822
+      },
+      {
+        "color": 25,
+        "flags": 664365,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 81,
+        "texpos": 161820
+      },
+      {
+        "color": 25,
+        "flags": 860981,
+        "material": 1,
+        "pillow": 2,
+        "sheet": true,
+        "sheet_color": 105,
+        "texpos": 161821
+      }
+    ],
+    "expanded": {
+      "bed_graphics": [
+        {
+          "color_index": 0,
+          "flags": 1,
+          "material": 1,
+          "pillow_variant": 0,
+          "sheet_color_index": 0,
+          "sheet_variant": false,
+          "texpos": 161823
+        },
+        {
+          "color_index": 25,
+          "flags": 295729,
+          "material": 1,
+          "pillow_variant": 2,
+          "sheet_color_index": 36,
+          "sheet_variant": false,
+          "texpos": 161819
+        },
+        {
+          "color_index": 25,
+          "flags": 533301,
+          "material": 1,
+          "pillow_variant": 2,
+          "sheet_color_index": 65,
+          "sheet_variant": true,
+          "texpos": 161822
+        },
+        {
+          "color_index": 25,
+          "flags": 664365,
+          "material": 1,
+          "pillow_variant": 1,
+          "sheet_color_index": 81,
+          "sheet_variant": true,
+          "texpos": 161820
+        },
+        {
+          "color_index": 25,
+          "flags": 860981,
+          "material": 1,
+          "pillow_variant": 2,
+          "sheet_color_index": 105,
+          "sheet_variant": true,
+          "texpos": 161821
+        }
+      ],
+      "choices": [
+        {
+          "distance": 1,
+          "kind": "General",
+          "name": "granite beds"
+        },
+        {
+          "distance": 1,
+          "id": 48523,
+          "kind": "Specific",
+          "name": "granite bed"
+        },
+        {
+          "distance": 2,
+          "id": 48522,
+          "kind": "Specific",
+          "name": "granite bed"
+        },
+        {
+          "distance": 3,
+          "id": 48521,
+          "kind": "Specific",
+          "name": "granite bed"
+        },
+        {
+          "distance": 4,
+          "id": 48520,
+          "kind": "Specific",
+          "name": "granite bed"
+        }
+      ],
+      "items": [
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48520,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        },
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48521,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        },
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48522,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        },
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48523,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        }
+      ],
+      "lines": [
+        "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+        "                  Baldmirror                                      Stocks                         Mid-Summer",
+        "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+        "      Select materials for the Bed.",
+        "      Amount needed: 1",
+        "        ...",
+        "             Granite beds [4]                  Dist: 1",
+        "                                                                                                                                    Elevation 36",
+        "             Granite bed                       Dist: 1",
+        "             Granite bed                       Dist: 2",
+        "             Granite bed                       Dist: 3",
+        "             Granite bed                       Dist: 4"
+      ]
+    },
+    "hashes": {
+      "native-picker.png": "aebcd185c8b20b11139fefc5c35f31b5d2e073e317f11d1b4ba81ddf81562e53",
+      "group-cache.json": "673d914dea103802162afd109334b0390104c92bd17f358621ced767a1360598",
+      "expanded.json": "1cd0015e7da0561153fd3a2ebd098c9b38e628e4d56a7de6155015045e7f86e6",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "finding": "Default group composite flags1: stone material, sheet0/pillow0, no base or sheet descriptor color. Specific rows48523..48520 visibly match their distinct loose-bed bedding."
+  },
+  "installed": {
+    "source": "build/bed-native-installed-20261023-161304",
+    "source_save_unchanged": true,
+    "owned_df_closed": true,
+    "screenshot_inspected": "native-picker.png",
+    "group_cache": [
+      {
+        "color": 0,
+        "flags": 1,
+        "material": 1,
+        "pillow": 0,
+        "sheet": false,
+        "sheet_color": 0,
+        "texpos": 161904
+      },
+      {
+        "color": 25,
+        "flags": 49957,
+        "material": 1,
+        "pillow": 0,
+        "sheet": true,
+        "sheet_color": 6,
+        "texpos": 161852
+      },
+      {
+        "color": 25,
+        "flags": 140081,
+        "material": 1,
+        "pillow": 2,
+        "sheet": false,
+        "sheet_color": 17,
+        "texpos": 161853
+      },
+      {
+        "color": 25,
+        "flags": 172841,
+        "material": 1,
+        "pillow": 1,
+        "sheet": false,
+        "sheet_color": 21,
+        "texpos": 161851
+      },
+      {
+        "color": 25,
+        "flags": 172845,
+        "material": 1,
+        "pillow": 1,
+        "sheet": true,
+        "sheet_color": 21,
+        "texpos": 161854
+      }
+    ],
+    "expanded": {
+      "bed_graphics": [
+        {
+          "color_index": 0,
+          "flags": 1,
+          "material": 1,
+          "pillow_variant": 0,
+          "sheet_color_index": 0,
+          "sheet_variant": false,
+          "texpos": 161904
+        },
+        {
+          "color_index": 25,
+          "flags": 49957,
+          "material": 1,
+          "pillow_variant": 0,
+          "sheet_color_index": 6,
+          "sheet_variant": true,
+          "texpos": 161852
+        },
+        {
+          "color_index": 25,
+          "flags": 140081,
+          "material": 1,
+          "pillow_variant": 2,
+          "sheet_color_index": 17,
+          "sheet_variant": false,
+          "texpos": 161853
+        },
+        {
+          "color_index": 25,
+          "flags": 172841,
+          "material": 1,
+          "pillow_variant": 1,
+          "sheet_color_index": 21,
+          "sheet_variant": false,
+          "texpos": 161851
+        },
+        {
+          "color_index": 25,
+          "flags": 172845,
+          "material": 1,
+          "pillow_variant": 1,
+          "sheet_color_index": 21,
+          "sheet_variant": true,
+          "texpos": 161854
+        }
+      ],
+      "choices": [
+        {
+          "distance": 4,
+          "kind": "General",
+          "name": "granite beds"
+        },
+        {
+          "distance": 4,
+          "id": 48525,
+          "kind": "Specific",
+          "name": "granite bed"
+        },
+        {
+          "distance": 4,
+          "id": 48527,
+          "kind": "Specific",
+          "name": "granite bed"
+        },
+        {
+          "distance": 5,
+          "id": 48526,
+          "kind": "Specific",
+          "name": "granite bed"
+        },
+        {
+          "distance": 5,
+          "id": 48528,
+          "kind": "Specific",
+          "name": "granite bed"
+        }
+      ],
+      "items": [
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48525,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        },
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48526,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        },
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48527,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        },
+        {
+          "color": 24,
+          "color_token": "CLEAR",
+          "description": "granite bed",
+          "id": 48528,
+          "material": "INORGANIC:GRANITE",
+          "quality": 0,
+          "type": 8
+        }
+      ],
+      "lines": [
+        "                  Roder nul           Pop                                  Food  Drink           20th Malachite",
+        "                  Baldmirror                                      Stocks                         Mid-Summer",
+        "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+        "      Select materials for the Bed.",
+        "      Amount needed: 1",
+        "        ...",
+        "             Granite beds [4]                  Dist: 4",
+        "                                                                                                                                    Elevation 36",
+        "             Granite bed                       Dist: 4",
+        "             Granite bed                       Dist: 4",
+        "             Granite bed                       Dist: 5",
+        "             Granite bed                       Dist: 5"
+      ]
+    },
+    "hashes": {
+      "native-picker.png": "b3589a813ee64597189d845fbf480fc414c20a5cbc3a7577c95eb3e4db78f089",
+      "group-cache.json": "b67acc906534e005041a352ef74aef3d82a3548f3c18c4d5e306d218acc031d0",
+      "expanded.json": "2e499045883a996043567e5109278ee22ed8b3a2d71df19f091a5f2cd307881a",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "completion": {
+      "cache": [
+        {
+          "color": 0,
+          "flags": 1,
+          "material": 1,
+          "pillow": 0,
+          "sheet": false,
+          "sheet_color": 0,
+          "texpos": 161904
+        },
+        {
+          "color": 25,
+          "flags": 49957,
+          "material": 1,
+          "pillow": 0,
+          "sheet": true,
+          "sheet_color": 6,
+          "texpos": 161852
+        },
+        {
+          "color": 106,
+          "flags": 77124,
+          "material": 0,
+          "pillow": 0,
+          "sheet": true,
+          "sheet_color": 9,
+          "texpos": 161941
+        },
+        {
+          "color": 25,
+          "flags": 140081,
+          "material": 1,
+          "pillow": 2,
+          "sheet": false,
+          "sheet_color": 17,
+          "texpos": 161853
+        },
+        {
+          "color": 25,
+          "flags": 172841,
+          "material": 1,
+          "pillow": 1,
+          "sheet": false,
+          "sheet_color": 21,
+          "texpos": 161851
+        },
+        {
+          "color": 25,
+          "flags": 172845,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 21,
+          "texpos": 161854
+        },
+        {
+          "color": 106,
+          "flags": 593236,
+          "material": 0,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 72,
+          "texpos": 161940
+        }
+      ],
+      "frame": 425,
+      "id": 1490,
+      "item_id": 48525,
+      "jobs": 0,
+      "maximum": 1,
+      "stage": 1
+    },
+    "limits": "Native placement selected48525; natural completion425 stage1/1 jobs0. Screenshot partly occluded by dwarf; no exact installed pixel comparison."
+  },
+  "failed_installed_fixture": {
+    "source": "build/bed-native-installed-20261023-161149",
+    "reason": "Original display floor disconnected; canWalkBetween false at frame2477. Stopped through owned lane, source preserved. Not completion evidence."
+  },
+  "native_wrapper": {
+    "source": "build/bed-native-wrapper-20261023-161613",
+    "status": "passed",
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "paused_frame": 0,
+    "results": [
+      {
+        "id": 48520,
+        "result": {
+          "color": 35,
+          "pillow": 2,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48521,
+        "result": {
+          "color": 80,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48522,
+        "result": {
+          "color": 104,
+          "pillow": 2,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48523,
+        "result": {
+          "color": 64,
+          "pillow": 2,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48524,
+        "result": {
+          "color": 91,
+          "pillow": 0,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48525,
+        "result": {
+          "color": 20,
+          "pillow": 1,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48526,
+        "result": {
+          "color": 5,
+          "pillow": 0,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48527,
+        "result": {
+          "color": 16,
+          "pillow": 2,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48528,
+        "result": {
+          "color": 20,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48529,
+        "result": {
+          "color": 51,
+          "pillow": 0,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48530,
+        "result": {
+          "color": 39,
+          "pillow": 2,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48531,
+        "result": {
+          "color": 74,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48532,
+        "result": {
+          "color": 103,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48533,
+        "result": {
+          "color": 12,
+          "pillow": 2,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48534,
+        "result": {
+          "color": 32,
+          "pillow": 0,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48535,
+        "result": {
+          "color": 108,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48536,
+        "result": {
+          "color": 38,
+          "pillow": 0,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48537,
+        "result": {
+          "color": 32,
+          "pillow": 1,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48538,
+        "result": {
+          "color": 112,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48539,
+        "result": {
+          "color": 107,
+          "pillow": 1,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48540,
+        "result": {
+          "color": 46,
+          "pillow": 2,
+          "sheet": 0,
+          "valid": true
+        }
+      },
+      {
+        "id": 48541,
+        "result": {
+          "color": 97,
+          "pillow": 2,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48542,
+        "result": {
+          "color": 62,
+          "pillow": 2,
+          "sheet": 1,
+          "valid": true
+        }
+      },
+      {
+        "id": 48543,
+        "result": {
+          "color": 13,
+          "pillow": 1,
+          "sheet": 1,
+          "valid": true
+        }
+      }
+    ],
+    "build_log": "build/notes/pm/bed-native-build.log",
+    "implementation": [
+      "bridge/plugin/bed_appearance_native.cpp",
+      "bridge/plugin/bed_appearance_native.h"
+    ],
+    "checks": [
+      "24 exact unique matches against native-rendered sheet/pillow/color",
+      "Repeated calls stable",
+      "Negative item ID and negative color count rejected",
+      "Empty palette gives color=-1",
+      "Single color and INT32_MAX item ID accepted",
+      "Counts above254 clamp to254",
+      "Native graphics cache unchanged"
+    ],
+    "limits": "Only diagnostic callers wired; schema/model/picker/world rendering integration remains. Renderer RNG nonmutation established by leaf disassembly and owned state, not a live byte snapshot.",
+    "hashes": {
+      "wrapper-results.json": "386224fab25b62c11c51225d63832d894dfe5a5376e379aae116eb13d1bf53cc",
+      "beds.json": "7eee36720be4b111a80ae00972df710339b025b3bf8cbf1e5342109e4b362edc",
+      "capture-inputs.json": "4406376b1987e5e8dcd5db72088895c58439df4134e33d891b0507bdf59da645",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
+  },
+  "semantic_transport": {
+    "source": "build/bed-transport-native-20261023-162516",
+    "result": {
+      "status": "passed",
+      "observations": 23,
+      "item_id": 48525,
+      "building_id": 1490,
+      "choices": {
+        "kind": "item",
+        "id": 48525,
+        "sheet": 0,
+        "pillow": 1,
+        "base_color": "CLEAR",
+        "sheet_color": "CHARTREUSE"
+      },
+      "native_cache_match": {
+        "color": 25,
+        "flags": 172841,
+        "material": 1,
+        "pillow": 1,
+        "sheet": false,
+        "sheet_color": 21,
+        "texpos": 161851
+      }
+    },
+    "completion": {
+      "cache": [
+        {
+          "color": 0,
+          "flags": 1,
+          "material": 1,
+          "pillow": 0,
+          "sheet": false,
+          "sheet_color": 0,
+          "texpos": 161904
+        },
+        {
+          "color": 25,
+          "flags": 49957,
+          "material": 1,
+          "pillow": 0,
+          "sheet": true,
+          "sheet_color": 6,
+          "texpos": 161852
+        },
+        {
+          "color": 106,
+          "flags": 77124,
+          "material": 0,
+          "pillow": 0,
+          "sheet": true,
+          "sheet_color": 9,
+          "texpos": 161937
+        },
+        {
+          "color": 25,
+          "flags": 140081,
+          "material": 1,
+          "pillow": 2,
+          "sheet": false,
+          "sheet_color": 17,
+          "texpos": 161853
+        },
+        {
+          "color": 25,
+          "flags": 172841,
+          "material": 1,
+          "pillow": 1,
+          "sheet": false,
+          "sheet_color": 21,
+          "texpos": 161851
+        },
+        {
+          "color": 25,
+          "flags": 172845,
+          "material": 1,
+          "pillow": 1,
+          "sheet": true,
+          "sheet_color": 21,
+          "texpos": 161854
+        },
+        {
+          "color": 106,
+          "flags": 593236,
+          "material": 0,
+          "pillow": 2,
+          "sheet": true,
+          "sheet_color": 72,
+          "texpos": 161936
+        }
+      ],
+      "frame": 450,
+      "id": 1490,
+      "item_id": 48525,
+      "jobs": 0,
+      "maximum": 1,
+      "stage": 1
+    },
+    "core_gate": "build/qa/bedding-transport/summary.json",
+    "bridge_build": "build/notes/pm/bed-transport-build.log",
+    "inspector": "passed; build/bed-transport-native-20261023-162516/inspector.log",
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "compatibility": "Additive optional BeddingFacts on Building and MapItem. Absent means unknown, not default bedding. Existing schema version retained.",
+    "limits": "World snapshot/model path only; construction candidate payload and renderer not integrated yet.",
+    "recording_sha256": "d7e54a3b7bd5b3b264208268f998b8e4ebbfeda1fca84506bec56716b92eb035"
+  },
+  "renderer": {
+    "status": "Integrated; partial native picker pixel verification, live payload/world acceptance pending",
+    "native_capture": "build/bed-native-picker-20261023-161049",
+    "comparisons": [
+      {
+        "id": 0,
+        "opaque_pixels": 658,
+        "different_opaque_pixels": 0,
+        "x": 66,
+        "y": 162,
+        "native_opaque_sha256": "326ada426c28bf5cad1b712fa97329ad00de3e16d21946aeeba9995486580f94",
+        "bedding": {
+          "sheet": 0,
+          "pillow": 0,
+          "base_color": "",
+          "sheet_color": ""
+        }
+      },
+      {
+        "id": 48523,
+        "opaque_pixels": 658,
+        "different_opaque_pixels": 0,
+        "x": 66,
+        "y": 198,
+        "native_opaque_sha256": "d119691d050946edb18c9b9ae24440167c9175fed032212426980769c34eab04",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 2,
+          "base_color": "CLEAR",
+          "sheet_color": "MAROON"
+        }
+      },
+      {
+        "id": 48522,
+        "opaque_pixels": 658,
+        "different_opaque_pixels": 0,
+        "x": 66,
+        "y": 234,
+        "native_opaque_sha256": "0a19becb2df9085ca053d0c6ba7d11575bfbbcb3f1bd0cf34c04aade758f4a47",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 2,
+          "base_color": "CLEAR",
+          "sheet_color": "TAUPE_PURPLE"
+        }
+      },
+      {
+        "id": 48521,
+        "opaque_pixels": 658,
+        "different_opaque_pixels": 0,
+        "x": 66,
+        "y": 270,
+        "native_opaque_sha256": "39b499b56508f8fcdd6664712e63dc39422dd003e114e41b1fa3f75035e4220e",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 1,
+          "base_color": "CLEAR",
+          "sheet_color": "PINE_GREEN"
+        }
+      },
+      {
+        "id": 48520,
+        "opaque_pixels": 658,
+        "different_opaque_pixels": 0,
+        "x": 66,
+        "y": 306,
+        "native_opaque_sha256": "3870e5b3741b412209bfe52bc57f246954fd17041fe3cff3ba1253f618f8f56c",
+        "bedding": {
+          "sheet": 0,
+          "pillow": 2,
+          "base_color": "CLEAR",
+          "sheet_color": "DARK_PEACH"
+        }
+      }
+    ],
+    "core_gate": "build/qa/bedding-renderer/summary.json (core passed; initial extension compile failed, repaired separately)",
+    "focused_gate": "build/qa/bedding-renderer-fixed/summary.json",
+    "scope": "3290 opaque pixels across five native icons match; later live_renderer group comparison includes all65partial pixels. World geometry screenshot is partly occluded."
+  },
+  "live_renderer": {
+    "source": "build/bed-render-live-main-20261023-164452",
+    "status": "passed_with_known_issues",
+    "candidate_choices": {
+      "48525": {
+        "base_color": "CLEAR",
+        "pillow": 1,
+        "sheet": 0,
+        "sheet_color": "CHARTREUSE"
+      },
+      "48526": {
+        "base_color": "CLEAR",
+        "pillow": 0,
+        "sheet": 1,
+        "sheet_color": "AUBURN"
+      },
+      "48527": {
+        "base_color": "CLEAR",
+        "pillow": 2,
+        "sheet": 0,
+        "sheet_color": "CARDINAL"
+      },
+      "48528": {
+        "base_color": "CLEAR",
+        "pillow": 1,
+        "sheet": 1,
+        "sheet_color": "CHARTREUSE"
+      }
+    },
+    "completion": {
+      "buildings": [
+        {
+          "all_items": [
+            {
+              "id": 48525,
+              "material": "INORGANIC:GRANITE",
+              "role": "PERM",
+              "type": "BED"
+            }
+          ],
+          "definition": "Bed",
+          "id": 1490,
+          "items": [
+            {
+              "id": 48525,
+              "material": "INORGANIC:GRANITE",
+              "role": "PERM",
+              "type": "BED"
+            }
+          ],
+          "jobs": 0,
+          "maximum": 1,
+          "stage": 1
+        }
+      ],
+      "frame": 425,
+      "status": "passed"
+    },
+    "group_pixels": {
+      "native_origin": [
+        66,
+        162
+      ],
+      "viewer_origin": [
+        66,
+        158
+      ],
+      "visible_pixels": 723,
+      "different_visible_pixels": 0,
+      "partial_pixels": 65,
+      "different_partial_pixels": 0
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "interaction": "Public nested menu, viewport site, typed granite search, expanded exact item48525, escape, Play; native observer confirms permanent input and natural completion.",
+    "limits": "Completed world screenshot partly occluded by citizen; selection icon inspected. Full world pixel parity, other bed material classes and other construction rendering remain open.",
+    "frame_fix": "Native picture frame40x36 instead of36x36; old right edge changed20partial-alpha pixels. All723visible group pixels now match."
+  }
+}

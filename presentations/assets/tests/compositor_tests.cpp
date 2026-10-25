@@ -8,12 +8,39 @@
 #include <vector>
 
 #include "df3d_assets/compositor.h"
+#include "df3d_assets/bed.h"
 #include "df3d_assets/terrain_fill.h"
 #include "df3d_assets/wall_top.h"
 #include "df3d_assets/wall_shadow.h"
 #include "df3d_assets/bitmap_slots.h"
 
 using namespace df3d::assets;
+
+TEST_CASE("bed layers overwrite by nonzero alpha and recolor only base and sheet") {
+  AssetIndex index;
+  index.inorganics["TEST"].flags=kMatStone;
+  index.pages.push_back({"BED","","/bed",3,1,3,3});
+  index.tileGraphics["ITEM_BED_STONE"]={SpriteRef{0,0,0,1,1}};
+  index.tileGraphics["ITEM_BED_SHEET_VARIANT"]={SpriteRef{0,0,1,1,1},SpriteRef{0,0,1,1,1}};
+  index.tileGraphics["ITEM_BED_PILLOW_VARIANT"]={SpriteRef{0,0,2,1,1},SpriteRef{0,0,2,1,1},SpriteRef{0,0,2,1,1}};
+  index.palette=Palette{};index.palette->absPath="/palette";index.palette->rows["COLOR"]=1;
+  auto page=RgbaImage::blank(3,3),palette=RgbaImage::blank(18,2);
+  for(int x=0;x<18;++x){palette.set(x,0,{uint8_t(x+1),2,3,255});palette.set(x,1,{100,101,102,255});}
+  for(int x=0;x<3;++x)page.set(x,0,{1,2,3,255});
+  page.set(1,1,{1,2,3,64});page.set(2,1,{1,2,3,64});page.set(2,2,{1,2,3,128});
+  CompositeContext ctx;ctx.index=&index;ctx.load=[&](const std::string& p){return p=="/bed"?&page:&palette;};
+  wm::BeddingFacts facts;facts.sheet=0;facts.pillow=0;facts.baseColor=facts.sheetColor="COLOR";
+  const auto result=compositeBed(ctx,"INORGANIC:TEST",facts);
+  REQUIRE(result.ok);
+  CHECK(result.image.get(0,0)==Rgba{100,101,102,255});
+  CHECK(result.image.get(1,0)==Rgba{100,101,102,64});
+  CHECK(result.image.get(2,0)==Rgba{1,2,3,128});
+  facts.baseColor.clear();facts.sheetColor.clear();
+  CHECK(compositeBed(ctx,"INORGANIC:TEST",facts).image.get(0,0)==Rgba{1,2,3,255});
+  facts.sheet=-1;CHECK_FALSE(compositeBed(ctx,"INORGANIC:TEST",facts).ok);
+  facts.sheet=2;CHECK_FALSE(compositeBed(ctx,"INORGANIC:TEST",facts).ok);
+  facts.sheet=0;facts.sheetColor="MISSING";CHECK_FALSE(compositeBed(ctx,"INORGANIC:TEST",facts).ok);
+}
 
 TEST_CASE("native transparent RGB cleanup preserves alpha and partial colors") {
   std::vector<uint8_t> pixels={255,255,255,0, 90,80,70,0, 255,240,230,1, 46,43,41,96, 80,90,100,255};
@@ -587,4 +614,16 @@ TEST_CASE("compositor: cache keyed by appearance version") {
   CHECK(cache.erase(0x1235));
   CHECK_FALSE(cache.erase(0x1235));
   CHECK(cache.size() == 0);
+}
+
+TEST_CASE("native layout overlay preserves split truncation and opaque shortcuts") {
+ Rgba d=rgba(90,94,101,255);blendLayoutOver(d,rgba(47,48,56,128));
+ CHECK(d.r==67);CHECK(d.g==70);CHECK(d.b==78);CHECK(d.a==253);
+ blendLayoutOver(d,rgba(255,255,255,0));CHECK(d.r==67);CHECK(d.a==253);
+ blendLayoutOver(d,rgba(19,20,21,255));CHECK(d.r==19);CHECK(d.g==20);CHECK(d.b==21);CHECK(d.a==255);
+}
+
+TEST_CASE("native layout overlays seed empty base alpha inside and outside the footprint") {
+ Rgba d=rgba(255,255,255,0);blendLayoutOver(d,rgba(80,100,120,128));
+ CHECK(d.r==40);CHECK(d.g==50);CHECK(d.b==60);CHECK(d.a==190);
 }

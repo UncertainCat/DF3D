@@ -83,6 +83,20 @@ void blendOver(Rgba& dst, Rgba src) {
   dst.a = static_cast<uint8_t>(oa);
 }
 
+void blendLayoutOver(Rgba& dst, Rgba src) {
+  if (src.a == 0) return;
+  if (src.a == 255) { dst = src; return; }
+  // Native seeds empty base alpha from the overlay, both inside the footprint
+  // and on overhangs, before applying the independently truncated blend.
+  if (dst.a == 0) { dst.r=dst.g=dst.b=0;dst.a=src.a; }
+  const int sa = src.a;
+  auto channel = [sa](int s, int d) {
+    return static_cast<uint8_t>((s * sa >> 8) + (d * (255 - sa) >> 8));
+  };
+  dst.r = channel(src.r, dst.r); dst.g = channel(src.g, dst.g);
+  dst.b = channel(src.b, dst.b); dst.a = channel(255, dst.a);
+}
+
 int fitFactor(int w, int h, int cw, int ch) {
   if (cw <= 0 || ch <= 0) return 1;
   const int fx = (w + cw - 1) / cw, fy = (h + ch - 1) / ch;

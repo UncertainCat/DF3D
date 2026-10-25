@@ -1,0 +1,3348 @@
+{
+  "cases": [
+    {
+      "directions": "",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161701,
+      "stage": 1,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161701,
+      "stage": 1,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161701,
+      "stage": 1,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161701,
+      "stage": 1,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161701,
+      "stage": 1,
+      "terrain": "StoneFloorSmooth",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "N",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackN",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "S",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackS",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "E",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackE",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "W",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackW",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NS",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161702,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNS",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161704,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161704,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161704,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161704,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NE",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161704,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNE",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161705,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161705,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161705,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161705,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "NW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161705,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNW",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161706,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161706,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161706,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161706,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SE",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161706,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSE",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161707,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161707,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161707,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161707,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "SW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161707,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "EW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161703,
+      "stage": 1,
+      "terrain": "StoneFloorTrackEW",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161708,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161708,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161708,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161708,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSE",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161708,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSE",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161709,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161709,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161709,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161709,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NSW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161709,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161710,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161710,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161710,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161710,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "NEW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161710,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161711,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161711,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161711,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161711,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "SEW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161711,
+      "stage": 1,
+      "terrain": "StoneFloorTrackSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 0,
+      "maximum": 1,
+      "one": 161712,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 1,
+      "maximum": 1,
+      "one": 161712,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 2,
+      "maximum": 1,
+      "one": 161712,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 3,
+      "maximum": 1,
+      "one": 161712,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161699,
+      "stage": 0,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    },
+    {
+      "directions": "NSEW",
+      "dump": 4,
+      "maximum": 1,
+      "one": 161712,
+      "stage": 1,
+      "terrain": "StoneFloorTrackNSEW",
+      "two": 0
+    }
+  ],
+  "frame": 0,
+  "material": "INORGANIC:GRANITE",
+  "scope": "Synthetic track stop, sixteen underlying terrain direction combinations, five dumping settings, all construction stages; no natural construction claim",
+  "native_version": "DF 53.16 Steam build 24557528",
+  "source": "build/track-stop-art-native-20261023-182731",
+  "source_save_unchanged": true,
+  "owned_df_pid": 81644,
+  "owned_df_closed": true,
+  "screenshot_inspected": true,
+  "texture_matches": {
+    "161699": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NSWE::half"
+      ]
+    },
+    "161701": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NSWE:"
+      ]
+    },
+    "161702": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NS:"
+      ]
+    },
+    "161703": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_WE:"
+      ]
+    },
+    "161704": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NE:"
+      ]
+    },
+    "161705": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NW:"
+      ]
+    },
+    "161706": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_SE:"
+      ]
+    },
+    "161707": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_SW:"
+      ]
+    },
+    "161708": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NSE:"
+      ]
+    },
+    "161709": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NSW:"
+      ]
+    },
+    "161710": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NWE:"
+      ]
+    },
+    "161711": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_SWE:"
+      ]
+    },
+    "161712": {
+      "different_pixels": 0,
+      "names": [
+        "TRACK_STOP_STONE_NSWE:"
+      ]
+    }
+  },
+  "findings": [
+    "Completed artwork follows underlying finished track connections.",
+    "Single N/S endpoints use NS; single E/W endpoints use WE. Bare floor uses NSWE.",
+    "Planned stops always use NSWE with painted RGB and alpha divided by two, rounded down.",
+    "All five dumping settings give identical artwork for each terrain and stage.",
+    "All 13 exported textures match installed artwork byte-for-byte."
+  ],
+  "implementation": "Existing semantic completedTrack tile field feeds the building asset query. Terrain changes invalidate the affected Track Stop artwork cache and queue a rebuild independently of building versions. Native palette retained; unfinished world stops use white half alpha.",
+  "verification": [
+    "build/qa/track-stop-render/summary.json",
+    "build/qa/track-stop-core/summary.json"
+  ],
+  "limits": [
+    "Synthetic fixtures do not establish natural construction or minecart effects."
+  ],
+  "renderer_regression": {
+    "gate": "build/qa/track-stop-lifecycle-final/summary.json",
+    "core_gate": "build/qa/track-stop-lifecycle-fixed/summary.json",
+    "generator": "tools/make_track_stop_fixture.cpp",
+    "script": "presentations/godot/project/tests/track_stop_render_test.gd",
+    "snapshots": 19,
+    "checks": [
+      "All16 underlying completed-track masks yield native sprite UVs and painted white tint",
+      "Terrain changes carry empty building deltas",
+      "Completed stops publish through batches",
+      "Unrelated tile track changes reuse stop mesh",
+      "Planned stop uses crossing artwork with half alpha and separate transparent rendering",
+      "Removing underlying track restores original bare-floor rendered image"
+    ],
+    "diagnostics": "Three known engine diagnostics only; no unclassified output.",
+    "limits": "Installed-asset synthetic replay; does not establish natural construction or minecart operation."
+  },
+  "material_investigation": {
+    "sources": [
+      "build/track-stop-material-native-20261023-183623",
+      "build/track-stop-floor-material-native-20261023-183759"
+    ],
+    "scope": "Synthetic stops with no contained construction items: first vary building material over natural stone track, then vary underlying constructed-floor material while stop remains granite. Each run covers four materials,16 masks,2 stages (128 cases).",
+    "materials": [
+      "INORGANIC:GRANITE",
+      "INORGANIC:IRON",
+      "GLASS_GREEN",
+      "PLANT:OAK:WOOD"
+    ],
+    "results": "Both runs return the same13 stone-art textures, byte-identical to installed source. Building material and underlying construction material do not select wood art in these empty-item fixtures.",
+    "source_saves_unchanged": true,
+    "owned_df_pids": [
+      80788,
+      95392
+    ],
+    "owned_df_closed": true,
+    "native_trace": {
+      "draw_rva": "0x5a6c70",
+      "track_stop_branch_rva": "0x5a6f26",
+      "first_contained_item": "0x5a6f69..0x5a6f96",
+      "material": "getActualMaterialIndex (slot8), getActualMaterial (slot7), then native material color lookup",
+      "wood_switch": "0x5a700a..0x5a7012 checks item getType()==5 (WOOD/log), sets bit9",
+      "planned": "0x5a70b9 passes constant0x100 to sprite resolver",
+      "scratch_rule": "Static inspection only; no native renderer cache or scratch is read by runtime."
+    },
+    "remaining": "First-item transport and runtime mapping verified; natural gameplay effects remain outside these probes."
+  },
+  "selection_icon": {
+    "source": "build/track-stop-material-native-20261023-183623",
+    "native_comparison": [
+      {
+        "index": 0,
+        "opaque_pixels": 709,
+        "different_pixels": 0
+      },
+      {
+        "index": 1,
+        "opaque_pixels": 709,
+        "different_pixels": 0
+      },
+      {
+        "index": 2,
+        "opaque_pixels": 709,
+        "different_pixels": 0
+      },
+      {
+        "index": 3,
+        "opaque_pixels": 709,
+        "different_pixels": 0
+      }
+    ],
+    "token": "BUILDING_ICON_TRACK_STOP",
+    "implementation": "Return fixed native UI texture after building visibility validation, independent of material/terrain/stage.",
+    "gate": "build/qa/track-stop-selection/summary.json",
+    "coverage": "Four native clicked material variants match709opaque pixels each. Registered replay checks exact icon RGBA across19terrain/stage states.",
+    "diagnostics": "Known engine issues only."
+  },
+  "contained_item_probe": {
+    "source": "build/track-stop-items-native-20261023-184132",
+    "scope": "Paused diagnostic constructs one contained item at a time (oak log, oak block, granite block, iron block, green glass block), traverses16terrain masks and2construction stages. These synthetic items test drawing inputs, not build eligibility.",
+    "frame": 0,
+    "owned_df_pid": 73592,
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "cases": 160,
+    "exact_cases": 160,
+    "distinct_native_textures": 61,
+    "comparison": [
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "",
+        "sprite": "TRACK_STOP_WOOD_NSWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "N",
+        "sprite": "TRACK_STOP_WOOD_NS",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "S",
+        "sprite": "TRACK_STOP_WOOD_NS",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "E",
+        "sprite": "TRACK_STOP_WOOD_WE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "W",
+        "sprite": "TRACK_STOP_WOOD_WE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_WOOD_NS",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_WOOD_NE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_WOOD_NW",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_WOOD_SE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_WOOD_SW",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_WOOD_WE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_WOOD_NSE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_WOOD_NSW",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_WOOD_NWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_WOOD_SWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 0,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "log",
+        "stage": 1,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_WOOD_NSWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NW",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_SE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_SW",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSW",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_SWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "PLANT:OAK:WOOD",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 6,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NW",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_SE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_SW",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSW",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NWE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_SWE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:GRANITE",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 25,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NW",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_SE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_SW",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSW",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NWE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_SWE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "INORGANIC:IRON",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 50,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "N",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "S",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "E",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "W",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NS",
+        "sprite": "TRACK_STOP_STONE_NS",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NE",
+        "sprite": "TRACK_STOP_STONE_NE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NW",
+        "sprite": "TRACK_STOP_STONE_NW",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SE",
+        "sprite": "TRACK_STOP_STONE_SE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SW",
+        "sprite": "TRACK_STOP_STONE_SW",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "EW",
+        "sprite": "TRACK_STOP_STONE_WE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSE",
+        "sprite": "TRACK_STOP_STONE_NSE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSW",
+        "sprite": "TRACK_STOP_STONE_NSW",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NEW",
+        "sprite": "TRACK_STOP_STONE_NWE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "SEW",
+        "sprite": "TRACK_STOP_STONE_SWE",
+        "palette_row": 33,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 0,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": -1,
+        "different_pixels": 0
+      },
+      {
+        "material": "GLASS_GREEN",
+        "item_kind": "block",
+        "stage": 1,
+        "directions": "NSEW",
+        "sprite": "TRACK_STOP_STONE_NSWE",
+        "palette_row": 33,
+        "different_pixels": 0
+      }
+    ],
+    "findings": [
+      "Completed wood sheet is selected only by a first contained item of native item_type WOOD (log); oak blocks use stone sheet.",
+      "Completed artwork recolors the first18 native palette keys from the first contained item actual material solid-state color; first matching duplicate key wins.",
+      "Planned artwork always uses the uncolored stone crossing with alpha divided by two, rounded down.",
+      "The diagnostic did not advance simulation or save. Final window screenshot is after item cleanup and only establishes capture health; exported RGBA establishes material appearance."
+    ],
+    "runtime_status": "Implemented and verified by core tests, synthetic GPU replay, native publication comparison, inspector acceptance and actual-recording GPU replay."
+  },
+  "contained_item_implementation": {
+    "schema": "Building.construction_item_is_log: int8 -1 unknown/absent,0 non-log,1 log; construction_item_material:uint16 actual material or65535 unknown. Currently valid only for Trap subtype5.",
+    "bridge": "Safe-point read of contained_items[0], getType()==WOOD and getActualMaterial/getActualMaterialIndex. Building material remains unchanged. Shadow equality includes both facts.",
+    "model": "Facts survive serialization, revise building state on changes, and clear on unknown observations.",
+    "renderer": "Completed known log uses wood sheet; other/unknown uses stone. Known item actual material supplies palette. Planned stop always uncolored stone crossing.",
+    "core_gate": "build/qa/track-stop-item-facts/summary.json",
+    "plugin_build": "build/notes/pm/track-stop-item-local-material-build.log",
+    "gpu_gate": "build/qa/track-stop-item-render/summary.json",
+    "gpu_snapshots": 23,
+    "gpu_checks": [
+      "Prior terrain and icon checks",
+      "Oak log uses wood row",
+      "Oak block uses stone row",
+      "Actual item material recolors rendered image",
+      "Unknown item restores original uncolored image"
+    ],
+    "limitations": "Synthetic construction/item manipulation; natural construction and minecart effects are outside these render/transport probes."
+  },
+  "live_transport": {
+    "source": "build/track-stop-transport-native-20261023-185746",
+    "owned_df_pid": 89608,
+    "owned_df_closed": true,
+    "source_save_unchanged": true,
+    "frame": 600,
+    "native_cases": [
+      {
+        "finish": 350,
+        "id": 1490,
+        "is_log": -1,
+        "item_id": -1,
+        "label": "empty",
+        "material": "",
+        "start": 300
+      },
+      {
+        "finish": 400,
+        "id": 1490,
+        "is_log": 1,
+        "item_id": 8453,
+        "label": "log",
+        "material": "PLANT:WILLOW:WOOD",
+        "start": 350
+      },
+      {
+        "finish": 450,
+        "id": 1490,
+        "is_log": 1,
+        "item_id": 8453,
+        "label": "log before block",
+        "material": "PLANT:WILLOW:WOOD",
+        "start": 400
+      },
+      {
+        "finish": 500,
+        "id": 1490,
+        "is_log": 0,
+        "item_id": 1884,
+        "label": "block before log",
+        "material": "INORGANIC:DOLOMITE",
+        "start": 450
+      },
+      {
+        "finish": 550,
+        "id": 1490,
+        "is_log": 1,
+        "item_id": 8453,
+        "label": "log after removal",
+        "material": "PLANT:WILLOW:WOOD",
+        "start": 500
+      },
+      {
+        "finish": 600,
+        "id": 1490,
+        "is_log": -1,
+        "item_id": -1,
+        "label": "empty after removal",
+        "material": "",
+        "start": 550
+      }
+    ],
+    "comparison": {
+      "success": true,
+      "covered": [
+        "block before log",
+        "empty",
+        "empty after removal",
+        "log",
+        "log after removal",
+        "log before block"
+      ],
+      "observations": [
+        {
+          "tick": 301,
+          "label": "empty",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 302,
+          "label": "empty",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 303,
+          "label": "empty",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 309,
+          "label": "empty",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 339,
+          "label": "empty",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 351,
+          "label": "log",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 352,
+          "label": "log",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 353,
+          "label": "log",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 369,
+          "label": "log",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 399,
+          "label": "log",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 429,
+          "label": "log before block",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 451,
+          "label": "block before log",
+          "is_log": 0,
+          "material": "INORGANIC:DOLOMITE"
+        },
+        {
+          "tick": 452,
+          "label": "block before log",
+          "is_log": 0,
+          "material": "INORGANIC:DOLOMITE"
+        },
+        {
+          "tick": 453,
+          "label": "block before log",
+          "is_log": 0,
+          "material": "INORGANIC:DOLOMITE"
+        },
+        {
+          "tick": 459,
+          "label": "block before log",
+          "is_log": 0,
+          "material": "INORGANIC:DOLOMITE"
+        },
+        {
+          "tick": 489,
+          "label": "block before log",
+          "is_log": 0,
+          "material": "INORGANIC:DOLOMITE"
+        },
+        {
+          "tick": 501,
+          "label": "log after removal",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 502,
+          "label": "log after removal",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 503,
+          "label": "log after removal",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 519,
+          "label": "log after removal",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 549,
+          "label": "log after removal",
+          "is_log": 1,
+          "material": "PLANT:WILLOW:WOOD"
+        },
+        {
+          "tick": 551,
+          "label": "empty after removal",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 552,
+          "label": "empty after removal",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 553,
+          "label": "empty after removal",
+          "is_log": -1,
+          "material": ""
+        },
+        {
+          "tick": 579,
+          "label": "empty after removal",
+          "is_log": -1,
+          "material": ""
+        }
+      ]
+    },
+    "inspector": "accepted",
+    "fix": "Map the global first-item material index through localMaterial before serializing each snapshot. Prior recording185601 failed range validation and is not acceptance evidence.",
+    "viewer": "build/track-stop-native-viewer/result.json",
+    "viewer_checks": [
+      "All six native states render expected wood/stone UV row in published batches",
+      "Log remains visually stable when a second block is added",
+      "Second-item addition does not rebuild first-item artwork",
+      "Reordering first item switches artwork/material",
+      "Removing both items restores exact original uncolored center image"
+    ],
+    "uncropped_images_inspected": true,
+    "diagnostics": "Known engine diagnostics only.",
+    "limits": "Synthetic completed stop with real seed items; fixture changes item order and detaches items explicitly. This does not establish natural construction, minecart operation or a user-facing remove-material action."
+  },
+  "planned_alpha_regression": {
+    "gate": "build/qa/planned-machinery-verified/summary.json",
+    "status": "passed_with_known_issues",
+    "behavior": "Native floor-half source alpha before mipmaps, white vertex tint; completed phase/resource behavior retained.",
+    "pixel_reference": "planned_machine_pixels.json; existing tests separately assert layout, phase and resource ownership."
+  }
+}

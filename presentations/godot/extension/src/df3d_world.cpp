@@ -5,6 +5,7 @@
 
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/rendering_server.hpp>
 #include "df3d_assets/ground_spatter.h"
 #include <godot_cpp/core/memory.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
@@ -515,6 +516,14 @@ bool Df3dWorld::poll() {
         lastRenderedTick_ = UINT64_MAX;
         // Session-owned resources retire together; handles are never reused.
     }
+    // The active world's semantic calendar freezes with paused snapshots and
+    // becomes unknown on disconnect. This uniform never dirties resident meshes.
+    const int32_t calendar = update.available && source_.model().hasData()
+        ? source_.model().calendarYearTick() : -1;
+    if (calendar != machineryCalendarSeen_) {
+        machineryCalendarSeen_ = calendar;
+        godot::RenderingServer::get_singleton()->global_shader_parameter_set("machinery_calendar_tick", calendar);
+    }
     if (!update.available || !source_.model().hasData()) return false;
 
     renderTick_ = update.renderTick;
@@ -651,6 +660,7 @@ bool Df3dWorld::poll() {
 void Df3dWorld::flushPresentationGeometry() {
     // Layout first, then geometry, then batch work last (a later geometry edit would cancel it).
     drainBuildingGeometry();
+    flushMachinePositions();
     PerfScope timer("batches.flush", &perfBatchFlushMs_);
     // Initial residency is a loading phase. Subsequent source edits use the
     // smaller interactive budget; camera travel never enqueues geometry.
@@ -1110,6 +1120,30 @@ void Df3dWorld::updateTerrain() {
         refreshTerrainSupport(ev.pos);
         const auto p=ev.pos;
         const auto block=source_.model().block(p);
+        // Track-stop artwork depends on finished track, independently of the
+        // building revision or tile visibility. Retire only changed owners.
+        const auto trackOwners=layoutBuildingsByBlock_.find({p.bz,p.bx,p.by});
+        if(trackOwners!=layoutBuildingsByBlock_.end())for(auto id:trackOwners->second) {
+            const auto* b=source_.model().building(id);
+            const auto art=buildingFootprintCache_.find(id);
+            if(!b || art==buildingFootprintCache_.end())continue;
+            bool changed=false;
+            if(b->kind==wm::BuildingKind::Rollers) {
+                size_t cell=0;
+                for(int y=b->y1;y<=b->y2;++y)for(int x=b->x1;x<=b->x2;++x,++cell) {
+                    const auto tile=source_.model().tileAt({x,y,b->z});
+                    const uint8_t track=tile?tile->completedTrack:0;
+                    changed |= cell>=art->second.completedTracks.size() || track!=art->second.completedTracks[cell];
+                }
+            } else if(b->kind==wm::BuildingKind::Trap && b->subtype==5) {
+                const auto tile=source_.model().tileAt({b->x1,b->y1,b->z});
+                changed=(tile?tile->completedTrack:0)!=art->second.completedTrack;
+            }
+            if(changed) {
+                buildingFootprintCache_.erase(art);
+                layoutBuildingChanges_.insert(id);enqueueBuilding(id,submission::Layout);
+            }
+        }
         const auto visibility=terrainVisibilityDependencies_.observe(p,block?block->tiles:nullptr,revealHidden_);
         // Retained layout membership must observe hidden/visible changes even
         // outside the current render window, before the camera returns.

@@ -1,9 +1,9 @@
 -- Initial ordering only. Caller owns route, semantic snapshot and search facts.
 -- Native generic groups use minimum candidate navigation distance; equal-distance
 -- rows retain initial partition order. This layer consumes owned distance results.
-return function(snapshot,seed,reader,search,maximum,tile_limit,seeds)
+return function(snapshot,seed,search,seeds)
     if type(snapshot)~='table' or snapshot.status~=0 or type(snapshot.candidates)~='table' or
-        type(snapshot.initial_groups)~='table' or type(reader)~='function' or type(search)~='function' then return {status=2} end
+        type(snapshot.initial_groups)~='table' or type(search)~='function' then return {status=2} end
     local targets,index={},{}
     for _,candidate in ipairs(snapshot.candidates) do
         if candidate.enabled then
@@ -12,7 +12,7 @@ return function(snapshot,seed,reader,search,maximum,tile_limit,seeds)
         end
     end
     if #targets==0 then return {status=0,groups={},candidate_distances={}} end
-    local result=search(reader,seeds or {seed},targets,maximum,tile_limit)
+    local result=search(seeds or {seed},targets)
     if type(result)~='table' or result.status~=0 then return {status=type(result)=='table' and result.status or 2,native_message=type(result)=='table' and result.native_message or nil,reason='search status '..tostring(type(result)=='table' and result.status or 'missing')..(type(result)=='table' and result.reason and ': '..result.reason or '')} end
     if type(result.distances)~='table' or #result.distances~=#targets then return {status=2} end
     local groups={}
@@ -21,7 +21,8 @@ return function(snapshot,seed,reader,search,maximum,tile_limit,seeds)
         for _,id in ipairs(group.ids) do
             local row=index[id] and result.distances[index[id]]
             -- Native stale costs for unreachable candidates are not a semantic
-            -- distance. Keep that ordering unverified; do not invent a fallback.
+            -- distance. Track uses fresh native costs under the maintainer-approved
+            -- stale-ordering exception; unreachable results still fail closed.
             if not row or row.reachable~=true or math.type(row.distance)~='integer' or row.distance<0 then return {status=2,reason='candidate '..id..' reachable='..tostring(row and row.reachable)..' distance='..tostring(row and row.distance)} end
             distance=distance and math.min(distance,row.distance) or row.distance
         end

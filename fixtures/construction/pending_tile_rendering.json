@@ -1,0 +1,1316 @@
+{
+  "cases": [
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Fortification",
+      "subtype_id": 0,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "f31f3941531828ac05c0080d6fa5dc94398c5caa1eab984520a3473ac25f4ce3"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Fortification",
+      "subtype_id": 0,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "f31f3941531828ac05c0080d6fa5dc94398c5caa1eab984520a3473ac25f4ce3"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Wall",
+      "subtype_id": 1,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "5bdb11dbdab0efdb79143754fc12e8745a25a475a33f4d6de4043b8288fafb83"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Wall",
+      "subtype_id": 1,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "5bdb11dbdab0efdb79143754fc12e8745a25a475a33f4d6de4043b8288fafb83"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Floor",
+      "subtype_id": 2,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "2b326880e63d0737726ba9050bd905fc70719a55cd2277e25f8675ffcefdd5f8"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Floor",
+      "subtype_id": 2,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "2b326880e63d0737726ba9050bd905fc70719a55cd2277e25f8675ffcefdd5f8"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "UpStair",
+      "subtype_id": 3,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "e812e09efbe3f268635112a6b4e3f65bf6498f90ce3327e8e91e8c3f650e3b93"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "UpStair",
+      "subtype_id": 3,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "e812e09efbe3f268635112a6b4e3f65bf6498f90ce3327e8e91e8c3f650e3b93"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "DownStair",
+      "subtype_id": 4,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "1bf6af28fde013a1c7abaaa9229d2721ca456a1ec26dea586b2e3da310c09bf6"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "DownStair",
+      "subtype_id": 4,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "1bf6af28fde013a1c7abaaa9229d2721ca456a1ec26dea586b2e3da310c09bf6"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "UpDownStair",
+      "subtype_id": 5,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "983ac98b7d09a0c1e187945993f2570ce340bc160a890da4f827ad257c26e8f6"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "UpDownStair",
+      "subtype_id": 5,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "983ac98b7d09a0c1e187945993f2570ce340bc160a890da4f827ad257c26e8f6"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Ramp",
+      "subtype_id": 6,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "482e7a3530c66188a5b691a052994a2747af3a533df342e3195d856974a944c9"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "Ramp",
+      "subtype_id": 6,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "482e7a3530c66188a5b691a052994a2747af3a533df342e3195d856974a944c9"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackN",
+      "subtype_id": 7,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "2de256db6686fc9fbff46d869763d825d21ce4e2c141771b7faace3c907ca973"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackN",
+      "subtype_id": 7,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "2de256db6686fc9fbff46d869763d825d21ce4e2c141771b7faace3c907ca973"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackS",
+      "subtype_id": 8,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "e5df9f9059238bca50a5b2992dd326fff47b4fb423080620ac126213c2128254"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackS",
+      "subtype_id": 8,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "e5df9f9059238bca50a5b2992dd326fff47b4fb423080620ac126213c2128254"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackE",
+      "subtype_id": 9,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "74eb93bd1eb0822ec1894b81125c0994f78d54e2670871024fb5a215129c484a"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackE",
+      "subtype_id": 9,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "74eb93bd1eb0822ec1894b81125c0994f78d54e2670871024fb5a215129c484a"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackW",
+      "subtype_id": 10,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "a9e11c3bf3cd5ba7aaa44c9365ca9c0da048559646fd39c907de32c31d25c46b"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackW",
+      "subtype_id": 10,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "a9e11c3bf3cd5ba7aaa44c9365ca9c0da048559646fd39c907de32c31d25c46b"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNS",
+      "subtype_id": 11,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "74c5e9ada8a22b02c67ecb321fd1059fdb75b02c4c30d0af843274fc0780b879"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNS",
+      "subtype_id": 11,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "74c5e9ada8a22b02c67ecb321fd1059fdb75b02c4c30d0af843274fc0780b879"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNE",
+      "subtype_id": 12,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "4654ae18c0b8fa936e04f10118fa36cf9bf920e7a9630440d8568ba2600d8834"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNE",
+      "subtype_id": 12,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "4654ae18c0b8fa936e04f10118fa36cf9bf920e7a9630440d8568ba2600d8834"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNW",
+      "subtype_id": 13,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "f77e1de4ddd02a49671abac0247257b218220c81208f5923073d8ccbcc5b247a"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNW",
+      "subtype_id": 13,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "f77e1de4ddd02a49671abac0247257b218220c81208f5923073d8ccbcc5b247a"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackSE",
+      "subtype_id": 14,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "044db09e5a603016937b4bd083b75e9e42aa92bb5f8853bea1ff5a5b6c0e2489"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackSE",
+      "subtype_id": 14,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "044db09e5a603016937b4bd083b75e9e42aa92bb5f8853bea1ff5a5b6c0e2489"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackSW",
+      "subtype_id": 15,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "5a114332ed6319b5c39ab3a70e046095fafa9e3b37f49c7ad90969e7907a5c28"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackSW",
+      "subtype_id": 15,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "5a114332ed6319b5c39ab3a70e046095fafa9e3b37f49c7ad90969e7907a5c28"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackEW",
+      "subtype_id": 16,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "7deaf8613138544cefd65186951e97353fdaee283921858a62681befc6eb11e0"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackEW",
+      "subtype_id": 16,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "7deaf8613138544cefd65186951e97353fdaee283921858a62681befc6eb11e0"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNSE",
+      "subtype_id": 17,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "b4a4f8f1868c726c86a02c0a3dcc38aacac16c845cb688a5959c9135de3efd46"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNSE",
+      "subtype_id": 17,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "b4a4f8f1868c726c86a02c0a3dcc38aacac16c845cb688a5959c9135de3efd46"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNSW",
+      "subtype_id": 18,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "344aebdc8d844cd5165f18d4d947d60d95ad7f1048842bdda2bd494899823c3f"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNSW",
+      "subtype_id": 18,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "344aebdc8d844cd5165f18d4d947d60d95ad7f1048842bdda2bd494899823c3f"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNEW",
+      "subtype_id": 19,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "1c0ab9b8d3dead605ba240daafd4404e8bea754d8da17ce4191e325b69fe4001"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNEW",
+      "subtype_id": 19,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "1c0ab9b8d3dead605ba240daafd4404e8bea754d8da17ce4191e325b69fe4001"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackSEW",
+      "subtype_id": 20,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "efb2233fe33cb96696a8ced8b6aa84446db1d0550ecf39cd0846dd0ce703a571"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackSEW",
+      "subtype_id": 20,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "efb2233fe33cb96696a8ced8b6aa84446db1d0550ecf39cd0846dd0ce703a571"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNSEW",
+      "subtype_id": 21,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "c699e9914a153a6718426679ad71abe4a9c9dc6a8422ecf1f900ad43b23cd6a2"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackNSEW",
+      "subtype_id": 21,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "c699e9914a153a6718426679ad71abe4a9c9dc6a8422ecf1f900ad43b23cd6a2"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampN",
+      "subtype_id": 22,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "49902d506f2a6195946818a877638609e9d04940b52b841e3c8b62bff55cbb9d"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampN",
+      "subtype_id": 22,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "49902d506f2a6195946818a877638609e9d04940b52b841e3c8b62bff55cbb9d"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampS",
+      "subtype_id": 23,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "23f76dbbeb3c7d38c49dc0edf764018665c8894b7e226101c169696aedbd0253"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampS",
+      "subtype_id": 23,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "23f76dbbeb3c7d38c49dc0edf764018665c8894b7e226101c169696aedbd0253"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampE",
+      "subtype_id": 24,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "e03adf0dd61ce0d36b8c68ada2ac8ad6f153cc7c61e49f9a4362f7da7dd1775e"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampE",
+      "subtype_id": 24,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "e03adf0dd61ce0d36b8c68ada2ac8ad6f153cc7c61e49f9a4362f7da7dd1775e"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampW",
+      "subtype_id": 25,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "689a265ce4a94f049d8034214a22991933d58b75e119fb59dc01f84893f3a4e7"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampW",
+      "subtype_id": 25,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "689a265ce4a94f049d8034214a22991933d58b75e119fb59dc01f84893f3a4e7"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNS",
+      "subtype_id": 26,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "3d29b82d38853f5e393bc8d9ed723a20f6bd83f3eada6ceffb41b2acdc16304b"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNS",
+      "subtype_id": 26,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "3d29b82d38853f5e393bc8d9ed723a20f6bd83f3eada6ceffb41b2acdc16304b"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNE",
+      "subtype_id": 27,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "c16228dd79117b56680801fe8d9dd9cfd6f23a951fef03ca1321fe80fcf86ce0"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNE",
+      "subtype_id": 27,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "c16228dd79117b56680801fe8d9dd9cfd6f23a951fef03ca1321fe80fcf86ce0"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNW",
+      "subtype_id": 28,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "f90ddaead7f05158961803f3ae57f9933f37d581a77d6b005e17509a92684fec"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNW",
+      "subtype_id": 28,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "f90ddaead7f05158961803f3ae57f9933f37d581a77d6b005e17509a92684fec"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampSE",
+      "subtype_id": 29,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "fc2a86c76be85aaa98a8973406644ef6d7c241fad527779a3b958b0bb5261da0"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampSE",
+      "subtype_id": 29,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "fc2a86c76be85aaa98a8973406644ef6d7c241fad527779a3b958b0bb5261da0"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampSW",
+      "subtype_id": 30,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "fabe943ab70afadf40e2c3f4a63082285c5c125e97aa4c257dfea798d2a12ad1"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampSW",
+      "subtype_id": 30,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "fabe943ab70afadf40e2c3f4a63082285c5c125e97aa4c257dfea798d2a12ad1"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampEW",
+      "subtype_id": 31,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "b73ca12d1960aa9f066c7531acc2857078d7909a717622089f45c42c102f228a"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampEW",
+      "subtype_id": 31,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "b73ca12d1960aa9f066c7531acc2857078d7909a717622089f45c42c102f228a"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNSE",
+      "subtype_id": 32,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "67b2894bff78c14a9e185074e19eeca22d868aad63131cfe0feffd2842111bad"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNSE",
+      "subtype_id": 32,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "67b2894bff78c14a9e185074e19eeca22d868aad63131cfe0feffd2842111bad"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNSW",
+      "subtype_id": 33,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "ba29b7121e8088c1a9fe7590d973480aaab8011195e4c16c712245bd4ea36aae"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNSW",
+      "subtype_id": 33,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "ba29b7121e8088c1a9fe7590d973480aaab8011195e4c16c712245bd4ea36aae"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNEW",
+      "subtype_id": 34,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "04481419f588b2d09bee0737ff77f334a92c2bd0dc62bdd77b9d212572fd9bf3"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNEW",
+      "subtype_id": 34,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "04481419f588b2d09bee0737ff77f334a92c2bd0dc62bdd77b9d212572fd9bf3"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampSEW",
+      "subtype_id": 35,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "812f5914ed5e2f59d4447fbe7f08278c9bf0e63eb0739cbf74b79b528eb9f4f3"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampSEW",
+      "subtype_id": 35,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "812f5914ed5e2f59d4447fbe7f08278c9bf0e63eb0739cbf74b79b528eb9f4f3"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNSEW",
+      "subtype_id": 36,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "7019bfca1f8845d851413dcacd1f2893a4d545bdf0cc39ae5fa75abcb648f057"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "TrackRampNSEW",
+      "subtype_id": 36,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "7019bfca1f8845d851413dcacd1f2893a4d545bdf0cc39ae5fa75abcb648f057"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "INORGANIC:GRANITE",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "ReinforcedWall",
+      "subtype_id": 37,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "119e26eb6a8d1a43d12756b649e685d0855cfd76c8a773b7b33b44d7e5ce230e"
+        }
+      ],
+      "width": 1
+    },
+    {
+      "height": 1,
+      "kind": "Construction",
+      "material": "PLANT:OAK:WOOD",
+      "maximum": 1,
+      "stage": 0,
+      "subtype": "ReinforcedWall",
+      "subtype_id": 37,
+      "tiles": [
+        {
+          "x": 0,
+          "y": 0,
+          "one": "119e26eb6a8d1a43d12756b649e685d0855cfd76c8a773b7b33b44d7e5ce230e"
+        }
+      ],
+      "width": 1
+    }
+  ],
+  "version": "DF53.16 Steam24557528",
+  "capture": "build/construction-pending-art-native-20261024-112033",
+  "layout_sha256": "49783d2a405d5948a1928747a6e35237ad1b621a44b5159e00b2d424c24fc81f",
+  "source_preserved": true,
+  "owned_session_closed": true,
+  "frame": 0,
+  "scope": "76 paused pending Construction cases, all38 subtype IDs with granite/oak. Every native maximum stage is1. Diagnostic ReinforcedWall coverage is not UI eligibility acceptance. No natural completion effects.",
+  "normalization": "32x32 RGBA SHA256, RGB cleared where alpha0; no game pixels.",
+  "acceptance": {
+    "gate": "build/qa/pending-tile-native",
+    "status": "passed_with_known_issues",
+    "cases": 76,
+    "reloads": [
+      0,
+      75,
+      1
+    ],
+    "code_sha256": "661b3f77cb9408603747bc23b5a0fed573fa47d8d6a18779f365199e0303692c",
+    "scope": "Uploaded per-cell RGBA, world position and white vertex colors; not completed terrain or composited pixels."
+  }
+}

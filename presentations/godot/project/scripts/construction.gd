@@ -2,6 +2,8 @@ extends Node3D
 const Contract = preload("res://scripts/management_contract.gd")
 const Action = Contract.ManagementAction
 const Status = Contract.ManagementStatus
+# Exact native refusal scope recorded in fixtures/construction/placement_refusals.json.
+var sourced_refusals: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://panels/construction_refusals.json"))
 var world
 var pause_guard
 var camera: Camera3D
@@ -19,6 +21,8 @@ var material_view
 var footer: PanelContainer
 var heading: Label
 var message: Label
+var placement_refusal: Label
+var placement_warning: Label
 var shortage_panel: PanelContainer
 var shortage_text: Label
 var keep_building: CheckBox
@@ -29,8 +33,6 @@ var material_picker_right := true
 var use_last: Button
 var material_strategy := "after"
 var last_material: Dictionary = {}
-var remove_button: Button
-var inspection_tools: HBoxContainer
 var orientation: Control
 var orientation_panel: PanelContainer
 var orientation_hint: Label
@@ -52,14 +54,17 @@ var preview_delay := -1.0
 var pending_read: Dictionary = {}
 var read_delay := 0.0
 var material_elapsed := 0.0
-var inspect_delay := 1.0
 var filter_position := 0
-var inspected_id := -1
-var inspected_key := ""
-var inspected_terrain := Vector3i(-1,-1,-1)
 var placed_sites: Dictionary = {}
 var outline: MeshInstance3D
 var art = preload("res://scripts/original_ui.gd").new()
+
+func sourced_placement_refusal(text: String, definition: String) -> bool:
+	if text.is_empty(): return false
+	var allowed: Array = sourced_refusals.get(definition,[])
+	for line in text.split("\n"):
+		if not line in allowed: return false
+	return true
 
 func _ready() -> void:
 	pause_guard = preload("res://scripts/construction_pause_guard.gd").new()
@@ -83,6 +88,8 @@ func _ready() -> void:
 	art.configure(world); panel.theme = art.theme; panel.theme.default_font_size = 12
 	footer = PanelContainer.new(); footer.position = Vector2(32,52); footer.custom_minimum_size.x = 448
 	footer.add_theme_stylebox_override("panel",placement_panel_style()); panel.add_child(footer)
+	# Native placement panels shrink again when their refusal line disappears.
+	footer.minimum_size_changed.connect(footer.reset_size)
 	var controls := VBoxContainer.new(); footer.add_child(controls)
 	heading = Label.new(); heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; heading.custom_minimum_size.x = 416; controls.add_child(heading)
 	material_options = VBoxContainer.new(); material_options.add_theme_constant_override("separation",0); controls.add_child(material_options)
@@ -103,17 +110,20 @@ func _ready() -> void:
 	orientation_hint.custom_minimum_size.x = 330; orientation_box.add_child(orientation_hint)
 	orientation = Control.new(); orientation.custom_minimum_size = Vector2(330,84); orientation_box.add_child(orientation)
 	orientation_panel.hide()
-	# e4/bed_hover_valid: placement has material strategies and Keep building,
-	# without the unfinished inspection actions in its footer.
-	inspection_tools = HBoxContainer.new(); controls.add_child(inspection_tools)
-	button(inspection_tools,"Inspect building",begin_inspect)
-	remove_button = button(inspection_tools,"Remove this building",remove_building)
-	button(inspection_tools,"Cancel",handle_back)
 	message = Label.new(); message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; message.custom_minimum_size.x = 420
 	message.add_theme_color_override("font_color",Color("ff9900")); controls.add_child(message)
 	# These strings are transport/draft diagnostics, not sourced native UI copy.
 	# Retain failure state for inspection while native error presentation is unfinished.
 	message.hide()
+	placement_refusal = Label.new(); placement_refusal.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	placement_refusal.custom_minimum_size.x = 416
+	placement_refusal.add_theme_color_override("font_color",Color("ff9900"))
+	controls.add_child(placement_refusal); placement_refusal.hide()
+	# Native farm-warning capture: yellow advisory lines below any orange refusal.
+	placement_warning = Label.new(); placement_warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	placement_warning.custom_minimum_size.x = 416
+	placement_warning.add_theme_color_override("font_color",Color("ffe111"))
+	controls.add_child(placement_warning); placement_warning.hide()
 	shortage_panel = PanelContainer.new(); panel.add_child(shortage_panel)
 	shortage_panel.position = Vector2(32,52)
 	shortage_panel.custom_minimum_size.x = 448
@@ -148,7 +158,7 @@ func strategy_button(text: String, strategy: String) -> Button:
 	return control
 
 func supports_closest_material() -> bool:
-	return draft.is_connected_track() or draft.is_terrain_construction() or draft.is_magma_building() or draft.is_fixed_recipe() or draft.is_single_item_building() or draft.definition.get("key","") in ["Windmill","Bridge","RoadDirt"]
+	return draft.is_connected_track() or draft.is_terrain_construction() or draft.is_magma_building() or draft.is_fixed_recipe() or draft.is_single_item_building() or draft.definition.get("key","") in ["Windmill","Bridge","RoadDirt","FarmPlot"]
 
 func material_history_class(key: String) -> String:
 	# Native workshop_history_reference: equal material identities do not make
@@ -366,7 +376,7 @@ func cancel_site() -> void:
 	if pause_guard != null: pause_guard.release()
 	if shortage_panel != null: shortage_panel.hide()
 	_detach_draft(); draft.clear(); corner = Vector3i(-1,-1,-1); hover = corner
-	preview_delay = -1; pending_read.clear(); inspected_id = -1; inspected_key = ""; inspected_terrain = corner
+	preview_delay = -1; pending_read.clear()
 	material_view.hide(); draw_outline(); update_buttons()
 
 func handle_back() -> void:
@@ -598,7 +608,15 @@ func update_prompt() -> void:
 	if draft.definition.get("family","") == "Rollers": heading.text = "Click a tile to be one end of the Rollers."
 	if draft.definition.get("key","") == "RoadDirt": heading.text = "Click a tile to be a corner of the Dirt Road."
 	if draft.is_fixed_recipe(): heading.text = draft.FixedRecipes.RECIPES[draft.definition.key].placement
+	_update_stair_heading()
 	message.text = ""; update_buttons()
+
+func _update_stair_heading() -> void:
+	if heading == null or draft.definition.get("key","") != "Construction:Stairs": return
+	# Native stair placement capture: stairs_refusal_events.parent_render_capture.
+	heading.text = "Click a tile to place the Stairs."
+	if draft.dimensions.z > 1:
+		heading.text += "\n (spans %d levels)" % draft.dimensions.z
 
 func send(request: Dictionary) -> void:
 	if not play_enabled or not panel.visible or request_ticket != 0: return
@@ -686,17 +704,20 @@ func place() -> void:
 	if pause_guard != null: pause_guard.mutation_ticket = request_ticket
 	draft.preview_valid = false
 
-func begin_inspect() -> void:
-	cancel_site(); menu.hide(); footer.show(); orientation_panel.hide(); mode = "inspect"
-	heading.text = "Click a building to inspect construction"; message.text = ""
-
-func remove_building() -> void:
-	if inspected_id >= 0: send({"action":Action.Remove,"building_id":inspected_id,"definition":inspected_key})
-	elif inspected_terrain.z >= 0: send({"action":Action.RemoveConstruction,"origin":inspected_terrain})
-
 func _receive_result(state: Dictionary, request: Dictionary) -> void:
+	placement_refusal.hide(); placement_refusal.text = ""
+	placement_warning.hide(); placement_warning.text = ""
+	# Native placement_refusals/site_support captures: refusal below Keep building in the placement
+	# panel. Only exact, sourced gameplay copy is exposed; diagnostics stay hidden.
+	# Expand this catalog with native evidence, never by translating draft errors.
+	var refusal := str(state.get("message",""))
+	if int(state.get("status",Status.Rejected)) == Status.Rejected and int(request.action) in [Action.Preview,Action.Place] and sourced_placement_refusal(refusal,str(request.get("definition",""))):
+		placement_refusal.text = refusal; placement_refusal.show()
 	message.text = str(state.get("message",""))
 	var data: Dictionary = state.get("construction",{})
+	var warning := str(data.get("warnings",""))
+	if int(request.action) in [Action.Preview,Action.Place] and str(request.get("definition","")) == "FarmPlot" and warning == "No mud/soil for farm\nMud is left by water":
+		placement_warning.text = warning; placement_warning.show()
 	# Non-atomic area Place may report confirmed work even on a refusal. Preserve
 	# that evidence; never replay or imply that a rejected batch did nothing.
 	if int(request.action) == Action.Place and data.has("placed"):
@@ -707,7 +728,9 @@ func _receive_result(state: Dictionary, request: Dictionary) -> void:
 	if int(state.get("status",Status.Rejected)) != Status.Ok:
 		if int(request.action) == Action.Preview and mode == "place" and corner == hover: corner = Vector3i(-1,-1,-1)
 		draft.invalidate(); pending_read.clear(); material_view.hide(); footer.show()
-		if mode != "menu": mode = "place" if not draft.definition.is_empty() else "inspect"
+		if mode != "menu":
+			mode = "place" if not draft.definition.is_empty() else "menu"
+			if mode == "menu": menu.open()
 		draw_outline(); update_buttons(); return
 	match int(request.action):
 		Action.Catalog:
@@ -769,20 +792,14 @@ func _receive_result(state: Dictionary, request: Dictionary) -> void:
 				mode = "place"; footer.show(); rebuild_orientation(); update_prompt(); message.text = text
 			else:
 				message.text = text; close_panel() # e4 wall_placed_mixed_materials: unchecked returns to the map.
-		Action.Inspect, Action.InspectAtTile:
-			inspected_id = int(state.get("building_id",-1)); inspected_key = str(data.get("building_key",""))
-			inspected_terrain = request.get("origin",Vector3i(-1,-1,-1)) if state.get("terrain_construction",false) else Vector3i(-1,-1,-1)
-			message.text += "\nStage %d / %d; %d jobs%s" % [int(state.get("build_stage",-1)),int(state.get("max_stage",-1)),int(state.get("jobs",0)),"; removing" if state.get("removing",false) else ""]
-		Action.Remove, Action.RemoveConstruction:
-			placed_sites.erase(inspected_id); inspected_id = -1; inspected_terrain = Vector3i(-1,-1,-1); draw_outline()
+
 	update_buttons()
 
 func update_buttons() -> void:
-	if remove_button == null: return
+	if material_options == null: return
 	# native_placement_hover_correction: Bridge and Pressure Plate retain the
 	# left placement pane alongside their right option pane.
-	material_options.visible = mode != "inspect"
-	inspection_tools.visible = mode == "inspect"
+	material_options.visible = true
 	select_after.disabled = request_ticket != 0 or mode != "place"
 	use_closest.disabled = select_after.disabled or not supports_closest_material()
 	use_closest.set_pressed_no_signal(material_strategy == "closest")
@@ -796,7 +813,6 @@ func update_buttons() -> void:
 	select_after.set_pressed_no_signal(material_strategy == "after")
 	use_last.set_pressed_no_signal(material_strategy == "last")
 	keep_building.disabled = mode != "place" or request_ticket != 0
-	remove_button.disabled = request_ticket != 0 or (inspected_id < 0 and inspected_terrain.z < 0)
 	for control in orientation.get_children():
 		if control is BaseButton: control.disabled = request_ticket != 0 or mode != "place"
 		elif control.has_method("set_locked"): control.set_locked(request_ticket != 0 or mode != "place")
@@ -822,16 +838,14 @@ func _process(delta: float) -> void:
 	var z := int(world.get_top_z())
 	if z != current_z:
 		current_z = z
-		if not (mode == "place" and corner.z >= 0 and (int(draft.definition.get("area_mode",0)) == 4 or draft.is_connected_track())):
+		# Native stairs retain the selected recipe when browsing elevations before
+		# the first anchor as well as while extending an existing selection.
+		if not (mode == "place" and (int(draft.definition.get("area_mode",0)) == 4 or (corner.z >= 0 and draft.is_connected_track()))):
 			if mode != "menu": handle_back()
 		draw_outline()
 	if preview_delay >= 0:
 		preview_delay -= delta
 		if preview_delay < 0 and mode == "place" and request_ticket == 0: preview()
-	if mode == "inspect" and inspected_id >= 0 and request_ticket == 0:
-		inspect_delay -= delta
-		if inspect_delay <= 0:
-			inspect_delay = 1.0; send({"action":Action.Inspect,"building_id":inspected_id})
 	if mode == "materials":
 		material_elapsed += delta
 		if material_elapsed > 120 and not pending_read.is_empty():
@@ -846,7 +860,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not panel.visible or not ui_host.allows_panel_input(self): return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		handle_back(); get_viewport().set_input_as_handled(); return
-	if mode not in ["place","inspect"]: return
+	if mode != "place": return
 	if event is InputEventMouseMotion and mode == "place":
 		var tile: Vector3i = world.pick_tile(camera.project_ray_origin(event.position),camera.project_ray_normal(event.position),world.get_top_z())
 		if tile != hover: target_tile(tile)
@@ -858,8 +872,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				# not move the picker. Use our projected tile, not native UI state.
 				var center := camera.unproject_position(Vector3(tile.x+0.5,tile.z+float(world.floor_height()),tile.y+0.5))
 				material_picker_right = center.x <= get_viewport().get_visible_rect().size.x/2.0
-			if mode == "inspect" and request_ticket == 0: send({"action":Action.InspectAtTile,"origin":tile})
-			elif mode == "place": target_tile(tile,true)
+			target_tile(tile,true)
 		get_viewport().set_input_as_handled()
 
 func layout_placement(view: Vector2) -> void:
@@ -879,7 +892,9 @@ func layout_placement(view: Vector2) -> void:
 		orientation_panel.position = Vector2(32,footer.get_rect().end.y+8)
 
 func visible_outline_sites() -> Array:
-	var sites: Array = placed_sites.values().duplicate(true)
+	# Receipts describe past commands, not current world occupancy.
+	# Confirmed buildings/jobs render from DF-backed model entities.
+	var sites: Array = []
 	if draft.is_connected_track() and not draft.track_path.is_empty():
 		for tile in draft.track_path: sites.append({"origin":tile,"width":1,"height":1,"depth":1})
 	elif draft.origin.z >= 0:
@@ -890,7 +905,11 @@ func visible_outline_sites() -> Array:
 	return visible_sites
 
 func draw_outline() -> void:
+	_update_stair_heading()
 	if outline == null: return
+	# Placement receipts outlive this view; their geometry must not.
+	if not panel.visible:
+		outline.mesh = null; return
 	var visible_sites := visible_outline_sites()
 	var z := int(world.get_top_z())
 	if visible_sites.is_empty(): outline.mesh = null; return
@@ -903,6 +922,8 @@ func draw_outline() -> void:
 	mesh.surface_end(); outline.mesh = mesh
 
 func _detach_draft() -> void:
+	if placement_refusal != null: placement_refusal.text = ""; placement_refusal.hide()
+	if placement_warning != null: placement_warning.text = ""; placement_warning.hide()
 	draft_generation += 1
 	if action_service != null: action_service.detach(request_ticket)
 	request_ticket = 0

@@ -126,5 +126,987 @@
   "omissions": [
     "Whole Construction parity/exposure remains open, including TrackStop and PressurePlate options."
   ],
-  "gpu_screenshot_source": "build/qa/construction-diagnostic-copy-20260930/screenshots"
+  "gpu_screenshot_source": "build/qa/construction-diagnostic-copy-20260930/screenshots",
+  "main_scene_placement": {
+    "source": "build/rollers-main-20261022-221434",
+    "status": "passed_with_known_issues",
+    "source_preserved": true,
+    "result": {
+      "failure": "",
+      "observations": [
+        {
+          "selected": [
+            48520,
+            48524
+          ]
+        },
+        {
+          "building_id": 1490,
+          "input": "launcher/category/leaf/map/material through viewport pointer",
+          "site": "(127, 61, 165)"
+        },
+        {
+          "elapsed": 775.0,
+          "frame": 775.0,
+          "id": 1490.0,
+          "items": [
+            48524.0,
+            48520.0
+          ],
+          "job_details": [],
+          "jobs": 0.0,
+          "maximum": 1.0,
+          "stage": 1.0,
+          "status": "passed"
+        }
+      ],
+      "status": "passed"
+    },
+    "native_profile": {
+      "direction": 0,
+      "height": 3,
+      "speed": 10000,
+      "width": 1
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "inspected": [
+      "rollers-placement.png",
+      "rollers-filter-0-0.png",
+      "door-complete.png"
+    ],
+    "scope": "Pointer menu/speed, two endpoints for length3, two exact material phases and natural completion775. Finished1x3 direction0 speed10000 building contains selected mechanism48520 and chain48524.",
+    "limits": [
+      "One length/orientation/speed combination completed end-to-end; existing semantic evidence covers all5 speeds.",
+      "Powered minecart transport is not exercised by this construction test.",
+      "Existing panel frame/spacing differences remain."
+    ]
+  },
+  "native_material_integration": {
+    "scope": "Native candidate integration and variable length across mechanism quantity threshold; construction completion only, not powered cart movement.",
+    "native_five_tile": {
+      "run": "build/native-rollers-length-five-20261023-142815",
+      "result": {
+        "error": "nil",
+        "success": true
+      },
+      "comparison": {
+        "baseline": {
+          "50:-1": {
+            "candidates": [
+              [
+                24480,
+                48521,
+                48522,
+                48523,
+                48524
+              ],
+              [
+                386,
+                5818,
+                5868,
+                7404,
+                7417,
+                7448,
+                7479,
+                7564,
+                12753,
+                12833,
+                28450,
+                48525,
+                48526,
+                48527,
+                48528
+              ]
+            ],
+            "recipes": [
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 5,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 67,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 5,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 76,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 15,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 10,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 15,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 54,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              }
+            ],
+            "status": 0
+          }
+        },
+        "comparisons": [
+          {
+            "candidates": [
+              [
+                24480,
+                48521,
+                48522,
+                48523,
+                48524
+              ],
+              [
+                386,
+                5818,
+                5868,
+                7404,
+                7417,
+                7448,
+                7479,
+                7564,
+                12753,
+                12833,
+                28450,
+                48525,
+                48526,
+                48527,
+                48528
+              ]
+            ],
+            "digest": "1c1596e719740309559e9981023d388e:a681c10485f282fab04e04d5f6377be7",
+            "name": "Rollers",
+            "native": [
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 5,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 2,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 67,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 5,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 76,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 15,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 10,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 15,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 54,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              }
+            ],
+            "native_candidates": [
+              [
+                24480,
+                48521,
+                48522,
+                48523,
+                48524
+              ],
+              [
+                386,
+                5818,
+                5868,
+                7404,
+                7417,
+                7448,
+                7479,
+                7564,
+                12753,
+                12833,
+                28450,
+                48525,
+                48526,
+                48527,
+                48528
+              ]
+            ],
+            "owned": [
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 5,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 67,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 5,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 76,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 15,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 10,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 15,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 54,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              }
+            ]
+          }
+        ],
+        "created": {
+          "Rollers": [
+            [
+              48521,
+              48522,
+              48523,
+              48524
+            ],
+            [
+              48525,
+              48526,
+              48527,
+              48528
+            ]
+          ]
+        },
+        "final": "{\n\t\"buildings\": 921,\n\t\"choices\": 1,\n\t\"cursor\": [ -30000, -30000, -30000 ],\n\t\"frame\": 0,\n\t\"items\": 13370,\n\t\"mouse\": [ 102, 32 ],\n\t\"next_building\": 1490,\n\t\"next_item\": 48529,\n\t\"next_job\": 382794,\n\t\"pathclear\": 0,\n\t\"pathstart\": 1,\n\t\"pos\": [ 104, 40, 165 ],\n\t\"reindex\": false,\n\t\"requirements\": 2,\n\t\"selection\": [ 100, 40, 165 ],\n\t\"stage\": 2,\n\t\"subtype\": -1,\n\t\"type\": 50,\n\t\"window\": [ 87, 32, 165 ]\n}"
+      },
+      "source_preservation": "Owned source unchanged",
+      "owned_session_closed": true,
+      "screenshot_inspected": "native-picker.png",
+      "screenshot_sha256": "8362261840b9b324e631cf3885e2e41737db599811fa60f9f4249be6afd64976",
+      "intent": "Five-tile horizontal span, direction1, speed30000; diagnostic sets semantic native direction/speed before native endpoint inputs. Actual native filters require2 mechanisms and1 chain."
+    },
+    "viewers": [
+      {
+        "run": "build/native-rollers-completion-main-20261023-142610",
+        "length": 3,
+        "status": "passed_with_known_issues",
+        "result": {
+          "failure": "",
+          "observations": [
+            {
+              "building_id": 1490,
+              "input": "launcher/category/leaf/map/material through viewport pointer",
+              "site": "(121, 46, 165)"
+            },
+            {
+              "buildings": [
+                {
+                  "definition": "Rollers",
+                  "direction": 1.0,
+                  "id": 1490.0,
+                  "items": [
+                    {
+                      "id": 48527.0,
+                      "material": "INORGANIC:IRON",
+                      "type": "CHAIN"
+                    },
+                    {
+                      "id": 48525.0,
+                      "material": "INORGANIC:GRANITE",
+                      "type": "TRAPPARTS"
+                    }
+                  ],
+                  "jobs": 0.0,
+                  "maximum": 1.0,
+                  "speed": 30000.0,
+                  "stage": 1.0,
+                  "x1": 121.0,
+                  "x2": 123.0,
+                  "y1": 46.0,
+                  "y2": 46.0
+                }
+              ],
+              "frame": 975.0,
+              "status": "passed"
+            }
+          ],
+          "status": "passed"
+        },
+        "completion": {
+          "buildings": [
+            {
+              "definition": "Rollers",
+              "direction": 1,
+              "id": 1490,
+              "items": [
+                {
+                  "id": 48527,
+                  "material": "INORGANIC:IRON",
+                  "type": "CHAIN"
+                },
+                {
+                  "id": 48525,
+                  "material": "INORGANIC:GRANITE",
+                  "type": "TRAPPARTS"
+                }
+              ],
+              "jobs": 0,
+              "maximum": 1,
+              "speed": 30000,
+              "stage": 1,
+              "x1": 121,
+              "x2": 123,
+              "y1": 46,
+              "y2": 46
+            }
+          ],
+          "frame": 975,
+          "status": "passed"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "native_candidate_oracle": {
+          "created": [
+            [
+              48525,
+              48526
+            ],
+            [
+              48527,
+              48528
+            ]
+          ],
+          "ids": [
+            48525,
+            48527
+          ],
+          "oracle": {
+            "candidates": [
+              [
+                48525,
+                48526
+              ],
+              [
+                48527,
+                48528
+              ]
+            ],
+            "recipes": [
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 2,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 67,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 2,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 76,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 2,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 10,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 2,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 54,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              }
+            ],
+            "status": 0
+          },
+          "origin": {
+            "x": 121,
+            "y": 46,
+            "z": 165
+          }
+        },
+        "source_preservation": "Owned source unchanged",
+        "owned_session_closed": true,
+        "hashes": [
+          {
+            "Algorithm": "SHA256",
+            "Hash": "252C4F091BFC1F9F307C051F40203586F07FD540615BD655650947CB6242D080",
+            "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\native-rollers-completion-main.gd"
+          },
+          {
+            "Algorithm": "SHA256",
+            "Hash": "4583A4C87AB69214F10D9B85C60C3FCDB70EBBF4AE036C490DA35326494A08F6",
+            "Path": "C:\\Users\\Josh\\Documents\\DF3D\\presentations\\godot\\project\\bin\\df3d_godot.dll"
+          }
+        ],
+        "screenshots_inspected": [
+          "rollers-placement.png",
+          "rollers-filter-0.png",
+          "rollers-complete.png"
+        ],
+        "screenshot_sha256": {
+          "rollers-complete.png": "70998ebd329dcae2c2971195771f4d88a8520c30fb9c584a040978ce2ad3b22a",
+          "rollers-filter-0.png": "4e61fefb6412b54461655ced72633eb72e7e58c9e134c4807b24516d07dae62c",
+          "rollers-filter-1.png": "8ebb407655c1cc40d7e26b351309db2d4dd14213765845a47c8403021e6d44c8",
+          "rollers-initial-picker.png": "1d6d670d49443381bda4c29fdf8e325c75282d568d9b81196b8f17d1cf0146b2",
+          "rollers-keep-placement.png": "77ebb5dbd4785a2ea8cb134a3775ebe4c2dc77b98335bbc35b93c7fd788f17bf",
+          "rollers-placement.png": "731c45392687d7f6bb6fe644e00c1fd5838ca474a7e18c7fd2e45c4c62d704ae"
+        },
+        "scope": "Public launcher/Machines/Rollers, orientation1 and speed30000 buttons, exact endpoint picks, cancel/reopen, Keep enabled/Last absent, exact individual inputs and public Play; native readback confirms extent/direction/speed/retained inputs at natural completion."
+      },
+      {
+        "run": "build/native-rollers-five-completion-main-20261023-142935",
+        "length": 5,
+        "status": "passed_with_known_issues",
+        "result": {
+          "failure": "",
+          "observations": [
+            {
+              "building_id": 1490,
+              "input": "launcher/category/leaf/map/material through viewport pointer",
+              "site": "(119, 46, 165)"
+            },
+            {
+              "buildings": [
+                {
+                  "definition": "Rollers",
+                  "direction": 1.0,
+                  "id": 1490.0,
+                  "items": [
+                    {
+                      "id": 48528.0,
+                      "material": "INORGANIC:IRON",
+                      "type": "CHAIN"
+                    },
+                    {
+                      "id": 48526.0,
+                      "material": "INORGANIC:GRANITE",
+                      "type": "TRAPPARTS"
+                    },
+                    {
+                      "id": 48525.0,
+                      "material": "INORGANIC:GRANITE",
+                      "type": "TRAPPARTS"
+                    }
+                  ],
+                  "jobs": 0.0,
+                  "maximum": 1.0,
+                  "speed": 30000.0,
+                  "stage": 1.0,
+                  "x1": 119.0,
+                  "x2": 123.0,
+                  "y1": 46.0,
+                  "y2": 46.0
+                }
+              ],
+              "frame": 1625.0,
+              "status": "passed"
+            }
+          ],
+          "status": "passed"
+        },
+        "completion": {
+          "buildings": [
+            {
+              "definition": "Rollers",
+              "direction": 1,
+              "id": 1490,
+              "items": [
+                {
+                  "id": 48528,
+                  "material": "INORGANIC:IRON",
+                  "type": "CHAIN"
+                },
+                {
+                  "id": 48526,
+                  "material": "INORGANIC:GRANITE",
+                  "type": "TRAPPARTS"
+                },
+                {
+                  "id": 48525,
+                  "material": "INORGANIC:GRANITE",
+                  "type": "TRAPPARTS"
+                }
+              ],
+              "jobs": 0,
+              "maximum": 1,
+              "speed": 30000,
+              "stage": 1,
+              "x1": 119,
+              "x2": 123,
+              "y1": 46,
+              "y2": 46
+            }
+          ],
+          "frame": 1625,
+          "status": "passed"
+        },
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        },
+        "native_candidate_oracle": {
+          "created": [
+            [
+              48525,
+              48526,
+              48527
+            ],
+            [
+              48528,
+              48529,
+              48530
+            ]
+          ],
+          "ids": [
+            48525,
+            48526,
+            48528
+          ],
+          "oracle": {
+            "candidates": [
+              [
+                48525,
+                48526,
+                48527
+              ],
+              [
+                48528,
+                48529,
+                48530
+              ]
+            ],
+            "recipes": [
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 3,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 67,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 3,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 76,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              },
+              {
+                "building_present": 0,
+                "burrow_count": 0,
+                "can_steal_haul_items": 0,
+                "candidate_count": 3,
+                "contains_count": 0,
+                "count_max": 0,
+                "count_provided": 0,
+                "count_required": 1,
+                "dye_color": -1,
+                "flags1": 0,
+                "flags2": 8192,
+                "flags3": 0,
+                "flags4": 0,
+                "flags5": 0,
+                "has_melee_skill": -1,
+                "has_tool_use": -1,
+                "item_subtype": -1,
+                "item_type": 10,
+                "job_present": 0,
+                "mat_index": -1,
+                "mat_type": -1,
+                "metal_ore": -1,
+                "min_dimension": -1,
+                "reaction_id": -1,
+                "site_present": 0,
+                "take_from_present": 0,
+                "total_dim_count": 3,
+                "unit_present": 0,
+                "use_burrows": 0,
+                "use_contains": 0,
+                "use_flags2": 1,
+                "use_flags3": 0,
+                "use_flags4": 0,
+                "use_flags5": 0,
+                "use_mat_index": 0,
+                "use_metal_ore": 0,
+                "use_reaction_class": 0,
+                "use_reaction_product": 0,
+                "vector_index": 54,
+                "x": -30000,
+                "y": -30000,
+                "z": -30000
+              }
+            ],
+            "status": 0
+          },
+          "origin": {
+            "x": 119,
+            "y": 46,
+            "z": 165
+          }
+        },
+        "source_preservation": "Owned source unchanged",
+        "owned_session_closed": true,
+        "hashes": [
+          {
+            "Algorithm": "SHA256",
+            "Hash": "4CB1D2AAC6E87465B023152F5716755D4E05B717535DF9ECBAF9A80E77ACF54B",
+            "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\native-rollers-five-completion-main.gd"
+          },
+          {
+            "Algorithm": "SHA256",
+            "Hash": "4583A4C87AB69214F10D9B85C60C3FCDB70EBBF4AE036C490DA35326494A08F6",
+            "Path": "C:\\Users\\Josh\\Documents\\DF3D\\presentations\\godot\\project\\bin\\df3d_godot.dll"
+          }
+        ],
+        "screenshots_inspected": [
+          "rollers-filter-0.png",
+          "rollers-complete.png"
+        ],
+        "screenshot_sha256": {
+          "rollers-complete.png": "ffabac5cd52162eb9bef45f432d7409d995e5fab142f4e6e9c45dad6ad049a8e",
+          "rollers-filter-0.png": "dd8d4bc3de7bc1fd41bab6257f7f6c297ca2a12bed80038ac90f09eb91541894",
+          "rollers-filter-1.png": "99b141ca121e2401e5dbc30c9852d963502d8215ef4a58d5ea1e6843d5759b65",
+          "rollers-initial-picker.png": "8a2e5fcaafb0bf285f443401ee7fb3a72a619032e82c6a9f604087e086303ef2",
+          "rollers-keep-placement.png": "6be713b3e9f7867b1ec7bd17fe21c5d3541e04c9d65a6266aecec62581b11e21",
+          "rollers-placement.png": "32cbe5da64e5cf5fd53e23e7a70a650577a4069555c10e91f8351eb7aaf10245"
+        },
+        "scope": "Public launcher/Machines/Rollers, orientation1 and speed30000 buttons, exact endpoint picks, cancel/reopen, Keep enabled/Last absent, exact individual inputs and public Play; native readback confirms extent/direction/speed/retained inputs at natural completion."
+      }
+    ]
+  }
 }

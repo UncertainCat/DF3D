@@ -2,7 +2,7 @@
 from pathlib import Path
 import json
 import unittest
-from test_construction_catalog import catalog_runtime
+from test_construction_catalog import catalog_runtime, synthetic_native_recipe, synthetic_native_candidates
 
 # DFHack signatures/return shapes: see test_construction_catalog.API_MOCKS audit.
 # designateRemove: Lua API.rst:2821 returns true,was_only_planned (or false).
@@ -46,6 +46,160 @@ class Adapter(unittest.TestCase):
         self.assertEqual(placed['first_building'],88);self.assertEqual(len(self.lua.globals().created),0)
         self.assertEqual(self.lua.globals().queued.type,self.lua.globals().df.construction_type.ReinforcedWall)
         self.assertEqual(self.lua.globals().queued.jobs[1].original_item,77)
+
+    def test_native_ordinary_queued_replacement(self):
+        for target in ('Floor','Wall','Ramp','Fortification'):
+            for original in ('Floor','Wall','Ramp','Fortification'):
+                self.reset()
+                self.lua.execute("""
+                    occupied={['0:0:0']=true}
+                    queued={id=88,type=df.construction_type[...],jobs={{original_item=77}},
+                        getType=function()return df.building_type.Construction end,getBuildStage=function()return 0 end}
+                    dfhack.buildings.findAtTile=function()return queued end
+                    dfhack.buildings.markedForRemoval=function()return false end
+                """,original)
+                preview=self.finish(action=1,definition='Construction:'+target)
+                self.assertTrue(preview['ok'],(target,original,preview['message']))
+                self.assertEqual(preview['required'],0)
+                self.assertEqual(len(preview['filters']),0)
+                placed=self.finish(action=2,definition='Construction:'+target)
+                self.assertTrue(placed['ok'],placed['message'])
+                self.assertEqual(placed['placed'],1)
+                self.assertEqual(placed['first_building'],88)
+                self.assertEqual(len(self.lua.globals().created),0)
+                self.assertEqual(self.lua.globals().queued.type,self.lua.globals().df.construction_type[target])
+                self.assertEqual(self.lua.globals().queued.jobs[1].original_item,77)
+
+    def test_native_queued_mixed_material_accounting_and_stale_site(self):
+        self.lua.execute("""
+            occupied={['0:0:0']=true}
+            queued={id=88,type=df.construction_type.Floor,jobs={{original_item=77}},
+                getType=function()return df.building_type.Construction end,getBuildStage=function()return 0 end}
+            dfhack.buildings.findAtTile=function(p)if p.x==0 then return queued end end
+            dfhack.buildings.markedForRemoval=function()return false end
+        """)
+        request=dict(definition='Construction:Wall',width=2)
+        preview=self.finish(action=1,**request)
+        self.assertTrue(preview['ok']);self.assertEqual(preview['required'],1)
+        selection=self.selection(**request)
+        placed=self.finish(action=2,selections=[selection],**request)
+        self.assertTrue(placed['ok'],placed['message']);self.assertEqual(placed['placed'],2)
+        self.assertEqual(len(self.lua.globals().created),1)
+        self.assertEqual(self.lua.globals().queued.jobs[1].original_item,77)
+        self.lua.execute("queued.type=df.construction_type.Floor;flags.flow_size=2")
+        refused=self.finish(action=2,definition='Construction:Wall')
+        self.assertFalse(refused['ok'])
+        self.assertEqual(self.lua.globals().queued.type,self.lua.globals().df.construction_type.Floor)
+
+    def test_native_mixed_queued_cancel_and_commit(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/construction_paint_area.json.gz').read_bytes()))
+        for row in data['queued_mixed']['rows']:
+            self.setUp()
+            before=row['before']
+            self.lua.execute("""
+                local original,id,job,item=...
+                occupied={['0:0:0']=true}
+                queued={id=id,type=df.construction_type[original],jobs={{id=job,original_item=item}},
+                    getType=function()return df.building_type.Construction end,getBuildStage=function()return 0 end}
+                dfhack.buildings.findAtTile=function(p)if p.x==0 then return queued end end
+                dfhack.buildings.markedForRemoval=function()return false end
+            """,row['existing'],before['id'],before['jobs'][0],before['items'][0])
+            request=dict(definition='Construction:'+row['target'],width=2)
+            preview=self.finish(action=1,**request)
+            self.assertTrue(preview['ok']);self.assertEqual(preview['required'],1)
+            if row['mode']=='manual_cancel':
+                self.reset()
+            else:
+                selection=self.selection(**request)
+                placed=self.finish(action=2,selections=[selection],**request)
+                self.assertTrue(placed['ok']);self.assertEqual(placed['placed'],2)
+            queued=self.lua.globals().queued
+            self.assertEqual(queued.id,row['after']['id'])
+            self.assertEqual(queued.type,self.lua.globals().df.construction_type[row['after']['subtype']])
+            self.assertEqual(queued.jobs[1].id,row['after']['jobs'][0])
+            self.assertEqual(queued.jobs[1].original_item,row['after']['items'][0])
+            self.assertEqual(len(self.lua.globals().created),len(row['created']))
+
+    def test_native_mixed_queued_stairs_cancel_and_commit(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/construction_paint_area.json.gz').read_bytes()))
+        for row in data['queued_stairs']['rows']:
+            self.setUp()
+            before=row['before']
+            self.lua.execute("""
+                local original,z,id,job,item=...
+                occupied={['0:0:'..z]=true}
+                queued={id=id,type=df.construction_type[original],jobs={{id=job,original_item=item}},
+                    getType=function()return df.building_type.Construction end,getBuildStage=function()return 0 end}
+                dfhack.buildings.findAtTile=function(p)if p.z==z then return queued end end
+                dfhack.buildings.markedForRemoval=function()return false end
+            """,row['existing'],row['affected'],before['id'],before['jobs'][0],before['items'][0])
+            request=dict(definition='Construction:Stairs',depth=3,
+                         material_anchor=dict(x=0,y=0,z=0 if row['reverse'] else 2))
+            preview=self.finish(action=1,**request)
+            self.assertTrue(preview['ok'],row);self.assertEqual(preview['required'],2)
+            if row['mode']=='manual_cancel':
+                self.reset()
+            else:
+                selection=self.selection(count=2,**request)
+                placed=self.finish(action=2,selections=[selection],**request)
+                self.assertTrue(placed['ok'],placed['message']);self.assertEqual(placed['placed'],3)
+            queued=self.lua.globals().queued
+            self.assertEqual(queued.id,row['after']['id'])
+            self.assertEqual(queued.type,self.lua.globals().df.construction_type[row['after']['subtype']],row)
+            self.assertEqual(queued.jobs[1].id,row['after']['jobs'][0])
+            self.assertEqual(queued.jobs[1].original_item,row['after']['items'][0])
+            created=list(self.lua.globals().created.values())
+            self.assertEqual(len(created),len(row['created']))
+            expected={v['position']['z']-165:v['subtype'] for v in row['created']}
+            for building in created:
+                self.assertEqual(building['subtype'],self.lua.globals().df.construction_type[expected[building['pos']['z']]])
+
+    def test_native_queued_stair_endpoint_connections(self):
+        cases=json.loads((Path(__file__).resolve().parents[1]/'fixtures/construction/stairs_placement.json').read_text(encoding='utf-8'))['queued_replacement']['cases']
+        for case in cases:
+            self.reset()
+            self.lua.execute("""
+                local original,opposite=...
+                occupied={['0:0:0']=true,['0:0:1']=true,['0:0:2']=true};queued={}
+                for z=0,2 do queued[z]={id=88+z,type=df.construction_type[original],jobs={{original_item=77+z}},
+                    getType=function()return df.building_type.Construction end,getBuildStage=function()return 0 end} end
+                dfhack.buildings.findAtTile=function(p)return queued[p.z]end
+                dfhack.buildings.markedForRemoval=function()return false end
+                dfhack.maps.getTileType=function(p)return opposite and df.tiletype_shape[({'STAIR_DOWN','STAIR_UPDOWN','STAIR_UP'})[p.z+1]] or df.tiletype_shape.FLOOR end
+            """,case['existing'],case['terrain']=='opposite_stairs')
+            request=dict(definition='Construction:Stairs',depth=3,material_anchor=dict(x=0,y=0,z=0 if case['reverse'] else 2))
+            preview=self.finish(action=1,**request)
+            self.assertTrue(preview['ok'],preview['message']);self.assertEqual(preview['required'],0)
+            placed=self.finish(action=2,**request)
+            self.assertTrue(placed['ok'],placed['message']);self.assertEqual(placed['placed'],3)
+            self.assertEqual(len(self.lua.globals().created),0)
+            for z,piece in enumerate(case['after']):
+                queued=self.lua.globals().queued[z]
+                self.assertEqual(queued.type,self.lua.globals().df.construction_type[piece['subtype']],(case,z))
+                self.assertEqual(queued.jobs[1].original_item,77+z)
+
+    def test_queued_stairs_recheck_connection_after_incremental_scan(self):
+        self.lua.execute("""
+            occupied={['0:0:0']=true,['0:0:1']=true,['0:0:2']=true};queued={}
+            for z=0,2 do queued[z]={id=88+z,type=df.construction_type.Floor,
+                getType=function()return df.building_type.Construction end,getBuildStage=function()return 0 end} end
+            dfhack.buildings.findAtTile=function(p)return queued[p.z]end
+            dfhack.buildings.markedForRemoval=function()return false end
+        """)
+        self.seq+=1
+        request=dict(action=2,definition='Construction:Stairs',depth=3)
+        pending=self.call(step_budget=3,**request)
+        self.assertTrue(pending['pending']);self.assertEqual(pending['placed'],0)
+        self.lua.execute('queued[0].type=df.construction_type.DownStair;queued[2].type=df.construction_type.UpStair')
+        for _ in range(10):
+            result=self.call(step_budget=3,**request)
+            if not result['pending']:break
+        self.assertTrue(result['ok']);self.assertFalse(result['pending'])
+        for z in range(3):self.assertEqual(self.lua.globals().queued[z].type,self.lua.globals().df.construction_type.UpDownStair)
 
     def test_native_reinforced_material_admission(self):
         evidence=json.loads((Path(__file__).resolve().parents[1]/'fixtures/construction/material_candidates.json').read_text(encoding='utf-8'))['reinforced_admission_reference']
@@ -263,13 +417,36 @@ class Adapter(unittest.TestCase):
         end
         fill(1024)
         ''')
+        evidence=json.loads((Path(__file__).resolve().parents[1]/'fixtures/construction/windmill.json').read_text())
+        hooks=evidence['native_hookup_service']['cases'][0]['native_closed']['hooks']
+        self.lua.execute("""
+            local captured=...
+            df.global.world.buildings={all=setmetatable({[0]={canConnectToMachine=function(_,info)
+                return fixture_connect and fixture_connect(info) or false
+            end}},{__len=function()return 1 end})}
+            df.global.world.buildings.get_machine_hookup_list=function(_,info,kind,subtype,x1,y1,x2,y2,z,direction)
+                if kind~=df.building_type.Windmill then
+                    -- Synthetic native service result; live fixtures establish geometry.
+                    hook_calls=(hook_calls or 0)+1
+                    if fixture_hook then fixture_hook(info,kind,subtype,x1,y1,x2,y2,z,direction) end
+                    return
+                end
+                assert(kind==df.building_type.Windmill and subtype==-1 and not direction)
+                assert(x2-x1==2 and y2-y1==2)
+                hook_calls=(hook_calls or 0)+1
+                for i,h in ipairs(captured)do
+                    info.tiles.x[i-1]=x1+1+h.x;info.tiles.y[i-1]=y1+1+h.y;info.tiles.z[i-1]=z+h.z
+                    info.can_connect[i-1]={whole=h.bits}
+                end
+            end
+        """,self.lua.table_from(hooks,recursive=True))
         self.seq=0
         self.reset()
 
     def reset(self):
         self.lua.execute('''
             dfhack.maps.getTileSize=function()return 192,192,193 end
-            fixture_search=function(reader,seeds,targets)
+            fixture_search=function(seeds,targets)
                 local distances={}
                 for _,p in ipairs(targets)do distances[#distances+1]={reachable=true,distance=p.x}end
                 return {status=0,distances=distances}
@@ -277,7 +454,7 @@ class Adapter(unittest.TestCase):
         ''')
         order=self.lua.execute((Path(__file__).resolve().parents[1]/'bridge/plugin/construction_material_order.lua').read_text())
         names=self.lua.eval("function(group,id)if id then return 'fixture item '..id end end")
-        self.helper=self.lua.execute(SOURCE,None,self.lua.eval('function()end'),None,order,None,None,names)
+        self.helper=self.lua.execute(SOURCE,None,None,order,None,None,names,self.lua.eval("function(p,family,width,height,subtype,x1,y1) if family=='BridgeTile' then if native_bridge then return native_bridge(p,subtype) end;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if native_open then ok,reason=native_open(p) elseif sh=='WALL' or sh=='FORTIFICATION' then ok,reason=false,'Blocked at this location' end;if not ok then return false,reason,reason~='' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location',true end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;if subtype then if native_floor then ok,reason=native_floor(p) else ok=({FLOOR=true,BOULDER=true,PEBBLES=true,TWIG=true,SAPLING=true,SHRUB=true})[sh]==true;reason='Blocked at this location' end;if not ok then return false,reason=='' and '' or 'Needs to be anchored on edge',reason~='' end end;return true,'',true end;if family:match('SpecialTile$') then family=family:sub(1,-12);if native_special then return native_special(p,family,subtype) end;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if subtype then if native_open then ok,reason=native_open(p) elseif sh=='WALL' or sh=='FORTIFICATION' then ok,reason=false,'Blocked at this location' end else floor_calls=(floor_calls or 0)+1;if native_floor then ok,reason=native_floor(p) elseif sh=='WALL' or sh=='FORTIFICATION' or sh=='EMPTY' or sh=='RAMP' or sh=='RAMP_TOP' or sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1)) then ok,reason=false,'Blocked at this location' end end;if not ok then return false,reason,reason~='' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location',true end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;return true,'',true end;if family:match('OpeningTile$') then family=family:sub(1,-12);if native_opening then return native_opening(p,family) end;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if family=='Support' then floor_calls=(floor_calls or 0)+1;if native_floor then ok,reason=native_floor(p) elseif sh~='FLOOR' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1)) then ok,reason=false,'Blocked at this location' end elseif native_open then ok,reason=native_open(p) elseif sh=='WALL' or sh=='FORTIFICATION' then ok,reason=false,'Blocked at this location' end;if not ok then return false,reason,reason~='' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location',true end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;if family=='Well' or family=='Hatch' or family=='GrateFloor' or family=='BarsFloor' then support_calls=(support_calls or 0)+1;return not support_allowed or support_allowed[family]~=false,'fixture native support refusal',true end;return true,'',true end;if family=='PressurePlateTrigger' then if native_trigger then return native_trigger(subtype) end;return subtype.units or subtype.water or subtype.magma or subtype.track,'Need trigger type',true end;if family:match('FurnitureTile$') or family:match('OrdinaryTile$') then local ordinary=family:match('OrdinaryTile$')~=nil;family=family:sub(1,ordinary and -13 or -14);if ordinary and native_ordinary then return native_ordinary(p,family) end;if not ordinary and native_furniture then return native_furniture(p,family) end;floor_calls=(floor_calls or 0)+1;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if native_floor then ok,reason=native_floor(p) elseif sh=='WALL' or sh=='FORTIFICATION' or sh=='EMPTY' or sh=='RAMP' or sh=='RAMP_TOP' or sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1)) then ok,reason=false,'Blocked at this location' end;if not ok then return false,reason,reason~='' end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;if (family=='Bed' or family=='Chair' or family=='Table' or family=='Coffin' or family=='TractionBench') and f.outside then return false,'Must be inside',true end;if family=='Door' then door_calls=(door_calls or 0)+1;return door_allowed~=false,'fixture native Door refusal',true end;return true,'',true end;if family=='FarmPlotTile' or family=='RoadDirtTile' or family=='RoadPavedTile' then terrain_calls=(terrain_calls or 0)+1;family=family:sub(1,-5);if native_extent_tile then return native_extent_tile(p,family) end;local raw,reason=true,'';if native_terrain then raw,reason=native_terrain(p,family) end;if not raw then return false,reason,reason~='',false end;local f,occ=dfhack.maps.getTileFlags(p);local depth=f.flow_size or 0;local magma=f.liquid_type==true or f.liquid_type==1;if depth>1 and not magma then return false,'Water at this location',true,true end;if depth>0 and magma then return false,'Lava/Magma at this location',true,true end;if occ.building~=0 then return false,'Building present',true,true end;return true,'',true,true end;if family=='FarmPlotWarning' then if native_warning then return native_warning(p,width,height,subtype) end;return false,'',true end;if family:match('Connectivity$') then if native_connectivity then return native_connectivity() end;return true,'' end;if family=='ConstructionTerrain' then if native_construction then return native_construction(p,width,height,subtype,x1,y1) end;local a=df.tiletype.attrs[dfhack.maps.getTileType(p)];local sh=df.tiletype_shape[a.shape];local f=dfhack.maps.getTileFlags(p);local ct=a.material==df.tiletype_material.CONSTRUCTION;if sh=='WALL' or sh=='FORTIFICATION' then return false,ct and 'Must remove construction' or 'Blocked at this location' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location' end;if f.flow_size>1 then return false,'Water at this location' end;if ct and (sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN') and subtype~=df.construction_type.UpDownStair then return false,'Must remove construction' end;return true,'' end;if family=='BridgePerimeter' then if native_perimeter then local ok,reason,verified=native_perimeter(p,width,height);return ok,reason,verified~=false end;return true,'',true end;if family=='OpenTerrain' then if native_open then return native_open(p) end;return df.tiletype.attrs[dfhack.maps.getTileType(p)].shape~=df.tiletype_shape.WALL and df.tiletype.attrs[dfhack.maps.getTileType(p)].shape~=df.tiletype_shape.FORTIFICATION,'Blocked at this location' end;if family=='SinglePerimeter' then if native_single_perimeter then return native_single_perimeter() end;return perimeter_allowed~=false,'Needs walkable perimeter',true end;if family=='FloorTerrain' then floor_calls=(floor_calls or 0)+1;if native_floor then return native_floor(p) end;local f=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];return not (sh=='WALL' or sh=='FORTIFICATION' or sh=='EMPTY' or sh=='RAMP' or sh=='RAMP_TOP' or sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1))),'Blocked at this location' end;if family=='FarmPlot' or family=='RoadDirt' or family=='RoadPaved' then terrain_calls=(terrain_calls or 0)+1;if native_terrain then return native_terrain(p,family) end;return true,'' end; if family=='Door' then door_calls=(door_calls or 0)+1;return door_allowed~=false,'fixture native Door refusal' end;support_calls=(support_calls or 0)+1;return not support_allowed or support_allowed[family]~=false,'fixture native support refusal' end"))
 
     def test_furniture_eligibility_uses_site_not_citizen_group(self):
         # Native furniture_material_copy evidence: citizens group47, site and
@@ -469,7 +646,7 @@ class Adapter(unittest.TestCase):
                     costs[row.x..':'..row.y..':'..row.z]=row.distance
                 end
                 stock=remapped
-                fixture_search=function(reader,seeds,targets)
+                fixture_search=function(seeds,targets)
                     assert(#seeds==seed_count)
                     for _,seed in ipairs(seeds)do assert(seed.z==first_z,'wrong gesture elevation seed')end
                     local result={};for _,p in ipairs(targets)do result[#result+1]={reachable=true,distance=assert(costs[p.x..':'..p.y..':'..p.z])}end
@@ -536,6 +713,236 @@ class Adapter(unittest.TestCase):
             actual=[v['id'] for v in self.lua.globals().created[1]['items'].values()]
             self.assertEqual(actual,native['items'])
 
+    def test_native_candidate_admission_and_fresh_reservation(self):
+        for family in ('Bed','Chair','Table','Coffin','Cabinet','Box','Statue','Slab','Cage','Chain','Door','Hatch','GrateWall','GrateFloor','Floodgate','Armorstand','Weaponrack','TractionBench','Bookcase','DisplayFurniture','OfferingPlace','Instrument','NestBox','Hive','AnimalTrap','WindowGlass','BarsVertical','BarsFloor','WindowGem','Support','ArcheryTarget','TradeDepot','Weapon','Bridge','RoadPaved','Workshop:Carpenters','Furnace:WoodFurnace'):
+            for stale in (False,True):
+                self.setUp()
+                self.lua.execute("fill(2);local definition=...;local name,sub=definition:match('^([^:]+):(.+)$');name=name or definition;local e=df.building_type;if e[name]==nil then e._last_item=e._last_item+1;e[e._last_item]=name;e[name]=e._last_item end;native_request_type=e[name];if sub then local st=name=='Workshop' and df.workshop_type or df.furnace_type;if st[sub]==nil then st._last_item=st._last_item+1;st[st._last_item]=sub;st[sub]=st._last_item end end;recipes[native_request_type]={{item_type=0,quantity=1}};stock[1].flags.hostile=true;stock[1].flags.on_ground=false;allow_native=true",family)
+                self.reset()
+                query=self.lua.eval("function(t)assert(t==native_request_type);return {status=0,candidates={allow_native and {1} or {}}}end")
+                request=dict(definition=family,native_material_candidates=query)
+                if family.startswith('Workshop:'):request.update(width=3,height=3)
+                page=self.page(**request)
+                self.assertTrue(page['ok'],(family,page['message']))
+                self.assertEqual([x['id'] for x in page['materials'][1]['candidates'].values()],[1],family)
+                if stale:self.lua.execute('allow_native=false')
+                selection=dict(filter=0,item_type=0,item_subtype=-1,mat_type=0,mat_index=0,count=1,item_ids=[1],expected_list_revision=page['list_revision'])
+                placed=self.finish(action=2,selections=[selection],**request)
+                self.assertEqual(bool(placed['ok']),not stale,(family,placed['message']))
+                self.assertEqual(len(self.lua.globals().created),0 if stale else 1)
+                if not stale:self.assertEqual(self.lua.globals().created[1]['items'][1]['id'],1)
+
+    def test_native_custom_recipe_identity_and_stale_admission(self):
+        self.lua.execute("""
+            fill(3);customs[1].code='SCREW_PRESS';customs[2].code='SOAP_MAKER';customs[2].class='workshop'
+            native_id1=customs[1].id;native_id2=customs[2].id
+            dfhack.buildings.getFiltersByType=function()return {{item_type=0,quantity=1}}end
+            stock[1].flags.hostile=true;stock[2].flags.hostile=true;allow_native=true
+        """)
+        self.reset()
+        query=self.lua.eval("""function(t,st,custom_id)
+            assert(t==df.building_type.Workshop and st==df.workshop_type.Custom)
+            assert(custom_id==native_id1 or custom_id==native_id2)
+            return {status=0,candidates={allow_native and {custom_id==native_id1 and 1 or 2} or {}}}
+        end""")
+        requests=[]
+        for name,item_id in [('SCREW_PRESS',1),('SOAP_MAKER',2)]:
+            request=dict(definition='Workshop:Custom:'+name,width=3,height=3,native_material_candidates=query)
+            page=self.page(**request)
+            self.assertTrue(page['ok'],page['message'])
+            self.assertEqual([row['id'] for row in page['materials'][1]['candidates'].values()],[item_id])
+            selection=dict(filter=0,item_type=0,item_subtype=-1,mat_type=0,mat_index=0,count=1,
+                           item_ids=[item_id],expected_list_revision=page['list_revision'])
+            requests.append((request,selection))
+        request,selection=requests[0]
+        placed=self.finish(action=2,selections=[selection],**request)
+        self.assertTrue(placed['ok'],placed['message'])
+        self.assertEqual(self.lua.globals().created[1]['custom'],self.lua.globals().native_id1)
+        self.lua.execute('allow_native=false')
+        request,selection=requests[1]
+        refused=self.finish(action=2,selections=[selection],**request)
+        self.assertFalse(refused['ok'])
+        self.assertEqual(len(self.lua.globals().created),1)
+
+    def test_native_candidate_requirements_remain_separate(self):
+        for stale in (False, True):
+            self.setUp()
+            self.lua.execute("""
+                fill(4);recipes[df.building_type.ScrewPump]={
+                    {item_type=0,quantity=1},{item_type=0,quantity=1},{item_type=0,quantity=1}}
+                for _,item in ipairs(stock)do item.flags.hostile=true end
+                allow_last=true
+            """)
+            query=self.lua.eval("function()return {status=0,candidates={{3},{1},allow_last and {2} or {}}}end")
+            request=dict(definition='ScrewPump',native_material_candidates=query)
+            selections=[]
+            for index,item_id in enumerate((3,1,2)):
+                page=self.page(filter=index,**request)
+                self.assertTrue(page['ok'],page['message'])
+                self.assertEqual([x['id'] for x in page['materials'][1]['candidates'].values()],[item_id])
+                selections.append(dict(filter=index,item_type=0,item_subtype=-1,mat_type=0,mat_index=0,
+                                       count=1,item_ids=[item_id],expected_list_revision=page['list_revision']))
+            if stale:self.lua.execute('allow_last=false')
+            placed=self.finish(action=2,selections=selections,**request)
+            self.assertEqual(bool(placed['ok']),not stale,placed['message'])
+            self.assertEqual(len(self.lua.globals().created),0 if stale else 1)
+            if not stale:
+                self.assertEqual([v['id'] for v in self.lua.globals().created[1]['items'].values()],[3,1,2])
+
+    def test_native_bolt_thrower_requirements_remain_separate(self):
+        for stale in (False, True):
+            self.setUp()
+            self.lua.execute("""
+                fill(5);df.siegeengine_type=enum{'Ballista','Catapult','BoltThrower'};recipes[df.building_type.SiegeEngine]={
+                    {item_type=0,quantity=1},{item_type=0,quantity=1},{item_type=0,quantity=1},{item_type=0,quantity=1}}
+                for _,item in ipairs(stock)do item.flags.hostile=true end
+                dfhack.buildings.getCorrectSize=function()return false,1,1,0,0 end
+                allow_last=true
+            """)
+            self.reset()
+            query=self.lua.eval("function()return {status=0,candidates={{4},{2},{1},allow_last and {3} or {}}}end")
+            request=dict(definition='SiegeEngine:BoltThrower',native_material_candidates=query)
+            selections=[]
+            for index,item_id in enumerate((4,2,1,3)):
+                page=self.page(filter=index,**request)
+                self.assertTrue(page['ok'],page['message'])
+                self.assertEqual([x['id'] for x in page['materials'][1]['candidates'].values()],[item_id])
+                selections.append(dict(filter=index,item_type=0,item_subtype=-1,mat_type=0,mat_index=0,
+                                       count=1,item_ids=[item_id],expected_list_revision=page['list_revision']))
+            if stale:self.lua.execute('allow_last=false')
+            placed=self.finish(action=2,selections=selections,**request)
+            self.assertEqual(bool(placed['ok']),not stale,placed['message'])
+            self.assertEqual(len(self.lua.globals().created),0 if stale else 1)
+            if not stale:
+                self.assertEqual([v['id'] for v in self.lua.globals().created[1]['items'].values()],[4,2,1,3])
+
+    def test_native_weapon_trap_variable_inputs_and_stale_admission(self):
+        for stale in (False, True):
+            self.setUp()
+            self.lua.execute("""
+                fill(5);recipes[df.building_type.Trap]={
+                    {item_type=0,quantity=1},{item_type=0,quantity=1}}
+                for _,item in ipairs(stock)do item.flags.hostile=true end
+                allow_weapon=true
+            """)
+            query=self.lua.eval("""function(t,st)
+                assert(t==df.building_type.Trap and st==df.trap_type.WeaponTrap)
+                return {status=0,candidates={{4},allow_weapon and {1,2,3} or {1,3}}}
+            end""")
+            request=dict(definition='Trap:WeaponTrap',native_material_candidates=query)
+            selections=[]
+            for index,ids in enumerate(([4],[1,2,3])):
+                page=self.page(filter=index,**request)
+                self.assertTrue(page['ok'],page['message'])
+                self.assertEqual([x['id'] for x in page['materials'][1]['candidates'].values()],ids)
+                selections.append(dict(filter=index,item_type=0,item_subtype=-1,mat_type=0,mat_index=0,
+                                       count=len(ids),item_ids=ids,expected_list_revision=page['list_revision']))
+            if stale:self.lua.execute('allow_weapon=false')
+            placed=self.finish(action=2,selections=selections,**request)
+            self.assertEqual(bool(placed['ok']),not stale,placed['message'])
+            self.assertEqual(len(self.lua.globals().created),0 if stale else 1)
+            if not stale:
+                self.assertEqual([v['id'] for v in self.lua.globals().created[1]['items'].values()],[4,1,2,3])
+
+    def test_native_fixed_quantity_overrides_legacy_recipe_and_fails_closed(self):
+        self.lua.execute('fill(6);recipes[df.building_type.Windmill]={{item_type=0,quantity=1}};recipe_calls=0')
+        query=self.lua.eval("function(t,st,c)assert(t==df.building_type.Windmill and st==-1 and c==-1);recipe_calls=recipe_calls+1;return {status=0,recipes={{count_required=4}}}end")
+        request=dict(definition='Windmill',width=3,height=3,native_material_recipe=query)
+        preview=self.finish(action=1,**request)
+        self.assertTrue(preview['ok'],preview['message']);self.assertEqual(preview['required'],4)
+        self.assertEqual(self.lua.globals().recipe_calls,1)
+        selection=self.selection(count=1,definition='Windmill',width=3,height=3)
+        refused=self.finish(action=2,selections=[selection],**request)
+        self.assertFalse(refused['ok']);self.assertEqual(len(self.lua.globals().created),0)
+        selection=self.selection(count=4,definition='Windmill',width=3,height=3)
+        placed=self.finish(action=2,selections=[selection],**request)
+        self.assertTrue(placed['ok'],placed['message'])
+        self.assertEqual(len(self.lua.globals().created[1]['items']),4)
+        self.assertEqual(self.lua.globals().recipe_calls,3)
+        for value in ('nil','{status=1}','{status=0,recipes={}}','{status=0,recipes={{count_required=0}}}','{status=0,recipes={{count_required=32768}}}'):
+            request['native_material_recipe']=self.lua.eval('function()return '+value+' end')
+            failed=self.finish(action=1,**request);self.assertFalse(failed['ok'])
+
+    def test_missing_native_fixed_quantity_callback_rejects_preview_and_place(self):
+        for callback in (None, False, 1, 'not a callback'):
+            for action in (1, 2):
+                with self.subTest(callback=callback, action=action):
+                    self.reset()
+                    result=self.finish(action=action, native_material_recipe=callback)
+                    self.assertFalse(result['ok'])
+                    self.assertEqual(result['message'], '')
+                    self.assertEqual(len(self.lua.globals().created), 0)
+
+    def test_native_road_quantity_uses_mask_rechecks_and_fails_closed(self):
+        self.lua.execute("df.new=function()return {}end;df.reinterpret_cast=function(_,p)return p end;fill(12);recipes[df.building_type.RoadPaved]={{quantity=-1,vector_id=1}};road_count=0;road_calls=0;native_terrain=function(p)return p.x~=0,'Blocked at this location' end")
+        query=self.lua.eval("function(t,s,c,n)assert(t==df.building_type.RoadPaved and s==-1 and c==-1);road_count=n;road_calls=road_calls+1;return {status=0,recipes={{count_required=7}}}end")
+        request=dict(definition='RoadPaved',width=3,height=3,native_material_recipe=query)
+        preview=self.finish(action=1,**request)
+        self.assertTrue(preview['ok'],preview['message']);self.assertEqual(preview['required'],7)
+        self.assertEqual(self.lua.globals().road_count,6);self.assertEqual(self.lua.globals().road_calls,1)
+        self.lua.execute("native_terrain=function()return true,'' end")
+        refused=self.finish(action=2,selections=[],**request)
+        self.assertFalse(refused['ok']);self.assertEqual(self.lua.globals().road_count,9)
+        self.assertEqual(self.lua.globals().road_calls,2);self.assertEqual(len(self.lua.globals().created),0)
+        for value in ('nil','{status=1}','{status=0,recipes={}}','{status=0,recipes={{count_required=0}}}','{status=0,recipes={{count_required=1.5}}}'):
+            request['native_material_recipe']=self.lua.eval('function()return '+value+' end')
+            self.assertFalse(self.finish(action=1,**request)['ok'])
+        request['native_material_recipe']=False
+        self.assertFalse(self.finish(action=1,**request)['ok'])
+
+    def test_native_initial_quantity_does_not_replace_later_area_stage(self):
+        self.lua.execute('recipes[df.building_type.Bridge]={{quantity=-1,vector_id=1}}')
+        query=self.lua.eval("function()error('Initial recipe is not final area quantity')end")
+        result=self.finish(action=1,definition='Bridge',width=3,height=3,native_material_recipe=query)
+        self.assertTrue(result['ok'],result['message']);self.assertEqual(result['required'],3)
+
+    def test_native_candidate_rechecked_after_reservation_yields(self):
+        self.lua.execute("fill(1);recipes[df.building_type.Bed]={{item_type=0,quantity=1}};allow_native=true")
+        query=self.lua.eval("function()return {status=0,candidates={allow_native and {1} or {}}}end")
+        request=dict(definition='Bed',native_material_candidates=query)
+        page=self.page(**request);self.assertTrue(page['ok'])
+        selection=dict(filter=0,item_type=0,item_subtype=-1,mat_type=0,mat_index=0,count=1,item_ids=[1],expected_list_revision=page['list_revision'])
+        self.seq+=1
+        pending=self.call(action=2,selections=[selection],step_budget=2,**request)
+        self.assertTrue(pending['pending'])
+        self.assertEqual(len(self.lua.globals().created),0)
+        self.lua.execute('allow_native=false')
+        result=self.call(action=2,selections=[selection],**request)
+        self.assertFalse(result['ok'])
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_missing_native_candidate_callback_has_no_fallback(self):
+        for callback in (None, False, 1, 'not a callback'):
+            for action in (63, 2):
+                with self.subTest(callback=callback, action=action):
+                    self.reset()
+                    result=self.finish(action=action, native_material_candidates=callback)
+                    self.assertFalse(result['ok'])
+                    self.assertEqual(result['message'], '')
+                    self.assertEqual(len(self.lua.globals().created), 0)
+
+    def test_native_candidate_result_is_not_refiltered_by_old_item_flags(self):
+        # These deliberately contradictory synthetic flags verify delegation,
+        # not which flags DF accepts. Recorded native collectors own that proof.
+        flags=['dump','forbid','garbage_collect','hostile','on_fire','rotten','trader',
+               'in_building','construction','in_job','owned','removed','encased','spider_web']
+        query=self.lua.eval('function()return {status=0,candidates={{1}}}end')
+        for flag in flags:
+            with self.subTest(flag=flag):
+                self.lua.execute('fill(2);stock[1].flags[...]=true',flag)
+                self.reset()
+                page=self.page(native_material_candidates=query)
+                self.assertTrue(page['ok'],page['message'])
+                self.assertEqual([v['id'] for v in page['materials'][1]['candidates'].values()],[1])
+
+    def test_native_candidate_failure_has_no_legacy_fallback(self):
+        self.lua.execute("fill(2);recipes[df.building_type.Bed]={{item_type=0,quantity=1}}")
+        query=self.lua.eval("function()return {status=1}end")
+        page=self.page(definition='Bed',native_material_candidates=query)
+        self.assertFalse(page['ok'])
+        self.assertEqual(page['message'],'')
+        self.assertEqual(page['build_phase'],3)
+
     def test_exact_furniture_placement_preserves_farther_item(self):
         self.lua.execute('fill(2);df.item_type.CHAIR=0')
         page=self.page()
@@ -554,8 +961,9 @@ class Adapter(unittest.TestCase):
 
     def test_material_group_name_helper_reaches_generic_rows(self):
         self.lua.execute('fill(2)')
-        names=self.lua.eval("function(row)assert(#row.ids==2);return 'native fixture chairs' end")
-        self.helper=self.lua.execute(SOURCE,None,None,None,None,None,None,names)
+        names=self.lua.eval("function(row,id)if id then return 'fixture chair '..id end;assert(#row.ids==2);return 'native fixture chairs' end")
+        order=self.lua.execute((Path(__file__).resolve().parents[1]/'bridge/plugin/construction_material_order.lua').read_text())
+        self.helper=self.lua.execute(SOURCE,None,None,order,None,None,names)
         page=self.page()
         self.assertTrue(page['ok'])
         self.assertEqual(page['materials'][1]['name'],'native fixture chairs')
@@ -578,7 +986,7 @@ class Adapter(unittest.TestCase):
                     dfhack.maps.getTileBlock=function(p)
                         return {walkable=setmetatable({},{__index=function()return setmetatable({},{__index=function()return 1 end})end})}
                     end
-                    fixture_search=function(reader,seeds,targets)
+                    fixture_search=function(seeds,targets)
                         local distances={}
                         for _,p in ipairs(targets)do distances[#distances+1]={reachable=true,distance=costs[p.x..':'..p.y..':'..p.z]}end
                         return {status=0,distances=distances}
@@ -654,7 +1062,7 @@ class Adapter(unittest.TestCase):
           for i=1,130 do rows[i]={id=i,name='fixture item '..i..':'..generation,position={x=i,y=2,z=3}}end
           return {status=0,candidates=rows}
         end
-        ordering=function(snapshot,seed,reader,search,maximum,limit)
+        ordering=function(snapshot,seed,search)
           if unverified then return {status=2}end
           local groups,costs={},{}
           for i=1,130 do
@@ -679,7 +1087,7 @@ class Adapter(unittest.TestCase):
         ''')
         g = self.lua.globals()
         preflight = self.lua.execute((Path(__file__).resolve().parents[1] / 'bridge/plugin/construction_track_placement_plan.lua').read_text())
-        helper = self.lua.execute(SOURCE, g.native_reader, g.native_reader, g.scan, g.ordering, preflight)
+        helper = self.lua.execute(SOURCE, g.native_reader, g.scan, g.ordering, preflight)
         request = g.request
         first = helper(request)
         self.assertTrue(first['ok'])
@@ -732,9 +1140,40 @@ class Adapter(unittest.TestCase):
         self.assertEqual((appearance['stack'],appearance['flags'],appearance['color_token']),(1,0,''))
         self.lua.execute('stock[1].stack=nil;stock[1].color=nil;stock[1].flags.artifact=false')
         self.assertEqual(helper(request)['list_revision'],baseline_revision)
+        self.lua.execute("df.item_type.INSTRUMENT=0;df.job_skill={PLAY_KEYBOARD_INSTRUMENT=100,PLAY_STRINGED_INSTRUMENT=101,PLAY_WIND_INSTRUMENT=102,PLAY_PERCUSSION_INSTRUMENT=103};instrument_raw={id='FIXTURE_INSTRUMENT',music_skill=103,flags={PLACED_AS_BUILDING=true}};dfhack.items.getSubtypeDef=function()return instrument_raw end")
+        instrument_page=helper(request)
+        instrument=instrument_page['materials'][1]['candidates'][1]['appearance']
+        self.assertEqual((instrument['instrument_family'],instrument['instrument_placed']),(3,1))
+        self.lua.execute('instrument_raw.music_skill=100;instrument_raw.flags.PLACED_AS_BUILDING=false')
+        portable=helper(request)
+        self.assertNotEqual(portable['list_revision'],instrument_page['list_revision'])
+        facts=portable['materials'][1]['candidates'][1]['appearance']
+        self.assertEqual((facts['instrument_family'],facts['instrument_placed']),(0,0))
+        self.assertEqual((instrument['instrument_family'],instrument['instrument_placed']),(3,1))
+        self.lua.execute('df.item_type.INSTRUMENT=nil;dfhack.items.getSubtypeDef=function()end')
+        self.assertEqual(helper(request)['list_revision'],baseline_revision)
+        self.lua.execute('df.item_type.SLAB=0;stock[1].engraving_type=-1')
+        slab_page=helper(request)
+        self.assertEqual(slab_page['materials'][1]['candidates'][1]['appearance']['slab_engraving'],-1)
+        self.lua.execute('stock[1].engraving_type=6')
+        engraved=helper(request)
+        self.assertNotEqual(engraved['list_revision'],slab_page['list_revision'])
+        self.assertEqual(engraved['materials'][1]['candidates'][1]['appearance']['slab_engraving'],6)
+        self.assertEqual(slab_page['materials'][1]['candidates'][1]['appearance']['slab_engraving'],-1)
+        self.lua.execute('df.item_type.SLAB=nil;stock[1].engraving_type=nil')
+        self.lua.execute("df.item_type.SMALLGEM=0;for _,item in ipairs(stock)do item.shape=-1 end;stock[1].shape=0;df.global.world.raws.descriptors.shapes={[0]={id='BAGUETTE_CUT_GEM'},{id='ROUND_BRILLIANT_CUT_GEM'},{id='sentinel'}}")
+        gem_page=helper(request)
+        self.assertEqual(gem_page['materials'][1]['candidates'][1]['appearance']['gem_shape_raw'],'BAGUETTE_CUT_GEM')
+        self.lua.execute('stock[1].shape=1')
+        changed_gem=helper(request)
+        self.assertNotEqual(changed_gem['list_revision'],gem_page['list_revision'])
+        self.assertEqual(gem_page['materials'][1]['candidates'][1]['appearance']['gem_shape_raw'],'BAGUETTE_CUT_GEM')
+        self.lua.execute('df.item_type.SMALLGEM=nil;stock[1].shape=nil')
+
+        self.assertEqual(helper(request)['list_revision'],baseline_revision)
         for field, value in [('x', 9), ('y', 9), ('z', 9), ('action', 1),
                              ('building_id', 123), ('connections', 15),
-                             ('expected_connections', 4), ('expected_terrain_connections', 4),
+                             ('expected_connections', 4), ('expected_subtype', 9), ('expected_terrain_connections', 4),
                              ('expected_terrain_kind', 1), ('ramp', True),
                              ('expected_job_ramp', True), ('expected_terrain_ramp', True)]:
             with self.subTest(field=field):
@@ -769,7 +1208,7 @@ class Adapter(unittest.TestCase):
         for failure, outcome, placed in [('',1,2),('reject',3,1),('throw',4,1)]:
             with self.subTest(commit=failure):
                 g.commit_calls=self.lua.table();g.fail_kind=failure
-                writer=self.lua.execute(SOURCE,g.native_reader,g.native_reader,g.scan,g.ordering,preflight,commit)
+                writer=self.lua.execute(SOURCE,g.native_reader,g.scan,g.ordering,preflight,commit)
                 snap=writer(request)
                 for selection in placement['selections'].values(): selection['expected_list_revision']=snap['list_revision']
                 result=writer(placement)
@@ -804,7 +1243,7 @@ class Adapter(unittest.TestCase):
                 g.fail_kind='';g.commit_calls=self.lua.table()
                 g.pending['stage']=0;g.pending['removing']=False;g.pending['x1']=1
                 g.pending['type']=98;g.pending['jobs'][0]['job_type']=77
-                writer=self.lua.execute(SOURCE,g.native_reader,g.native_reader,g.scan,g.ordering,preflight,commit)
+                writer=self.lua.execute(SOURCE,g.native_reader,g.scan,g.ordering,preflight,commit)
                 snapshot=writer(request)
                 placement['selections'][1]['expected_list_revision']=snapshot['list_revision']
                 if defect=='stage':g.pending['stage']=1
@@ -818,6 +1257,34 @@ class Adapter(unittest.TestCase):
                 if not defect:
                     self.assertEqual(result['placed'],1);self.assertEqual(result['updated'],1)
                     self.assertEqual(g.pending['type'],99);self.assertEqual(g.pending['jobs'][0]['id'],300)
+
+        # All-reused routes need neither a prior material snapshot nor stock reads.
+        self.lua.execute("""
+        queued_jobs={}
+        for i=1,2 do queued_jobs[200+i]={id=200+i,type=df.construction_type.Floor,x1=i,y1=2,z=3,stage=0,removing=false,jobs=vec{{id=300+i,job_type=77}},
+          getType=function()return df.building_type.Construction end,getSubtype=function(b)return b.type end,getBuildStage=function(b)return b.stage end}end
+        df.building.find=function(id)return queued_jobs[id]end
+        no_materials=function()error('zero-input conversion read materials')end
+        request.plan_track=function(...)
+          local plan=original_plan(...);plan.new_count=0
+          for i,p in ipairs(plan.pieces)do p.action=1;p.building_id=200+i;p.expected_connections=0;p.expected_subtype=df.construction_type.Floor end
+          return plan
+        end
+        """)
+        placement['plan_track']=g.request['plan_track'];placement['selections']=self.lua.table()
+        for defect in ('','subtype','stage','removing'):
+            for building in g.queued_jobs.values():
+                building['type']=g.df.construction_type.Floor;building['stage']=0;building['removing']=False
+            if defect=='subtype':g.queued_jobs[201]['type']=g.df.construction_type.Wall
+            if defect=='stage':g.queued_jobs[201]['stage']=1
+            if defect=='removing':g.queued_jobs[201]['removing']=True
+            writer=self.lua.execute(SOURCE,g.native_reader,g.no_materials,g.no_materials,preflight,commit)
+            result=writer(placement)
+            self.assertEqual(result['ok'],not defect)
+            if not defect:
+                self.assertEqual(result['updated'],2);self.assertEqual(result['placed'],0)
+                self.assertEqual(g.queued_jobs[201]['jobs'][0]['id'],301)
+                self.assertEqual(g.queued_jobs[201]['type'],99)
 
     def test_connected_track_preview_preserves_order_and_payload_outcome(self):
         self.lua.execute('''
@@ -859,6 +1326,7 @@ class Adapter(unittest.TestCase):
         result=helper(request)
         self.assertTrue(result['placement_valid'])
         self.assertEqual(result['required'],0)
+        self.assertEqual(len(result['filters']),0)
 
     def test_pressure_creature_examples_use_raw_facts_and_context(self):
         self.lua.execute('''
@@ -927,7 +1395,13 @@ class Adapter(unittest.TestCase):
     def call(self, **kw):
         args=dict(action=63,epoch=7,definition='Chair',filter=0,cursor=0,x=0,y=0,z=0,seq=self.seq,
                   material_distances=self.lua.globals().fixture_search)
+        args['native_material_candidates']=synthetic_native_candidates(self.lua)
         args.update(kw)
+        if args['definition']=='RoadPaved' and 'native_material_recipe' not in args:
+            # Synthetic native boundary; real quantity parity is captured live.
+            args['native_material_recipe']=self.lua.eval("function(t,s,c,n)assert(n~=nil);return {status=0,recipes={{count_required=n//4+1}}}end")
+        if 'native_material_recipe' not in args:
+            args['native_material_recipe']=synthetic_native_recipe(self.lua)
         return self.helper(self.lua.table_from(args,recursive=True))
 
     def finish(self, **kw):
@@ -974,7 +1448,7 @@ class Adapter(unittest.TestCase):
                 costs[it.pos.x..':'..it.pos.y..':'..it.pos.z]=row.native_distance
             end
             df.global.world.items.other[0]=vec(all)
-            fixture_search=function(reader,seeds,targets)
+            fixture_search=function(seeds,targets)
                 assert(#seeds==9,'Windmill needs all footprint seeds')
                 local seen={}
                 for _,p in ipairs(seeds)do
@@ -1014,7 +1488,7 @@ class Adapter(unittest.TestCase):
                 costs[it.pos.x..':'..it.pos.y..':'..it.pos.z]=row.native_distance
             end
             df.global.world.items.other[0]=vec(all)
-            fixture_search=function(reader,seeds,targets)
+            fixture_search=function(seeds,targets)
                 assert(#seeds==9,'Magma furnace needs all footprint seeds')
                 local seen={}
                 for _,p in ipairs(seeds)do
@@ -1063,7 +1537,7 @@ class Adapter(unittest.TestCase):
         # Long sourced descriptions force the byte budget before the row cap.
         names=self.lua.eval("function(group,id)if id then return string.rep('x',128)end end")
         order=self.lua.execute((Path(__file__).resolve().parents[1]/'bridge/plugin/construction_material_order.lua').read_text())
-        self.helper=self.lua.execute(SOURCE,None,self.lua.eval('function()end'),None,order,None,None,names)
+        self.helper=self.lua.execute(SOURCE,None,None,order,None,None,names,self.lua.eval("function(p,family,width,height,subtype,x1,y1) if family=='BridgeTile' then if native_bridge then return native_bridge(p,subtype) end;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if native_open then ok,reason=native_open(p) elseif sh=='WALL' or sh=='FORTIFICATION' then ok,reason=false,'Blocked at this location' end;if not ok then return false,reason,reason~='' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location',true end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;if subtype then if native_floor then ok,reason=native_floor(p) else ok=({FLOOR=true,BOULDER=true,PEBBLES=true,TWIG=true,SAPLING=true,SHRUB=true})[sh]==true;reason='Blocked at this location' end;if not ok then return false,reason=='' and '' or 'Needs to be anchored on edge',reason~='' end end;return true,'',true end;if family:match('SpecialTile$') then family=family:sub(1,-12);if native_special then return native_special(p,family,subtype) end;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if subtype then if native_open then ok,reason=native_open(p) elseif sh=='WALL' or sh=='FORTIFICATION' then ok,reason=false,'Blocked at this location' end else floor_calls=(floor_calls or 0)+1;if native_floor then ok,reason=native_floor(p) elseif sh=='WALL' or sh=='FORTIFICATION' or sh=='EMPTY' or sh=='RAMP' or sh=='RAMP_TOP' or sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1)) then ok,reason=false,'Blocked at this location' end end;if not ok then return false,reason,reason~='' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location',true end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;return true,'',true end;if family:match('OpeningTile$') then family=family:sub(1,-12);if native_opening then return native_opening(p,family) end;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if family=='Support' then floor_calls=(floor_calls or 0)+1;if native_floor then ok,reason=native_floor(p) elseif sh~='FLOOR' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1)) then ok,reason=false,'Blocked at this location' end elseif native_open then ok,reason=native_open(p) elseif sh=='WALL' or sh=='FORTIFICATION' then ok,reason=false,'Blocked at this location' end;if not ok then return false,reason,reason~='' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location',true end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;if family=='Well' or family=='Hatch' or family=='GrateFloor' or family=='BarsFloor' then support_calls=(support_calls or 0)+1;return not support_allowed or support_allowed[family]~=false,'fixture native support refusal',true end;return true,'',true end;if family=='PressurePlateTrigger' then if native_trigger then return native_trigger(subtype) end;return subtype.units or subtype.water or subtype.magma or subtype.track,'Need trigger type',true end;if family:match('FurnitureTile$') or family:match('OrdinaryTile$') then local ordinary=family:match('OrdinaryTile$')~=nil;family=family:sub(1,ordinary and -13 or -14);if ordinary and native_ordinary then return native_ordinary(p,family) end;if not ordinary and native_furniture then return native_furniture(p,family) end;floor_calls=(floor_calls or 0)+1;local f,occ=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];local ok,reason=true,'';if native_floor then ok,reason=native_floor(p) elseif sh=='WALL' or sh=='FORTIFICATION' or sh=='EMPTY' or sh=='RAMP' or sh=='RAMP_TOP' or sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1)) then ok,reason=false,'Blocked at this location' end;if not ok then return false,reason,reason~='' end;if f.flow_size>1 then return false,'Water at this location',true end;if occ.building~=0 then return false,'Building present',true end;if (family=='Bed' or family=='Chair' or family=='Table' or family=='Coffin' or family=='TractionBench') and f.outside then return false,'Must be inside',true end;if family=='Door' then door_calls=(door_calls or 0)+1;return door_allowed~=false,'fixture native Door refusal',true end;return true,'',true end;if family=='ConstructionTerrain' then if native_construction then return native_construction(p,width,height,subtype,x1,y1) end;local a=df.tiletype.attrs[dfhack.maps.getTileType(p)];local sh=df.tiletype_shape[a.shape];local f=dfhack.maps.getTileFlags(p);local ct=a.material==df.tiletype_material.CONSTRUCTION;if sh=='WALL' or sh=='FORTIFICATION' then return false,ct and 'Must remove construction' or 'Blocked at this location' end;if f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1) then return false,'Lava/Magma at this location' end;if f.flow_size>1 then return false,'Water at this location' end;if ct and (sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN') and subtype~=df.construction_type.UpDownStair then return false,'Must remove construction' end;return true,'' end;if family=='BridgePerimeter' then if native_perimeter then local ok,reason,verified=native_perimeter(p,width,height);return ok,reason,verified~=false end;return true,'',true end;if family=='OpenTerrain' then if native_open then return native_open(p) end;return df.tiletype.attrs[dfhack.maps.getTileType(p)].shape~=df.tiletype_shape.WALL and df.tiletype.attrs[dfhack.maps.getTileType(p)].shape~=df.tiletype_shape.FORTIFICATION,'Blocked at this location' end;if family=='SinglePerimeter' then if native_single_perimeter then return native_single_perimeter() end;return perimeter_allowed~=false,'Needs walkable perimeter',true end;if family=='FloorTerrain' then floor_calls=(floor_calls or 0)+1;if native_floor then return native_floor(p) end;local f=dfhack.maps.getTileFlags(p);local sh=df.tiletype_shape[df.tiletype.attrs[dfhack.maps.getTileType(p)].shape];return not (sh=='WALL' or sh=='FORTIFICATION' or sh=='EMPTY' or sh=='RAMP' or sh=='RAMP_TOP' or sh=='STAIR_UP' or sh=='STAIR_DOWN' or sh=='STAIR_UPDOWN' or f.flow_size==7 or (f.flow_size>0 and (f.liquid_type==true or f.liquid_type==1))),'Blocked at this location' end;if family=='FarmPlot' or family=='RoadDirt' or family=='RoadPaved' then terrain_calls=(terrain_calls or 0)+1;if native_terrain then return native_terrain(p,family) end;return true,'' end; if family=='Door' then door_calls=(door_calls or 0)+1;return door_allowed~=false,'fixture native Door refusal' end;support_calls=(support_calls or 0)+1;return not support_allowed or support_allowed[family]~=false,'fixture native support refusal' end"))
         seen=[];cursor=0;revision=0
         while True:
             page=self.page(definition='Windmill',width=3,height=3,cursor=cursor,expected_list_revision=revision)
@@ -1087,15 +1561,11 @@ class Adapter(unittest.TestCase):
                         dfhack.maps.getTileType=function(p)
                             return p.x==1 and p.y==1 and df.tiletype_shape[name] or df.tiletype_shape.FLOOR
                         end
-                        dfhack.buildings.findAtTile=function(p)
-                            if supported and p.x==3 and p.y==1 and p.z==0 then
-                                return {canConnectToMachine=function()return true end}
-                            end
-                        end
+                        fixture_connect=function()return supported end
                     ''',case['variant'],supported)
                     result=self.finish(action=1,definition='Windmill',width=3,height=3)
                     self.assertEqual(bool(result['ok']),case['clicked_stage']=='STAGES')
-        for case in fixture['machine_hookup_probe']['cases']:
+        for case in fixture['native_hookup_service']['cases']:
             with self.subTest(hookup=case['variant']):
                 self.lua.execute('''
                     local c=...
@@ -1104,16 +1574,12 @@ class Adapter(unittest.TestCase):
                         if c.variant=='gear_center_floor' and p.x==1 and p.y==1 then return df.tiletype_shape.FLOOR end
                         return df.tiletype_shape.EMPTY
                     end
-                    dfhack.buildings.findAtTile=function(p)
-                        local s=c.support.pos;local center=c.position
-                        if p.x~=s.x-center.x+1 or p.y~=s.y-center.y+1 or p.z~=s.z-center.z then return end
-                        return {canConnectToMachine=function(_,info)
-                            for i=0,4 do for _,h in ipairs(c.hookups)do
-                                if info.tiles.x[i]==h.x+1 and info.tiles.y[i]==h.y+1 and
-                                   info.tiles.z[i]==h.z and info.can_connect[i].whole==2^h.bit then return true end
-                            end end
-                            return false
-                        end}
+                    fixture_connect=function(info)
+                        for i=0,8 do for _,h in ipairs(c.hookups)do
+                            if info.tiles.x[i]==h.x+1 and info.tiles.y[i]==h.y+1 and
+                               info.tiles.z[i]==h.z and (info.can_connect[i].whole & (1<<h.bit))~=0 then return true end
+                        end end
+                        return false
                     end
                 ''',self.lua.table_from(case,recursive=True))
                 result=self.finish(action=1,definition='Windmill',width=3,height=3)
@@ -1145,62 +1611,31 @@ class Adapter(unittest.TestCase):
             self.check_native_extent_gestures(cases,family)
 
     def check_native_extent_gestures(self, fixture, family):
-        self.lua.execute("""
-            df.new=function(kind,count)assert(kind=='uint8_t');return {}end
-            df.reinterpret_cast=function(_,ptr)return ptr end
-            df.tiletype.attrs[100]={shape=0,material=df.tiletype_material.SOIL}
-            df.tiletype.attrs[101]={shape=0,material=df.tiletype_material.STONE}
-            df.tiletype.attrs[102]={shape=0,material=df.tiletype_material.GRASS_DARK}
-            df.tiletype_shape.attrs[df.tiletype_shape.BOULDER].basic_shape=0
-            df.tiletype_shape.attrs[df.tiletype_shape.PEBBLES].basic_shape=0
-        """)
+        # Replay captured native mask decisions through the adapter contract.
+        # Terrain classification itself is tested against the real DF routines.
+        self.lua.execute("df.new=function(kind,count)assert(kind=='uint8_t');return {}end;df.reinterpret_cast=function(_,ptr)return ptr end")
         for case in fixture['cases']:
-            name=case['variant']
-            with self.subTest(variant=name):
-                self.lua.execute("""
-                    local name=...;created={}
-                    local stone=name:find('stone',1,true)==1 or name=='rough_stone_center_mud'
-                    local base=stone and 101 or name=='soil_grass' and 102 or name=='boulder_all_mud' and df.tiletype_shape.BOULDER or name=='pebbles_all_mud' and df.tiletype_shape.PEBBLES or 100
-                    dfhack.maps.getTileType=function(p)
-                        if name=='stone_first_soil' and p.x==0 and p.y==0 or (name=='stone_last_soil' or name=='stone_last_soil_reverse') and p.x==2 and p.y==2 then return 100 end
-                        if p.x==1 and p.y==1 then
-                            local center={soil_center_stone=101,soil_center_wall=df.tiletype_shape.WALL,soil_center_empty=df.tiletype_shape.EMPTY,soil_center_ramp=df.tiletype_shape.RAMP,soil_center_stair=df.tiletype_shape.STAIR_UPDOWN}
-                            return center[name] or base
-                        end
-                        return base
-                    end
-                    dfhack.maps.getTileFlags=function(p)
-                        local at_center=p.x==1 and p.y==1
-                        local flow=at_center and ({soil_water_one=1,soil_water_two=2,soil_magma_one=1,soil_magma_two=2})[name] or 0
-                        if name=='soil_water_two_corner' and p.x==0 and p.y==0 then flow=2 end
-                        return {flow_size=flow,hidden=name=='soil_all_hidden' or name=='soil_hidden_center' and at_center,
-                            liquid_type=name:find('magma',1,true)~=nil},{building=0}
-                    end
-                    dfhack.maps.getTileBlock=function(p)
-                        local amount=0
-                        if name:find('mud',1,true)then
-                            local x,y=1,1
-                            if name:find('elsewhere',1,true)then x,y=3,3 elseif name=='stone_first_mud' then x,y=0,0 elseif name=='stone_last_mud' then x,y=2,2 end
-                            if name:find('all_mud',1,true) or p.x==x and p.y==y then amount=10 end
-                        end
-                        return {block_events={{getType=function()return 0 end,mat_type=0,mat_state=0,
-                            amount=setmetatable({},{__index=function()return setmetatable({},{__index=function()return amount end})end})}}}
-                    end
-                """,name)
+            with self.subTest(variant=case['variant']):
+                self.lua.execute("created={}")
                 accepted_anchor=case['first_selection']['x']!=-30000
+                self.lua.execute("local ok=...;native_terrain=function()return ok,'fixture terrain refusal' end",accepted_anchor)
                 x,y=(case['first_selection']['x']-fixture['origin']['x'],case['first_selection']['y']-fixture['origin']['y']) if accepted_anchor else (0,0)
                 anchor=self.finish(action=1,definition=family,x=x,y=y,width=1,height=1)
                 self.assertEqual(bool(anchor['ok']),accepted_anchor)
                 if not case['buildings']:
-                    if accepted_anchor:
-                        self.assertFalse(self.finish(action=1,definition=family,width=3,height=3)['ok'])
+                    self.lua.execute("native_terrain=function()return false,'fixture terrain refusal' end")
+                    self.assertFalse(self.finish(action=1,definition=family,width=3,height=3)['ok'])
+                    self.assertEqual(len(self.lua.globals().created),0)
                     continue
                 building=case['buildings'][0]
                 x=building['x1']-fixture['origin']['x'];y=building['y1']-fixture['origin']['y']
                 w=building['x2']-building['x1']+1;h=building['y2']-building['y1']+1
+                expected=[1 if v==-1 else v for v in building['extents']]
+                self.lua.execute("""local x,y,w,mask=...;native_terrain=function(p)
+                    return mask[(p.y-y)*w+p.x-x+1]==1,'fixture terrain refusal' end""",
+                    x,y,w,self.lua.table_from(expected))
                 preview=self.finish(action=1,definition=family,x=x,y=y,width=w,height=h)
                 self.assertTrue(preview['ok'],preview['message'])
-                expected=[1 if v==-1 else v for v in building['extents']]
                 self.assertEqual(list(preview['valid_mask'].values()),expected)
                 if family=='RoadPaved':
                     self.assertEqual(preview['required'],sum(expected)//4+1)
@@ -1309,7 +1744,7 @@ class Adapter(unittest.TestCase):
     def test_native_stair_navigation_receives_construction_subtype(self):
         self.lua.execute("""
             fill(1)
-            fixture_search=function(reader,seeds,targets,maximum,limit,subtype)
+            fixture_search=function(seeds,targets,subtype)
                 assert(subtype==df.construction_type.UpDownStair,'native stair subtype missing')
                 native_stair_called=true
                 local result={status=0,distances={}}
@@ -1325,7 +1760,7 @@ class Adapter(unittest.TestCase):
         self.lua.execute("""
             fill(2);stock[1].pos={x=3,y=1,z=0};stock[2].pos={x=0,y=3,z=0}
             stock[1].flags.on_ground=false;stock[2].flags.on_ground=false
-            fixture_search=function(reader,seeds,targets)
+            fixture_search=function(seeds,targets)
                 local result={status=0,distances={}}
                 for _,p in ipairs(targets)do
                     local best=math.huge
@@ -1399,6 +1834,13 @@ class Adapter(unittest.TestCase):
                         return f,{building=occupancy}
                     end
                 """,case['variant'],case['orientation'])
+                self.lua.execute("""
+                    local accepted,anchor=...
+                    native_perimeter=function(p,w,h)
+                        return (w==3 and h==3 and accepted) or (w==1 and h==1 and anchor),'Needs walkable perimeter'
+                    end
+                """,'Needs walkable perimeter' not in case['errors'],
+                    case['first_selection']['x']!=-30000)
                 request=dict(action=1,definition='Bridge',direction=max(0,case['direction']),retracting=case['direction']==-1)
                 anchor=self.finish(**request)
                 accepted=case['first_selection']['x']!=-30000
@@ -1406,6 +1848,45 @@ class Adapter(unittest.TestCase):
                 if accepted:
                     result=self.finish(width=3,height=3,**request)
                     self.assertEqual(bool(result['ok']),case['stage']=='STAGES',result['message'])
+
+    def test_construction_native_refusal_precedes_occupancy(self):
+        self.lua.execute("occupied={['0:0:0']=true}")
+        for family in ['Construction:Wall','Construction:Floor']:
+            for message in ['Water at this location','Lava/Magma at this location','Blocked at this location','Cannot build at highest level','Too close to edge']:
+                self.lua.execute("local message=...;native_construction=function()return false,message end",message)
+                self.refusal(message,action=1,definition=family)
+                self.assertFalse(self.finish(action=2,definition=family)['ok'])
+                self.assertEqual(len(self.lua.globals().created),0)
+        self.lua.execute("flags.hidden=true;native_construction=function()error('Hidden site should stop before native terrain')end")
+        self.refusal('Hidden, cannot build at this location',action=1,definition='Construction:Wall')
+
+    def test_construction_native_bounds_subtype_and_recheck(self):
+        for family in ['Wall','Floor','Ramp','Fortification','Stairs']:
+            with self.subTest(family=family):
+                self.setUp()
+                depth=3 if family=='Stairs' else 1
+                self.lua.execute("expected=df.construction_type[...];native_construction=function(p,w,h,st,x,y)assert(w==2 and h==2 and x==0 and y==0 and st==expected);return true,'' end",'UpDownStair' if family=='Stairs' else family)
+                request=dict(definition='Construction:'+family,width=2,height=2,depth=depth)
+                self.assertTrue(self.finish(action=1,**request)['placement_valid'])
+                self.lua.execute("native_construction=function()return false,'Must remove construction' end")
+                self.refusal('Must remove construction',action=1,**request)
+                self.assertFalse(self.finish(action=2,**request)['ok'])
+                self.assertEqual(len(self.lua.globals().created),0)
+                self.lua.execute("native_construction=function()return false,'' end")
+                self.refusal('',action=1,**request)
+
+    def test_magma_native_center_outer_and_commit_recheck(self):
+        for family in ['Workshop:MagmaForge','Furnace:MagmaSmelter','Furnace:MagmaGlassFurnace','Furnace:MagmaKiln']:
+            with self.subTest(family=family):
+                self.setUp()
+                self.lua.execute("native_floor=function(p)assert(p.x==1 and p.y==1);return true,'' end;native_open=function(p)assert(p.x~=1 or p.y~=1);return true,'' end")
+                self.assertTrue(self.finish(action=1,definition=family,width=3,height=3)['placement_valid'])
+                self.lua.execute("native_floor=function()return false,'Must remove construction' end")
+                self.refusal('Must remove construction',action=1,definition=family,width=3,height=3)
+                self.assertFalse(self.finish(action=2,definition=family,width=3,height=3)['ok'])
+                self.assertEqual(len(self.lua.globals().created),0)
+                self.lua.execute("native_open=function()return false,'' end")
+                self.refusal('',action=1,definition=family,width=3,height=3)
 
     def test_native_magma_placement_matrix(self):
         fixture=json.loads((Path(__file__).resolve().parents[1]/'fixtures/construction/magma_placement.json').read_text())
@@ -1438,14 +1919,430 @@ class Adapter(unittest.TestCase):
                 result=self.finish(action=1,definition=case['definition'],width=3,height=3)
                 self.assertEqual(bool(result['ok']),case['clicked_stage']=='STAGES',str(result['message']))
 
+    def test_machinery_native_terrain_and_support_recheck(self):
+        for family in ['GearAssembly','AxleHorizontal','AxleVertical','Rollers','Workshop:Millstone']:
+            with self.subTest(family=family):
+                self.setUp()
+                if family=='Workshop:Millstone':
+                    self.lua.execute("df.workshop_type=enum{'Carpenters','Tool','MagmaForge','Custom','Millstone'}")
+                    self.reset()
+                size=3 if family=='Workshop:Millstone' else 1
+                self.lua.execute("fixture_connect=function()return true end;native_open=function()return true,'' end;native_floor=function()return false,'Blocked at this location' end")
+                self.assertTrue(self.finish(action=1,definition=family,width=size,height=size)['placement_valid'])
+                self.lua.execute("fixture_connect=function()return false end")
+                self.refusal('Blocked at this location',action=1,definition=family,width=size,height=size)
+                self.assertFalse(self.finish(action=2,definition=family,width=size,height=size)['ok'])
+                self.assertEqual(len(self.lua.globals().created),0)
+        self.setUp()
+        self.lua.execute("native_floor=function()return false,'' end")
+        self.refusal('',action=1,definition='Support')
+
+    def test_windmill_native_terrain_selection_and_unknown(self):
+        self.lua.execute("shape=df.tiletype_shape.EMPTY;fixture_connect=function()return true end;native_open=function()return true,'' end;native_floor=function()error('wrong terrain mode')end")
+        self.assertTrue(self.finish(action=1,definition='Windmill',width=3,height=3)['placement_valid'])
+        self.lua.execute("native_open=function()return false,'Must remove construction' end")
+        self.refusal('Must remove construction\nNeeds ground or near machine',action=1,definition='Windmill',width=3,height=3)
+        self.lua.execute("native_open=function()return false,'' end")
+        self.refusal('',action=1,definition='Windmill',width=3,height=3)
+        self.lua.execute("fixture_connect=function()return false end;native_floor=function()return false,'Blocked at this location' end")
+        self.refusal('Blocked at this location\nNeeds ground or near machine',action=1,definition='Windmill',width=3,height=3)
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_farm_warning_independent_of_preview_acceptance(self):
+        for accepted in [True,False]:
+            self.setUp()
+            self.lua.execute("native_warning=function()return true,'No mud/soil for farm\\nMud is left by water',true end")
+            if not accepted:
+                self.lua.execute("native_connectivity=function()return false,'Disconnected' end")
+            result=self.finish(action=1,definition='FarmPlot',width=3,height=3)
+            self.assertEqual(result['ok'],accepted)
+            self.assertEqual(result['warnings'],'No mud/soil for farm\nMud is left by water')
+            self.assertEqual(len(self.lua.globals().created),0)
+        self.lua.execute("native_warning=function()return true,'unverified',false end")
+        self.assertEqual(self.finish(action=1,definition='FarmPlot')['warnings'],'')
+
+    def test_farm_water_refusal_finishes_warning_scan_without_jobs(self):
+        self.lua.execute("""
+        dfhack.maps.getTileFlags=function(p)return {hidden=false,flow_size=p.x==0 and 2 or 0,liquid_type=0},{building=0} end
+        native_warning=function(p,w,h,mask)
+          assert(table.concat(mask,',')=='0,0,1,1,1,1')
+          return true,'No mud/soil for farm\\nMud is left by water',true
+        end
+        """)
+        for action in [1,2]:
+            result=self.finish(action=action,definition='FarmPlot',width=3,height=2,step_budget=1)
+            self.assertFalse(result['ok'])
+            self.assertEqual(result['message'],'Water at this location')
+            self.assertEqual(result['warnings'],'No mud/soil for farm\nMud is left by water')
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_farm_warning_transposes_completed_mask(self):
+        self.lua.execute("""
+        df.new=function(kind,count)assert(kind=='uint8_t');return {}end
+        df.reinterpret_cast=function(_,ptr)return ptr end
+        native_terrain=function(p)return p.x==0 or p.y==0,'Need soil or mud at location' end
+        native_warning=function(p,w,h,mask)
+          assert(w==3 and h==2)
+          assert(table.concat(mask,',')=='1,1,1,0,1,0')
+          warning_calls=(warning_calls or 0)+1
+          return false,'',true
+        end
+        """)
+        self.seq+=1
+        for _ in range(5):
+            result=self.call(action=1,definition='FarmPlot',width=3,height=2,step_budget=1)
+            self.assertTrue(result['pending'])
+            self.assertEqual(result['warnings'],'')
+        result=self.call(action=1,definition='FarmPlot',width=3,height=2)
+        self.assertTrue(result['ok'])
+        self.assertEqual(result['warnings'],'')
+        self.assertEqual(self.lua.globals().warning_calls,1)
+
+    def test_native_bridge_full_tiles_and_perimeter_order(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/bridge_tile_native.json.gz').read_bytes()))
+        messages={5:'Needs to be anchored on edge',6:'Blocked at this location',7:'Hidden, cannot build at this location',10:'Water at this location',11:'Lava/Magma at this location',12:'Building present',19:'Must remove construction'}
+        for dataset in data['datasets'].values():
+            for row in dataset['rows']:
+                codes={str(t['dx'])+','+str(t['dy']):t['code'] for t in row['tiles']}
+                self.lua.execute("""
+                  local codes,messages,direction,w,h,perimeter=...
+                  native_bridge=function(p,anchor)
+                    assert(anchor==((direction==0 and p.x==0) or (direction==1 and p.x==w-1) or (direction==2 and p.y==0) or (direction==3 and p.y==h-1)))
+                    local code=assert(codes[p.x..','..p.y]);return code==0,messages[code] or '',true
+                  end
+                  native_perimeter=function()return perimeter,'Needs walkable perimeter',true end
+                """,self.lua.table_from(codes),self.lua.table_from(messages),row['direction'],row['width'],row['height'],'Needs walkable perimeter' not in row['errors'])
+                result=self.finish(action=1,definition='Bridge',width=row['width'],height=row['height'],direction=max(0,row['direction']),retracting=row['direction']==-1)
+                self.assertEqual(result['ok'],not row['errors'],row)
+                if row['errors']:self.assertEqual(result['message'],'\n'.join(row['errors']),row)
+        self.lua.execute("native_bridge=function()return false,'unverified',false end")
+        self.assertEqual(self.finish(action=1,definition='Bridge',width=3,height=3)['message'],'')
+        self.lua.execute("native_bridge=function()return true,'',true end;native_perimeter=function()return false,'unverified',false end")
+        self.assertEqual(self.finish(action=1,definition='Bridge',width=3,height=3)['message'],'')
+        self.lua.execute("bridge_calls=0;native_bridge=function()bridge_calls=bridge_calls+1;return bridge_calls<=9,'Water at this location',true end;native_perimeter=function()return true,'',true end;dfhack.buildings.getFiltersByType=function()return {}end")
+        self.assertFalse(self.finish(action=2,definition='Bridge',width=3,height=3)['ok'])
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_special_tiles_drive_preview_and_commit(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/special_tile_native.json.gz').read_bytes()))
+        names={'building_type':['ScrewPump','WaterWheel','GearAssembly','AxleHorizontal','AxleVertical','Rollers','Workshop','Windmill','Furnace'],'workshop_type':['Millstone','MagmaForge'],'furnace_type':['MagmaSmelter','MagmaGlassFurnace','MagmaKiln']}
+        for enum,values in names.items():
+            self.lua.execute("local e,names=df[(...)],select(2,...);for _,name in ipairs(names)do if not e[name] then e._last_item=e._last_item+1;e[e._last_item]=name;e[name]=e._last_item end end",enum,self.lua.table_from(values))
+        dimensions={row['key']:[row['width'],row['height']] for row in data['datasets']['edge']['rows']}
+        self.lua.execute("""
+          local dimensions=...
+          dfhack.buildings.getCorrectSize=function(w,h,kind,subtype)
+            local key=df.building_type[kind]
+            if key=='Workshop' then key=key..':'..df.workshop_type[subtype] elseif key=='Furnace' then key=key..':'..df.furnace_type[subtype] end
+            local size=dimensions[key];if size then return true,size[1],size[2],0,0 end
+            return true,w,h,0,0
+          end
+        """,self.lua.table_from(dimensions,recursive=True))
+        self.reset()
+        messages={6:'Blocked at this location',7:'Hidden, cannot build at this location',10:'Water at this location',11:'Lava/Magma at this location',12:'Building present',14:'Too close to edge',19:'Must remove construction'}
+        for row in data['datasets']['edge']['rows']:
+            codes={str(t['dx'])+','+str(t['dy']):t['code'] for t in row['tiles']}
+            self.lua.execute("""
+                local codes,messages,hookup=...
+                df.global.world.buildings.get_machine_hookup_list=function(_,info)if hookup then info.tiles.x[1]=0 end end
+                fixture_connect=function()return false end
+                native_special=function(p,key,open)
+                  assert(open==(key:find('Magma')~=nil and not (p.x==1 and p.y==1)))
+                  local code=assert(codes[p.x..','..p.y]);return code<=3,messages[code] or '',true
+                end
+            """,self.lua.table_from(codes),self.lua.table_from(messages),'Needs ground or near machine' in row['errors'])
+            result=self.finish(action=1,definition=row['key'],width=row['width'],height=row['height'],direction=0)
+            self.assertEqual(result['ok'],not row['errors'],row)
+            if row['errors']:self.assertEqual(result['message'],'\n'.join(row['errors']),row)
+        self.lua.execute("native_special=function()return false,'unverified',false end")
+        self.assertEqual(self.finish(action=1,definition='Windmill',width=3,height=3)['message'],'')
+        self.lua.execute("special_calls=0;native_special=function()special_calls=special_calls+1;return special_calls<=9,'Water at this location',true end;dfhack.buildings.getFiltersByType=function()return {}end")
+        result=self.finish(action=2,definition='Windmill',width=3,height=3)
+        self.assertFalse(result['ok']);self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_opening_results_drive_preview_and_commit(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/opening_tile_native.json.gz').read_bytes()))
+        self.lua.execute("local e=df.building_type;for _,name in ipairs{'Support','Well','Hatch','GrateFloor','BarsFloor','AnimalTrap'}do if not e[name] then e._last_item=e._last_item+1;e[e._last_item]=name;e[name]=e._last_item end end")
+        self.reset()
+        for dataset in data['datasets'].values():
+            for row in dataset['rows']:
+                family=row.get('family',row.get('key'));code=row.get('code',row.get('first_tile'))
+                errors=row['errors'];reason=errors[0] if errors and code not in (0,1) else ''
+                self.lua.execute("local ok,reason,perimeter=...;native_opening=function()return ok,reason,true end;perimeter_allowed=perimeter",code in (0,1),reason,'Needs walkable perimeter' not in errors)
+                result=self.finish(action=1,definition=family)
+                self.assertEqual(result['ok'],not errors,(family,row))
+                if errors:self.assertEqual(result['message'],'\n'.join(errors),(family,row))
+        self.lua.execute("native_opening=function()return false,'unverified',false end")
+        self.assertEqual(self.finish(action=1,definition='Hatch')['message'],'')
+        self.lua.execute("native_opening=function()return true,'',true end;native_single_perimeter=function()return false,'unverified',false end")
+        self.assertEqual(self.finish(action=1,definition='AnimalTrap')['message'],'')
+        self.lua.execute("native_single_perimeter=nil;opening_calls=0;native_opening=function()opening_calls=opening_calls+1;return opening_calls==1,'Water at this location',true end;dfhack.buildings.getFiltersByType=function()return {}end")
+        result=self.finish(action=2,definition='Hatch')
+        self.assertFalse(result['ok']);self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_animal_perimeter_preserves_tiles_and_rechecks_commit(self):
+        self.lua.execute("native_opening=function()return true,'',true end;native_single_perimeter=function()return false,'Needs walkable perimeter',true end")
+        result=self.finish(action=1,definition='AnimalTrap')
+        self.assertFalse(result['ok']);self.assertEqual(result['message'],'Needs walkable perimeter')
+        self.assertEqual(list(result['valid_mask'].values()),[1])
+        self.lua.execute("perimeter_calls=0;native_single_perimeter=function()perimeter_calls=perimeter_calls+1;return perimeter_calls==1,'Needs walkable perimeter',true end;dfhack.buildings.getFiltersByType=function()return {}end")
+        result=self.finish(action=2,definition='AnimalTrap')
+        self.assertFalse(result['ok']);self.assertEqual(result['message'],'Needs walkable perimeter')
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_ordinary_results_drive_preview_and_commit(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/ordinary_tile_native.json.gz').read_bytes()))
+        names={}
+        for row in data['datasets']['priority']['rows']:
+            parts=row['key'].split(':');names.setdefault('building_type',set()).add(parts[0])
+            if len(parts)>1:
+                names.setdefault({'Workshop':'workshop_type','Furnace':'furnace_type','Trap':'trap_type','SiegeEngine':'siegeengine_type'}[parts[0]],set()).add(parts[1])
+        for enum, values in names.items():
+            self.lua.execute("local key,names=...;local e=df[key];for _,name in ipairs(names)do if e[name]==nil then e._last_item=e._last_item+1;e[e._last_item]=name;e[name]=e._last_item end end",enum,self.lua.table_from(sorted(values)))
+        # Add the two admitted custom workshop raws.
+        self.lua.execute("customs[#customs+1]={id=91,code='SCREW_PRESS',name='Screw Press',class='workshop'};customs[#customs+1]={id=92,code='SOAP_MAKER',name='Soap Maker',class='workshop'};permitted_ids[#permitted_ids+1]=91;permitted_ids[#permitted_ids+1]=92")
+        self.reset()
+        catalog={r['key']:r for r in self.call(action=0)['catalog'].values()}
+        plate=json.loads((root/'fixtures/construction/pressure_plate.json').read_text())['default']
+        options={**plate['flags'],**{k:plate[k] for k in ('unit_min','unit_max','water_min','water_max','magma_min','magma_max','track_min','track_max')},'units':True}
+        for dataset in data['datasets'].values():
+            for row in dataset['rows']:
+                code=row['first_tile'];reason=row['errors'][0] if row['errors'] else ''
+                self.lua.execute("local ok,reason=...;native_ordinary=function()return ok,reason,true end",code in (0,1),reason)
+                args=dict(action=1,definition=row['key'],width=catalog[row['key']]['width'],height=catalog[row['key']]['height'])
+                if row['key']=='Trap:PressurePlate':args['pressure_plate']=options
+                if row['key']=='Trap:TrackStop':args['track_stop']={'friction':50000,'dump_direction':0}
+                result=self.finish(**args)
+                self.assertEqual(result['ok'],code in (0,1),row['key'])
+                if code not in (0,1):self.assertEqual(result['message'],reason,row['key'])
+        self.lua.execute("native_ordinary=function()return false,'unverified',false end")
+        for action in (1,2):
+            result=self.finish(action=action,definition='Workshop:Carpenters',width=3,height=3)
+            self.assertFalse(result['ok']);self.assertEqual(result['message'],'')
+        self.lua.execute("""
+            dfhack.buildings.getFiltersByType=function()return {}end
+            ordinary_calls=0
+            native_ordinary=function()
+                ordinary_calls=ordinary_calls+1
+                return ordinary_calls<=9,'Water at this location',true
+            end
+        """)
+        result=self.finish(action=2,definition='Workshop:Carpenters',width=3,height=3)
+        self.assertFalse(result['ok']);self.assertEqual(len(self.lua.globals().created),0)
+        self.assertGreater(self.lua.globals().ordinary_calls,9)
+
+    def test_native_furniture_results_drive_preview_and_place(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/furniture_tile_native.json.gz').read_bytes()))
+        self.lua.execute("local e=df.building_type;for _,name in ipairs{'Bed','Chair','Door','Statue','Cage','Weaponrack','Table','Box','Cabinet','Coffin','Slab','TractionBench','Bookcase','DisplayFurniture','OfferingPlace','Instrument','GrateWall','BarsVertical','WindowGlass','WindowGem'}do if not e[name] then e._last_item=e._last_item+1;e[e._last_item]=name;e[name]=e._last_item end end")
+        self.reset()
+        for dataset in data['datasets'].values():
+            for row in dataset['rows']:
+                code=row['code'];reason=row['errors'][0] if row['errors'] else ''
+                self.lua.execute("local ok,reason=...;native_furniture=function()return ok,reason,true end",code in (0,1),reason)
+                result=self.finish(action=1,definition=row['family'])
+                self.assertEqual(result['ok'],code in (0,1),row)
+                if code not in (0,1):self.assertEqual(result['message'],reason,row)
+        self.lua.execute("native_furniture=function()return false,'unverified',false end")
+        for action in (1,2):
+            result=self.finish(action=action,definition='Chair')
+            self.assertFalse(result['ok']);self.assertEqual(result['message'],'')
+        self.lua.execute("""
+            dfhack.buildings.getFiltersByType=function()return {}end
+            furniture_calls=0
+            native_furniture=function()
+                furniture_calls=furniture_calls+1
+                return furniture_calls==1,'Must be inside',true
+            end
+        """)
+        result=self.finish(action=2,definition='Chair')
+        self.assertFalse(result['ok']);self.assertEqual(len(self.lua.globals().created),0)
+        self.assertEqual(self.lua.globals().furniture_calls,2)
+
+    def test_native_extent_tile_results_drive_preview(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/extent_tile_native.json.gz').read_bytes()))
+        for dataset in data['datasets'].values():
+            for row in dataset['cases']:
+                code=row['code'];reason=row['errors'][0] if row['errors'] else ''
+                self.lua.execute("local ok,reason,raw=...;native_extent_tile=function()return ok,reason,true,raw end",code==0,reason,row['raw']==0)
+                result=self.finish(action=1,definition=row['family'])
+                self.assertEqual(result['ok'],code==0,row)
+                if code!=0:self.assertEqual(result['message'],reason,row)
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_extent_unknown_or_missing_raw_fails_closed(self):
+        for value in ["true,'',false,true", "true,'',true,nil"]:
+            self.lua.execute("native_extent_tile=function()return "+value+" end")
+            for action in [1,2]:
+                result=self.finish(action=action,definition='FarmPlot')
+                self.assertFalse(result['ok'])
+                self.assertEqual(result['message'],'')
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_construction_mixed_rectangles_refuse_entire_area(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/construction_paint_area.json.gz').read_bytes()))
+        self.lua.execute("local e=df.construction_type;for _,name in ipairs{'ReinforcedWall','UpStair','DownStair','UpDownStair'}do if e[name]==nil then e._last_item=e._last_item+1;e[e._last_item]=name;e[name]=e._last_item end end")
+        self.reset()
+        reasons={6:'Blocked at this location',7:'Hidden, cannot build at this location',10:'Water at this location',11:'Lava/Magma at this location',12:'Building present'}
+        for row in data['native_evaluation']['rows']:
+            # Native single stair subtypes are construction effects; the menu exposes Stairs.
+            if row['subtype'] in ('UpStair','DownStair','UpDownStair'):
+                continue
+            family='Stairs' if row['subtype']=='UpDownStair' else row['subtype']
+            self.lua.execute("local codes,reasons=...;native_construction=function(p) local c=codes[p.x+1];return c<4,reasons[c] or '' end",self.lua.table_from(row['tiles']),self.lua.table_from(reasons))
+            result=self.finish(action=1,definition='Construction:'+family,width=3,step_budget=2)
+            self.assertEqual(result['ok'],not row['errors'],row)
+            self.assertEqual(result['message'],'\n'.join(row['errors']),row)
+            if row['errors']:
+                result=self.finish(action=2,definition='Construction:'+family,width=3,step_budget=2)
+                self.assertFalse(result['ok']);self.assertEqual(result['message'],'\n'.join(row['errors']))
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_unknown_family_has_no_local_terrain_fallback(self):
+        self.lua.execute("local e=df.building_type;e._last_item=e._last_item+1;e[e._last_item]='UnverifiedFamily';e.UnverifiedFamily=e._last_item")
+        self.reset()
+        for action in (1,2):
+            result=self.finish(action=action,definition='UnverifiedFamily')
+            self.assertFalse(result['ok']);self.assertEqual(result['message'],'')
+        for key,size in [('Workshop:Custom:PRESS',3),('Furnace:Custom:KILN',1)]:
+            for action in (1,2):
+                result=self.finish(action=action,definition=key,width=size,height=size)
+                self.assertFalse(result['ok']);self.assertEqual(result['message'],'')
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_stairs_click_time_volume_refusals(self):
+        import gzip
+        root=Path(__file__).resolve().parents[1]
+        data=json.loads(gzip.decompress((root/'fixtures/construction/construction_paint_area.json.gz').read_bytes()))
+        reasons={'wall':'Blocked at this location','water':'Water at this location','magma':'Lava/Magma at this location','hidden':'Hidden, cannot build at this location','occupied':'Building present'}
+        for row in data['stairs_mixed']['rows']:
+            if row['reverse'] or row['selection']['z']==-30000:continue
+            reason=reasons.get(row['variant'],'')
+            self.lua.execute("local level,reason=...;native_construction=function(p)if p.z==level and reason~='' then return false,reason end;return true,'' end",row['affected'],reason)
+            result=self.finish(action=1,definition='Construction:Stairs',depth=3,step_budget=1)
+            self.assertEqual(result['ok'],row['stage']=='STAGES',row)
+            self.assertEqual(result['message'],'\n'.join(row['after_errors']),row)
+        # The renderer overwrites reverse errors; use native click-time validation.
+        for row in data['stairs_refusal_events']['rows']:
+            self.lua.execute("""
+                local variant=...
+                native_construction=function(p)
+                    if p.z==0 and p.x==1 and variant~='middle_pair' then return false,'Water at this location' end
+                    if p.z==1 and p.x==0 then return false,'Building present' end
+                    if p.z==1 and p.x==1 and variant=='middle_pair' then return false,'Water at this location' end
+                    if p.z==2 and p.x==0 and variant=='three_levels' then return false,'Hidden, cannot build at this location' end
+                    return true,''
+                end
+            """,row['variant'])
+            for action in (1,2):
+                result=self.finish(action=action,definition='Construction:Stairs',width=2,depth=4,step_budget=1,material_anchor=dict(x=0 if row['reverse'] else 1,y=0,z=0 if row['reverse'] else 3))
+                self.assertFalse(result['ok']);self.assertEqual(result['message'],'\n'.join(row['click_trace']['after_input']['errors']),row)
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_extent_errors_order_and_raw_terrain_skip(self):
+        for family in ['FarmPlot','RoadDirt','RoadPaved']:
+            self.setUp()
+            self.lua.execute("""
+            native_terrain=function(p)return p.x~=1,'Blocked at this location' end
+            native_connectivity=function()return false,'Disconnected' end
+            dfhack.maps.getTileFlags=function(p)return {hidden=false,flow_size=p.x==0 and 2 or 0,liquid_type=0},{building=0} end
+            """)
+            for action in [1,2]:
+                result=self.finish(action=action,definition=family,width=3,height=3,step_budget=1)
+                self.assertFalse(result['ok'])
+                self.assertEqual(result['message'],'Disconnected\nWater at this location')
+            self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_extent_partial_occupancy_refuses_entire_area(self):
+        for family in ['FarmPlot','RoadDirt','RoadPaved']:
+            self.setUp()
+            self.lua.execute("dfhack.maps.getTileFlags=function(p)return {hidden=false,flow_size=0,liquid_type=0},{building=p.x==0 and 1 or 0} end")
+            for action in [1,2]:
+                result=self.finish(action=action,definition=family,width=3,height=3,step_budget=1)
+                self.assertFalse(result['ok'])
+                self.assertEqual(result['message'],'Building present')
+            self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_extent_raw_terrain_precedes_occupancy_and_water(self):
+        for family in ['FarmPlot','RoadDirt']:
+            self.setUp()
+            reason='Need soil or mud at location' if family=='FarmPlot' else 'Need soil at location'
+            self.lua.execute("""local reason=...
+            native_terrain=function(p)return false,p.x==1 and 'Blocked at this location' or reason end
+            dfhack.maps.getTileFlags=function(p)return {hidden=false,flow_size=p.x==0 and 2 or 0,liquid_type=0},{building=p.x==2 and 1 or 0} end
+            """,reason)
+            result=self.finish(action=1,definition=family,width=3,height=3,step_budget=1)
+            self.assertFalse(result['ok'])
+            self.assertEqual(result['message'],reason+'\nBlocked at this location')
+
+    def test_native_extent_skipped_terrain_becomes_occupied_before_creation(self):
+        self.lua.execute("""
+        df.new=function()return {}end;df.reinterpret_cast=function(_,p)return p end
+        dfhack.buildings.getFiltersByType=function()return {} end
+        native_calls=0
+        native_terrain=function(p)native_calls=native_calls+1;return p.x~=0 or native_calls>9,'Blocked at this location' end
+        dfhack.maps.getTileFlags=function(p)return {hidden=false,flow_size=0,liquid_type=0},{building=p.x==0 and native_calls>=9 and 1 or 0} end
+        """)
+        result=self.finish(action=2,definition='FarmPlot',width=3,height=3)
+        self.assertFalse(result['ok'])
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_area_connectivity_refuses_before_reserving_materials(self):
+        for family in ['FarmPlot','RoadDirt','RoadPaved']:
+            with self.subTest(family=family):
+                self.setUp()
+                self.lua.execute("native_connectivity=function()return false,'Disconnected' end")
+                for action in [1,2]:
+                    self.refusal('Disconnected',action=action,definition=family,width=3,height=3)
+                self.assertEqual(len(self.lua.globals().created),0)
+        self.lua.execute("native_connectivity=function()return false,'' end")
+        self.refusal('',action=1,definition='FarmPlot',width=3,height=3)
+
+    def test_area_connectivity_changes_before_creation(self):
+        self.lua.execute("""
+        dfhack.buildings.getFiltersByType=function()return {} end
+        connectivity_calls=0
+        native_connectivity=function()
+          connectivity_calls=connectivity_calls+1
+          return connectivity_calls==1,'Disconnected'
+        end
+        """)
+        result=self.finish(action=2,definition='FarmPlot',width=3,height=3)
+        self.assertFalse(result['ok'])
+        self.assertEqual(self.lua.globals().connectivity_calls,2)
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_refusal_order_and_dedup_across_incremental_scan(self):
+        self.lua.execute("""
+        native_floor=function(p)
+          if p.x==0 and p.y==1 then return false,'Water at this location' end
+          if p.x==1 or p.x==2 then return false,'Blocked at this location' end
+          return true,''
+        end
+        """)
+        for action in [1,2]:
+            result=self.finish(action=action,definition='Windmill',width=3,height=3,step_budget=1)
+            self.assertFalse(result['ok'])
+            self.assertEqual(result['message'],'Water at this location\nBlocked at this location\nNeeds ground or near machine')
+            self.assertEqual(len(self.lua.globals().created),0)
+
     def test_windmill_support_removed_before_creation(self):
         self.lua.execute('''
             shape=df.tiletype_shape.EMPTY;support_present=true
-            dfhack.buildings.findAtTile=function(p)
-                if support_present and p.x==3 and p.y==1 and p.z==0 then
-                    return {canConnectToMachine=function()return true end}
-                end
-            end
+            fixture_connect=function()return support_present end
         ''')
         request=dict(definition='Windmill',width=3,height=3)
         selection=self.selection(**request)
@@ -1462,15 +2359,15 @@ class Adapter(unittest.TestCase):
         self.assertEqual(len(self.lua.globals().created),0)
 
     def test_site_rules(self):
-        groups=[(['Chair','AnimalTrap','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox',
-                  'Hive','Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels',
-                  'Furnace:WoodFurnace','Trap:Lever','RoadPaved','Workshop:Carpenters',
+        groups=[(['Chair','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox',
+                  'Hive','Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem',
+                  'Furnace:WoodFurnace','Trap:Lever','Workshop:Carpenters',
                   'SiegeEngine:Ballista','SiegeEngine:Catapult','Trap:CageTrap','Trap:StoneFallTrap',
                   'Trap:WeaponTrap','Weapon','TradeDepot','GrateWall','BarsVertical','Floodgate'], 'FLOOR','EMPTY','Site needs a floor'),
-                (['Hatch','GrateFloor','BarsFloor'],'EMPTY','WALL','Site needs a floor, open space, a ramp top or stairs'),
-                (['Support'],'EMPTY','WALL','Site needs open space'),
+                (['Hatch','GrateFloor','BarsFloor'],'EMPTY','WALL','Blocked at this location'),
+                (['Support'],'FLOOR','WALL','Blocked at this location'),
                 (['ScrewPump','WaterWheel','GearAssembly','AxleHorizontal','AxleVertical','Rollers','Bridge'],
-                 'FLOOR','WALL','Site needs open space, a ramp or stairs')]
+                 'FLOOR','WALL','Blocked at this location')]
         for names,good,bad,message in groups:
             for name in names:
                 with self.subTest(name=name):
@@ -1478,44 +2375,229 @@ class Adapter(unittest.TestCase):
                     size=3 if name.startswith(('Workshop:','SiegeEngine:')) else 1
                     self.assertTrue(self.finish(action=1,definition=name,width=size,height=size)['ok'])
                     self.lua.execute('shape=df.tiletype_shape[...]',bad)
-                    self.refusal('Native placement check rejected this site' if name=='RoadPaved' else message,action=1,definition=name,width=size,height=size)
+                    self.refusal('Blocked at this location' if name in ['Chain', 'Cage', 'ArcheryTarget', 'NestBox', 'Hive', 'Furnace:WoodFurnace', 'Trap:Lever', 'Workshop:Carpenters', 'SiegeEngine:Ballista', 'SiegeEngine:Catapult', 'Trap:CageTrap', 'Trap:StoneFallTrap', 'Trap:WeaponTrap', 'Weapon', 'TradeDepot', 'Floodgate','Chair','TractionBench','Slab','Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','GrateWall','BarsVertical'] else message,action=1,definition=name,width=size,height=size)
         self.lua.execute('shape=0;flags.outside=false')
         self.assertTrue(self.finish(action=1,definition='Bed')['ok'])
         self.lua.execute('flags.outside=true')
-        self.refusal('Bed requires an indoor site',action=1,definition='Bed')
-        self.lua.execute('flags.outside=false;adjacent_shape=df.tiletype_shape.WALL')
+        self.refusal('Must be inside',action=1,definition='Bed')
+        self.lua.execute('flags.outside=false;adjacent_shape=0;door_allowed=true;door_calls=0')
         self.assertTrue(self.finish(action=1,definition='Door')['ok'])
-        self.lua.execute('adjacent_shape=0')
-        self.refusal('Door requires an adjacent wall',action=1,definition='Door')
-        self.lua.execute('shape=df.tiletype_shape.EMPTY')
+        self.assertGreater(self.lua.globals().door_calls,0)
+        self.lua.execute('door_allowed=false;adjacent_shape=df.tiletype_shape.WALL')
+        self.refusal('fixture native Door refusal',action=1,definition='Door')
+        self.lua.execute('shape=df.tiletype_shape.EMPTY;adjacent_shape=0')
         self.assertTrue(self.finish(action=1,definition='Well')['ok'])
-        self.lua.execute('adjacent_shape=df.tiletype_shape.WALL')
-        self.refusal('Well needs open space with an adjacent floor',action=1,definition='Well')
-        for name in ('FarmPlot','RoadDirt'):
-            self.lua.execute('shape=0;df.tiletype.attrs[0].material=df.tiletype_material.SOIL')
-            self.assertTrue(self.finish(action=1,definition=name)['ok'])
-            self.lua.execute('df.tiletype.attrs[0].material=0')
-            self.refusal('Native placement check rejected this site',action=1,definition=name)
-        for setup,message in [('valid=false','Site is hidden, unloaded or outside the map'),
-            ('flags.hidden=true','Site is hidden, unloaded or outside the map'),
+        self.lua.execute('support_allowed={Well=false};adjacent_shape=df.tiletype_shape.FLOOR')
+        self.refusal('fixture native support refusal',action=1,definition='Well')
+        self.lua.execute('support_allowed={}')
+        self.lua.execute('shape=0')
+        for setup,message in [('valid=false','Site is unloaded or outside the map'),
+            ('flags.hidden=true','Hidden, cannot build at this location'),
             ("occupied['0:0:0']=true",'Building present'),
-            ('flags.flow_size=2','Site has magma or deep water'),
-            ('flags.flow_size=1;flags.liquid_type=1','Site has magma or deep water'),
+            ('flags.flow_size=2','Water at this location'),
+            ('flags.flow_size=1;flags.liquid_type=1','Blocked at this location'),
             ('free=false','Native placement check rejected this site')]:
             self.lua.execute('valid=true;flags={flow_size=0};occupied={};free=true;'+setup)
             self.refusal(message,action=1)
 
+    def test_natural_wall_refusal(self):
+        for family in ['Bed', 'Door', 'Well', 'Hatch', 'Workshop:Carpenters', 'FarmPlot', 'RoadDirt', 'RoadPaved', 'Windmill', 'Construction:Wall']:
+            with self.subTest(family=family):
+                self.setUp()
+                self.lua.execute("shape=df.tiletype_shape.WALL;native_terrain=function()return false,'Blocked at this location' end")
+                size = 3 if family in ['Workshop:Carpenters', 'Windmill'] else 1
+                for liquid in ['flags.flow_size=0', 'flags.flow_size=2', 'flags.flow_size=7', 'flags.flow_size=1;flags.liquid_type=true']:
+                    self.lua.execute(liquid)
+                    for action in [1, 2]:
+                        self.refusal('Blocked at this location'+('\nNeeds ground or near machine' if family=='Windmill' else ''), action=action, definition=family, width=size, height=size)
+                        self.assertEqual(len(self.lua.globals().created), 0)
+
+    def test_terrain_empty_mask_preserves_refusal(self):
+        for family in ['Construction:Wall', 'Construction:Floor', 'Construction:Ramp', 'Construction:Fortification']:
+            for setup, reason in [('flags.hidden=true', 'Hidden, cannot build at this location'),
+                                  ('flags.flow_size=2', 'Water at this location')]:
+                with self.subTest(family=family, setup=setup):
+                    self.setUp()
+                    self.lua.execute(setup)
+                    result = self.finish(action=1, definition=family, width=2, height=2, step_budget=1)
+                    self.assertFalse(result['ok'])
+                    self.assertFalse(result['placement_valid'])
+                    self.assertEqual(result['message'], reason)
+                    self.assertEqual(list(result['valid_mask'].values()), [0, 0, 0, 0])
+                    self.assertEqual(len(self.lua.globals().created), 0)
+                    placed = self.finish(action=2, definition=family, width=2, height=2, step_budget=1)
+                    self.assertFalse(placed['ok'])
+                    self.assertEqual(placed['message'], reason)
+                    self.assertEqual(len(self.lua.globals().created), 0)
+        self.setUp()
+        self.lua.execute("dfhack.maps.getTileFlags=function(p)return {flow_size=0,hidden=p.x==0 and p.y==0},{building=0}end")
+        result = self.finish(action=1, definition='Construction:Wall', width=2, height=2, step_budget=1)
+        self.assertFalse(result['ok'])
+        self.assertFalse(result['placement_valid'])
+        self.assertEqual(sum(result['valid_mask'].values()), 3)
+        self.assertEqual(result['message'], 'Hidden, cannot build at this location')
+        self.assertEqual(result['required'], 0)
+
+    def test_hidden_refusal_distinguishes_missing_map_data(self):
+        original_flags = self.lua.globals().dfhack.maps.getTileFlags
+        for missing in ('nil,nil', '{hidden=true},nil', 'nil,{building=0}'):
+            self.reset()
+            self.lua.execute('dfhack.maps.getTileFlags=function()return '+missing+' end')
+            self.refusal('Site is unloaded or outside the map', action=1)
+        self.lua.globals().dfhack.maps.getTileFlags = original_flags
+        self.reset()
+        self.assertTrue(self.finish(action=1)['ok'])
+        self.lua.execute('flags.hidden=true')
+        self.refusal('Hidden, cannot build at this location', action=2)
+        self.assertEqual(len(self.lua.globals().created), 0)
+
+    def test_native_extent_terrain_rechecked_and_unknown_fails_closed(self):
+        for family in ['FarmPlot','RoadDirt','RoadPaved']:
+            with self.subTest(family=family):
+                self.setUp()
+                self.lua.execute("native_terrain=function()return true,'' end;terrain_calls=0")
+                self.assertTrue(self.finish(action=1,definition=family)['ok'])
+                before=self.lua.globals().terrain_calls
+                self.lua.execute("native_terrain=function()return false,'fixture native terrain refusal' end")
+                self.refusal('fixture native terrain refusal',action=2,definition=family)
+                self.assertGreater(self.lua.globals().terrain_calls,before)
+                self.assertEqual(len(self.lua.globals().created),0)
+                # One unknown native answer must abort, not become a skipped cell.
+                self.lua.execute("native_terrain=function(p)if p.x==1 then return false,'' end;return true,'' end")
+                self.refusal('',action=1,definition=family,width=2,height=1)
+                self.assertEqual(len(self.lua.globals().created),0)
+                self.helper=self.lua.execute(SOURCE)
+                self.refusal('',action=1,definition=family)
+                self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_native_extent_liquid_stage_preserves_fatal_and_skipped_cells(self):
+        for family in ['FarmPlot','RoadDirt','RoadPaved']:
+            for depth in range(2,7):
+                with self.subTest(family=family,depth=depth):
+                    self.setUp()
+                    self.lua.execute("""local depth=...;native_terrain=function()return true,'' end
+                        dfhack.maps.getTileFlags=function(p)return {flow_size=p.x==1 and depth or 0},{building=0}end""",depth)
+                    for action in [1,2]:
+                        self.refusal('Water at this location',action=action,definition=family,width=2,height=1)
+                        self.assertEqual(len(self.lua.globals().created),0)
+            for magma,depth in [(False,7),(True,1),(True,7)]:
+                with self.subTest(family=family,magma=magma,depth=depth):
+                    self.setUp()
+                    self.lua.execute("df.new=function(kind,count)assert(kind=='uint8_t');return {}end;df.reinterpret_cast=function(_,ptr)return ptr end")
+                    self.lua.execute("""local magma,depth=...;native_terrain=function(p)
+                        return p.x~=1,'Blocked at this location' end
+                        dfhack.maps.getTileFlags=function(p)return {flow_size=p.x==1 and depth or 0,liquid_type=magma},{building=0}end""",magma,depth)
+                    preview=self.finish(action=1,definition=family,width=2,height=1)
+                    self.assertTrue(preview['placement_valid'])
+                    self.assertEqual(list(preview['valid_mask'].values()),[1,0])
+
+    def test_opening_native_terrain_replaces_shape_filter(self):
+        for family in ['Well','Hatch','GrateFloor','BarsFloor']:
+            with self.subTest(family=family):
+                self.setUp()
+                self.lua.execute("shape=df.tiletype_shape.RAMP;native_open=function()return true,'' end")
+                self.assertTrue(self.finish(action=1,definition=family)['placement_valid'])
+                self.lua.execute("native_open=function()return false,'Must remove construction' end")
+                self.refusal('Must remove construction',action=2,definition=family)
+                self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_bridge_native_terrain_and_anchor_recheck(self):
+        self.lua.execute("native_open=function()return true,'' end;native_floor=function()return false,'Blocked at this location' end")
+        self.refusal('Needs to be anchored on edge',action=1,definition='Bridge')
+        self.assertTrue(self.finish(action=1,definition='Bridge',retracting=True)['placement_valid'])
+        self.lua.execute("native_floor=function()return true,'' end")
+        self.assertTrue(self.finish(action=1,definition='Bridge')['placement_valid'])
+        self.lua.execute("native_floor=function()return false,'' end")
+        self.refusal('',action=1,definition='Bridge')
+        self.assertFalse(self.finish(action=2,definition='Bridge')['ok'])
+        self.lua.execute("native_open=function()return false,'Must remove construction' end")
+        self.refusal('Must remove construction',action=1,definition='Bridge',retracting=True)
+        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_bridge_native_perimeter_dimensions_and_commit_recheck(self):
+        self.lua.execute("""
+            native_perimeter=function(p,w,h)
+                assert(p.x==0 and p.y==0 and w==3 and h==2)
+                return perimeter_allowed~=false,perimeter_reason or 'Needs walkable perimeter'
+            end
+        """)
+        self.assertTrue(self.finish(action=1,definition='Bridge',width=3,height=2)['placement_valid'])
+        self.lua.execute('perimeter_allowed=false')
+        self.refusal('Needs walkable perimeter',action=1,definition='Bridge',width=3,height=2)
+        self.assertFalse(self.finish(action=2,definition='Bridge',width=3,height=2)['ok'])
+        self.assertEqual(len(self.lua.globals().created),0)
+        self.lua.execute("perimeter_reason=''")
+        self.refusal('',action=1,definition='Bridge',width=3,height=2)
+
+    def test_animal_trap_native_terrain_and_perimeter_recheck(self):
+        for shape in ['RAMP','STAIR_UP','EMPTY']:
+            with self.subTest(shape=shape):
+                self.setUp()
+                self.lua.execute("shape=df.tiletype_shape[...];perimeter_allowed=true",shape)
+                self.assertTrue(self.finish(action=1,definition='AnimalTrap')['placement_valid'])
+                self.lua.execute('perimeter_allowed=false')
+                self.refusal('Needs walkable perimeter',action=2,definition='AnimalTrap')
+                self.assertEqual(len(self.lua.globals().created),0)
+        self.setUp()
+        self.lua.execute("native_open=function()return false,'' end")
+        self.refusal('',action=1,definition='AnimalTrap')
+
+    def test_workshop_native_terrain_checks_entire_footprint(self):
+        for reason in ['Blocked at this location','Must remove construction','']:
+            with self.subTest(reason=reason):
+                self.setUp()
+                self.lua.execute("local reason=...;native_floor=function(p)if p.x==1 and p.y==1 then return false,reason end;return true,'' end",reason)
+                for action in [1,2]:
+                    self.refusal(reason,action=action,definition='Workshop:Carpenters',width=3,height=3)
+                    self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_furniture_native_terrain_rechecked_and_unknown_fails_closed(self):
+        for family in ['Bed','Door','Chair','WindowGem']:
+            for reason in ['Must remove construction','Blocked at this location','']:
+                with self.subTest(family=family,reason=reason):
+                    self.setUp()
+                    self.lua.execute("native_floor=function()return true,'' end")
+                    self.assertTrue(self.finish(action=1,definition=family)['placement_valid'])
+                    self.lua.execute("local reason=...;native_floor=function()return false,reason end",reason)
+                    self.refusal(reason,action=2,definition=family)
+                    self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_opening_liquid_refusals_precede_support(self):
+        for family in ['Well','Hatch','GrateFloor','BarsFloor']:
+            for magma,depth in [(False,n) for n in range(2,8)]+[(True,n) for n in range(1,8)]:
+                with self.subTest(family=family,magma=magma,depth=depth):
+                    self.setUp()
+                    self.lua.execute("shape=df.tiletype_shape.EMPTY;flags.flow_size=...",depth)
+                    self.lua.execute("flags.liquid_type=...",magma)
+                    self.lua.execute("support_allowed={};support_allowed[...]=false",family)
+                    for action in [1,2]:
+                        self.refusal('Lava/Magma at this location' if magma else 'Water at this location',action=action,definition=family)
+                        self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_floor_opening_native_support_rechecked(self):
+        for family in ['Well','Hatch','GrateFloor','BarsFloor']:
+            with self.subTest(family=family):
+                self.lua.execute('support_allowed={};support_calls=0;shape=df.tiletype_shape.EMPTY')
+                self.assertTrue(self.finish(action=1,definition=family)['ok'])
+                before=self.lua.globals().support_calls
+                self.lua.execute('support_allowed[...]=false',family)
+                self.refusal('fixture native support refusal',action=2,definition=family)
+                self.assertGreater(self.lua.globals().support_calls,before)
+                self.assertEqual(len(self.lua.globals().created),0)
+
+    def test_door_support_rechecked_after_preview(self):
+        self.lua.execute('door_allowed=true;door_calls=0')
+        self.assertTrue(self.finish(action=1,definition='Door')['ok'])
+        before=self.lua.globals().door_calls
+        self.lua.execute('door_allowed=false')
+        self.refusal('fixture native Door refusal',action=2,definition='Door')
+        self.assertGreater(self.lua.globals().door_calls,before)
+        self.assertEqual(len(self.lua.globals().created),0)
+
     def test_site_rule_edges_and_direction_limits(self):
-        for family in ('FarmPlot','RoadDirt'):
-            for material in ('SOIL','GRASS_LIGHT','GRASS_DARK','GRASS_DRY','GRASS_DEAD','PLANT'):
-                for shape in ('FLOOR','TWIG','SAPLING','SHRUB','BOULDER','PEBBLES'):
-                    self.lua.execute('shape=df.tiletype_shape[...];df.tiletype.attrs[shape].material=df.tiletype_material[select(2,...)]',shape,material)
-                    if shape in ('BOULDER','PEBBLES') or family=='RoadDirt' and material!='SOIL':
-                        self.refusal('Native placement check rejected this site',action=1,definition=family)
-                    else:self.assertTrue(self.finish(action=1,definition=family)['ok'])
         for direction in range(4):
             self.lua.execute('shape=df.tiletype_shape.RAMP')
-            self.refusal('Site needs open space, a ramp or stairs',action=1,definition='Bridge',direction=direction)
+            self.refusal('Needs to be anchored on edge',action=1,definition='Bridge',direction=direction)
             self.assertTrue(self.finish(action=1,definition='Bridge',direction=direction,retracting=True)['ok'])
             self.lua.execute('shape=df.tiletype_shape.EMPTY')
             self.refusal('Needs to be anchored on edge',action=1,definition='Bridge',direction=direction)
@@ -1561,6 +2643,10 @@ class Adapter(unittest.TestCase):
 
     def test_pressure_plate_recorded_profiles_reach_native_constructor(self):
         fixture=json.loads((Path(__file__).resolve().parents[1]/'fixtures/construction/pressure_plate.json').read_text())
+        quantities={r['bits']:r['native'] for r in fixture['native_quantity']['capture']['cases']}
+        self.assertEqual(set(quantities.values()),{1})
+        for row in fixture['native_quantity']['capture']['cases']:
+            self.assertEqual(row['bits'],row['configured_flags']);self.assertEqual(row['bits'],row['picker_flags'])
         state=fixture['default']
         default={**state['flags'],**{k:state[k] for k in ('unit_min','unit_max','water_min','water_max','magma_min','magma_max','track_min','track_max')}}
         profiles=[default]
@@ -1573,14 +2659,39 @@ class Adapter(unittest.TestCase):
         for bits in range(64):
             profiles.append({**default,**{key:bool(bits & (1<<i)) for i,key in enumerate(('units','water','magma','citizens','resets','track'))}})
         self.lua.execute("df.global.buildreq=setmetatable({}, {__index=function()error('native widget read')end})")
+        native_recipe=self.lua.eval("function(t,s,c,...)assert(t==df.building_type.Trap and s==df.trap_type.PressurePlate and c==-1 and select('#',...)==0);return {status=0,recipes={{count_required=1}}}end")
+        accepted={r['bits']:r['errors']!=['Need trigger type'] for r in fixture['native_trigger']['cases'] if r['case']=='dry'}
         for options in profiles:
             row=self.selection(definition='Trap:PressurePlate')
-            result=self.finish(action=2,definition='Trap:PressurePlate',pressure_plate=options,selections=[row])
-            self.assertTrue(result['ok'],result['message'])
+            result=self.finish(action=2,definition='Trap:PressurePlate',pressure_plate=options,selections=[row],native_material_recipe=native_recipe)
+            bits=sum((1<<i) for i,key in enumerate(('units','water','magma','citizens','resets','track')) if options[key])
+            self.assertEqual(result['ok'],accepted[bits],options)
+            if not accepted[bits]:
+                self.assertEqual(result['message'],'Need trigger type');continue
             created=self.lua.globals().created
+            self.assertEqual(len(created[len(created)]['items']),quantities[bits])
             actual=created[len(created)]['fields']['plate_info']
             for key,value in options.items():
                 self.assertEqual(actual['flags'][key] if key in default and isinstance(value,bool) else actual[key],value)
+
+    def test_pressure_trigger_native_order_unknown_and_commit_recheck(self):
+        fixture=json.loads((Path(__file__).resolve().parents[1]/'fixtures/construction/pressure_plate.json').read_text())
+        d=fixture['default'];default={**d['flags'],**{k:d[k] for k in ('unit_min','unit_max','water_min','water_max','magma_min','magma_max','track_min','track_max')}}
+        for row in fixture['native_trigger']['cases']:
+            options={**default,**{key:bool(row['bits']&(1<<i)) for i,key in enumerate(('units','water','magma','citizens','resets','track'))}}
+            reason={0:'',7:'Hidden, cannot build at this location',10:'Water at this location'}[row['code']]
+            self.lua.execute("local reason=...;native_ordinary=function()return reason=='',reason,true end",reason)
+            result=self.finish(action=1,definition='Trap:PressurePlate',pressure_plate=options)
+            self.assertEqual(result['ok'],not row['errors'],row)
+            self.assertEqual(result['message'],'\n'.join(row['errors']),row)
+        self.lua.execute("native_ordinary=function()return true,'',true end;native_trigger=function()return false,'unverified',false end")
+        for action in (1,2):
+            result=self.finish(action=action,definition='Trap:PressurePlate',pressure_plate={**default,'units':True})
+            self.assertFalse(result['ok']);self.assertEqual(result['message'],'')
+        self.lua.execute("dfhack.buildings.getFiltersByType=function()return {}end;trigger_calls=0;native_trigger=function()trigger_calls=trigger_calls+1;return trigger_calls==1,'Need trigger type',true end")
+        result=self.finish(action=2,definition='Trap:PressurePlate',pressure_plate={**default,'units':True})
+        self.assertFalse(result['ok']);self.assertEqual(result['message'],'Need trigger type')
+        self.assertEqual(len(self.lua.globals().created),0)
 
     def test_pressure_plate_rejects_malformed_profiles_before_creation(self):
         default=dict(units=False,water=False,magma=False,citizens=False,resets=True,track=False,
@@ -1603,28 +2714,13 @@ class Adapter(unittest.TestCase):
         request=self.lua.table_from(dict(x=0,y=0,z=0,width=1,height=1,depth=1,direction=0))
         definition=self.lua.table_from(dict(family='Construction',subtype_key='Wall'))
         pos=self.lua.table_from(dict(x=0,y=0,z=0))
-        self.assertTrue(rule(request,definition,pos))
-        self.lua.execute('shape=df.tiletype_shape.WALL')
-        self.assertEqual(rule(request,definition,pos),(False,'Site needs open space or a ramp'))
-        self.lua.execute('df.tiletype.attrs[shape].material=df.tiletype_material.CONSTRUCTION')
-        self.assertEqual(rule(request,definition,pos),(False,'Construction already present'))
-        definition['subtype_key']='Stairs'
-        self.lua.execute('df.tiletype.attrs[shape].material=0')
-        self.assertEqual(rule(request,definition,pos,1),(False,'Site needs open space or a ramp'))
-        self.lua.execute('shape=0;free=false')
-        self.assertEqual(rule(request,definition,pos),(False,'Native placement check rejected this site'))
-        self.lua.execute('free=true')
+        # Missing native service must fail closed, even on plausible floor.
+        self.assertEqual(rule(request,definition,pos),(False,'',True))
         for raw,expected in [("{quantity=1,has_tool_use=1}",'SCREW'),
                              ("{quantity=1,flags2={whole=0,building_material=true}}",'building_material')]:
             self.lua.execute('recipes[df.building_type.Chair]={'+raw+'}')
             self.reset()
             self.assertEqual(self.finish(action=1)['filters'][1]['requirement'],expected)
-        # Mud-on-stone is a separate FarmPlot acceptance path.
-        self.lua.execute("""dfhack.maps.getTileBlock=function()return {block_events={{
-          getType=function()return 0 end,mat_type=0,mat_state=0,amount={[0]={[0]=1}}}}}end""")
-        self.assertTrue(self.finish(action=1,definition='FarmPlot')['ok'])
-        self.refusal('Native placement check rejected this site',action=1,definition='RoadDirt')
-
     def test_preview_and_custom_resolution(self):
         self.refusal('Depth applies to stairs only',action=1,depth=2)
         self.refusal("Size exceeds this building's limits",action=1,width=32)
@@ -1644,7 +2740,9 @@ class Adapter(unittest.TestCase):
             self.assertTrue(p['placement_valid'], name)
             self.assertEqual(list(p['valid_mask'].values()),[1]*(w*h*d))
             if d==3:self.assertEqual(list(p['pieces'].values()),[1]*4+[3]*4+[2]*4)
-        for key,index,size in [('Workshop:Custom:PRESS',1,3),('Furnace:Custom:KILN',2,1)]:
+        self.lua.execute("customs[1].code='SCREW_PRESS';customs[2].code='SOAP_MAKER';customs[2].class='workshop'")
+        self.reset()
+        for key,index,size in [('Workshop:Custom:SCREW_PRESS',1,3),('Workshop:Custom:SOAP_MAKER',2,3)]:
             row=self.selection(definition=key)
             self.lua.execute('customs[...].id=77',index)
             result=self.finish(action=2,definition=key,width=size,height=size,selections=[row])
@@ -1680,7 +2778,9 @@ class Adapter(unittest.TestCase):
           return p and p.x>=0 and p.y>=0 and p.z==0
         end
         """)
-        key='Workshop:Custom:PRESS'
+        self.lua.execute("customs[1].code='SCREW_PRESS'")
+        self.reset()
+        key='Workshop:Custom:SCREW_PRESS'
         row=self.selection(definition=key)
         placed=self.finish(action=2,definition=key,width=3,height=3,selections=[row])
         self.assertTrue(placed['ok'],placed['message'])
@@ -1750,8 +2850,10 @@ class Adapter(unittest.TestCase):
                 elif mode=='occupied':
                     self.lua.execute("occupied['16:8:0']=true")
                     while result['pending']:result=self.call(**args)
-                    self.assertEqual((result['placed'],result['skipped']),(599,1))
-                    self.assertEqual(self.lua.globals().created[257]['items'][1]['id'],257)
+                    self.assertFalse(result['ok'])
+                    self.assertEqual((result['placed'],result['skipped']),(256,0))
+                    self.assertEqual(result['message'],'Painted 256 of 600; Building present')
+                    self.assertEqual(len(self.lua.globals().created),256)
                 else:
                     self.reset()
                     result=self.call(**args)
@@ -1772,8 +2874,9 @@ class Adapter(unittest.TestCase):
             self.assertLessEqual(step['steps'],1);counts[phase]+=step['steps']
         self.assertEqual(counts[1],131)  # resume after the last read enters the first merge move
         signature='|'.join(['0','-1','-1','-1','0','-1','-1']+['nil']*5+['0']*3)+'|0:0:0'
-        expected=130+129*8+len('7|'+signature)+129*2
-        self.assertEqual(sum(counts.values()),expected)  # reads, merge moves, signature bytes, rows and ids
+        # Native sorting is one safe-point query; no local merge-sort moves remain.
+        self.assertGreater(counts[2],0)
+        self.assertLessEqual(sum(counts.values()),130+len('7|'+signature)+129*4)
         self.assertEqual(len(p['materials']),128);self.assertEqual(p['next_cursor'],128)
         tail=self.call(cursor=128,expected_list_revision=p['list_revision'])
         self.assertEqual(len(tail['materials']),1)
@@ -1797,14 +2900,14 @@ class Adapter(unittest.TestCase):
         self.assertEqual(self.page(x=4)['cache_entries'],4)
         self.assertEqual(self.call(x=0)['build_phase'],0)
         self.assertEqual(self.call(x=1)['build_phase'],1)
-        for n in (65536,65537):
+        for n in (1000,65537):
             self.lua.execute('fill(...)',n);self.reset()
-            if n==65536:
+            if n==1000:
                 result=self.page();self.assertTrue(result['ok'],result['message'])
-                self.assertEqual(result['materials'][1]['count'],65536)
+                self.assertEqual(result['materials'][1]['count'],1000)
                 for x in range(1,4):self.page(x=x)
                 stats=self.call(x=3)
-                self.assertEqual((stats['cache_entries'],stats['cache_ids']),(4,4*65536))
+                self.assertEqual((stats['cache_entries'],stats['cache_ids']),(4,4*1000))
                 self.assertLess(self.lua.eval("(function()collectgarbage('collect');return collectgarbage('count')end)()"),100*1024)
             else:
                 self.call()
@@ -1853,6 +2956,7 @@ class Adapter(unittest.TestCase):
           stock[3].mat=1;stock[3].flags.on_ground=false;stock[3].container={flags={on_ground=true},getType=function()return 97 end}
           stock[4].nameless=true;stock[5].flags.forbid=true;stock[6].pos.z=1;walk_groups[stock[6].pos.x..':0:1']=2
           stock[1].name=string.rep('n',129)''')
+        self.lua.execute("dfhack.maps.getTileBlock=function(p)return {walkable=setmetatable({},{__index=function()return setmetatable({},{__index=function()return walk_groups[p.x..':'..p.y..':'..p.z] or 1 end})end})}end")
         self.reset();p=self.page()
         self.assertEqual([(r['mat_index'],r['count']) for r in p['materials'].values()],[(1,2),(2,1)])
         self.assertTrue(p['estimated']);self.assertEqual(p['message'],'')
@@ -1872,9 +2976,9 @@ class Adapter(unittest.TestCase):
         p=self.finish(action=1,definition='Construction:Wall')
         self.assertEqual(list(p['valid_mask'].values()),[1])
         p=self.finish(action=1,definition='Construction:Wall',width=2)
-        self.assertEqual(list(p['valid_mask'].values()),[0,0])
+        self.assertEqual(list(p['valid_mask'].values()),[1,1])
         p=self.finish(action=1,definition='Construction:Floor')
-        self.assertEqual(list(p['valid_mask'].values()),[0])
+        self.assertEqual(list(p['valid_mask'].values()),[1])
         self.lua.execute('df.tiletype.attrs[0].material=0;existing=nil')
         for name,directions in [('ScrewPump',range(4)),('Rollers',range(4)),
                                 ('WaterWheel',range(2)),('AxleHorizontal',range(2)),('Bridge',range(5))]:
@@ -1889,25 +2993,19 @@ class Adapter(unittest.TestCase):
         # DFHack applies these direction parameters to native fields; that write
         # belongs to the MSVC/live check, not this synthetic constructBuilding.
 
-    def test_screen_flags_containers_and_clipping_boundaries(self):
-        flags=['dump','forbid','garbage_collect','hostile','on_fire','rotten','trader',
-               'in_building','construction','in_job','owned','removed','encased','spider_web']
-        for flag in flags:
-            with self.subTest(flag=flag):
-                self.lua.execute('fill(1);stock[1].flags[...]=true',flag);self.reset()
-                self.assertEqual(len(self.page()['materials']),0)
-                self.lua.execute('stock[1].flags[...]=false',flag);self.reset()
-                self.assertEqual(self.page()['materials'][1]['count'],1)
+    def test_native_candidate_rows_clip_names_and_omit_empty_names(self):
         for size in (128,129):
             self.lua.execute("fill(1);stock[1].name=string.rep('n',...)",size);self.reset()
             self.assertEqual(len(self.page()['materials'][1]['name']),128)
-        for depth in (16,17):
-            self.lua.execute("""fill(1);local item=stock[1];item.flags.on_ground=false
-              for i=1,... do item.container={flags={on_ground=true},getType=function()return 97 end};item=item.container end""",depth)
-            self.reset();p=self.page()
-            self.assertEqual(len(p['materials']),1 if depth==16 else 0)
         self.lua.execute("fill(1);stock[1].name=''");self.reset()
         self.assertEqual(len(self.page()['materials']),0)
+
+    def test_unknown_custom_recipe_has_no_copied_material_gate(self):
+        result=self.page(definition='Workshop:Custom:PRESS')
+        self.assertFalse(result['ok'])
+        self.assertEqual(result['message'], '')
+        self.assertEqual(result['cache_entries'], 0)
+        self.assertNotIn('local function screen(', SOURCE)
 
     def test_shared_budget_two_real_closures(self):
         # Both real domain closures progress, with the request's inline work
@@ -1946,6 +3044,28 @@ class Adapter(unittest.TestCase):
             self.assertEqual(page['list_revision'],(h&((1<<63)-1)) or 1)
             if h >= 1<<63:break
         else:self.fail('fixture failed to exercise the unmasked high bit')
+
+    def test_stair_effects_remain_inspectable_without_legacy_catalog_entries(self):
+        catalog=self.call(action=0)
+        keys={v['key'] for v in catalog['catalog'].values()}
+        self.assertIn('Construction:Stairs',keys)
+        self.lua.execute("""building={id=1,centerx=0,centery=0,z=0,jobs={},
+            getType=function()return df.building_type.Construction end,
+            getSubtype=function()return stair_subtype end,
+            getBuildStage=function()return 0 end,getMaxBuildStage=function()return 1 end}
+            df.building={find=function()return building end}
+            dfhack.buildings.markedForRemoval=function()return false end
+            dfhack.buildings.getName=function()return '' end
+            cancelled=0;dfhack.buildings.deconstruct=function()cancelled=cancelled+1;return true end""")
+        for subtype in ('UpStair','DownStair','UpDownStair'):
+            key='Construction:'+subtype
+            self.assertNotIn(key,keys)
+            self.lua.globals().stair_subtype=self.lua.globals().df.construction_type[subtype]
+            inspected=self.finish(action=3,building_id=1)
+            self.assertTrue(inspected['ok']);self.assertEqual(inspected['building_key'],key)
+            cancelled=self.finish(action=4,building_id=1,definition=key)
+            self.assertTrue(cancelled['ok']);self.assertTrue(cancelled['removing'])
+        self.assertEqual(self.lua.globals().cancelled,3)
 
     def test_removal(self):
         self.lua.execute('''building={id=1,centerx=0,centery=0,z=0,jobs={},getType=function()return df.building_type.Chair end,
@@ -2138,12 +3258,12 @@ class TrackSiteReader(unittest.TestCase):
         dfhack.buildings.markedForRemoval=function(b)return b.removing end
         ''')
         path=Path(__file__).resolve().parents[1]/'bridge/plugin/construction_track.lua'
-        self.reader=self.lua.execute(path.read_text())
+        self.reader=self.lua.execute(path.read_text(), self.lua.eval("function()return true, '', true end"))
         self.pos=self.lua.table_from({'x':0,'y':0,'z':0,'extra':'caller metadata'})
 
     def test_pending_identity_requires_current_stage_and_no_removal(self):
         result=self.reader(self.pos)
-        self.assertEqual((result['occupancy'],result['pending']['id'],result['pending']['connections']),('PendingTrack',20,15))
+        self.assertEqual((result['occupancy'],result['pending']['id'],result['pending']['connections']),('PendingConstruction',20,15))
         self.lua.execute('building.removing=true')
         result=self.reader(self.pos)
         self.assertEqual(result['occupancy'],'Unknown')
@@ -2171,9 +3291,11 @@ class TrackSiteReader(unittest.TestCase):
         building.id=1496;df.construction_type[21]='TrackRampNSEW'
         ''')
         actual=self.reader(self.pos)
-        self.assertEqual(actual['occupancy'],expected['occupancy'])
+        self.assertEqual(actual['occupancy'],'PendingConstruction')
+        self.assertEqual(expected['occupancy'],'PendingTrack')  # retained capture used the older internal name
+        self.assertTrue(actual['pending']['track']);self.assertEqual(actual['pending']['subtype'],21)
         for field in ('pending','terrain'):
-            self.assertEqual(dict(actual[field]),expected[field])
+            self.assertEqual({k:actual[field][k] for k in expected[field]},expected[field])
 
     def test_hatch_clearance_tracks_live_flags_and_completion(self):
         self.lua.execute('block.occupancy[0][0].building=7;building.kind=1;building.stage=1;building.door_flags={forbidden=true,closed=true}')

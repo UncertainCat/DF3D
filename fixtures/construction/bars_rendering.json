@@ -1,0 +1,3788 @@
+{
+  "native_run": "build/bars-states-native-20261024-002223",
+  "evidence": "bars_rendering.json.gz",
+  "rgba_sha256": {
+    "none:0:0": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "none:1:0": [
+      "88fd1c006720145da72c5ef2b62fbdba90deb50c5af56013588ce227c35ddf4e"
+    ],
+    "none:0:1": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "ab3e7c8fd9294d7a45f81e84d6201482fa63bff4bec69869571e2c6284c8082d"
+    ],
+    "none:1:1": [
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16",
+      "d7611c72cbe31ce462e94467a51871a5d9ecd799ef04640ad271dd02fac19603"
+    ],
+    "none:0:2": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "ab3e7c8fd9294d7a45f81e84d6201482fa63bff4bec69869571e2c6284c8082d"
+    ],
+    "none:1:2": [
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16",
+      "d7611c72cbe31ce462e94467a51871a5d9ecd799ef04640ad271dd02fac19603"
+    ],
+    "none:0:3": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "ab3e7c8fd9294d7a45f81e84d6201482fa63bff4bec69869571e2c6284c8082d"
+    ],
+    "none:1:3": [
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16",
+      "d7611c72cbe31ce462e94467a51871a5d9ecd799ef04640ad271dd02fac19603"
+    ],
+    "none:0:4": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "none:1:4": [
+      "88fd1c006720145da72c5ef2b62fbdba90deb50c5af56013588ce227c35ddf4e"
+    ],
+    "none:0:5": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "a3c308dc899bad61414835d1d7e1d24a750e798674f5c7dc1491c0ca39e82d9e"
+    ],
+    "none:1:5": [
+      "a51b2337aa0938af9a7aad69759a8b9e34350c1879aa17834879999b72b3459c",
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16"
+    ],
+    "none:0:6": [
+      "900cfe48f027c031a6d73ba4c7dce47274489aee7a5b9426e00fd8e3c8083f91"
+    ],
+    "none:1:6": [
+      "5dac808e3dd075b6420e8f4c5aea239851de494593be7671860ee7ea0b904547"
+    ],
+    "none:0:7": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "c2240f040f5120d0714a09d98ad1ace898897bf1988513e9affdba01eb8fbc04"
+    ],
+    "none:1:7": [
+      "327168a346563f8e2bf6cace5eb00002352869d505b761d7f8c0ec34db8c2767",
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16"
+    ],
+    "none:0:8": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "none:1:8": [
+      "88fd1c006720145da72c5ef2b62fbdba90deb50c5af56013588ce227c35ddf4e"
+    ],
+    "none:0:9": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "d9d64ce0aa4856af876f8fb8ad08001ab79fa71356011647cf6207d995850615"
+    ],
+    "none:1:9": [
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16",
+      "d12d2bc4b1f8d79b0a87469c8b8082a33369c9a2e5dad7d84fecbc2dbebfc5c0"
+    ],
+    "none:0:10": [
+      "f8615359f4c05d28486f275e048cbae02c0799a494e011efa01a3a782aa8a83e"
+    ],
+    "none:1:10": [
+      "3bfd9c55f1a36b80c7df2448848824e51784d4037c22c49a7219e0d9d9fd1cc2"
+    ],
+    "none:0:11": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "37ccb35f33055de9549899d50dee0f288967ff5e876e58f8d51a53efedec83ce"
+    ],
+    "none:1:11": [
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16",
+      "d494e477525ede891dee7b0568fe43c461dacc9c3dfb9dfeadb119e5d8f2b8e2"
+    ],
+    "none:0:12": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "none:1:12": [
+      "88fd1c006720145da72c5ef2b62fbdba90deb50c5af56013588ce227c35ddf4e"
+    ],
+    "none:0:13": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "1c3d2da7848b12e8574022775b92065abf03621bd26dfeb48d28a459bd850af8"
+    ],
+    "none:1:13": [
+      "44ed107e91fd7d955ea4313aa2f0c87263099680e9fafb7d5439f70d420d3a1a",
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16"
+    ],
+    "none:0:14": [
+      "8e95e8df73eff1d5b235fcd99d0ccb6947af6c02f0555d6c5e2f3b70ec90fa57"
+    ],
+    "none:1:14": [
+      "fc16d2648f735c94956c081394eb3a22d0d257476c483611b194373c722132e8"
+    ],
+    "none:0:15": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "8e95e8df73eff1d5b235fcd99d0ccb6947af6c02f0555d6c5e2f3b70ec90fa57"
+    ],
+    "none:1:15": [
+      "bea6b1f2980f19e303e2a817e86387cc1ee62a29ff27b32879d151cbde644d16",
+      "fc16d2648f735c94956c081394eb3a22d0d257476c483611b194373c722132e8"
+    ],
+    "INORGANIC:IRON:0:0": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "INORGANIC:IRON:1:0": [
+      "5449c40f5f7a0a966f31c7aec0fa5c7c1d3d69784c9baf7a111cdb6cffda0249"
+    ],
+    "INORGANIC:IRON:0:1": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "ab3e7c8fd9294d7a45f81e84d6201482fa63bff4bec69869571e2c6284c8082d"
+    ],
+    "INORGANIC:IRON:1:1": [
+      "acbd1bbd6d8595f763c0241e928e831fbf4f76bea098031717cf7bdfeacb3161",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:2": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "ab3e7c8fd9294d7a45f81e84d6201482fa63bff4bec69869571e2c6284c8082d"
+    ],
+    "INORGANIC:IRON:1:2": [
+      "acbd1bbd6d8595f763c0241e928e831fbf4f76bea098031717cf7bdfeacb3161",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:3": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "ab3e7c8fd9294d7a45f81e84d6201482fa63bff4bec69869571e2c6284c8082d"
+    ],
+    "INORGANIC:IRON:1:3": [
+      "acbd1bbd6d8595f763c0241e928e831fbf4f76bea098031717cf7bdfeacb3161",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:4": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "INORGANIC:IRON:1:4": [
+      "5449c40f5f7a0a966f31c7aec0fa5c7c1d3d69784c9baf7a111cdb6cffda0249"
+    ],
+    "INORGANIC:IRON:0:5": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "a3c308dc899bad61414835d1d7e1d24a750e798674f5c7dc1491c0ca39e82d9e"
+    ],
+    "INORGANIC:IRON:1:5": [
+      "b08c39e82c183a5e265cf886867aff6711813484715fe0978d5da9d09456f529",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:6": [
+      "900cfe48f027c031a6d73ba4c7dce47274489aee7a5b9426e00fd8e3c8083f91"
+    ],
+    "INORGANIC:IRON:1:6": [
+      "4b2d454f8aaa3a253081e4744339278a400f018f7fbe6b92e20f8d3fad2cfa64"
+    ],
+    "INORGANIC:IRON:0:7": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "c2240f040f5120d0714a09d98ad1ace898897bf1988513e9affdba01eb8fbc04"
+    ],
+    "INORGANIC:IRON:1:7": [
+      "72eb4c0ea91372c0b50d804a5c55e652343398399bb5e1ea07df180d61e56854",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:8": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "INORGANIC:IRON:1:8": [
+      "5449c40f5f7a0a966f31c7aec0fa5c7c1d3d69784c9baf7a111cdb6cffda0249"
+    ],
+    "INORGANIC:IRON:0:9": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "d9d64ce0aa4856af876f8fb8ad08001ab79fa71356011647cf6207d995850615"
+    ],
+    "INORGANIC:IRON:1:9": [
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e",
+      "e735f9b46bb1f9c531ef7e6214a2feb3a84e3aca4245330971925d19b266c99e"
+    ],
+    "INORGANIC:IRON:0:10": [
+      "f8615359f4c05d28486f275e048cbae02c0799a494e011efa01a3a782aa8a83e"
+    ],
+    "INORGANIC:IRON:1:10": [
+      "ac9a99a49c2e9fd9803c78a07aa2f6f93f694fad4cdb38c46cb139e9d99b4060"
+    ],
+    "INORGANIC:IRON:0:11": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "37ccb35f33055de9549899d50dee0f288967ff5e876e58f8d51a53efedec83ce"
+    ],
+    "INORGANIC:IRON:1:11": [
+      "6d8280042b848dfeaf89e74180aa77796046302e1966a88449e62b0777f3f3e4",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:12": [
+      "e6206491e1112a8e8355c4c8099ca9ca3b4a4871eaa5ee216c1569f41375ee15"
+    ],
+    "INORGANIC:IRON:1:12": [
+      "5449c40f5f7a0a966f31c7aec0fa5c7c1d3d69784c9baf7a111cdb6cffda0249"
+    ],
+    "INORGANIC:IRON:0:13": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "1c3d2da7848b12e8574022775b92065abf03621bd26dfeb48d28a459bd850af8"
+    ],
+    "INORGANIC:IRON:1:13": [
+      "9be32c8388a14590e5d042940bdfd220220c907a5ba87d1208a732e440b7e689",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ],
+    "INORGANIC:IRON:0:14": [
+      "8e95e8df73eff1d5b235fcd99d0ccb6947af6c02f0555d6c5e2f3b70ec90fa57"
+    ],
+    "INORGANIC:IRON:1:14": [
+      "9ec736ae2b23e0ae74dd8e5a35bd0eaa84e7e7e35f65655f2b99ba920acaa5ab"
+    ],
+    "INORGANIC:IRON:0:15": [
+      "0e2a60a74091320bdeb6f6e2d7818541af1c1922237a1fb55f32805b70b4d581",
+      "8e95e8df73eff1d5b235fcd99d0ccb6947af6c02f0555d6c5e2f3b70ec90fa57"
+    ],
+    "INORGANIC:IRON:1:15": [
+      "9ec736ae2b23e0ae74dd8e5a35bd0eaa84e7e7e35f65655f2b99ba920acaa5ab",
+      "e24c840af760db07297219a64b3a18d62e81e3452dc24d6408d56652166aae3e"
+    ]
+  },
+  "runtime_acceptance": {
+    "gpu": "build/qa/bars-native-pixels",
+    "gpu_status": "passed_with_known_issues",
+    "transport": "build/bars-transport-native-20261024-011510",
+    "observations": 95,
+    "states": 21,
+    "source_preserved": true,
+    "scope": "Exact artwork/material/planned alpha, changed connection masks, synthetic removal/reload and native semantic publication. Not exhaustive terrain enums or natural construction/removal effects."
+  },
+  "floor_and_support": {
+    "source": "build/simple-building-art-native-20261024-020638",
+    "scope": "Native planned and complete artwork with granite building material and absent/granite/iron first item. Focused GPU checks native RGBA for complete iron, planned granite and absent-first-item states, including reload. Protected live transport separately checks first-item identity/material changes.",
+    "rgba_sha256": {
+      "BarsFloor:none:0": "42ee46785a1870ae38e1407674d2a06ae334fd37e9140dbe2dc0a714a36de796",
+      "BarsFloor:none:1": "5394928ea95e57938c63b51fd4e1f62dc00a7bbeaddf4cdb914cea080776b0f6",
+      "BarsFloor:INORGANIC:GRANITE:0": "42ee46785a1870ae38e1407674d2a06ae334fd37e9140dbe2dc0a714a36de796",
+      "BarsFloor:INORGANIC:GRANITE:1": "947470a7aa4b063ef30ada60aea3bacf63c687f1f5709536e75f826898229267",
+      "BarsFloor:INORGANIC:IRON:0": "42ee46785a1870ae38e1407674d2a06ae334fd37e9140dbe2dc0a714a36de796",
+      "BarsFloor:INORGANIC:IRON:1": "0fd172ca21be8e6a029003e4d6d4e16b1350dda0b79fb2994d3eb12ceae67e00",
+      "Support:none:0": "bc5567ac37edc866d80a8e6bf5f72ab64c203e25cb66273c7846d270574b7496",
+      "Support:none:1": "e709ff149959eb06b4686c1822fc83c457d08df4a17bfac1e3876f89a1a41004",
+      "Support:INORGANIC:GRANITE:0": "bc5567ac37edc866d80a8e6bf5f72ab64c203e25cb66273c7846d270574b7496",
+      "Support:INORGANIC:GRANITE:1": "47432491f7b797f25964f02739ac83bc77bffd84df32b3c7fdb6382e296580a1",
+      "Support:INORGANIC:IRON:0": "bc5567ac37edc866d80a8e6bf5f72ab64c203e25cb66273c7846d270574b7496",
+      "Support:INORGANIC:IRON:1": "772586dc25d0498ae179cc51f056ad87d4835c3b2acd266d87bed74682546b51",
+      "WindowGem:INORGANIC:RUBY:0": "906f4b00d5f8374bbe88568bd71a46c9a9077447f092674c8af5c0c8e6991e54",
+      "WindowGem:INORGANIC:RUBY:1": "7693165d9bf97b299bc36ce0a711d3e5793242da036bfea4104835d05277402a",
+      "Well:0:0": "ce785dfa5c26bc16103c70df2567aeaeae37dcc144d26d73a9a880f84f95e504",
+      "Well:0:1": "96cc3b30c88bef0ddd2c0394bad20c402fef3078abb48cd4e2747f994f372563",
+      "Well:1:0": "ce785dfa5c26bc16103c70df2567aeaeae37dcc144d26d73a9a880f84f95e504",
+      "Well:1:1": "487a8e1354ec5d3cc3c29dd23659c19eab0221a93f9c83094173941bb6fabf7b",
+      "WindowGlass:GLASS_GREEN:0": "b2406ae8097b28e4d97f10cfab3126f71f5c76f7b3e87357184b3bd4e4d3c1c9",
+      "WindowGlass:GLASS_GREEN:1": "3f79f9304a7401ef59196e1ca6ffcea2dfd0f6c8f345563a2b3259b5a63cb15a",
+      "WindowGlass:GLASS_CRYSTAL:0": "72e7eac578fceb4a1eb847a07d6fbaa6f783c982b5547c8764f41fa885f654cc",
+      "WindowGlass:GLASS_CRYSTAL:1": "6f8a7587825fbf1867189a11fa4266dddd7c7b3a576be23e5d8490303ede09ac",
+      "Door:planned": "a41ebc65b2c28d4b9c578ff595dc16744a02446ee2ba74ca337a6e801a5b7ce5",
+      "Hatch:planned": "471e34bf2bd609309c19e5b752810c451559c5ccaff94c8d79e3e15c80451d3f",
+      "GrateWall:planned": "5ec422f9e89116630d083ef454d9be9785d51a259142bdaa0314d5430409906a",
+      "GrateFloor:planned": "a00692c74be17e7be9c016ae2a8876d6bfff2b5f90a8934d369e3f74eb8bff86",
+      "Floodgate:planned": "286ec7dd6c5bf9f93c5f166113abbdfffe8080eb51897124aa94484f3a23af77",
+      "Chair:planned": "4eda5651cbf4b03aa6c1d5254d1393056d18b397149236e1d9b33084fce4c1e4",
+      "Table:planned": "19ef2c04a19d4b685aa6afd883ee36b23619e4a54a4b7a9918649329c0a46229",
+      "Box:planned": "ce8ab54b83522094a1c8bfaa4547545162481a5c5cc2698087689407b54d74e8",
+      "Cabinet:planned": "104321bb465fad53f9dc12904cfab73ebea344d2cac810a75b07ac7c405e0cae",
+      "Coffin:planned": "95fe617b95f0a398e698fba0e4033bdaaa7d3272168c28aa6cd6268b783fb30b",
+      "Cage:planned": "a7b2a80943f11433f3dbcd3b5303c33f503c6a5efe47455c9a84474a787d730a",
+      "Chain:planned": "21bcd7083a2a66b66317cd783f3bc4509f8552da830ec7109a105c4df7707a24",
+      "AnimalTrap:planned": "76aaed121f61f10b3c4147fb1256ab7b6d96a41c5fa4157e5a5c5961e6e3b4aa"
+    },
+    "status": "passed_with_known_issues",
+    "gpu_source": "build/qa/floor-bars-support-rendering",
+    "transport_source": "build/floor-support-transport-native-20261024-021409",
+    "transport_observations": 50,
+    "transport_states": 12,
+    "source_preserved": true,
+    "owned_session_closed": true,
+    "screenshot_inspected": "bars-rendered.png",
+    "permanent_component_recheck": {
+      "source": "build/simple-building-art-perm-native-20261024-022231",
+      "identical_native_cases": 12
+    }
+  },
+  "gem_window": {
+    "native_source": "build/valid-component-art-native-20261024-022441",
+    "natural_source": "build/gem-window-natural-art-20261024-021733",
+    "shape_source": "build/gem-window-ruby-shapes-native-20261024-022336",
+    "rule": "For valid gem building material, both planned and complete use ITEM_WINDOW_GEM with building material palette; planned alpha is truncated half before mipmaps. First item material, count and cut shape do not change this artwork.",
+    "status": "passed_with_known_issues",
+    "excluded_inference": "Granite building material synthetic windows are not a normal gem-window recipe; their item artwork must not be implemented as valid gem-window behavior.",
+    "gpu_source": "build/qa/gem-window-rendering",
+    "natural_completion": {
+      "frame": 1550,
+      "items": [
+        48525,
+        48526,
+        48527
+      ],
+      "stage": 1,
+      "jobs": 0,
+      "native_art_match": "ITEM_WINDOW_GEM:pal94:halfnone",
+      "source_preserved": true,
+      "owned_session_closed": true
+    },
+    "shape_cases": 48,
+    "screenshot_inspected": "bars-planned.png"
+  },
+  "well": {
+    "source": "build/valid-component-art-native-20261024-022441",
+    "rule": "Raw BLD_WELL planned with rounded-up half alpha before mipmaps; complete raw BLD_WELL_WITH_CHAIN if any contained chain is metal, otherwise BLD_WELL_WITH_ROPE. Unknown old recordings retain BLD_WELL.",
+    "status": "passed_with_known_issues",
+    "gpu_source": "build/qa/well-native-art",
+    "core_source": "build/qa/well-rendering",
+    "transport_source": "build/well-transport-native-20261024-025257",
+    "transport_observations": 25,
+    "transport_states": 6,
+    "native_art_states_matched": 6,
+    "source_preserved": true,
+    "owned_session_closed": true,
+    "limits": [
+      "Idle completed and planned artwork; lowering bucket animation is outside this capture.",
+      "Synthetic transport checks do not replace the separately recorded natural construction effects."
+    ],
+    "excluded_attempts": [
+      "well-rendering and well-native-pixels GPU checks used the wrong texture parameter for Well surfaces; corrected to sprite_tex for both stages. Core checks passed.",
+      "well-transport-native-20261024-024514 used solid floor and the simulated Well disappeared; corrected to an opening with adjacent support.",
+      "well-transport-native-20261024-024654 exposed first-chain classification as incorrect when rope precedes metal; publication now reports any metal chain."
+    ]
+  },
+  "glass_window": {
+    "capture": "build/opening-art-native-20261024-040050",
+    "scope": "Matching valid glass building and permanent window component; green and crystal glass, planned and completed, frame0; native source-alpha floor-half before filtering. No simulation-effect claim.",
+    "source_preserved": true,
+    "rgba_sha256": {
+      "WindowGlass:GLASS_GREEN:0": "b2406ae8097b28e4d97f10cfab3126f71f5c76f7b3e87357184b3bd4e4d3c1c9",
+      "WindowGlass:GLASS_GREEN:1": "3f79f9304a7401ef59196e1ca6ffcea2dfd0f6c8f345563a2b3259b5a63cb15a",
+      "WindowGlass:GLASS_CRYSTAL:0": "72e7eac578fceb4a1eb847a07d6fbaa6f783c982b5547c8764f41fa885f654cc",
+      "WindowGlass:GLASS_CRYSTAL:1": "6f8a7587825fbf1867189a11fa4266dddd7c7b3a576be23e5d8490303ede09ac"
+    },
+    "transport_capture": "build/glass-color-native-20261024-041625",
+    "transport_observations": 17,
+    "transport_states": 3,
+    "core_gate": "build/qa/glass-native-color-core-fixed",
+    "gpu_gate": "build/qa/glass-window-native-color",
+    "gpu_scope": "Green-glass planned and complete exact RGBA, reload; native valid-component hashes. Clear/crystal transport covered separately, not GPU assertion coverage.",
+    "status": "passed_with_known_issues",
+    "natural_completion_reference": "build/opening-natural-art-20261024-042329: GLASS_GREEN item48525, natural completion at1350, exact planned/completed pixel match; diagnostic submission, not public UI."
+  },
+  "planned_openings": {
+    "capture": "build/opening-natural-art-20261024-042329",
+    "scope": "Five granite openings; registered exact components and natural completion at1350 frames. Planned native raw artwork ceil-half alpha. Completed Door/Hatch variants remain separate.",
+    "source_preserved": true,
+    "rgba_sha256": {
+      "Door:planned": "a41ebc65b2c28d4b9c578ff595dc16744a02446ee2ba74ca337a6e801a5b7ce5",
+      "Hatch:planned": "471e34bf2bd609309c19e5b752810c451559c5ccaff94c8d79e3e15c80451d3f",
+      "GrateWall:planned": "5ec422f9e89116630d083ef454d9be9785d51a259142bdaa0314d5430409906a",
+      "GrateFloor:planned": "a00692c74be17e7be9c016ae2a8876d6bfff2b5f90a8934d369e3f74eb8bff86",
+      "Floodgate:planned": "286ec7dd6c5bf9f93c5f166113abbdfffe8080eb51897124aa94484f3a23af77"
+    },
+    "core_gate": "build/qa/opening-planned-art",
+    "gpu_gate": "build/qa/opening-planned-pixels",
+    "status": "passed_with_known_issues",
+    "omissions": [
+      "Completed Door/Hatch variant composition is unresolved",
+      "Granite planned pixel assertions; other material classes not GPU asserted here"
+    ]
+  },
+  "completed_opening_native_reference": {
+    "status": "Implemented and verified: core/schema/model, bridge transport,99 native GPU references and reload reset",
+    "captures": [
+      "build/opening-variants-native-20261024-043112",
+      "build/opening-quality-native-20261024-043220"
+    ],
+    "scope": "68 registered-item completed Door/Hatch comparisons across granite and iron, all four ID-selected overlays and qualities0..6. Initial examples naturally completed; subsequent component replacements are diagnostic, not public UI placement.",
+    "source_preserved": true,
+    "rules": {
+      "base": "ITEM_DOOR_<class>_CLOSED:ALL or ITEM_HATCH_COVER_<class>_CLOSED:1; independent of tested quality",
+      "variant": "first SplitMix64(item.id), upper32 &3, then indexed installed ITEM_DOOR_VARIANT or ITEM_HATCH_COVER_VARIANT",
+      "palette": "Recolor both base and overlay before blending, native palette key matching first duplicate wins",
+      "blend": "Engine-independent blendOver: transparent destination copies source; otherwise output alpha=srcA+floor(dstA*(255-srcA)/255), RGB=floor((srcRGB*srcA+floor(dstRGB*dstA*(255-srcA)/255))/outputA). Both layers palette-swapped first; glass confirms partially transparent destinations."
+    },
+    "rgba_sha256": [
+      {
+        "kind": "Door",
+        "item_id": 48520,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "04ef50366e97118ecb3297ece04fd8e9c54679d318f395de98db950f2a5cf2aa",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48521,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "61555bf7315a5ed6eecdbd676c6c4057beb59ea8ef948bd2c1e2ebb81890befe",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48554,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48555,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "25c02cd061449a497e0eeeb5da01771d47a07923b7abcb64778c24f8e974b4b3",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48556,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48557,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "c3d79e5d0cf48b85def7fdc0f15bcdf6b973dfac87490375ac18807e8d3c6ff3",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48558,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "c3d79e5d0cf48b85def7fdc0f15bcdf6b973dfac87490375ac18807e8d3c6ff3",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48559,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "c3d79e5d0cf48b85def7fdc0f15bcdf6b973dfac87490375ac18807e8d3c6ff3",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48560,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48561,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "04ef50366e97118ecb3297ece04fd8e9c54679d318f395de98db950f2a5cf2aa",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48562,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "ad3ced51612491f92da93683b57a28453fa6a148c58036a865dfdb926756ec2f",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48563,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "ad3ced51612491f92da93683b57a28453fa6a148c58036a865dfdb926756ec2f",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48564,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "5a754c586b167aa4995c2b3f1cde3fd114238ada9033bd9e4847ffeb133ea7ad",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48565,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48566,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48567,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48568,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "ad3ced51612491f92da93683b57a28453fa6a148c58036a865dfdb926756ec2f",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48569,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "ad3ced51612491f92da93683b57a28453fa6a148c58036a865dfdb926756ec2f",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48570,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "a3f81b2158b24ce0d86aea044ccb540509c67b0938f62f7ed0b97f89f6f96adc",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48571,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "08b20100b48161098bfe3e16a135740059fa2e1c4635911947e2585c06d15924",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48572,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "a3f81b2158b24ce0d86aea044ccb540509c67b0938f62f7ed0b97f89f6f96adc",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48573,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "14fa84a1270d4fbe1fbaf0c20d07ec57f2a734728d2981c12d69e95c7f7f5c58",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48574,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "08b20100b48161098bfe3e16a135740059fa2e1c4635911947e2585c06d15924",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48575,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "14fa84a1270d4fbe1fbaf0c20d07ec57f2a734728d2981c12d69e95c7f7f5c58",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48576,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "08b20100b48161098bfe3e16a135740059fa2e1c4635911947e2585c06d15924",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48577,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "61555bf7315a5ed6eecdbd676c6c4057beb59ea8ef948bd2c1e2ebb81890befe",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48578,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "2fc3b93b723bf360747ed0f7cd9b331436948209cfdc869ee94ec5b77802e38c",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48579,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "2fc3b93b723bf360747ed0f7cd9b331436948209cfdc869ee94ec5b77802e38c",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48580,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "68cb44a93e3c04b5fea41f382a452989644aa43fd8a570cdc1bdeb8abb3d9ef6",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48581,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "0f8ca60249ddbf889bd7a4209269bbc1d0a284ee11b900ef54310511da60b923",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48582,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "68cb44a93e3c04b5fea41f382a452989644aa43fd8a570cdc1bdeb8abb3d9ef6",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48583,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "0f8ca60249ddbf889bd7a4209269bbc1d0a284ee11b900ef54310511da60b923",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48584,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "2fc3b93b723bf360747ed0f7cd9b331436948209cfdc869ee94ec5b77802e38c",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48585,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "ec6b9782d7822772ed9b7a16bc089a1ff917642c2d2ef33b2388e752b16fd562",
+        "source": "opening-variants-native-20261024-043112"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48520,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "04ef50366e97118ecb3297ece04fd8e9c54679d318f395de98db950f2a5cf2aa",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48521,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "61555bf7315a5ed6eecdbd676c6c4057beb59ea8ef948bd2c1e2ebb81890befe",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48545,
+        "material": "INORGANIC:GRANITE",
+        "quality": 1,
+        "sha256": "c3d79e5d0cf48b85def7fdc0f15bcdf6b973dfac87490375ac18807e8d3c6ff3",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48546,
+        "material": "INORGANIC:GRANITE",
+        "quality": 2,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48547,
+        "material": "INORGANIC:GRANITE",
+        "quality": 3,
+        "sha256": "25c02cd061449a497e0eeeb5da01771d47a07923b7abcb64778c24f8e974b4b3",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48548,
+        "material": "INORGANIC:GRANITE",
+        "quality": 4,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48549,
+        "material": "INORGANIC:GRANITE",
+        "quality": 5,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48550,
+        "material": "INORGANIC:GRANITE",
+        "quality": 6,
+        "sha256": "25c02cd061449a497e0eeeb5da01771d47a07923b7abcb64778c24f8e974b4b3",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48551,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "25c02cd061449a497e0eeeb5da01771d47a07923b7abcb64778c24f8e974b4b3",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48552,
+        "material": "INORGANIC:GRANITE",
+        "quality": 1,
+        "sha256": "ccebca9f3397f6841778820904301c26497680ea198d38837c32de8a8276fffa",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48553,
+        "material": "INORGANIC:IRON",
+        "quality": 1,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48554,
+        "material": "INORGANIC:IRON",
+        "quality": 2,
+        "sha256": "5a754c586b167aa4995c2b3f1cde3fd114238ada9033bd9e4847ffeb133ea7ad",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48555,
+        "material": "INORGANIC:IRON",
+        "quality": 3,
+        "sha256": "ad3ced51612491f92da93683b57a28453fa6a148c58036a865dfdb926756ec2f",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48556,
+        "material": "INORGANIC:IRON",
+        "quality": 4,
+        "sha256": "5a754c586b167aa4995c2b3f1cde3fd114238ada9033bd9e4847ffeb133ea7ad",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48557,
+        "material": "INORGANIC:IRON",
+        "quality": 5,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48558,
+        "material": "INORGANIC:IRON",
+        "quality": 6,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48559,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "e1cf586d5e26335b783ade265ab81fb2f4b0a2763420d999914b8087c4b892c9",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48560,
+        "material": "INORGANIC:IRON",
+        "quality": 1,
+        "sha256": "5a754c586b167aa4995c2b3f1cde3fd114238ada9033bd9e4847ffeb133ea7ad",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48561,
+        "material": "INORGANIC:GRANITE",
+        "quality": 1,
+        "sha256": "08b20100b48161098bfe3e16a135740059fa2e1c4635911947e2585c06d15924",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48562,
+        "material": "INORGANIC:GRANITE",
+        "quality": 2,
+        "sha256": "61555bf7315a5ed6eecdbd676c6c4057beb59ea8ef948bd2c1e2ebb81890befe",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48563,
+        "material": "INORGANIC:GRANITE",
+        "quality": 3,
+        "sha256": "61555bf7315a5ed6eecdbd676c6c4057beb59ea8ef948bd2c1e2ebb81890befe",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48564,
+        "material": "INORGANIC:GRANITE",
+        "quality": 4,
+        "sha256": "a3f81b2158b24ce0d86aea044ccb540509c67b0938f62f7ed0b97f89f6f96adc",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48565,
+        "material": "INORGANIC:GRANITE",
+        "quality": 5,
+        "sha256": "14fa84a1270d4fbe1fbaf0c20d07ec57f2a734728d2981c12d69e95c7f7f5c58",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48566,
+        "material": "INORGANIC:GRANITE",
+        "quality": 6,
+        "sha256": "14fa84a1270d4fbe1fbaf0c20d07ec57f2a734728d2981c12d69e95c7f7f5c58",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48567,
+        "material": "INORGANIC:GRANITE",
+        "quality": 0,
+        "sha256": "14fa84a1270d4fbe1fbaf0c20d07ec57f2a734728d2981c12d69e95c7f7f5c58",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48568,
+        "material": "INORGANIC:GRANITE",
+        "quality": 1,
+        "sha256": "61555bf7315a5ed6eecdbd676c6c4057beb59ea8ef948bd2c1e2ebb81890befe",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48569,
+        "material": "INORGANIC:IRON",
+        "quality": 1,
+        "sha256": "0f8ca60249ddbf889bd7a4209269bbc1d0a284ee11b900ef54310511da60b923",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48570,
+        "material": "INORGANIC:IRON",
+        "quality": 2,
+        "sha256": "68cb44a93e3c04b5fea41f382a452989644aa43fd8a570cdc1bdeb8abb3d9ef6",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48571,
+        "material": "INORGANIC:IRON",
+        "quality": 3,
+        "sha256": "2fc3b93b723bf360747ed0f7cd9b331436948209cfdc869ee94ec5b77802e38c",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48572,
+        "material": "INORGANIC:IRON",
+        "quality": 4,
+        "sha256": "68cb44a93e3c04b5fea41f382a452989644aa43fd8a570cdc1bdeb8abb3d9ef6",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48573,
+        "material": "INORGANIC:IRON",
+        "quality": 5,
+        "sha256": "ec6b9782d7822772ed9b7a16bc089a1ff917642c2d2ef33b2388e752b16fd562",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48574,
+        "material": "INORGANIC:IRON",
+        "quality": 6,
+        "sha256": "2fc3b93b723bf360747ed0f7cd9b331436948209cfdc869ee94ec5b77802e38c",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48575,
+        "material": "INORGANIC:IRON",
+        "quality": 0,
+        "sha256": "ec6b9782d7822772ed9b7a16bc089a1ff917642c2d2ef33b2388e752b16fd562",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48576,
+        "material": "INORGANIC:IRON",
+        "quality": 1,
+        "sha256": "2fc3b93b723bf360747ed0f7cd9b331436948209cfdc869ee94ec5b77802e38c",
+        "source": "opening-quality-native-20261024-043220"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48585,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "9f09e25793046649576c80157e6ff70109bc71b8fb51dae262d25022e5e1d0fe",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48586,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "57888ab821e110b67b5ac63c24b80085ba125c5d236bbe9a8b1bf503e15ab860",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48587,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "57888ab821e110b67b5ac63c24b80085ba125c5d236bbe9a8b1bf503e15ab860",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48588,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "9f09e25793046649576c80157e6ff70109bc71b8fb51dae262d25022e5e1d0fe",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48589,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "9f09e25793046649576c80157e6ff70109bc71b8fb51dae262d25022e5e1d0fe",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48590,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "9f09e25793046649576c80157e6ff70109bc71b8fb51dae262d25022e5e1d0fe",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48593,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "780cd1b41bcca469ef1ed7711095e3117fd7037fa01b29b1fa9d9c013c6aa770",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48594,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "780cd1b41bcca469ef1ed7711095e3117fd7037fa01b29b1fa9d9c013c6aa770",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48598,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "ebb32d8f8258d5f0d7c013d1362f3cc869efe11f2886db4c1c7d86efb510cc71",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48600,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "26a7933005f4bedd5e58f248dd6d6b1d3334bc50471e78d7ff5ec63380679a5b",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48603,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "c120b1d567234bc975e0eb882d69a988709720ad310d42fb4279adb9b07ff052",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48606,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "26a7933005f4bedd5e58f248dd6d6b1d3334bc50471e78d7ff5ec63380679a5b",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48609,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "26a7933005f4bedd5e58f248dd6d6b1d3334bc50471e78d7ff5ec63380679a5b",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48610,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "c120b1d567234bc975e0eb882d69a988709720ad310d42fb4279adb9b07ff052",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Door",
+        "item_id": 48611,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "c120b1d567234bc975e0eb882d69a988709720ad310d42fb4279adb9b07ff052",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48647,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "c47980ea4db328db31373f7aa4392065113a30145cb3076f1afcf3f29e08d31b",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48648,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "6312d72367c42251f5ab203d60f30aeefff365886f27ecb3f0900dc0efdfa46e",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48657,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "c47980ea4db328db31373f7aa4392065113a30145cb3076f1afcf3f29e08d31b",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48658,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "43b36a3662fda1ef009caecc6aea21f429bcda173b59845a439b3c45c4fd4185",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48660,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "43b36a3662fda1ef009caecc6aea21f429bcda173b59845a439b3c45c4fd4185",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48663,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "aa5c3ae34c0694139757069340972185a35e10c56d06ca2a4594762fc0a81b51",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48664,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "43b36a3662fda1ef009caecc6aea21f429bcda173b59845a439b3c45c4fd4185",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48665,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "43b36a3662fda1ef009caecc6aea21f429bcda173b59845a439b3c45c4fd4185",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48666,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "f00d3a2ebd445848c9fe3a943292987e9f5584c6a9be7472ebeb1dafc93b7b71",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48667,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "f00d3a2ebd445848c9fe3a943292987e9f5584c6a9be7472ebeb1dafc93b7b71",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48668,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "b2507db3a467ad74d5a15c5a705e645c1738fa8ba7ec03c5ea8bb6babd09d4c7",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48669,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "b2507db3a467ad74d5a15c5a705e645c1738fa8ba7ec03c5ea8bb6babd09d4c7",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48675,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "f00d3a2ebd445848c9fe3a943292987e9f5584c6a9be7472ebeb1dafc93b7b71",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48676,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "f00d3a2ebd445848c9fe3a943292987e9f5584c6a9be7472ebeb1dafc93b7b71",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48677,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "f00d3a2ebd445848c9fe3a943292987e9f5584c6a9be7472ebeb1dafc93b7b71",
+        "source": "opening-transport-native-20261024-044433"
+      },
+      {
+        "kind": "Hatch",
+        "item_id": 48679,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "f00d3a2ebd445848c9fe3a943292987e9f5584c6a9be7472ebeb1dafc93b7b71",
+        "source": "opening-transport-native-20261024-044433"
+      }
+    ],
+    "transport": {
+      "capture": "build/opening-transport-native-20261024-044433",
+      "observations": 362,
+      "replacement_states": 64,
+      "source_preserved": true,
+      "native_closed_matches": 63,
+      "open_door_cases_excluded": 3,
+      "scope": "Published item ID/color; closed rendering includes granite/iron/wood/green-glass. Three naturally opened Door frames excluded from closed-state art comparison."
+    },
+    "core_gate": "build/qa/completed-opening-variants",
+    "gpu_gate": "build/qa/completed-opening-materials"
+  },
+  "completed_furniture_native_reference": {
+    "capture": "build/furniture-variants-native-20261024-045021",
+    "scope": "Four natural completions at1700 frames and128 registered component replacements; four materials, qualities0..6. Chair/Table first leg overlay; Box ID variant; Cabinet base only in this install. Not public UI coverage of each replacement.",
+    "source_preserved": true,
+    "rgba_sha256": [
+      {
+        "kind": "Chair",
+        "item_id": 48520,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48521,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48522,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "4b3cd1e43caee28611483a9293fa62c3b833b7c85a61a5452c553e1445a3719e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48523,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48561,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48562,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 2,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48563,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 3,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48564,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 4,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48565,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 5,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48566,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 6,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48567,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48568,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "f81421ef2947f96933377602dfc1503e67f9c9ee1998226fb2ef415e96e8413d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48569,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48570,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 2,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48571,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 3,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48572,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 4,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48573,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 5,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48574,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 6,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48575,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 0,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48576,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "fd34a4a64138d06f825b683f475e225c39e7cae3563b52b866405b00dd7dd6bb"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48577,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48578,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 2,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48579,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 3,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48580,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 4,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48581,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 5,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48582,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 6,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48583,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48584,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "1cfabe8ee440b474867f35194beadf32d7615ac9ee98de29c69088c34130d58d"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48585,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48586,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 2,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48587,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 3,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48588,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 4,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48589,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 5,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48590,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 6,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48591,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Chair",
+        "item_id": 48592,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "8ea42d1013763468a1ab5d5e5090f825ed549d416272fa7ce9f22f40b015a3a3"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48593,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48594,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 2,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48595,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 3,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48596,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 4,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48597,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 5,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48598,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 6,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48599,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48600,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "b3dcaf6523328deba7c1a07b8b42e5b110a0a2522ac8b2401f9442a8030b0caa"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48601,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48602,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 2,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48603,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 3,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48604,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 4,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48605,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 5,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48606,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 6,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48607,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 0,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48608,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "ad217e61b8a3003ee5179769832edc6658478df3d4112f388852f4b677b3d092"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48609,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48610,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 2,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48611,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 3,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48612,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 4,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48613,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 5,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48614,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 6,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48615,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48616,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "0e524c576f02c18e0ad16e2708d3d5f66f75f2125f7150dcc33ccce18e325f67"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48617,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48618,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 2,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48619,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 3,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48620,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 4,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48621,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 5,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48622,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 6,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48623,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Table",
+        "item_id": 48624,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "d908fac29266ce9d48b1459ab1659329bf8b81ebf818e2f7c91acad63b532d96"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48625,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "cf14d53e4526a2bc65de0df90eeffa0a375cae19822b81f92ca9de044b3e0672"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48626,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 2,
+        "sha256": "fff0c1111ab7132be492661e0001f1b9554efd5e84ecdd57cd9500fd766106c8"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48627,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 3,
+        "sha256": "fff0c1111ab7132be492661e0001f1b9554efd5e84ecdd57cd9500fd766106c8"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48628,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 4,
+        "sha256": "1e381f4125e285788f40f06be2cc202f1a6aa55bd11f7c43b175654e87f508b3"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48629,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 5,
+        "sha256": "1e381f4125e285788f40f06be2cc202f1a6aa55bd11f7c43b175654e87f508b3"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48630,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 6,
+        "sha256": "fff0c1111ab7132be492661e0001f1b9554efd5e84ecdd57cd9500fd766106c8"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48631,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "1e381f4125e285788f40f06be2cc202f1a6aa55bd11f7c43b175654e87f508b3"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48632,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "fff0c1111ab7132be492661e0001f1b9554efd5e84ecdd57cd9500fd766106c8"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48633,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "9de12175b06de9ea098708916f27e7c9150f1cdec7e9bd74020ba7dfc20daa1a"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48634,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 2,
+        "sha256": "9d3f15662bdd15e39753bce4aa6eb493e9672b18f059ecc48655d0558e4060aa"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48635,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 3,
+        "sha256": "fb639fd9ac12707000546276efcdd56fb12acff372664eb61ab869df23ea6571"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48636,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 4,
+        "sha256": "9d3f15662bdd15e39753bce4aa6eb493e9672b18f059ecc48655d0558e4060aa"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48637,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 5,
+        "sha256": "18cb060183f9df50ba6b70750f02a79ce5e1d3a6fb14b06097d0075a31e16755"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48638,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 6,
+        "sha256": "fb639fd9ac12707000546276efcdd56fb12acff372664eb61ab869df23ea6571"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48639,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 0,
+        "sha256": "fb639fd9ac12707000546276efcdd56fb12acff372664eb61ab869df23ea6571"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48640,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "9de12175b06de9ea098708916f27e7c9150f1cdec7e9bd74020ba7dfc20daa1a"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48641,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "d766d1c0de7eab6720ffe59b48f8d80d5781153b7fa76269be6ce0b90c8c7197"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48642,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 2,
+        "sha256": "21da862eba0ad8ee69983735ceedd870f88cddd1aa5caf198bface0bf063e33c"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48643,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 3,
+        "sha256": "d766d1c0de7eab6720ffe59b48f8d80d5781153b7fa76269be6ce0b90c8c7197"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48644,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 4,
+        "sha256": "21da862eba0ad8ee69983735ceedd870f88cddd1aa5caf198bface0bf063e33c"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48645,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 5,
+        "sha256": "d2c6ef33d944af64bfcdf8f19b7671e7b2a1c34f11663622c709b537a40237ef"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48646,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 6,
+        "sha256": "d2c6ef33d944af64bfcdf8f19b7671e7b2a1c34f11663622c709b537a40237ef"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48647,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "63cf997209a61fa82070a5e23b82fdbab7de0430d7a070e6c09a6df68477b060"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48648,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "d2c6ef33d944af64bfcdf8f19b7671e7b2a1c34f11663622c709b537a40237ef"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48649,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "ac91b372c1493cb16a6e28bdc83d7845b947755675b48817b0c06c7523cdca6c"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48650,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 2,
+        "sha256": "fbbed44e091743830067631de14c424f65398c99e3357181948a879287572150"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48651,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 3,
+        "sha256": "83a417bb89091bcf2935a25f1bee7d048aa4a455a0dd366b81a0901947d3c362"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48652,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 4,
+        "sha256": "83a417bb89091bcf2935a25f1bee7d048aa4a455a0dd366b81a0901947d3c362"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48653,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 5,
+        "sha256": "1ffb1423bb205655bed424329078110cfd97b821d303c588031a04f9aaacab66"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48654,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 6,
+        "sha256": "ac91b372c1493cb16a6e28bdc83d7845b947755675b48817b0c06c7523cdca6c"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48655,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "83a417bb89091bcf2935a25f1bee7d048aa4a455a0dd366b81a0901947d3c362"
+      },
+      {
+        "kind": "Box",
+        "item_id": 48656,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "fbbed44e091743830067631de14c424f65398c99e3357181948a879287572150"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48657,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48658,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 2,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48659,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 3,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48660,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 4,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48661,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 5,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48662,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 6,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48663,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 0,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48664,
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "quality": 1,
+        "sha256": "e3ebe04a9c063e14935ccf90e09939399b80a14d6e7d0bc3799460b75cd3012e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48665,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48666,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 2,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48667,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 3,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48668,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 4,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48669,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 5,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48670,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 6,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48671,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 0,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48672,
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "quality": 1,
+        "sha256": "06c6b2253ec33f75afdc65253050cbb9892a7c49eeedc75e00ec57a0f291d54e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48673,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48674,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 2,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48675,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 3,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48676,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 4,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48677,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 5,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48678,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 6,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48679,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 0,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48680,
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "quality": 1,
+        "sha256": "0059bc7cdd95c46cfaee9f9b91a775a48ebcff321d367da5d2a1a7a1f825cc5e"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48681,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48682,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 2,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48683,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 3,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48684,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 4,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48685,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 5,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48686,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 6,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48687,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 0,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      },
+      {
+        "kind": "Cabinet",
+        "item_id": 48688,
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "quality": 1,
+        "sha256": "19e10aab802df01d28f6a5e7ed84b53b8f7efa37acc5f0b80c061d3d02268d92"
+      }
+    ],
+    "status": "Implemented and verified",
+    "core_gate": "build/qa/furniture-native-variants",
+    "gpu_gate": "build/qa/furniture-native-pixels",
+    "transport_capture": "build/furniture-transport-native-20261024-050535",
+    "transport_observations": 725,
+    "replacement_states": 128,
+    "native_live_art_matches": 132,
+    "omissions": [
+      "Generated-artifact and improvement rendering not established by setting quality0..6",
+      "Operational contents or occupied furniture not covered"
+    ]
+  },
+  "planned_furniture": {
+    "capture": "build/furniture-planned-native-20261024-045228",
+    "scope": "16 planned material states, all raw generic family sprite with ceil-half alpha",
+    "rgba_sha256": {
+      "Chair:planned": "4eda5651cbf4b03aa6c1d5254d1393056d18b397149236e1d9b33084fce4c1e4",
+      "Table:planned": "19ef2c04a19d4b685aa6afd883ee36b23619e4a54a4b7a9918649329c0a46229",
+      "Box:planned": "ce8ab54b83522094a1c8bfaa4547545162481a5c5cc2698087689407b54d74e8",
+      "Cabinet:planned": "104321bb465fad53f9dc12904cfab73ebea344d2cac810a75b07ac7c405e0cae"
+    },
+    "gpu_gate": "build/qa/furniture-native-pixels"
+  },
+  "planned_ordinary_furniture": {
+    "source": "build/ordinary-art-native-20261024-051057",
+    "scope": "Native initial planned states; material replacement captures also confirm Coffin class-specific raw art, Cage and AnimalTrap fixed metal raw art, Chain metal/rope raw art. Alpha rounds half up. Completed artwork is outside this check.",
+    "cases": [
+      {
+        "kind": "Coffin",
+        "material": "INORGANIC:GRANITE",
+        "sha256": "95fe617b95f0a398e698fba0e4033bdaaa7d3272168c28aa6cd6268b783fb30b"
+      },
+      {
+        "kind": "Cage",
+        "material": "INORGANIC:IRON",
+        "sha256": "a7b2a80943f11433f3dbcd3b5303c33f503c6a5efe47455c9a84474a787d730a"
+      },
+      {
+        "kind": "Chain",
+        "material": "INORGANIC:IRON",
+        "sha256": "21bcd7083a2a66b66317cd783f3bc4509f8552da830ec7109a105c4df7707a24"
+      },
+      {
+        "kind": "AnimalTrap",
+        "material": "PLANT:OAK:WOOD",
+        "sha256": "76aaed121f61f10b3c4147fb1256ab7b6d96a41c5fa4157e5a5c5961e6e3b4aa"
+      }
+    ]
+  },
+  "planned_equipment_furniture": {
+    "source": "build/ordinary-art-native-20261024-051057",
+    "scope": "Diagnostic planned material states after natural completion. Material-class empty artwork, native building material palette, alpha truncated to half. Completed equipment/occupancy is outside this check.",
+    "rgba_sha256": [
+      {
+        "kind": "Armorstand",
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "sha256": "f03890aff132065017a80133f8bc8f720b5177c45275ea810f7c17a7ba876f87"
+      },
+      {
+        "kind": "Armorstand",
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "sha256": "d85bcf57dcef86a9fcbb119189ba5d007b2edaf3a0457c96b373be8cd7e75919"
+      },
+      {
+        "kind": "Armorstand",
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "sha256": "e547e9cb4388687921bebbfb8a49467aab09a64e7c720d7977a5e4c5313218b0"
+      },
+      {
+        "kind": "Armorstand",
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "sha256": "605ae66e197b228065dfd9572d19e09c2aa75667d53481ddf6b109b5dabdb068"
+      },
+      {
+        "kind": "Weaponrack",
+        "material": "INORGANIC:GRANITE",
+        "color": "CLEAR",
+        "sha256": "94f2a811c3cc015c237ded1e20eaabf2fcda558a4bd5c03b4c15c203f58e9206"
+      },
+      {
+        "kind": "Weaponrack",
+        "material": "INORGANIC:IRON",
+        "color": "GRAY",
+        "sha256": "94aed8ff3a60d3cfba3005b71dfe5ca473f8d2524dd1428d4323e606c3b7de6b"
+      },
+      {
+        "kind": "Weaponrack",
+        "material": "GLASS_GREEN",
+        "color": "DARK_GREEN",
+        "sha256": "4e81beef069053915c22a528ea2365577da21b479af0c2798f287722b9390bee"
+      },
+      {
+        "kind": "Weaponrack",
+        "material": "PLANT:OAK:WOOD",
+        "color": "AUBURN",
+        "sha256": "21499f187a25333eda7330c63ddde551b7b700c2838d5d757a544540c7f8e14d"
+      }
+    ]
+  },
+  "completed_chain_native_reference": {
+    "source": "build/chain-material-source-native-20261024-053630",
+    "scope": "Natural iron-chain completion followed by paused independent iron/cotton building versus component material changes. Building material selects chain/rope; both retain raw palette.",
+    "rgba_sha256": [
+      {
+        "kind": "Chain",
+        "material": "INORGANIC:IRON",
+        "label": "natural complete",
+        "sha256": "d08b6feb0b05363f4ae9fd577948b3a53289c99fb4054fee189299cb2bbdbccf"
+      },
+      {
+        "kind": "Chain",
+        "material": "PLANT:COTTON:THREAD",
+        "label": "building material only changed",
+        "sha256": "63d279b6bf10df9aa7e3c1b5a2cbf7169cf9997cc9ef0945e6fef49b7c3140e6"
+      },
+      {
+        "kind": "Chain",
+        "material": "INORGANIC:IRON",
+        "label": "building material restored",
+        "sha256": "d08b6feb0b05363f4ae9fd577948b3a53289c99fb4054fee189299cb2bbdbccf"
+      },
+      {
+        "kind": "Chain",
+        "material": "INORGANIC:IRON",
+        "label": "component material only changed",
+        "sha256": "d08b6feb0b05363f4ae9fd577948b3a53289c99fb4054fee189299cb2bbdbccf"
+      },
+      {
+        "kind": "Chain",
+        "material": "PLANT:COTTON:THREAD",
+        "label": "both materials changed",
+        "sha256": "63d279b6bf10df9aa7e3c1b5a2cbf7169cf9997cc9ef0945e6fef49b7c3140e6"
+      },
+      {
+        "kind": "Chain",
+        "material": "INORGANIC:IRON",
+        "label": "component restored",
+        "sha256": "d08b6feb0b05363f4ae9fd577948b3a53289c99fb4054fee189299cb2bbdbccf"
+      }
+    ]
+  },
+  "completed_ordinary_native_reference": {
+    "scope": "Natural completions, paused material-source/contents discriminator captures, and live contents changes across four materials. Counts are building entries, not component contents; source/label retained per row.",
+    "rgba_sha256": [
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "natural complete",
+        "kind": "Coffin",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48520,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 1,
+        "sha256": "3a75e768a8efb373fe267f2f3aa006196624487eee2d94b345d5b36f10c4cd6b",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "natural complete",
+        "kind": "Armorstand",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48521,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 1,
+        "sha256": "592ab1320cc557cacb43ce0f51dabe3de3fa6ad5c7bdb06fdbb87c19d77a538d",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "natural complete",
+        "kind": "Weaponrack",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48522,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 1,
+        "sha256": "148d6b99fd8bfcad968d6ee987f0ff0189fad2a605964feddcdd5be0a42691e1",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "natural complete",
+        "kind": "Cage",
+        "material": "INORGANIC:IRON",
+        "component_id": 48523,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "5cc5eac72f6f5ce4f8b5e2d01c24451cdee325385f121b859fa48ad8d400665c",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "natural complete",
+        "kind": "AnimalTrap",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48525,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "fd10caceaf1daca1fcd40053e5eb4ad65a6d04474cf2af97556f2e8f36547b4a",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Coffin",
+        "material": "INORGANIC:IRON",
+        "component_id": 48553,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "93bddb63a265822805fe4fb193218a427059f786f4a7168a9bbf4aebfb69f62e",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Coffin",
+        "material": "GLASS_GREEN",
+        "component_id": 48555,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "contained_count": 1,
+        "sha256": "56998d877aec8bf3042730b75da1ae9083522ff96ea4e4b841415babc64dccb5",
+        "building_color": "DARK_GREEN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Coffin",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48557,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "8f7f1446b6d4416dd1b83a97041a6ee401975b3cd4f1276f3bf144b5ddea6c63",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Armorstand",
+        "material": "INORGANIC:IRON",
+        "component_id": 48561,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "ff2ed3ceb2a891bd6df5d2336c60dca58c9039e79ef25ed099710a241a945bb4",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Armorstand",
+        "material": "GLASS_GREEN",
+        "component_id": 48563,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "contained_count": 1,
+        "sha256": "506a2eb83850355b4ffac4e59e935c2ba8ee58b410585dbbbf4a918bdf435e52",
+        "building_color": "DARK_GREEN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Armorstand",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48565,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "9026b17976377004390e115a890b343575b09c57385bbbf7f688ebc2d1df6baf",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Weaponrack",
+        "material": "INORGANIC:IRON",
+        "component_id": 48569,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "4cffbd09aa9ec6696e16a711aa5d8221e3679b6156167da88f58681107b7a210",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Weaponrack",
+        "material": "GLASS_GREEN",
+        "component_id": 48571,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "contained_count": 1,
+        "sha256": "201b06ce024b1f418a22a8ecb98df8ad41e98c45669f2862b56d1dc065846135",
+        "building_color": "DARK_GREEN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Weaponrack",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48573,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "290bc50e9e6358c299fcbeb56badbbd0299bd8fb0f585871704ceaa4c81f8973",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Cage",
+        "material": "GLASS_GREEN",
+        "component_id": 48577,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "contained_count": 1,
+        "sha256": "758be4d0957db11c13e7eaacc45261f10caf4b1f2cefcd78f07c6cc27c748e96",
+        "building_color": "DARK_GREEN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "Cage",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48579,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "35693f86be41aaa59c4b042c231db5933f0c17ba2ceec2eadcb4ed58d25b1b69",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-art-native-20261024-051057",
+        "label": "registered variant",
+        "kind": "AnimalTrap",
+        "material": "INORGANIC:IRON",
+        "component_id": 48587,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "cecaed92b7da66c67346b92cf44a2c6abb9e42bc9c0983213d2e5932536d285e",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-contents-native-20261024-053340",
+        "label": "extra building item TEMP",
+        "kind": "Coffin",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48520,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 2,
+        "sha256": "c6632f3fa55cbd7d3966c65f4be74728d396ef24ca4edf2c8e21f28dfc826f8f",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-contents-native-20261024-053340",
+        "label": "extra building item TEMP",
+        "kind": "Armorstand",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48521,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 2,
+        "sha256": "17931e2602129586b172bf47666de4c88b513001076a1bc1e157673e45d6804e",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-contents-native-20261024-053340",
+        "label": "extra building item TEMP",
+        "kind": "Weaponrack",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48522,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 2,
+        "sha256": "704163afd2128cace22735dce0816f37441fdce558c2d8cc72391ac66f86b6e2",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-contents-native-20261024-053340",
+        "label": "extra building item TEMP",
+        "kind": "Cage",
+        "material": "INORGANIC:IRON",
+        "component_id": 48523,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 2,
+        "sha256": "5cc5eac72f6f5ce4f8b5e2d01c24451cdee325385f121b859fa48ad8d400665c",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-contents-native-20261024-053340",
+        "label": "extra building item TEMP",
+        "kind": "AnimalTrap",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48525,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 2,
+        "sha256": "fd10caceaf1daca1fcd40053e5eb4ad65a6d04474cf2af97556f2e8f36547b4a",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "building material only changed",
+        "kind": "Coffin",
+        "material": "INORGANIC:IRON",
+        "component_id": 48520,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 1,
+        "sha256": "3a75e768a8efb373fe267f2f3aa006196624487eee2d94b345d5b36f10c4cd6b",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "component material only changed",
+        "kind": "Coffin",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48554,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "93bddb63a265822805fe4fb193218a427059f786f4a7168a9bbf4aebfb69f62e",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "building material only changed",
+        "kind": "Armorstand",
+        "material": "INORGANIC:IRON",
+        "component_id": 48521,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 1,
+        "sha256": "ff2ed3ceb2a891bd6df5d2336c60dca58c9039e79ef25ed099710a241a945bb4",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "component material only changed",
+        "kind": "Armorstand",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48555,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "592ab1320cc557cacb43ce0f51dabe3de3fa6ad5c7bdb06fdbb87c19d77a538d",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "building material only changed",
+        "kind": "Weaponrack",
+        "material": "INORGANIC:IRON",
+        "component_id": 48522,
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "contained_count": 1,
+        "sha256": "4cffbd09aa9ec6696e16a711aa5d8221e3679b6156167da88f58681107b7a210",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "component material only changed",
+        "kind": "Weaponrack",
+        "material": "INORGANIC:GRANITE",
+        "component_id": 48556,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "148d6b99fd8bfcad968d6ee987f0ff0189fad2a605964feddcdd5be0a42691e1",
+        "building_color": "CLEAR"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "building material only changed",
+        "kind": "Cage",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48523,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "5cc5eac72f6f5ce4f8b5e2d01c24451cdee325385f121b859fa48ad8d400665c",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "component material only changed",
+        "kind": "Cage",
+        "material": "INORGANIC:IRON",
+        "component_id": 48557,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "35693f86be41aaa59c4b042c231db5933f0c17ba2ceec2eadcb4ed58d25b1b69",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "building material only changed",
+        "kind": "AnimalTrap",
+        "material": "INORGANIC:IRON",
+        "component_id": 48525,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "contained_count": 1,
+        "sha256": "fd10caceaf1daca1fcd40053e5eb4ad65a6d04474cf2af97556f2e8f36547b4a",
+        "building_color": "GRAY"
+      },
+      {
+        "source": "build/ordinary-material-source-native-20261024-053520",
+        "label": "component material only changed",
+        "kind": "AnimalTrap",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48559,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "contained_count": 1,
+        "sha256": "cecaed92b7da66c67346b92cf44a2c6abb9e42bc9c0983213d2e5932536d285e",
+        "building_color": "AUBURN"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Coffin",
+        "material": "INORGANIC:IRON",
+        "component_id": 48566,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "building_color": "GRAY",
+        "contained_count": 2,
+        "sha256": "74e05f91e052f1480e23331ca26091e9d4175317fa3781e8d075fdc14d6d96ec"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Coffin",
+        "material": "GLASS_GREEN",
+        "component_id": 48572,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "building_color": "DARK_GREEN",
+        "contained_count": 2,
+        "sha256": "cd6844b2fc4f8bc50733c97d4092e4fb735377540e109fb3ee67da5bbc3620e0"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Coffin",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48580,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "building_color": "AUBURN",
+        "contained_count": 2,
+        "sha256": "6ce5c74f4d1e14987d06fd142c606802ad92d0a87bb47e6af39fcd6440d83cf6"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Armorstand",
+        "material": "INORGANIC:IRON",
+        "component_id": 48594,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "building_color": "GRAY",
+        "contained_count": 2,
+        "sha256": "e2c14ca1184904049ba32acd2a147e6026afaad228d0360adabed87231c76786"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Armorstand",
+        "material": "GLASS_GREEN",
+        "component_id": 48599,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "building_color": "DARK_GREEN",
+        "contained_count": 2,
+        "sha256": "39adf8364c3754ceb24ff1109a27797a6c5e09c22b3a463736f5a4b381048034"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Armorstand",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48605,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "building_color": "AUBURN",
+        "contained_count": 2,
+        "sha256": "c365872d4f93caa29907ef192b4c73b53f493bdc68c0f7017f3608125b39182e"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Weaponrack",
+        "material": "INORGANIC:IRON",
+        "component_id": 48621,
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "building_color": "GRAY",
+        "contained_count": 2,
+        "sha256": "e7a7548c7dd4518c73485df04a6ecdd34f9384f4e4762ef4d9bc7dcd52abec44"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Weaponrack",
+        "material": "GLASS_GREEN",
+        "component_id": 48628,
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "building_color": "DARK_GREEN",
+        "contained_count": 2,
+        "sha256": "abedb1e7640148d0eb2e30ac6a17ade3049fa10be3172c13cc0f2f3a5c494829"
+      },
+      {
+        "source": "build/ordinary-state-transport-native-20261024-055345",
+        "label": "material contents added",
+        "kind": "Weaponrack",
+        "material": "PLANT:OAK:WOOD",
+        "component_id": 48634,
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "building_color": "AUBURN",
+        "contained_count": 2,
+        "sha256": "d93cac8b57e9f56da52d63853006425d7a3c9c71de3846ebf45518fd15915a41"
+      }
+    ]
+  },
+  "tool_furniture_native_reference": {
+    "scope": "Initial natural planned jobs and natural completions, plus paused component/material source comparisons. Forced planned tool states without jobs are excluded. Planned Bed fixtures also retain synthetic bedding facts to check that they are ignored.",
+    "rgba_sha256": [
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "Bed",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "",
+        "component_id": -1,
+        "sha256": "5d3bde58ef6be1ef5acfbc8eace4dc951ce41d46f884bad1a0d86a32c784a152"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "Bookcase",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": -1,
+        "sha256": "53df00bb5178ae5d71b2cebb8f1b1ba0bd501fe762201673504cb0d564797d29"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "DisplayFurniture",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_PEDESTAL",
+        "component_id": -1,
+        "sha256": "5f17591e4d155fa627d0b685dd70318b98429f9be962823814cfab7822335b3e"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "OfferingPlace",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": -1,
+        "sha256": "8d7c8ca224152819dcbde0268213ac0b207a46f0ee987caecfae344183e6a766"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "Hive",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": -1,
+        "sha256": "f53011afe3827a1aa787dcf6fdb6ab4c552d6d07454f7be7c24e1fcc6e83ffcc"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "NestBox",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": -1,
+        "sha256": "29f5b3eb4474a14155bff718057bca3e721ef1f5519634f733bf6e5264ac9ffd"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned",
+        "kind": "TractionBench",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "",
+        "component_color": "",
+        "raw": "",
+        "component_id": -1,
+        "sha256": "b666465bf1929d6785a22053b2c9c3d80ef6396b07865da91222c42825d01833"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "natural complete",
+        "kind": "Bookcase",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": 48521,
+        "sha256": "2c2b855ab4c57785e3bde919f66e13f20944ea1aeecfe2449baf3f4f01463f52"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "natural complete",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "ITEM_TOOL_PEDESTAL",
+        "component_id": 48522,
+        "sha256": "f06fcc7945464230c08d50fd06f8e9acd034c31d13aa366e04b99e31a6223d8c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "natural complete",
+        "kind": "OfferingPlace",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": 48523,
+        "sha256": "bf4d2dcb36b7153e992f02a3947a0fa6287055fafc48d2f38d73b4bdcbe0387c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "natural complete",
+        "kind": "Hive",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": 48524,
+        "sha256": "e2375cd52647ff9647d184fad5e01168810bebc07f1d8c9f8b23a5cc9709c20c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "natural complete",
+        "kind": "NestBox",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": 48525,
+        "sha256": "81bc285c5994405ed8fa9eb05dfc6f564d3e096db0c3f1e9c1dc7147ee33b025"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "natural complete",
+        "kind": "TractionBench",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "",
+        "component_id": 48526,
+        "sha256": "6c47d2790a561281ee28a9d271e9e1c817598a7b7d178e250089a7f55681bc11"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "Bed",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "",
+        "component_id": 48562,
+        "sha256": "5d3bde58ef6be1ef5acfbc8eace4dc951ce41d46f884bad1a0d86a32c784a152"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "Bed",
+        "complete": false,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "",
+        "component_id": 48563,
+        "sha256": "5d3bde58ef6be1ef5acfbc8eace4dc951ce41d46f884bad1a0d86a32c784a152"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "Bed",
+        "complete": false,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "",
+        "component_id": 48564,
+        "sha256": "5d3bde58ef6be1ef5acfbc8eace4dc951ce41d46f884bad1a0d86a32c784a152"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "Bed",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "",
+        "component_id": 48565,
+        "sha256": "5d3bde58ef6be1ef5acfbc8eace4dc951ce41d46f884bad1a0d86a32c784a152"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "Bookcase",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": 48567,
+        "sha256": "d18f304a130d4b57ef08f019c7f80ebc936e735871bbaec52b544d53651f2d94"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "Bookcase",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": 48568,
+        "sha256": "277d78dacb03f4be1eae37b4c96a1b8000bf2f8e86d744bcbcf77e09b8788c4c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "Bookcase",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": 48569,
+        "sha256": "8d3bb2ef9b211b85cec909d6d1766028d0d2c9e5dcf9bb4dcb565c2c9adbba13"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_PEDESTAL",
+        "component_id": 48571,
+        "sha256": "b6372d757fc9646b9fbfee462f1a89c72fa38e1e4102b3813ac6cc53d134d864"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "ITEM_TOOL_PEDESTAL",
+        "component_id": 48572,
+        "sha256": "f39f8fa9b4becf6406b6cecb018497b983ed0be2cdb7bdf579efa0b8ff565a5a"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_PEDESTAL",
+        "component_id": 48573,
+        "sha256": "4954d868c95ddc1bb76ae39bb7e7214a57893a5597723bfc5d87228bae53dd6a"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": 48574,
+        "sha256": "7bec73d39a9a781615126fb044b4c2ed59147c44d0b8ee38b2724f09a22a4966"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": 48575,
+        "sha256": "c6d1d84347de7f1690d4809277c84cd7c00a1a87f07d663bfcf1cc8884f327b7"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": 48576,
+        "sha256": "64dc52ad040bd2c595b986e520a92d3d3a85419af58fcbca105338e94de9cdd5"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": 48577,
+        "sha256": "60a5259ac35ac8356f50e5ff452885d693853f7ff7390d6018a7fa39c886f977"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "OfferingPlace",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": 48579,
+        "sha256": "c6920aded803b6852c66cbd9b7976dfafaa11d1c5fe4f82034fb3154a30970e9"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "OfferingPlace",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": 48580,
+        "sha256": "8a5acefbb80f1a3265dfc3dd7298532cff14a84db57899070ed851490c94b49e"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "OfferingPlace",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": 48581,
+        "sha256": "ff362e1d1f4cfb6d56c71fb3b2af68b78d6d9832b4402e044a1219a5bea1500b"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "Hive",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": 48583,
+        "sha256": "e2375cd52647ff9647d184fad5e01168810bebc07f1d8c9f8b23a5cc9709c20c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "Hive",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": 48584,
+        "sha256": "e2375cd52647ff9647d184fad5e01168810bebc07f1d8c9f8b23a5cc9709c20c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "Hive",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": 48585,
+        "sha256": "e2375cd52647ff9647d184fad5e01168810bebc07f1d8c9f8b23a5cc9709c20c"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "NestBox",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": 48587,
+        "sha256": "728b698440171abfab9b0877f971a5ae0e2a7127376918d7a4ce4fce0f6f01a4"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "NestBox",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": 48588,
+        "sha256": "ae98e3e067f2ca00a25bed76854be1638b0fdea3439a380406754fb314766b57"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "NestBox",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": 48589,
+        "sha256": "d24e103b3a58870f86c325791539f152ed0b32202465190f170b053eab46fa37"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "TractionBench",
+        "complete": false,
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "component_color": "CLEAR",
+        "raw": "",
+        "component_id": 48590,
+        "sha256": "b666465bf1929d6785a22053b2c9c3d80ef6396b07865da91222c42825d01833"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "TractionBench",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "",
+        "component_id": 48591,
+        "sha256": "018f2c70c3d5b8ac60321e1bdc4e2f2300fe69ba3f70fd794daf2952544c470b"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "TractionBench",
+        "complete": false,
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "",
+        "component_id": 48591,
+        "sha256": "6faab5f06b2eb86a9afb1b6d2a85001bfdf02fb07e530cfbe10308b19d7431fb"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "TractionBench",
+        "complete": true,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "",
+        "component_id": 48592,
+        "sha256": "018f2c70c3d5b8ac60321e1bdc4e2f2300fe69ba3f70fd794daf2952544c470b"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "TractionBench",
+        "complete": false,
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "component_color": "DARK_GREEN",
+        "raw": "",
+        "component_id": 48592,
+        "sha256": "6faab5f06b2eb86a9afb1b6d2a85001bfdf02fb07e530cfbe10308b19d7431fb"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "registered variant",
+        "kind": "TractionBench",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "",
+        "component_id": 48593,
+        "sha256": "dd45327a999a2c546a23eaa4a8d7e06de50c6ebcf313d14e62e0b671554aa612"
+      },
+      {
+        "source": "build/tool-furniture-art-native-20261024-060022",
+        "label": "planned material",
+        "kind": "TractionBench",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "",
+        "component_id": 48593,
+        "sha256": "a0fd09a7afa8fc69f6bbf4db521c758be7fa41656dc16cc808b832fa56798852"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "Bed",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "",
+        "component_id": -1,
+        "sha256": "5d3bde58ef6be1ef5acfbc8eace4dc951ce41d46f884bad1a0d86a32c784a152"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "Bookcase",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": -1,
+        "sha256": "53df00bb5178ae5d71b2cebb8f1b1ba0bd501fe762201673504cb0d564797d29"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "DisplayFurniture",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": -1,
+        "sha256": "0fb7120ea3c69c7e3aa07d4a21a689785dd8c037ffb099852080116042b01b22"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "OfferingPlace",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": -1,
+        "sha256": "8d7c8ca224152819dcbde0268213ac0b207a46f0ee987caecfae344183e6a766"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "Hive",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": -1,
+        "sha256": "f53011afe3827a1aa787dcf6fdb6ab4c552d6d07454f7be7c24e1fcc6e83ffcc"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "NestBox",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": -1,
+        "sha256": "29f5b3eb4474a14155bff718057bca3e721ef1f5519634f733bf6e5264ac9ffd"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "planned",
+        "kind": "TractionBench",
+        "complete": false,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "",
+        "component_color": "",
+        "raw": "",
+        "component_id": -1,
+        "sha256": "a0fd09a7afa8fc69f6bbf4db521c758be7fa41656dc16cc808b832fa56798852"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "building material only changed",
+        "kind": "Bookcase",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": 48521,
+        "sha256": "8d3bb2ef9b211b85cec909d6d1766028d0d2c9e5dcf9bb4dcb565c2c9adbba13"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "component material only changed",
+        "kind": "Bookcase",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_BOOKCASE",
+        "component_id": 48552,
+        "sha256": "d18f304a130d4b57ef08f019c7f80ebc936e735871bbaec52b544d53651f2d94"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "building material only changed",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": 48522,
+        "sha256": "60a5259ac35ac8356f50e5ff452885d693853f7ff7390d6018a7fa39c886f977"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "component material only changed",
+        "kind": "DisplayFurniture",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_DISPLAY_CASE",
+        "component_id": 48553,
+        "sha256": "c6d1d84347de7f1690d4809277c84cd7c00a1a87f07d663bfcf1cc8884f327b7"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "building material only changed",
+        "kind": "OfferingPlace",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": 48523,
+        "sha256": "ff362e1d1f4cfb6d56c71fb3b2af68b78d6d9832b4402e044a1219a5bea1500b"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "component material only changed",
+        "kind": "OfferingPlace",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_ALTAR",
+        "component_id": 48554,
+        "sha256": "c6920aded803b6852c66cbd9b7976dfafaa11d1c5fe4f82034fb3154a30970e9"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "building material only changed",
+        "kind": "Hive",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": 48524,
+        "sha256": "e2375cd52647ff9647d184fad5e01168810bebc07f1d8c9f8b23a5cc9709c20c"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "component material only changed",
+        "kind": "Hive",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_HIVE",
+        "component_id": 48555,
+        "sha256": "e2375cd52647ff9647d184fad5e01168810bebc07f1d8c9f8b23a5cc9709c20c"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "building material only changed",
+        "kind": "NestBox",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": 48525,
+        "sha256": "d24e103b3a58870f86c325791539f152ed0b32202465190f170b053eab46fa37"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "component material only changed",
+        "kind": "NestBox",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "ITEM_TOOL_NEST_BOX",
+        "component_id": 48556,
+        "sha256": "728b698440171abfab9b0877f971a5ae0e2a7127376918d7a4ce4fce0f6f01a4"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "building material only changed",
+        "kind": "TractionBench",
+        "complete": true,
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "component_color": "AUBURN",
+        "raw": "",
+        "component_id": 48526,
+        "sha256": "018f2c70c3d5b8ac60321e1bdc4e2f2300fe69ba3f70fd794daf2952544c470b"
+      },
+      {
+        "source": "build/tool-furniture-source-native-20261024-060329",
+        "label": "component material only changed",
+        "kind": "TractionBench",
+        "complete": true,
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "INORGANIC:IRON",
+        "component_color": "GRAY",
+        "raw": "",
+        "component_id": 48557,
+        "sha256": "dd45327a999a2c546a23eaa4a8d7e06de50c6ebcf313d14e62e0b671554aa612"
+      }
+    ]
+  },
+  "completed_bed_component_reference": {
+    "source": "build/tool-state-transport-native-20261024-062138",
+    "scope": "Published native bedding facts and component material compared to independent native building textures after natural completion and registered material changes. Building-only material changes prove frame material comes from the component.",
+    "rgba_sha256": [
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "natural complete",
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "bedding": {
+          "sheet": 0,
+          "pillow": 2,
+          "base_color": "CLEAR",
+          "sheet_color": "DARK_PEACH"
+        },
+        "sha256": "c4740e7582f065e173af09132bd499a67f0c8069b7286990aa121dfb2a3b6110"
+      },
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "registered variant",
+        "material": "INORGANIC:GRANITE",
+        "component_material": "INORGANIC:GRANITE",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 0,
+          "base_color": "CLEAR",
+          "sheet_color": "TAUPE_DARK"
+        },
+        "sha256": "a7de576f7c856d84fa6c49f95a68ed349e34621c88f948f6987555653fa13010"
+      },
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "registered variant",
+        "material": "INORGANIC:IRON",
+        "component_material": "INORGANIC:IRON",
+        "bedding": {
+          "sheet": 0,
+          "pillow": 0,
+          "base_color": "GRAY",
+          "sheet_color": "BLACK"
+        },
+        "sha256": "3f5f83aff55194df284b8f1202f25825d96a60c4c66d24126f31d23bfdebf56a"
+      },
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "registered variant",
+        "material": "GLASS_GREEN",
+        "component_material": "GLASS_GREEN",
+        "bedding": {
+          "sheet": 0,
+          "pillow": 1,
+          "base_color": "DARK_GREEN",
+          "sheet_color": "TEAL"
+        },
+        "sha256": "0bb0642d2a0b0f70f3c885e3390026bbb64505a38a783e0901e7af40e86dcaae"
+      },
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "registered variant",
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 1,
+          "base_color": "AUBURN",
+          "sheet_color": "GREEN-YELLOW"
+        },
+        "sha256": "2462aceea8b0f094b796c6253ea709ee85076d1d6907f9081c9fa303f2ad75af"
+      },
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "building material only changed",
+        "material": "INORGANIC:IRON",
+        "component_material": "PLANT:OAK:WOOD",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 1,
+          "base_color": "AUBURN",
+          "sheet_color": "GREEN-YELLOW"
+        },
+        "sha256": "2462aceea8b0f094b796c6253ea709ee85076d1d6907f9081c9fa303f2ad75af"
+      },
+      {
+        "kind": "Bed",
+        "source": "build/tool-state-transport-native-20261024-062138",
+        "label": "building material restored",
+        "material": "PLANT:OAK:WOOD",
+        "component_material": "PLANT:OAK:WOOD",
+        "bedding": {
+          "sheet": 1,
+          "pillow": 1,
+          "base_color": "AUBURN",
+          "sheet_color": "GREEN-YELLOW"
+        },
+        "sha256": "2462aceea8b0f094b796c6253ea709ee85076d1d6907f9081c9fa303f2ad75af"
+      }
+    ]
+  }
+}

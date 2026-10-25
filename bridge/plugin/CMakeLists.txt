@@ -26,7 +26,7 @@ add_custom_target(df3d_generate_mirror
     DEPENDS "${DF3D_GENERATED_DIR}/mirror_generated.h")
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/embed_lua.cmake")
-foreach(script IN ITEMS construction construction_track construction_material_facts construction_material_terrain construction_material_opening construction_material_shapes construction_track_material_candidates construction_material_candidate_gate construction_track_material_recipe construction_material_candidate_enabled construction_track_material_groups construction_material_partition construction_material_group_name construction_material_order construction_track_placement_plan construction_track_commit areas production work_orders citizens creature reports report_tabs report_tab_page report_tab_snapshot report_text_snapshot report_unit_profession report_unit_page report_unit_log report_unit_snapshot report_group_snapshot report_alert_dismiss report_dismissal report_entries agreements trade)
+foreach(script IN ITEMS construction construction_track construction_track_material_candidates construction_material_candidate_enabled construction_track_material_groups construction_material_partition construction_material_group_name construction_material_order construction_track_placement_plan construction_track_commit areas production work_orders citizens creature reports report_tabs report_tab_page report_tab_snapshot report_text_snapshot report_unit_profession report_unit_page report_unit_log report_unit_snapshot report_group_snapshot report_alert_dismiss report_dismissal report_entries agreements trade)
     df3d_embed_lua_script(${script} "${DF3D_GENERATED_DIR}")
 endforeach()
 
@@ -39,7 +39,7 @@ add_dependencies(df3d df3d_generate_mirror)
 # Reuse only the stateless semantic Track rules, not WorldModel, mirror clients
 # or presentation state. The same source is exercised by the core native fixtures.
 target_sources(df3d PRIVATE construction_track_route.cpp "${DF3D_ROOT}/worldmodel/src/track_path.cpp")
-target_sources(df3d PRIVATE construction_material_native.cpp)
+target_sources(df3d PRIVATE construction_material_native.cpp construction_site_native.cpp bed_appearance_native.cpp)
 target_include_directories(df3d PRIVATE "${DF3D_ROOT}/worldmodel/include")
 add_executable(df3d_track_callback_test EXCLUDE_FROM_ALL
     tests/construction_track_route_test.cpp construction_track_route.cpp

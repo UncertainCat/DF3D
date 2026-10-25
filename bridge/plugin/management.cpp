@@ -1,3 +1,4 @@
+#include "bed_appearance_native.h"
 #include "management.h"
 #include "construction_track_route.h"
 #include "construction_material_native.h"
@@ -200,7 +201,7 @@ struct ConstructionFilter {
   int16_t index=-1,item_type=-1,item_subtype=-1;
   std::string caption,requirement; int32_t quantity=-1;
 };
-struct ConstructionItemAppearance { std::string material_token,subtype_raw,color_token;uint32_t stack=1;uint8_t flags=0; };
+struct ConstructionItemAppearance { std::string material_token,subtype_raw,color_token,gem_shape_raw;uint32_t stack=1;uint8_t flags=0;df3d_bed::Facts bedding;int8_t instrument_family=-1,instrument_placed=-1,slab_engraving=-2; };
 struct ConstructionMaterialCandidate {
   int32_t id=-1; std::string name; uint32_t distance=0;
   std::optional<ConstructionItemAppearance> appearance;
@@ -227,7 +228,7 @@ struct ConstructionState {
   bool has_track=false; m::ConnectedTrackStatus track_status=m::ConnectedTrackStatus::UnverifiedTerrain;
   std::vector<m::TilePos> track_path;
   m::ConstructionOutcome outcome=m::ConstructionOutcome::None;
-  uint32_t updated=0;int32_t failed_index=-1;
+  uint32_t updated=0;int32_t failed_index=-1;std::string warnings;
 } construction;
 struct Def {
   std::string key,name,reason,family,subtype_key,custom_code,native_name;
@@ -350,7 +351,9 @@ void publish() {
       for(const auto& item:*v.candidates) {
         flatbuffers::Offset<m::ConstructionItemAppearance> appearance;
         if(item.appearance) { const auto& a=*item.appearance;
-          appearance=m::CreateConstructionItemAppearance(b,b.CreateString(a.material_token),b.CreateString(a.subtype_raw),b.CreateString(a.color_token),a.stack,a.flags); }
+          flatbuffers::Offset<m::BeddingFacts> bedding;
+          if(a.bedding.sheet>=0)bedding=m::CreateBeddingFactsDirect(b,a.bedding.sheet,a.bedding.pillow,a.bedding.baseColor.c_str(),a.bedding.sheetColor.c_str());
+          appearance=m::CreateConstructionItemAppearance(b,b.CreateString(a.material_token),b.CreateString(a.subtype_raw),b.CreateString(a.color_token),a.stack,a.flags,bedding,a.instrument_family,a.instrument_placed,a.slab_engraving,b.CreateString(a.gem_shape_raw)); }
         rows.push_back(m::CreateConstructionMaterialCandidate(b,item.id,b.CreateString(item.name),item.distance,appearance)); }
       candidates=b.CreateVector(rows); }
     materials.push_back(m::CreateConstructionMaterial(b,v.item_type,v.item_subtype,v.mat_type,v.mat_index,b.CreateString(v.name),b.CreateString(v.caption),v.count,candidates,v.individual_id,b.CreateString(v.last_name)));
@@ -361,7 +364,7 @@ void publish() {
   auto constructionResult=m::CreateConstructionState(b,b.CreateString(construction.building_key),construction.filter,filters(construction.filters),b.CreateVector(materials),
     construction.total,construction.list_revision,construction.estimated,construction.build_phase,construction.build_done,construction.build_total,
     construction.placed,construction.skipped,construction.first_building,b.CreateVector(construction.valid_mask),b.CreateVector(construction.pieces),
-    construction.hasFootprint ? footprint(construction.footprint) : flatbuffers::Offset<m::ConstructionFootprint>{},b.CreateVector(pressureCreatures),trackPreview,construction.outcome,construction.updated,construction.failed_index);
+    construction.hasFootprint ? footprint(construction.footprint) : flatbuffers::Offset<m::ConstructionFootprint>{},b.CreateVector(pressureCreatures),trackPreview,construction.outcome,construction.updated,construction.failed_index,b.CreateString(construction.warnings));
   std::vector<flatbuffers::Offset<m::ConstructionInput>> is;
   for (auto& i : inputs)
     is.push_back(m::CreateConstructionInput(b, i.id, b.CreateString(i.description), i.quantity));
@@ -2064,6 +2067,14 @@ void run(color_ostream& out) {
   field(L, "height", r->height());
   field(L, "direction", r->direction());
   field(L, "roller_speed", r->roller_speed());
+  if(action==m::ManagementAction::Preview || action==m::ManagementAction::Place) {
+    lua_pushcfunction(L,df3d_construction::nativeMaterialRequirements);
+    lua_setfield(L,-2,"native_material_recipe");
+  }
+  if(action==m::ManagementAction::ConstructionMaterials || action==m::ManagementAction::Place) {
+    lua_pushcfunction(L,df3d_construction::nativeMaterialCandidates);
+    lua_setfield(L,-2,"native_material_candidates");
+  }
   if(action==m::ManagementAction::ConstructionMaterials) {
     lua_pushcfunction(L,df3d_construction::nativeMaterialDistances);lua_setfield(L,-2,"material_distances");
   }
@@ -2534,6 +2545,7 @@ void run(color_ostream& out) {
     auto readFootprint=[&]() {ConstructionFootprint v;v.direction=uint8_t(n("direction",0,7));v.width=uint16_t(n("width",1,31));v.height=uint16_t(n("height",1,31));v.center_x=int16_t(n("center_x",-1,30,-1));v.center_y=int16_t(n("center_y",-1,30,-1));return v;};
     catalog.clear();
     each("catalog",128,[&](){Def d;d.key=str("key",64);d.name=str("name",128);d.reason=str("reason",128);d.w=uint16_t(n("width",1,31,1));d.h=uint16_t(n("height",1,31,1));d.supported=boolean(L,"supported");d.family=str("family",64);d.subtype_key=str("subtype_key",64);d.custom_code=str("custom_code",64);d.native_name=str("native_name",128);d.area_mode=uint8_t(n("area_mode",0,4));d.orientations=uint8_t(n("orientations",0,255));d.max_width=uint16_t(n("max_width",0,31));d.max_height=uint16_t(n("max_height",0,31));d.max_depth=uint16_t(n("max_depth",0,256));d.filters=readFilters();each("footprints",8,[&](){d.footprints.push_back(readFootprint());});catalog.push_back(std::move(d));});
+    construction.warnings=str("warnings",512);
     construction.outcome=m::ConstructionOutcome(n("construction_outcome",0,4));
     construction.updated=uint32_t(n("updated",0,16384));construction.failed_index=int32_t(n("failed_index",-1,16384,-1));
     if(construction.updated || construction.placed || construction.outcome==m::ConstructionOutcome::Unknown)mutated=true;
@@ -2578,7 +2590,24 @@ void run(color_ostream& out) {
           else { ConstructionItemAppearance a;
             a.material_token=str("material_token",256);a.subtype_raw=str("subtype_raw",128);a.color_token=str("color_token",128);
             a.stack=uint32_t(n("stack",1,INT32_MAX,0));a.flags=uint8_t(n("flags",0,96,0));
+            a.gem_shape_raw=str("gem_shape_raw",128);
+            if(!a.gem_shape_raw.empty() && v.item_type!=1)invalid=true;
+            a.slab_engraving=int8_t(n("slab_engraving",-2,26,-2));
+            if(a.slab_engraving!=-2 && v.item_type!=87)invalid=true;
+            a.instrument_family=int8_t(n("instrument_family",-1,3,-1));
+            a.instrument_placed=int8_t(n("instrument_placed",-1,1,-1));
+            if((a.instrument_family==-1)!=(a.instrument_placed==-1) ||
+               (a.instrument_family!=-1 && v.item_type!=13))invalid=true;
             if(a.material_token.empty() || (a.flags & ~uint8_t(96)))invalid=true;
+            lua_getfield(L,-1,"bedding");
+            if(!lua_isnil(L,-1)) {
+              if(!lua_istable(L,-1) || v.item_type!=8)invalid=true;
+              else {
+                a.bedding.sheet=int8_t(n("sheet",0,1,-1));a.bedding.pillow=int8_t(n("pillow",0,2,-1));
+                a.bedding.baseColor=str("base_color",128);a.bedding.sheetColor=str("sheet_color",128);
+              }
+            }
+            lua_pop(L,1);
             item.appearance=std::move(a); }
         }
         lua_pop(L,1);v.candidates->push_back(std::move(item));}); }
@@ -2638,7 +2667,14 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
-bool printMaterialDistances(color_ostream& out,const std::array<int32_t,6>& positions,int32_t tileLimit) {
+bool printMaterialRecipe(color_ostream& out,int32_t type,int32_t subtype,bool collect,bool cold_cache,int32_t custom,int32_t plate_flags,int32_t eligible_tiles) {
+  auto* L=Core::getInstance().getLuaState();const int top=lua_gettop(L);
+  lua_pushcfunction(L,df3d_construction::nativeMaterialRecipe);lua_pushinteger(L,type);lua_pushinteger(L,subtype);lua_pushboolean(L,collect);lua_pushboolean(L,cold_cache);lua_pushinteger(L,custom);lua_pushinteger(L,plate_flags);lua_pushinteger(L,eligible_tiles);
+  bool ok=Lua::SafeCall(out,L,7,1) && lua_istable(L,-1);
+  if(ok)ok=Lua::SafeCallString(out,L,"local result=...;return require('json').encode(result)",1,1) && lua_type(L,-1)==LUA_TSTRING;
+  if(ok)out.print("{}\n",lua_tostring(L,-1));lua_settop(L,top);return ok;
+}
+bool printMaterialDistances(color_ostream& out,const std::array<int32_t,6>& positions,int32_t /*legacyTileLimit*/) {
   auto* world=df::global::world;
   if(!world || world->map.x_count<=0 || world->map.y_count<=0 || world->map.z_count<=0)return false;
   auto* L=Core::getInstance().getLuaState();const int top=lua_gettop(L);
@@ -2650,8 +2686,6 @@ bool printMaterialDistances(color_ostream& out,const std::array<int32_t,6>& posi
   const auto point=[&](int32_t x,int32_t y,int32_t z){lua_newtable(L);field(L,"x",x);field(L,"y",y);field(L,"z",z);};
   lua_newtable(L);point(positions[0],positions[1],positions[2]);lua_rawseti(L,-2,1);lua_setfield(L,-2,"seeds");
   lua_newtable(L);point(positions[3],positions[4],positions[5]);lua_rawseti(L,-2,1);lua_setfield(L,-2,"targets");
-  point(world->map.x_count-1,world->map.y_count-1,world->map.z_count-1);lua_setfield(L,-2,"maximum");
-  field(L,"tile_limit",tileLimit);
   bool ok=Lua::SafeCall(out,L,1,1) && lua_istable(L,-1);
   if(ok)ok=Lua::SafeCallString(out,L,"local result=...;return require('json').encode(result)",1,1) && lua_type(L,-1)==LUA_TSTRING;
   if(ok)out.print("{}\n",lua_tostring(L,-1));
@@ -2663,6 +2697,8 @@ bool printTrackMaterialCandidates(color_ostream& out,const std::array<int32_t,6>
   if(helper==LUA_NOREF){lua_settop(L,top);return false;}
   lua_rawgeti(L,LUA_REGISTRYINDEX,helper);lua_newtable(L);
   lua_pushboolean(L,true);lua_setfield(L,-2,"track_material_candidates_query");
+  lua_pushcfunction(L,df3d_construction::nativeMaterialCandidates);
+  lua_setfield(L,-2,"native_material_candidates");
   lua_pushcfunction(L,df3d_construction::routeTrack);lua_setfield(L,-2,"route_track");
   const auto point=[&](int32_t x,int32_t y,int32_t z){lua_newtable(L);field(L,"x",x);field(L,"y",y);field(L,"z",z);};
   point(positions[0],positions[1],positions[2]);lua_setfield(L,-2,"start");
@@ -2671,7 +2707,6 @@ bool printTrackMaterialCandidates(color_ostream& out,const std::array<int32_t,6>
   if(tileLimit!=0) {
     lua_pushboolean(L,true);lua_setfield(L,-2,"material_order_query");
     lua_pushcfunction(L,df3d_construction::nativeMaterialDistances);lua_setfield(L,-2,"material_distances");
-    field(L,"tile_limit",tileLimit);
   }
   bool ok=Lua::SafeCall(out,L,1,1) && lua_istable(L,-1);
   if(ok)ok=Lua::SafeCallString(out,L,"local result=...;return require('json').encode(result)",1,1) && lua_type(L,-1)==LUA_TSTRING;

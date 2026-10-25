@@ -64,7 +64,7 @@ add_test(NAME designation_fixture_evidence
 if(DF3D_BUILD_TOOLS)
   foreach(fixture IN ITEMS demo interaction depth_cache vertical_motion render_cache
           item_updates spatter effect_events corpse_handoff truescale ramp_support
-          resource_lifetime)
+          resource_lifetime pump_animation track_stop roller instrument roller_pages waterwheel windmill transmission slab bars siege layout_families trap weapon_trap upright_weapon farm_road pending_tile constructed_ramp)
     add_executable(make_${fixture}_fixture make_${fixture}_fixture.cpp)
     target_link_libraries(make_${fixture}_fixture PRIVATE mirror_support)
   endforeach()

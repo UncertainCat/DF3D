@@ -270,5 +270,52 @@
       "existing general building sheet is not fully native-parity accepted"
     ],
     "source_preserved": true
+  },
+  "machinery_acceptance": {
+    "capture": "build/waterwheel-removal-main-20261024-012258",
+    "status": "passed_with_known_issues",
+    "checks": [
+      "WE three-tile WaterWheel naturally completed using exact selected logs48520/48521/48522",
+      "Map-click inspector exact building1491 removal, cancellation and requeue",
+      "Native paused removal state verified after each action",
+      "Natural removal in300ticks with allthree original logs registered and released",
+      "Viewer entity retired after native building removal"
+    ],
+    "source_preserved": true,
+    "omissions": [
+      "Dry supported wheel, not powered-machine graph teardown",
+      "Not exhaustive across all machinery or other building kinds",
+      "General building inspector layout is not fully native-parity accepted"
+    ],
+    "outline_lifecycle": {
+      "capture": "build/waterwheel-removal-main-20261024-013141",
+      "status": "passed_with_known_issues",
+      "checks": [
+        "Closed construction outline.mesh is null while placement receipt remains",
+        "After natural removal the viewer entity and construction outline are absent",
+        "Exact three logs released; native remove/cancel/requeue and source preservation repeat passed"
+      ],
+      "focused_gate": "build/qa/construction-outline-lifetime",
+      "screenshot_review": "Wheel-removed.png no stale yellow three-tile outline"
+    },
+    "legacy_controller_cleanup": {
+      "capture": "build/waterwheel-removal-main-20261024-013507",
+      "status": "passed_with_known_issues",
+      "source_preserved": true,
+      "focused_gate": "build/qa/construction-inspector-cleanup",
+      "scope": "Real inspector lifecycle after removing hidden construction inspection mode; migrated broad diagnostic controller scripts parse but were not rerun live."
+    },
+    "outline_reopen": {
+      "capture": "build/waterwheel-removal-main-20261024-013800",
+      "status": "passed_with_known_issues",
+      "source_preserved": true,
+      "focused_gate": "build/qa/construction-receipt-geometry",
+      "checks": [
+        "All original natural wheel construction/removal/material-release checks",
+        "Reopen Build with retained placement receipt",
+        "No outline mesh or visible preview sites for removed wheel"
+      ],
+      "screenshot": "Wheel-reopened.png inspected"
+    }
   }
 }

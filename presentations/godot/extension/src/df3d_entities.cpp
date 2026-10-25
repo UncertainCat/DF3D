@@ -55,6 +55,28 @@ namespace mesher = df3d::mesher;
 
 namespace {
 
+bool isFloorHalfPlannedBuilding(wm::BuildingKind kind, uint16_t subtype) {
+    return kind==wm::BuildingKind::ScrewPump || kind==wm::BuildingKind::Instrument ||
+           kind==wm::BuildingKind::Rollers || kind==wm::BuildingKind::WaterWheel ||
+           kind==wm::BuildingKind::Windmill || (kind==wm::BuildingKind::SiegeEngine && subtype==2) || (kind==wm::BuildingKind::Trap && subtype==5);
+}
+
+bool isMaterialPlannedFurniture(wm::BuildingKind kind) {
+    return kind==wm::BuildingKind::Armorstand || kind==wm::BuildingKind::Weaponrack;
+}
+
+bool isRawPlannedFurniture(wm::BuildingKind kind) {
+    return kind==wm::BuildingKind::ArcheryTarget || kind==wm::BuildingKind::Bed || kind==wm::BuildingKind::Bookcase ||
+           kind==wm::BuildingKind::DisplayFurniture || kind==wm::BuildingKind::OfferingPlace ||
+           kind==wm::BuildingKind::Hive || kind==wm::BuildingKind::NestBox || kind==wm::BuildingKind::TractionBench ||
+           kind==wm::BuildingKind::Coffin || kind==wm::BuildingKind::Cage ||
+           kind==wm::BuildingKind::Chain || kind==wm::BuildingKind::AnimalTrap ||
+           kind==wm::BuildingKind::Door || kind==wm::BuildingKind::Hatch ||
+           kind==wm::BuildingKind::GrateWall || kind==wm::BuildingKind::GrateFloor ||
+           kind==wm::BuildingKind::Floodgate || kind==wm::BuildingKind::Chair ||
+           kind==wm::BuildingKind::Table || kind==wm::BuildingKind::Box || kind==wm::BuildingKind::Cabinet;
+}
+
 struct QuadArrays {
     godot::Vector3 ground;
     PackedVector3Array vertices, normals;
@@ -172,6 +194,9 @@ void Df3dWorld::resetEntities() {
     itemRenderGroupsSeen_ = UINT64_MAX;
     buildingBatches_.clear();
     buildingPieceMaterials_.clear();
+    buildingPumpMaterials_.clear();
+    buildingMachineMaterials_.clear();machinePhasePages_.clear();machinePhaseSlots_.clear();
+    machinePhaseFreeSlots_.clear();machinePhaseSources_.clear();
     buildingFootprintCache_.clear();
     buildingAlphaCache_.clear();
     buildingAlphaRecent_.clear();
@@ -221,6 +246,67 @@ bool Df3dWorld::tileVisible(wm::TilePos p) const {
 }
 
 // --- buildings ---
+namespace {
+bool isAxle(wm::BuildingKind kind) {return kind==wm::BuildingKind::AxleHorizontal || kind==wm::BuildingKind::AxleVertical;}
+bool isTransmission(wm::BuildingKind kind) {return isAxle(kind) || kind==wm::BuildingKind::GearAssembly;}
+}
+
+uint32_t Df3dWorld::updateMachinePosition(const wm::Building& b) {
+    auto it=machinePhaseSlots_.find(b.id);
+    if(it==machinePhaseSlots_.end()) {
+        if(machinePhaseFreeSlots_.empty()) {
+            const uint32_t first=uint32_t(machinePhasePages_.size())*256;
+            MachinePhasePage page;
+            page.image=godot::Image::create(256,1,false,godot::Image::FORMAT_RF);
+            page.image->fill(Color(-129,0,0,1));
+            page.texture=godot::ImageTexture::create_from_image(page.image);
+            machinePhasePages_.push_back(std::move(page));
+            for(uint32_t i=256;i>0;--i)machinePhaseFreeSlots_.push_back(first+i-1);
+        }
+        const auto slot=machinePhaseFreeSlots_.back();machinePhaseFreeSlots_.pop_back();
+        it=machinePhaseSlots_.emplace(b.id,slot).first;
+    }
+    auto& page=machinePhasePages_[it->second/256];const int x=it->second%256;
+    int phase=b.kind==wm::BuildingKind::WaterWheel ? b.waterwheelMachinePosition : b.rollerMachinePosition;
+    if(isTransmission(b.kind))phase=b.stage==wm::BuildingStage::Complete ? b.gearAxleMachinePosition : 0;
+    if(b.kind==wm::BuildingKind::Windmill) {
+        // Presentation payload: installed atlas orientation row and frame.
+        static constexpr int rows[3][3]={{3,2,1},{4,0,0},{5,6,7}};
+        const bool known=b.windmillOrientX>=-1 && b.windmillOrientX<=1 && b.windmillOrientY>=-1 && b.windmillOrientY<=1;
+        const int row=known ? rows[b.windmillOrientX+1][b.windmillOrientY+1] : 0;
+        phase=row*2+(b.stage==wm::BuildingStage::Complete && b.windmillRotation!=-129 && b.windmillRotation!=0 ? 1:0);
+    }
+    if(page.image->get_pixel(x,0).r!=float(phase)) {
+        page.image->set_pixel(x,0,Color(float(phase),0,0,1));page.dirty=true;
+    }
+    return it->second;
+}
+
+void Df3dWorld::releaseMachinePosition(wm::BuildingId id) {
+    const auto it=machinePhaseSlots_.find(id);if(it==machinePhaseSlots_.end())return;
+    auto& page=machinePhasePages_[it->second/256];
+    page.image->set_pixel(it->second%256,0,Color(-129,0,0,1));page.dirty=true;
+    machinePhaseFreeSlots_.push_back(it->second);machinePhaseSlots_.erase(it);
+}
+
+void Df3dWorld::flushMachinePositions() {
+    for(auto& page:machinePhasePages_)if(page.dirty) {
+        page.texture->update(page.image);page.dirty=false;
+    }
+}
+
+namespace {
+bool sameMachineGeometry(const wm::Building& a,const wm::Building& b) {
+    return a.kind==b.kind && a.subtype==b.subtype && a.custom==b.custom &&
+        a.x1==b.x1 && a.x2==b.x2 && a.y1==b.y1 && a.y2==b.y2 && a.z==b.z &&
+        a.centerX==b.centerX && a.centerY==b.centerY && a.extents==b.extents &&
+        a.material==b.material && a.stage==b.stage && a.flags==b.flags &&
+        a.statue==b.statue && a.bedding==b.bedding && a.bridge==b.bridge &&
+        a.pumpDirection==b.pumpDirection && a.pumpRunning==b.pumpRunning &&
+        a.rollerDirection==b.rollerDirection && a.horizontalAxleVertical==b.horizontalAxleVertical && a.constructionItemIsLog==b.constructionItemIsLog &&
+        a.constructionItemMaterial==b.constructionItemMaterial;
+}
+}
 
 void Df3dWorld::enqueueBuilding(wm::BuildingId id, uint32_t reason) {
     if(submission::details().enabled)buildingSubmissionReasons_[id]|=reason;
@@ -320,9 +406,20 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     // translucent ghost for planned buildings.
     Color tint(1, 1, 1, 1);
     SurfaceKind kind = kSurfDecal;
-    if (b->kind == wm::BuildingKind::Construction) {
+    if ((isRawPlannedFurniture(b->kind) || isMaterialPlannedFurniture(b->kind) || r.plannedHalfAlpha) && b->stage!=wm::BuildingStage::Complete) {
+        kind=kSurfGhost;
+    } else if ((b->kind == wm::BuildingKind::Well || b->kind == wm::BuildingKind::WindowGem || b->kind == wm::BuildingKind::WindowGlass || b->kind == wm::BuildingKind::BarsFloor || b->kind == wm::BuildingKind::Support || b->kind == wm::BuildingKind::BarsVertical || b->kind == wm::BuildingKind::Slab || b->kind == wm::BuildingKind::Instrument || b->kind == wm::BuildingKind::ScrewPump || b->kind==wm::BuildingKind::Rollers || b->kind==wm::BuildingKind::WaterWheel || b->kind==wm::BuildingKind::Windmill || isTransmission(b->kind) || (b->kind==wm::BuildingKind::Trap && b->subtype==5)) && b->stage != wm::BuildingStage::Complete) {
+        // Native planned pumps and track stops retain painted RGB with half alpha.
+        kind=kSurfGhost;
+    } else if (b->kind == wm::BuildingKind::Bridge && b->stage != wm::BuildingStage::Complete) {
+        // Native stages0..2 retain the bridge's colors and halve source alpha.
+        tint=Color(1,1,1,1);kind=kSurfGhost;
+    } else if (b->kind == wm::BuildingKind::Construction) {
         // Native planned artwork owns partial alpha (e.g. Track grooves at
         // 115/255). Cutout discards those pixels; retain full source opacity.
+        kind = kSurfGhost;
+    } else if (r.stageArt) {
+        // Native layout construction stages supply their own opacity.
         kind = kSurfGhost;
     } else if (b->stage == wm::BuildingStage::Planned) {
         tint = Color(1, 1, 1, 0.4f);
@@ -330,6 +427,8 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     } else if (b->stage == wm::BuildingStage::InProgress && !r.stageArt) {
         tint = Color(0.6f, 0.6f, 0.6f, 1);
     }
+    const bool phasedMachine=r.found && (isTransmission(b->kind) || b->kind==wm::BuildingKind::Windmill || ((b->kind==wm::BuildingKind::Rollers || b->kind==wm::BuildingKind::WaterWheel) && b->stage==wm::BuildingStage::Complete));
+    const uint32_t machineSlot=phasedMachine ? updateMachinePosition(*b) : 0;
     const bool piece = mesher::isFurniturePiece(b->kind);
     const auto depthAt=[&](int,int y) {
         return piece?mesher::buildingDepth(b->y1,y):mesher::DepthInterval{mesher::installationArtBottom(b->kind),0};
@@ -345,7 +444,12 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
         for (const assets::BuildingTile& t : r.tiles) {
             const wm::TilePos p{b->x1+t.lx,b->y1+t.ly,b->z};
             if(!tileVisible(p))continue;
-            const int slot=slotFor(t.sprite.page,r.paletteRow,false);if(slot<0)continue;
+            if(b->kind==wm::BuildingKind::Bed && b->stage==wm::BuildingStage::Complete && b->bedding.sheet>=0) {
+                const int bed=bedSlot(source_.model().materialName(b->constructionItemIsLog>=0?b->constructionItemMaterial:b->material),b->bedding);
+                if(bed>=0)tiles[{p.x,p.y}].push_back({bed,Color(0,0,1,1)});
+                continue;
+            }
+            const int slot=buildingSlotFor(b->kind,b->stage,t.sprite.page,(t.rawPalette || (r.gridLayout && t.foreground)) ? -1 : r.paletteRow,b->subtype,r.plannedHalfAlpha || t.halfAlpha);if(slot<0)continue;
             const TextureSlot* found=spriteResources_.slots.find(slot);
             ERR_CONTINUE_MSG(!found, "stale building sprite slot " + godot::String::num_int64(slot));
             const auto& s=*found;const auto px=assets_->index.pixels(t.sprite);
@@ -355,8 +459,11 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
         std::map<DrawCell,Fragment> fragments;
         for(const auto& [pos,layers]:tiles) {
             const auto [x,y]=pos;
-            const int slot=layers.size()==1?layers[0].first:compositeBuildingTile(layers);
-            const Color region=layers.size()==1?layers[0].second:Color(0,0,1,1);
+            const bool half=(isMaterialPlannedFurniture(b->kind) || b->kind==wm::BuildingKind::BarsVertical || b->kind==wm::BuildingKind::BarsFloor || b->kind==wm::BuildingKind::Support || b->kind==wm::BuildingKind::WindowGem || b->kind==wm::BuildingKind::WindowGlass) && b->stage!=wm::BuildingStage::Complete;
+            const bool direct=layers.size()==1 && !half;
+            const bool grid = r.gridLayout && b->width() > 1 && b->height() > 1;
+            const int slot=direct?layers[0].first:compositeBuildingTile(layers,half,b->constructionItemId>=0,grid);
+            const Color region=direct?layers[0].second:Color(0,0,1,1);
             auto depth=depthAt(x,y);
             const TextureSlot* layer=slot>=0?spriteResources_.slots.find(slot):nullptr;
             ERR_CONTINUE_MSG(!layer || layer->texture.is_null(), "stale building tile slot " + godot::String::num_int64(slot));
@@ -419,7 +526,21 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
                 sortLift=std::max(sortLift,nativeLift);
                 surfaces[{slot,kind}].addCutoutVertices(cached->second,x,y,base,depth.thickness,region,tint,nativeLift);
             }
-            else surfaces[{slot,kind}].add(x,y,base,tint,uv);
+            else {
+                auto& array=surfaces[{slot,kind}];
+                const auto start=array.tileCenters.size();
+                array.add(x,y,base,tint,uv);
+                if(phasedMachine) {
+                    const int direction=b->rollerDirection;
+                    const int coordinate=(direction&1)?x:y;
+                    const float code=isTransmission(b->kind) ? 15.0f : b->kind==wm::BuildingKind::Windmill ? 14.0f : b->kind==wm::BuildingKind::WaterWheel ? (b->x2-b->x1>b->y2-b->y1 ? 12.0f : 13.0f)
+                        : (direction>=0 && direction<=3 ? float(direction*3+coordinate%3) : -1.0f);
+                    auto* data=array.tileCenters.ptrw();
+                    for(int64_t i=start;i<array.tileCenters.size();i+=4) {
+                        data[i+2]=(float(machineSlot%256)+0.5f)/256.0f;data[i+3]=code;
+                    }
+                }
+            }
             ++quads;
         }
     } else {
@@ -472,7 +593,29 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
     // back from an uploaded mesh can otherwise synchronize with the GPU.
     Array batchArrays;
     PackedInt32Array pickSlots;
+    const bool pump = b->kind==wm::BuildingKind::ScrewPump &&
+        b->stage==wm::BuildingStage::Complete && r.found;
     for (auto& [sk, arr] : surfaces) {
+        // Flat pumps carry an atlas displacement in CUSTOM2.zw. Its sign encodes
+        // the base row's parity; zero means idle/unknown. The batcher retains it.
+        if (pump && b->pumpRunning==1 && b->pumpDirection>=0 && b->pumpDirection<4) {
+            static constexpr const char* directions[]={"S","W","N","E"};
+            const std::string prefix=std::string("SCREWPUMP_")+directions[b->pumpDirection];
+            const auto* first=assets_->index.tile(prefix+"_1",0);
+            const auto* second=assets_->index.tile(prefix+"_2",0);
+            const TextureSlot* slot=spriteResources_.slots.find(sk.slot);
+            if(first && second && first->page==second->page && slot) {
+                const auto a=assets_->index.pixels(*first),z=assets_->index.pixels(*second);
+                const float sign=(b->y1%2)==0?1.0f:-1.0f;
+                const float dx=float(z.px-a.px)/slot->width,dy=float(z.py-a.py)/slot->height;
+                if(dx>=0 && dy>=0) {
+                    auto* payload=arr.tileCenters.ptrw();
+                    for(int64_t i=0;i<arr.tileCenters.size();i+=4) {
+                        payload[i+2]=sign*dx;payload[i+3]=sign*dy;
+                    }
+                }
+            }
+        }
         PerfScope uploadProfile("building.upload_surface", nullptr, df3d::profiling::detailed());
         Array arrays;
         arrays.resize(Mesh::ARRAY_MAX);
@@ -486,7 +629,38 @@ void Df3dWorld::buildBuilding(wm::BuildingId id, uint32_t reason) {
         pickSlots.push_back(piece ? sk.slot : -1);
         detail.surface(arrays);
         const int surface = mesh->get_surface_count();
-        if (piece && sk.slot >= 0) {
+        if (phasedMachine && sk.slot>=0) {
+            submission::meshSurface(mesh,arrays,submission::MeshSite::Building,
+                uint64_t(Mesh::ARRAY_CUSTOM_RGBA_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM2_SHIFT);
+            auto& mat=buildingMachineMaterials_[{sk,machineSlot/256}];
+            if(mat.is_null()) {
+                mat.instantiate();
+                mat->set_shader(godot::ResourceLoader::get_singleton()->load(sk.kind==kSurfGhost ? "res://shaders/machine_ghost.gdshader" : "res://shaders/machine_surface.gdshader"));
+                const TextureSlot* sprite=spriteResources_.slots.find(sk.slot);
+                ERR_CONTINUE_MSG(!sprite || sprite->texture.is_null(),"stale machinery sprite slot");
+                godot::Dictionary parameters;
+                parameters["albedo_tex"]=sprite->texture;
+                parameters["albedo_cell"]=sprite->texture->get_meta("world_cell",Vector2());
+                parameters["machine_positions"]=machinePhasePages_[machineSlot/256].texture;
+                configureImmutableMaterial(mat,parameters);
+            }
+            mesh->surface_set_material(surface,mat);
+        } else if (pump && sk.slot>=0) {
+            submission::meshSurface(mesh,arrays,submission::MeshSite::Building,
+                uint64_t(Mesh::ARRAY_CUSTOM_RGBA_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM2_SHIFT);
+            auto& mat=buildingPumpMaterials_[sk];
+            if(mat.is_null()) {
+                mat.instantiate();
+                mat->set_shader(godot::ResourceLoader::get_singleton()->load("res://shaders/pump_surface.gdshader"));
+                const TextureSlot* sprite=spriteResources_.slots.find(sk.slot);
+                ERR_CONTINUE_MSG(!sprite || sprite->texture.is_null(),"stale pump sprite slot");
+                godot::Dictionary parameters;
+                parameters["albedo_tex"]=sprite->texture;
+                parameters["albedo_cell"]=sprite->texture->get_meta("world_cell",Vector2());
+                configureImmutableMaterial(mat,parameters);
+            }
+            mesh->surface_set_material(surface,mat);
+        } else if (piece && sk.slot >= 0) {
             submission::meshSurface(mesh, arrays, submission::MeshSite::Building,uint64_t(Mesh::ARRAY_CUSTOM_RGBA_FLOAT)<<Mesh::ARRAY_FORMAT_CUSTOM2_SHIFT);
             // Piece geometry already owns its tint and atlas UVs. The material
             // depends only on its texture slot and compositing mode, allowing
@@ -553,9 +727,55 @@ void Df3dWorld::refresh_building_batches(int64_t id) {
 
 // All source layers become one top image BEFORE silhouette extrusion. This
 // removes the coincident contour walls of forbidden/state-overlay furniture.
-int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers) {
+int Df3dWorld::buildingSlotFor(wm::BuildingKind kind,wm::BuildingStage stage,int page,int paletteRow,uint16_t subtype,bool plannedHalfAlpha) {
+    const bool planned=stage!=wm::BuildingStage::Complete;
+    const bool rawOpening=isRawPlannedFurniture(kind) && planned;
+    const bool floorHalf=isFloorHalfPlannedBuilding(kind,subtype);
+    const bool layoutHalf=plannedHalfAlpha;
+    const int colored=slotFor(page,rawOpening ? -1 : paletteRow,false);
+    if((!rawOpening && !isTransmission(kind) && kind!=wm::BuildingKind::Slab && kind!=wm::BuildingKind::Well && kind!=wm::BuildingKind::Bridge && !floorHalf && !layoutHalf) || (!isAxle(kind) && !planned) || colored<0)return colored;
+    const int raw=slotFor(page,-1,false);
+    if(raw<0)return -1;
+    const std::string key=std::string(rawOpening ? "opening-page:" : layoutHalf ? "layout-half-page:" : floorHalf ? "floor-half-page:" : kind==wm::BuildingKind::Bridge ? "bridge-page:" : isAxle(kind) ? "axle-page:" : kind==wm::BuildingKind::Slab ? "slab-page:" : kind==wm::BuildingKind::Well ? "well-page:" : "gear-page:")+std::to_string(colored)+":"+std::to_string(raw)+(planned ? ":planned" : ":complete");
+    if(auto it=spriteResources_.buildings.find(key);it!=spriteResources_.buildings.end())return it->second;
+    const auto* base=spriteResources_.slots.find(colored);
+    const auto* uncolored=spriteResources_.slots.find(raw);
+    ERR_FAIL_COND_V_MSG(!base || !uncolored,-1,"stale building artwork page");
+    auto source=base->texture->get_image();auto fittings=uncolored->texture->get_image();
+    auto image=source->get_region(godot::Rect2i(0,0,source->get_width(),source->get_height()));
+    image->clear_mipmaps();
+    // Both native frames are immutable material artwork. Phase updates only
+    // select a cell; fittings are never recolored or recomposited per tick.
+    if(isAxle(kind))for(const char* family:{"AXLE_HORIZONTAL_NS","AXLE_HORIZONTAL_WE","AXLE_VERTICAL"})for(int frame=1;frame<=2;++frame) {
+        const std::string name=family;
+        const auto* shaft=assets_->index.tile(name+"_"+std::to_string(frame));
+        const auto* fitting=assets_->index.tile(name+"_FITTINGS_"+std::to_string(frame));
+        ERR_FAIL_COND_V_MSG(!shaft || !fitting || shaft->page!=page || fitting->page!=page,-1,"missing native axle fittings");
+        const auto from=assets_->index.pixels(*fitting),to=assets_->index.pixels(*shaft);
+        image->blend_rect(fittings,godot::Rect2i(from.px,from.py,from.pw,from.ph),godot::Vector2i(to.px,to.py));
+    }
+    // Native planned gears, slabs, bridges and querns round half alpha up; pumps and axles truncate.
+    // Apply this before filtering/mipmap generation, once per cached artwork.
+    if(planned) {
+        image->convert(godot::Image::FORMAT_RGBA8);
+        auto bytes=image->get_data();
+        const int rounding=(isAxle(kind) || floorHalf) ? 0 : 1;
+        for(int64_t i=3;i<bytes.size();i+=4)bytes.set(i,(int(bytes[i])+rounding)/2);
+        image->set_data(image->get_width(),image->get_height(),false,godot::Image::FORMAT_RGBA8,bytes);
+    }
+    image->generate_mipmaps();
+    TextureSlot slot;slot.page=page;slot.paletteRow=paletteRow;slot.width=image->get_width();slot.height=image->get_height();
+    slot.texture=submission::texture(image,submission::TextureSite::BuildingArt,true);
+    const auto* info=assets_->index.page(page);
+    slot.texture->set_meta("world_cell",Vector2(info->tileW,info->tileH));
+    const int id=spriteResources_.slots.add(std::move(slot));
+    ERR_FAIL_COND_V_MSG(id<0,-1,"building artwork slots exhausted");
+    spriteResources_.images[id]=image;spriteResources_.buildings[key]=id;return id;
+}
+
+int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers,bool floorHalfAlpha,bool nativeItemBlend,bool nativeLayoutBlend) {
     if(layers.empty()) return -1;
-    std::string key;
+    std::string key=nativeLayoutBlend ? "layout-composite:" : nativeItemBlend ? "item-composite:" : floorHalfAlpha ? "half-composite:" : "composite:";
     struct Source {int slot,x,y,w,h; godot::Ref<godot::ImageTexture> texture;};
     std::vector<Source> sources;
     int w=0,h=0;
@@ -572,12 +792,35 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
     if(auto it=spriteResources_.buildings.find(key);it!=spriteResources_.buildings.end())return it->second;
     auto image=godot::Image::create(w,h,false,godot::Image::FORMAT_RGBA8);
     image->fill(Color(0,0,0,0));
+    bool firstLayer=true;
     for(const auto& src:sources) {
         auto& source=spriteResources_.images[src.slot];if(source.is_null())source=src.texture->get_image();
         ERR_FAIL_COND_V_MSG(source.is_null(), -1, "composite layer slot without image");
         auto layer=source->get_region(godot::Rect2i(src.x,src.y,src.w,src.h));
         if(layer->get_width()!=w || layer->get_height()!=h)layer->resize(w,h,godot::Image::INTERPOLATE_NEAREST);
-        image->blend_rect(layer,godot::Rect2i(0,0,w,h),godot::Vector2i(0,0));
+        if(nativeLayoutBlend && firstLayer) {
+            image->blit_rect(layer,godot::Rect2i(0,0,w,h),godot::Vector2i(0,0));
+        } else if(nativeItemBlend || nativeLayoutBlend) {
+            layer->convert(godot::Image::FORMAT_RGBA8);layer->clear_mipmaps();
+            auto dst=image->get_data();const auto src=layer->get_data();
+            for(int64_t i=0;i<dst.size();i+=4) {
+                assets::Rgba d{dst[i],dst[i+1],dst[i+2],dst[i+3]};
+                const assets::Rgba pixel{src[i],src[i+1],src[i+2],src[i+3]};
+                if(nativeLayoutBlend) {
+                    assets::blendLayoutOver(d,pixel);
+                }
+                else assets::blendOver(d,pixel);
+                dst.set(i,d.r);dst.set(i+1,d.g);dst.set(i+2,d.b);dst.set(i+3,d.a);
+            }
+            image->set_data(w,h,false,godot::Image::FORMAT_RGBA8,dst);
+        } else image->blend_rect(layer,godot::Rect2i(0,0,w,h),godot::Vector2i(0,0));
+        firstLayer=false;
+    }
+    // Native bars halve the finished composite, not each component layer.
+    if(floorHalfAlpha) {
+        auto bytes=image->get_data();
+        for(int64_t i=3;i<bytes.size();i+=4)bytes.set(i,int(bytes[i])/2);
+        image->set_data(w,h,false,godot::Image::FORMAT_RGBA8,bytes);
     }
     // Upload preparation clears zero-alpha RGB. Do not dilate edge colors:
     // native Lanczos reconstructs against transparent black, including here.
@@ -730,9 +973,29 @@ Df3dWorld::BuildingDrawFootprint Df3dWorld::resolveBuildingFootprint(const wm::B
         q.width=b.width();q.height=b.height();q.flags=b.flags;
         q.material=source_.model().materialName(b.material);q.extents=&b.extents;
         q.statue=b.statue;
+        q.instrumentFamily=b.instrumentFamily;q.instrumentPlaced=b.instrumentPlaced;
+        q.pumpDirection=b.pumpDirection;q.horizontalAxleVertical=b.horizontalAxleVertical;q.slabEngraving=b.slabEngraving;q.verticalBarsConnections=b.verticalBarsConnections;q.wellChainIsMetal=b.wellChainIsMetal;q.materialSolidColor=b.materialSolidColor;q.containedItemCount=b.containedItemCount;q.constructionToolRaw=b.constructionToolRaw;q.constructionStage=b.constructionStage;q.siegeFacing=b.siegeFacing;q.siegeFireTimer=b.siegeFireTimer;q.trapState=b.trapState;q.trapReadyTimeout=b.trapReadyTimeout;q.trapFillTimer=b.trapFillTimer;q.trapTriggerFlags=b.trapTriggerFlags;q.weaponCount=b.weaponCount;q.weaponRetracted=b.weaponRetracted;q.constructionWeaponRaw=b.constructionWeaponRaw;q.constructionItemId=b.constructionItemId;q.constructionItemSolidColor=b.constructionItemSolidColor;
+        q.rollerDirection=b.rollerDirection;q.x1=b.x1;q.y1=b.y1;
+        if(b.kind==wm::BuildingKind::Rollers) {
+            for(int y=b.y1;y<=b.y2;++y)for(int x=b.x1;x<=b.x2;++x) {
+                const auto tile=source_.model().tileAt({x,y,b.z});
+                result.completedTracks.push_back(tile?tile->completedTrack:0);
+            }
+            q.completedTracks=&result.completedTracks;
+            // Resident geometry uses frame1; the shader owns machine position.
+            if(b.stage==wm::BuildingStage::Complete)q.rollerDirection=-1;
+        }
+        q.constructionItemIsLog=b.constructionItemIsLog;
+        q.constructionItemMaterial=source_.model().materialName(b.constructionItemMaterial);
+        if(b.kind==wm::BuildingKind::Trap && b.subtype==5) {
+            const auto tile=source_.model().tileAt({b.x1,b.y1,b.z});
+            result.completedTrack=tile?tile->completedTrack:0;
+            q.completedTrack=result.completedTrack;
+        }
+        q.bridgeDirection=b.bridge.direction;q.bridgeRaised=b.bridge.raised;
         result.artwork=assets::resolveBuildingTiles(assets_->index,q);
         for(const auto& t:result.artwork.tiles) {
-            const int slot=slotFor(t.sprite.page,result.artwork.paletteRow,false);
+            const int slot=buildingSlotFor(b.kind,b.stage,t.sprite.page,(t.rawPalette || (result.artwork.gridLayout && t.foreground)) ? -1 : result.artwork.paletteRow,b.subtype,result.artwork.plannedHalfAlpha || t.halfAlpha);
             if(slot<0)continue;
             const auto rect=assets_->index.pixels(t.sprite);
             const auto alpha=buildingAlphaRegion(slot,rect.px,rect.py,rect.pw,rect.ph);
@@ -785,10 +1048,29 @@ void Df3dWorld::updateUnitCutoutPositions() {
 void Df3dWorld::updateEntities() {
     // Building events: Added / Changed rebuild, Removed frees.
     const std::vector<wm::BuildingEvent> bev = source_.model().drainBuildingEvents();
-    for (const auto& event : bev) layoutBuildingChanges_.insert(event.id);
     if (!bev.empty()) lastRenderedTick_=UINT64_MAX;
     buildingEvents_ += static_cast<int64_t>(bev.size());
     for (const wm::BuildingEvent& ev : bev) {
+        const auto* current=source_.model().building(ev.id);
+        const auto previous=machinePhaseSources_.find(ev.id);
+        bool positionOnly=false;
+        if(ev.change!=wm::EntityChange::Removed && current && (current->kind==wm::BuildingKind::Rollers || current->kind==wm::BuildingKind::WaterWheel || current->kind==wm::BuildingKind::Windmill || isTransmission(current->kind))) {
+            updateMachinePosition(*current);
+            // A restarted version denotes a new incarnation even if art matches.
+            positionOnly=previous!=machinePhaseSources_.end() && current->version>previous->second.version &&
+                sameMachineGeometry(previous->second,*current);
+            if(positionOnly) {
+                const auto built=builtBuildings_.find(ev.id);
+                if(built!=builtBuildings_.end() && built->second.version==previous->second.version)
+                    built->second.version=current->version;
+                const auto art=buildingFootprintCache_.find(ev.id);
+                if(art!=buildingFootprintCache_.end() && art->second.version==previous->second.version)
+                    art->second.version=current->version;
+            }
+            machinePhaseSources_.insert_or_assign(ev.id,*current);
+        } else {machinePhaseSources_.erase(ev.id);releaseMachinePosition(ev.id);}
+        if(positionOnly)continue;
+        layoutBuildingChanges_.insert(ev.id);
         // Version numbers restart after removal/readdition, even when events
         // coalesce to Changed. Every event retires any cached incarnation.
         perfFootprintEvictions_ += buildingFootprintCache_.erase(ev.id);

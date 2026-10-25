@@ -38,6 +38,8 @@ func _initialize() -> void:
 				check(draft.group_count(0,row)==int(step.used),"native used count")
 				check(draft.group_distance(0,row)==int(step.distance),"native remaining distance")
 				transitions += 1
+	check(transitions == 558,"all recorded native transitions exercised")
+	check_recorded_clicks(fixture)
 	var iron := group([3225,3226],{"3225":2,"3226":1})
 	var silver := group([41071,41075],{"41071":1,"41075":1},1)
 	var draft = setup([iron,silver],3)
@@ -80,3 +82,50 @@ func _initialize() -> void:
 	check(draft.selections.is_empty() and draft.snapshots.is_empty() and not draft.select_item(0,0,3225),"reset clears selected IDs and ownership")
 	print("CONSTRUCTION_EXACT_SELECTION ","PASS" if failures==0 else "FAIL"," native_transitions=",transitions)
 	quit(0 if failures==0 else 1)
+
+func selected_in(frame: Dictionary) -> Array:
+	var ids: Array = []
+	for item in frame.candidates:
+		if item.selected: ids.append(int(item.id))
+	ids.sort()
+	return ids
+
+func recorded_row(frame: Dictionary, caption: String) -> Dictionary:
+	var costs: Dictionary = {}
+	for item in frame.candidates: costs[str(int(item.id))] = int(item.distance)
+	for choice in frame.choices:
+		if choice.name == caption: return group(choice.ids,costs)
+	return {}
+
+func check_recorded_clicks(fixture: Dictionary) -> void:
+	var evidence: Dictionary = fixture.picker_interaction_capture
+	var frames: Dictionary = evidence.frames
+	var row := recorded_row(frames["picker-initial"],"chert blocks")
+	var draft = setup([row],int(frames["picker-initial"].required))
+	for label in ["picker-one","picker-all"]:
+		check(draft.select_group(0,0,draft.group_count(0,row)+1),"recorded group click")
+		check(draft.selected_ids(0,row)==selected_in(frames[label]),"recorded click exact IDs")
+		for choice in frames[label].choices:
+			if choice.name == "chert blocks":
+				check(draft.group_distance(0,row)==int(choice.distance),"recorded click remaining distance")
+	check(draft.select_group(0,0,0) and draft.selected_count(0)==int(frames["picker-none"].provided),"recorded None clears selection")
+	var partial: Dictionary = frames["picker-four"]
+	row = recorded_row(frames["picker-initial"],"platinum bars")
+	draft = setup([row],int(partial.required)-int(partial.provided))
+	check(draft.select_group(0,0,1),"last required material selects nearest")
+	var reserved := selected_in(partial)
+	reserved.append_array(draft.selected_ids(0,row)); reserved.sort()
+	var expected: Array = []
+	for id in evidence.placement_effects.reserved: expected.append(int(id))
+	expected.sort()
+	check(reserved==expected,"recorded final selection matches native reserved items")
+	frames = fixture.individual_picker_capture.frames
+	row = recorded_row(frames["expanded-Iron bars"],"iron bars")
+	draft = setup([row],int(frames["expanded-Iron bars"].required))
+	expected = selected_in(frames["specific-selected"])
+	check(expected.size()==1,"recorded exact item count")
+	check(draft.select_item(0,0,expected[0]),"recorded exact item click")
+	check(draft.select_item(0,0,expected[0]),"recorded repeat click no-op")
+	for label in ["specific-selected","specific-collapsed","specific-reopened","specific-clicked-again"]:
+		check(draft.selected_ids(0,row)==selected_in(frames[label]),"recorded exact selection retained")
+	check(not draft.select_item(0,0,-1),"unknown exact item rejected")

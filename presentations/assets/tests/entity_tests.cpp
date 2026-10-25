@@ -6,6 +6,9 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
 
 #include "df3d_assets/asset_index.h"
 #include "df3d_assets/raw_tokens.h"
@@ -13,6 +16,48 @@
 #include "df3d_assets/steam_install.h"
 
 using namespace df3d::assets;
+
+TEST_CASE("bridge direction and raised footprint match native captured cells") {
+  std::ifstream input(std::string(DF3D_ASSETS_TEST_DIR)+"/../../../fixtures/construction/bridge_render_tiles.txt");
+  REQUIRE(input.good());
+  std::string line;std::getline(input,line);int cases=0;
+  int width,height,direction,raised,count;
+  while(input>>width>>height>>direction>>raised>>count) {
+    AssetIndex idx;idx.inorganics["GRANITE"].flags=kMatStone;
+    std::vector<std::pair<int,int>> expected;
+    std::vector<std::string> expectedNames;
+    for(int i=0;i<count;++i) {
+      int x,y;std::string aliases;REQUIRE(bool(input>>x>>y>>aliases));
+      expected.push_back({x,y});
+      expectedNames.push_back(aliases.substr(0,aliases.find(',')));
+      std::istringstream names(aliases);std::string name;
+      while(std::getline(names,name,','))idx.tileGraphics[name]={{0,i,0,1,1}};
+    }
+    BuildingQuery q;q.kind=wm::BuildingKind::Bridge;q.material="INORGANIC:GRANITE";
+    q.width=width;q.height=height;q.bridgeDirection=int8_t(direction);q.bridgeRaised=raised!=0;
+    const auto result=resolveBuildingTiles(idx,q);
+    INFO(width,"x",height," direction=",direction," raised=",raised);
+    REQUIRE(result.found);REQUIRE(result.tiles.size()==expected.size());
+    for(const auto& tile:result.tiles) {
+      REQUIRE(tile.sprite.x>=0);REQUIRE(size_t(tile.sprite.x)<expected.size());
+      const auto position=std::find(expected.begin(),expected.end(),std::pair(tile.lx,tile.ly));
+      REQUIRE(position!=expected.end());
+      CHECK(tile.sprite.x==idx.tile(expectedNames[size_t(position-expected.begin())])->x);
+    }
+    ++cases;
+  }
+  CHECK(cases==70);
+}
+
+TEST_CASE("bolt thrower parts resolve their own installed graphics token") {
+  AssetIndex idx;
+  idx.pages.push_back({"ITEM_CONSTRUCTION","","/synthetic",32,32,256,320});
+  idx.tileGraphics["ITEM_BALLISTA_PARTS"]={{0,1,9,1,1}};
+  idx.tileGraphics["ITEM_BOLT_THROWER_PARTS"]={{0,2,9,1,1}};
+  ItemQuery q; q.kind=wm::ItemKind::BoltThrowerParts;
+  auto r=resolveItem(idx,q);
+  REQUIRE(r.found); CHECK(r.sprite.x==2); CHECK(r.sprite.y==9);
+}
 
 TEST_CASE("container contents choose occupied art and independent material overlays") {
   AssetIndex idx;
@@ -323,8 +368,8 @@ TEST_CASE("buildings: workshop layouts map the building grid under the overhang 
   CHECK(r.tiles.back().lx == 0);
   CHECK(r.tiles.back().ly == -1); // sparse overlay uses BASE layout anchor
   CHECK(r.tiles.back().sprite == at(idx, "WORKSHOPS", 12, 4));
-  CHECK(r.colorName == "CLEAR");
-  CHECK(r.paletteRow == 25);
+  CHECK(r.colorName.empty()); // no construction component
+  CHECK(r.paletteRow == -1);
 
   // In progress: the stage below the complete one, flagged as stage art.
   r = resolveBuildingTiles(idx, bq(wm::BuildingKind::Workshop, 3, 3, "INORGANIC:GRANITE",
@@ -550,7 +595,7 @@ TEST_CASE("items: kind, itemdef raw, material and flags pick the sprite") {
   CHECK(resolveItem(idx, iq(wm::ItemKind::Rough, "INORGANIC:GLASS_GREEN")).sprite ==
         at(idx, "BOULDERS", 0, 8));
   CHECK(resolveItem(idx, iq(wm::ItemKind::SmallGem, "INORGANIC:RUBY")).rule ==
-        std::string("gem.cut->rough"));
+        std::string("gem.small.generic"));
 
   // Weapons: default / wood / artifact variants of the itemdef.
   r = resolveItem(idx, iq(wm::ItemKind::Weapon, "INORGANIC:IRON", "ITEM_WEAPON_PICK"));
@@ -785,4 +830,312 @@ TEST_CASE("pending construction uses native directional art without material rec
     q.stage=wm::BuildingStage::Planned;q.subtype=65535;
     CHECK_FALSE(resolveBuildingTiles(idx,q).found);
   }
+}
+
+TEST_CASE("stationary pump cells match four captured native intake directions") {
+  // pump_rendering.json: native completed and planned sprites share these cells.
+  AssetIndex idx;idx.pages.push_back({"SCREWPUMP","","/synthetic",32,32,128,160});
+  const char* names[]={"SCREWPUMP_S_1","SCREWPUMP_W_1","SCREWPUMP_N_1","SCREWPUMP_E_1"};
+  const int x[]={2,2,0,0},y[]={2,0,2,0};
+  for(int d=0;d<4;++d) {
+    const bool horizontal=(d%2)!=0;
+    for(int i=0;i<2;++i)idx.tileGraphics[names[d]].push_back({0,x[d]+(horizontal?i:0),y[d]+(horizontal?0:i),1,1});
+    for(auto stage:{wm::BuildingStage::Planned,wm::BuildingStage::Complete}) {
+      BuildingQuery q;q.kind=wm::BuildingKind::ScrewPump;q.pumpDirection=int8_t(d);
+      q.width=horizontal?2:1;q.height=horizontal?1:2;q.stage=stage;q.material="INORGANIC:GRANITE";
+      const auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==2);
+      CHECK(r.paletteRow==-1);
+      for(int i=0;i<2;++i) {
+        CHECK(r.tiles[i].lx==(horizontal?i:0));CHECK(r.tiles[i].ly==(horizontal?0:i));
+        CHECK(r.tiles[i].sprite.x==x[d]+(horizontal?i:0));CHECK(r.tiles[i].sprite.y==y[d]+(horizontal?0:i));
+      }
+    }
+  }
+}
+
+TEST_CASE("track stop cells follow captured native terrain connections") {
+  AssetIndex idx;idx.pages.push_back({"TRACK_STOPS","","/synthetic",32,32,512,64});
+  const char* names[]={"NS","WE","SE","SW","NE","NW","NSW","NSE","SWE","NWE","NSWE"};
+  for(int i=0;i<11;++i)idx.tileGraphics[std::string("TRACK_STOP_STONE_")+names[i]].push_back({0,i,0,1,1});
+  // Expected sheet columns from 160 native stage/dump/direction observations.
+  const int columns[]={10,0,0,0,1,4,2,7,1,5,3,6,1,9,8,10};
+  for(int mask=0;mask<16;++mask)for(auto stage:{wm::BuildingStage::Planned,wm::BuildingStage::Complete}) {
+    BuildingQuery q;q.kind=wm::BuildingKind::Trap;q.subtype=5;q.completedTrack=uint8_t(mask);
+    q.stage=stage;q.material="INORGANIC:GRANITE";
+    auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==1);
+    CHECK(r.tiles[0].sprite.x==(stage==wm::BuildingStage::Complete?columns[mask]:10));
+    CHECK(r.paletteRow==-1);
+  }
+}
+
+TEST_CASE("track stop uses first item kind rather than wood material class") {
+ auto idx=entityIndex();
+ idx.tileGraphics["TRACK_STOP_STONE_NSWE"]={{0,0,0,1,1}};
+ idx.tileGraphics["TRACK_STOP_WOOD_NSWE"]={{0,1,0,1,1}};
+ BuildingQuery q;q.kind=wm::BuildingKind::Trap;q.subtype=5;q.material="PLANT:OAK:WOOD";
+ q.constructionItemMaterial="INORGANIC:GRANITE";
+ for(int8_t log:{-1,0,1}) {
+  q.constructionItemIsLog=log;q.stage=wm::BuildingStage::Complete;
+  auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.tiles[0].sprite.x==(log==1?1:0));
+  CHECK(r.paletteRow==(log==-1?-1:idx.paletteRow(idx.materialColorName(q.constructionItemMaterial))));
+  q.stage=wm::BuildingStage::Planned;r=resolveBuildingTiles(idx,q);
+  CHECK(r.tiles[0].sprite.x==0);CHECK(r.paletteRow==-1);
+ }
+}
+
+TEST_CASE("rollers resolve native per-cell track, item material and machine position") {
+  auto idx=entityIndex();
+  const char* names[]={"NS","WE","SE","SW","NE","NW","NSW","NSE","SWE","NWE","NSWE"};
+  for(int wood=0;wood<2;++wood)for(int frame=1;frame<=2;++frame)for(int shape=0;shape<11;++shape)
+    idx.tileGraphics[std::string(wood?"ROLLERS_WOOD_":"ROLLERS_STONE_")+names[shape]+"_"+std::to_string(frame)]={{0,shape,wood*2+frame-1,1,1}};
+  // Captured native sheet columns for all16 track masks.
+  const int columns[]={10,0,0,0,1,4,2,7,1,5,3,6,1,9,8,10};
+  // Native frame1 coordinate residues, indexed by direction then machine position.
+  const int firstResidue[4][3]={{2,1,0},{0,1,2},{0,1,2},{2,1,0}};
+  BuildingQuery q;q.kind=wm::BuildingKind::Rollers;q.material="PLANT:OAK:WOOD";
+  q.constructionItemMaterial="INORGANIC:GRANITE";
+  std::vector<uint8_t> tracks(3);q.completedTracks=&tracks;
+  for(int direction=0;direction<4;++direction)for(int phase=0;phase<3;++phase)
+  for(int log=-1;log<=1;++log)for(int mask=0;mask<16;++mask) {
+    q.rollerDirection=int8_t(direction);q.rollerMachinePosition=int16_t(phase);q.constructionItemIsLog=int8_t(log);
+    q.width=(direction&1)?3:1;q.height=(direction&1)?1:3;q.x1=99;q.y1=39;
+    tracks={uint8_t(mask),5,12}; // varied underlying shapes within one building
+    for(auto stage:{wm::BuildingStage::Complete,wm::BuildingStage::Planned}) {
+      q.stage=stage;auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==3);
+      CHECK(std::string(r.rule)=="machine.rollers");
+      const bool complete=stage==wm::BuildingStage::Complete;
+      CHECK(r.paletteRow==(complete && log!=-1?idx.paletteRow(idx.materialColorName(q.constructionItemMaterial)):-1));
+      for(int cell=0;cell<3;++cell) {
+        CHECK(r.tiles[cell].lx==((direction&1)?cell:0));CHECK(r.tiles[cell].ly==((direction&1)?0:cell));
+        CHECK(r.tiles[cell].sprite.x==(complete?columns[tracks[cell]]:direction%2));
+        const int frameRow=complete && cell!=firstResidue[direction][phase]?1:0;
+        CHECK(r.tiles[cell].sprite.y==((complete && log==1?2:0)+frameRow));
+      }
+    }
+  }
+  q.stage=wm::BuildingStage::Complete;q.width=1;q.height=1;q.rollerDirection=1;
+  q.constructionItemIsLog=-1;q.completedTracks=nullptr;q.rollerMachinePosition=-129;
+  auto r=resolveBuildingTiles(idx,q);REQUIRE(r.tiles.size()==1);CHECK(r.tiles[0].sprite.x==10);CHECK(r.tiles[0].sprite.y==0);
+  q.rollerMachinePosition=-128;r=resolveBuildingTiles(idx,q);CHECK(r.tiles[0].sprite.y==1);
+  q.rollerMachinePosition=127;q.x1=100;r=resolveBuildingTiles(idx,q);CHECK(r.tiles[0].sprite.y==0);
+  q.rollerDirection=-1;r=resolveBuildingTiles(idx,q);CHECK(r.tiles[0].sprite.y==0);
+}
+
+TEST_CASE("instrument artwork follows native family, definition and construction stage") {
+  auto idx=entityIndex();const char* names[]={"KEYBOARD","STRINGED","WIND","PERCUSSION"};
+  // Installed sheet columns differ from semantic family order.
+  const int columns[]={0,2,3,1};
+  for(int family=0;family<4;++family)for(int placed=0;placed<2;++placed)
+    idx.tileGraphics[std::string("ITEM_INSTRUMENT_")+names[family]+(placed?"_BUILDING":"_HANDHELD")]={{0,columns[family],1-placed,1,1}};
+  BuildingQuery q;q.kind=wm::BuildingKind::Instrument;q.material="PLANT:OAK:WOOD";
+  q.constructionItemMaterial="INORGANIC:GRANITE";
+  for(int family=-1;family<4;++family)for(int placed=0;placed<2;++placed)
+  for(auto stage:{wm::BuildingStage::Planned,wm::BuildingStage::InProgress,wm::BuildingStage::Complete}) {
+    q.instrumentFamily=int8_t(family);q.instrumentPlaced=family<0?-1:int8_t(placed);q.stage=stage;
+    const auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==1);
+    const bool complete=stage==wm::BuildingStage::Complete;
+    CHECK(r.tiles[0].sprite.x==(complete && family>=0?columns[family]:0));
+    CHECK(r.tiles[0].sprite.y==(complete && family>=0?1-placed:0));
+    CHECK(r.paletteRow==(complete?(family<0?-1:idx.paletteRow(idx.materialColorName(q.constructionItemMaterial))):idx.paletteRow(idx.materialColorName(q.material))));
+    CHECK(std::string_view(r.rule)=="instrument.native");
+  }
+}
+
+TEST_CASE("instrument item artwork uses candidate definition facts") {
+ auto idx=entityIndex();const char* names[]={"KEYBOARD","STRINGED","WIND","PERCUSSION"};
+ const int columns[]={0,2,3,1};
+ for(int family=0;family<4;++family)for(int placed=0;placed<2;++placed)
+  idx.tileGraphics[std::string("ITEM_INSTRUMENT_")+names[family]+(placed?"_BUILDING":"_HANDHELD")]={{0,columns[family],1-placed,1,1}};
+ ItemQuery q;q.kind=wm::ItemKind::Instrument;q.material="INORGANIC:GRANITE";
+ for(int family=0;family<4;++family)for(int placed=0;placed<2;++placed) {
+  q.instrumentFamily=int8_t(family);q.instrumentPlaced=int8_t(placed);
+  const auto r=resolveItem(idx,q);REQUIRE(r.found);
+  CHECK(r.sprite.x==columns[family]);CHECK(r.sprite.y==1-placed);
+  CHECK(r.paletteRow==25);CHECK(std::string_view(r.rule)=="instrument.native");
+ }
+}
+
+TEST_CASE("one-cell axle orientation uses native axis and transmission art uses first item material") {
+ auto idx=entityIndex();idx.tileGraphics["AXLE_HORIZONTAL_NS_1"]={{0,2,0,1,1}};idx.tileGraphics["AXLE_HORIZONTAL_WE_1"]={{0,2,1,1,1}};
+ idx.tileGraphics["AXLE_VERTICAL_1"]={{0,2,3,1,1}};idx.tileGraphics["GEAR_ASSEMBLY_1"]={{0,0,2,1,1}};
+ BuildingQuery q;q.material="INORGANIC:GRANITE";q.constructionItemMaterial="PLANT:OAK:WOOD";
+ for(auto kind:{wm::BuildingKind::AxleHorizontal,wm::BuildingKind::AxleVertical,wm::BuildingKind::GearAssembly})for(int axis:{-1,0,1})for(int present:{-1,0,1})for(auto stage:{wm::BuildingStage::Complete,wm::BuildingStage::Planned}) {
+  q.kind=kind;q.horizontalAxleVertical=axis;q.constructionItemIsLog=present;q.stage=stage;
+  const auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==1);
+  const int row=kind==wm::BuildingKind::GearAssembly?2:kind==wm::BuildingKind::AxleVertical?3:axis==0?1:0;
+  CHECK(r.tiles[0].sprite.y==row);CHECK(r.paletteRow==(stage==wm::BuildingStage::Complete && present>=0?idx.paletteRow(idx.materialColorName(q.constructionItemMaterial)):-1));
+ }
+}
+
+TEST_CASE("placed slab engraving and first item determine native artwork") {
+ auto idx=entityIndex();idx.tileGraphics["ITEM_SLAB_BLANK"]={{0,0,0,1,1}};idx.tileGraphics["ITEM_SLAB_ENGRAVED_MEMORIAL"]={{0,0,1,1,1}};idx.tileGraphics["ITEM_SLAB_ENGRAVED_SECRET"]={{0,0,2,1,1}};
+ BuildingQuery q;q.kind=wm::BuildingKind::Slab;q.material="PLANT:OAK:WOOD";q.constructionItemMaterial="INORGANIC:GRANITE";
+ for(int present:{-1,0})for(int engraving:{-2,-1,0,1,5,6})for(auto stage:{wm::BuildingStage::Planned,wm::BuildingStage::Complete}) {
+  q.constructionItemIsLog=present;q.slabEngraving=engraving;q.stage=stage;const auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==1);
+  const bool known=present>=0 && stage==wm::BuildingStage::Complete && (engraving==-1 || engraving==0 || engraving==6);
+  CHECK(r.tiles[0].sprite.y==(known?(engraving==0?1:engraving==6?2:0):0));CHECK(r.paletteRow==(known?25:-1));
+ }
+}
+
+TEST_CASE("Exact native layout stages select base and overlay together") {
+ auto idx=entityIndex();
+ auto& base=idx.buildingLayouts["WORKSHOP_CARPENTER"];base.width=1;base.height=2;
+ auto& overlay=idx.buildingLayouts["WORKSHOP_CARPENTER_OVERLAY"];overlay.width=1;overlay.height=2;
+ for(int stage=0;stage<4;++stage) {
+  base.stages[stage]={at(idx,"WORKSHOPS",stage,0),at(idx,"WORKSHOPS",stage,1)};
+  overlay.stages[stage]={at(idx,"WORKSHOPS",stage+4,0),at(idx,"WORKSHOPS",stage+4,1)};
+ }
+ auto q=bq(wm::BuildingKind::Workshop,1,1,"INORGANIC:GRANITE",wm::BuildingStage::Planned,0);
+ for(int stage:{0,1,2,3,1,2}) {
+  q.constructionStage=stage;q.stage=stage==0?wm::BuildingStage::Planned:stage==3?wm::BuildingStage::Complete:wm::BuildingStage::InProgress;
+  auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==4);
+  CHECK(tileAt(r,0,0)->sprite.x==stage);CHECK(tileAt(r,0,-1)->sprite.x==stage);
+  CHECK(tileAt(r,0,0,1)->sprite.x==stage+4);CHECK(tileAt(r,0,-1,1)->sprite.x==stage+4);
+  CHECK(r.stageArt==(stage!=3));CHECK(r.gridLayout);
+  if(stage<=1) {CHECK(r.paletteRow==-1);CHECK(r.colorName.empty());}
+ }
+ q.constructionStage=-1;q.stage=wm::BuildingStage::Planned;
+ auto r=resolveBuildingTiles(idx,q);CHECK_FALSE(r.stageArt);CHECK(tileAt(r,0,0)->sprite.x==3);
+}
+
+TEST_CASE("Layout base palette follows its construction component at every stage") {
+ const auto idx=entityIndex();
+ auto q=bq(wm::BuildingKind::Workshop,3,3,"PLANT:OAK:WOOD",wm::BuildingStage::InProgress,2);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="INORGANIC:GRANITE";
+ for(auto stage:{wm::BuildingStage::Planned,wm::BuildingStage::InProgress,wm::BuildingStage::Complete}) {
+  q.stage=stage;auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.paletteRow==25);CHECK(r.colorName=="CLEAR");
+ }
+ q.constructionItemIsLog=-1;auto r=resolveBuildingTiles(idx,q);CHECK(r.paletteRow==-1);
+}
+
+TEST_CASE("Quern column uses component palette and native descriptor") {
+ const auto idx=entityIndex();auto q=bq(wm::BuildingKind::Workshop,1,1,"INORGANIC:GRANITE",wm::BuildingStage::Planned,17);
+ auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK_FALSE(r.gridLayout);CHECK(r.paletteRow==-1);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="INORGANIC:GRANITE";r=resolveBuildingTiles(idx,q);CHECK(r.paletteRow==25);
+ q.stage=wm::BuildingStage::Complete;r=resolveBuildingTiles(idx,q);CHECK(r.paletteRow==25);
+ q.constructionItemSolidColor="CLEAR";q.constructionItemMaterial="UNKNOWN";r=resolveBuildingTiles(idx,q);CHECK(r.paletteRow==25);
+}
+
+TEST_CASE("Siege artwork follows native facing timer contents and exact construction stage") {
+ auto idx=entityIndex();
+ const char* dirs[]={"N","NE","E","SE","S","SW","W","NW"};
+ for(const char* base:{"CATAPULT","BALLISTA"}) {
+  for(int n=0;n<4;++n)idx.tileGraphics[std::string(base)+"_CONST_"+std::to_string(n)]={{0,n,0,1,1}};
+  for(int d=0;d<8;++d)for(int fire=0;fire<2;++fire)
+   idx.tileGraphics[std::string(base)+"_"+dirs[d]+(fire?"_FIRING":"")]={{0,d,fire+1,1,1}};
+ }
+ for(int d=0;d<8;++d)for(int fire=0;fire<2;++fire)
+  idx.tileGraphics[std::string("BOLT_THROWER_")+(fire?"FIRING_":"READY_")+dirs[d]]={{0,d,fire+1,1,1}};
+ // Remove real test layouts so these sentinel columns isolate selection.
+ for(auto it=idx.buildingLayouts.begin();it!=idx.buildingLayouts.end();) {
+  if(it->first.find("CATAPULT")==0 || it->first.find("BALLISTA")==0)it=idx.buildingLayouts.erase(it);else ++it;
+ }
+ auto q=bq(wm::BuildingKind::SiegeEngine,1,1,"PLANT:OAK:WOOD",wm::BuildingStage::Complete,0);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="INORGANIC:GRANITE";
+ for(int type=0;type<3;++type)for(int d=0;d<8;++d)for(int count:{0,1,2,3,4})for(int timer:{-129,-128,-1,0,1,2,3,4,5,6,127}) {
+  q.subtype=type;q.siegeFacing=d;q.siegeFireTimer=timer;q.containedItemCount=count;
+  const auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==1);
+  CHECK(r.tiles[0].sprite.x==d);
+  const bool fire=(timer>=1 && timer<=(type==2?2:5)) || (type==1 && count==3);
+  CHECK(r.tiles[0].sprite.y==(fire?2:1));CHECK(r.paletteRow==25);CHECK_FALSE(r.stageArt);
+ }
+ for(int type=0;type<3;++type)for(int d=0;d<8;++d)for(int count:{0,1})for(int stage=0;stage<3;++stage) {
+  q.subtype=type;q.siegeFacing=d;q.containedItemCount=count;q.constructionStage=stage;
+  q.stage=stage?wm::BuildingStage::InProgress:wm::BuildingStage::Planned;
+  const auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.stageArt);CHECK(r.paletteRow==-1);
+  CHECK(r.tiles[0].sprite.x==(type==2?d:count?stage+1:0));
+ }
+ q.stage=wm::BuildingStage::Complete;q.constructionItemIsLog=-1;
+ CHECK(resolveBuildingTiles(idx,q).paletteRow==-1);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="UNKNOWN";q.constructionItemSolidColor="CLEAR";
+ CHECK(resolveBuildingTiles(idx,q).paletteRow==25);
+}
+
+TEST_CASE("single-tile workshop planned art keeps component color and halves source alpha") {
+ auto idx=entityIndex();idx.tileGraphics["WORKSHOP_MILLSTONE"]={{0,0,0,1,1},{0,0,1,1,1}};
+ auto q=bq(wm::BuildingKind::Workshop,1,1,"PLANT:OAK:WOOD",wm::BuildingStage::Planned,22);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="INORGANIC:GRANITE";
+ auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.plannedHalfAlpha);CHECK(r.stageArt);CHECK(r.paletteRow==25);
+ q.stage=wm::BuildingStage::Complete;r=resolveBuildingTiles(idx,q);CHECK_FALSE(r.plannedHalfAlpha);CHECK(r.paletteRow==25);
+}
+
+TEST_CASE("Archery targets retain raw palette and use metal artwork for glass") {
+ auto idx=entityIndex();idx.tileGraphics["BLD_ARCHERY_TARGET_METAL"]={{0,0,0,1,1}};
+ auto q=bq(wm::BuildingKind::ArcheryTarget,1,1,"GLASS_GREEN",wm::BuildingStage::Planned);
+ auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.paletteRow==-1);CHECK(r.tiles[0].sprite.x==0);
+ q.stage=wm::BuildingStage::Complete;r=resolveBuildingTiles(idx,q);CHECK(r.paletteRow==-1);
+}
+
+TEST_CASE("Mechanism traps use native state colors top layers and planned opacity") {
+ auto idx=entityIndex();
+ const char* names[]={"LEVER_SET","LEVER_PULLED","TRAP_PLATE_READY","TRAP_PLATE_PRESSED","TRAP_CAGE","TRAP_CAGE_UNLOADED","TRAP_CAGE_TOP","TRAP_STONE","TRAP_STONE_UNLOADED","TRAP_STONE_TOP"};
+ for(int i=0;i<10;++i)idx.tileGraphics[names[i]]={{0,i,0,1,1}};
+ for(int pressed=0;pressed<2;++pressed)for(int trigger=0;trigger<3;++trigger)
+  idx.tileGraphics[std::string(pressed?"TRAP_PLATE_PRESSED":"TRAP_PLATE_READY")+std::vector<std::string>{"_WATER","_MAGMA","_MINECART"}[trigger]]={{0,10+trigger,pressed,1,1}};
+ auto q=bq(wm::BuildingKind::Trap,1,1,"PLANT:OAK:WOOD",wm::BuildingStage::Complete,0);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="INORGANIC:GRANITE";q.containedItemCount=2;
+ for(int state:{-129,-128,-1,0,1,127}) {
+  q.trapState=state;auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.tiles.size()==1);CHECK(r.tiles[0].sprite.x==(state>0?1:0));CHECK(r.paletteRow==25);
+ }
+ q.subtype=1;q.trapState=0;q.trapTriggerFlags=63;
+ for(int ready:{-32769,-32768,-1,0,1,32767})for(int fill:{-32769,-32768,-1,0,1,32767}) {
+  q.trapReadyTimeout=ready;q.trapFillTimer=fill;auto r=resolveBuildingTiles(idx,q);
+  REQUIRE(r.found);CHECK(r.tiles.size()==1);CHECK(r.tiles[0].sprite.x==11);CHECK(r.tiles[0].sprite.y==int(ready>0 || fill>0));
+ }
+ for(int type:{2,3})for(int count:{0,1,2,3,4})for(int state:{-128,0,1,127}) {
+  q.subtype=type;q.containedItemCount=count;q.trapState=state;
+  auto r=resolveBuildingTiles(idx,q);const bool loaded=count>=2 && state<=0;
+  REQUIRE(r.found);CHECK(r.tiles.size()==(loaded?2:1));
+  CHECK(r.tiles[0].sprite.x==(type==2?4:7)+(loaded?0:1));
+  if(loaded){CHECK(r.tiles[1].ly==-1);CHECK(r.tiles[1].foreground);CHECK(r.tiles[1].rawPalette);CHECK_FALSE(r.gridLayout);}
+ }
+ for(int type=0;type<4;++type) {
+  q.subtype=type;q.stage=wm::BuildingStage::Planned;
+  auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);CHECK(r.stageArt);CHECK(r.plannedHalfAlpha);CHECK(r.paletteRow==-1);CHECK(r.tiles.size()==1);
+  q.stage=wm::BuildingStage::Complete;q.constructionItemIsLog=-1;
+  r=resolveBuildingTiles(idx,q);CHECK(r.found);CHECK(r.tiles.empty());
+ }
+}
+
+TEST_CASE("Weapon traps use the selected weapon only when complete loaded and armed") {
+ auto idx=entityIndex();idx.tileGraphics["TRAP_WEAPON"]={{0,0,0,1,1}};
+ idx.itemDefs["ITEM_WEAPON_SWORD_SHORT"].variants["WEAPON_TRAP"]={0,1,0,1,1};
+ idx.itemDefs["ITEM_TRAPCOMP_MENACINGSPIKE"].variants["WEAPON_TRAP"]={0,2,0,1,1};
+ auto q=bq(wm::BuildingKind::Trap,1,1,"PLANT:OAK:WOOD",wm::BuildingStage::Complete,4);
+ q.constructionItemIsLog=0;q.constructionItemMaterial="INORGANIC:GRANITE";
+ for(const char* raw:{"ITEM_WEAPON_SWORD_SHORT","ITEM_TRAPCOMP_MENACINGSPIKE"})for(int count:{0,1,2,10})for(int state:{-128,-1,0,1,127}) {
+  q.constructionWeaponRaw=raw;q.containedItemCount=count;q.weaponCount=1;q.trapState=state;
+  auto r=resolveBuildingTiles(idx,q);REQUIRE(r.found);REQUIRE(r.tiles.size()==1);
+  const bool armed=count>=2 && state<=0;
+  CHECK(r.tiles[0].sprite.x==(armed?(q.constructionWeaponRaw=="ITEM_WEAPON_SWORD_SHORT"?1:2):0));CHECK(r.paletteRow==(armed?25:-1));
+ }
+ q.containedItemCount=2;q.trapState=0;q.weaponCount=0;
+ CHECK(resolveBuildingTiles(idx,q).tiles[0].sprite.x==0);
+ q.weaponCount=2;q.stage=wm::BuildingStage::Planned;
+ auto r=resolveBuildingTiles(idx,q);CHECK(r.tiles[0].sprite.x==0);CHECK(r.paletteRow==-1);CHECK(r.stageArt);CHECK(r.plannedHalfAlpha);
+ q.stage=wm::BuildingStage::Complete;q.constructionWeaponRaw="MISSING";
+ CHECK(resolveBuildingTiles(idx,q).tiles[0].sprite.x==0);
+}
+
+TEST_CASE("Upright weapons select declared count art and native retracted palette") {
+ auto idx=entityIndex();
+ for(int n=1;n<=10;++n) {
+  idx.tileGraphics["UPRIGHT_WEAPON_RETRACTED_"+std::to_string(n)]={{0,n,0,1,1}};
+  auto& variants=idx.itemDefs["ITEM_TRAPCOMP_MENACINGSPIKE"].variants;
+  variants["UPRIGHT_"+std::to_string(n)+"T"]={0,n,1,1,1};
+  variants["UPRIGHT_"+std::to_string(n)+"B"]={0,n,2,1,1};
+ }
+ auto q=bq(wm::BuildingKind::Weapon,1,1,"PLANT:OAK:WOOD",wm::BuildingStage::Complete);
+ q.constructionWeaponRaw="ITEM_TRAPCOMP_MENACINGSPIKE";q.constructionItemMaterial="INORGANIC:GRANITE";
+ for(int n=0;n<=11;++n)for(int retracted:{0,1}) {
+  q.weaponCount=n;q.weaponRetracted=retracted;auto r=resolveBuildingTiles(idx,q);
+  REQUIRE(r.found);const bool raised=n>0 && !retracted;
+  REQUIRE(r.tiles.size()==(raised?2:1));CHECK(r.paletteRow==(raised?25:-1));
+  CHECK(r.tiles[0].sprite.x==(n==0?10:std::min(n,10)));CHECK(r.tiles[0].sprite.y==(raised?2:0));
+  if(raised){CHECK(r.tiles[1].ly==-1);CHECK(r.tiles[1].foreground);CHECK_FALSE(r.tiles[1].rawPalette);CHECK(r.tiles[1].sprite.y==1);}
+ }
+ q.stage=wm::BuildingStage::Planned;q.weaponCount=3;q.weaponRetracted=0;
+ auto r=resolveBuildingTiles(idx,q);REQUIRE(r.tiles.size()==1);CHECK(r.tiles[0].sprite.x==10);CHECK(r.paletteRow==-1);CHECK(r.stageArt);CHECK(r.plannedHalfAlpha);
+ q.stage=wm::BuildingStage::Complete;q.weaponCount=-1;
+ CHECK(std::string(resolveBuildingTiles(idx,q).rule)=="upright-weapon.unknown");
 }

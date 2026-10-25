@@ -1,6 +1,8 @@
 extends "res://tests/ui_test_support.gd"
 func run():
 	preload("res://scripts/presentation_settings.gd").loaded = true
+	# This fixture asserts native pixels at manual 1x; adaptive scaling has its own suite.
+	preload("res://scripts/presentation_settings.gd").ui_auto_scale = false
 	preload("res://scripts/presentation_settings.gd").ui_scale = 1.0
 	var assets:=Df3dWorld.new();root.add_child(assets)
 	check(assets.load_assets(OS.get_environment("DF3D_DF_PATH")),"Original Info assets load")
@@ -14,6 +16,7 @@ func run():
 			view.set_info_page(page);view.open_panel();view._process(0)
 			await process_frame;await process_frame
 			view._process(0)
+			check(view.panel.get_parent().scale == Vector2.ONE,"Fixed-pixel fixture uses manual 1x scale")
 			var frame=view.info_frame
 			var expected:Rect2 = Rect2(32,72,704,532) if size.x==960 else Rect2(32,72,1664,972)
 			if page!="Residents": expected=preload("res://scripts/fortress_hud.gd").info_rect(Vector2(size))

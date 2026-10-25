@@ -95,7 +95,7 @@ func configure(source) -> void:
 	row_theme.set_color("font_disabled_color","Button",Color("666666"))
 	rows.theme = row_theme
 	for light in [true,false]:
-		var stripe: StyleBox = bands._row_style(light)
+		var stripe: StyleBox = bands._row_style("BUTTON_RECTANGLE_LIGHT" if light else "BUTTON_RECTANGLE_DARK")
 		for side in [SIDE_LEFT,SIDE_TOP,SIDE_RIGHT,SIDE_BOTTOM]: stripe.set_content_margin(side,0)
 		_row_styles.append(stripe)
 	scroll.add_child(rows)

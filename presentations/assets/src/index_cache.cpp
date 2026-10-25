@@ -16,7 +16,7 @@ constexpr const char* kMagic = "DF3DAIX";
 // Bump whenever the parser's output changes shape or meaning: the cache
 // key is the raw-content hash, so a stale index for unchanged raws is
 // otherwise trusted forever.
-constexpr int kFormat = 8;  // 8: statue creature/caste artwork
+constexpr int kFormat = 9;  // 9: descriptor cut-gem shape artwork
 
 std::string hex64(uint64_t v) {
   char buf[24];

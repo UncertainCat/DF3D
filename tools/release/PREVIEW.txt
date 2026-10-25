@@ -10,7 +10,7 @@ Game artwork and audio are read from your own installation at runtime.
 
 Material lookup is faster in the tested fortress; larger or unusual searches can still take time.
 
-Run DF3D-0.1.0-rc.5-windows-x64.exe, select the game installation, and follow setup.
+Run DF3D-0.2.0-windows-x64.exe, select the game installation, and follow setup.
 Godot, the native extension and required runtimes are included; no build tools
 or separate Godot installation are needed. A Steam library is detected automatically;
 Browse or DF3D_DF_PATH can select another installation.
@@ -24,18 +24,22 @@ save is pending. The launcher starts its own DF instance; close any independentl
 running DF before Play. Viewer/launcher failure also cleans up the owned session.
 Keep your own save backup outside the game's save directory.
 
-This candidate adds Reports/alerts and construction across the native build
+This release includes Reports/alerts and construction across the native build
 catalog. An animated activity marker now indicates pending construction material
 loading/placement. Closing a panel also makes Play respond immediately.
-This follow-up includes the fix for construction material selection while the fortress
-is running by holding simulation during the picker. Material lookup can still
-take roughly two seconds. Pause on new starts off in each fortress session and
+Construction uses DF's native material candidates, ordering and placement checks.
+The viewer remains responsive during lookup and holds simulation during the picker.
+Pause on new starts off in each fortress session and
 remembers explicit toggles; this simplification is maintainer-approved.
-Known issues for this cut: some placement refusals lack
-native explanatory text, and unusual material-navigation states can refuse a
-valid selection. Reinforced Wall Closest has an unresolved native bar-choice
-inconsistency across equivalent captures. Small panel spacing differences remain. See ENGINEERING.md for
-verification limits and retained defects. These are not permanent scope cuts.
+All 93 supported construction entries have verified construction effects.
+Track uses fresh material distances and stable first previews; stair previews
+keep all span errors visible, and raised spikes use their correct installed art.
+Small panel spacing differences and known Godot rendering/shutdown diagnostics
+remain. Other unfinished screens are not made complete by this release.
+See ENGINEERING.md for verification scope and retained limitations.
+
+The included viewer and bridge must be updated together: management protocol54
+is incompatible with older peers. The supported DF version remains unchanged.
 
 DF3D is MIT licensed; see notices/DF3D-LICENSE.txt.
 Third-party licenses are in notices/. The included DFHack distribution also

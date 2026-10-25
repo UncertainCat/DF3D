@@ -98,6 +98,37 @@ struct BuildingQuery {
   // Row-major width*height occupancy (wm::Building::extents); nullptr/empty = whole rectangle; edge decals read it.
   const std::vector<uint8_t>* extents = nullptr;
   wm::StatueFacts statue;
+  int8_t pumpDirection = -1; // unknown; intake from north/east/south/west
+  int8_t instrumentFamily = -1, instrumentPlaced = -1;
+  int8_t rollerDirection = -1;
+  int8_t horizontalAxleVertical = -1;
+  int8_t slabEngraving = -2;
+  int8_t verticalBarsConnections = -1;
+  int8_t wellChainIsMetal = -1;
+  std::string_view materialSolidColor;
+  int32_t constructionItemId=-1;
+  std::string_view constructionItemSolidColor;
+  int32_t containedItemCount=-1;
+  std::string_view constructionToolRaw;
+  int32_t constructionStage = -1;
+  int8_t siegeFacing = -1;
+  int16_t siegeFireTimer = -129;
+  int16_t trapState = -129;
+  int32_t trapReadyTimeout = -32769;
+  int32_t trapFillTimer = -32769;
+  int16_t trapTriggerFlags = -1;
+  int32_t weaponCount = -1;
+  int8_t weaponRetracted = -1;
+  std::string_view constructionWeaponRaw;
+  int16_t rollerMachinePosition = -129; // unknown; native signed byte otherwise
+  int32_t x1 = 0, y1 = 0; // native coordinates for Roller cell phase
+  // Row-major underlying track masks for multi-cell Rollers; absent cells use0.
+  const std::vector<uint8_t>* completedTracks = nullptr;
+    uint8_t completedTrack = 0; // underlying tile: N=1,S=2,E=4,W=8
+    int8_t constructionItemIsLog = -1;
+    std::string_view constructionItemMaterial; // first contained item actual material
+  int8_t bridgeDirection = -2; // unknown; -1 retracting, 0 west, 1 east, 2 north, 3 south
+  bool bridgeRaised = false;
 };
 
 // One sprite for building tile (lx, ly); a tile may carry several in draw order.
@@ -109,6 +140,8 @@ struct BuildingTile {
   // Native foreground artwork is drawn above creatures. This is presentation
   // metadata only; negative drawing rows do not expand semantic occupancy.
   bool foreground = false;
+  bool rawPalette = false; // this layer keeps its installed colors, independent of the base
+  bool halfAlpha = false; // ceil-half source alpha for an unfinished tile within a mixed stage
 };
 
 struct BuildingSprites {
@@ -117,7 +150,9 @@ struct BuildingSprites {
   std::string colorName;  // STATE_COLOR id of the material ("" = none)
   int paletteRow = -1;    // palette row for colorName (-1 = as painted)
   bool decal = false;     // floor decal drawn under everything else (stockpiles, zones, farms, roads)
-  bool stageArt = false;  // the tiles are the raws' own in-progress art
+  bool stageArt = false;  // the tiles are the raws' own construction-stage art
+  bool plannedHalfAlpha = false; // native ceil-half source alpha for missing planned layout art
+  bool gridLayout = false; // base artwork came from a stage/lx/ly layout
   const char* rule = "none";
 };
 
@@ -128,6 +163,8 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& index, const BuildingQuer
 std::string buildingLayoutName(wm::BuildingKind kind, uint16_t subtype, std::string_view custom);
 
 struct ItemQuery {
+  int8_t slabEngraving=-2;
+  int8_t instrumentFamily=-1, instrumentPlaced=-1;
   wm::ItemKind kind = wm::ItemKind::Unknown;
   std::string_view subtypeRaw;  // itemdef raw id ("ITEM_WEAPON_PICK"), "" = none
   std::string_view material;    // wm material token

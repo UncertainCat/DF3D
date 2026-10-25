@@ -29,11 +29,18 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
                   (it.flags & (wm::kItemArtifact | wm::kItemWeb)) ? static_cast<int>(it.flags & (wm::kItemArtifact | wm::kItemWeb)) : 0,
                   bucket, static_cast<unsigned>(it.corpseFlags), variant);
     const std::string lookKey = std::string(key) + "|" + std::to_string(it.containedCount==UINT32_MAX ? 0 : it.containedCount==0 ? 1 : 2) +
-        "|" + std::to_string(static_cast<int>(it.containedKind)) + "|" + std::to_string(it.containedMaterial) + "|" + it.containedSubtypeRaw + "|" + it.containedColor;
+        "|" + std::to_string(static_cast<int>(it.containedKind)) + "|" + std::to_string(it.containedMaterial) + "|" + it.containedSubtypeRaw + "|" + it.containedColor +
+        "|" + std::to_string(it.bedding.sheet) + "|" + std::to_string(it.bedding.pillow) + "|" +
+        std::to_string(it.bedding.baseColor.size()) + ":" + it.bedding.baseColor + it.bedding.sheetColor;
     auto found = itemLooks_.find(lookKey);
     if (found != itemLooks_.end()) return found->second;
     PerfScope profile("items.look_miss", nullptr, df3d::profiling::detailed());
     ItemLook look;
+    if(it.kind==wm::ItemKind::Bed && it.bedding.sheet>=0) {
+        look.slot=bedSlot(source_.model().materialName(it.material),it.bedding);
+        look.region=Color(0,0,1,1);look.size=Vector2(1,1);look.kind=1;look.rule="item.bedding";
+        return itemLooks_.emplace(lookKey,look).first->second;
+    }
     if (assets_) {
         assets::ItemQuery q;
         q.kind = it.kind;

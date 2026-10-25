@@ -1,17 +1,13 @@
+#include "bed_appearance_native.h"
 #pragma once
 #include "Core.h"
+#include "construction_site_native.h"
 #include "management_helper_owners.h"
 #include "LuaTools.h"
 #include "mirror_generated.h"
 #include "construction_script.h"
 #include "construction_track_script.h"
-#include "construction_material_facts_script.h"
-#include "construction_material_terrain_script.h"
-#include "construction_material_opening_script.h"
-#include "construction_material_shapes_script.h"
 #include "construction_track_material_candidates_script.h"
-#include "construction_material_candidate_gate_script.h"
-#include "construction_track_material_recipe_script.h"
 #include "construction_material_candidate_enabled_script.h"
 #include "construction_track_material_groups_script.h"
 #include "construction_material_partition_script.h"
@@ -120,28 +116,13 @@ public:
             if(helper.reference==LUA_NOREF) {
                 const int top=lua_gettop(state);
                 const bool construction=helper.first==Action::Catalog;
-                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionTrackScript,0,1) ||
+                if(construction)lua_pushcfunction(state,df3d_construction::nativeSiteSupport);
+                if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionTrackScript,1,1) ||
                                     !lua_isfunction(state,-1))) {
                     lua_settop(state,top); return LUA_NOREF;
                 }
                 if(construction) {
-                    // The second injected closure owns its semantic helper functions.
-                    for(const auto* source : {&kConstructionMaterialTerrainScript,&kConstructionMaterialOpeningScript,&kConstructionMaterialShapesScript}) {
-                        if(!DFHack::Lua::SafeCallString(out,state,*source,0,1) || !lua_isfunction(state,-1)) {
-                            lua_settop(state,top);return LUA_NOREF;
-                        }
-                    }
-                    if(!DFHack::Lua::SafeCallString(out,state,kConstructionMaterialFactsScript,0,1) || !lua_isfunction(state,-1)) {
-                        lua_settop(state,top);return LUA_NOREF;
-                    }
-                    lua_insert(state,-4); // factory, destination, opening, shapes
-                    if(!DFHack::Lua::SafeCall(out,state,3,1) || !lua_isfunction(state,-1)) {
-                        lua_settop(state,top);return LUA_NOREF;
-                    }
-                }
-                if(construction) {
-                    for(const auto* source : {&kConstructionMaterialCandidateGateScript,&kConstructionTrackMaterialRecipeScript,
-                                             &kConstructionMaterialCandidateEnabledScript,&kConstructionTrackMaterialGroupsScript,&kConstructionMaterialPartitionScript,&kConstructionMaterialGroupNameScript}) {
+                    for(const auto* source : {&kConstructionMaterialCandidateEnabledScript,&kConstructionTrackMaterialGroupsScript,&kConstructionMaterialPartitionScript,&kConstructionMaterialGroupNameScript}) {
                         if(!DFHack::Lua::SafeCallString(out,state,*source,0,1) || !lua_isfunction(state,-1)) {
                             lua_settop(state,top);return LUA_NOREF;
                         }
@@ -149,8 +130,8 @@ public:
                     if(!DFHack::Lua::SafeCallString(out,state,kConstructionTrackMaterialCandidatesScript,0,1) || !lua_isfunction(state,-1)) {
                         lua_settop(state,top);return LUA_NOREF;
                     }
-                    lua_insert(state,-7); // factory, gate, recipe, enabled, groups, partition, name
-                    if(!DFHack::Lua::SafeCall(out,state,6,1) || !lua_isfunction(state,-1)) {
+                    lua_insert(state,-5); // factory, enabled, groups, partition, name
+                    if(!DFHack::Lua::SafeCall(out,state,4,1) || !lua_isfunction(state,-1)) {
                         lua_settop(state,top);return LUA_NOREF;
                     }
                 }
@@ -166,6 +147,8 @@ public:
                 if(construction && (!DFHack::Lua::SafeCallString(out,state,kConstructionMaterialGroupNameScript,0,1) || !lua_isfunction(state,-1))) {
                     lua_settop(state,top);return LUA_NOREF;
                 }
+                if(construction)lua_pushcfunction(state,df3d_construction::nativeSiteSupport);
+                if(construction)lua_pushcfunction(state,df3d_bed::nativeFacts);
                 const bool dismissal=helper.first==Action::PrepareAlertDismissal;
                 if(dismissal && !DFHack::Lua::SafeCallString(out,state,kReportAlertDismissScript,0,3)) {
                     lua_settop(state,top);return LUA_NOREF;
@@ -176,7 +159,7 @@ public:
                         lua_settop(state,top);return LUA_NOREF;
                     }
                 }
-                if(!DFHack::Lua::SafeCallString(out,state,std::string(helper.source),construction?7:reports?9:dismissal?3:0,1)) {
+                if(!DFHack::Lua::SafeCallString(out,state,std::string(helper.source),construction?8:reports?9:dismissal?3:0,1)) {
                     lua_settop(state,top); return LUA_NOREF;
                 }
                 helper.reference=luaL_ref(state,LUA_REGISTRYINDEX);

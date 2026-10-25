@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "bed": 0,
+      "closed": 0,
+      "door": 0,
+      "errors": [],
+      "native": 0,
+      "site": {
+        "x": 127,
+        "y": 61,
+        "z": 165
+      }
+    },
+    {
+      "bed": 8,
+      "closed": 8,
+      "door": 8,
+      "errors": [
+        "Needs adjacent wall"
+      ],
+      "native": 8,
+      "site": {
+        "x": 128,
+        "y": 62,
+        "z": 165
+      }
+    }
+  ],
+  "provenance": {
+    "build": "DF 53.16 Steam 24557528",
+    "run": "build/door-support-oracle-20261022-212606",
+    "scope": "Native wall support only; floor, occupancy, liquid and generic placement checks remain separate.",
+    "method": "Compare coordinate-only native callback with native Door evaluation at two natural sites; repeat with menus closed, Bed selected, and Door selected. Verify global request type/subtype/position and redraw counter unchanged.",
+    "source_preserved": true,
+    "rva": "0xa827b0",
+    "bytes": 213,
+    "fnv1a64": "30b1875261582ee7",
+    "classifier_rva": "0xa62ba0",
+    "classifier_bytes": 228,
+    "classifier_fnv1a64": "6fe4fbdbcf6d528d",
+    "native_text": "Needs adjacent wall",
+    "limitations": [
+      "Two natural sites in one paused fortress; not exhaustive terrain coverage.",
+      "Refusal presentation remains unfinished."
+    ],
+    "source_sha256": "eec86f7a5193ea1103bcb530e49add01b086e11b32909ec333bdf838ebe62ada",
+    "invalid_inputs": "Negative x/z, x outside int16, and unloaded/outside-map x returned unknown."
+  },
+  "main_screen": {
+    "run": "build/door-support-main-20261022-212434",
+    "status": "passed_with_known_issues",
+    "refusal": "Needs adjacent wall",
+    "exact_item": 48520,
+    "building_id": 1490,
+    "completion_frames": 575,
+    "source_preserved": true,
+    "scope": "Door selection, rejected-site response, valid site, exact material selection, placement receipt and natural completion. Existing UI artwork inspected; refusal text visibility is not accepted.",
+    "retained_failure": "build/door-support-main-20261022-212227 timed out at 5100 frames with an unfinished job; later run completed at 575 frames. Timing varies; the earlier failure remains recorded."
+  }
+}

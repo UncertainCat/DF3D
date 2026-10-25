@@ -1,0 +1,1547 @@
+{
+  "scope": "Exact construction-stage transport and native pixel references for Carpenter, Smelter and TradeDepot stage/material rendering. Does not establish other layout families or new natural construction effects.",
+  "supported_build": {
+    "version": "53.16",
+    "steam_build": 24557528
+  },
+  "capture": "build/construction-stage-native-20261024-074806",
+  "recording_sha256": "07be9c93d571c33b25abd41d93b90c5984c2b53ad8584c4a353d05d7addaa20e",
+  "cases": [
+    {
+      "finish": 350,
+      "id": 1490,
+      "maximum": 3,
+      "stage": 0,
+      "start": 300
+    },
+    {
+      "finish": 400,
+      "id": 1490,
+      "maximum": 3,
+      "stage": 1,
+      "start": 350
+    },
+    {
+      "finish": 450,
+      "id": 1490,
+      "maximum": 3,
+      "stage": 2,
+      "start": 400
+    },
+    {
+      "finish": 500,
+      "id": 1490,
+      "maximum": 3,
+      "stage": 3,
+      "start": 450
+    },
+    {
+      "finish": 550,
+      "id": 1490,
+      "maximum": 3,
+      "stage": 1,
+      "start": 500
+    },
+    {
+      "finish": 600,
+      "id": 1490,
+      "maximum": 3,
+      "stage": 2,
+      "start": 550
+    }
+  ],
+  "observations": [
+    {
+      "tick": 301,
+      "case": 0,
+      "stage": 0,
+      "coarse": 0
+    },
+    {
+      "tick": 302,
+      "case": 0,
+      "stage": 0,
+      "coarse": 0
+    },
+    {
+      "tick": 303,
+      "case": 0,
+      "stage": 0,
+      "coarse": 0
+    },
+    {
+      "tick": 309,
+      "case": 0,
+      "stage": 0,
+      "coarse": 0
+    },
+    {
+      "tick": 339,
+      "case": 0,
+      "stage": 0,
+      "coarse": 0
+    },
+    {
+      "tick": 351,
+      "case": 1,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 352,
+      "case": 1,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 353,
+      "case": 1,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 369,
+      "case": 1,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 399,
+      "case": 1,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 401,
+      "case": 2,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 402,
+      "case": 2,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 403,
+      "case": 2,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 429,
+      "case": 2,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 451,
+      "case": 3,
+      "stage": 3,
+      "coarse": 2
+    },
+    {
+      "tick": 452,
+      "case": 3,
+      "stage": 3,
+      "coarse": 2
+    },
+    {
+      "tick": 453,
+      "case": 3,
+      "stage": 3,
+      "coarse": 2
+    },
+    {
+      "tick": 459,
+      "case": 3,
+      "stage": 3,
+      "coarse": 2
+    },
+    {
+      "tick": 489,
+      "case": 3,
+      "stage": 3,
+      "coarse": 2
+    },
+    {
+      "tick": 501,
+      "case": 4,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 502,
+      "case": 4,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 503,
+      "case": 4,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 519,
+      "case": 4,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 549,
+      "case": 4,
+      "stage": 1,
+      "coarse": 1
+    },
+    {
+      "tick": 551,
+      "case": 5,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 552,
+      "case": 5,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 553,
+      "case": 5,
+      "stage": 2,
+      "coarse": 1
+    },
+    {
+      "tick": 579,
+      "case": 5,
+      "stage": 2,
+      "coarse": 1
+    }
+  ],
+  "source_save_preserved": true,
+  "owned_process_closed": 69732,
+  "contract": {
+    "field": "Building.construction_stage",
+    "unknown": -1,
+    "source": "df::building::getBuildStage()",
+    "coarse_stage_retained": true,
+    "old_recordings": "Unknown; never infer exact intermediate stage from coarse InProgress."
+  },
+  "rendering_pending": "Remaining grid/custom layout families and siege artwork require comparison. Quern stage/material rendering is covered separately by quern_rendering.json. General full-fortress compositing and management contents are not established here.",
+  "viewer_verification": {
+    "gate": "build/qa/layout-components-verified",
+    "status": "passed_with_known_issues",
+    "checks": [
+      "core",
+      "layout_stage_gpu",
+      "bridge_material_gpu"
+    ],
+    "stage_sequence": [
+      0,
+      1,
+      2,
+      3,
+      1,
+      2
+    ],
+    "pixel_parity_stages": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "checks_scope": "All four Carpenter component-free stages and 48 Carpenter/Smelter/Depot stage/material cases compare uploaded native RGBA and white tint, including north overhangs. Repeated intermediate stages and reload restore artwork. Bridge pixels unchanged. Synthetic fixture screenshot overlaps installations; it is not main-scene visual acceptance.",
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "component_pixel_cases": 48
+  },
+  "carpenter_stage_pixels": {
+    "capture": "build\\layout-stage-native-20261024-073007",
+    "rows": [
+      {
+        "stage": 0,
+        "hashes": [
+          "2cb2e096addbec56319e9fbebb5007c1e75b71be41ce56c36789b77a4796eb1c",
+          "6c235e44e1268937521589ade8bec3de052472af565cc2498c64d076372c29a9",
+          "760825f9104b945d85422ce9c300e60876b4499d683d6280e18c91ef87a23562",
+          "7dcca691426a3915b30e81fd98fcf04ecceae98c57eb1c549121a34f3d1f2f0e",
+          "84dd5a10f95501a28cfd3e4295a6a0d439502d66a25c819e4c479dadc91fd6d3",
+          "8a603278225d379552fe8d1182f41806e7d294edb4ffdc905c66751eab00ab1c",
+          "8d31e6bc6ce891ddba27e555fca2cb7c93ddaaa91f285ce5949d0f47dfc22e2e",
+          "ac7a574317d0756ae107e1fbcadc1794cbcbfed8baa31f600b7debd9767db757",
+          "c3a7b421a96fce49b3d17e4b57ac2230f3ebc7a48df561529467f9323906ed91",
+          "da13b28806782cce8ae57980142f76c86a44d1c6102220852e96f77099a9656c",
+          "da453f65a1d1fe201f105663ad83320cb78e22591f870440021233c30eb6fd88"
+        ]
+      },
+      {
+        "stage": 1,
+        "hashes": [
+          "247d3b8659f1bcaf1d612c5ebe1f2483d7c0f5931fac54d64e490b16f6e60215",
+          "41d886d9aa8ea5b9a97bc5dd4bf6f0af800577a4092d945fa5f8cd235f3d99fc",
+          "7f0b6605e575322f744b0fd4b30cfb755d9c692556295bade39ba55b8395f673",
+          "7f659e166baf7d939b12cf8ab727432388ee6b21a141802f8f571e40c99ae6f0",
+          "93d0e6cc4d3f9c2b0041420a605946dac853ba032a92c20cb2bb91f0110b04ab",
+          "944f6166bf5fe908a361ff7ab782935b640319b5e421052113835a1c6bc15b0f",
+          "b1dfafe8fef6c79de7a3c7ca870ce8a3a69d51be29d82d87cb2e348432556c76",
+          "c50dd54317cd10b9d858952370821f0ce0db45903c30975a7a97aae6c535f251",
+          "c55bd26c3d17f24157231fd5ba5b11abdcdac24b7d9e2d03e8b22a11045e79d0",
+          "ea8e341da3a0e3ef76e7b4bdd7987996ec78ef75975b8da32dca25481e5fc2cc",
+          "ed9b39a049cee13200c6f2ee14a400dbd14cf75ee5d5b7934e939c5df31396f8",
+          "ffe1cbacd1e2cb92efea96880342db57500c2036e672132af65e730f75253e7f"
+        ]
+      },
+      {
+        "stage": 2,
+        "hashes": [
+          "180a513f9c263aa6e28d097cc7aa6019656d0356bcad104d72028df9633a56a6",
+          "337ae4608aee4c802cd516997109783759320aac46476e052cae7bf8931100ea",
+          "66d837202e265e47fc2b0993f7b7beb5cdc406db0b218921463ddff97fa46959",
+          "676ba35cf7779edc31b83a6b9b9bd26fabd07e665f4d25306c5357d46d7d9973",
+          "6efd68de9ae2eba62b6283e8098422dd98f30446a93d8b69cdf4edd8111f9600",
+          "842a2ee307f8721d787c1264e7e0ff6dcad9502e0acbaf8641471a8f84bddd0a",
+          "b69f0ba56d3161c552e4f3a54eb25953c21184a98f7f09e67aaefecfc0facb6a",
+          "b70c89b3f92ae1a5c6d50b3196527bc4c54f1b9542c08e434f93069002361fbc",
+          "e94864991925f0dc3a5f16150ea34dd9a1d0ee2f341b6673380fb89b579636f8",
+          "ec5eed630197b790277bab012876873cbcd54892c5efddffa93f9761019b60c2",
+          "ee6a62ebe90dd6310d3d73fbab898b5f6de368fd4eaf6d814f8afe72e0b5e478",
+          "fe2ca4a79faf8edc08d839012ed8e6a29c28deb2a8d30cfe78cd350c7560a0cd"
+        ]
+      },
+      {
+        "stage": 3,
+        "hashes": [
+          "00c158716ad240bfb9ef1025e6e8739e34305d311fed630db1f07f7df11a6b57",
+          "10a4e825f824805f62db5b17503f49d20f3db266bebbdaf3ea08bc0ecc289060",
+          "4344bc8ac38f17af1ee28e133e9199c4f74867f798b693b61c33bc35d39f9af6",
+          "66d837202e265e47fc2b0993f7b7beb5cdc406db0b218921463ddff97fa46959",
+          "676ba35cf7779edc31b83a6b9b9bd26fabd07e665f4d25306c5357d46d7d9973",
+          "7d10360b0cf395776d85fa607d4e4883d1bc80f88b731ee05623c94567e60ec2",
+          "9b5dafcaf3a516bf876569ad135990b5346aa4166b524c8b1e8af53649a633b2",
+          "a473a93c3bcb5c3606173e79934e888ebc0ef7e3b079aa5c685de5be387556cd",
+          "d8e5f71a636a7aab3d340006a22979f8a9b58cde37d05b15eaa393b8993c9b28",
+          "dab736bee9490ffa2445f715809b6df7b1bea4da9f3ff395935576faa49001f2",
+          "ee6a62ebe90dd6310d3d73fbab898b5f6de368fd4eaf6d814f8afe72e0b5e478",
+          "f19cf36fe3d64d57d173d5ec8605fa032c9b0fed9db3e8f979f8b150b69a12c5"
+        ]
+      }
+    ]
+  },
+  "component_pixels": {
+    "capture": "build\\layout-components-native-20261024-081255",
+    "rows": [
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:GRANITE",
+        "stage": 0,
+        "hashes": [
+          "124033a6bcac7c373fbbd92f2006c758119f9aa6963a34a5e21cd768784ea06a",
+          "27118de8ee0bbbd58e2b23a5fe662466ca635808b5662bfcca1eff92be2818ca",
+          "273f377431d1c511310e16a085a1bc4d12ea7f2a2c88eb36298b6d6a8027e8bb",
+          "3d2cafa8687552d366ceb2d69a343815202f6b7f0498edce7d15c2e8dcf6b292",
+          "6cc8c7366f7bebbcc1b8fefd72a2cb9f8a478ac6669e4a2dfca8b2f710c285c8",
+          "86771d58ef7d05717c7a9e7e58a1c1790fd742c9bd8a68906cc06d2775545c87",
+          "8a052cbb7e9fca8b2bdaff9d8713f4e122d0b4c5fb364a356fdeac45d9dd93eb",
+          "bf35446d054ad958853c7bbf19ca42d9e07a32b46bdde1e9a0bd480d400f53db",
+          "cd1406e1c877de5909d5a367144bfe64fffaf003936f3ad4bf8807e6cedb1b3f",
+          "cf49da41b36cc45a52ac70b85f3e5d4e6abcce42081887488ebb618ed2bc16bc",
+          "d329deb38b721ac93dda282c8a0183ffdd940db3310cfefdc8b05d4b4c9fad2d"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:GRANITE",
+        "stage": 1,
+        "hashes": [
+          "08f7fe1d2c69ccc146a6801e110b9155c2683f77e23dbdab5a8f3773ba4509b9",
+          "08f807ca3dece83c2d18a02ad9188075cd538dcc9fca6fd585c7b7ecf6982f84",
+          "0bac37e1ad7aa5a8283ff2d68fab40b188f0643c63b492c8d6bb1bfc72f5e17e",
+          "0dc7e948d8c8358f792b5064761ea095efe2ca51403ab2ac032683e32ad7437b",
+          "104379c92f870c2f9d612f524b26f42b86a2c8b386824e5551f4c36958735c85",
+          "136ed91f6060dd92789fdc7788e3989250e4a4d1cfee623ebe8922431b087e4a",
+          "4d6555f5a9b15a22fd5103e731611655441a465546d9b0f27d55161f540d267a",
+          "69735f7cd418e0b0487c06b8e9778be5733afcce35ab2cf2f53209e48da7651f",
+          "8141578159b1ae161ac6617420c397a27c130ce8831a0a821c9461423a68df61",
+          "8e0266564c1053994387924749a2ab22188c9a849386bd5661fd6e753be89774",
+          "adce74f97fc191cd6147d11f685fcee2e43b4ddc0ce47d4688380a6227de849a",
+          "d021006fc9f8caee9837ffd158fa140ba81ea83f6521c2f6d39a9fbcae07d321"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:GRANITE",
+        "stage": 2,
+        "hashes": [
+          "005d2f56d7887be9ce0f6cb39aae6cc28a676d4482ae846e79cb228e544a2d28",
+          "1783a9a2d90f68640ba4babb234a91cae740df6f934fbf41424a7ec2141b2e8d",
+          "3510870aaa08e7f05a8f9d185828c21d04d27eef44d79b6c852d639378cc6c3a",
+          "3c802c51dc864c9cbea99aed5eb535fcc8ced4a285228a21b3a3c1d940f2c92b",
+          "3e35c6f5bc0e355fdd9489b471b24d64ac6ad64649a61cc241687a32c583ac84",
+          "59fbf64c8e07997642358331a8316ae37a7f95631967dcf94c45e5b0d914ac6b",
+          "7bc275a3d99a4215aad6399c544f88e4cbf0176ccd9029aa82fbd6fb1101d3c7",
+          "7be345b6fe2aa89259c7ebaf6989117302373b2c2f41a95bef5ef00b634c3f96",
+          "8553901a4795df2ea953fdc1baa1f2a7af83569149153cee3b30ad2ccac641ba",
+          "97fdfc31ee0207e8e42f847a298beade73e9596de2e79f302e1059c7174b75f9",
+          "9bb6869735169182caae0fc59f5c061d613fb676194584f398e5624267ce9731",
+          "bcc244fd21688d913830f48e1e3df269b71d8c6fd565776aa3aa0cddd689a5f5"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:GRANITE",
+        "stage": 3,
+        "hashes": [
+          "053fce1eb03082aae1b4449ef586244aa20e4491238541be47486ca613ef2b14",
+          "1b4023a44c1ce8bf2c56b4a5914e225dd750035f33d84175d837b7856b9ca203",
+          "281d41c2ca0b1430b756563deea6db08ea6a9c079a6af4a2471d120ba2b78ebc",
+          "35622af708fd2f63a294d35cce24bc2d967404e0c1d1c2ade24002a6bda3292b",
+          "3c802c51dc864c9cbea99aed5eb535fcc8ced4a285228a21b3a3c1d940f2c92b",
+          "697a773bc164c230fbc251d97efc44c46df4c70b5869fe77f297b12bd314e6c6",
+          "6c47e1f6399aafa629f6bec0c80bb2170fec57001c4f541d5f684d605d5dcc08",
+          "709262c5bd9ad350fa3dd2a2daf22db401bd42cf815a79dbc93bf8a6e23f624d",
+          "7bc275a3d99a4215aad6399c544f88e4cbf0176ccd9029aa82fbd6fb1101d3c7",
+          "8d5893f845315108adcf30d72ade6fb35f3f01dc0e0eb3fa24dbfa55caa84278",
+          "97fdfc31ee0207e8e42f847a298beade73e9596de2e79f302e1059c7174b75f9",
+          "e3a83409b5e988245ef4a0544ff45019d16c2f0ab3a5d1e8fd36e1cfa8febb71"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:IRON",
+        "stage": 0,
+        "hashes": [
+          "006747e541a49c884056ef62f9a7ea1c84409bb9b2b06526a11fa61a56951f0d",
+          "170538d67aa139a8ec0032e9942fc58f77026a1bf27e4daace14e00586c56594",
+          "3cdfec7fa5fc8906298e605c0c66041d0a71cd0b7b9fa9ce7c73a68118ad4bbe",
+          "4d864a673b275c7e4c89b93b8c28a30911a143d3fbb18badb9567ed3b7423f7f",
+          "519be488755224a3d26ca8608751869684e998d87c7323979eedf79d31a43ccd",
+          "81f0f694398961146b8fb15347ebad8cfc050ae36e62c7f84966146f34169e2d",
+          "a1e93695ad905ed5b025970c333035eb1ef53d505b0541660602730a27db14e8",
+          "a2a9da7d84105558eb75394cfe799a368112c3bab131de8a13860d2bbfdbb588",
+          "acb929711faff09d861df55c7acfbef291a791c3ddcbe732afbc2d5314ddf186",
+          "b9a4c1b72e9b1bb12783032871d14f447b1168942b4401aa667f80a5d43b16ab",
+          "c79bee6c8a43efd99cc56f34f6efaa8cb9fe4bb63ad01f1141e2657bde4bcda3"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:IRON",
+        "stage": 1,
+        "hashes": [
+          "055b11a0d14007e301e4d95cc77180f87bc3dd0dcc556971327ebc48c4d5939c",
+          "0cfaf3a9545a97e10e7b3dd9403977d063e7df6b390b7f0fc773065b104a00e5",
+          "1925e58618a4934e28e89f8ac4559c556c4b844ed14f6a60c5f5069ce1934cac",
+          "25b9fa0599031ba9eff97ad8eb45d16a30b14948a02160a516cec9efe9f17da0",
+          "58e984314e73393d37f71638f187ef5f980e1e023be7e3e26acd7f7a910221b3",
+          "5fbc7b8b78d0fbd02a44fab16976ce2d4dd7c2d0ba5aecf4687e734ffd7289ca",
+          "9ae16b208fbd94b09de0f7170c7cb96a2f6cbe4a3a187ab919128526b7f4a33c",
+          "a443d3ef81e797db616130eeb01eb9827ab9b94a4f9232b2127dbf3703334f80",
+          "b7473de90c7bd4328467c020d418b486772e08ffcc23aa7929aa8ff3044723f8",
+          "d49c3bbacc117b9c64426fbbd575878c852e223839c41592d06895ddbdd2be09",
+          "dcde0f0ac35688ad7ca58b67fc9eb7a55c6d17c2b6c173fc80b21d6e1beec1a0",
+          "e7da9f237eb8f05a13f8ffaa1741622edf54a176543e0e51b626542cc331366d"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:IRON",
+        "stage": 2,
+        "hashes": [
+          "24b0b1443302436b8b5e01f892feea585de25710eadd7540581097159b383b07",
+          "59be4eca40713fa6bcfb9b6d3220ef9f9f0d9863b248463ba2219d95695e382c",
+          "668bf771d97ab13f2d1a09653eec7cb86be0b3cdb9c6626ade787a053345750d",
+          "6ef35a5e9dc71b44b251661b5e038a68608281eef2732f3c6835de7721b09ca8",
+          "798929793832a4b6271e7242ab381b65d0833b785982ffdc766f25f9eedb4ba6",
+          "9476b6ce4bed827ef3d73ae7a427c4e93beb530a3a08d26e3ac8262a048b15ca",
+          "950bb6fb6dff0beaa05caa6e9c5d7738fa8487e6e7b75ddedaef316a2fff67c7",
+          "aa3628ded9ff28fbbb16f95face8fdfaac17d4c1ccbdff6e67abcf0e8c9a3256",
+          "b22e6a91a7c3a66bb5966b336ba87427be2310c52f81a5fca102f869242c1fe9",
+          "b4b7a0673755db13ba7b12ba0daea81e2c510ad9c63e7ca4a6c0f0ff4d1534d2",
+          "e3dfb70a4829221e6cb5ba733fada42d56c500b02126ae0e82571d974e37a9e6",
+          "f4179e612f0621384f324e5490ac139dc97e43882d22190b598de7f9c59a2fbb"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "INORGANIC:IRON",
+        "stage": 3,
+        "hashes": [
+          "08b23281e43188201955cd29ac2a9a85c0d84d779ec1ee1a8a7e54a7cdf94b19",
+          "3e2f1485cfdda616d427fa4a8c6cddc144cb9fa85d8e167cbc1554ab34ce80e7",
+          "5ff69080cd7d98cf9f0ff30f9e168993dfabe66e8a8fac2f0ca31cfb51b67960",
+          "6920a7b7b1828574a0de4b7af755963c8cdc4c2568bc35ca13889744344f426b",
+          "6ef35a5e9dc71b44b251661b5e038a68608281eef2732f3c6835de7721b09ca8",
+          "708655ec0cc16afb9ba954fff1d57311dbdff3090c1332cf3094cabea64ba120",
+          "7947f01ee2bd956dda17527873349952bed43b1d96463ab5a162ce07a78ad91c",
+          "9476b6ce4bed827ef3d73ae7a427c4e93beb530a3a08d26e3ac8262a048b15ca",
+          "b22e6a91a7c3a66bb5966b336ba87427be2310c52f81a5fca102f869242c1fe9",
+          "b87d8aa55fd0a4b95275a46ab1cb9ab29ccec6932e756bb09779933187b69192",
+          "d955ce2d66000adce667a18f494c015999474cbfac411d3051b4d78fb9ca0ca0",
+          "f76208acdf7bca402db67175f66f79eb3b05a1af1599371af9a70339dbde3829"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "GLASS_GREEN",
+        "stage": 0,
+        "hashes": [
+          "0642692b9022a3b84a24ed30946fd07999152f794025656372020ddb7eb12cec",
+          "1506be669c736d92bd6f591d38f6ead43649a2b1ff7846ba729f11149b48f24c",
+          "167c4d9eba2c158be3fff983a4620f1ac70fad3596c2adc72414d578cf51cf42",
+          "27204b1ea4a65c9eb9266d3ce69ad1b76364f5baad81da9d4e3eb11d9e09db9e",
+          "4e120adab1e3df2199ee3cc8f4ad6e77b2beeadb8f1d6e6ded31fd8faca4eb0f",
+          "59719975508cb68b1959d312274ebd583d2ff36f5f96d92465204820a5234ee6",
+          "5f8ba282ad4baf341049ea2ac610688ada23a7daf4bfef083c52ffff60384275",
+          "a68b9dd26d3d62e84363d3967df512cfe8af8b850b8a8ee2329f4370f7994879",
+          "a9ba66ea44a72ba2e1a7fb60818016e68e0b00c99aaa11c9b0eb6d11b9741390",
+          "e5a97a364720c94cfcaa50f5bc8060f0d4af021df660f26f45a0a7d85728924d",
+          "f1bc066309318834176396d1678d209da1ed55f3cea9bc326073d76439b3db20"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "GLASS_GREEN",
+        "stage": 1,
+        "hashes": [
+          "2771a7cbcde1fd7318310bc3f94d642b21556c3f49d918027d469a63b8bd91b6",
+          "30e6d22c542b3492031ef83fa6a4be8af941906a2549087eb30963b46670e615",
+          "3e2ffb96a43455ca6a4c154871aa94c3ac40ee76a0c3a37d1c6d5bf7d8048746",
+          "4ef8cba43bf7d42e3ddbc58710ae335ef7476abf9d6396cd1e23921c0ff66191",
+          "5aaff160e64125274373a356a39273a1ea26d7b15536c178e35400213542d611",
+          "5b96f00dde69d5cf594b7b47ccb336f4f9f08762873df8b230e3a298e084e915",
+          "6d39b64acf770e552f7c4594bdf060560a564636e04a331ada15199a3bd7e322",
+          "98f09989bb9566d73466e3adc61ca9e9d9c4f38d3d42314057574305c3da41c5",
+          "cc3d88ad3ece7982b48cd6dbc3d3961951d75a6cff8560c1eac0f7d5ac63644e",
+          "d1db7008e993f2a15742610bd6469411b20a5ff4f652f7c21007ae93bf78e0a6",
+          "eea147ebc5ea471ff170a12871cd5337e8d25b56b5a5c056413deb599bd91134",
+          "fc90b26f7a2973b921ea925be27e7fa4dc8ac59c5a7576f8b814bfb1750f37c8"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "GLASS_GREEN",
+        "stage": 2,
+        "hashes": [
+          "2529ccc717f325046350f8a3d7854c2af0fe4561da5af84dd689ccfb6b9ff42a",
+          "2959c6fc08a9aade34d47894ae996a3081ebd753cad572664561240d82cc98c2",
+          "330e6b1a9166c7e9ee6bdd21431385f761f98ee95c93dfe5eca5547432350580",
+          "39bd1edb6dfad411749e4b0e28c17ab1ea2c250265bc5af3a3d63d2849bc2fb9",
+          "6a11f27c6360ee03586aae6a9dd70a746fe8b501bc2b0434ef4f2ab27608e745",
+          "6f35f05f25e90ff916fb0c6d5fab9af5f462942add112826fec09be4fd518df7",
+          "734b747ec16f0d6e6a794706c899bde77c90de9ae8fdcfda43275821fce90dde",
+          "7562ac8b240d6ecfd4a475ab48085f9370ea3822575c4921d6500276579ab188",
+          "76c30233aea77deb4ee3db038d49a9a3f9dc4e29784e83896007efdb76e3077d",
+          "a4ec8552d351f3268220f72bdaa7b7b229f0ee5224a3fa692e11e74977074ae2",
+          "bae8e6024f25f5cd7bb5f5205be870348800d54b67f3a06918783781d625f51a",
+          "fd171bc392c1af1a83321d6c661b8c76da19d310fd09eb8912c95596e3e1eae9"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "GLASS_GREEN",
+        "stage": 3,
+        "hashes": [
+          "18304082c85c41c180b00598133f00028523eed95b408fe0f58f960b8e01e3aa",
+          "2529ccc717f325046350f8a3d7854c2af0fe4561da5af84dd689ccfb6b9ff42a",
+          "3168e0cf365f4141716c98c13c5ce954985359c84e9f8a7058e7a210002bc3f5",
+          "330e6b1a9166c7e9ee6bdd21431385f761f98ee95c93dfe5eca5547432350580",
+          "3c3a2cecb98ccba248b90cbaad4568c72a42d8d0f9d24d7c656f177431201479",
+          "5aafaf9d595febc5502391a9535452d75ad370552be3197c43d419a8858839ae",
+          "5e6f45476894f525e78e7e943689dc0b7469fdbc4d169a981479db382dbfc340",
+          "715e68f7e2bc6cef06d31109cd1ca9db45f7bc263bf6d000f40db71b397e555a",
+          "7562ac8b240d6ecfd4a475ab48085f9370ea3822575c4921d6500276579ab188",
+          "78280cf1ac3a9c67e02a303760d34bd121a4e1871e84e7d676b1a67db0c5262b",
+          "8a8f98c12d500c679a8d03e70f446854836d72cd23c345db2fc5d5fb840d2e6c",
+          "d21fc6c66478d67a8f4668ce6e52d723509a386a91aa08da9296dcc7f093ffe9"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 0,
+        "hashes": [
+          "19b394c50848319bca0806d9fecf4769c93e50c32b779932a56c27cc5e42b168",
+          "254575cf09283e6371c512c6f65d9d179029ab541b099d5b565d499025d05c6e",
+          "391cc20f8f809c9cf7f6f20b72af4efad6da213efd5b0264e35f8b3532392ac2",
+          "45638c375e05f28cca19ee8973d5d87dbc5329ac0d765cdf07f6f87bd76a2e7e",
+          "4f183c01353867e131b1b1336bfa1d7e7025bc30980a7b475a07ca956994b70e",
+          "5806d68de7469d67fc13f319856327d1ce40dae233656885e1afebd8926db68b",
+          "7476ebb2db2f622ec20a3991c0e6492d8b1b85539296b5f357f606ec45a4cf30",
+          "d1e25c5483ee9b47058360b17b7501dd7e279c3ea70005e2934319cbea5c3b6d",
+          "e6c3913748bc352bf41defa429a68b53a69044ac2f9ed03649a4a3ba0acbf3ae",
+          "ee3fa5cb8a076eb60a84faadf39e583d5e62b803693f87058d7704ca7e77b174",
+          "f95d31c02ccfea11351b61f5d74a3fdfd910abe70f547b32deadb688391ffceb"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 1,
+        "hashes": [
+          "206b3a0036efe07ceb44d26319e3d5b6bcb3b5c426594ae48588aea847c88d9f",
+          "52b4157878845ed5d061fb64f50a17d0a091859bf5774fb20bebb1fcbf973819",
+          "5fe9a1b9f171a6d2119e047f71a85f7571057361f903a8443557667e19a0fd3b",
+          "6f7b6088f7ee1f1f5e5597456458a8ba6549fd2b3864219b6878bd123d74f818",
+          "74a61c97e1413007fddc09e33780ff1e85ab75627f8d6a8156e01278755a431e",
+          "84a8d8848ff7be27370b5780e0bc47e40c453e3de330267c259f88647568d062",
+          "8af600e992022988f17700092b1133d484e90299e93d23cead40d647903b3258",
+          "935f83abc2f377f1ad2538fcfd4f920b51ea5396832345c233eb080cabd43e1c",
+          "a5aef184059bd01218a42f73ed6cbae53243a870903c9d43c7963bb794d0a1e4",
+          "a8c07ecc23aafacb05846875b2bbf405556cdb3ec2be61606cd9865c13026f06",
+          "e9cadc733a628e71c7a551e4740450adceb0cd15b5628313d56479f2a1472465",
+          "fdce3936d592b97cd0754cc48c05a712e847ccd04ee84256b38e4109e4afdc95"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 2,
+        "hashes": [
+          "048825a1a3aa7d3f6a06994bf65b21ee419d613d5c021d5df0a9ba5ef87bf9a4",
+          "18ff018a754228ab6c2a45df33dd3b0f4ed23bc684ce18fb6962f6f542cf5bb6",
+          "1cb9e1c7465c87c00941392c549b03ce4ee332bd6d0e5e19e7651f30cd733e71",
+          "5b657cb28f1b57078877ea6d69c2d037a097236c92dbabb36aef260dc1122773",
+          "77c568abcdc35fd5266c6ce2d930bb4e2e28bdfa52abf87201db2cb6b499cca9",
+          "88f5d10bd9af727eeed5c81700cadc429649a67474fdd09421d7cc53a43ce30c",
+          "97509f2379b83cab173e1e03020c9639b26284c6922806bdfaef600d42aebaf8",
+          "b15eb222329eacf1a3f333d3487a7a6593d178992d96ecbd8e446d51192e3fb6",
+          "b5a4e671f3b00c7f3bde97fe97a7365d085abdadb48c138dbe599766681228d7",
+          "b8aa958e4822773812a08c5794c84f872c6ee82834d6bc117a9ec24b4fab7b14",
+          "d24d2440846653fa5bc2fea38fbf4512edeacfddc0f6425aa00be3b95786ca68",
+          "f21986c999fee96372c5069b3ce55351ab1d3e4466f73c86e0a00e77284fd5f3"
+        ]
+      },
+      {
+        "kind": "Workshop",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 3,
+        "hashes": [
+          "1ca4c363547ad288ca91cf2bdafe5ff95cfd8f37f27bca1236e049d1e900b968",
+          "2ed42fd7fa796248f88dfee58b7760b259b8ae9e01481502640dad12eabe6cdd",
+          "5b657cb28f1b57078877ea6d69c2d037a097236c92dbabb36aef260dc1122773",
+          "97509f2379b83cab173e1e03020c9639b26284c6922806bdfaef600d42aebaf8",
+          "b73ea32a495d8be0b1c8f8a1bc331086da60ebebfdba76fe66b77a9ce2331a14",
+          "b8aa958e4822773812a08c5794c84f872c6ee82834d6bc117a9ec24b4fab7b14",
+          "bdf0163e6ddd09d8ac6da9aedc06e9014ef72dce6ef46e545f822da488039db0",
+          "c9589fcb64dba12aec89d0af5b00be0ef4a8d81dc36a4f742f5bf7d2fc7bd6aa",
+          "cdad3e9c9d93f2551c5016829819b7e194eef7d2f1bbd0987f90d71c0f1a5a2e",
+          "dba5106639c1a1bb26ec09b67b0e7d91c06ebd91f35a2e6a7a64c26aaec3ef7c",
+          "dbe2af18443a963271f882dd4f78ef983e40b463f9573f094f9367ce44176996",
+          "f8586c2a3295823bc00d9a0b320197080bf978eb589241e37f94cd2d3e51e1ca"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:GRANITE",
+        "stage": 0,
+        "hashes": [
+          "124033a6bcac7c373fbbd92f2006c758119f9aa6963a34a5e21cd768784ea06a",
+          "27118de8ee0bbbd58e2b23a5fe662466ca635808b5662bfcca1eff92be2818ca",
+          "273f377431d1c511310e16a085a1bc4d12ea7f2a2c88eb36298b6d6a8027e8bb",
+          "3d2cafa8687552d366ceb2d69a343815202f6b7f0498edce7d15c2e8dcf6b292",
+          "524def806051d6daa945bad43965caddf1a495a65a5c93a0045d5e5a772062ed",
+          "86771d58ef7d05717c7a9e7e58a1c1790fd742c9bd8a68906cc06d2775545c87",
+          "8a052cbb7e9fca8b2bdaff9d8713f4e122d0b4c5fb364a356fdeac45d9dd93eb",
+          "bf35446d054ad958853c7bbf19ca42d9e07a32b46bdde1e9a0bd480d400f53db",
+          "cd1406e1c877de5909d5a367144bfe64fffaf003936f3ad4bf8807e6cedb1b3f",
+          "cf49da41b36cc45a52ac70b85f3e5d4e6abcce42081887488ebb618ed2bc16bc",
+          "d329deb38b721ac93dda282c8a0183ffdd940db3310cfefdc8b05d4b4c9fad2d"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:GRANITE",
+        "stage": 1,
+        "hashes": [
+          "08f7fe1d2c69ccc146a6801e110b9155c2683f77e23dbdab5a8f3773ba4509b9",
+          "0bac37e1ad7aa5a8283ff2d68fab40b188f0643c63b492c8d6bb1bfc72f5e17e",
+          "156a18b1f0d9bf17acc3484e7603e1e1a2247f65abcba5dd6f00fd97352c279e",
+          "52857e5e1fafaba112ca98ba74e81ea8d01d3dc015b91bc30618d740643c23a0",
+          "5cb3257f9ddeff0aee798831d7119172801075596b52a3804d2e6eaf7040f48c",
+          "8141578159b1ae161ac6617420c397a27c130ce8831a0a821c9461423a68df61",
+          "8ad6c8d3a29fba24956e7aaec424af137f73813ba8a97f75c4768919e5b03921",
+          "8e0266564c1053994387924749a2ab22188c9a849386bd5661fd6e753be89774",
+          "b45db5f7b56828261e9267eb644d566faf65cfef37aebd8a4712488e2966bf86",
+          "d021006fc9f8caee9837ffd158fa140ba81ea83f6521c2f6d39a9fbcae07d321",
+          "fe3dd5da51b51e06304f44e6bd22c6ef0907c70a4e7b0f2c835f2ef6969edfd7",
+          "feaf32f2da80744f46b012a6216717ee883fe850c07a7b7a80c3a9308beb9953"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:GRANITE",
+        "stage": 2,
+        "hashes": [
+          "1b5d17e5cd4d08bb6b89339ac3835d9a6fcfbbaae073c54f5303268873a771dc",
+          "327fdd8efea8f54b77757fa8abbb93a54e11631a8a2cad79dd0716b7419c44f8",
+          "4f7d24b7df448ef083a34a0845e7aeee44c17dd66774eab281a73061ae3392f5",
+          "7bae6d77232f1c7bf2c90d234c056f4d8e8aa650a3cde230660ae34b28c248a2",
+          "803fbcdd7cd5bd11c20af687195f51e19f54181c046be43d958d99e87ac8979a",
+          "839a933ccbd3ae40cbab1a0e08e22b59fd28460562eba3a879b8dbc038b18314",
+          "8ad6c8d3a29fba24956e7aaec424af137f73813ba8a97f75c4768919e5b03921",
+          "9529ce9c632872bedd56296a24cb1ef024a303bace2175d3b355cd5298804895",
+          "d54f356351c96842e7e818361ba6667aff9b9b5115b4c595fa4248cae4fd7741",
+          "ee9332df96bd9f223192275ddada64ab07f51f9d08c5f5063ca1cb40735b3354",
+          "f84f3091cffa19a2d92f467fae8819d4445f1899fc59332301869ce039dff19e",
+          "fe3dd5da51b51e06304f44e6bd22c6ef0907c70a4e7b0f2c835f2ef6969edfd7"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:GRANITE",
+        "stage": 3,
+        "hashes": [
+          "2271c38b5326e27698df5888a5784ce893c960c1445a75b12a9891e6123d5102",
+          "2d9935778af36821307543a4cd7d589c891b45f6467acb93c5aed78bb07e0e3e",
+          "40431e07d08e8595ed9a5825c7f232a389806849ccefac34879f15f4a1dbf81e",
+          "463516a3f41d494ca402b73e86b52a334f87cff998b4508518599a0698ff06da",
+          "6b48a934926f75a62ae553d8ab6bb69430c6fbd7483af37ef2f758ff0634e979",
+          "70ddaad56b1f50cb78b2771031a4b7e3673aff9f19f95453b2f49ffc87c8c8ac",
+          "86dbc41ebf7cead0884e29b2fda4c8776dc9a71cd855c031be7b3cdffcd3a9d5",
+          "9529ce9c632872bedd56296a24cb1ef024a303bace2175d3b355cd5298804895",
+          "96cecb14222bcdf5fcab4279880b1d92398599dc4459fb18800cfafc8f459b5e",
+          "a579fd87a95e60335af36258515432d80acd627c35ca058df66beb67d839e224",
+          "ab7173f04276d06f985ddd7bf403df0c7fabc5a14083011031de237f950b23c3",
+          "bc133a37f0fbe5e46c367d036c5a6b767e45f40c999606c558a106152daeb9f7"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:IRON",
+        "stage": 0,
+        "hashes": [
+          "006747e541a49c884056ef62f9a7ea1c84409bb9b2b06526a11fa61a56951f0d",
+          "170538d67aa139a8ec0032e9942fc58f77026a1bf27e4daace14e00586c56594",
+          "3cdfec7fa5fc8906298e605c0c66041d0a71cd0b7b9fa9ce7c73a68118ad4bbe",
+          "4d864a673b275c7e4c89b93b8c28a30911a143d3fbb18badb9567ed3b7423f7f",
+          "519be488755224a3d26ca8608751869684e998d87c7323979eedf79d31a43ccd",
+          "92bb5cae40d197ec7a44492c9da9d021b2ef2ba1fa788746c308f49097a99b52",
+          "a1e93695ad905ed5b025970c333035eb1ef53d505b0541660602730a27db14e8",
+          "a2a9da7d84105558eb75394cfe799a368112c3bab131de8a13860d2bbfdbb588",
+          "acb929711faff09d861df55c7acfbef291a791c3ddcbe732afbc2d5314ddf186",
+          "b9a4c1b72e9b1bb12783032871d14f447b1168942b4401aa667f80a5d43b16ab",
+          "c79bee6c8a43efd99cc56f34f6efaa8cb9fe4bb63ad01f1141e2657bde4bcda3"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:IRON",
+        "stage": 1,
+        "hashes": [
+          "021fc04441c11f14afad501b7f3e6f0e9120ba7d7d6a9b5545b7f0f0d5639dda",
+          "0cfaf3a9545a97e10e7b3dd9403977d063e7df6b390b7f0fc773065b104a00e5",
+          "1925e58618a4934e28e89f8ac4559c556c4b844ed14f6a60c5f5069ce1934cac",
+          "256a277ba7167c6959f49f0fcca220192831a19cd23cf242d4d749d4d163b907",
+          "28270d357f5fc9d2485d513dfb3972a30c1c3fbcf591a49a82be475762b99159",
+          "4018797480aea46ebedfb95baf658da142a9dedb2a693951d9b949dee2329f2e",
+          "58e984314e73393d37f71638f187ef5f980e1e023be7e3e26acd7f7a910221b3",
+          "837486ab7aa23989e13128d995df616817d36babbf36a93580f544b90d8fc912",
+          "9ae16b208fbd94b09de0f7170c7cb96a2f6cbe4a3a187ab919128526b7f4a33c",
+          "a27a68892897e37df50502975d692ed171e42d87b93129f579fecc9536842f75",
+          "dcde0f0ac35688ad7ca58b67fc9eb7a55c6d17c2b6c173fc80b21d6e1beec1a0",
+          "ec46ee2aa1a71c40bd919ae9856ef821e79bf8f7626a71a2fa2e46fce7a5e031"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:IRON",
+        "stage": 2,
+        "hashes": [
+          "021fc04441c11f14afad501b7f3e6f0e9120ba7d7d6a9b5545b7f0f0d5639dda",
+          "1e97a0119302bcb8e31fcf22fa6365af6cd69f0f252ef5d2d1e64b857c9ad0c4",
+          "24e565f76791731c898c0ca697b636e7184cae5e5d169898561680302bd4f9c9",
+          "3f7a3c26849ae118c073cce61e5c949f7cc2aa996d387123da9a47ac0a993337",
+          "5e8d97167383c861501ff5d9c7e02dbc04e616b87a2753762b7dbf38dc8e9ae3",
+          "7b60d82a41e5c199b259ea36f22f81b3e995d610783f3660010859ad35aa4893",
+          "91fbed3410908aa4de4e6e48f7f8760330be3d9438dfe255ede84c1c15e176a3",
+          "9c3a2bee01fed3a97f694e5e0955fe23176c4e589db3426fda6fd19e064dc224",
+          "b3d9f8ddac1b3151498bdba29bd3e19c3509b354a34058b3f5cbb4f7982cd42b",
+          "d895c5d48aaf87b073f6c81f7864923ee082665ca8da325ca16efead0460ca06",
+          "ec46ee2aa1a71c40bd919ae9856ef821e79bf8f7626a71a2fa2e46fce7a5e031",
+          "f4d2140324b9baabed939db557b98fc68c1a0bdda5e702e28e4e0b29a0d1a6be"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "INORGANIC:IRON",
+        "stage": 3,
+        "hashes": [
+          "04db7c34226c8a1c678c2016292778049d3b1d87c5659cc9479ae881cd01612d",
+          "0cfd9e9122e576ce3ee6c721d9562e11a53ffd4b95ff3ecb644c5d22e6332079",
+          "1e97a0119302bcb8e31fcf22fa6365af6cd69f0f252ef5d2d1e64b857c9ad0c4",
+          "23c8704ab9b8235867efcb68c8485585e22d53a81793e63ba578b85e3bca16cc",
+          "3d38bff6673696e8770f440bb7865011296dbca8189199eabb83c550ed5e41a7",
+          "6177f9bb775fb3762eea73636e9c3e79c40f6694e3668730f6641f31f58082bb",
+          "7dc62a20aa93e2d370d2012fef836ca3780901323ef207118fe19ef164733330",
+          "b13d74054b538a51341d6c6ed1bd446dd3f36adf71112e2a5d014469455887f0",
+          "c848aa70737ef6945d10569f25b52a5552b669cbbfab5a2ba87e68eeb30ae008",
+          "e4ed3cb3016bab49c5daa0bb7f76778a936629e6cefc597e30dd04417f475f09",
+          "f2220a0ec2d636a372dc5f85aa7f5c9f73fa6861414c2bddbfa19d1e708de3d5",
+          "f731b6a4b024deef3ebecaa7a6d3088a781ed8587a4d3d343b464712ce6a209d"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "GLASS_GREEN",
+        "stage": 0,
+        "hashes": [
+          "0642692b9022a3b84a24ed30946fd07999152f794025656372020ddb7eb12cec",
+          "1506be669c736d92bd6f591d38f6ead43649a2b1ff7846ba729f11149b48f24c",
+          "167c4d9eba2c158be3fff983a4620f1ac70fad3596c2adc72414d578cf51cf42",
+          "27204b1ea4a65c9eb9266d3ce69ad1b76364f5baad81da9d4e3eb11d9e09db9e",
+          "3f41e39b15c0d352162b14d1cf2af3f2ceaba99ec48a29f2f0f7cbfb831960e7",
+          "4e120adab1e3df2199ee3cc8f4ad6e77b2beeadb8f1d6e6ded31fd8faca4eb0f",
+          "59719975508cb68b1959d312274ebd583d2ff36f5f96d92465204820a5234ee6",
+          "5f8ba282ad4baf341049ea2ac610688ada23a7daf4bfef083c52ffff60384275",
+          "a68b9dd26d3d62e84363d3967df512cfe8af8b850b8a8ee2329f4370f7994879",
+          "a9ba66ea44a72ba2e1a7fb60818016e68e0b00c99aaa11c9b0eb6d11b9741390",
+          "e5a97a364720c94cfcaa50f5bc8060f0d4af021df660f26f45a0a7d85728924d"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "GLASS_GREEN",
+        "stage": 1,
+        "hashes": [
+          "218e940de4cd63ea5d80f9c4574a7991b3b91f2070c35ab12b8472a60861eb72",
+          "2ef56390b05fab936b245ac4be76b0fde000cef8df85c7aa42984dcc31429c1b",
+          "3e2ffb96a43455ca6a4c154871aa94c3ac40ee76a0c3a37d1c6d5bf7d8048746",
+          "5aaff160e64125274373a356a39273a1ea26d7b15536c178e35400213542d611",
+          "5eb5e1fc0bab217f03de5c1e770f0d20ce9d4df6364ab52420f9132934487044",
+          "6705117d95f284f124d1f191bcbf45fa70866df38746ae507c6a72f969473f9f",
+          "6d39b64acf770e552f7c4594bdf060560a564636e04a331ada15199a3bd7e322",
+          "94b1bba0b5207c58384679bf5230d98c709dfc55b7ce3e25400359a3026d064c",
+          "98f09989bb9566d73466e3adc61ca9e9d9c4f38d3d42314057574305c3da41c5",
+          "cc3d88ad3ece7982b48cd6dbc3d3961951d75a6cff8560c1eac0f7d5ac63644e",
+          "d74891b22f02637cfe6721f83736002923f512b405d7981fc14bc924a2730a9a",
+          "dadfae36b75ad3c05491fc95150f793686e0444670bf24fb26fb76770394bd52"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "GLASS_GREEN",
+        "stage": 2,
+        "hashes": [
+          "10cb1de6ea54e1abec6b16e23796737fa948027629510e0f8a7fa77e53ea2812",
+          "12b6121f007de8b4a3bebc4a4c967c3bbbbf4d96924d0f7bdb4bd2208daa8689",
+          "218e940de4cd63ea5d80f9c4574a7991b3b91f2070c35ab12b8472a60861eb72",
+          "38b6bf3e70e3654d928d477c20c6471363f53dab8ffce4d59b431b4225f3eb50",
+          "39d11fa4c8146b2c07783a6b18606d2eadbd85e6b8ef852d2a370bcf5166deeb",
+          "48492bec37cd12996a6da38ef183806248c0828cb833d260b8781bb7903699bc",
+          "561cbf89f7813c21cee27c5dd9392a66e876e4d489e3cf40af28c5816d7b7279",
+          "6705117d95f284f124d1f191bcbf45fa70866df38746ae507c6a72f969473f9f",
+          "ac5a13325ff079157efb8646a7251b4191c43e49ed40c86780d189bc1b36cb02",
+          "adb560b7f1f60e76d216485e689f490e95a364c351038714d03d7369a09518b3",
+          "c5739052da8742f3534321189002bda5eefb327cde70854de06b6dab7c22fbf4",
+          "e1d4a19af098485636ecf9fd0fed3d76238bf8ce7cb3a629e9d44ccb4724a539"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "GLASS_GREEN",
+        "stage": 3,
+        "hashes": [
+          "321f6b1dee76ab25130ddf8a4b64a140e423a268ac38322a5230930c7fd370b0",
+          "3bcad4a9aa6abae2a365bcc347d776c73bb7b51bbd108451c69c85173abb2e52",
+          "3c0bb6b29d413bfb6c4566be61494780cbe9f334c84b5e94dc6b9972b6471c84",
+          "702aecd82e249b72762682f1df45a067d8310146b78e04ba83bac38387db9326",
+          "76885defadf3b040e3d0b390e51f3cb0b63036a886a99cd319de269c597561b4",
+          "88a40de06ce2ccc69e6cd6d00c555b9bb133676fdd38d2bd03a5386a0d439620",
+          "92206fc59e9803119a27878e93cb48188f79ff12c895fc01731d9cf9864e29b2",
+          "ac5a13325ff079157efb8646a7251b4191c43e49ed40c86780d189bc1b36cb02",
+          "c7841aafc16364093a180874c6869e28012beea6fb597b2f8e77d2e5f3144338",
+          "de202a0af78cb607f63dbf86922107a7df0e02404debf3328ffe7c1c4a867467",
+          "f76105b7bff202ad02debb435113562779474cf1a9f0548333f3840ed7841d95",
+          "f7711f0b805f958362b46deba13284c663888291f5f154383854a647860c9562"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 0,
+        "hashes": [
+          "19b394c50848319bca0806d9fecf4769c93e50c32b779932a56c27cc5e42b168",
+          "254575cf09283e6371c512c6f65d9d179029ab541b099d5b565d499025d05c6e",
+          "391cc20f8f809c9cf7f6f20b72af4efad6da213efd5b0264e35f8b3532392ac2",
+          "45638c375e05f28cca19ee8973d5d87dbc5329ac0d765cdf07f6f87bd76a2e7e",
+          "4f183c01353867e131b1b1336bfa1d7e7025bc30980a7b475a07ca956994b70e",
+          "5806d68de7469d67fc13f319856327d1ce40dae233656885e1afebd8926db68b",
+          "7476ebb2db2f622ec20a3991c0e6492d8b1b85539296b5f357f606ec45a4cf30",
+          "b8422b198712b2f2a7f93d369ea8afb0a0272088a0bd60c825d92c230b08b2ec",
+          "d1e25c5483ee9b47058360b17b7501dd7e279c3ea70005e2934319cbea5c3b6d",
+          "e6c3913748bc352bf41defa429a68b53a69044ac2f9ed03649a4a3ba0acbf3ae",
+          "ee3fa5cb8a076eb60a84faadf39e583d5e62b803693f87058d7704ca7e77b174"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 1,
+        "hashes": [
+          "206b3a0036efe07ceb44d26319e3d5b6bcb3b5c426594ae48588aea847c88d9f",
+          "31ac6c30837c9941b8181ae5afdde95ede809bb16d9046b3c6b8508ad40f3cfb",
+          "38b3cf3651b59fd2abd4be047499169c47b0a5c1e720d7f480889fa6b31077a2",
+          "4b21efed9755616dc5d65ebb708d2ca8fedfe78244d8042bcbcfd64721af0780",
+          "56ae98de9744dbbfe52f4bf029759deda14fc0c6932c069d851634395588b4f0",
+          "74a61c97e1413007fddc09e33780ff1e85ab75627f8d6a8156e01278755a431e",
+          "77f812090be11593ec19e2918983108459a08ed0b76172741fe67a9412ef8643",
+          "935f83abc2f377f1ad2538fcfd4f920b51ea5396832345c233eb080cabd43e1c",
+          "a5aef184059bd01218a42f73ed6cbae53243a870903c9d43c7963bb794d0a1e4",
+          "a8c07ecc23aafacb05846875b2bbf405556cdb3ec2be61606cd9865c13026f06",
+          "bb8cdd220a4cffd58939c93170989e889247b376b77a2377b46919268777c936",
+          "fe5431b86ee304e167c0a3851b999504d25e4e15509121f65bc66aedf068b28a"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 2,
+        "hashes": [
+          "28e07b4053aa6666d215cabfb3714a2b11c864b3971ae9084a10bf96558c63f8",
+          "2cf98cd73e51f16ef48049265c91ff0175ec8946a985181e3ebf7c55349bc1f3",
+          "38b3cf3651b59fd2abd4be047499169c47b0a5c1e720d7f480889fa6b31077a2",
+          "3d6833ed6c4c91130031f4defa8d084e6faf5a49e53191da4abbf4190fbadd13",
+          "4695b6f587ce7b908fbab364ebf1d021091e314a5e226c13368cf0bf02dd5d9f",
+          "acc0f20c2020e780a417ec428d77700e74eb1c2365a25b436b8fe56feedee702",
+          "b42186adfdacf35b71673016a151b718d77da6af1e4b3e29e6a3823a57a2f1b3",
+          "bb8cdd220a4cffd58939c93170989e889247b376b77a2377b46919268777c936",
+          "cb346b96cf54c2e81867eb8e7ce4ee886bc801ceecdb30a4e4f33c2944b7bdaf",
+          "d4c6879b246e3ef7710b8574b28a1a627ca56a418448a935b3b73c315b1b53ee",
+          "e57a8a18fdfbc95d357d58ec8dd1b943ac6b8dfde4e2f508f24d26ade4af9847",
+          "fd71d5d11ecd900d02c500110b89a6089e5bb4eba884447e27ad1d3f5af24294"
+        ]
+      },
+      {
+        "kind": "Furnace",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 3,
+        "hashes": [
+          "38c7a4962662a055bf9600862df459a010c9d6e88add27e056708b151b82e39b",
+          "4346c7c19c846a8dbf1e2c9e982ba191dcc5c963ef26cbc314aed2035059c02e",
+          "44515e4e158ddb2409ffacdc4c15a09646b41b652880a0bebad520db1cc42dd5",
+          "46ecf3f0d9e8a0fdb108eb5129ca07a720ebcccc6a4123619a124eea92d4fe38",
+          "5b45167cfb5b98d9c116e84cf074fb8005f8adc5b2cdfe418e35b69009f21299",
+          "8b70493520cde825f7ea882048ac3b3e8c4f094147ff0a588f053408573e2a5f",
+          "ae7e427c41a18c6ef96a1daef4ec748f9859339c153b447950f30390e351f986",
+          "b42186adfdacf35b71673016a151b718d77da6af1e4b3e29e6a3823a57a2f1b3",
+          "c3957cc2a71999fcdcfc56fd50714451ab6064801346609451619c2b13d4ab32",
+          "cd2bdf59f11a1180aa1d8ea2bc2c3f7720972e60374026cadbb03ab6bf075364",
+          "e63311860e781ed6ac72d313c0db31e35642d97d8a20686eaef4d94420391169",
+          "f8476ed592b76e704923067f3024b80f3f6efc23e4e56df99d2982ae5061883c"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:GRANITE",
+        "stage": 0,
+        "hashes": [
+          "08f7fe1d2c69ccc146a6801e110b9155c2683f77e23dbdab5a8f3773ba4509b9",
+          "0a17f7261cfc56a849f63323de4a0a5615a61aed6485b73010ec3f1e91edebdd",
+          "0e504f177fb57e5b93df81e599d78d6984981bcc421a733febc3d9daf94ec06c",
+          "1ba7b1884a945df1e19babbce3a35603cdd1b5902e5f90ba5887a778f01f208f",
+          "21d01e2bf5cb2e54128448394ef7c7e037f3f794ed01e95c54606263989134dd",
+          "2bc400c4c1ed8e27f2879ca678208fd4d3ecd54b27e9be24b132960c5ba2a2bd",
+          "4d39c92c0fed2241d87a1e951e5f1c35964d7562c37eff349c2e68f31a982160",
+          "524def806051d6daa945bad43965caddf1a495a65a5c93a0045d5e5a772062ed",
+          "63964ce42e28ac35ac8c8058e06916993e4b3d27fea0f572d02f739edab27358",
+          "6abf2b31c57bd8aa16b2f6d0ecc897178cd48d499375409b5f46a9f8c0f1b515",
+          "8a052cbb7e9fca8b2bdaff9d8713f4e122d0b4c5fb364a356fdeac45d9dd93eb",
+          "8e0266564c1053994387924749a2ab22188c9a849386bd5661fd6e753be89774",
+          "91f1bbb0f144a41b57fa7f472cbc271f066948c4b1be5c361c48a2f8f4bf7507",
+          "a3e35c1de6d798ee510eb47baa2250b3a4effc21407769a1247b13c708d5637c",
+          "ac11a7b24a1f745045f0fa4c43e1aef135289cec5196dd337c394e5268620228",
+          "ce633c6f92a9230f5deb5ce72357260d836535386495521506c6bea9d4b79be6",
+          "d5010ef7afd1f272e1e8795fbfdbb95a2ece0968649c1d8d15238bf2a4c74b3a",
+          "e149cdcc9bc63510a58557ce42b535fbc8cbd888c3ae24aed493d731419fb12a",
+          "feb0087ea057a004c3cb603cf8f904d153040ec87d66004d3c003dcf724e8a12",
+          "ff171fe5e0c6ef921a640d000bbe74dbce4782be6dbc16b757182fb03f9db38f"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:GRANITE",
+        "stage": 1,
+        "hashes": [
+          "07d13848504d513eb90ea9dd6ddc18de4a97e0065fc904cf4d4452d295d84692",
+          "08f7fe1d2c69ccc146a6801e110b9155c2683f77e23dbdab5a8f3773ba4509b9",
+          "15d46b52eaeac631a09e771c4318e21159a25210e1c9e1cc640a25cf9e0123be",
+          "167f591c931f2f6c402984691c29f500a11859e1abb1756ae06ecbf8de29f55f",
+          "1de89e908093c4cee9428a02d327a1fee874a4e5e39e588a9b127c24814aa9a2",
+          "2c66087c5f97ca54d699fb63236cb545fc17f91055b6fd146dc6214e03f9395d",
+          "2d5fef3f93ccb27c09df2b6982ee73b0e37158f065ce6b7650cee16e9cd4bc36",
+          "2f15c1534dd42d64a2ce9c2aefb82a613bbf21d90e2ff410faf4650e32cf95f0",
+          "2f5aad0f233a927260d3b34db9f4899190bbbea1492d5ed8e29e42f4bb56fc77",
+          "35ddcb8b6c8054f9ed57057c52641edcfcf1c7b69ab9132de7f5c8407459304c",
+          "37948ec85f52f7a9f4464c712a00da256f9497c636b9c40494b36a9faf6d6106",
+          "552c8e18b7fc6d98d7e35dc555abb43e1957c77d38b1bf6d2623170a3b6df26f",
+          "6b37d01793f14597acc6af6e479d38a8219c1a728009b3bdb76fbf18807f02f1",
+          "6e05a940ec2addd4fd8c1c64c581f7e8adc24d5340556c70c82255c934770b6c",
+          "6ee599e60cf5ba98ff13233363e0c058435e7b9d49e50393a149243732b3c5ed",
+          "78477e42ba496c340271ac911004aa36f9c24078877261dc9b1eba209661016c",
+          "803fbcdd7cd5bd11c20af687195f51e19f54181c046be43d958d99e87ac8979a",
+          "8ad6c8d3a29fba24956e7aaec424af137f73813ba8a97f75c4768919e5b03921",
+          "8e0266564c1053994387924749a2ab22188c9a849386bd5661fd6e753be89774",
+          "9ed336284af89da05ab0b2ad57320966cbd31ad1d2ba44e8483e37716b3302df",
+          "a10aaf9d8fe8d5111b1525b39b9b25370e40320a09adb820afb257999623a41d",
+          "b3a852aab168ccb41e610a13928cc830ec34ff4e451b06dd744f8fd2d37a9b19",
+          "df4556c8aa58d72bfe101b1e4da87ff2baab530cab9a192c286f4e6a86367e3a",
+          "ea2238ba928db1b21603c51f5f5360b8b846fbd960ef298f44ec3e4cfa6ed28a",
+          "f49282997b176762492f0579f9cea6a3ab87b252964f502e69ce5d396b44c31f",
+          "f571de22bdb16ad6328b7fc4e3505a29f4d047ac24975ba42a646fa5cc2176fb",
+          "f88e97b72b8860f17a6db8cff9ac642e5d3f105e9042ae3733e59bd0f0b47106"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:GRANITE",
+        "stage": 2,
+        "hashes": [
+          "08f7fe1d2c69ccc146a6801e110b9155c2683f77e23dbdab5a8f3773ba4509b9",
+          "0934af139b33355e998e4825cf2332c40ecf9d1b276d4a08e085e06ed499f175",
+          "14ae08e2b68037a66f8520c9de00c3c5c9c6b0476a50ff3d7fe03f1c6e676c35",
+          "167f591c931f2f6c402984691c29f500a11859e1abb1756ae06ecbf8de29f55f",
+          "1de89e908093c4cee9428a02d327a1fee874a4e5e39e588a9b127c24814aa9a2",
+          "2d5fef3f93ccb27c09df2b6982ee73b0e37158f065ce6b7650cee16e9cd4bc36",
+          "31ed9bd5321ad5235b268a6fc1ecbcaa814d36f96f54d5befbd030ce8e965bb9",
+          "37948ec85f52f7a9f4464c712a00da256f9497c636b9c40494b36a9faf6d6106",
+          "417f2aaa819a334a85583a5d17b0cba73576b7306ae9abb942a5f629be68433b",
+          "4836e96ebc2d0c1f8c5bea70ecc8c562e1ece96f0dd87a9a18be097e624af91a",
+          "55e82411cda850511abf5b41f8383a9fd4d93ab5b1cdd1a16d23aa3491a77078",
+          "5bb1c86335b5c72eba0495f2b21e8582dedc59f934937d989280f95c19f381cc",
+          "6331a0fb72f98dcf770cb644aad07ca8da884e7d69a46c3c981998e3e7f330df",
+          "6b37d01793f14597acc6af6e479d38a8219c1a728009b3bdb76fbf18807f02f1",
+          "6e05a940ec2addd4fd8c1c64c581f7e8adc24d5340556c70c82255c934770b6c",
+          "76912f5fedc5c7f1ea3d9a92a40aa0603256c402c52b3817fd35a89fd9cf5851",
+          "7d0df6fa9a927d7e8a103153ac79f34d9e15a0fc1f3886faeccfe39595deeac3",
+          "803fbcdd7cd5bd11c20af687195f51e19f54181c046be43d958d99e87ac8979a",
+          "8e0266564c1053994387924749a2ab22188c9a849386bd5661fd6e753be89774",
+          "9529d71abe890ae2504fa0df9baf611e80d9311773aeea1efcedf2664359a5ca",
+          "a10aaf9d8fe8d5111b1525b39b9b25370e40320a09adb820afb257999623a41d",
+          "a2ed5c971bf3031830658c20ac8b73a1f22301fe80c4088c986443efd50e29f0",
+          "a9e575f9750c5388881b96cef1ecfde76483142facac753458c0eb20d51f2e2f",
+          "ad8495af6adc4a1542384176023c9c50d8f024bedcc4d4c239c6ab5a6da5dd67",
+          "b3a852aab168ccb41e610a13928cc830ec34ff4e451b06dd744f8fd2d37a9b19",
+          "c56d40f05c78fffadadb37f1f48800efd7194b982d0f3e7a8027582993464a12",
+          "db74f924509d64fb09ae2bc05f2b58a100a2767d5428a2a641f3dc1cde8f5b7c",
+          "dfd3f344435f9ee94780faf5ca1314eedd1bda270ef3fa566db93f0517e81333",
+          "e1e6a4e0189ab0aa1f44b97b6fc397541e496132ae11f51958b522f015a0d3c8",
+          "f88e97b72b8860f17a6db8cff9ac642e5d3f105e9042ae3733e59bd0f0b47106"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:GRANITE",
+        "stage": 3,
+        "hashes": [
+          "03f10d523ccd004bb8b456a552adf2846603d564d33f5a76391d61ea8bcf5af1",
+          "09568d8fef9a4676fed25989e56f77a78ca0de27f3e5d2f391c6fd15126b61e2",
+          "0d17c53d232a817a42d2c75d05079fdadbfe1df78120cda14f537c59cd6ac007",
+          "14ae08e2b68037a66f8520c9de00c3c5c9c6b0476a50ff3d7fe03f1c6e676c35",
+          "17bbceac41290ccc9f823a61fc6e8027af6220570d1efe50712f05a16468bdf2",
+          "1a9f8bea6ac563b37990ae3769b64a846a92d57ac94aa1834ca3bdba484b48f0",
+          "1c742405ab8d86959116576964f3aa0ec71d491624c30167eaf834893054d3e1",
+          "233efcbd50ca97c9ebb636fc13c9a2003db090758943f81861f1804e7979c1ec",
+          "4af3e377a5124598412baec77f6954bfceebbc4e052ea47dfbaa0814ca280b1d",
+          "5bb1c86335b5c72eba0495f2b21e8582dedc59f934937d989280f95c19f381cc",
+          "636335c2e99b3ac26d0e4a70182b47573da12956f4408363eac7796f9ac4eb88",
+          "7cf2a403c36fb2283ddf25e5c7f9f30900dc4e521d007dad7c38e5a42dd5d7a0",
+          "7d0df6fa9a927d7e8a103153ac79f34d9e15a0fc1f3886faeccfe39595deeac3",
+          "7e8be1bde95a8636e5ce34076f3aeeb4e086118ba3890c6bf93801fcc386c6d0",
+          "866e3b75fd49e783e0c695f6a82c822acaf2491d3235a45c1027275feeb92075",
+          "86e267ba5d0f66e73b81cc5c5c44bc375d533c9bc80248e0ca223ae51658e42f",
+          "88530b7796f637b506624d9795405ae601174775d72f517fc28c3f7aacb36141",
+          "912e5dd0939baf1e94d04427b8f378c50bb666d3486e8e496987203239d32d59",
+          "941672904d995bdf92fab3f3ee81119f24df0a0af614821dbc12da83f484b936",
+          "977e40ae7f318e98845e90b58237133c649629ffd7302c330b07af85cc419bc0",
+          "a0dabc99de6a1f5664c72773bf6063521edf1b9a5091447078b0b6f53e8bd79e",
+          "a5f6e3d4f02066d4740fb67242e921564b8baf3d47091935ca009304c6ab2bf1",
+          "a9e575f9750c5388881b96cef1ecfde76483142facac753458c0eb20d51f2e2f",
+          "bf137e8b07eb96f70c4eb6740f642dc1d9dbeb1e51b86d909f110b566b0ccaca",
+          "c6755e6ccab1231ac2b0e37f8d734835d82ab2854afa08272aa5dd7c13c62f18",
+          "cd364cf647de1581aa692620fe03504f8afc106657bab14162fc6d76451240d4",
+          "db74f924509d64fb09ae2bc05f2b58a100a2767d5428a2a641f3dc1cde8f5b7c",
+          "defff55a4d0fc3c5c3061ac262d6168adc55d2a9b95829c0dd3b273401afeffb",
+          "e16193098438a8b032daed5ca5f5bfc8780fd457afa5970dfc83ce8c51fd56d3",
+          "fc2f12b66a560c781ea67ae70cd2d21c4556e0299a8ae6323cc69e0afe3e72a2"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:IRON",
+        "stage": 0,
+        "hashes": [
+          "053445d71bbec94abc3e26c2279108573a8d8f30e69ced05f85a2d55478bfc04",
+          "0850255e341203e29796311354e44fd599dffb17aebb62e37c5bd32d803f5947",
+          "1925e58618a4934e28e89f8ac4559c556c4b844ed14f6a60c5f5069ce1934cac",
+          "2c99986543b6594ca471392a45bc113a5a96b9054839c595d0493218880a94a3",
+          "3cdfec7fa5fc8906298e605c0c66041d0a71cd0b7b9fa9ce7c73a68118ad4bbe",
+          "3f09f7bb47a9a437782a3dc5c9d40bca46c87adb221db91ef8801d0c1b37d9be",
+          "50f24eaa55bb4bab4fa3a1fbd809fca912c7fb81366045db9b025abfc59f958c",
+          "61b97c358f3667b93591c34fed160580ae2901977e16b0f15a3e868037e6b78c",
+          "6495366afdebd424f6333d0f4e60fee2bf1e6c86a85d3477a59830eb9ca414f9",
+          "8cfe6c31ff6175016b2bb92382960c001780712188bfbea264dd352ea3768b2b",
+          "92263d0d3ce1fb50f4dee68e9031e6181dbd1cc356992b5e2161b714a4d29a71",
+          "92bb5cae40d197ec7a44492c9da9d021b2ef2ba1fa788746c308f49097a99b52",
+          "9f54f7188492b47affd6c920163bedb0b1b0c534f72efb4a5f32fb24ad2382d7",
+          "ba2fc59b73b7a559a46d35ae365760f7646508c45f58561770780a7463a04b3c",
+          "c0b7ba2bc731af3ea65abefffd7504053051549a6fa325ada97b5cb917912f65",
+          "c4bdc1b88398474961fbf66c9e9f32b47e1796a2765cbc73ea3ee1df06f57407",
+          "db23fe6778ee0efcc8e1b7d4733ac5e4fb8311c706f2abfcf8e9c171016f26d0",
+          "dcde0f0ac35688ad7ca58b67fc9eb7a55c6d17c2b6c173fc80b21d6e1beec1a0",
+          "df96b7b3f9fd2d992cb2e2f2356b3550bfbacf542f8e191d7773e8632afd5027",
+          "ef35d4da3a3e2ef3e0e4e751a4c8d318def4e85f1e55f0119397c2d524dad88f"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:IRON",
+        "stage": 1,
+        "hashes": [
+          "037894cbe2a275abe7b5cd0271e7ef442710cf94a893eadaf771ee9d8c947d23",
+          "07b2f53f263e459e8f4c8112d0912f39dc97549f02633ef507ed07792c3fb79f",
+          "08e1943a043cb9dac5001612db4532e05b30b649672ae32d6fbcfe801b7a1aff",
+          "12920faba1a0b77fd5883f8e5fbbd4f8ea238651dd9d3e302fc0f833d7da0b92",
+          "14368870b02b0fc75923c7b091e32bf84287e0301b038ba89edc40ab1111329e",
+          "1925e58618a4934e28e89f8ac4559c556c4b844ed14f6a60c5f5069ce1934cac",
+          "1cef9322e4a329985686c166cb0b2e46baf8b766f9b9205823e8afd7ad7559b1",
+          "2f4d033afaf542963f24e2dce441ed41b0b465e58494f92c4e5e6139b62c878b",
+          "389f09f4eac130972fdb9ef5a0e5c9b5de86925766a4484f1c3d60e98ebbed53",
+          "4153e54b52cbf5db9bedcd95426d47a789f2d90f7b75eeb16b0628cbb6fd8414",
+          "4d3e144958a0f865d7b7f642191bee4e655e4b120944d05562f2129fa84816a9",
+          "50972dde97e6c691a69a5babc3267bb0ed99ffa43b11b26b2b626291b082d268",
+          "5c48a5a9262b2ae17a12ff0929a05e61198483b52fd47a31fbd2323aa76addd2",
+          "5e8d97167383c861501ff5d9c7e02dbc04e616b87a2753762b7dbf38dc8e9ae3",
+          "7e07e32b1652f55c4ddeb70f2ded6f0318f4c33c2d2986dd868a0abf0053b712",
+          "830d609a5ae83cbe7889ee02b24660c3dad213023ff533e073d730b820f3958d",
+          "a1d5fbf3194015b78bcb7e82ce13673ac939fe930b0c0ca5325f3f313272b192",
+          "a5e1574030328e6d96f716494d3d7f21624d0538fa716f3ac668e0eac53ada37",
+          "adb40b087c0fc8ae6dff9fefd9d7fb4fb3c82d3aef64aca19ec456f32951f9cf",
+          "b6850b5cce074dd5b599c012f7ddbeb4d3464789c05e1bc451b92fdf4db45e98",
+          "b77d8752c517eec7374dc17ddfb279185323b887cffea6bd66053ee9192fc5f6",
+          "cd1a2d3dc749f5bd378640546256549690d28331f6041781ef446d17f4c33b9d",
+          "dcde0f0ac35688ad7ca58b67fc9eb7a55c6d17c2b6c173fc80b21d6e1beec1a0",
+          "e28a52b764c0542ffc06e68bd218a6008f86e91a4b0121be25b5f9e980d0c1d1",
+          "ec46ee2aa1a71c40bd919ae9856ef821e79bf8f7626a71a2fa2e46fce7a5e031",
+          "fae9101209ad7a995df8ea716caa733d61085ec006f70962e79657a595c1c234",
+          "fd163c051567aa522c01915f3d82670eb94690cbfd1f8d875c3f185f2db2acf8"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:IRON",
+        "stage": 2,
+        "hashes": [
+          "07b2f53f263e459e8f4c8112d0912f39dc97549f02633ef507ed07792c3fb79f",
+          "1925e58618a4934e28e89f8ac4559c556c4b844ed14f6a60c5f5069ce1934cac",
+          "1abcfd4ef9f7e028423a4122441dbe37fd45c4c90a32413b0df0513f5c36d934",
+          "1cef9322e4a329985686c166cb0b2e46baf8b766f9b9205823e8afd7ad7559b1",
+          "1dec87bd443a9dbf06a991234edf7c1449500aa227da9525218fad15a6ec76f8",
+          "27af45ffa7641cd7721a2d51f951e67ab7c4bfb4b88380a86957ca06d5781013",
+          "29c14b4caf5e51bc612f8065783947e7d34044d1c659d64659344a3afc8b71e1",
+          "2d8ce54aa2c58a121363f518cd64567070cb5cb0585dc590f8af82870cf3d5bb",
+          "2f4d033afaf542963f24e2dce441ed41b0b465e58494f92c4e5e6139b62c878b",
+          "464cafc53aa4ad0ecf21ba87bc3b16eba354b93883ed3209915b99a878b7b2fc",
+          "50972dde97e6c691a69a5babc3267bb0ed99ffa43b11b26b2b626291b082d268",
+          "58df2c2ee96d6ba14e54487fe922a9a8154ced1061ebed94feac49f932d1dd0f",
+          "58e0555d841bea83d713c4a0222868a1cb1f801df76273205316a4c15ec6f170",
+          "5c48a5a9262b2ae17a12ff0929a05e61198483b52fd47a31fbd2323aa76addd2",
+          "5e8d97167383c861501ff5d9c7e02dbc04e616b87a2753762b7dbf38dc8e9ae3",
+          "60837860c8aaa5ad12d5ecd42d250b79bdf74cdb3b2dbfc49dd6217aeaf1f189",
+          "654c90b8ed20f048834d9fa67230e700e837d008a532afd2cb30469f314e9eed",
+          "9e1e9a8a7962fde7b171d75d2ab393d23e8f4c7dd7695136e17b2e0698e1a9c9",
+          "a16d077ebdb2c76d8d1034f203e04e77dcdbbd0ffd90842f0f8145089e431353",
+          "a5e1574030328e6d96f716494d3d7f21624d0538fa716f3ac668e0eac53ada37",
+          "a6c5717c76a5678a60f10d9c9d1112eb7d9999d017d882ff2cbdc9cfa84f9b28",
+          "ac4392b75774fb9cb41fbd47196c40d0b203a8091ae7046a21ea81604924876f",
+          "adb8a6e23f60a7eda1e3e47974d5de4e210891f23063c953b12176c1d58eb742",
+          "b6850b5cce074dd5b599c012f7ddbeb4d3464789c05e1bc451b92fdf4db45e98",
+          "c608ac4765fa39720bbd4f6d98e15ee8abffaba12f3fcbd6bc4c37375e3f41af",
+          "cd1a2d3dc749f5bd378640546256549690d28331f6041781ef446d17f4c33b9d",
+          "dcde0f0ac35688ad7ca58b67fc9eb7a55c6d17c2b6c173fc80b21d6e1beec1a0",
+          "dfb2c9f88977fc38829dc7cf4a409496d58aa203337d1443a06dc5072b6d323a",
+          "e2e08a1851a62506b097e9c375d3f128ab349eb6c78cd4f9e7ce56a3ba91e669",
+          "fae9101209ad7a995df8ea716caa733d61085ec006f70962e79657a595c1c234"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "INORGANIC:IRON",
+        "stage": 3,
+        "hashes": [
+          "0440eecdbff8c7aa8f09a586d12b778a8e8664d1e9ee1d8d9edbbc766a6b0b75",
+          "0a2335f9f09ed8251cfb91fec59c2aaff5855a25f1917a92eda90fdbc5a2a8ad",
+          "2fca7c1d9c29c0f628936681282892b2b4f8a4efa9000f1c802d61931628d7bb",
+          "3a51ce4f559aa56d1601676620bce9bca9d4183ed469856e4f11ead11cd2a2ce",
+          "40e866909d9c7cfed5fb6eb6625d039def608f1afaccf0044b804c0ae5a34318",
+          "4115e9e9274061e582ae11390ead8e8265a6b02c828905fb609690173de13a48",
+          "48fb747b452fba8b4aac661ce020bc3a4ff6040216e5b945b0316e9751d33a0f",
+          "4af3e377a5124598412baec77f6954bfceebbc4e052ea47dfbaa0814ca280b1d",
+          "4d582d7a26338daed4d8e0d94b5720900e63acee5e78048a10750540ff964092",
+          "58df2c2ee96d6ba14e54487fe922a9a8154ced1061ebed94feac49f932d1dd0f",
+          "6dcbf4786d1ea682387bc89cc6afaa530d5ee99cc61e608fc90f84658b9a60f0",
+          "7f337e85e7b6aca07b8a19e08d533706f71f21972b8d6da435cb78796da1b808",
+          "8111b9a0e2b7b35e8ab8f8817bae27ef605ce663a56613f6dd0bb799f784e4b8",
+          "85df8af14179d4f61b82a42821d56e22df24fd23667e747c74b0ae9c9d838be9",
+          "928bb7f5f3c12390cb0f714ebe4e1b913eef29929fbba3a595932b9f076bbca5",
+          "92dddba9a21c1796d824f9acaea5fdbdf4bdbf3df4062e10761001642668a8f7",
+          "a060259c29f87e11c7ba0a0b209f911572b99a2141cffd1c84a4e66c7c21af4e",
+          "a16d077ebdb2c76d8d1034f203e04e77dcdbbd0ffd90842f0f8145089e431353",
+          "a2be2884e92777489c30f0a99d5ccb7e4205f185bf7ddaa0e4541694d2462058",
+          "a6c5717c76a5678a60f10d9c9d1112eb7d9999d017d882ff2cbdc9cfa84f9b28",
+          "abbf7b57d70781fa791b57bd9548fdb1c615c41d68de3c204fe29eb36a7a23bf",
+          "adb8a6e23f60a7eda1e3e47974d5de4e210891f23063c953b12176c1d58eb742",
+          "afb3bdbd65928608d6bedfa51a648076b20e47ac26e67bb69c2820770d13c7c8",
+          "b38de3b0326b141be425392c8d09087ea07e519f769fcf27180136b528b2cf44",
+          "c608ac4765fa39720bbd4f6d98e15ee8abffaba12f3fcbd6bc4c37375e3f41af",
+          "c61634f0991f4dee47e7805369ae62a2e157fd1d702bfea4f12fe5dbcfc41224",
+          "cb218b864f73f0d884bc70f11c7651613dcca612930269c45e6bd6507a3c3cb8",
+          "d15f844a57864840d661220d7664a894b737e61dc062539a8e08d6f3451dbf23",
+          "e77b1e1d795ff4c61d922fd5f5ab6362150d10008e631ef2b70efaf27a4cc4fc",
+          "ff7bb9b3722b9c1d65a18398ef2e550ec791084b8c7f1764886607a3e070ffb7"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "GLASS_GREEN",
+        "stage": 0,
+        "hashes": [
+          "0735c3d186ae9739122b47f9bcbbadd4149d4d876776799aa4f380636f5e5782",
+          "074e5e1455d47643094e2bd61f3293ea78ea2d88a890e1f4a083293c8e519d6a",
+          "11f3063dff4d1d0339079215fae60fc606ff90f519e886d6f51698b79a7113b0",
+          "1506be669c736d92bd6f591d38f6ead43649a2b1ff7846ba729f11149b48f24c",
+          "3f41e39b15c0d352162b14d1cf2af3f2ceaba99ec48a29f2f0f7cbfb831960e7",
+          "4ccc6c3dd7c1a5223ed370f677a4a8fdde8332fc90450aebbbc88514388b6313",
+          "4ff8cf74554a6c41254b00b94ec4c17f7f38a9775f449a06527a8bbc2d84a352",
+          "586baa187581721fb05c247e9ed6c82bfb6fbe8ab8e0f039897530dea312e2b4",
+          "64eed324245a0b03d92e30843fe3c1bc58b080187ed6b13c402dd3f04f2604a0",
+          "6d39b64acf770e552f7c4594bdf060560a564636e04a331ada15199a3bd7e322",
+          "a4a432fecac94766a537f18a4c3374b17a0203c16a9fb4ad83224ce6123782bf",
+          "a51a86f1b1500495a6dae0f0fc0aa22e91d0ac62597a606be2ee859051c1c7bc",
+          "ad9591d7fb542702be02347f1774ae44d733557200df3569de93f42f41891cd4",
+          "c1b08296afe00190a269882ae39e00f5207734e6d308e2e9f3a8a0fb60e294e8",
+          "cc3d88ad3ece7982b48cd6dbc3d3961951d75a6cff8560c1eac0f7d5ac63644e",
+          "d1fa4bd2885b5adeedc79b13ae6c24b672e27c98f883f535f5884f1a58ee9081",
+          "d563e62edf555af2577cffb3fc44d77297acf29c98c27d13eb400e423cd31f08",
+          "d6e04829ef8484929dc402cc215b3d7637c6e789103263fe708186718877847b",
+          "e3cd6138faaec46c0e59781abbb46e8a93de66a54fb314afb627e4cd05b4fb17",
+          "fb21752eb0c5d962d17d632112544d4135ed6ec521b5dde79fff48529cc3abd7"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "GLASS_GREEN",
+        "stage": 1,
+        "hashes": [
+          "05709fc117990e82610987184b49539b822d732e0a5ecaefd2ee15d338d15d36",
+          "09c6c3af64db243c6166389753d26c5c328e5d2433d6043f1b577c71629b38ca",
+          "125280d3aeb1f7056dd5112eab782c525ee4048c57a2e7cffa79d7421cc56642",
+          "12b6121f007de8b4a3bebc4a4c967c3bbbbf4d96924d0f7bdb4bd2208daa8689",
+          "23c8398f9d14a1ccd41ed8ed987ecd158debc89ce6b53fea37e97c0856038134",
+          "365942504d5dfe82bf73e5891382a2e7feec4857279adf6a44a8802bdc6f32b4",
+          "450250bd7846a4d2b59d95623179e32a958795e4252f48afeacf1c41d80a2413",
+          "59990867d7841076ca6b149a2bcdd9dcbb62f1091d7385233a0369411bf79b32",
+          "5d5de0c8cd7b937001cfaa7f1909449d3a4539225191da85a671ed8a4795afdd",
+          "6705117d95f284f124d1f191bcbf45fa70866df38746ae507c6a72f969473f9f",
+          "6d39b64acf770e552f7c4594bdf060560a564636e04a331ada15199a3bd7e322",
+          "77b4d8272cd4a5013765ae014721f734fbd2b63608e5fe3005f3d8f0f2ad990c",
+          "7b9553ed2e3176dd8cdc6052f1632126c7e648d429c5adb7a6d9b128a90b24d5",
+          "82960d47ebe3a491919a874481b1087817e42ad76b441026a8e1fc2ffa8f9068",
+          "82d63a0a6b0ac1fb0b3a21702d5710144683b691a2376b485240f0db94ea5ef6",
+          "92379af3588d45a8c09ac0fbba96fa9d4eb40fc3e3ecf6186f0acb6441a71951",
+          "9f76fb4bfbff9dd9e4ef23e2459877a642899626b3825188f698da49453d47e8",
+          "b067a711c6c9eccbe3977ef368cc739ad0e708604bc8fbc9641c27684a158ce6",
+          "b938f504ac9c428add32cd97dabe206f114d60cb6082b4e008c358b7d88b153a",
+          "bf7895f4b486cd9db7a31e4984afba8d75d0cedd18dc40a9db126406de41e292",
+          "c6d112922941d978dd8c1e69d5311b3816ff4636bf869fef5121b2726345142c",
+          "cc3d88ad3ece7982b48cd6dbc3d3961951d75a6cff8560c1eac0f7d5ac63644e",
+          "d5f58a46d9998e42c791878fe321cbe83320aece4bd4026c8cb99ed276d80ed5",
+          "dcc17fe188244d1a823cd76950f3c29316ac1c36057d09876ff3f63b8bccf5be",
+          "e828a3e80f365987d265372da7d9f82eb4c5b3b31ed34df178b66c2dfba29558",
+          "e9f701789ed2d73035ab34c3e8b82bef2970673f43ca59fed55f742d4ab6320e",
+          "f29192246cce8175d2c0810883b24f8e29b7002d625c738f77b38386e61cdb61"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "GLASS_GREEN",
+        "stage": 2,
+        "hashes": [
+          "05709fc117990e82610987184b49539b822d732e0a5ecaefd2ee15d338d15d36",
+          "06344bfa3a7ce456fa1021c9e20a42699ad33f211d24d8acf50ff023dbc759c2",
+          "12b6121f007de8b4a3bebc4a4c967c3bbbbf4d96924d0f7bdb4bd2208daa8689",
+          "16db12247dc40fbda2d190cd9c5ac765f434ec139619ffa4b01dcf4655a1dc3e",
+          "1bfd2c348c9288596d908d675f0f041c115ea789be460b152629289576f98583",
+          "32237510e5cc30bd93883aa44399bca7ada5c2d145e66d49075561a779205fe8",
+          "365942504d5dfe82bf73e5891382a2e7feec4857279adf6a44a8802bdc6f32b4",
+          "3d468e6dd6fa185f79d1b7d5dd23e299a24cc3308866e6d9f64227c11c47d4c1",
+          "3efc494a62b774b5c28deb331810c8eaab8b7bffef081c7ae1980ec8b8043133",
+          "450250bd7846a4d2b59d95623179e32a958795e4252f48afeacf1c41d80a2413",
+          "4d7d1df678d380b55a6ef0e5c7ca1c42e175cebdb4bf8c61bde18f3f0d9c4503",
+          "59990867d7841076ca6b149a2bcdd9dcbb62f1091d7385233a0369411bf79b32",
+          "5e1902a9fdde0de7b86054ca0f1e914740062bb1cb03ebbb46b24d6173633fc8",
+          "6c221a2ee7917dec89127912a3d015e67112abbaf168a8f63bd4e74216bb5530",
+          "6d39b64acf770e552f7c4594bdf060560a564636e04a331ada15199a3bd7e322",
+          "77b4d8272cd4a5013765ae014721f734fbd2b63608e5fe3005f3d8f0f2ad990c",
+          "8709f8c5f34dd50ddf86fb9b14a078189e64b760be796ad71d3d99f9c2838dfb",
+          "919de20cb24f6eac42170efe8091dd117b698e06113697f22fb05712a04d52ff",
+          "9e7799238efc36d09597b520f016179405da39aa4612e31351370464a2122d21",
+          "ad1aa56c0758fdcddf06ce71b04ce1a8e9e38512e6c3847c3ead1408ea0127d8",
+          "b6921b5d95a034369b5ebe626821c10a24283b24243240031985d31580e5e727",
+          "b938f504ac9c428add32cd97dabe206f114d60cb6082b4e008c358b7d88b153a",
+          "bf7895f4b486cd9db7a31e4984afba8d75d0cedd18dc40a9db126406de41e292",
+          "c87f2e85b9867aaeb781f57e95258897e0414cd552b432ef65f1860bdfab98c3",
+          "cc3d88ad3ece7982b48cd6dbc3d3961951d75a6cff8560c1eac0f7d5ac63644e",
+          "cea4b841942f07a9cf09d5836ef029c1db4f9985b745ecdf839a288daacf3bdf",
+          "dcc17fe188244d1a823cd76950f3c29316ac1c36057d09876ff3f63b8bccf5be",
+          "e23726729050de2a9cbd71f5c9aee6de278f8f38738db7c04bafe847ce5a30d9",
+          "e5edf2c241dcef993fe7963cb75bc5fb1b5d65a5899779a6f5129612b28c7090",
+          "f29192246cce8175d2c0810883b24f8e29b7002d625c738f77b38386e61cdb61"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "GLASS_GREEN",
+        "stage": 3,
+        "hashes": [
+          "058db591715b1f2fd9441b168ce3c5643f35c6ddb1e107b7372b1794623f5787",
+          "1bfd2c348c9288596d908d675f0f041c115ea789be460b152629289576f98583",
+          "277445e4bed8fca62da49032dc71bc4234054edc5c280f273d482033200a8def",
+          "29be419ecd598b3cd0813e6c5fb90bfa709eb85feff117b077561d214bf0d25d",
+          "345c043a7a5a8aba7c399ee04a7d04e2e5029808eb63a03b7c599378389c0000",
+          "36d092f6cee8cffa5563b3717656445fc784018caaad9076989a1d25d29048d4",
+          "36f2865f272e3842ae52488140190bb3e6a0deb8a70dd6085f1e4c2778ed5a9a",
+          "3a2ba3c9e381146ec6ed35a8cdd0eb4c05a5857855f867b59ea254416514dae8",
+          "4af3e377a5124598412baec77f6954bfceebbc4e052ea47dfbaa0814ca280b1d",
+          "4d7d1df678d380b55a6ef0e5c7ca1c42e175cebdb4bf8c61bde18f3f0d9c4503",
+          "5a41ae68e1f0a5bc41192759c20547066378fbfbdf042bf660bf3dd152cca8c0",
+          "5e1902a9fdde0de7b86054ca0f1e914740062bb1cb03ebbb46b24d6173633fc8",
+          "62ebc0dbb8aab3a7d2845df90e02eb38396e970e99576c6ae92f40d05f0f8060",
+          "6c92e063e37faa9b2276a70f7ed5b4a2f19167b82c03430d5e03654c9efe6041",
+          "7482814448a9e093557ce96f5ea5277f20d5f31a0079d77dc6774176b42f7416",
+          "754a355d964f3e54e788911236b23d15e4e593b07cf986575b555a71d9920fd7",
+          "794f0199dda6f3458eb83e415210863d14f9d0355ee3049805c4346a5a46968e",
+          "88e737259a0cee28b85f1f2917f6e9ef3ee6a30a61d37cdf7dc37c7b17ccbbe6",
+          "928feccb67b8b08aeafe29653c99e8fccbfde05b1c1eee868bc0d75145b4689d",
+          "9e7799238efc36d09597b520f016179405da39aa4612e31351370464a2122d21",
+          "a41f641c49db2854e0f53731c83a215841520f3ae617b82558fe2d2e6d52dae4",
+          "ac82313c00e0b84d559f6ef4c9793f266468733535d6c845d9d55fe74efdacad",
+          "b40a753699abb61b6a0fea0739fbbd894dece9c37115cc907f04ad9e979f41bc",
+          "bcd98b6f214ac8c0445b962496e03d928a533f19d08b949be97f759973d033f0",
+          "c86353f1e8c82372167bd14e5677b2a7bba9a62b2697be0eaf81affab89af6de",
+          "c9d226a1d9fb653c02c9690f6b148d095968972a3a94423ae90c2915b4a8b332",
+          "e09029f5d8acad6b0fee0436165c0165961a46fd8135fb5c969834793fd8774d",
+          "e5edf2c241dcef993fe7963cb75bc5fb1b5d65a5899779a6f5129612b28c7090",
+          "f19f48d8acae490ca2025fcd118f1fced66a7e451c363f7e78889b7a8c368374",
+          "f7f0540e61920b705850a11941105d7e3db329d3c62507f630dc848dbb84acdc"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 0,
+        "hashes": [
+          "1bdf14352919ba8e929d414bbe443c071657c8557ec903a16cf08207fb91bbdc",
+          "206b3a0036efe07ceb44d26319e3d5b6bcb3b5c426594ae48588aea847c88d9f",
+          "34c11fecb47bb87684c7f579b14877ca14a3982eea4f283fffd84c5683126b08",
+          "372452f6f42d9791afd383e84f0a4f6dc1b663931952cd68e094bf15498beb23",
+          "39601c506b33955db21abad5f408abe66492858a58d6e479ca221ca895378b84",
+          "45638c375e05f28cca19ee8973d5d87dbc5329ac0d765cdf07f6f87bd76a2e7e",
+          "563afb5ef2fa58d3510ebe5dc3390166acd85c74accdb1daa378717a9933d888",
+          "67ad02a2bd03624b7800de7bcc1cf8fc276a7c2053ff76e51dd54a5a68278bc8",
+          "67e1f0029a47b7784cb29314b74d1695d722b592a90baa3706cb8b080bc35299",
+          "935f83abc2f377f1ad2538fcfd4f920b51ea5396832345c233eb080cabd43e1c",
+          "b03d22a92de4618b433dc4fa9a237536a4f051fea4447fa12bb0f725c8fbe024",
+          "b7f3a843d66d383b3a2887f98f1d1fa60a8a1ea9ba4d9fed54f5d9d5d633d2d8",
+          "b8422b198712b2f2a7f93d369ea8afb0a0272088a0bd60c825d92c230b08b2ec",
+          "bbe3c4f41b30ba9a12dd867c51318a1e10ee80b43741769d983ea18264278eb6",
+          "bec1aa27f0e6133454a4633148eef414d5ae07aad8924b6085ed513649c30065",
+          "bf552b177015bff6d02ea7acbe7d50cba38471939624a8534b12efdfacdbcbf4",
+          "d431fad5aa1408bdaeae7964cac30d4116734480b03db29f551398642fc25b38",
+          "d5ba3582fa12cabfc97a49f7f9f13881403bdb613dc8cf08dfba8d5d4efac3ab",
+          "dd654c1d6070981a4cd473ca88f6157c3359c4566a87fc2fcfb785fcdfc97860",
+          "f343f058db1e091eb5c973782097fdf7db12af983047f267113edded6bb61b0b"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 1,
+        "hashes": [
+          "0f62f17c5cc45efa1a1fc5e1bc11936a0111dde6313726cea8c36a03639f9e90",
+          "171afcb70e590922adc943a0ab2fbc51a8f85d95aab60dee3fac1f23e6707857",
+          "206b3a0036efe07ceb44d26319e3d5b6bcb3b5c426594ae48588aea847c88d9f",
+          "2226b6e5dd21838c69c366f40c97d006b90ac97436fdb5e4388c0403c9e2ef67",
+          "26fde4741bd95efe0c8af4d8a33f6b69d5a6d673f601434df7622dc2f2aefb4e",
+          "37b3f28e4088bfed3e890caef271f98d5ecddce1957e1992d712ffd38302ebf7",
+          "418595ab61406c55dc2570b76a6580c9ba26d7d036ffd06d0c7c0d89278d6790",
+          "53e199468a1f30182a7e44cb13cddf94942acf565e056707b29e3cd825d407c5",
+          "6888960cdaca21c4fd3b4ccd34538a48970a3ae901a93021bb7fb2111f5b84d4",
+          "6962af6f9a270db825c468e08fedf03685601615c04677b2c9f9c07563d98f5d",
+          "6a8a316d044c4c657d851297a37511f52bbf18d746eb5947c5136b29a4662af1",
+          "7393fa04792c6b99990714dbc5b20f411d3491512a239ec3150bd368f7e90c49",
+          "749062829b76b98f6a025ea599ff38aa0d8c4168bc3324101577c65ac96f37aa",
+          "935f83abc2f377f1ad2538fcfd4f920b51ea5396832345c233eb080cabd43e1c",
+          "9da86139fd25769c5967c933327f513794477885bd52a04caa988cf25216dc72",
+          "a4690d06b9bacce97e10eba0089ebb03958374f08650f81fa3172544c847c0d4",
+          "abf118311d46e34badce8caa5c9a490890183312d06aca7e7f02237a3832c73c",
+          "aeef89c27737f1fd457d6e5283a6fa5f00326995d20fd6d3e13190ed3e2c2b6e",
+          "bb8cdd220a4cffd58939c93170989e889247b376b77a2377b46919268777c936",
+          "de785c586f2c981442dc21688789ebf9ec0c9b331e1a1c56878ec89f5e265de2",
+          "e873ad926836807803a25fd17af93612652b60d37bf8031159e20a95626f5596",
+          "ebcd7766f97bf70d5d12f81a55386f7db95f02b65325417055a6f659bb84d1ce",
+          "f192c222f2cae75c88a47518c9017359be90e44edb24cafb3ddfe08a238613e7",
+          "f476d3eec2efa4e9af96eeff76c25101f29227348d8457196e09c44b4a36112a",
+          "f7bf7a30b7db4c9996ece42cf53a3a5f9ddaf83ebb8c9193d94c7b8cdedafda1",
+          "fc79af781e5856f5f485585db5e79857656474ff4d991c97fd3a522b7fff0c89",
+          "fd71d5d11ecd900d02c500110b89a6089e5bb4eba884447e27ad1d3f5af24294"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 2,
+        "hashes": [
+          "0d4f63eb888556a2eec719cfeb10a21181ecb57175dfc7052ccf5f416a26482b",
+          "171afcb70e590922adc943a0ab2fbc51a8f85d95aab60dee3fac1f23e6707857",
+          "1b41608de1b86e8f58ee4d5467a7f8deb09c420fdc477795761a012861a2dc85",
+          "206b3a0036efe07ceb44d26319e3d5b6bcb3b5c426594ae48588aea847c88d9f",
+          "273846da6ae73dfd72f40a1ff8706e6b07d6557cadecaf586eb67a408be44ecb",
+          "2bd8380bdf92aa5d001b6febac48c9e9f3358603a48e213d2238b628901c3702",
+          "3682f320ee473cb82ae78a269a8c8d33aace0f034e4b46794c5e6007dd1a26b1",
+          "37b3f28e4088bfed3e890caef271f98d5ecddce1957e1992d712ffd38302ebf7",
+          "4c982ed383c342c08589fc7f9321823d2cac49b5657966d4558d6f7f795fd3ff",
+          "5012bfdc7283d404330c1dea31b338aa43457e9ff8050f1c68d32ff62146471f",
+          "53e199468a1f30182a7e44cb13cddf94942acf565e056707b29e3cd825d407c5",
+          "5eb729f1eb0b12f9cad83816a44a680d22f892bbca86c2d6476343144e208bf5",
+          "6144abaf75916220aad98eeed894bad208aa6fdc2342972a709e9d7f42e54ab4",
+          "641ab0a80660164974d1ce053b01508eec28870756b2e5bdcd2bda4fd9299edb",
+          "68660429bf671489be1bfb43b69788c4e70e902c593651c8f4c62f5ac7ab2887",
+          "6962af6f9a270db825c468e08fedf03685601615c04677b2c9f9c07563d98f5d",
+          "6a8a316d044c4c657d851297a37511f52bbf18d746eb5947c5136b29a4662af1",
+          "6d82a394711598a36186c002ade1612cdcb6f59c61f028b3cf41c05a8da46917",
+          "749062829b76b98f6a025ea599ff38aa0d8c4168bc3324101577c65ac96f37aa",
+          "7af3ed1d538609ea51d0f64ce2886d202fe0e1d32764e3b5ba9e3666046750e0",
+          "8b5b443696c457aa476f4647be215c4c5ad3ade75acb0383a6309f813340f4d6",
+          "935f83abc2f377f1ad2538fcfd4f920b51ea5396832345c233eb080cabd43e1c",
+          "9ae245debff580e090a407ece4f891bdd1e333473e62baec433a0fedae02d700",
+          "9da86139fd25769c5967c933327f513794477885bd52a04caa988cf25216dc72",
+          "aeef89c27737f1fd457d6e5283a6fa5f00326995d20fd6d3e13190ed3e2c2b6e",
+          "b655c51d09b55ee98a3c8dbf4cae04f570ff00aa23b6e6f6b1900404a0052c30",
+          "d2b1887cd84c08b10a9b4743a31422fc7c1384f422a8ea416ca74c61c1b806af",
+          "e873ad926836807803a25fd17af93612652b60d37bf8031159e20a95626f5596",
+          "faf8cc5dc3e0a68ea13bcdd4cd0d81c3cd94abea00a8016862f3b9c1a2ad3f2e",
+          "fd71d5d11ecd900d02c500110b89a6089e5bb4eba884447e27ad1d3f5af24294"
+        ]
+      },
+      {
+        "kind": "TradeDepot",
+        "material": "PLANT:OAK:WOOD",
+        "stage": 3,
+        "hashes": [
+          "05315fe1000a3470aa03f1c75c356f4028a7a7fb376a7623930e6e1c41775c7d",
+          "1617c67f696ea56d127e99372c7bfcb89eae96354b4b172ea98d8aa3b5f725a1",
+          "250565fec7bda6e0f8608e794315b9bd83517982d3c951a4c8db21cf2012dae6",
+          "2731db484e1f9db59bf0a48ea8a186356dc2044169c5448902befc24c00a1afb",
+          "273846da6ae73dfd72f40a1ff8706e6b07d6557cadecaf586eb67a408be44ecb",
+          "316bd67acc795f6b38c340febd6af4f3b77961e6272b9c16d40f98096e7ddc6a",
+          "3682f320ee473cb82ae78a269a8c8d33aace0f034e4b46794c5e6007dd1a26b1",
+          "3e5ae27f6ac1d3eab13c75f0b8027bf44a1580a3537a914f621470901fad5b6b",
+          "4af3e377a5124598412baec77f6954bfceebbc4e052ea47dfbaa0814ca280b1d",
+          "4c982ed383c342c08589fc7f9321823d2cac49b5657966d4558d6f7f795fd3ff",
+          "4e5cc5d9d22043f31cffe4bbf0a6bca161808d45ad798d8319d758d9d0bce0cf",
+          "54b0c76636c54fe733f5d3b721055a983d421d8ca9f343a1f84894b5afae949e",
+          "57e34c48e32427961f508bf53317dd994513cbb056f9d96527782f4ce8b1aa34",
+          "5ac528736b57a76ab69183c29f8464bd479999ad4941a9e1bec2591e28192433",
+          "5b11d37a823bbeb0f4bd8313c0fe4b542764c40745410eb2777e31595b10ae89",
+          "5eb729f1eb0b12f9cad83816a44a680d22f892bbca86c2d6476343144e208bf5",
+          "62931a37ffea9d61a0680cd441172a9957877fe019ce4e58bbdb40576820268a",
+          "6f0c8401bd2bcb3b98ee19c067786ed588c1d3496cb663f95a60e021a7824a4f",
+          "785d69e9402bcb6d1b25d16ec68b751692629c2f9107053bd571201f9b3e865e",
+          "7d0784017def2f87519533b5aa6a0d699239ff8ea59b26f18675734d8b65c445",
+          "89864a1f7aa94da080fb95ca120e088aa264cc21a11331f3aa07c5c764f41f35",
+          "9ae245debff580e090a407ece4f891bdd1e333473e62baec433a0fedae02d700",
+          "b2e7bd1bec094ad606665d99033b9eb03f660ecec7df082e38fdb9f6fbb9c19d",
+          "c552f6bc24067d58331e51e4b7c77b3a93a4b141ddfe4379baf4c74811ed26fb",
+          "d0f229cab00449ab0d98729671b198ffb96e5b90147d9f78cecf7d48f0611aff",
+          "dd6423acc5a8a47e2979601728a4f8807e9d3b53f090322e0cba00fa8caa846d",
+          "ea98e14d9897fe33e443e485a2d1d0f539efcc161ba2616fae5014f308e24c5a",
+          "f89e6bc0105f50376e0c32380d5570e209a008318384486eb9c2538070b2195f",
+          "ff55df2ffa844f4961b73190049556163eeb5952df5f25e38c0c4d8b15aee067",
+          "ff7ced2b22f389d195e7d658106ff5ee0f7c5b6f32aa7940dbf86d6b7baa08bd"
+        ]
+      }
+    ],
+    "scope": "Owned layout footprint and one north overhang row only. The capture margin at Depot local(5,5) contains an unrelated signpost, excluded."
+  },
+  "native_component_rule": {
+    "selection": "First PERM entry, otherwise entry zero; no contents uses raw palette. Building material is not used. Base gets selected component solid color; overlays stay raw.",
+    "overhang": "For zero-alpha destination pixels, north overhang composition seeds destination alpha from the overlay before the native split /256 overlay blend.",
+    "captures": [
+      {
+        "path": "build/layout-existing-native-20261024-080922",
+        "cases": 8,
+        "matched_cells": 114,
+        "scope": "Existing completed buildings with actual components."
+      },
+      {
+        "path": "build/layout-components-native-20261024-081255",
+        "cases": 144,
+        "matched_cells": 2592,
+        "scope": "Four materials, four stages, three families; PERM only, TEMP before PERM, PERM before TEMP."
+      },
+      {
+        "path": "build/layout-component-order-native-20261024-081456",
+        "cases": 24,
+        "matched_cells": 432,
+        "scope": "Two PERM entries and TEMP only."
+      },
+      {
+        "path": "build/layout-component-fresh-native-20261024-081626",
+        "cases": 24,
+        "matched_cells": 432,
+        "scope": "Fresh TEMP-only state before PERM states excludes prior-render color cache explanation."
+      },
+      {
+        "path": "build/layout-two-temp-native-20261024-081750",
+        "cases": 12,
+        "matched_cells": 216,
+        "scope": "Two TEMP entries select entry zero."
+      }
+    ]
+  },
+  "live_component_transport": [
+    {
+      "capture": "build/layout-transport-native-20261024-082814",
+      "buildings": 8,
+      "exact_observations": 44,
+      "temporary_first_ids": [],
+      "recording_sha256": "067d9acc7384154caf62f3521c340b0e385b27dba6b4f49c69de3f2f42c388e0",
+      "source_unchanged": true,
+      "owned_session_closed": true,
+      "scope": "Native selected component ID, actual material and solid descriptor with building material independently changed to iron. No natural construction claim."
+    },
+    {
+      "capture": "build/layout-selection-transport-native-20261024-083049",
+      "buildings": 8,
+      "exact_observations": 44,
+      "temporary_first_ids": [
+        4,
+        466
+      ],
+      "recording_sha256": "8ec1bdfa9ae1b4a3b031f47e7af1ef3f0b9794752967e1201b351da8f9e85c60",
+      "source_unchanged": true,
+      "owned_session_closed": true,
+      "scope": "Native selected component ID, actual material and solid descriptor with building material independently changed to iron. No natural construction claim."
+    }
+  ],
+  "building_material_independence": {
+    "capture": "build/layout-transport-native-20261024-082814",
+    "cells_identical_to_existing_capture": 114,
+    "cells_different": 0
+  }
+}

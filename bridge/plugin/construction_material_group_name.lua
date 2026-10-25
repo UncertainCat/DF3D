@@ -15,6 +15,19 @@ return function(group,individual_id,history)
     if not item or
         item:getType()~=group.item_type or item:getSubtype()~=group.item_subtype or
         item:getMaterial()~=group.mat_type or item:getMaterialIndex()~=group.mat_index then return nil end
+    if group.item_type==df.item_type.SMALLGEM and (history or (not individual_id and not group.individual)) then
+        -- Native generic gem rows omit the individual cut. Ask DF's item
+        -- description routine with an owned, unregistered generic item;
+        -- never change the shape or other facts of a world item.
+        local sample=df.item_smallgemst:new()
+        local ok,text=pcall(function()
+            sample.mat_type=group.mat_type;sample.mat_index=group.mat_index;sample.shape=-1
+            sample:setStackSize(1)
+            return dfhack.items.getDescription(sample,(history or #group.ids>=2) and 2 or 1,false)
+        end)
+        sample:delete()
+        return ok and type(text)=='string' and text~='' and dfhack.df2utf(text) or nil
+    end
     if history then
         -- single_item_special_last_reference and artifact_last_reference: Last
         -- names the undecorated plural class even for a standalone special item.

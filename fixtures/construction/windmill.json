@@ -10242,5 +10242,8916 @@
       "unclassified": []
     },
     "scope": "Main scene pointer expansion, group addition/subtraction, exact selected/unselected subtraction, four individual log clicks, natural completion. Screenshots inspected against native073757/074252. Ordinary logs only; no full construction acceptance."
+  },
+  "native_hookup_service": {
+    "capture": "build/machine-hookup-oracle-20261023-011516",
+    "cases": [
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 0,
+            "y": -1,
+            "z": -1
+          },
+          {
+            "bit": 2,
+            "x": -1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 3,
+            "x": 1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 0,
+            "x": 0,
+            "y": 1,
+            "z": -1
+          },
+          {
+            "bit": 5,
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1490,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 164
+          },
+          "stage": 0,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "below_gear_pending",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 0,
+            "y": -1,
+            "z": -1
+          },
+          {
+            "bit": 2,
+            "x": -1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 3,
+            "x": 1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 0,
+            "x": 0,
+            "y": 1,
+            "z": -1
+          },
+          {
+            "bit": 5,
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1491,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 164
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "below_gear_complete",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "PLACING",
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": -1,
+            "y": -2,
+            "z": -1
+          },
+          {
+            "bit": 2,
+            "x": -2,
+            "y": -1,
+            "z": -1
+          },
+          {
+            "bit": 3,
+            "x": 0,
+            "y": -1,
+            "z": -1
+          },
+          {
+            "bit": 0,
+            "x": -1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 5,
+            "x": -1,
+            "y": -1,
+            "z": 0
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 0,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1492,
+          "maximum": 1,
+          "pos": {
+            "x": 102,
+            "y": 38,
+            "z": 164
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED"
+        ],
+        "variant": "corner_gear_complete",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 2,
+            "y": -1,
+            "z": 0
+          },
+          {
+            "bit": 2,
+            "x": 1,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "bit": 0,
+            "x": 2,
+            "y": 1,
+            "z": 0
+          },
+          {
+            "bit": 5,
+            "x": 2,
+            "y": 0,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1493,
+          "maximum": 1,
+          "pos": {
+            "x": 105,
+            "y": 39,
+            "z": 165
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "side_gear_complete",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 5,
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1494,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 164
+          },
+          "stage": 1,
+          "type": "AxleVertical"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "below_axle_complete",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "PLACING",
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "hookups": [],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 0,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1495,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 164
+          },
+          "stage": 1,
+          "type": "Chair"
+        },
+        "tiles": [
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED"
+        ],
+        "variant": "below_chair_complete",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "PLACING",
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 0,
+            "y": -1,
+            "z": 1
+          },
+          {
+            "bit": 2,
+            "x": -1,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "bit": 3,
+            "x": 1,
+            "y": 0,
+            "z": 1
+          },
+          {
+            "bit": 0,
+            "x": 0,
+            "y": 1,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 0,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1496,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 166
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED"
+        ],
+        "variant": "above_gear_complete",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "PLACING",
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 0,
+            "y": -1,
+            "z": -1
+          },
+          {
+            "bit": 2,
+            "x": -1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 3,
+            "x": 1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 0,
+            "x": 0,
+            "y": 1,
+            "z": -1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 0,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1497,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 164
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "FINE_BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED"
+        ],
+        "variant": "gear_center_floor",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "PLACING",
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 0,
+            "y": -1,
+            "z": -1
+          },
+          {
+            "bit": 2,
+            "x": -1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 3,
+            "x": 1,
+            "y": 0,
+            "z": -1
+          },
+          {
+            "bit": 0,
+            "x": 0,
+            "y": 1,
+            "z": -1
+          },
+          {
+            "bit": 5,
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 0,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1498,
+          "maximum": 1,
+          "pos": {
+            "x": 103,
+            "y": 39,
+            "z": 164
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "gear_corner_wall",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": -2,
+            "y": -2,
+            "z": 0
+          },
+          {
+            "bit": 3,
+            "x": -1,
+            "y": -1,
+            "z": 0
+          },
+          {
+            "bit": 0,
+            "x": -2,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "bit": 5,
+            "x": -2,
+            "y": -1,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1499,
+          "maximum": 1,
+          "pos": {
+            "x": 101,
+            "y": 38,
+            "z": 165
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "left_corner_gear",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 2,
+            "x": -2,
+            "y": -2,
+            "z": 0
+          },
+          {
+            "bit": 3,
+            "x": 0,
+            "y": -2,
+            "z": 0
+          },
+          {
+            "bit": 0,
+            "x": -1,
+            "y": -1,
+            "z": 0
+          },
+          {
+            "bit": 5,
+            "x": -1,
+            "y": -2,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1500,
+          "maximum": 1,
+          "pos": {
+            "x": 102,
+            "y": 37,
+            "z": 165
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "top_corner_gear",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 2,
+            "y": 0,
+            "z": 0
+          },
+          {
+            "bit": 2,
+            "x": 1,
+            "y": 1,
+            "z": 0
+          },
+          {
+            "bit": 0,
+            "x": 2,
+            "y": 2,
+            "z": 0
+          },
+          {
+            "bit": 5,
+            "x": 2,
+            "y": 1,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1501,
+          "maximum": 1,
+          "pos": {
+            "x": 105,
+            "y": 40,
+            "z": 165
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "right_corner_gear",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "STAGES",
+        "errors": [],
+        "focus": [
+          "dwarfmode/Building/PickMaterials"
+        ],
+        "hookups": [
+          {
+            "bit": 1,
+            "x": 1,
+            "y": 1,
+            "z": 0
+          },
+          {
+            "bit": 2,
+            "x": 0,
+            "y": 2,
+            "z": 0
+          },
+          {
+            "bit": 3,
+            "x": 2,
+            "y": 2,
+            "z": 0
+          },
+          {
+            "bit": 5,
+            "x": 1,
+            "y": 2,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": true,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 143,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1502,
+          "maximum": 1,
+          "pos": {
+            "x": 104,
+            "y": 41,
+            "z": 165
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE_BLOCKED",
+          "FINE",
+          "FINE",
+          "FINE",
+          "FINE"
+        ],
+        "variant": "bottom_corner_gear",
+        "warnings": []
+      },
+      {
+        "clicked_stage": "PLACING",
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "focus": [
+          "dwarfmode/Building/Placement"
+        ],
+        "hookups": [
+          {
+            "bit": 3,
+            "x": -1,
+            "y": -2,
+            "z": 0
+          },
+          {
+            "bit": 0,
+            "x": -2,
+            "y": -1,
+            "z": 0
+          },
+          {
+            "bit": 5,
+            "x": -2,
+            "y": -2,
+            "z": 1
+          }
+        ],
+        "hover_stage": "PLACING",
+        "native_closed": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_other": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "native_selected": {
+          "connected": false,
+          "hooks": [
+            {
+              "bits": 32,
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 9,
+              "x": -1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 8,
+              "x": -1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 10,
+              "x": -1,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 1,
+              "x": 0,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 2,
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            {
+              "bits": 5,
+              "x": 1,
+              "y": -1,
+              "z": 0
+            },
+            {
+              "bits": 4,
+              "x": 1,
+              "y": 0,
+              "z": 0
+            },
+            {
+              "bits": 6,
+              "x": 1,
+              "y": 1,
+              "z": 0
+            }
+          ]
+        },
+        "position": {
+          "x": 103,
+          "y": 39,
+          "z": 165
+        },
+        "requirements": [
+          {
+            "candidates": 0,
+            "required": 4
+          }
+        ],
+        "support": {
+          "id": 1503,
+          "maximum": 1,
+          "pos": {
+            "x": 101,
+            "y": 37,
+            "z": 165
+          },
+          "stage": 1,
+          "type": "GearAssembly"
+        },
+        "tiles": [
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED",
+          "BLOCKED"
+        ],
+        "variant": "diagonal_gear",
+        "warnings": []
+      }
+    ],
+    "scope": "Native get_machine_hookup_list with owned output and reverse buildings.all canConnectToMachine scan; selected/Bed/closed states agree without sampled UI/pathfinder changes.",
+    "source_preserved": true,
+    "completion_viewer": {
+      "capture": "build/machine-hookup-main-20261023-011808",
+      "completion": {
+        "elapsed": 825,
+        "frame": 825,
+        "id": 1491,
+        "items": [
+          48523,
+          48522,
+          48521,
+          48520
+        ],
+        "jobs": 0,
+        "maximum": 1,
+        "stage": 1,
+        "status": "passed"
+      },
+      "support": {
+        "id": 1490,
+        "pos": {
+          "x": 127,
+          "y": 61,
+          "z": 165
+        },
+        "stage": 0,
+        "windmill_center": {
+          "x": 129,
+          "y": 62,
+          "z": 165
+        }
+      },
+      "input": "Pointer menu and exact material add/subtract; semantic empty-center target. Prepared center OpenSpace and planned lateral corner gear; no forced windmill completion.",
+      "source_preserved": true,
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      }
+    }
+  },
+  "native_terrain_service": {
+    "capture": "build/windmill-terrain-oracle-20261023-012121",
+    "cases": [
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": false,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 19,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 19,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 19,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 19,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 19,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 19,
+        "connected": false,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneFloorSmooth",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "SoilFloor1",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "Shrub",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneRamp",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairU",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "StoneStairUD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "RampTop",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "OpenSpace",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneWall",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkPillar",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 0,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "TreeBranchNS",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "TreeTrunkBranchN",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairU",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 0,
+        "connected": true,
+        "errors": [],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Water at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 0,
+        "connected": true,
+        "errors": [
+          "Lava/Magma at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 0,
+        "selected": 0,
+        "terrain": "ConstructedStairUD",
+        "tiles": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 6,
+        "connected": true,
+        "errors": [
+          "Blocked at this location",
+          "Needs ground or near machine"
+        ],
+        "floor": 6,
+        "key": "Windmill",
+        "other": 6,
+        "selected": 6,
+        "terrain": "StoneFortification",
+        "tiles": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      {
+        "case": "water0",
+        "closed": 19,
+        "connected": true,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water1",
+        "closed": 19,
+        "connected": true,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water2",
+        "closed": 19,
+        "connected": true,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "water7",
+        "closed": 19,
+        "connected": true,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma1",
+        "closed": 19,
+        "connected": true,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      },
+      {
+        "case": "magma7",
+        "closed": 19,
+        "connected": true,
+        "errors": [
+          "Must remove construction",
+          "Needs ground or near machine"
+        ],
+        "floor": 19,
+        "key": "Windmill",
+        "other": 19,
+        "selected": 19,
+        "terrain": "ConstructedFortification",
+        "tiles": [
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19
+        ]
+      }
+    ],
+    "scope": "216 cases:18 terrains,6 liquids,with/without planned side gear; all nine footprint results match FloorTerrain unsupported or OpenTerrain supported followed by liquid validation. OpenTerrain selectedWindmill/Well/closed unchanged.",
+    "source_preserved": true,
+    "paused_frame": 0,
+    "refusal_viewer": {
+      "capture": "build/windmill-terrain-main-20261023-012641",
+      "result": {
+        "failure": "",
+        "observations": [
+          {
+            "copy": "Water at this location",
+            "family": "Windmill",
+            "x": 100
+          },
+          {
+            "copy": "Lava/Magma at this location",
+            "family": "Windmill",
+            "x": 104
+          },
+          {
+            "copy": "Must remove construction",
+            "family": "Windmill",
+            "x": 112
+          },
+          {
+            "copy": "Blocked at this location",
+            "family": "Windmill",
+            "x": 116
+          },
+          {
+            "copy": "Water at this location",
+            "family": "Windmill",
+            "x": 124
+          },
+          {
+            "dry_valid": true,
+            "family": "Windmill",
+            "x": 108
+          },
+          {
+            "dry_valid": true,
+            "family": "Windmill",
+            "x": 120
+          }
+        ],
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "input": "Semantic previews; five refusals, dry floor and supported ramp recovery; deep water screenshot inspected.",
+      "excluded_harness_run": "build/windmill-terrain-main-20261023-012525 expected Blocked for supported water7; native oracle requires Water. Product matched native."
+    },
+    "completion_viewer": {
+      "capture": "build/machine-hookup-main-20261023-012729",
+      "completion": {
+        "elapsed": 650,
+        "frame": 650,
+        "id": 1491,
+        "items": [
+          48523,
+          48522,
+          48521,
+          48520
+        ],
+        "jobs": 0,
+        "maximum": 1,
+        "stage": 1,
+        "status": "passed"
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "input": "Pointer menu/exact material add-subtract, semantic open-center target; planned lateral corner gear. Natural completion screenshot inspected."
+    }
   }
 }

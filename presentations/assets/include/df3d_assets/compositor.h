@@ -95,6 +95,10 @@ inline uint32_t packRgb(Rgba c) {
 // Alpha-over in 8-bit integer arithmetic (the bridge's formula).
 void blendOver(Rgba& dst, Rgba src);
 
+// Native grid-layout interior overlay blend, with independent /256 truncation.
+// The base is copied first; empty base alpha is seeded from the overlay.
+void blendLayoutOver(Rgba& dst, Rgba src);
+
 // Nearest-neighbour reduction factor: 1 when (w, h) fits (cw, ch), else the smallest integer that does.
 int fitFactor(int w, int h, int cw, int ch);
 

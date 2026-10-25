@@ -4957,10 +4957,9 @@
       "Four retained rendered states were visually inspected."
     ],
     "limits": [
-      "Existing outer Construction editor/exposure and material/Keep-building lifecycle remain separate incomplete work.",
-      "Cart numeric centering still needs direct pixel comparison; full outer-panel pixel parity is not claimed.",
-      "Live pointer-to-placement and linked-building activation effects remain unverified.",
-      "Known pinned Godot startup/shutdown diagnostics remain distinct from a clean pass."
+      "Known pinned Godot startup/shutdown diagnostics remain distinct from a clean pass.",
+      "main_scene_placement verifies one live pointer-to-placement profile; linked-building activation remains unverified.",
+      "Cart alignment is superseded by cart_weight_alignment; placement/material/Keep acceptance is recorded in the later owning sections. Full outer-panel pixel identity is not claimed."
     ]
   },
   "lifecycle": {
@@ -5558,5 +5557,5032 @@
     ],
     "verified": "Visible checkbox located from native text because Last shifts it down. Unchecked placement exits to map; checked placement remains in placement. Pressure Plate resets its configured water trigger. Native Last appears after a matching placement; screenshot inspected.",
     "limits": "Closest native jobs only, then cancelled; not natural completion, retained nondefault Bridge direction or generic Last semantics. Earlier160933 lacked reachable material,161104/161255 clicked Last instead of the shifted checkbox; their keep=true labels are not acceptance."
+  },
+  "main_scene_placement": {
+    "source": "build/pressure-plate-main-20261022-220616",
+    "status": "passed_with_known_issues",
+    "result": {
+      "failure": "",
+      "observations": [
+        {
+          "kept_profile": {
+            "citizens": false,
+            "magma": false,
+            "magma_max": 7,
+            "magma_min": 1,
+            "resets": true,
+            "track": false,
+            "track_max": 2000,
+            "track_min": 1,
+            "unit_max": 200000,
+            "unit_min": 5000,
+            "units": false,
+            "water": false,
+            "water_max": 7,
+            "water_min": 1
+          }
+        },
+        {
+          "building_id": 1490,
+          "input": "launcher/category/leaf/map/material through viewport pointer",
+          "site": "(128, 62, 165)"
+        },
+        {
+          "elapsed": 650.0,
+          "frame": 650.0,
+          "id": 1490.0,
+          "items": [
+            48520.0
+          ],
+          "job_details": [],
+          "jobs": 0.0,
+          "maximum": 1.0,
+          "stage": 1.0,
+          "status": "passed"
+        }
+      ],
+      "status": "passed"
+    },
+    "native_profile": {
+      "resets": false,
+      "water": true,
+      "water_max": 3,
+      "water_min": 3
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "source_preserved": true,
+    "inspected": [
+      "pressure-plate-placement.png",
+      "pressure-plate-kept.png"
+    ],
+    "scope": "Menu, trigger/mode/depth controls, site and exact material through viewport pointer. Natural completion650 with mechanism48520; Keep defaults match native keep_options_reference.",
+    "limitations": [
+      "One profile is tested end-to-end; existing semantic coverage tests other profiles.",
+      "Linked-building activation and fluid-trigger simulation are not exercised.",
+      "220425 timed out before placement: harness target was covered by the option panel. Rerun moved the camera; no product workaround was added."
+    ]
+  },
+  "native_trigger": {
+    "run": "build/pressure-trigger-native-20261023-065824",
+    "scope": "All64 flag combinations on dry, water and hidden-water terrain; native errors preserve Need trigger type before tile refusal. Runtime service comparison and effects recorded separately.",
+    "cases": [
+      {
+        "bits": 0,
+        "case": "dry",
+        "code": 0,
+        "errors": [
+          "Need trigger type"
+        ]
+      },
+      {
+        "bits": 1,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 2,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 3,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 4,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 5,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 6,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 7,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 8,
+        "case": "dry",
+        "code": 0,
+        "errors": [
+          "Need trigger type"
+        ]
+      },
+      {
+        "bits": 9,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 10,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 11,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 12,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 13,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 14,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 15,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 16,
+        "case": "dry",
+        "code": 0,
+        "errors": [
+          "Need trigger type"
+        ]
+      },
+      {
+        "bits": 17,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 18,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 19,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 20,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 21,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 22,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 23,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 24,
+        "case": "dry",
+        "code": 0,
+        "errors": [
+          "Need trigger type"
+        ]
+      },
+      {
+        "bits": 25,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 26,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 27,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 28,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 29,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 30,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 31,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 32,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 33,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 34,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 35,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 36,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 37,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 38,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 39,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 40,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 41,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 42,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 43,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 44,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 45,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 46,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 47,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 48,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 49,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 50,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 51,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 52,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 53,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 54,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 55,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 56,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 57,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 58,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 59,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 60,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 61,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 62,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 63,
+        "case": "dry",
+        "code": 0,
+        "errors": []
+      },
+      {
+        "bits": 0,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Need trigger type",
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 1,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 2,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 3,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 4,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 5,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 6,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 7,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 8,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Need trigger type",
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 9,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 10,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 11,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 12,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 13,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 14,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 15,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 16,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Need trigger type",
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 17,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 18,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 19,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 20,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 21,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 22,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 23,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 24,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Need trigger type",
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 25,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 26,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 27,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 28,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 29,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 30,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 31,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 32,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 33,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 34,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 35,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 36,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 37,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 38,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 39,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 40,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 41,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 42,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 43,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 44,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 45,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 46,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 47,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 48,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 49,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 50,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 51,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 52,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 53,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 54,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 55,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 56,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 57,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 58,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 59,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 60,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 61,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 62,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 63,
+        "case": "water",
+        "code": 10,
+        "errors": [
+          "Water at this location"
+        ]
+      },
+      {
+        "bits": 0,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Need trigger type",
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 1,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 2,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 3,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 4,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 5,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 6,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 7,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 8,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Need trigger type",
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 9,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 10,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 11,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 12,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 13,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 14,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 15,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 16,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Need trigger type",
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 17,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 18,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 19,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 20,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 21,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 22,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 23,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 24,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Need trigger type",
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 25,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 26,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 27,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 28,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 29,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 30,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 31,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 32,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 33,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 34,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 35,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 36,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 37,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 38,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 39,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 40,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 41,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 42,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 43,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 44,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 45,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 46,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 47,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 48,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 49,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 50,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 51,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 52,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 53,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 54,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 55,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 56,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 57,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 58,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 59,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 60,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 61,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 62,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      },
+      {
+        "bits": 63,
+        "case": "hidden-water",
+        "code": 7,
+        "errors": [
+          "Hidden, cannot build at this location"
+        ]
+      }
+    ],
+    "native_instruction": {
+      "rva": "0x3c0ea6",
+      "mask_immediate_rva": "0x3c0eac",
+      "guard_start": "0x3c0e97",
+      "guard_size": 24,
+      "guard_fnv1a64": "ea8f061448b130e7",
+      "ownership": "The native TEST reads global buildreq flags; service applies its verified mask to owned flags instead."
+    },
+    "service": {
+      "run": "build/pressure-trigger-service-20261023-070211",
+      "cases": 192,
+      "menu_comparisons": 576,
+      "contexts": [
+        "PressurePlate",
+        "Bed",
+        "closed"
+      ],
+      "global_flags_unchanged": true,
+      "source_preserved": true,
+      "simulation_frame": 0
+    },
+    "runtime": {
+      "run": "build/pressure-trigger-main-20261023-070708",
+      "input": "actual viewport pointer menu/map/options/exact material",
+      "refusal": "Need trigger type",
+      "recovery": "water trigger enabled, exact mechanism48520",
+      "completed": {
+        "building_id": 1490,
+        "frame": 650,
+        "stage": 1,
+        "maximum": 1,
+        "jobs": 0
+      },
+      "native_profile": {
+        "water": true,
+        "water_min": 3,
+        "water_max": 3,
+        "resets": false
+      },
+      "keep_building": "remains in placement and resets trigger options, matching native lifecycle",
+      "screenshots_inspected": [
+        "pressure-no-trigger.png",
+        "door-complete.png"
+      ],
+      "diagnostics": "three known engine diagnostics; unclassified empty",
+      "source_preserved": true,
+      "owned_session_closed": true
+    },
+    "checks": "build/qa/pressure-trigger-runtime: extension, construction headless, catalog and114 adapter tests passed",
+    "visual": {
+      "run": "build/pressure-trigger-visual-20261023-070851",
+      "cases": {
+        "pressure-no-trigger": [
+          "Need trigger type"
+        ],
+        "pressure-water": []
+      },
+      "screenshots_inspected": true,
+      "source_preserved": true,
+      "frame": 0,
+      "prior_capture": "070806 water row had stale native position cache; excluded for recovery evidence"
+    }
+  },
+  "native_quantity": {
+    "source": "build/native-pressure-quantity-20261023-125332",
+    "status": "passed",
+    "capture": {
+      "baseline": [
+        1,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        3,
+        1,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        3,
+        1,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        3,
+        1,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        3,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4,
+        1,
+        2,
+        2,
+        3,
+        2,
+        3,
+        3,
+        4
+      ],
+      "cases": [
+        {
+          "bits": 1,
+          "configured_flags": 1,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 1
+        },
+        {
+          "bits": 2,
+          "configured_flags": 2,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 2
+        },
+        {
+          "bits": 3,
+          "configured_flags": 3,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 3
+        },
+        {
+          "bits": 4,
+          "configured_flags": 4,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 4
+        },
+        {
+          "bits": 5,
+          "configured_flags": 5,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 5
+        },
+        {
+          "bits": 6,
+          "configured_flags": 6,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 6
+        },
+        {
+          "bits": 7,
+          "configured_flags": 7,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 7
+        },
+        {
+          "bits": 9,
+          "configured_flags": 9,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 9
+        },
+        {
+          "bits": 10,
+          "configured_flags": 10,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 10
+        },
+        {
+          "bits": 11,
+          "configured_flags": 11,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 11
+        },
+        {
+          "bits": 12,
+          "configured_flags": 12,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 12
+        },
+        {
+          "bits": 13,
+          "configured_flags": 13,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 13
+        },
+        {
+          "bits": 14,
+          "configured_flags": 14,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 14
+        },
+        {
+          "bits": 15,
+          "configured_flags": 15,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 15
+        },
+        {
+          "bits": 17,
+          "configured_flags": 17,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 17
+        },
+        {
+          "bits": 18,
+          "configured_flags": 18,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 18
+        },
+        {
+          "bits": 19,
+          "configured_flags": 19,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 19
+        },
+        {
+          "bits": 20,
+          "configured_flags": 20,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 20
+        },
+        {
+          "bits": 21,
+          "configured_flags": 21,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 21
+        },
+        {
+          "bits": 22,
+          "configured_flags": 22,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 22
+        },
+        {
+          "bits": 23,
+          "configured_flags": 23,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 23
+        },
+        {
+          "bits": 25,
+          "configured_flags": 25,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 25
+        },
+        {
+          "bits": 26,
+          "configured_flags": 26,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 26
+        },
+        {
+          "bits": 27,
+          "configured_flags": 27,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 27
+        },
+        {
+          "bits": 28,
+          "configured_flags": 28,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 28
+        },
+        {
+          "bits": 29,
+          "configured_flags": 29,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 29
+        },
+        {
+          "bits": 30,
+          "configured_flags": 30,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 30
+        },
+        {
+          "bits": 31,
+          "configured_flags": 31,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 31
+        },
+        {
+          "bits": 32,
+          "configured_flags": 32,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 32
+        },
+        {
+          "bits": 33,
+          "configured_flags": 33,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 33
+        },
+        {
+          "bits": 34,
+          "configured_flags": 34,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 34
+        },
+        {
+          "bits": 35,
+          "configured_flags": 35,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 35
+        },
+        {
+          "bits": 36,
+          "configured_flags": 36,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 36
+        },
+        {
+          "bits": 37,
+          "configured_flags": 37,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 37
+        },
+        {
+          "bits": 38,
+          "configured_flags": 38,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 38
+        },
+        {
+          "bits": 39,
+          "configured_flags": 39,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 4,
+          "picker_flags": 39
+        },
+        {
+          "bits": 40,
+          "configured_flags": 40,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 40
+        },
+        {
+          "bits": 41,
+          "configured_flags": 41,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 41
+        },
+        {
+          "bits": 42,
+          "configured_flags": 42,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 42
+        },
+        {
+          "bits": 43,
+          "configured_flags": 43,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 43
+        },
+        {
+          "bits": 44,
+          "configured_flags": 44,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 44
+        },
+        {
+          "bits": 45,
+          "configured_flags": 45,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 45
+        },
+        {
+          "bits": 46,
+          "configured_flags": 46,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 46
+        },
+        {
+          "bits": 47,
+          "configured_flags": 47,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 4,
+          "picker_flags": 47
+        },
+        {
+          "bits": 48,
+          "configured_flags": 48,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 48
+        },
+        {
+          "bits": 49,
+          "configured_flags": 49,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 49
+        },
+        {
+          "bits": 50,
+          "configured_flags": 50,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 50
+        },
+        {
+          "bits": 51,
+          "configured_flags": 51,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 51
+        },
+        {
+          "bits": 52,
+          "configured_flags": 52,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 52
+        },
+        {
+          "bits": 53,
+          "configured_flags": 53,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 53
+        },
+        {
+          "bits": 54,
+          "configured_flags": 54,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 54
+        },
+        {
+          "bits": 55,
+          "configured_flags": 55,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 4,
+          "picker_flags": 55
+        },
+        {
+          "bits": 56,
+          "configured_flags": 56,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 1,
+          "picker_flags": 56
+        },
+        {
+          "bits": 57,
+          "configured_flags": 57,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 57
+        },
+        {
+          "bits": 58,
+          "configured_flags": 58,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 58
+        },
+        {
+          "bits": 59,
+          "configured_flags": 59,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 59
+        },
+        {
+          "bits": 60,
+          "configured_flags": 60,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 2,
+          "picker_flags": 60
+        },
+        {
+          "bits": 61,
+          "configured_flags": 61,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 61
+        },
+        {
+          "bits": 62,
+          "configured_flags": 62,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 3,
+          "picker_flags": 62
+        },
+        {
+          "bits": 63,
+          "configured_flags": 63,
+          "configured_quantity": 1,
+          "native": 1,
+          "owned": 4,
+          "picker_flags": 63
+        }
+      ],
+      "frame": 0
+    },
+    "hashes": [
+      {
+        "Algorithm": "SHA256",
+        "Hash": "147EACAC2B50E52427FC0910B7934A207E0E0BB28BCA7915A21A783B89CC70F2",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\construction_material_native.cpp"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "1E78797D91D98E9F1558EF70F98D38F6CCE74E88B20268C82D2E2DE9C5908CE0",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\construction.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "1EA7D2B499A4C0CEA04D79CD5B82095C16F90846D3432C929E6689271CCE16A0",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\bridge\\plugin\\management_helpers.h"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "736557617972AE1CD0953E89865BAFD6D97A972DA845B3BBEC28F532125D6F72",
+        "Path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dwarf Fortress\\hack\\plugins\\df3d.plug.dll"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "34374C059E37CEF46B6EA9C0C3974B471FC611D15F35D0F94FD8A492827A349B",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\native-pressure-quantity.lua"
+      },
+      {
+        "Algorithm": "SHA256",
+        "Hash": "BE06A5377AB983FD4B956E8052E7FE1F5C190C2CBE1CBC44E0833CEDBB0A75A2",
+        "Path": "C:\\Users\\Josh\\Documents\\DF3D\\build\\notes\\native-pressure-quantity.ps1"
+      }
+    ],
+    "source_unchanged": "Owned source unchanged",
+    "owned_session_closed": true,
+    "scope": [
+      "64 isolated native-constructor flag combinations;60 valid native picker configurations",
+      "Four trigger booleans selected through native controls; citizens/reset bits set diagnostically",
+      "Configured and picker flags equal requested bits for every case; configured/picker requirement stays1",
+      "Owned queries preserve observed menu/counters/navigation; full-map path/walkable/item digests checked independently of native UI traversal; frame0"
+    ],
+    "finding": "Constructor aae4b0/aaf821 reads input trigger bits and yields1..4. The actual native picker creates its requirement before trigger controls change, then retains count_required1 even with all four trigger bits enabled. Calling the constructor with final configured flags is not native picker parity. Product quantity remains1; no parity exception requested or applied.",
+    "limits": [
+      "Does not establish every native quantity stage or building family",
+      "No new completed building effects or rendering claim"
+    ],
+    "harness_failures": [
+      {
+        "source": "build/native-pressure-quantity-20261023-124730",
+        "reason": "Direct flag assignment comparison disproved equality atbits3; initial bug hypothesis invalid"
+      },
+      {
+        "source": "build/native-pressure-quantity-20261023-124905",
+        "reason": "Preservation compared across native UI traversal, which changes path state; corrected isolation boundaries"
+      },
+      {
+        "source": "build/native-pressure-quantity-20261023-125035",
+        "reason": "Passed preliminary quantity capture; final run adds configured and picker flag identity"
+      }
+    ]
+  },
+  "cart_weight_alignment": {
+    "source": "build/pressure-weight-alignment-20261024-014532",
+    "status": "passed_with_known_issues",
+    "origin_cell": [
+      73,
+      5
+    ],
+    "row": 15,
+    "cases": [
+      {
+        "name": "upper-1",
+        "minimum": 1,
+        "maximum": 1,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 49
+          },
+          {
+            "x": 107,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-100",
+        "minimum": 1,
+        "maximum": 100,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 49
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1000",
+        "minimum": 1,
+        "maximum": 1000,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 48
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1050",
+        "minimum": 1,
+        "maximum": 1050,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 48
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1100",
+        "minimum": 1,
+        "maximum": 1100,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 49
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1150",
+        "minimum": 1,
+        "maximum": 1150,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 49
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1200",
+        "minimum": 1,
+        "maximum": 1200,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 50
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1250",
+        "minimum": 1,
+        "maximum": 1250,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 50
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1300",
+        "minimum": 1,
+        "maximum": 1300,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 51
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1350",
+        "minimum": 1,
+        "maximum": 1350,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 51
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1400",
+        "minimum": 1,
+        "maximum": 1400,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 52
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1450",
+        "minimum": 1,
+        "maximum": 1450,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 52
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-150",
+        "minimum": 1,
+        "maximum": 150,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 49
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1500",
+        "minimum": 1,
+        "maximum": 1500,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 53
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1550",
+        "minimum": 1,
+        "maximum": 1550,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 53
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1600",
+        "minimum": 1,
+        "maximum": 1600,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 54
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1650",
+        "minimum": 1,
+        "maximum": 1650,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 54
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1700",
+        "minimum": 1,
+        "maximum": 1700,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 55
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1750",
+        "minimum": 1,
+        "maximum": 1750,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 55
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1800",
+        "minimum": 1,
+        "maximum": 1800,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 56
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1850",
+        "minimum": 1,
+        "maximum": 1850,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 56
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1900",
+        "minimum": 1,
+        "maximum": 1900,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 57
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-1950",
+        "minimum": 1,
+        "maximum": 1950,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 104,
+            "ch": 49
+          },
+          {
+            "x": 105,
+            "ch": 57
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-200",
+        "minimum": 1,
+        "maximum": 200,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 50
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-250",
+        "minimum": 1,
+        "maximum": 250,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 50
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-300",
+        "minimum": 1,
+        "maximum": 300,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 51
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-350",
+        "minimum": 1,
+        "maximum": 350,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 51
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-400",
+        "minimum": 1,
+        "maximum": 400,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 52
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-450",
+        "minimum": 1,
+        "maximum": 450,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 52
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-50",
+        "minimum": 1,
+        "maximum": 50,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-500",
+        "minimum": 1,
+        "maximum": 500,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 53
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-550",
+        "minimum": 1,
+        "maximum": 550,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 53
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-600",
+        "minimum": 1,
+        "maximum": 600,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 54
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-650",
+        "minimum": 1,
+        "maximum": 650,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 54
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-700",
+        "minimum": 1,
+        "maximum": 700,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 55
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-750",
+        "minimum": 1,
+        "maximum": 750,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 55
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-800",
+        "minimum": 1,
+        "maximum": 800,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 56
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-850",
+        "minimum": 1,
+        "maximum": 850,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 56
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-900",
+        "minimum": 1,
+        "maximum": 900,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 57
+          },
+          {
+            "x": 106,
+            "ch": 48
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "upper-950",
+        "minimum": 1,
+        "maximum": 950,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 105,
+            "ch": 57
+          },
+          {
+            "x": 106,
+            "ch": 53
+          },
+          {
+            "x": 107,
+            "ch": 48
+          },
+          {
+            "x": 108,
+            "ch": 226
+          }
+        ]
+      },
+      {
+        "name": "weight-1",
+        "minimum": 1,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 49
+          },
+          {
+            "x": 91,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-100",
+        "minimum": 100,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 49
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1000",
+        "minimum": 1000,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 48
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1050",
+        "minimum": 1050,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 48
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1100",
+        "minimum": 1100,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 49
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1150",
+        "minimum": 1150,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 49
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1200",
+        "minimum": 1200,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 50
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1250",
+        "minimum": 1250,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 50
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1300",
+        "minimum": 1300,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 51
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1350",
+        "minimum": 1350,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 51
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1400",
+        "minimum": 1400,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 52
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1450",
+        "minimum": 1450,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 52
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-150",
+        "minimum": 150,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 49
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1500",
+        "minimum": 1500,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 53
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1550",
+        "minimum": 1550,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 53
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1600",
+        "minimum": 1600,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 54
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1650",
+        "minimum": 1650,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 54
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1700",
+        "minimum": 1700,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 55
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1750",
+        "minimum": 1750,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 55
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1800",
+        "minimum": 1800,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 56
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1850",
+        "minimum": 1850,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 56
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1900",
+        "minimum": 1900,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 57
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-1950",
+        "minimum": 1950,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 49
+          },
+          {
+            "x": 89,
+            "ch": 57
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-200",
+        "minimum": 200,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 50
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-2000",
+        "minimum": 2000,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 88,
+            "ch": 50
+          },
+          {
+            "x": 89,
+            "ch": 48
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-250",
+        "minimum": 250,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 50
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-300",
+        "minimum": 300,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 51
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-350",
+        "minimum": 350,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 51
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-400",
+        "minimum": 400,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 52
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-450",
+        "minimum": 450,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 52
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-50",
+        "minimum": 50,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-500",
+        "minimum": 500,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 53
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-550",
+        "minimum": 550,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 53
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-600",
+        "minimum": 600,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 54
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-650",
+        "minimum": 650,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 54
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-700",
+        "minimum": 700,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 55
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-750",
+        "minimum": 750,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 55
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-800",
+        "minimum": 800,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 56
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-850",
+        "minimum": 850,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 56
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-900",
+        "minimum": 900,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 57
+          },
+          {
+            "x": 90,
+            "ch": 48
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      },
+      {
+        "name": "weight-950",
+        "minimum": 950,
+        "maximum": 2000,
+        "cells": [
+          {
+            "x": 89,
+            "ch": 57
+          },
+          {
+            "x": 90,
+            "ch": 53
+          },
+          {
+            "x": 91,
+            "ch": 48
+          },
+          {
+            "x": 92,
+            "ch": 226
+          },
+          {
+            "x": 106,
+            "ch": 65
+          },
+          {
+            "x": 107,
+            "ch": 110
+          },
+          {
+            "x": 108,
+            "ch": 121
+          }
+        ]
+      }
+    ],
+    "scope": "All 41 minimum choices and 40 numeric maximum choices plus Any, captured through native pointer controls with simulation paused. Current renderer matches 17,534 native foreground glyph pixels across all 81 states. Background and outer-panel parity are outside this check.",
+    "gpu_source": "build/qa/pressure-weight-alignment",
+    "screenshots_inspected": [
+      "controller_pressure_weight-50.png"
+    ],
+    "source_unchanged": true,
+    "owned_session_closed": true,
+    "sha256": {
+      "build/pressure-weight-alignment-20261024-014532/result.json": "eb8019fb5cc0477a731c89d242d4e48aeab129057ce2b8dbe299fb19d449bd4c",
+      "build/pressure-weight-alignment-20261024-014532/capture-inputs.json": "b866372ed84126ac3ec3bb13c67e7a8770830b150c81f0d087297788187b5109",
+      "build/qa/pressure-weight-alignment/build_menu_capture.log": "bf97d04f34278ec5ad15a068aec11ccbd2fea8a21b29bd5872003c2eaadf37b2"
+    }
   }
 }

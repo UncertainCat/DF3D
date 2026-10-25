@@ -1,8 +1,8 @@
 -- Safe-point semantic Track candidate snapshot. Native buildreq, widgets and
 -- native navigation scratch are forbidden inputs. Inject the verified helpers
 -- once with the construction owner's lifetime; callers provide their own route.
-return function(gate, recipe, enabled, collect_groups, partition, group_name)
-    return function(path, maximum_candidates)
+return function(enabled, collect_groups, partition, group_name)
+    return function(path, maximum_candidates, native_query, native_type, native_subtype)
         if math.type(maximum_candidates)~='integer' or maximum_candidates<1 or maximum_candidates>65536 then
             return {status=1}
         end
@@ -14,41 +14,29 @@ return function(gate, recipe, enabled, collect_groups, partition, group_name)
             end
             local groups=collect_groups(path,raw_group)
             if not groups then return {status=2} end
+            if type(native_query)~='function' then return {status=2} end
+            local native=native_query(native_type,native_subtype)
+            if type(native)~='table' or native.status~=0 or type(native.candidates)~='table' or
+                #native.candidates~=1 or type(native.candidates[1])~='table' then return {status=2} end
+            if #native.candidates[1]>maximum_candidates then return {status=3} end
             local rows,seen={},{}
-            for _,item in ipairs(df.global.world.items.other.IN_PLAY) do
-                local facts={type=df.item_type[item:getType()],is_build_mat=item:isBuildMat(),
-                    material_type=item:getMaterial(),material_index=item:getMaterialIndex()}
-                if facts.type=='BOULDER' and facts.material_type==0 and facts.material_index>=0 then
-                    local policy=df.global.plotinfo.economic_stone
-                    facts.economic_restricted=facts.material_index<#policy and policy[facts.material_index]~=0 or false
-                end
-                local suitable=recipe(facts)
-                if suitable==nil then return {status=2} end
-                if suitable then
-                    facts.flags=item.flags.whole;facts.flags2=item.flags2.whole
-                    if item.flags.in_inventory then
-                        local container=dfhack.items.getContainer(item)
-                        facts.container_kind=container and df.item_type[container:getType()] or 'UNIT'
-                        if container then facts.container_flags=container.flags.whole;facts.container_flags2=container.flags2.whole end
-                    end
-                    local allowed=gate(facts)
-                    if allowed==nil then return {status=2} end
-                    if allowed and not item:isAssignedToStockpile() then
-                        local x,y,z=dfhack.items.getPosition(item)
-                        local p={x=x,y=y,z=z}
-                        if x and y and z and dfhack.maps.isValidTilePos(p) and not seen[item.id] then
-                            if #rows>=maximum_candidates then return {status=3} end
-                            local group=raw_group(p)
-                            local available=enabled(group,groups)
-                            if available==nil then return {status=2} end
-                            rows[#rows+1]={id=item.id,item_type=item:getType(),item_subtype=item:getSubtype(),
-                                mat_type=facts.material_type,mat_index=facts.material_index,
-                                position=p,walkable_group=group,enabled=available,
-                                individual=item.flags.artifact or item:isImproved()}
-                            seen[item.id]=true
-                        end
-                    end
-                end
+            for _,id in ipairs(native.candidates[1]) do
+                if math.type(id)~='integer' or id<0 or seen[id] then return {status=2} end
+                seen[id]=true
+                local item=df.item.find(id)
+                if not item then return {status=2} end
+                -- Native collection owns suitability, flags and containment.
+                -- Placement-group enablement remains a separate semantic step.
+                local x,y,z=dfhack.items.getPosition(item)
+                local p={x=x,y=y,z=z}
+                if not x or not y or not z or not dfhack.maps.isValidTilePos(p) then return {status=2} end
+                local group=raw_group(p)
+                local available=enabled(group,groups)
+                if available==nil then return {status=2} end
+                rows[#rows+1]={id=id,item_type=item:getType(),item_subtype=item:getSubtype(),
+                    mat_type=item:getMaterial(),mat_index=item:getMaterialIndex(),
+                    position=p,walkable_group=group,enabled=available,
+                    individual=item.flags.artifact or item:isImproved()}
             end
             table.sort(rows,function(a,b)return a.id<b.id end)
             local initial_groups=partition(rows)

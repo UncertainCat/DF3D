@@ -15,6 +15,20 @@ func wait_for(predicate: Callable, label: String) -> bool:
 		await create_timer(0.02).timeout
 	return check(false,label+" timed out; no command replay")
 
+# Diagnostic cleanup uses the shared semantic service, not a hidden product UI.
+func inspect_and_remove(id: int, at_tile = null) -> bool:
+	editor.cancel_site()
+	var request={"action":3,"building_id":id} if at_tile==null else {"action":5,"origin":at_tile}
+	var replies:Array=[]
+	actions.submit("construction",request,func(_ticket,result,_request):replies.append(result))
+	if not await wait_for(func():return not replies.is_empty(),"Inspect cleanup receipt"):return false
+	var inspected:Dictionary=replies[0]
+	if not check(int(inspected.get("status",-1))==S.Ok and int(inspected.get("building_id",-1))==id,"Inspect cleanup identity"):return false
+	replies.clear()
+	actions.submit("construction",{"action":4,"building_id":id,"definition":inspected.construction.building_key},func(_ticket,result,_request):replies.append(result))
+	if not await wait_for(func():return not replies.is_empty(),"Remove cleanup receipt"):return false
+	return check(int(replies[0].get("status",-1))==S.Ok,"Remove cleanup accepted")
+
 func exercise() -> void:
 	step = "controller setup"
 	if not check(world.load_assets(FileAccess.get_file_as_string(directory+"/df-path.txt")),"installed assets unavailable"): return
@@ -67,10 +81,7 @@ func exercise_controller(fixture: Dictionary, origin: Vector3i) -> void:
 		if stopped: return
 		var ids := building_ids(verified)
 		if not check(ids.size() == 1 and editor.placed_sites.has(ids[0]),"controller/native building identities differ"): return
-		editor.begin_inspect(); editor.send({"action":5,"origin":origin})
-		if not await wait_for(func(): return editor.request_ticket == 0 and editor.inspected_id == ids[0],"InspectAtTile"): return
-		editor.remove_button.pressed.emit()
-		if not await wait_for(func(): return editor.request_ticket == 0 and not editor.placed_sites.has(ids[0]),"Remove"): return
+		if not await inspect_and_remove(ids[0],origin):return
 		await native("removed",{"id":ids[0]})
 		await native("site_clear",{"origin":native_point(origin),"width":1,"height":1})
 		if stopped: return
@@ -145,10 +156,7 @@ func place_scenario(fixture: Dictionary, scenario: Array) -> void:
 	var ids := building_ids(verified)
 	if not check(not ids.is_empty() and editor.placed_sites.has(int(receipt.first_building)),"native/controller placement identity mismatch"): return
 	for id in ids:
-		editor.begin_inspect(); editor.send({"action":3,"building_id":id})
-		if not await wait_for(func(): return editor.request_ticket == 0 and editor.inspected_id == id,"Inspect"): return
-		editor.remove_button.pressed.emit()
-		if not await wait_for(func(): return editor.request_ticket == 0 and editor.inspected_id == -1,"Remove"): return
+		if not await inspect_and_remove(id):return
 		await native("removed",{"id":id})
 		if stopped: return
 	for dz in dimensions.z:

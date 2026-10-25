@@ -1,6 +1,8 @@
 -- Semantic Track site reader. Invoke at a DF safe point over a stable map.
 -- No buildreq, viewscreen, pointer/camera or staged native editor inputs.
--- Connected Preview uses this reader; Track placement stays disabled.
+-- Connected Preview and placement planning use these semantic site facts.
+local native_site_support=...
+assert(type(native_site_support)=='function','Missing native track terrain service')
 local function connections(name)
     local suffix=name and name:match('Track([NSEW]+)$')
     local ramp=false
@@ -33,6 +35,8 @@ return function(p)
         support=(shape=='WALL' or shape=='FORTIFICATION') and
             not tile_name:find('Trunk',1,true) and tile_name~='SemiMoltenRock' and tile_name~='GlowingBarrier',
         open=tile==df.tiletype.OpenSpace or tile==df.tiletype.Chasm or tile==df.tiletype.EeriePit}
+    local accepted,_,verified=native_site_support(p,'TrackTerrain')
+    if verified then result.native_eligible=accepted end
     local b=dfhack.buildings.findAtTile(p)
     if occ.building==0 then result.occupancy='None' end
     if b then
@@ -42,13 +46,16 @@ return function(p)
             local name=df.construction_type[b:getSubtype()]
             local mask,ramp=connections(name)
             result.building.subtype=name
-            if mask and result.building.stage==0 and not result.building.removing then
-                result.occupancy='PendingTrack'
-                result.pending={id=b.id,connections=mask,ramp=ramp}
+            if name and result.building.stage==0 and not result.building.removing then
+                result.occupancy='PendingConstruction'
+                result.pending={id=b.id,connections=mask or 0,ramp=not not ramp,track=mask~=nil,subtype=b:getSubtype()}
             else result.occupancy='Unknown' end
-        elseif (kind=='Support' or kind=='Stockpile') and occ.building~=0 then
+        elseif occ.building~=0 then
+            -- Native construction occupancy rejects non-construction buildings
+            -- regardless of their family (a82436..a824b3). Passable workshops
+            -- are blocked sites, not unknown facts that poison nearby routes.
             result.occupancy='BlockingBuilding'
-        elseif kind~='Civzone' then result.occupancy='Unknown' end
+        end
     elseif occ.building~=0 then result.occupancy='Unknown' end
 
     -- Preserve native tile kind independently of any pending replacement job.

@@ -1,5 +1,6 @@
-"""Replay native Track bin/secondary-flag evidence through the partial Lua gate."""
+"""Verify native material collection integration, grouping, naming and ordering."""
 import json
+import gzip
 from pathlib import Path
 import unittest
 
@@ -18,6 +19,7 @@ class CandidateGateTests(unittest.TestCase):
                     getType=function()return sample.item_type end,getSubtype=function()return sample.item_subtype end,
                     getMaterial=function()return sample.mat_type end,getMaterialIndex=function()return sample.mat_index end}
             end}}
+            df.item_smallgemst={new=function()return {setStackSize=function()end,delete=function()end}end}
             dfhack={df2utf=function(s)return s end,items={getDescription=function(item,mode,decorated)
                 return mode==0 and sample.description or mode==1 and sample.singular or sample.plural end}}
         ''')
@@ -32,6 +34,31 @@ class CandidateGateTests(unittest.TestCase):
                         group={k:sample[k] for k in ('item_type','item_subtype','mat_type','mat_index')}
                         group.update(individual=special,ids=native['ids'])
                         self.assertEqual(describe(self.lua.table_from(group,recursive=True)),native['name'],(case['definition'],f['index']))
+
+    def test_generic_gem_name_uses_owned_native_item_and_releases_on_error(self):
+        describe=self.lua.execute((ROOT/'bridge/plugin/construction_material_group_name.lua').read_text(encoding='utf-8'))
+        self.lua.execute("""
+            deleted=0;fail=false;world_item={shape=30,flags={artifact=false},getType=function()return 1 end,
+                getSubtype=function()return -1 end,getMaterial=function()return 0 end,getMaterialIndex=function()return 151 end,
+                isImproved=function()return false end}
+            df={item_type={SMALLGEM=1},item={find=function()return world_item end},item_smallgemst={new=function()
+                return {setStackSize=function(self,n)self.stack=n end,delete=function()deleted=deleted+1 end}
+            end}}
+            dfhack={df2utf=function(s)return s end,items={getDescription=function(item,mode,decorate)
+                if item==world_item then return 'baguette cut rubies' end
+                assert(item.shape==-1 and item.mat_type==0 and item.mat_index==151 and item.stack==1 and not decorate)
+                if fail then error('fixture description failure')end
+                return 'rubies'
+            end}}
+        """)
+        group=self.lua.table_from(dict(item_type=1,item_subtype=-1,mat_type=0,mat_index=151,individual=False,ids=[10,11]),recursive=True)
+        self.assertEqual(describe(group),'rubies')
+        self.assertEqual(describe(group,10),'baguette cut rubies')
+        self.assertEqual(describe(group,None,True),'rubies')
+        self.lua.execute('fail=true')
+        self.assertIsNone(describe(group))
+        self.assertEqual(self.lua.globals().deleted,3)
+        self.assertEqual(self.lua.globals().world_item.shape,30)
 
     def test_native_improved_last_name_is_a_generic_material_class(self):
         fixture=json.loads((ROOT/'fixtures/construction/furniture_material_copy.json').read_text(encoding='utf-8'))
@@ -274,13 +301,11 @@ class CandidateGateTests(unittest.TestCase):
 
     def setUp(self):
         self.lua = LuaRuntime(unpack_returned_tuples=True)
-        self.gate = self.lua.execute((ROOT / 'bridge/plugin/construction_material_candidate_gate.lua').read_text())
         self.enabled = self.lua.execute((ROOT / 'bridge/plugin/construction_material_candidate_enabled.lua').read_text())
         self.groups = self.lua.execute((ROOT / 'bridge/plugin/construction_track_material_groups.lua').read_text())
-        self.recipe = self.lua.execute((ROOT / 'bridge/plugin/construction_track_material_recipe.lua').read_text())
         factory = self.lua.execute((ROOT / 'bridge/plugin/construction_track_material_candidates.lua').read_text())
         self.partition = self.lua.execute((ROOT / 'bridge/plugin/construction_material_partition.lua').read_text())
-        self.scan = factory(self.gate, self.recipe, self.enabled, self.groups, self.partition, self.lua.eval('function()return nil end'))
+        self.scan = factory(self.enabled, self.groups, self.partition, self.lua.eval('function()return nil end'))
 
     def test_native_initial_group_membership(self):
         fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
@@ -359,6 +384,36 @@ class CandidateGateTests(unittest.TestCase):
                 count += 1
         self.assertEqual(count, 132)
 
+    def test_track_fresh_order_ignores_native_stale_history(self):
+        with gzip.open(ROOT / 'fixtures/construction/track_negative_distance_probe.json.gz',
+                       'rt', encoding='utf-8') as stream:
+            evidence = json.load(stream)['fresh_order_verification']
+        records = evidence['records']
+        self.assertEqual([r['history'] for r in records],
+                         ['repeat', 'floor_origin', 'floor_destination'])
+        self.assertNotEqual(records[0]['groups'], records[1]['groups'])
+        order = self.lua.execute((ROOT / 'bridge/plugin/construction_material_order.lua').read_text())
+        expected = records[0]['fresh']
+        for record in records:
+            snapshot = record['fresh']
+            self.assertTrue(record['state_restored'])
+            self.assertEqual(snapshot, expected)
+            costs = {row['id']: row['distance'] for row in snapshot['candidate_distances']}
+            distances = [dict(reachable=True, distance=costs[row['id']])
+                         for row in snapshot['candidates'] if row['enabled']]
+            self.assertEqual(len(distances), 2105)
+            self.assertTrue(all(row['distance'] >= 0 for row in distances))
+            self.lua.globals().recorded = self.lua.table_from(distances, recursive=True)
+            search = self.lua.eval('function()return {status=0,distances=recorded}end')
+            actual = order(self.lua.table_from(snapshot, recursive=True), None, search)
+            self.assertEqual(actual['status'], 0)
+            self.assertEqual(len(actual['groups']), 32)
+            for group, wanted in zip(actual['groups'].values(), expected['groups']):
+                for field in ('name', 'distance', 'item_type', 'item_subtype', 'mat_type', 'mat_index'):
+                    self.assertEqual(group[field], wanted[field])
+                self.assertEqual(list(group['ids'].values()), wanted['ids'])
+                self.assertEqual(list(group['expanded_ids'].values()), wanted['expanded_ids'])
+
     def test_native_initial_distance_order(self):
         order = self.lua.execute((ROOT / 'bridge/plugin/construction_material_order.lua').read_text())
         fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
@@ -369,7 +424,7 @@ class CandidateGateTests(unittest.TestCase):
             self.lua.globals().recorded = self.lua.table_from(recorded, recursive=True)
             search = self.lua.eval('function()return {status=0,distances=recorded}end')
             result = order(self.lua.table_from(snapshot, recursive=True),
-                           self.lua.table_from(case['destination']), self.lua.eval('function()end'), search, None, 10000)
+                           self.lua.table_from(case['destination']), search)
             self.assertEqual(result['status'], 0)
             self.assertEqual({r['id']: r['distance'] for r in result['candidate_distances'].values()},
                              {int(k): v for k, v in case['candidate_distances'].items()})
@@ -383,85 +438,10 @@ class CandidateGateTests(unittest.TestCase):
             for expression, status in [('return {status=3}', 3),
                     ('recorded[1]={reachable=false};return {status=0,distances=recorded}', 2)]:
                 failed = order(self.lua.table_from(snapshot, recursive=True), None,
-                    self.lua.eval('function()end'), self.lua.eval('function()' + expression + ' end'), None, 10000)
+                    self.lua.eval('function()' + expression + ' end'))
                 self.assertEqual(failed['status'], status)
                 self.assertIsNone(failed['groups'])
                 self.assertIsNone(failed['candidate_distances'])
-
-    def test_native_selection_kernel(self):
-        select = self.lua.execute((ROOT / 'bridge/plugin/construction_material_selection.lua').read_text())
-        fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
-        steps = 0
-        for case in fixture['selection_kernel_capture']['cases']:
-            distances = self.lua.table_from({int(k): v for k, v in case['candidate_distances'].items()})
-            for group in case['groups']:
-                ids = self.lua.table_from(group['ids'])
-                selected = self.lua.table_from([])
-                for native in group['steps']:
-                    result = select(ids, distances, selected, native['action'])
-                    self.assertIsNotNone(result)
-                    self.assertEqual(list(result['selected'].values()), native['selected'])
-                    self.assertEqual(result['distance'], native['distance'])
-                    self.assertEqual(result['used'], native['used'])
-                    self.assertEqual(result['used'], native['provided'])
-                    if native['action'] == 'select':
-                        self.assertEqual(result['changed_id'], native['returned_id'])
-                    else:
-                        self.assertEqual(result['changed_id'] >= 0, native['changed'])
-                    selected = result['selected']
-                    steps += 1
-        self.assertEqual(steps, 558)
-        self.assertIsNone(select(self.lua.table_from([1]), self.lua.table_from({1: 0}),
-                                 self.lua.table_from([2]), 'select'))
-        self.assertIsNone(select(self.lua.table_from([1]), self.lua.table_from({}),
-                                 self.lua.table_from([]), 'select'))
-
-    def test_native_picker_click_selection_and_final_cap(self):
-        select = self.lua.execute((ROOT / 'bridge/plugin/construction_material_selection.lua').read_text())
-        evidence = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())['picker_interaction_capture']
-        frames = evidence['frames']
-        initial = frames['picker-initial']
-        distances = self.lua.table_from({r['id']: r['distance'] for r in initial['candidates']})
-        group = next(g for g in initial['choices'] if g['name'] == 'chert blocks')
-        selected = self.lua.table_from([])
-        for label in ('picker-one', 'picker-all'):
-            result = select(self.lua.table_from(group['ids']), distances, selected, 'select')
-            self.assertEqual(list(result['selected'].values()),
-                             [r['id'] for r in frames[label]['candidates'] if r['selected']])
-            expected = next(g for g in frames[label]['choices'] if g['ids'] == group['ids'])
-            self.assertEqual(result['distance'], expected['distance'])
-            selected = result['selected']
-        for _ in range(2):
-            selected = select(self.lua.table_from(group['ids']), distances, selected, 'deselect')['selected']
-        self.assertEqual(len(selected), frames['picker-none']['provided'])
-        # Actual All click on a two-item row with only one required selected
-        # exactly the nearest item, then native placement reserved all five.
-        partial = frames['picker-four']
-        self.assertEqual(partial['required'] - partial['provided'], 1)
-        group = next(g for g in partial['choices'] if g['name'] == 'platinum bars')
-        result = select(self.lua.table_from(group['ids']), distances, self.lua.table_from([]), 'select')
-        expected = {r['id'] for r in partial['candidates'] if r['selected']} | set(result['selected'].values())
-        self.assertEqual(expected, set(evidence['placement_effects']['reserved']))
-
-    def test_native_individual_click_preserves_exact_item(self):
-        select = self.lua.execute((ROOT / 'bridge/plugin/construction_material_selection.lua').read_text())
-        evidence = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())['individual_picker_capture']
-        frames = evidence['frames']
-        initial = frames['expanded-Iron bars']
-        group = next(g for g in initial['choices'] if g['kind'] == 'General' and g['name'] == 'iron bars')
-        distances = self.lua.table_from({r['id']: r['distance'] for r in initial['candidates']})
-        selected = [r['id'] for r in frames['specific-selected']['candidates'] if r['selected']]
-        self.assertEqual(len(selected), 1)
-        ids = self.lua.table_from(group['ids'])
-        result = select(ids, distances, self.lua.table_from([]), 'select', selected[0])
-        self.assertEqual(list(result['selected'].values()), selected)
-        self.assertEqual(result['changed_id'], selected[0])
-        again = select(ids, distances, result['selected'], 'select', selected[0])
-        self.assertEqual(again['changed_id'], -1)
-        for label in ('specific-collapsed', 'specific-reopened', 'specific-clicked-again'):
-            self.assertEqual(list(again['selected'].values()),
-                             [r['id'] for r in frames[label]['candidates'] if r['selected']])
-        self.assertIsNone(select(ids, distances, result['selected'], 'select', -1))
 
     def test_native_expanded_display_order(self):
         order = self.lua.execute((ROOT / 'bridge/plugin/construction_material_order.lua').read_text())
@@ -471,8 +451,7 @@ class CandidateGateTests(unittest.TestCase):
                          for id in case['ids']], 'initial_groups': [{'ids': case['ids']}]}
             recorded = [{'reachable': True, 'distance': case['candidate_distances'][str(id)]} for id in case['ids']]
             self.lua.globals().recorded = self.lua.table_from(recorded, recursive=True)
-            result = order(self.lua.table_from(snapshot, recursive=True), None, self.lua.eval('function()end'),
-                self.lua.eval('function()return {status=0,distances=recorded}end'), None, 10000)
+            result = order(self.lua.table_from(snapshot, recursive=True), None, self.lua.eval('function()return {status=0,distances=recorded}end'))
             self.assertEqual(result['status'], 0)
             group = result['groups'][1]
             self.assertEqual(list(group['expanded_ids'].values()), [r['id'] for r in case['native_children']])
@@ -496,40 +475,27 @@ class CandidateGateTests(unittest.TestCase):
                 make_item(5,true,false),make_item(6,false,true)}
             test_path={{x=1,y=1,z=1},{x=2,y=1,z=1}}
         ''')
+        self.lua.execute("df.item={find=function(id)for _,item in ipairs(df.global.world.items.other.IN_PLAY)do if item.id==id then return item end end end}")
+        native = self.lua.eval('function(t,st) assert(t==42 and st==8);return {status=0,candidates={{9,2,5,6}}}end')
+        def scan(limit):
+            return self.scan(path, limit, native, 42, 8)
         path = self.lua.globals().test_path
-        result = self.scan(path, 8)
+        result = scan(8)
         self.assertEqual(result['status'], 0)
-        self.assertEqual([r['id'] for r in result['candidates'].values()], [2, 9])
+        self.assertEqual([r['id'] for r in result['candidates'].values()], [2, 5, 6, 9])
         self.assertTrue(all(r['enabled'] for r in result['candidates'].values()))
-        self.assertEqual(self.scan(path, 1)['status'], 3)
-        self.assertIsNone(self.scan(path, 1)['candidates'])
-        self.lua.execute('dfhack.items.getPosition=function()error("unavailable position")end')
+        self.assertEqual(scan(1)['status'], 3)
+        self.assertIsNone(scan(1)['candidates'])
+        # Native membership supersedes copied forbid/stockpile rejection above.
+        for expression in ['return {status=2}', 'return {status=0,candidates={{2,2}}}',
+                           'return {status=0,candidates={{999}}}', 'return {status=0,candidates={}}']:
+            failed = self.scan(path, 8, self.lua.eval('function()' + expression + 'end'), 42, 8)
+            self.assertEqual(failed['status'], 2)
         self.assertEqual(self.scan(path, 8)['status'], 2)
-        self.assertIsNone(self.scan(path, 8)['candidates'])
-        self.assertEqual(self.scan(path, 0)['status'], 1)
-
-    def test_native_recipe_capture(self):
-        fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
-        count = 0
-        for case in fixture['recipe_capture']['cases'] + fixture['bar_capture']['cases']:
-            for probe in case['probes']:
-                with self.subTest(case=case['label'], kind=probe['kind']):
-                    self.assertEqual(self.recipe(self.lua.table_from(probe)), probe['present'])
-                    count += 1
-        self.assertEqual(count, 54)
-
-    def test_missing_recipe_policy_is_unknown(self):
-        self.assertIsNone(self.recipe(self.lua.table_from({})))
-        self.assertIsNone(self.recipe(self.lua.table_from({'is_build_mat': True, 'type': 'BOULDER',
-                                                          'material_type': 0, 'material_index': 196})))
-
-    def test_native_melt_exclusion(self):
-        fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
-        melt = next(row for row in fixture['melt_capture']['cases'] if row['flag']=='melt')
-        # The captured primary flag is sufficient to reject, without inventing
-        # the uncaptured secondary flags or containment facts.
-        self.assertFalse(melt['present'])
-        self.assertFalse(self.gate(self.lua.table_from({'flags': melt['item_flags']})))
+        self.lua.execute('dfhack.items.getPosition=function()error("unavailable position")end')
+        self.assertEqual(scan(8)['status'], 2)
+        self.assertIsNone(scan(8)['candidates'])
+        self.assertEqual(scan(0)['status'], 1)
 
     def test_native_track_site_groups(self):
         fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
@@ -576,39 +542,6 @@ class CandidateGateTests(unittest.TestCase):
         self.assertFalse(self.enabled(0, self.lua.table_from([0])))
         self.assertFalse(self.enabled(1, self.lua.table_from([])))
         self.assertTrue(self.enabled(1000047, self.lua.table_from([47, 1000047])))
-
-    def test_native_container_capture(self):
-        fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
-        rows = fixture['container_capture']['cases']
-        self.assertEqual(len(rows), 29)
-        for row in rows:
-            with self.subTest(case=row['flag']):
-                facts = {'flags': row['item_flags'], 'flags2': row['item_flags2'],
-                         'container_kind': 'BIN', 'container_flags': row['bin_flags'],
-                         'container_flags2': row['bin_flags2']}
-                self.assertEqual(self.gate(self.lua.table_from(facts)), row['present'])
-
-    def test_native_containment_capture(self):
-        fixture = json.loads((ROOT / 'fixtures/construction/material_candidates.json').read_text())
-        rows = fixture['containment_capture']['cases']
-        self.assertEqual(len(rows), 8)
-        for row in rows:
-            with self.subTest(case=row['flag']):
-                container = row['containment']
-                facts = {'flags': row['item_flags'], 'flags2': row['item_flags2'],
-                         'container_kind': container['kind']}
-                if 'flags' in container:
-                    facts.update(container_flags=container['flags'], container_flags2=container['flags2'])
-                self.assertEqual(self.gate(self.lua.table_from(facts)), row['present'])
-
-    def test_incomplete_facts_are_unknown(self):
-        for facts in [{}, {'flags': 1}, {'flags': 1, 'flags2': -1},
-                      {'flags': 1.5, 'flags2': 0}, {'flags': 1 << 32, 'flags2': 0},
-                      {'flags': 8, 'flags2': 0},
-                      {'flags': 8, 'flags2': 0, 'container_kind': ''},
-                      {'flags': 8, 'flags2': 0, 'container_kind': 'BIN', 'container_flags': 1}]:
-            with self.subTest(facts=facts):
-                self.assertIsNone(self.gate(self.lua.table_from(facts)))
 
 
 if __name__ == '__main__':

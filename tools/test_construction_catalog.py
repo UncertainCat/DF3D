@@ -3,6 +3,7 @@
 Run with Python + lupa (test tooling only; no DF or presentation dependencies).
 """
 from pathlib import Path
+import json
 
 from lupa import LuaRuntime
 
@@ -43,6 +44,125 @@ function finalize(clean,fn,...)
  return table.unpack(result,2,result.n)
 end
 """
+
+
+def refusal_evidence():
+    root = Path(__file__).resolve().parents[1]
+    evidence = json.loads((root / 'fixtures/construction/placement_refusals.json').read_text())
+    displayed = json.loads((root / 'presentations/godot/project/panels/construction_refusals.json').read_text())
+    assert displayed == evidence['presentation']['displayed']
+    occupied = {key for row in evidence['catalog_oracle']['cases']['occupied']
+                if 'Building present' in row['errors'] for key in row['keys']}
+    terrain = json.loads((root / 'fixtures/construction/farm_road_terrain.json').read_text())
+    assert any(row['variant']=='occupied_soil' and 'Building present' in row['errors']
+               for row in terrain['native_farm_warning']['cases'])
+    occupied.update(row['family'] for row in terrain['native_mixed_area_click']['cases']
+                    if row['variant']=='occupied' and 'Building present' in row['errors'])
+    assert {key for key, errors in displayed.items() if 'Building present' in errors} == occupied
+    assert {'FarmPlot','RoadDirt','RoadPaved'} <= occupied
+    hidden = {key for row in evidence['catalog_oracle']['cases']['hidden']
+              if 'Hidden, cannot build at this location' in row['errors'] for key in row['keys']}
+    assert {key for key, errors in displayed.items() if 'Hidden, cannot build at this location' in errors} == hidden
+    assert not {'FarmPlot', 'RoadDirt', 'RoadPaved'} & hidden
+    blocked = {key for row in evidence['catalog_oracle']['cases']['wall']
+               if 'Blocked at this location' in row['errors'] for key in row['keys']}
+    assert {key for key, errors in displayed.items() if 'Blocked at this location' in errors} == blocked
+    terrain = json.loads((root / 'fixtures/construction/farm_road_terrain.json').read_text())
+    import gzip
+    extent = json.loads(gzip.decompress((root/'fixtures/construction/extent_tile_native.json.gz').read_bytes()))['datasets']
+    extent_rows = extent['priority']['cases'] + extent['tile_types']['cases']
+    for family, message in [('FarmPlot','Need soil or mud at location'),('RoadDirt','Need soil at location')]:
+        assert any(row['family']==family and message in row['errors'] for row in terrain['extended_verification']['cases'])
+        assert {key for key, errors in displayed.items() if message in errors} == {r['family'] for r in extent_rows if message in r['errors']}
+    liquid = json.loads((root / 'fixtures/construction/liquid_refusals.json').read_text())
+    water_keys = {r['key'] for r in liquid['valid_soil_followup']['rows']
+                  if r['case']=='water2' and 'Water at this location' in r['errors']}
+    openings = {'Well','Hatch','GrateFloor','BarsFloor','AnimalTrap'}
+    for profile in liquid['terrain_sweep']['profiles']:
+        if openings & set(profile['keys']):
+            for row in profile['rows']:
+                if row['terrain']=='StoneWall':
+                    assert row['errors']==['Blocked at this location']
+                elif row['case'] in ['water2','water7']:
+                    assert row['errors']==['Water at this location']
+                elif row['case'] in ['magma1','magma7']:
+                    assert row['errors']==['Lava/Magma at this location']
+    machine_evidence=liquid['machinery_terrain']
+    machine_rows=machine_evidence['ground_rows']+machine_evidence['connected_rows']+machine_evidence['axle_below_rows']
+    magma_rows=json.loads((root/'fixtures/construction/magma_placement.json').read_text())['native_terrain_service']['cases']
+    machine_rows+=magma_rows
+    import gzip
+    construction_rows=json.loads(gzip.decompress((root/'fixtures/construction/construction_terrain.json.gz').read_bytes()))['datasets']['liquid']['cases']
+    top_rows=json.loads(gzip.decompress((root/'fixtures/construction/construction_terrain.json.gz').read_bytes()))['datasets']['top_boundary']['cases']
+    priority_rows=json.loads(gzip.decompress((root/'fixtures/construction/construction_terrain.json.gz').read_bytes()))['datasets']['priority']['cases']
+    edge_keys={'Construction:'+r['subtype'] for r in priority_rows if 'Too close to edge' in r['errors']} | {r['family'] for r in extent_rows if 'Too close to edge' in r['errors']}
+    furniture_rows=[row for dataset in json.loads(gzip.decompress((root/'fixtures/construction/furniture_tile_native.json.gz').read_bytes()))['datasets'].values() for row in dataset['rows']]
+    edge_keys |= {r['family'] for r in furniture_rows if 'Too close to edge' in r['errors']}
+    assert {k for k,errors in displayed.items() if 'Must be inside' in errors}=={r['family'] for r in furniture_rows if 'Must be inside' in r['errors']}
+    ordinary_rows=[row for dataset in json.loads(gzip.decompress((root/'fixtures/construction/ordinary_tile_native.json.gz').read_bytes()))['datasets'].values() for row in dataset['rows']]
+    edge_keys |= {r['key'] for r in ordinary_rows if 'Too close to edge' in r['errors']}
+    opening_rows=[row for dataset in json.loads(gzip.decompress((root/'fixtures/construction/opening_tile_native.json.gz').read_bytes()))['datasets'].values() for row in dataset['rows']]
+    edge_keys |= {r.get('family',r.get('key')) for r in opening_rows if 'Too close to edge' in r['errors']}
+    special_rows=json.loads(gzip.decompress((root/'fixtures/construction/special_tile_native.json.gz').read_bytes()))['datasets']['edge']['rows']
+    edge_keys |= {r['key'] for r in special_rows if 'Too close to edge' in r['errors']}
+    assert {k for k,errors in displayed.items() if 'Too close to edge' in errors}==edge_keys
+    top_keys={'Construction:'+('Stairs' if r['subtype']=='UpDownStair' else r['subtype']) for r in top_rows if r['subtype']!='UpStair' and 'Cannot build at highest level' in r['errors']}
+    assert {k for k,errors in displayed.items() if 'Cannot build at highest level' in errors}==top_keys
+    construction_keys={'Wall','Floor','Ramp','Fortification','ReinforcedWall','UpDownStair'}
+    machine_rows += [dict(row,key='Construction:'+('Stairs' if row['subtype']=='UpDownStair' else row['subtype'])) for row in construction_rows if row['subtype'] in construction_keys]
+
+    machine_scope=lambda message:{c['key'] for c in machine_rows if message in c['errors']}
+    assert {k for k,errors in displayed.items() if 'Water at this location' in errors} == water_keys | openings | (set(liquid['furniture_floor_terrain']['keys']) | set(liquid['ordinary_floor_terrain']['keys']) | {'AnimalTrap','Well','Hatch','GrateFloor','BarsFloor','Bridge','Windmill'}) | machine_scope('Water at this location')
+    assert {k for k,errors in displayed.items() if 'Lava/Magma at this location' in errors} == openings | {'Bridge','Windmill'} | machine_scope('Lava/Magma at this location')
+    assert {k for k,errors in displayed.items() if 'Must remove construction' in errors} == (set(liquid['furniture_floor_terrain']['keys']) | set(liquid['ordinary_floor_terrain']['keys']) | {'AnimalTrap','Well','Hatch','GrateFloor','BarsFloor','Bridge','Windmill'}) | machine_scope('Must remove construction')
+    for family,filename in [('Bridge','bridge_placement.json'),('Windmill','windmill.json')]:
+        evidence=json.loads((root/'fixtures/construction'/filename).read_text())['native_terrain_service']
+        native_errors={message for case in evidence['cases'] for message in case['errors']}
+        for message in ['Water at this location','Lava/Magma at this location','Must remove construction']:
+            assert message in native_errors and message in displayed[family],(family,message)
+
+
+
+def synthetic_native_candidates(lua):
+    # Minimal stock service for adapter protocol tests, not a DF eligibility
+    # implementation. Native collector fixtures/overrides own eligibility cases.
+    return lua.eval("""function(t,s,c)
+        local inputs=dfhack.buildings.getFiltersByType({},t,s,c) or {}
+        local rows={}
+        for _,raw in ipairs(inputs)do
+            local ids={};local seen={}
+            local all=df.global.world.items.other[0]
+            for index=0,#all-1 do
+                local item=all[index]
+                local owner=item.container or item
+                if not seen[item.id] and not item.flags.forbid and not item.flags.in_job and
+                   not item.flags.in_inventory and not owner.flags.in_job and
+                   (not raw.item_type or raw.item_type<0 or item:getType()==raw.item_type) then
+                    ids[#ids+1]=item.id;seen[item.id]=true
+                end
+            end
+            rows[#rows+1]=ids
+        end
+        if t==df.building_type.SiegeEngine and s==df.siegeengine_type.BoltThrower and #rows==4 then
+            rows={rows[1],rows[3],rows[4],rows[2]}
+        end
+        return {status=0,candidates=rows}
+    end""")
+
+
+def synthetic_native_recipe(lua):
+    # Explicit synthetic boundary for adapter mechanics, not native parity.
+    # Defaults mirror each test's synthetic recipe inputs; recorded/live captures
+    # separately establish the native counts.
+    return lua.eval('''function(t,s,c)
+                local inputs=dfhack.buildings.getFiltersByType({},t,s,c) or {}
+                local rows={}
+                for _,v in ipairs(inputs)do rows[#rows+1]={count_required=math.max(1,v.quantity or 1)}end
+                if t==df.building_type.SiegeEngine and s==df.siegeengine_type.BoltThrower and #rows==4 then
+                    rows={rows[1],rows[3],rows[4],rows[2]}
+                end
+                return {status=0,recipes=rows}
+            end''')
 
 
 def main():
@@ -102,7 +222,6 @@ def main():
     catalog = {entry["key"]: entry for entry in result["catalog"].values()}
     assert set(catalog) == {"Chair", "Workshop:Carpenters", "Construction:Wall", "Construction:Floor",
                             "Trap:Lever", "Trap:WeaponTrap", "Construction:Stairs", "Construction:Track",
-                            "Construction:UpStair", "Construction:DownStair", "Construction:UpDownStair",
                             "SiegeEngine:Ballista", "SiegeEngine:Catapult", "Weapon", "Bridge"}
     for key in ("Chair", "Workshop:Carpenters", "Construction:Wall"):
         assert catalog[key]["supported"], key
@@ -143,6 +262,7 @@ def main():
         dfhack.df2utf=function(v) return v end
         dfhack.with_finalize=finalize
         df.delete=function() end
+        dfhack.buildings.findAtTile=function() return nil end
         dfhack.buildings.allocInstance=function() return {room={}} end
         dfhack.buildings.setSize=function(b,w,h,d) return true,w,h,w*h,w*h end
         dfhack.buildings.getFiltersByType=function() return {{item_type=0,quantity=2},{item_type=1,quantity=1}} end
@@ -154,17 +274,19 @@ def main():
             df.global.world.raws.descriptors={colors={}}
             dfhack.maps.getTileSize=function()return 192,192,193 end
             dfhack.maps.getTileBlock=function(p)return {walkable=setmetatable({},{__index=function()return setmetatable({},{__index=function()return walkable_group(p)end})end})}end
-            material_search=function(reader,seeds,targets)
+            material_search=function(seeds,targets)
                 local rows={};for _,p in ipairs(targets)do rows[#rows+1]={reachable=true,distance=p.x}end
                 return {status=0,distances=rows}
             end
         """)
         order=lua.execute((source.parent/'construction_material_order.lua').read_text(encoding='utf-8'))
         names=lua.eval("function(group,id)if id then return 'fixture item '..id end end")
-        return lua.execute(source.read_text(encoding='utf-8'),None,lua.eval('function()end'),None,order,None,None,names)
+        return lua.execute(source.read_text(encoding='utf-8'),None,None,order,None,None,names,lua.eval("function(p,family)if family:match('FurnitureTile$') then local _,occ=dfhack.maps.getTileFlags(p);if occ.building~=0 then return false,'Building present',true end end;return true,'',true end"))
     place_adapter = load_place_adapter()
     def call(**fields):
         base = dict(action=63, definition="Chair", epoch=7, filter=0, cursor=0, x=0, y=0, z=0, material_distances=lua.globals().material_search)
+        base['native_material_recipe']=synthetic_native_recipe(lua)
+        base['native_material_candidates']=synthetic_native_candidates(lua)
         base.update(fields)
         return place_adapter(lua.table_from(base, recursive=True))
     revisions = []
@@ -189,6 +311,7 @@ def main():
         while result['pending']:
             result = call(**args)
         return result
+    lua.globals().reads = 0  # Native item-detail lookup during list construction is complete.
     # Every entry is checked, including a second group in the same filter.
     for index in (2, 1):
         for stale in (-1, 0, revisions[selections[index]['filter']] + 1, None):
@@ -344,24 +467,30 @@ def main():
         result = finish(action=2, definition=definition, selections=[selection(rev)])
         assert not result['ok'] and result['message'] == 'Native construction rejected'
         assert result['placed'] == 0 and result['skipped'] == 1
-    # Per-tile -1 recipe uses area 1, then multiplies by valid tile count.
+    # Native construction refuses mixed occupied rectangles; valid rectangles
+    # use a per-tile -1 recipe with area 1, multiplied by the tile count.
     lua.execute("""
         dfhack.maps.getTileFlags=function(p) return {flow_size=0},{building=p.x==1 and 1 or 0} end
         dfhack.buildings.constructBuilding=function(v) return {id=1} end
     """)
     preview = finish(action=1, definition='Construction:Wall', width=4, height=2)
+    assert not preview['ok'] and preview['message'] == 'Building present'
+    result = finish(action=2, definition='Construction:Wall', width=4, height=2)
+    assert not result['ok'] and result['placed'] == 0
+    lua.execute('dfhack.maps.getTileFlags=function() return {flow_size=0},{building=0} end')
+    preview = finish(action=1, definition='Construction:Wall', width=4, height=2)
     rev = page(definition='Construction:Wall',width=4,height=2)['list_revision']
-    assert preview['required'] == 6
+    assert preview['required'] == 8
     result = finish(action=2, definition='Construction:Wall', width=4, height=2,
-                    selections=[selection(rev, 6)])
-    assert result['ok'] and result['message'] == 'Painted 6 of 8'
-    assert result['placed'] == 6 and result['skipped'] == 2
+                    selections=[selection(rev, 8)])
+    assert result['ok'] and result['message'] == 'Painted 8 of 8'
+    assert result['placed'] == 8 and result['skipped'] == 0
     lua.execute('dfhack.buildings.constructBuilding=function(info) return nil,"cannot place at this position" end')
     rev = page(definition='Construction:Wall')['list_revision']
     result = finish(action=2, definition='Construction:Wall', selections=[selection(rev)])
     assert not result['ok'] and result['message'] == 'Native construction rejected'
     assert result['placed'] == 0 and result['skipped'] == 1
-    # Nearest-member squared 3D distance; ties use numeric material identities.
+    # Owned native-distance results determine order, and origin changes invalidate snapshots.
     # A grounded bin supplies one eligible item; another item is unreachable.
     lua.execute("""
         dfhack.maps.getTileFlags=function() return {flow_size=0},{building=0} end
@@ -374,6 +503,11 @@ def main():
         stock[3].container={flags={on_ground=true},getType=function() return 97 end}
         stock[4].pos={x=0,y=0,z=1};walk_groups['0:0:1']=2;stock[4].getMaterialIndex=function() return 99 end
         df.global.cur_year_tick=2000
+        material_search=function(seeds,targets)
+            local costs=seeds[1].x==10 and {[9]=3,[1]=15,[0]=22} or {[9]=19,[1]=6,[0]=2}
+            local rows={};for _,p in ipairs(targets)do rows[#rows+1]={reachable=true,distance=assert(costs[p.x])}end
+            return {status=0,distances=rows}
+        end
     """)
     material_page = page()
     assert [r['mat_index'] for r in material_page['materials'].values()] == [1, 2, 10]
@@ -434,7 +568,7 @@ def catalog_runtime():
       'ScrewPump','WaterWheel','GearAssembly','AxleHorizontal','AxleVertical','Rollers','Bridge',
       'FarmPlot','RoadDirt','RoadPaved','Windmill','Stockpile','Civzone','Weapon',
       'AnimalTrap','Chain','Cage','ArcheryTarget','TractionBench','Slab','NestBox','Hive',
-      'Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','Kennels','TradeDepot','GrateWall','BarsVertical','Floodgate'},
+      'Instrument','Bookcase','DisplayFurniture','OfferingPlace','WindowGem','WindowGlass','TradeDepot','GrateWall','BarsVertical','Floodgate'},
       workshop_type=enum{'Carpenters','Tool','MagmaForge','Custom'},furnace_type=enum{'WoodFurnace','MagmaSmelter','MagmaGlassFurnace','MagmaKiln','Custom'},
       trap_type=enum{'Lever','CageTrap','StoneFallTrap','WeaponTrap','PressurePlate','TrackStop'},
       siegeengine_type=enum{'Ballista','Catapult'},
@@ -536,5 +670,6 @@ def extended_catalog():
 
 
 if __name__ == "__main__":
+    refusal_evidence()
     extended_catalog()
     main()

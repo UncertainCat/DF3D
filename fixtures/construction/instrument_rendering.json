@@ -1,0 +1,6262 @@
+{
+  "native_version": "DF53.16 Steam build24557528",
+  "scope": "Placed Instrument artwork investigation. Synthetic building and temporary unregistered items; no natural construction or transport acceptance. Runtime still uses stringed approximation.",
+  "captures": [
+    {
+      "source": "build/instrument-art-native-20261023-200157",
+      "owned_df_pid": 102264,
+      "owned_df_closed": true,
+      "source_save_unchanged": true,
+      "frame": 0,
+      "scope": "Four classes from unmodified generated definitions, four first-item materials, both stages and empty-item baseline. Original capture omitted the placed flag; exhaustive art comparison identifies the observed sprite.",
+      "cases": [
+        {
+          "actual_material": "",
+          "color": -1,
+          "material": "",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "",
+          "skill": "NONE",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "",
+          "color": -1,
+          "material": "",
+          "maximum": 1,
+          "one": 43413,
+          "raw": "",
+          "skill": "NONE",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161701,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161702,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161703,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161704,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161705,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161706,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161707,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161708,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161709,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161710,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161711,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161712,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161713,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161714,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161715,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161699,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161716,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        }
+      ],
+      "comparison": [
+        {
+          "case": {
+            "actual_material": "",
+            "color": -1,
+            "material": "",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "",
+            "skill": "NONE",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "",
+            "color": -1,
+            "material": "",
+            "maximum": 1,
+            "one": 43413,
+            "raw": "",
+            "skill": "NONE",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 0,
+              "half": false,
+              "diff": 0
+            },
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": -1,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 0,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161701,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161702,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161703,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161704,
+            "raw": "ENT221 INK1",
+            "skill": "PLAY_KEYBOARD_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161705,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161706,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161707,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161708,
+            "raw": "ENT221 INS1",
+            "skill": "PLAY_STRINGED_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161709,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161710,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161711,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161712,
+            "raw": "ENT221 INW1",
+            "skill": "PLAY_WIND_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "PLANT:OAK:WOOD",
+            "color": 5,
+            "material": "PLANT:OAK:WOOD",
+            "maximum": 1,
+            "one": 161713,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 6,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:GRANITE",
+            "color": 24,
+            "material": "INORGANIC:GRANITE",
+            "maximum": 1,
+            "one": 161714,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 25,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "INORGANIC:IRON",
+            "color": 49,
+            "material": "INORGANIC:IRON",
+            "maximum": 1,
+            "one": 161715,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 50,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161699,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 0,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+              "palette_row": 25,
+              "half": true,
+              "diff": 0
+            }
+          ]
+        },
+        {
+          "case": {
+            "actual_material": "GLASS_GREEN",
+            "color": 32,
+            "material": "GLASS_GREEN",
+            "maximum": 1,
+            "one": 161716,
+            "raw": "ENT221 INP1",
+            "skill": "PLAY_PERCUSSION_INSTRUMENT",
+            "stage": 1,
+            "two": 0
+          },
+          "matches": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ],
+          "closest": [
+            {
+              "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+              "palette_row": 33,
+              "half": false,
+              "diff": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "build/instrument-flags-native-20261023-200456",
+      "owned_df_pid": 97892,
+      "owned_df_closed": true,
+      "source_save_unchanged": true,
+      "frame": 0,
+      "scope": "Four classes, controlled/restored raw PLACED_AS_BUILDING false/true, four first-item materials, both stages and empty baseline.",
+      "cases": [
+        {
+          "actual_material": "",
+          "color": -1,
+          "material": "",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "",
+          "skill": "NONE",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "",
+          "color": -1,
+          "material": "",
+          "maximum": 1,
+          "one": 43413,
+          "placed": false,
+          "raw": "",
+          "skill": "NONE",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161818,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161819,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161820,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161821,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161822,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161823,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161824,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161825,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161826,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161827,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161828,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161829,
+          "placed": false,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161830,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161831,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161832,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161833,
+          "placed": true,
+          "raw": "ENT221 INS1",
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161834,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161835,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161836,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161837,
+          "placed": false,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161838,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161839,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161840,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161841,
+          "placed": true,
+          "raw": "ENT221 INW1",
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161842,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161843,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161844,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161845,
+          "placed": false,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "PLANT:OAK:WOOD",
+          "color": 5,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161846,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:GRANITE",
+          "color": 24,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161847,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161848,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "GLASS_GREEN",
+          "color": 32,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161849,
+          "placed": true,
+          "raw": "ENT221 INP1",
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        }
+      ],
+      "comparison": [
+        {
+          "skill": "NONE",
+          "placed": false,
+          "material": "",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "NONE",
+          "placed": false,
+          "material": "",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": -1,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_HANDHELD",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_HANDHELD",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_HANDHELD",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_STRINGED_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_STRINGED_BUILDING",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_HANDHELD",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_BUILDING",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_BUILDING",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_WIND_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_WIND_BUILDING",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_HANDHELD",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_BUILDING",
+          "palette_row": 6,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_BUILDING",
+          "palette_row": 25,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_PERCUSSION_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_PERCUSSION_BUILDING",
+          "palette_row": 33,
+          "half": false,
+          "different_pixels": 0
+        }
+      ]
+    },
+    {
+      "source": "build/instrument-building-material-native-20261023-200604",
+      "owned_df_pid": 91116,
+      "owned_df_closed": true,
+      "source_save_unchanged": true,
+      "frame": 0,
+      "scope": "Keyboard class, controlled/restored placed flag, four building materials against constant iron item material, both stages and empty baseline.",
+      "cases": [
+        {
+          "actual_material": "",
+          "building_color": 24,
+          "color": -1,
+          "material": "",
+          "maximum": 1,
+          "one": 161816,
+          "placed": false,
+          "raw": "",
+          "skill": "NONE",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "",
+          "building_color": 24,
+          "color": -1,
+          "material": "",
+          "maximum": 1,
+          "one": 43413,
+          "placed": false,
+          "raw": "",
+          "skill": "NONE",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 5,
+          "color": 49,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 5,
+          "color": 49,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161818,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 24,
+          "color": 49,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161816,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 24,
+          "color": 49,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161818,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 49,
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161819,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 49,
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161818,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 32,
+          "color": 49,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161820,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 32,
+          "color": 49,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161818,
+          "placed": false,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 5,
+          "color": 49,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161817,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 5,
+          "color": 49,
+          "material": "PLANT:OAK:WOOD",
+          "maximum": 1,
+          "one": 161821,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 24,
+          "color": 49,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161816,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 24,
+          "color": 49,
+          "material": "INORGANIC:GRANITE",
+          "maximum": 1,
+          "one": 161821,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 49,
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161819,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 49,
+          "color": 49,
+          "material": "INORGANIC:IRON",
+          "maximum": 1,
+          "one": 161821,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 32,
+          "color": 49,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161820,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 0,
+          "two": 0
+        },
+        {
+          "actual_material": "INORGANIC:IRON",
+          "building_color": 32,
+          "color": 49,
+          "material": "GLASS_GREEN",
+          "maximum": 1,
+          "one": 161821,
+          "placed": true,
+          "raw": "ENT221 INK1",
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "stage": 1,
+          "two": 0
+        }
+      ],
+      "comparison": [
+        {
+          "skill": "NONE",
+          "placed": false,
+          "material": "",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "NONE",
+          "placed": false,
+          "material": "",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": -1,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 6,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 33,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": false,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_HANDHELD",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 6,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "PLANT:OAK:WOOD",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 25,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:GRANITE",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "INORGANIC:IRON",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 0,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 33,
+          "half": true,
+          "different_pixels": 0
+        },
+        {
+          "skill": "PLAY_KEYBOARD_INSTRUMENT",
+          "placed": true,
+          "material": "GLASS_GREEN",
+          "stage": 1,
+          "sprite": "ITEM_INSTRUMENT_KEYBOARD_BUILDING",
+          "palette_row": 50,
+          "half": false,
+          "different_pixels": 0
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "Planned building uses ITEM_INSTRUMENT_KEYBOARD_BUILDING regardless of contained instrument class or placement flag. Palette is building material solid-state color+1, first18keys with first duplicate precedence; alpha divided by2 rounded down.",
+    "Completed nonempty building uses contained instrument music_skill: keyboard/stringed/wind/percussion. PLACED_AS_BUILDING in its generated item definition selects BUILDING versus HANDHELD row, even when drawn as a building.",
+    "Completed palette uses item actual material solid-state color+1 with first18keys/first-match duplicate precedence.",
+    "Completed empty-item building uses painted keyboard BUILDING artwork without a material palette."
+  ],
+  "semantic_sources": [
+    "item_instrumentst subtype -> world.raws.itemdefs.instruments[index].music_skill",
+    "itemdef_instrumentst.flags.PLACED_AS_BUILDING",
+    "item.getActualMaterial/getActualMaterialIndex",
+    "building.mat_type/mat_index for planned art"
+  ],
+  "remaining": [
+    "Live disconnect lifecycle coverage alongside construction resource audit",
+    "Handheld map-item Instrument approximation remains separate from placed building resolver"
+  ],
+  "excluded": "instrument-placed-native-20261023-200329 stopped at missing placed Wind definition after two classes; source preserved and owned DF82896closed. Controlled/restored flag capture covers the absent definition combination.",
+  "contained_item_order": {
+    "capture": "build/instrument-order-native-20261023-200823",
+    "cases": 14,
+    "result": "All native RGBA cases exactly match first entry, with two different instrument families/materials reordered and first-entry use_mode 0/1/2. Paused frame0, source preserved, owned session closed."
+  },
+  "implementation": {
+    "contract": "Additive Building instrument_family (-1 unknown, 0 keyboard, 1 stringed, 2 wind, 3 percussion) and instrument_placed (-1 unknown, 0 portable, 1 placed definition). First contained item actual material uses shared construction_item_material. Direct semantic raw reads, no graphics or menu scratch. Unknown definition facts retain painted keyboard fallback.",
+    "material_remap": "World model remaps snapshot-local construction item material IDs; regression covers reordered material tables for Instruments, Rollers and Track Stops."
+  },
+  "transport": {
+    "capture": "build/instrument-state-native-20261023-201924",
+    "comparison": {
+      "success": true,
+      "covered": [
+        "PLAY_KEYBOARD_INSTRUMENT false stage0",
+        "PLAY_KEYBOARD_INSTRUMENT false stage1",
+        "PLAY_KEYBOARD_INSTRUMENT true stage0",
+        "PLAY_KEYBOARD_INSTRUMENT true stage1",
+        "PLAY_PERCUSSION_INSTRUMENT false stage0",
+        "PLAY_PERCUSSION_INSTRUMENT false stage1",
+        "PLAY_PERCUSSION_INSTRUMENT true stage0",
+        "PLAY_PERCUSSION_INSTRUMENT true stage1",
+        "PLAY_STRINGED_INSTRUMENT false stage0",
+        "PLAY_STRINGED_INSTRUMENT false stage1",
+        "PLAY_STRINGED_INSTRUMENT true stage0",
+        "PLAY_STRINGED_INSTRUMENT true stage1",
+        "PLAY_WIND_INSTRUMENT false stage0",
+        "PLAY_WIND_INSTRUMENT false stage1",
+        "PLAY_WIND_INSTRUMENT true stage0",
+        "PLAY_WIND_INSTRUMENT true stage1",
+        "empty",
+        "empty after removal"
+      ],
+      "observations": [
+        {
+          "tick": 301,
+          "label": "empty",
+          "material": ""
+        },
+        {
+          "tick": 302,
+          "label": "empty",
+          "material": ""
+        },
+        {
+          "tick": 303,
+          "label": "empty",
+          "material": ""
+        },
+        {
+          "tick": 309,
+          "label": "empty",
+          "material": ""
+        },
+        {
+          "tick": 339,
+          "label": "empty",
+          "material": ""
+        },
+        {
+          "tick": 351,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 352,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 353,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 369,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 399,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 401,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 402,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 403,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 429,
+          "label": "PLAY_KEYBOARD_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 451,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 452,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 453,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 459,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 489,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 501,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 502,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 503,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 519,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 549,
+          "label": "PLAY_KEYBOARD_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 551,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 552,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 553,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 579,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 601,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 602,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 603,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 609,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 639,
+          "label": "PLAY_STRINGED_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 651,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 652,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 653,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 669,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 699,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 701,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 702,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 703,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 729,
+          "label": "PLAY_STRINGED_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 751,
+          "label": "PLAY_WIND_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 752,
+          "label": "PLAY_WIND_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 753,
+          "label": "PLAY_WIND_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 759,
+          "label": "PLAY_WIND_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 789,
+          "label": "PLAY_WIND_INSTRUMENT false stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 801,
+          "label": "PLAY_WIND_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 802,
+          "label": "PLAY_WIND_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 803,
+          "label": "PLAY_WIND_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 819,
+          "label": "PLAY_WIND_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 849,
+          "label": "PLAY_WIND_INSTRUMENT false stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 851,
+          "label": "PLAY_WIND_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 852,
+          "label": "PLAY_WIND_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 853,
+          "label": "PLAY_WIND_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 879,
+          "label": "PLAY_WIND_INSTRUMENT true stage0",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 901,
+          "label": "PLAY_WIND_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 902,
+          "label": "PLAY_WIND_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 903,
+          "label": "PLAY_WIND_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 909,
+          "label": "PLAY_WIND_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 939,
+          "label": "PLAY_WIND_INSTRUMENT true stage1",
+          "material": "PLANT:OAK:WOOD"
+        },
+        {
+          "tick": 951,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 952,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 953,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 969,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 999,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1001,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1002,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1003,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1029,
+          "label": "PLAY_PERCUSSION_INSTRUMENT false stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1051,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1052,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1053,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1059,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1089,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage0",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1101,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1102,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1103,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1119,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1149,
+          "label": "PLAY_PERCUSSION_INSTRUMENT true stage1",
+          "material": "INORGANIC:IRON"
+        },
+        {
+          "tick": 1151,
+          "label": "empty after removal",
+          "material": ""
+        },
+        {
+          "tick": 1152,
+          "label": "empty after removal",
+          "material": ""
+        },
+        {
+          "tick": 1153,
+          "label": "empty after removal",
+          "material": ""
+        },
+        {
+          "tick": 1179,
+          "label": "empty after removal",
+          "material": ""
+        }
+      ]
+    },
+    "scope": "Synthetic instrument building with registered generated instruments; controlled restored raw placement flags. Natural ticks publish facts, not natural construction.",
+    "inspector": "passed",
+    "source_preserved": true,
+    "owned_session_closed": true
+  },
+  "viewer": {
+    "capture": "build/instrument-native-viewer",
+    "cases": 18,
+    "uploaded_artwork": [
+      {
+        "label": "empty",
+        "different_pixels": 0,
+        "palette_row": -1
+      },
+      {
+        "label": "PLAY_KEYBOARD_INSTRUMENT false stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_KEYBOARD_INSTRUMENT false stage1",
+        "different_pixels": 0,
+        "palette_row": 6
+      },
+      {
+        "label": "PLAY_KEYBOARD_INSTRUMENT true stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_KEYBOARD_INSTRUMENT true stage1",
+        "different_pixels": 0,
+        "palette_row": 6
+      },
+      {
+        "label": "PLAY_STRINGED_INSTRUMENT false stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_STRINGED_INSTRUMENT false stage1",
+        "different_pixels": 0,
+        "palette_row": 50
+      },
+      {
+        "label": "PLAY_STRINGED_INSTRUMENT true stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_STRINGED_INSTRUMENT true stage1",
+        "different_pixels": 0,
+        "palette_row": 50
+      },
+      {
+        "label": "PLAY_WIND_INSTRUMENT false stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_WIND_INSTRUMENT false stage1",
+        "different_pixels": 0,
+        "palette_row": 6
+      },
+      {
+        "label": "PLAY_WIND_INSTRUMENT true stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_WIND_INSTRUMENT true stage1",
+        "different_pixels": 0,
+        "palette_row": 6
+      },
+      {
+        "label": "PLAY_PERCUSSION_INSTRUMENT false stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_PERCUSSION_INSTRUMENT false stage1",
+        "different_pixels": 0,
+        "palette_row": 50
+      },
+      {
+        "label": "PLAY_PERCUSSION_INSTRUMENT true stage0",
+        "different_pixels": 0,
+        "palette_row": 25
+      },
+      {
+        "label": "PLAY_PERCUSSION_INSTRUMENT true stage1",
+        "different_pixels": 0,
+        "palette_row": 50
+      },
+      {
+        "label": "empty after removal",
+        "different_pixels": 0,
+        "palette_row": -1
+      }
+    ],
+    "checks": "Actual bridge recording replay; family/placement atlas regions, planned white half alpha, all planned placeholders equal, portable/placed images differ, cleared item returns to original empty image. Full percussion image inspected.",
+    "diagnostics": "Only documented separate-thread, device-finalize and shutdown-object signatures. Earlier harness read albedo_tex instead of furniture sprite_tex and was stopped; excluded from acceptance."
+  },
+  "verification": {
+    "core": "build/qa/instrument-semantic-remap, all19 CTest passed",
+    "bridge": "build/notes/pm/instrument-semantic-build.log, build/install passed",
+    "gpu_regressions": "build/qa/instrument-viewer-integration, Roller and Track Stop passed with known issues"
+  },
+  "uploaded_rgba_sha256": {
+    "scope": "32x32 RGBA8 normalized transparent RGB; planned entries now include native floor-half source alpha, directly hashed from captures[0] texture161699. Completed entries retain previous verified native palette/composition references.",
+    "values": [
+      "a7d623b9e50ab9afd05d0bd43bd0ce7a0172eb70e0b1b634149c48da49906926",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "b3b59415c11e2a04f2fc2d6178f4e87fcf74dd23fbcfe31048a78b8b10d1aab8",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "104edb02dc100c633670b14489acb9fc96b9a8242e7776a42241a0da6f77fd3f",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "3c23bdbb321e82c4794bbfeff9c42ded1ee553e99a236cba63f6d2f204857c09",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "46979a2db2ef6e366ecb3ea8cf458388d0233e8f23dcd07a8a670c674d4f8c19",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "8ffa6f5cc173d75de4432525234e3adf00a961f0794ec08b70950e96e1ec1ddb",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "078492dda0705b66925c3a406ef18d0ed7f3dfeb8d4bb65ace74a343c9c0a815",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "d866c5c5438df3fe5acf7dfbf3565864f4ab62b8941149c2a8397d043e298e9b",
+      "49082a698ba62a9187ad5349b6d16bdcf8768ae5d3c2cadb826cb7b092bcd9a2",
+      "df073bbe92f3ddca8fc3dfc1eef6580079be325931c4ee3fcda203cc15fff367",
+      "a7d623b9e50ab9afd05d0bd43bd0ce7a0172eb70e0b1b634149c48da49906926"
+    ]
+  },
+  "native_header": {
+    "capture": "build/instrument-icon-native-20261023-202515",
+    "comparison": [
+      {
+        "family": 0,
+        "opaque_pixels": 716,
+        "different_pixels": 0
+      },
+      {
+        "family": 1,
+        "opaque_pixels": 716,
+        "different_pixels": 0
+      },
+      {
+        "family": 2,
+        "opaque_pixels": 716,
+        "different_pixels": 0
+      },
+      {
+        "family": 3,
+        "opaque_pixels": 716,
+        "different_pixels": 0
+      }
+    ],
+    "rule": "Fixed BUILDING_ICON_INSTRUMENT for all four generated families; actual native map selection IDs match. Paused frame0, source unchanged, owned DF71052 closed; selection3 screenshot inspected."
+  },
+  "registered_gpu": {
+    "gate": "build/qa/instrument-render-final",
+    "result": "passed_with_known_issues",
+    "fixture": "tools/make_instrument_fixture.cpp",
+    "test": "presentations/godot/project/tests/instrument_render_test.gd",
+    "coverage": "All4families x portable/placed x planned/complete, native base-level RGBA hashes, fixed header, rendered placeholder invariance and placed/portable differences, empty recovery, remove/reused ID and fixture reload. Only three documented Godot diagnostics.",
+    "excluded_attempts": "instrument-render-registered used graphic variant as palette-row oracle; instrument-render-verified hashed generated mip levels as well as base image. Both test errors corrected; diagnostic PNG exports matched verified reference exactly."
+  },
+  "native_material_picker": {
+    "scope": "Actual native Instrument menu/map/material picker using eight registered items, first generated definition per family and oak/iron. PLACED_AS_BUILDING temporarily enabled for all four definitions and restored before exit to cover generated Wind absent in this save. Paused frame0, no construction submission. Graphics cache is diagnostic evidence only, forbidden as runtime input.",
+    "runs": [
+      {
+        "source": "build/instrument-picker-native-20261023-204630",
+        "owned_pid": 102368,
+        "owned_closed": true,
+        "source_unchanged": true,
+        "capture": {
+          "after": [
+            {
+              "building": true,
+              "color": 6,
+              "family": "KEYBOARD",
+              "flags": 1542,
+              "planned": false,
+              "texpos": 161817
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "KEYBOARD",
+              "flags": 1586,
+              "planned": false,
+              "texpos": 161818
+            },
+            {
+              "building": true,
+              "color": 6,
+              "family": "STRINGED",
+              "flags": 2566,
+              "planned": false,
+              "texpos": 161819
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "STRINGED",
+              "flags": 2610,
+              "planned": false,
+              "texpos": 161820
+            },
+            {
+              "building": true,
+              "color": 6,
+              "family": "WIND",
+              "flags": 3590,
+              "planned": false,
+              "texpos": 161821
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "WIND",
+              "flags": 3634,
+              "planned": false,
+              "texpos": 161822
+            },
+            {
+              "building": true,
+              "color": 6,
+              "family": "PERCUSSION",
+              "flags": 4614,
+              "planned": false,
+              "texpos": 161823
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "PERCUSSION",
+              "flags": 4658,
+              "planned": false,
+              "texpos": 161824
+            }
+          ],
+          "before": [],
+          "candidates": [
+            2978,
+            12697,
+            12800,
+            19804,
+            28407,
+            48520,
+            48521,
+            48522,
+            48523,
+            48524,
+            48525,
+            48526,
+            48527
+          ],
+          "colors": [
+            {
+              "b": 0.0,
+              "g": 0.74901962280273,
+              "id": "AMBER",
+              "index": 0,
+              "r": 1.0
+            },
+            {
+              "b": 0.80000001192093,
+              "g": 0.40000000596046,
+              "id": "AMETHYST",
+              "index": 1,
+              "r": 0.60000002384186
+            },
+            {
+              "b": 1.0,
+              "g": 1.0,
+              "id": "AQUA",
+              "index": 2,
+              "r": 0.0
+            },
+            {
+              "b": 0.83137255907059,
+              "g": 1.0,
+              "id": "AQUAMARINE",
+              "index": 3,
+              "r": 0.49803921580315
+            },
+            {
+              "b": 0.70980393886566,
+              "g": 0.74509805440903,
+              "id": "ASH_GRAY",
+              "index": 4,
+              "r": 0.69803923368454
+            },
+            {
+              "b": 0.10196078568697,
+              "g": 0.20784313976765,
+              "id": "AUBURN",
+              "index": 5,
+              "r": 0.43529412150383
+            },
+            {
+              "b": 1.0,
+              "g": 0.49803921580315,
+              "id": "AZURE",
+              "index": 6,
+              "r": 0.0
+            },
+            {
+              "b": 0.86274510622025,
+              "g": 0.96078431606293,
+              "id": "BEIGE",
+              "index": 7,
+              "r": 0.96078431606293
+            },
+            {
+              "b": 0.0,
+              "g": 0.0,
+              "id": "BLACK",
+              "index": 8,
+              "r": 0.0
+            },
+            {
+              "b": 1.0,
+              "g": 0.0,
+              "id": "BLUE",
+              "index": 9,
+              "r": 0.0
+            },
+            {
+              "b": 0.258823543787,
+              "g": 0.65098041296005,
+              "id": "BRASS",
+              "index": 10,
+              "r": 0.70980393886566
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.49803921580315,
+              "id": "BRONZE",
+              "index": 11,
+              "r": 0.80392158031464
+            },
+            {
+              "b": 0.0,
+              "g": 0.29411765933037,
+              "id": "BROWN",
+              "index": 12,
+              "r": 0.58823531866074
+            },
+            {
+              "b": 0.50980395078659,
+              "g": 0.86274510622025,
+              "id": "BUFF",
+              "index": 13,
+              "r": 0.94117647409439
+            },
+            {
+              "b": 0.31764706969261,
+              "g": 0.45490196347237,
+              "id": "BURNT_SIENNA",
+              "index": 14,
+              "r": 0.91372549533844
+            },
+            {
+              "b": 0.14117647707462,
+              "g": 0.20000000298023,
+              "id": "BURNT_UMBER",
+              "index": 15,
+              "r": 0.54117649793625
+            },
+            {
+              "b": 0.22745098173618,
+              "g": 0.1176470592618,
+              "id": "CARDINAL",
+              "index": 16,
+              "r": 0.76862746477127
+            },
+            {
+              "b": 0.094117648899555,
+              "g": 0.0,
+              "id": "CARMINE",
+              "index": 17,
+              "r": 0.58823531866074
+            },
+            {
+              "b": 0.65490198135376,
+              "g": 0.48235294222832,
+              "id": "CERULEAN",
+              "index": 18,
+              "r": 0.0
+            },
+            {
+              "b": 0.3098039329052,
+              "g": 0.27058824896812,
+              "id": "CHARCOAL",
+              "index": 19,
+              "r": 0.21176470816135
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "CHARTREUSE",
+              "index": 20,
+              "r": 0.49803921580315
+            },
+            {
+              "b": 0.36078432202339,
+              "g": 0.36078432202339,
+              "id": "CHESTNUT",
+              "index": 21,
+              "r": 0.80392158031464
+            },
+            {
+              "b": 0.1176470592618,
+              "g": 0.41176471114159,
+              "id": "CHOCOLATE",
+              "index": 22,
+              "r": 0.82352942228317
+            },
+            {
+              "b": 0.0,
+              "g": 0.24705882370472,
+              "id": "CINNAMON",
+              "index": 23,
+              "r": 0.48235294222832
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.50196081399918,
+              "id": "CLEAR",
+              "index": 24,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.67058825492859,
+              "g": 0.27843138575554,
+              "id": "COBALT",
+              "index": 25,
+              "r": 0.0
+            },
+            {
+              "b": 0.20000000298023,
+              "g": 0.45098039507866,
+              "id": "COPPER",
+              "index": 26,
+              "r": 0.72156864404678
+            },
+            {
+              "b": 0.81568628549576,
+              "g": 0.99215686321259,
+              "id": "CREAM",
+              "index": 27,
+              "r": 1.0
+            },
+            {
+              "b": 0.2352941185236,
+              "g": 0.078431375324726,
+              "id": "CRIMSON",
+              "index": 28,
+              "r": 0.86274510622025
+            },
+            {
+              "b": 0.54509806632996,
+              "g": 0.0,
+              "id": "DARK_BLUE",
+              "index": 29,
+              "r": 0.0
+            },
+            {
+              "b": 0.1294117718935,
+              "g": 0.26274511218071,
+              "id": "DARK_BROWN",
+              "index": 30,
+              "r": 0.39607843756676
+            },
+            {
+              "b": 0.37647059559822,
+              "g": 0.41176471114159,
+              "id": "DARK_CHESTNUT",
+              "index": 31,
+              "r": 0.59607845544815
+            },
+            {
+              "b": 0.12549020349979,
+              "g": 0.19607843458652,
+              "id": "DARK_GREEN",
+              "index": 32,
+              "r": 0.0039215688593686
+            },
+            {
+              "b": 0.38431373238564,
+              "g": 0.0,
+              "id": "DARK_INDIGO",
+              "index": 33,
+              "r": 0.19215686619282
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.40784314274788,
+              "id": "DARK_OLIVE",
+              "index": 34,
+              "r": 0.33333334326744
+            },
+            {
+              "b": 0.72549021244049,
+              "g": 0.85490196943283,
+              "id": "DARK_PEACH",
+              "index": 35,
+              "r": 1.0
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.32941177487373,
+              "id": "DARK_PINK",
+              "index": 36,
+              "r": 0.90588235855103
+            },
+            {
+              "b": 0.098039217293262,
+              "g": 0.011764706112444,
+              "id": "DARK_SCARLET",
+              "index": 37,
+              "r": 0.33725491166115
+            },
+            {
+              "b": 0.31764706969261,
+              "g": 0.50588238239288,
+              "id": "DARK_TAN",
+              "index": 38,
+              "r": 0.5686274766922
+            },
+            {
+              "b": 0.53725492954254,
+              "g": 0.19215686619282,
+              "id": "DARK_VIOLET",
+              "index": 39,
+              "r": 0.258823543787
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.69803923368454,
+              "id": "ECRU",
+              "index": 40,
+              "r": 0.76078432798386
+            },
+            {
+              "b": 0.31764706969261,
+              "g": 0.25098040699959,
+              "id": "EGGPLANT",
+              "index": 41,
+              "r": 0.38039216399193
+            },
+            {
+              "b": 0.4705882370472,
+              "g": 0.7843137383461,
+              "id": "EMERALD",
+              "index": 42,
+              "r": 0.3137255012989
+            },
+            {
+              "b": 0.258823543787,
+              "g": 0.4745098054409,
+              "id": "FERN_GREEN",
+              "index": 43,
+              "r": 0.3098039329052
+            },
+            {
+              "b": 0.50980395078659,
+              "g": 0.86274510622025,
+              "id": "FLAX",
+              "index": 44,
+              "r": 0.93333333730698
+            },
+            {
+              "b": 0.63137257099152,
+              "g": 0.0,
+              "id": "FUCHSIA",
+              "index": 45,
+              "r": 0.95686274766922
+            },
+            {
+              "b": 0.21568627655506,
+              "g": 0.68627452850342,
+              "id": "GOLD",
+              "index": 46,
+              "r": 0.83137255907059
+            },
+            {
+              "b": 0.0,
+              "g": 0.87450981140137,
+              "id": "GOLDEN_YELLOW",
+              "index": 47,
+              "r": 1.0
+            },
+            {
+              "b": 0.12549020349979,
+              "g": 0.64705884456635,
+              "id": "GOLDENROD",
+              "index": 48,
+              "r": 0.85490196943283
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.50196081399918,
+              "id": "GRAY",
+              "index": 49,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "GREEN",
+              "index": 50,
+              "r": 0.0
+            },
+            {
+              "b": 0.1843137294054,
+              "g": 1.0,
+              "id": "GREEN-YELLOW",
+              "index": 51,
+              "r": 0.678431391716
+            },
+            {
+              "b": 1.0,
+              "g": 0.45098039507866,
+              "id": "HELIOTROPE",
+              "index": 52,
+              "r": 0.87450981140137
+            },
+            {
+              "b": 0.50980395078659,
+              "g": 0.0,
+              "id": "INDIGO",
+              "index": 53,
+              "r": 0.29411765933037
+            },
+            {
+              "b": 0.94117647409439,
+              "g": 1.0,
+              "id": "IVORY",
+              "index": 54,
+              "r": 1.0
+            },
+            {
+              "b": 0.419607847929,
+              "g": 0.65882354974747,
+              "id": "JADE",
+              "index": 55,
+              "r": 0.0
+            },
+            {
+              "b": 0.98039215803146,
+              "g": 0.90196079015732,
+              "id": "LAVENDER",
+              "index": 56,
+              "r": 0.90196079015732
+            },
+            {
+              "b": 0.96078431606293,
+              "g": 0.94117647409439,
+              "id": "LAVENDER_BLUSH",
+              "index": 57,
+              "r": 1.0
+            },
+            {
+              "b": 0.062745101749897,
+              "g": 0.91372549533844,
+              "id": "LEMON",
+              "index": 58,
+              "r": 0.99215686321259
+            },
+            {
+              "b": 0.90196079015732,
+              "g": 0.84705883264542,
+              "id": "LIGHT_BLUE",
+              "index": 59,
+              "r": 0.678431391716
+            },
+            {
+              "b": 0.24705882370472,
+              "g": 0.52156865596771,
+              "id": "LIGHT_BROWN",
+              "index": 60,
+              "r": 0.80392158031464
+            },
+            {
+              "b": 0.7843137383461,
+              "g": 0.63529413938522,
+              "id": "LILAC",
+              "index": 61,
+              "r": 0.7843137383461
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "LIME",
+              "index": 62,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.0,
+              "g": 0.25098040699959,
+              "id": "MAHOGANY",
+              "index": 63,
+              "r": 0.75294119119644
+            },
+            {
+              "b": 0.0,
+              "g": 0.0,
+              "id": "MAROON",
+              "index": 64,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.40000000596046,
+              "g": 0.20000000298023,
+              "id": "MAUVE",
+              "index": 65,
+              "r": 0.60000002384186
+            },
+            {
+              "b": 0.42745098471642,
+              "g": 0.37254902720451,
+              "id": "MAUVE_TAUPE",
+              "index": 66,
+              "r": 0.5686274766922
+            },
+            {
+              "b": 0.40000000596046,
+              "g": 0.20000000298023,
+              "id": "MIDNIGHT_BLUE",
+              "index": 67,
+              "r": 0.0
+            },
+            {
+              "b": 0.59607845544815,
+              "g": 1.0,
+              "id": "MINT_GREEN",
+              "index": 68,
+              "r": 0.59607845544815
+            },
+            {
+              "b": 0.678431391716,
+              "g": 0.87450981140137,
+              "id": "MOSS_GREEN",
+              "index": 69,
+              "r": 0.678431391716
+            },
+            {
+              "b": 0.13333334028721,
+              "g": 0.46666666865349,
+              "id": "OCHRE",
+              "index": 70,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.0,
+              "g": 0.50196081399918,
+              "id": "OLIVE",
+              "index": 71,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.0,
+              "g": 0.64705884456635,
+              "id": "ORANGE",
+              "index": 72,
+              "r": 1.0
+            },
+            {
+              "b": 0.93333333730698,
+              "g": 0.93333333730698,
+              "id": "PALE_BLUE",
+              "index": 73,
+              "r": 0.68627452850342
+            },
+            {
+              "b": 0.32941177487373,
+              "g": 0.46274510025978,
+              "id": "PALE_BROWN",
+              "index": 74,
+              "r": 0.59607845544815
+            },
+            {
+              "b": 0.68627452850342,
+              "g": 0.678431391716,
+              "id": "PALE_CHESTNUT",
+              "index": 75,
+              "r": 0.86666667461395
+            },
+            {
+              "b": 0.86666667461395,
+              "g": 0.85490196943283,
+              "id": "PALE_PINK",
+              "index": 76,
+              "r": 0.98039215803146
+            },
+            {
+              "b": 0.70588237047195,
+              "g": 0.89803922176361,
+              "id": "PEACH",
+              "index": 77,
+              "r": 1.0
+            },
+            {
+              "b": 0.839215695858,
+              "g": 0.91764706373215,
+              "id": "PEARL",
+              "index": 78,
+              "r": 0.94117647409439
+            },
+            {
+              "b": 1.0,
+              "g": 0.80000001192093,
+              "id": "PERIWINKLE",
+              "index": 79,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.43529412150383,
+              "g": 0.4745098054409,
+              "id": "PINE_GREEN",
+              "index": 80,
+              "r": 0.0039215688593686
+            },
+            {
+              "b": 0.79607844352722,
+              "g": 0.75294119119644,
+              "id": "PINK",
+              "index": 81,
+              "r": 1.0
+            },
+            {
+              "b": 0.40000000596046,
+              "g": 0.0,
+              "id": "PLUM",
+              "index": 82,
+              "r": 0.40000000596046
+            },
+            {
+              "b": 0.60000002384186,
+              "g": 0.53333336114883,
+              "id": "PUCE",
+              "index": 83,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.094117648899555,
+              "g": 0.45882353186607,
+              "id": "PUMPKIN",
+              "index": 84,
+              "r": 1.0
+            },
+            {
+              "b": 0.60000002384186,
+              "g": 0.0,
+              "id": "PURPLE",
+              "index": 85,
+              "r": 0.40000000596046
+            },
+            {
+              "b": 0.070588238537312,
+              "g": 0.29019609093666,
+              "id": "RAW_UMBER",
+              "index": 86,
+              "r": 0.45098039507866
+            },
+            {
+              "b": 0.0,
+              "g": 0.0,
+              "id": "RED",
+              "index": 87,
+              "r": 1.0
+            },
+            {
+              "b": 0.29411765933037,
+              "g": 0.0,
+              "id": "RED_PURPLE",
+              "index": 88,
+              "r": 0.69803923368454
+            },
+            {
+              "b": 0.76078432798386,
+              "g": 0.76078432798386,
+              "id": "ROSE",
+              "index": 89,
+              "r": 0.95686274766922
+            },
+            {
+              "b": 0.34117648005486,
+              "g": 0.35294118523598,
+              "id": "RUSSET",
+              "index": 90,
+              "r": 0.45882353186607
+            },
+            {
+              "b": 0.054901961237192,
+              "g": 0.2549019753933,
+              "id": "RUST",
+              "index": 91,
+              "r": 0.71764707565308
+            },
+            {
+              "b": 0.18823529779911,
+              "g": 0.76862746477127,
+              "id": "SAFFRON",
+              "index": 92,
+              "r": 0.95686274766922
+            },
+            {
+              "b": 0.0,
+              "g": 0.14117647707462,
+              "id": "SCARLET",
+              "index": 93,
+              "r": 1.0
+            },
+            {
+              "b": 0.34117648005486,
+              "g": 0.54509806632996,
+              "id": "SEA_GREEN",
+              "index": 94,
+              "r": 0.1803921610117
+            },
+            {
+              "b": 0.078431375324726,
+              "g": 0.258823543787,
+              "id": "SEPIA",
+              "index": 95,
+              "r": 0.43921568989754
+            },
+            {
+              "b": 0.75294119119644,
+              "g": 0.75294119119644,
+              "id": "SILVER",
+              "index": 96,
+              "r": 0.75294119119644
+            },
+            {
+              "b": 0.92156863212585,
+              "g": 0.80784314870834,
+              "id": "SKY_BLUE",
+              "index": 97,
+              "r": 0.52941179275513
+            },
+            {
+              "b": 0.56470590829849,
+              "g": 0.50196081399918,
+              "id": "SLATE_GRAY",
+              "index": 98,
+              "r": 0.43921568989754
+            },
+            {
+              "b": 0.49803921580315,
+              "g": 1.0,
+              "id": "SPRING_GREEN",
+              "index": 99,
+              "r": 0.0
+            },
+            {
+              "b": 0.54901963472366,
+              "g": 0.70588237047195,
+              "id": "TAN",
+              "index": 100,
+              "r": 0.82352942228317
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.2352941185236,
+              "id": "TAUPE_DARK",
+              "index": 101,
+              "r": 0.28235295414925
+            },
+            {
+              "b": 0.53725492954254,
+              "g": 0.52156865596771,
+              "id": "TAUPE_GRAY",
+              "index": 102,
+              "r": 0.54509806632996
+            },
+            {
+              "b": 0.27843138575554,
+              "g": 0.29803922772408,
+              "id": "TAUPE_MEDIUM",
+              "index": 103,
+              "r": 0.40392157435417
+            },
+            {
+              "b": 0.30196079611778,
+              "g": 0.25098040699959,
+              "id": "TAUPE_PURPLE",
+              "index": 104,
+              "r": 0.3137255012989
+            },
+            {
+              "b": 0.49411764740944,
+              "g": 0.59607845544815,
+              "id": "TAUPE_PALE",
+              "index": 105,
+              "r": 0.73725491762161
+            },
+            {
+              "b": 0.3647058904171,
+              "g": 0.3647058904171,
+              "id": "TAUPE_ROSE",
+              "index": 106,
+              "r": 0.56470590829849
+            },
+            {
+              "b": 0.090196080505848,
+              "g": 0.44313725829124,
+              "id": "TAUPE_SANDY",
+              "index": 107,
+              "r": 0.58823531866074
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.50196081399918,
+              "id": "TEAL",
+              "index": 108,
+              "r": 0.0
+            },
+            {
+              "b": 0.7843137383461,
+              "g": 0.83529412746429,
+              "id": "TURQUOISE",
+              "index": 109,
+              "r": 0.18823529779911
+            },
+            {
+              "b": 0.20392157137394,
+              "g": 0.258823543787,
+              "id": "VERMILION",
+              "index": 110,
+              "r": 0.8901960849762
+            },
+            {
+              "b": 1.0,
+              "g": 0.0,
+              "id": "VIOLET",
+              "index": 111,
+              "r": 0.54509806632996
+            },
+            {
+              "b": 1.0,
+              "g": 1.0,
+              "id": "WHITE",
+              "index": 112,
+              "r": 1.0
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "YELLOW",
+              "index": 113,
+              "r": 1.0
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.80392158031464,
+              "id": "YELLOW_GREEN",
+              "index": 114,
+              "r": 0.60392159223557
+            },
+            {
+              "b": 0.88627451658249,
+              "g": 0.79215687513351,
+              "id": "BLUE-GRAY",
+              "index": 115,
+              "r": 0.7294117808342
+            }
+          ],
+          "frame": 0,
+          "items": [
+            {
+              "color": 5,
+              "family": "PLAY_KEYBOARD_INSTRUMENT",
+              "id": 48520,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INK1",
+              "x": 100,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_KEYBOARD_INSTRUMENT",
+              "id": 48521,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INK1",
+              "x": 100,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 5,
+              "family": "PLAY_STRINGED_INSTRUMENT",
+              "id": 48522,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INS1",
+              "x": 101,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_STRINGED_INSTRUMENT",
+              "id": 48523,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INS1",
+              "x": 101,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 5,
+              "family": "PLAY_WIND_INSTRUMENT",
+              "id": 48524,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INW1",
+              "x": 102,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_WIND_INSTRUMENT",
+              "id": 48525,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INW1",
+              "x": 102,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 5,
+              "family": "PLAY_PERCUSSION_INSTRUMENT",
+              "id": 48526,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INP1",
+              "x": 103,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_PERCUSSION_INSTRUMENT",
+              "id": 48527,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INP1",
+              "x": 103,
+              "y": 40,
+              "z": 165
+            }
+          ]
+        },
+        "choices": [
+          {
+            "kind": "General",
+            "name": "oaken kednath"
+          },
+          {
+            "kind": "General",
+            "name": "iron kednath"
+          },
+          {
+            "kind": "General",
+            "name": "oaken lim"
+          },
+          {
+            "kind": "General",
+            "name": "iron lim"
+          },
+          {
+            "kind": "General",
+            "name": "oaken nulom"
+          },
+          {
+            "kind": "General",
+            "name": "iron nulom"
+          },
+          {
+            "kind": "General",
+            "name": "oaken zugob"
+          },
+          {
+            "kind": "General",
+            "name": "iron zugob"
+          }
+        ],
+        "art_comparison": [
+          {
+            "family": "KEYBOARD",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "KEYBOARD",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          },
+          {
+            "family": "STRINGED",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "STRINGED",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          },
+          {
+            "family": "WIND",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "WIND",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          },
+          {
+            "family": "PERCUSSION",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "PERCUSSION",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          }
+        ]
+      },
+      {
+        "source": "build/instrument-picker-native-20261023-204740",
+        "owned_pid": 79748,
+        "owned_closed": true,
+        "source_unchanged": true,
+        "capture": {
+          "after": [
+            {
+              "building": true,
+              "color": 6,
+              "family": "KEYBOARD",
+              "flags": 1542,
+              "planned": false,
+              "texpos": 161817
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "KEYBOARD",
+              "flags": 1586,
+              "planned": false,
+              "texpos": 161818
+            },
+            {
+              "building": true,
+              "color": 6,
+              "family": "STRINGED",
+              "flags": 2566,
+              "planned": false,
+              "texpos": 161819
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "STRINGED",
+              "flags": 2610,
+              "planned": false,
+              "texpos": 161820
+            },
+            {
+              "building": true,
+              "color": 6,
+              "family": "WIND",
+              "flags": 3590,
+              "planned": false,
+              "texpos": 161821
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "WIND",
+              "flags": 3634,
+              "planned": false,
+              "texpos": 161822
+            },
+            {
+              "building": true,
+              "color": 6,
+              "family": "PERCUSSION",
+              "flags": 4614,
+              "planned": false,
+              "texpos": 161823
+            },
+            {
+              "building": true,
+              "color": 50,
+              "family": "PERCUSSION",
+              "flags": 4658,
+              "planned": false,
+              "texpos": 161824
+            }
+          ],
+          "before": [],
+          "candidates": [
+            2978,
+            12697,
+            12800,
+            19804,
+            28407,
+            48520,
+            48521,
+            48522,
+            48523,
+            48524,
+            48525,
+            48526,
+            48527
+          ],
+          "colors": [
+            {
+              "b": 0.0,
+              "g": 0.74901962280273,
+              "id": "AMBER",
+              "index": 0,
+              "r": 1.0
+            },
+            {
+              "b": 0.80000001192093,
+              "g": 0.40000000596046,
+              "id": "AMETHYST",
+              "index": 1,
+              "r": 0.60000002384186
+            },
+            {
+              "b": 1.0,
+              "g": 1.0,
+              "id": "AQUA",
+              "index": 2,
+              "r": 0.0
+            },
+            {
+              "b": 0.83137255907059,
+              "g": 1.0,
+              "id": "AQUAMARINE",
+              "index": 3,
+              "r": 0.49803921580315
+            },
+            {
+              "b": 0.70980393886566,
+              "g": 0.74509805440903,
+              "id": "ASH_GRAY",
+              "index": 4,
+              "r": 0.69803923368454
+            },
+            {
+              "b": 0.10196078568697,
+              "g": 0.20784313976765,
+              "id": "AUBURN",
+              "index": 5,
+              "r": 0.43529412150383
+            },
+            {
+              "b": 1.0,
+              "g": 0.49803921580315,
+              "id": "AZURE",
+              "index": 6,
+              "r": 0.0
+            },
+            {
+              "b": 0.86274510622025,
+              "g": 0.96078431606293,
+              "id": "BEIGE",
+              "index": 7,
+              "r": 0.96078431606293
+            },
+            {
+              "b": 0.0,
+              "g": 0.0,
+              "id": "BLACK",
+              "index": 8,
+              "r": 0.0
+            },
+            {
+              "b": 1.0,
+              "g": 0.0,
+              "id": "BLUE",
+              "index": 9,
+              "r": 0.0
+            },
+            {
+              "b": 0.258823543787,
+              "g": 0.65098041296005,
+              "id": "BRASS",
+              "index": 10,
+              "r": 0.70980393886566
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.49803921580315,
+              "id": "BRONZE",
+              "index": 11,
+              "r": 0.80392158031464
+            },
+            {
+              "b": 0.0,
+              "g": 0.29411765933037,
+              "id": "BROWN",
+              "index": 12,
+              "r": 0.58823531866074
+            },
+            {
+              "b": 0.50980395078659,
+              "g": 0.86274510622025,
+              "id": "BUFF",
+              "index": 13,
+              "r": 0.94117647409439
+            },
+            {
+              "b": 0.31764706969261,
+              "g": 0.45490196347237,
+              "id": "BURNT_SIENNA",
+              "index": 14,
+              "r": 0.91372549533844
+            },
+            {
+              "b": 0.14117647707462,
+              "g": 0.20000000298023,
+              "id": "BURNT_UMBER",
+              "index": 15,
+              "r": 0.54117649793625
+            },
+            {
+              "b": 0.22745098173618,
+              "g": 0.1176470592618,
+              "id": "CARDINAL",
+              "index": 16,
+              "r": 0.76862746477127
+            },
+            {
+              "b": 0.094117648899555,
+              "g": 0.0,
+              "id": "CARMINE",
+              "index": 17,
+              "r": 0.58823531866074
+            },
+            {
+              "b": 0.65490198135376,
+              "g": 0.48235294222832,
+              "id": "CERULEAN",
+              "index": 18,
+              "r": 0.0
+            },
+            {
+              "b": 0.3098039329052,
+              "g": 0.27058824896812,
+              "id": "CHARCOAL",
+              "index": 19,
+              "r": 0.21176470816135
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "CHARTREUSE",
+              "index": 20,
+              "r": 0.49803921580315
+            },
+            {
+              "b": 0.36078432202339,
+              "g": 0.36078432202339,
+              "id": "CHESTNUT",
+              "index": 21,
+              "r": 0.80392158031464
+            },
+            {
+              "b": 0.1176470592618,
+              "g": 0.41176471114159,
+              "id": "CHOCOLATE",
+              "index": 22,
+              "r": 0.82352942228317
+            },
+            {
+              "b": 0.0,
+              "g": 0.24705882370472,
+              "id": "CINNAMON",
+              "index": 23,
+              "r": 0.48235294222832
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.50196081399918,
+              "id": "CLEAR",
+              "index": 24,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.67058825492859,
+              "g": 0.27843138575554,
+              "id": "COBALT",
+              "index": 25,
+              "r": 0.0
+            },
+            {
+              "b": 0.20000000298023,
+              "g": 0.45098039507866,
+              "id": "COPPER",
+              "index": 26,
+              "r": 0.72156864404678
+            },
+            {
+              "b": 0.81568628549576,
+              "g": 0.99215686321259,
+              "id": "CREAM",
+              "index": 27,
+              "r": 1.0
+            },
+            {
+              "b": 0.2352941185236,
+              "g": 0.078431375324726,
+              "id": "CRIMSON",
+              "index": 28,
+              "r": 0.86274510622025
+            },
+            {
+              "b": 0.54509806632996,
+              "g": 0.0,
+              "id": "DARK_BLUE",
+              "index": 29,
+              "r": 0.0
+            },
+            {
+              "b": 0.1294117718935,
+              "g": 0.26274511218071,
+              "id": "DARK_BROWN",
+              "index": 30,
+              "r": 0.39607843756676
+            },
+            {
+              "b": 0.37647059559822,
+              "g": 0.41176471114159,
+              "id": "DARK_CHESTNUT",
+              "index": 31,
+              "r": 0.59607845544815
+            },
+            {
+              "b": 0.12549020349979,
+              "g": 0.19607843458652,
+              "id": "DARK_GREEN",
+              "index": 32,
+              "r": 0.0039215688593686
+            },
+            {
+              "b": 0.38431373238564,
+              "g": 0.0,
+              "id": "DARK_INDIGO",
+              "index": 33,
+              "r": 0.19215686619282
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.40784314274788,
+              "id": "DARK_OLIVE",
+              "index": 34,
+              "r": 0.33333334326744
+            },
+            {
+              "b": 0.72549021244049,
+              "g": 0.85490196943283,
+              "id": "DARK_PEACH",
+              "index": 35,
+              "r": 1.0
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.32941177487373,
+              "id": "DARK_PINK",
+              "index": 36,
+              "r": 0.90588235855103
+            },
+            {
+              "b": 0.098039217293262,
+              "g": 0.011764706112444,
+              "id": "DARK_SCARLET",
+              "index": 37,
+              "r": 0.33725491166115
+            },
+            {
+              "b": 0.31764706969261,
+              "g": 0.50588238239288,
+              "id": "DARK_TAN",
+              "index": 38,
+              "r": 0.5686274766922
+            },
+            {
+              "b": 0.53725492954254,
+              "g": 0.19215686619282,
+              "id": "DARK_VIOLET",
+              "index": 39,
+              "r": 0.258823543787
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.69803923368454,
+              "id": "ECRU",
+              "index": 40,
+              "r": 0.76078432798386
+            },
+            {
+              "b": 0.31764706969261,
+              "g": 0.25098040699959,
+              "id": "EGGPLANT",
+              "index": 41,
+              "r": 0.38039216399193
+            },
+            {
+              "b": 0.4705882370472,
+              "g": 0.7843137383461,
+              "id": "EMERALD",
+              "index": 42,
+              "r": 0.3137255012989
+            },
+            {
+              "b": 0.258823543787,
+              "g": 0.4745098054409,
+              "id": "FERN_GREEN",
+              "index": 43,
+              "r": 0.3098039329052
+            },
+            {
+              "b": 0.50980395078659,
+              "g": 0.86274510622025,
+              "id": "FLAX",
+              "index": 44,
+              "r": 0.93333333730698
+            },
+            {
+              "b": 0.63137257099152,
+              "g": 0.0,
+              "id": "FUCHSIA",
+              "index": 45,
+              "r": 0.95686274766922
+            },
+            {
+              "b": 0.21568627655506,
+              "g": 0.68627452850342,
+              "id": "GOLD",
+              "index": 46,
+              "r": 0.83137255907059
+            },
+            {
+              "b": 0.0,
+              "g": 0.87450981140137,
+              "id": "GOLDEN_YELLOW",
+              "index": 47,
+              "r": 1.0
+            },
+            {
+              "b": 0.12549020349979,
+              "g": 0.64705884456635,
+              "id": "GOLDENROD",
+              "index": 48,
+              "r": 0.85490196943283
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.50196081399918,
+              "id": "GRAY",
+              "index": 49,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "GREEN",
+              "index": 50,
+              "r": 0.0
+            },
+            {
+              "b": 0.1843137294054,
+              "g": 1.0,
+              "id": "GREEN-YELLOW",
+              "index": 51,
+              "r": 0.678431391716
+            },
+            {
+              "b": 1.0,
+              "g": 0.45098039507866,
+              "id": "HELIOTROPE",
+              "index": 52,
+              "r": 0.87450981140137
+            },
+            {
+              "b": 0.50980395078659,
+              "g": 0.0,
+              "id": "INDIGO",
+              "index": 53,
+              "r": 0.29411765933037
+            },
+            {
+              "b": 0.94117647409439,
+              "g": 1.0,
+              "id": "IVORY",
+              "index": 54,
+              "r": 1.0
+            },
+            {
+              "b": 0.419607847929,
+              "g": 0.65882354974747,
+              "id": "JADE",
+              "index": 55,
+              "r": 0.0
+            },
+            {
+              "b": 0.98039215803146,
+              "g": 0.90196079015732,
+              "id": "LAVENDER",
+              "index": 56,
+              "r": 0.90196079015732
+            },
+            {
+              "b": 0.96078431606293,
+              "g": 0.94117647409439,
+              "id": "LAVENDER_BLUSH",
+              "index": 57,
+              "r": 1.0
+            },
+            {
+              "b": 0.062745101749897,
+              "g": 0.91372549533844,
+              "id": "LEMON",
+              "index": 58,
+              "r": 0.99215686321259
+            },
+            {
+              "b": 0.90196079015732,
+              "g": 0.84705883264542,
+              "id": "LIGHT_BLUE",
+              "index": 59,
+              "r": 0.678431391716
+            },
+            {
+              "b": 0.24705882370472,
+              "g": 0.52156865596771,
+              "id": "LIGHT_BROWN",
+              "index": 60,
+              "r": 0.80392158031464
+            },
+            {
+              "b": 0.7843137383461,
+              "g": 0.63529413938522,
+              "id": "LILAC",
+              "index": 61,
+              "r": 0.7843137383461
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "LIME",
+              "index": 62,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.0,
+              "g": 0.25098040699959,
+              "id": "MAHOGANY",
+              "index": 63,
+              "r": 0.75294119119644
+            },
+            {
+              "b": 0.0,
+              "g": 0.0,
+              "id": "MAROON",
+              "index": 64,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.40000000596046,
+              "g": 0.20000000298023,
+              "id": "MAUVE",
+              "index": 65,
+              "r": 0.60000002384186
+            },
+            {
+              "b": 0.42745098471642,
+              "g": 0.37254902720451,
+              "id": "MAUVE_TAUPE",
+              "index": 66,
+              "r": 0.5686274766922
+            },
+            {
+              "b": 0.40000000596046,
+              "g": 0.20000000298023,
+              "id": "MIDNIGHT_BLUE",
+              "index": 67,
+              "r": 0.0
+            },
+            {
+              "b": 0.59607845544815,
+              "g": 1.0,
+              "id": "MINT_GREEN",
+              "index": 68,
+              "r": 0.59607845544815
+            },
+            {
+              "b": 0.678431391716,
+              "g": 0.87450981140137,
+              "id": "MOSS_GREEN",
+              "index": 69,
+              "r": 0.678431391716
+            },
+            {
+              "b": 0.13333334028721,
+              "g": 0.46666666865349,
+              "id": "OCHRE",
+              "index": 70,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.0,
+              "g": 0.50196081399918,
+              "id": "OLIVE",
+              "index": 71,
+              "r": 0.50196081399918
+            },
+            {
+              "b": 0.0,
+              "g": 0.64705884456635,
+              "id": "ORANGE",
+              "index": 72,
+              "r": 1.0
+            },
+            {
+              "b": 0.93333333730698,
+              "g": 0.93333333730698,
+              "id": "PALE_BLUE",
+              "index": 73,
+              "r": 0.68627452850342
+            },
+            {
+              "b": 0.32941177487373,
+              "g": 0.46274510025978,
+              "id": "PALE_BROWN",
+              "index": 74,
+              "r": 0.59607845544815
+            },
+            {
+              "b": 0.68627452850342,
+              "g": 0.678431391716,
+              "id": "PALE_CHESTNUT",
+              "index": 75,
+              "r": 0.86666667461395
+            },
+            {
+              "b": 0.86666667461395,
+              "g": 0.85490196943283,
+              "id": "PALE_PINK",
+              "index": 76,
+              "r": 0.98039215803146
+            },
+            {
+              "b": 0.70588237047195,
+              "g": 0.89803922176361,
+              "id": "PEACH",
+              "index": 77,
+              "r": 1.0
+            },
+            {
+              "b": 0.839215695858,
+              "g": 0.91764706373215,
+              "id": "PEARL",
+              "index": 78,
+              "r": 0.94117647409439
+            },
+            {
+              "b": 1.0,
+              "g": 0.80000001192093,
+              "id": "PERIWINKLE",
+              "index": 79,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.43529412150383,
+              "g": 0.4745098054409,
+              "id": "PINE_GREEN",
+              "index": 80,
+              "r": 0.0039215688593686
+            },
+            {
+              "b": 0.79607844352722,
+              "g": 0.75294119119644,
+              "id": "PINK",
+              "index": 81,
+              "r": 1.0
+            },
+            {
+              "b": 0.40000000596046,
+              "g": 0.0,
+              "id": "PLUM",
+              "index": 82,
+              "r": 0.40000000596046
+            },
+            {
+              "b": 0.60000002384186,
+              "g": 0.53333336114883,
+              "id": "PUCE",
+              "index": 83,
+              "r": 0.80000001192093
+            },
+            {
+              "b": 0.094117648899555,
+              "g": 0.45882353186607,
+              "id": "PUMPKIN",
+              "index": 84,
+              "r": 1.0
+            },
+            {
+              "b": 0.60000002384186,
+              "g": 0.0,
+              "id": "PURPLE",
+              "index": 85,
+              "r": 0.40000000596046
+            },
+            {
+              "b": 0.070588238537312,
+              "g": 0.29019609093666,
+              "id": "RAW_UMBER",
+              "index": 86,
+              "r": 0.45098039507866
+            },
+            {
+              "b": 0.0,
+              "g": 0.0,
+              "id": "RED",
+              "index": 87,
+              "r": 1.0
+            },
+            {
+              "b": 0.29411765933037,
+              "g": 0.0,
+              "id": "RED_PURPLE",
+              "index": 88,
+              "r": 0.69803923368454
+            },
+            {
+              "b": 0.76078432798386,
+              "g": 0.76078432798386,
+              "id": "ROSE",
+              "index": 89,
+              "r": 0.95686274766922
+            },
+            {
+              "b": 0.34117648005486,
+              "g": 0.35294118523598,
+              "id": "RUSSET",
+              "index": 90,
+              "r": 0.45882353186607
+            },
+            {
+              "b": 0.054901961237192,
+              "g": 0.2549019753933,
+              "id": "RUST",
+              "index": 91,
+              "r": 0.71764707565308
+            },
+            {
+              "b": 0.18823529779911,
+              "g": 0.76862746477127,
+              "id": "SAFFRON",
+              "index": 92,
+              "r": 0.95686274766922
+            },
+            {
+              "b": 0.0,
+              "g": 0.14117647707462,
+              "id": "SCARLET",
+              "index": 93,
+              "r": 1.0
+            },
+            {
+              "b": 0.34117648005486,
+              "g": 0.54509806632996,
+              "id": "SEA_GREEN",
+              "index": 94,
+              "r": 0.1803921610117
+            },
+            {
+              "b": 0.078431375324726,
+              "g": 0.258823543787,
+              "id": "SEPIA",
+              "index": 95,
+              "r": 0.43921568989754
+            },
+            {
+              "b": 0.75294119119644,
+              "g": 0.75294119119644,
+              "id": "SILVER",
+              "index": 96,
+              "r": 0.75294119119644
+            },
+            {
+              "b": 0.92156863212585,
+              "g": 0.80784314870834,
+              "id": "SKY_BLUE",
+              "index": 97,
+              "r": 0.52941179275513
+            },
+            {
+              "b": 0.56470590829849,
+              "g": 0.50196081399918,
+              "id": "SLATE_GRAY",
+              "index": 98,
+              "r": 0.43921568989754
+            },
+            {
+              "b": 0.49803921580315,
+              "g": 1.0,
+              "id": "SPRING_GREEN",
+              "index": 99,
+              "r": 0.0
+            },
+            {
+              "b": 0.54901963472366,
+              "g": 0.70588237047195,
+              "id": "TAN",
+              "index": 100,
+              "r": 0.82352942228317
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.2352941185236,
+              "id": "TAUPE_DARK",
+              "index": 101,
+              "r": 0.28235295414925
+            },
+            {
+              "b": 0.53725492954254,
+              "g": 0.52156865596771,
+              "id": "TAUPE_GRAY",
+              "index": 102,
+              "r": 0.54509806632996
+            },
+            {
+              "b": 0.27843138575554,
+              "g": 0.29803922772408,
+              "id": "TAUPE_MEDIUM",
+              "index": 103,
+              "r": 0.40392157435417
+            },
+            {
+              "b": 0.30196079611778,
+              "g": 0.25098040699959,
+              "id": "TAUPE_PURPLE",
+              "index": 104,
+              "r": 0.3137255012989
+            },
+            {
+              "b": 0.49411764740944,
+              "g": 0.59607845544815,
+              "id": "TAUPE_PALE",
+              "index": 105,
+              "r": 0.73725491762161
+            },
+            {
+              "b": 0.3647058904171,
+              "g": 0.3647058904171,
+              "id": "TAUPE_ROSE",
+              "index": 106,
+              "r": 0.56470590829849
+            },
+            {
+              "b": 0.090196080505848,
+              "g": 0.44313725829124,
+              "id": "TAUPE_SANDY",
+              "index": 107,
+              "r": 0.58823531866074
+            },
+            {
+              "b": 0.50196081399918,
+              "g": 0.50196081399918,
+              "id": "TEAL",
+              "index": 108,
+              "r": 0.0
+            },
+            {
+              "b": 0.7843137383461,
+              "g": 0.83529412746429,
+              "id": "TURQUOISE",
+              "index": 109,
+              "r": 0.18823529779911
+            },
+            {
+              "b": 0.20392157137394,
+              "g": 0.258823543787,
+              "id": "VERMILION",
+              "index": 110,
+              "r": 0.8901960849762
+            },
+            {
+              "b": 1.0,
+              "g": 0.0,
+              "id": "VIOLET",
+              "index": 111,
+              "r": 0.54509806632996
+            },
+            {
+              "b": 1.0,
+              "g": 1.0,
+              "id": "WHITE",
+              "index": 112,
+              "r": 1.0
+            },
+            {
+              "b": 0.0,
+              "g": 1.0,
+              "id": "YELLOW",
+              "index": 113,
+              "r": 1.0
+            },
+            {
+              "b": 0.19607843458652,
+              "g": 0.80392158031464,
+              "id": "YELLOW_GREEN",
+              "index": 114,
+              "r": 0.60392159223557
+            },
+            {
+              "b": 0.88627451658249,
+              "g": 0.79215687513351,
+              "id": "BLUE-GRAY",
+              "index": 115,
+              "r": 0.7294117808342
+            }
+          ],
+          "frame": 0,
+          "items": [
+            {
+              "color": 5,
+              "family": "PLAY_KEYBOARD_INSTRUMENT",
+              "id": 48520,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INK1",
+              "x": 100,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_KEYBOARD_INSTRUMENT",
+              "id": 48521,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INK1",
+              "x": 100,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 5,
+              "family": "PLAY_STRINGED_INSTRUMENT",
+              "id": 48522,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INS1",
+              "x": 101,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_STRINGED_INSTRUMENT",
+              "id": 48523,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INS1",
+              "x": 101,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 5,
+              "family": "PLAY_WIND_INSTRUMENT",
+              "id": 48524,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INW1",
+              "x": 102,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_WIND_INSTRUMENT",
+              "id": 48525,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INW1",
+              "x": 102,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 5,
+              "family": "PLAY_PERCUSSION_INSTRUMENT",
+              "id": 48526,
+              "material": "PLANT:OAK:WOOD",
+              "raw": "ENT221 INP1",
+              "x": 103,
+              "y": 40,
+              "z": 165
+            },
+            {
+              "color": 49,
+              "family": "PLAY_PERCUSSION_INSTRUMENT",
+              "id": 48527,
+              "material": "INORGANIC:IRON",
+              "raw": "ENT221 INP1",
+              "x": 103,
+              "y": 40,
+              "z": 165
+            }
+          ]
+        },
+        "choices": [
+          {
+            "kind": "General",
+            "name": "oaken kednath"
+          },
+          {
+            "kind": "General",
+            "name": "iron kednath"
+          },
+          {
+            "kind": "General",
+            "name": "oaken lim"
+          },
+          {
+            "kind": "General",
+            "name": "iron lim"
+          },
+          {
+            "kind": "General",
+            "name": "oaken nulom"
+          },
+          {
+            "kind": "General",
+            "name": "iron nulom"
+          },
+          {
+            "kind": "General",
+            "name": "oaken zugob"
+          },
+          {
+            "kind": "General",
+            "name": "iron zugob"
+          }
+        ],
+        "art_comparison": [
+          {
+            "family": "KEYBOARD",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "KEYBOARD",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          },
+          {
+            "family": "STRINGED",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "STRINGED",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          },
+          {
+            "family": "WIND",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "WIND",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          },
+          {
+            "family": "PERCUSSION",
+            "building": true,
+            "palette": 6,
+            "different_pixels": 0
+          },
+          {
+            "family": "PERCUSSION",
+            "building": true,
+            "palette": 50,
+            "different_pixels": 0
+          }
+        ],
+        "expanded_choices": [
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "oaken kednath"
+          },
+          {
+            "id": 48526,
+            "kind": "Specific",
+            "name": "oaken kednath"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "iron kednath"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "oaken lim"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "iron lim"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "oaken nulom"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "iron nulom"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "oaken zugob"
+          },
+          {
+            "id": -1,
+            "kind": "General",
+            "name": "iron zugob"
+          }
+        ],
+        "expanded_icon_comparison": [
+          {
+            "different_pixels": 0,
+            "origin": [
+              66,
+              162
+            ],
+            "opaque_pixels": 665
+          },
+          {
+            "different_pixels": 0,
+            "origin": [
+              66,
+              198
+            ],
+            "opaque_pixels": 665
+          }
+        ]
+      }
+    ],
+    "finding": "Grouped rows use family BUILDING art and actual material palette. Eight exported RGBA textures match installed sprites/palette first18keys exactly. Expanded percussion group and individual each match665opaque native texture pixels at66,162 and66,198. Screenshots inspected.",
+    "excluded": "instrument-picker-native-20261023-204542 failed old expansion helper: ASCII screen-text scan could not match accented generated instrument name. Source unchanged and ownedDF68924closed. Subsequent capture uses observed expand-arrow coordinates.",
+    "implementation_status": "Building renderer is corrected; material candidate appearance and Item resolver still lack instrument family/placed facts. Implementation pending.",
+    "icon_regression": [
+      {
+        "family": 0,
+        "placed": 1,
+        "material": "PLANT:OAK:WOOD",
+        "canonical_rgba_sha256": "104edb02dc100c633670b14489acb9fc96b9a8242e7776a42241a0da6f77fd3f"
+      },
+      {
+        "family": 0,
+        "placed": 1,
+        "material": "INORGANIC:IRON",
+        "canonical_rgba_sha256": "870de6ab0c123aa4c93de67fb30b6359b475fadb8c6168092165fe0c4ba0e953"
+      },
+      {
+        "family": 1,
+        "placed": 1,
+        "material": "PLANT:OAK:WOOD",
+        "canonical_rgba_sha256": "3f70b7f0aa087d1769023bb97b88492d9711ed785e37c57bf77a9e30bb88f99d"
+      },
+      {
+        "family": 1,
+        "placed": 1,
+        "material": "INORGANIC:IRON",
+        "canonical_rgba_sha256": "46979a2db2ef6e366ecb3ea8cf458388d0233e8f23dcd07a8a670c674d4f8c19"
+      },
+      {
+        "family": 2,
+        "placed": 1,
+        "material": "PLANT:OAK:WOOD",
+        "canonical_rgba_sha256": "078492dda0705b66925c3a406ef18d0ed7f3dfeb8d4bb65ace74a343c9c0a815"
+      },
+      {
+        "family": 2,
+        "placed": 1,
+        "material": "INORGANIC:IRON",
+        "canonical_rgba_sha256": "d77e738e35f0fe1bb019b76cbd3d980e6e3b24eb95904d2a4427a3ccca32b5f9"
+      },
+      {
+        "family": 3,
+        "placed": 1,
+        "material": "PLANT:OAK:WOOD",
+        "canonical_rgba_sha256": "6b7dbf0fbcbbb7320f6befb9183112b67b463a8665dffd8c4af8527248ae4085"
+      },
+      {
+        "family": 3,
+        "placed": 1,
+        "material": "INORGANIC:IRON",
+        "canonical_rgba_sha256": "df073bbe92f3ddca8fc3dfc1eef6580079be325931c4ee3fcda203cc15fff367"
+      }
+    ],
+    "implementation": {
+      "semantic_source": "Generated instrument definition music_skill and PLACED_AS_BUILDING; no native graphics or menu cache runtime inputs",
+      "candidate_contract": "Optional owned family 0 keyboard / 1 stringed / 2 wind / 3 percussion and placed 0/1; both absent for unknown. Included in revision hash and wire estimate.",
+      "verification": "build/qa/instrument-picker-facts: root build, extension build, all19 core checks and installed-art candidate icon check passed; adapter138 passed.",
+      "live_completion": {
+        "run": "build/native-material-instrument-main-20261023-205940",
+        "result": {
+          "failure": "",
+          "observations": [
+            {
+              "candidate": {
+                "appearance": {
+                  "color_token": "GOLD",
+                  "flags": 0,
+                  "instrument": {
+                    "family": 0,
+                    "placed": 1
+                  },
+                  "material_token": "PLANT:CHERRY:WOOD",
+                  "stack": 1,
+                  "subtype_raw": "ENT221 INK3"
+                },
+                "distance": 0,
+                "id": 48520,
+                "name": "cherry wood ekast"
+              }
+            },
+            {
+              "building_id": 1490,
+              "input": "launcher/category/leaf/map/material through viewport pointer",
+              "site": "(127, 61, 165)"
+            },
+            {
+              "elapsed": 575.0,
+              "frame": 575.0,
+              "id": 1490.0,
+              "items": [
+                48520.0
+              ],
+              "jobs": 0.0,
+              "maximum": 1.0,
+              "stage": 1.0,
+              "status": "passed"
+            }
+          ],
+          "status": "passed"
+        },
+        "source_unchanged": true,
+        "owned_session_closed": true,
+        "screenshots_inspected": [
+          "instrument-expanded.png",
+          "instrument-complete.png"
+        ],
+        "diagnostics": {
+          "known_engine": [
+            {
+              "id": "godot-separate-thread-notice",
+              "count": 1,
+              "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+            },
+            {
+              "id": "godot-device-finalize",
+              "count": 1,
+              "reference": "https://github.com/godotengine/godot/issues/119000"
+            },
+            {
+              "id": "godot-shutdown-objects",
+              "count": 1,
+              "reference": "ENGINEERING.md#tests-and-known-problems"
+            }
+          ],
+          "unclassified": []
+        }
+      },
+      "limitations": [
+        "Map-item streams still lack instrument definition facts and retain their legacy approximation.",
+        "Natural completion covers one real keyboard definition; all four family candidate artwork rules use the eight native texture references."
+      ]
+    }
+  },
+  "planned_alpha_regression": {
+    "gate": "build/qa/planned-machinery-verified/summary.json",
+    "status": "passed_with_known_issues",
+    "behavior": "Native floor-half source alpha before mipmaps, white vertex tint; completed phase/resource behavior retained.",
+    "pixel_reference": "Direct native planned keyboard hash in uploaded_rgba_sha256"
+  }
+}

@@ -348,7 +348,7 @@ TEST_CASE("classic item glyphs: ascii row, material symbol, itemdef tile, creatu
     CHECK(!classicItemGlyph(idx, wm::ItemKind::Unknown, &iron, 0, nullptr).found);
   }
   SUBCASE("every kind has a token and a tile") {
-    for (int k = 1; k <= static_cast<int>(wm::ItemKind::Branch); ++k) {
+    for (int k = 1; k <= static_cast<int>(wm::ItemKind::BoltThrowerParts); ++k) {
       const auto kind = static_cast<wm::ItemKind>(k);
       CHECK(*itemKindToken(kind) != '\0');
       CHECK(assumedItemTile(kind) != 0);

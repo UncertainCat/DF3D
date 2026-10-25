@@ -69,6 +69,7 @@ int routeTrack(lua_State* L) {
         if(!hidden || !magma || !integer(L,table,"liquid_depth",depth) || depth<0 || depth>7) {
           readerFailed=true;lua_settop(L,top);return value;
         }
+        value.site.nativeEligible=boolean(L,table,"native_eligible");
         value.site.loaded=true;value.site.hidden=*hidden;value.site.magma=*magma;
         value.site.liquidDepth=uint8_t(depth);value.site.shape=shape(text(L,table,"native_shape"));
         if(text(L,table,"native_shape")=="TWIG") {
@@ -78,7 +79,7 @@ int routeTrack(lua_State* L) {
         }
         const auto occupancy=text(L,table,"occupancy");
         if(occupancy=="None")value.site.occupancy=wm::TrackSiteOccupancy::None;
-        else if(occupancy=="PendingTrack")value.site.occupancy=wm::TrackSiteOccupancy::PendingTrack;
+        else if(occupancy=="PendingConstruction")value.site.occupancy=wm::TrackSiteOccupancy::PendingConstruction;
         else if(occupancy=="BlockingBuilding")value.site.occupancy=wm::TrackSiteOccupancy::BlockingBuilding;
         value.clearanceBlocked=boolean(L,table,"clearance_blocked");
         value.support=boolean(L,table,"support");value.open=boolean(L,table,"open");
@@ -100,7 +101,8 @@ int routeTrack(lua_State* L) {
 }
 int planTrack(lua_State* L) {
   std::vector<wm::TilePos> path;
-  std::vector<wm::PendingTrack> pending;
+  std::vector<wm::PendingConstruction> pending;
+  std::map<int32_t,int32_t> subtypes;
   std::vector<wm::TrackTerrain> terrain;
   std::map<std::tuple<int32_t,int32_t,int32_t>,bool> ramps;
   bool valid=lua_isfunction(L,1) && lua_istable(L,2);
@@ -122,18 +124,21 @@ int planTrack(lua_State* L) {
     const auto nativeShape=shape(text(L,table,"native_shape"));
     const auto occupancy=text(L,table,"occupancy");
     valid=loaded && *loaded && nativeShape!=wm::TileShape::Unknown &&
-        (occupancy=="None" || occupancy=="PendingTrack");
+        (occupancy=="None" || occupancy=="PendingConstruction");
     valid=valid && ramps.emplace(std::make_tuple(p.x,p.y,p.z),nativeShape==wm::TileShape::Ramp).second;
     lua_getfield(L,table,"pending");
-    if(occupancy=="PendingTrack") {
-      int32_t id=-1,mask=0;
+    if(occupancy=="PendingConstruction") {
+      int32_t id=-1,mask=0,subtype=-1;
       const int entry=lua_gettop(L);
       if(!lua_istable(L,entry))valid=false;
       else {
         const auto ramp=boolean(L,entry,"ramp");
+        const auto track=boolean(L,entry,"track").value_or(true);
+        const bool knownSubtype=integer(L,entry,"subtype",subtype) && subtype>=0;
         if(!ramp || !integer(L,entry,"id",id) || id<0 ||
-            !integer(L,entry,"connections",mask) || mask<1 || mask>15)valid=false;
-        else pending.push_back({p,id,uint8_t(mask),*ramp});
+            !integer(L,entry,"connections",mask) || mask<0 || mask>15 ||
+            (track ? mask==0 : mask!=0 || *ramp || !knownSubtype))valid=false;
+        else { pending.push_back({p,id,uint8_t(mask),*ramp,track}); subtypes[id]=subtype; }
       }
     } else if(!lua_isnil(L,-1))valid=false;
     lua_pop(L,1);
@@ -160,6 +165,7 @@ int planTrack(lua_State* L) {
       pushPosition(L,piece.position);
       field(L,"action",int32_t(piece.action));field(L,"building_id",piece.buildingId);
       field(L,"connections",piece.connections);field(L,"expected_connections",piece.expectedConnections);
+      field(L,"expected_subtype",piece.buildingId>=0?subtypes.at(piece.buildingId):-1);
       field(L,"expected_terrain_connections",piece.expectedTerrainConnections);
       field(L,"expected_terrain_kind",int32_t(piece.expectedTerrainKind));
       lua_pushboolean(L,piece.ramp);lua_setfield(L,-2,"ramp");

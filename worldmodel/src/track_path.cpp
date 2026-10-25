@@ -46,44 +46,23 @@ TrackTileEligibility trackSiteEligibility(const TrackSiteFacts& facts, bool endp
   using Result = TrackTileEligibility;
   if (!facts.loaded || (facts.hidden && !endpoint)) return Result::Ineligible;
   if (facts.endpointOnly && !endpoint) return Result::Ineligible;
-  if (facts.liquidDepth > 7) return Result::Unverified;
-  if (facts.liquidDepth > 1 || (facts.magma && facts.liquidDepth > 0)) return Result::Ineligible;
-  switch (facts.occupancy) {
-    case TrackSiteOccupancy::None:
-    case TrackSiteOccupancy::PendingTrack: break;
-    case TrackSiteOccupancy::BlockingBuilding: return Result::Ineligible;
-    default: return Result::Unverified;
-  }
-  switch (facts.shape) {
-    case TileShape::Empty:
-    case TileShape::Floor:
-    case TileShape::Ramp:
-    case TileShape::RampTop:
-    case TileShape::StairUp:
-    case TileShape::StairDown:
-    case TileShape::StairUpDown:
-    case TileShape::Shrub:
-    case TileShape::Boulder:
-    case TileShape::Pebbles:
-    case TileShape::TreeBranch:
-    case TileShape::Sapling: return Result::Eligible;
-    case TileShape::Wall:
-    case TileShape::TreeTrunk:
-    case TileShape::Fortification: return Result::Ineligible;
-    default: return Result::Unverified;
-  }
+  if (!facts.nativeEligible) return Result::Unverified;
+  if (!*facts.nativeEligible) return Result::Ineligible;
+  // A native terrain approval does not establish a mutable job's identity.
+  if (facts.occupancy == TrackSiteOccupancy::Unknown) return Result::Unverified;
+  return Result::Eligible;
 }
 
 std::optional<TrackConstructionPlan> planTrackConstruction(
-    std::span<const TilePos> path, std::span<const PendingTrack> existing,
+    std::span<const TilePos> path, std::span<const PendingConstruction> existing,
     std::span<const TrackTerrain> terrain, const std::function<bool(TilePos)>& isRamp) {
   const auto pieces = trackPathPieces(path, isRamp);
   if (!pieces) return std::nullopt;
   using Key = std::tuple<int32_t,int32_t,int32_t>;
-  std::map<Key, PendingTrack> jobs;
+  std::map<Key, PendingConstruction> jobs;
   std::set<int32_t> ids;
   for (const auto& job : existing) {
-    if (job.buildingId < 0 || job.connections == 0 || (job.connections & ~15) != 0 ||
+    if (job.buildingId < 0 || (job.track ? job.connections == 0 : job.connections != 0 || job.ramp) || (job.connections & ~15) != 0 ||
         !ids.insert(job.buildingId).second ||
         !jobs.emplace(Key{job.position.x,job.position.y,job.position.z},job).second)
       return std::nullopt;
@@ -94,9 +73,6 @@ std::optional<TrackConstructionPlan> planTrackConstruction(
     if (tile.connections == 0 || (tile.connections & ~15) != 0 ||
         (tile.kind != TrackTerrainKind::Carved && tile.kind != TrackTerrainKind::Constructed) ||
         !built.emplace(key,tile).second) return std::nullopt;
-    const auto pending = jobs.find(key);
-    if (pending != jobs.end() && ((pending->second.connections & tile.connections) != tile.connections || pending->second.ramp != tile.ramp))
-      return std::nullopt;
   }
   TrackConstructionPlan plan;
   plan.pieces.reserve(pieces->size());
@@ -115,12 +91,12 @@ std::optional<TrackConstructionPlan> planTrackConstruction(
     if (found == jobs.end()) {
       ++plan.newPieceCount;
     } else {
-      if (found->second.ramp != piece.ramp) return std::nullopt;
+      step.ramp = step.ramp || found->second.ramp;
       step.expectedJobRamp = found->second.ramp;
       step.buildingId = found->second.buildingId;
       step.expectedConnections = found->second.connections;
       step.connections |= step.expectedConnections;
-      step.action = step.connections == step.expectedConnections
+      step.action = step.connections == step.expectedConnections && step.ramp == step.expectedJobRamp
           ? TrackPlanAction::Unchanged : TrackPlanAction::Update;
     }
     plan.pieces.push_back(step);

@@ -272,6 +272,7 @@ const char* itemKindToken(ItemKind kind) {
     case ItemKind::Book: return "BOOK";
     case ItemKind::Sheet: return "SHEET";
     case ItemKind::Branch: return "BRANCH";
+    case ItemKind::BoltThrowerParts: return "BOLT_THROWER_PARTS";
   }
   return "";
 }
@@ -375,6 +376,7 @@ uint8_t assumedItemTile(ItemKind kind) {
     case ItemKind::Egg: return 37;            // assumed  % (absent)
     case ItemKind::Book: return 8;            // measured ◘
     case ItemKind::Sheet: return 245;         // measured §
+    case ItemKind::BoltThrowerParts: return 63; // unknown classic tile; explicit fallback
     case ItemKind::Branch: return 240;        // assumed  ≡ (absent)
   }
   return 63;

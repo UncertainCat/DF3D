@@ -101,10 +101,7 @@ func pointer_wall() -> void:
 	# Inspection/removal already have broader controller readback above.
 	editor.open_panel()
 	if not await wait_for(func(): return editor.request_ticket == 0,"cleanup catalog"): return
-	editor.begin_inspect(); editor.send({"action":3,"building_id":ids[0]})
-	if not await wait_for(func(): return editor.request_ticket == 0 and editor.inspected_id == ids[0],"cleanup Inspect"): return
-	editor.remove_button.pressed.emit()
-	if not await wait_for(func(): return editor.request_ticket == 0 and editor.inspected_id == -1,"cleanup Remove"): return
+	if not await inspect_and_remove(ids[0]):return
 	await native("removed",{"id":ids[0]}); await native("final")
 	editor.close_panel()
 	print("CONSTRUCTION_POINTER_WALL_PASS")

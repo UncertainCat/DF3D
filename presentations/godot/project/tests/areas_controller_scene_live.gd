@@ -111,6 +111,7 @@ func pointer_areas() -> void:
 		if destination == "Zones": await pointer_owner(id,origin)
 		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
 			await stockpile_name_contract()
+			if not stopped: await pointer_stockpile_name(origin)
 			if stopped: return
 			await pointer_storage_limits()
 			if not stopped: await pointer_stockpile_fit(origin)
@@ -148,6 +149,63 @@ func stockpile_name_contract() -> void:
 		var observed := await native("snapshot",{"id":int(editor.selected.id),"expected":{"custom_name":value}})
 		if stopped: return
 		if not check(editor.selected.get("custom_name",null) == value and editor.selected.name == observed.area.name,"custom/display name differs from native"): return
+
+func name_text(value: String) -> void:
+	for character in value:
+		for pressed in [true,false]:
+			var event := InputEventKey.new(); event.pressed = pressed; event.unicode = character.unicode_at(0)
+			root.push_input(event,true)
+
+func pointer_stockpile_name(origin: Vector3i) -> void:
+	step = "viewport inline stockpile name"
+	var id := int(editor.selected.id)
+	var initial_size: Vector2 = editor.panel.size
+	await click_control(editor.stockpile_view.controls.rename)
+	if not check(editor.rename_field.editing and editor.rename_field.value == "","native empty inline name absent"): return
+	name_text("Aa1 B")
+	if not await wait_ui(settled,"immediate rename without Enter"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":"Aa1 B"}})
+	if not check(editor.panel.size == initial_size and editor.rename_field.get_parent() == editor.stockpile_view,"rename changed palette layout"): return
+	await capture("stockpile_rename_inline")
+	await pointer_key(KEY_ENTER)
+	if not check(editor.panel.visible and not editor.rename_field.editing,"Enter did not end entry"): return
+	await click_control(editor.stockpile_view.controls.rename)
+	name_text("X")
+	if not await wait_ui(settled,"append existing name"): return
+	await pointer_key(KEY_BACKSPACE)
+	if not await wait_ui(settled,"name backspace"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":"Aa1 B"}})
+	name_text("a".repeat(40))
+	if not await wait_ui(settled,"native name limit"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":"Aa1 B"+"a".repeat(15)}})
+	await capture("stockpile_rename_limit")
+	# Deliver Backspace and Escape before the action service polls. Explicit
+	# text must drain even though the panel closes immediately.
+	for index in 20:
+		var key := InputEventKey.new(); key.pressed = true; key.keycode = KEY_BACKSPACE; root.push_input(key,true)
+	await pointer_key(KEY_ESCAPE)
+	if not check(not editor.panel.visible,"Escape did not close palette"): return
+	if not await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"closed rename drain"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
+	await click_control(scene._fortress_hud.navigation.Stockpiles,true)
+	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"rename reopen launcher"): return
+	await pointer_click(tile_screen(origin))
+	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == id,"renamed pile reselection"): return
+	if not check(editor.selected.custom_name == "" and editor.stockpile_view.heading.text == editor.selected.name,"cleared name did not restore default heading"): return
+	await click_control(editor.stockpile_view.controls.rename)
+	name_text("R")
+	await pointer_click(tile_screen(origin),MOUSE_BUTTON_RIGHT)
+	if not check(not editor.panel.visible,"right-click did not close rename palette"): return
+	if not await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"right-click rename drain"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":"R"}})
+	await click_control(scene._fortress_hud.navigation.Stockpiles,true)
+	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"right-click reopen launcher"): return
+	await pointer_click(tile_screen(origin))
+	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == id,"right-click pile reselection"): return
+	await click_control(editor.stockpile_view.controls.rename)
+	await pointer_key(KEY_BACKSPACE); await pointer_key(KEY_ENTER)
+	if not await wait_ui(settled,"restore unnamed stockpile"): return
+	await native("snapshot",{"id":id,"expected":{"custom_name":""}})
 
 func pointer_storage_limits() -> void:
 	step = "viewport native storage limits"

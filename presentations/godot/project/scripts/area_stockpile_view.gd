@@ -8,6 +8,7 @@ var data: Dictionary = Data.read()
 var preset_buttons: Array[Button] = []
 var controls: Dictionary = {}
 var heading: Label
+var name_entry = preload("res://scripts/area_name_entry.gd").new()
 var warning: Label
 var footer: Label
 
@@ -17,7 +18,16 @@ func configure(source) -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	custom_minimum_size = Vector2(312, 432)
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	var name_frame := Panel.new(); name_frame.size = Vector2(312,36)
+	var inset := StyleBoxFlat.new(); inset.bg_color = Color.TRANSPARENT; inset.border_color = Color("aaaaaa")
+	inset.set_border_width_all(2); name_frame.add_theme_stylebox_override("panel",inset)
+	name_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; add_child(name_frame)
 	heading = caption("", Vector2(8, 0), Vector2(264, 36))
+	name_entry.position = Vector2(8,0); name_entry.size = Vector2(264,36)
+	name_entry.add_theme_font_size_override("font_size",12)
+	name_entry.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	name_entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(name_entry); name_entry.hide()
 	controls.rename = icon_button("UNIT_SHEET_CUSTOMIZE", Vector2(280, 0), "Rename")
 	controls.rename.pressed.connect(func(): control_selected.emit("rename"))
 	for index in data.presets.size():
@@ -86,6 +96,7 @@ func icon_button(token: String, point: Vector2, hint: String) -> Button:
 
 func display(area: Dictionary, enabled: bool) -> void:
 	heading.text = str(area.get("name", ""))
+	heading.visible = not name_entry.editing
 	var mask := int(area.get("categories", 0))
 	warning.visible = mask == 0
 	for index in preset_buttons.size():

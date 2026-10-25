@@ -59,7 +59,8 @@ var links_give := true
 var settings_state = preload("res://scripts/area_settings_state.gd").new()
 var settings_view: Control
 var stockpile_page := "types"
-var rename_field: LineEdit
+var rename_field
+var rename_session
 var kind_picker: OptionButton
 var zone_picker: OptionButton
 var area_picker: OptionButton
@@ -203,10 +204,9 @@ func _ready() -> void:
 	settings_state.request_ready.connect(send)
 	settings_state.failed_page.connect(func(reason):
 		request_problem = true; message.text = reason; update_controls())
-	rename_field = LineEdit.new()
-	rename_field.max_length = 128
-	rename_field.text_submitted.connect(rename_area)
-	box.add_child(rename_field)
+	rename_field = stockpile_view.name_entry
+	rename_field.edited.connect(_rename_edited)
+	rename_field.submitted.connect(_finish_rename)
 	var header := HBoxContainer.new()
 	box.add_child(header)
 	var title := Label.new()
@@ -350,6 +350,7 @@ func set_area_kind(value: int) -> void:
 	launcher_destination = "Stockpiles" if value == 0 else "Zones"
 
 func close_panel() -> void:
+	_release_rename()
 	_release_paint_session("exit")
 	_finish_multi()
 	portraits.clear(world)
@@ -578,6 +579,8 @@ func selected_request(action: int) -> Dictionary:
 
 
 func choose_preset(preset: int) -> void:
+	if rename_session != null and rename_session.ticket != 0: return
+	_finish_rename()
 	if selected.is_empty() or int(selected.kind) != 0 or not available or request_ticket != 0: return
 	if preset == 0:
 		stockpile_page = "settings"
@@ -595,6 +598,8 @@ func choose_preset(preset: int) -> void:
 
 
 func stockpile_control(key: String) -> void:
+	if rename_session != null and rename_session.ticket != 0: return
+	if key != "rename": _finish_rename()
 	if selected.is_empty() or int(selected.kind) != 0 or not available or request_ticket != 0: return
 	match key:
 		"remove": remove_area()
@@ -603,11 +608,17 @@ func stockpile_control(key: String) -> void:
 			request.links_only = int(not bool(selected.links_only))
 			send(request)
 		"rename":
+			if rename_field.editing: return
+			if not selected.has("custom_name"): return
+			rename_session = preload("res://scripts/area_rename_session.gd").new()
+			action_service.add_child(rename_session)
+			rename_session.configure(action_service,selected)
+			rename_session.changed.connect(_rename_changed)
+			rename_session.finished.connect(_rename_finished)
+			rename_session.failed.connect(_rename_failed)
 			stockpile_page = "rename"
-			rename_field.text = str(selected.name)
+			rename_field.begin(str(selected.custom_name))
 			update_controls()
-			rename_field.grab_focus()
-			rename_field.select_all()
 		"repaint": begin_paint()
 		"containers", "links":
 			storage_view.cancel_edit()
@@ -904,6 +915,41 @@ func rename_area(value: String) -> void:
 	request.name = value
 	send(request)
 
+func _rename_edited(value: String) -> void:
+	if rename_session != null: rename_session.edit(value)
+	update_controls()
+
+func _rename_changed(observed: Dictionary) -> void:
+	selected = observed.duplicate(true)
+	update_controls()
+
+func _rename_finished() -> void:
+	rename_session = null
+	update_controls()
+
+func _rename_failed(result: Dictionary) -> void:
+	rename_session = null; rename_field.finish()
+	stockpile_page = "types"
+	if not selected.is_empty(): selected.revision = 0
+	request_problem = true; message.text = str(result.get("message",""))
+	update_controls()
+
+func _finish_rename() -> void:
+	rename_field.finish()
+	if stockpile_page == "rename": stockpile_page = "types"
+	if rename_session != null: rename_session.finish()
+	update_controls()
+
+func _release_rename() -> void:
+	rename_field.finish()
+	if rename_session == null: return
+	var owned = rename_session
+	rename_session = null
+	owned.changed.disconnect(_rename_changed)
+	owned.finished.disconnect(_rename_finished)
+	owned.failed.disconnect(_rename_failed)
+	owned.finish()
+
 
 func set_storage_value(key: String, value: int) -> void:
 	if selected.is_empty() or int(selected.kind) != 0 or key not in ["barrels","bins","wheelbarrows"] or not available or storage_failed: return
@@ -1135,7 +1181,7 @@ func update_controls() -> void:
 	for child in content.get_children():
 		# Transitional secondary pages are replaced independently; the type panel
 		# already uses its native hierarchy and actual preset semantics.
-		if child not in [stockpile_view, rename_field, message] and native_types: child.hide()
+		if child not in [stockpile_view, message] and native_types: child.hide()
 		if child not in [settings_view,message] and native_settings: child.hide()
 		if child not in [paint_view,message] and native_paint: child.hide()
 		if child not in [zone_menu,message] and native_zones: child.hide()
@@ -1172,9 +1218,8 @@ func update_controls() -> void:
 		storage_view.add_theme_stylebox_override("panel",stockpile_view.panel_style())
 		storage_view.size = Vector2.ZERO
 		storage_view.display(selected,available and not storage_failed and request_ticket == 0 and int(selected.get("revision",0)) > 0,storage_sending and not storage_failed)
-	rename_field.visible = native_types and stockpile_page == "rename"
-	rename_field.editable = request_ticket == 0
-	if native_types: stockpile_view.display(selected, available and request_ticket == 0 and int(selected.get("revision",0)) > 0)
+	rename_field.visible = native_types and stockpile_page == "rename" and rename_field.editing
+	if native_types: stockpile_view.display(selected, available and request_ticket == 0 and (rename_session == null or rename_session.ticket == 0) and int(selected.get("revision",0)) > 0)
 	if native_zones:
 		panel.add_theme_stylebox_override("panel",StyleBoxEmpty.new())
 		message.visible = request_ticket != 0 or request_problem
@@ -1267,7 +1312,6 @@ func _process(delta: float) -> void:
 		if settings_view.visible: settings_view.layout(view,view.y-insets.y-insets.z-24,view.x-insets.x-insets.w)
 		panel.custom_minimum_size.x = settings_view.custom_minimum_size.x + 12 if settings_view.visible else (324 if stockpile_view.visible else 390)
 		var panel_height := 452.0
-		if rename_field.visible: panel_height += 40
 		if message.visible: panel_height += maxf(36, message.get_combined_minimum_size().y)
 		panel.size = Vector2(panel.custom_minimum_size.x, minf(panel_height, view.y-insets.y-insets.z) if stockpile_view.visible else maxf(220, view.y - 64))
 		if settings_view.visible: panel.size.y = settings_view.custom_minimum_size.y + 24
@@ -1543,6 +1587,10 @@ func _input(event: InputEvent) -> void:
 		handle_back()
 		get_viewport().set_input_as_handled()
 		return
+	if panel.visible and rename_field.editing and event is InputEventKey and event.pressed:
+		rename_field.feed_key(event)
+		get_viewport().set_input_as_handled()
+		return
 	if (
 		panel.visible
 		and dragging
@@ -1619,6 +1667,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func handle_back() -> void:
+	if stockpile_page == "rename": close_panel(); return
 	if not details_origin.is_empty():
 		if details_view.staff_workflow.mode==details_view.staff_workflow.Mode.Choosing:
 			details_view.staff_workflow.close()
@@ -1653,7 +1702,6 @@ func handle_back() -> void:
 		settings_state.clear()
 		cancel_drag()
 		stockpile_page = "types"
-		rename_field.release_focus()
 		update_controls()
 	elif dragging or (selected.is_empty() and rectangle.has_area()):
 		cancel_drag()
@@ -1718,6 +1766,7 @@ func draw_outline() -> void:
 
 
 func _detach_draft() -> void:
+	_release_rename()
 	storage_values.clear(); storage_sending = false; storage_failed = false
 	if details_parent_ticket!=0 and action_service!=null:action_service.detach(details_parent_ticket)
 	details_parent_ticket=0;details_parent_refresh_again=false

@@ -42,10 +42,30 @@ unsaved and both save manifests match. Only the known separate-thread notice
 remains. These name comparisons exercise semantic writes, not rename pointer
 input or inline editing.
 
-DF3D's current staged rename remains incomplete: it still uses the display name,
-a separate128-character field and Enter-only writes. Command-level coverage is
-not actual rename UI acceptance; correct the inline editor and async write
-lifecycle before exposing Stockpiles.
+The stockpile editor now uses the heading itself, seeded with `custom_name`,
+with append/Backspace behavior and the native20-byte input limit. The separate
+LineEdit, whole-name selection and Enter-only submission are removed. Enter
+ends editing; Escape/right-click closes the palette. A service-owned rename
+session coalesces newer explicit text while a write is pending and continues
+against the confirmed revision. Closing the palette preserves those explicit
+edits. Rejection, unknown outcome or session invalidation stops the sequence
+without replay; a failed open editor invalidates its receipt until reinspection.
+Zones retains its existing rename UI.
+
+`build/qa/stockpile-inline-rename-final` passes root CTest19/19, area and storage
+controllers and the new rename controller checks. They cover rapid input,
+Enter/Escape with pending writes, revision chaining, rejection, unknown/late
+replies, disconnects and epoch changes. Protected
+`build/areas-acceptance-20261025-181957` exercises actual viewport quill clicks
+and text/Enter/Backspace/Escape/right-click input, compares native names before
+Enter, at the20-byte limit and after closure, and reselects the pile to verify
+the default heading after clearing. It also repeats the five viewport fit
+checks for storage, settings, paint and links. Inline and length-limit captures
+from the preceding181707 run were inspected against the native heading.
+Owned DF90116 closes unsaved and both save manifests match; the only diagnostic
+is the known separate-thread notice. The viewport text scenarios use ASCII;
+the earlier native high-byte oracle is helper evidence, not OS clipboard/IME
+acceptance. Stockpiles remains hidden while the broader completion audit proceeds.
 
 ## Stockpile settings ownership and protocol59
 

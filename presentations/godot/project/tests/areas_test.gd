@@ -125,6 +125,7 @@ func run():
 		"revision": 9007199254740993,
 		"kind": 0,
 		"name": "Custom pile",
+		"custom_name": "Custom pile",
 		"origin": Vector3i(3, 4, 2),
 		"width": 50,
 		"tile_count": 2500,
@@ -175,9 +176,9 @@ func run():
 	w.state = {"world_epoch":42,"revision":5,"request_seq":w.seq,"status":2,"action":11,"areas":[pile]}
 	service.poll()
 	c.stockpile_control("rename")
-	check(c.rename_field.visible and c.rename_field.text == pile.name, "rename begins with inspected name")
-	c.handle_back()
-	check(c.stockpile_page == "types" and not c.rename_field.visible and c.panel.visible, "back from rename restores type panel without sending")
+	check(c.rename_field.visible and c.rename_field.value == pile.custom_name, "rename begins with stored custom name")
+	c._finish_rename()
+	check(c.stockpile_page == "types" and not c.rename_field.visible and c.panel.visible, "Enter ends inline editing without sending an unchanged name")
 	c.stockpile_control("rename")
 	c.rename_area("Changed pile")
 	service.poll()

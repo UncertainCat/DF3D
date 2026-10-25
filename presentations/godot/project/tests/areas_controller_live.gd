@@ -17,7 +17,7 @@ func wait_ui(predicate: Callable, label: String) -> bool:
 	return check(false,label+" timed out; no command replay")
 
 func settled() -> bool:
-	return editor.request_ticket == 0 and (editor.paint_session == null or (editor.paint_session.ticket == 0 and editor.paint_session._queue.is_empty()))
+	return editor.request_ticket == 0 and (editor.rename_session == null or editor.rename_session.ticket == 0) and (editor.paint_session == null or (editor.paint_session.ticket == 0 and editor.paint_session._queue.is_empty()))
 
 func exercise() -> void:
 	step = "controller setup"
@@ -59,7 +59,10 @@ func exercise_ui(origin: Vector3i) -> void:
 	var pile := int(editor.selected.id)
 	await native("snapshot",{"id":pile,"expected":{"kind":0,"tile_count":4}})
 	editor.stockpile_view.controls.rename.pressed.emit()
-	editor.rename_field.text_submitted.emit("Controller stockpile")
+	for character in "Controller stockpile":
+		var key := InputEventKey.new(); key.pressed = true; key.unicode = character.unicode_at(0)
+		editor.rename_field.feed_key(key)
+	editor._finish_rename()
 	if not await wait_ui(settled,"rename"): return
 	await native("snapshot",{"id":pile,"expected":{"custom_name":"Controller stockpile"}})
 	editor.stockpile_view.controls.links_only.pressed.emit()

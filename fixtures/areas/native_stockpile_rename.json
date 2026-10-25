@@ -295,11 +295,7 @@
       "paused": true
     }
   ],
-  "implementation_gaps": [
-    "Viewer uses a separate field below the palette, prefilled with the displayed name and selected in full.",
-    "Viewer submits only on Enter, permits 128 characters and returns to the palette on Escape.",
-    "Actual viewport rename input and async write lifecycle acceptance remain outstanding."
-  ],
+  "implementation_gaps": [],
   "contract_acceptance": {
     "management_version": 60,
     "run": "build/areas-acceptance-20261025-180611",
@@ -317,5 +313,18 @@
       ""
     ],
     "scope": "Semantic writes and Godot-decoded custom/display names compared to native readback; not inline rename UI acceptance."
+  },
+  "inline_acceptance": {
+    "run": "build/areas-acceptance-20261025-181957",
+    "summary": "passed_with_known_issues",
+    "files_sha256": {
+      "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "scene_stockpile_rename_inline.png": "d07e89b07501e4a8a179a6a747744375befa6acb2c18146abedce839c4f8d868",
+      "scene_stockpile_rename_limit.png": "a1845c942f6cfbb8a113623c30f48f7f6094abbf40c93e81fd3faf8bff64c9bb"
+    },
+    "offline_gate": "build/qa/stockpile-inline-rename-final",
+    "scope": "Actual viewport ASCII entry, append, Backspace, Enter, 20-byte limit, Escape/right-click with pending writes, reopen and cleared default heading. Controller tests cover stale/unknown/late replies, disconnect and epoch. OS clipboard/IME input is not established."
   }
 }

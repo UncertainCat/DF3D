@@ -15,9 +15,7 @@ func run():
 	scene.set_process(false)
 	check(scene._ui != null, "main scene composes UI")
 	var ui = scene._ui
-	check(not ui.has_node("TileHover"), "Unsourced tile descriptions stay outside the product")
-	for child in ui.get_children():
-		check(child.get_script()!=preload("res://scripts/tile_hover.gd"), "No unnamed tile hover bypasses availability")
+	check(ui.has_node("TileHover") and ui.get_node("TileHover").actions==ui.actions, "Native world hover uses the shared semantic service")
 	# This test owns navigation/session transitions explicitly; asynchronous
 	# fixture polling must not reset the panels during deferred HUD layout.
 	ui.actions.set_process(false)

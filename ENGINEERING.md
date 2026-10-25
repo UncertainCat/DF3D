@@ -9345,25 +9345,124 @@ transported native values remain. HUD/minimap/UI composition checks pass in
 hud-unsourced-copy-contained. This is source/offline containment, not native
 hover behavior or full HUD visual acceptance.
 
-Tile hover still synthesizes descriptions from enum/material identifiers, and its
-synthetic formatting tests do not establish native copy. Native description
-transport/mapping remains required. Loader copy/layout, remaining HUD tooltip/
-feedback/settings prose and the missing-resident readout message also need source
-audits. No agent-authored spec or approval authorizes those departures. Detailed
-working inventory remains in build/notes/pm/COPY-PARITY-AUDIT.md.
+### Native terrain hover
 
+Map hover uses DF's coordinate-based terrain formatter at RVA `0xe7d330`
+through management protocol 55. The bridge verifies the supported executable and
+routine fingerprint, supplies owned output, rejects hidden/invalid tiles and
+restores the native MT/SplitMix random state. It never reads the native hover
+list, viewscreen or mouse state. Godot owns ray picking and asynchronously
+requests native prose; moving tiles, opening blocking UI and session invalidation
+clear the view and detach the old observer. Unavailable text stays blank.
+The stationary tile refresh interval is 500ms; native activation timing is not
+established by the capture, which explicitly advanced the reference hover clock.
 
-Tile-hover prototype exposure is now disabled through
-ui_availability.TILE_HOVER_AVAILABLE: the current tile_hover_info contract exposes
-enum/material tokens and semantic flags, not native descriptions. Main composition
-does not instantiate the generated-copy prototype. Its formatting tests remain
-explicitly synthetic and are not native-copy acceptance. Composition/HUD/prototype
-checks pass in tile-hover-native-copy-gate. Tile semantics and picking remain.
-This is unfinished containment; completion requires actual native description
-capture and semantic/native-string transport or exact evidenced mapping, covering
-shapes/materials/smooth/engraved/liquid/plants/hidden/unknown states. Native widget
-or cursor state must never become runtime input. Restore exposure only after the
-semantic, lifecycle and rendered behavior is accepted.
+`fixtures/hover/terrain.json` retains native copy for ten terrain cases and the
+map-hover frame/text cells from protected capture
+`build/tile-hover-native-20261024-232913`. The frame uses installed
+HOVER_RECTANGLE and join artwork, the installed 12px bitmap font and palette 9.
+GPU `terrain_hover_view_capture` compares every captured panel pixel at 1200x800.
+`build/qa/terrain-hover-render-gate` passed composition/lifecycle and pixel checks,
+with known renderer diagnostics only. The inspected main-scene capture
+`build/tile-hover-live-20261024-233859` passed actual pointer terrain queries for
+wall, floor, constructed floor and fortification, HUD/settings suppression, recovery, elevation changes and
+service invalidation. DF stayed paused at frame 0; the source manifest was unchanged.
+Root CTest 19 and the bridge build passed. Hidden-desktop pointer tests were
+excluded because Windows returned invalid cursor coordinates; the accepted lane
+uses a visible viewer and an isolated native DF session.
+
+Reproduce the protected pointer lane with `tools/smoke/terrain_hover_acceptance.ps1`
+using `-SavePath` and `-OwnedSaveManifest` for the verified oracle fortress clone.
+It verifies the manifest before/after and closes its owned processes without saving.
+Rebuild/install bridge and viewer together for protocol 56; older recordings have
+no ordered hover entries. The old enum/token-to-prose formatter is removed.
+
+The live acceptance above establishes terrain descriptions only. Native units,
+items, buildings, liquids and contaminants use the independent collection path;
+DF's current list builder writes global UI scratch and is prohibited at runtime.
+The native entry formatter at RVA `0x406860` is now exposed by the diagnostic
+`df3d hover-object-read Item|Unit|Building id`, using an independently constructed
+entry and bounded native text/colors. Protected capture
+`build/hover-object-native-20261024-235613` matched 539 item, six unit and four
+building entries (including repeated objects across targets); the native hover
+list stayed unchanged and the paused source was preserved. Comparisons are retained
+in `fixtures/hover/objects.json`. This verifies formatting only.
+The runtime collector and diagnostic `df3d hover-list-read x y z` collect independently owned
+entries using simulation containers and native unit visibility/footprint,
+building footprint, liquid-depth and entry-formatting routines. Normal fortress
+building visibility uses native `isHidden`, without native hide/unhide menu
+exceptions. `fixtures/hover/collector.json` retains complete-list comparisons for
+20 natural targets and 114 controlled effects cases from protected
+`build/hover-collector-native-20261025-000232` and
+`build/hover-effects-native-20261025-000441`. Counts, ordering, text and colors
+match; native hover lists and source manifests stayed unchanged at paused frame0.
+The effects matrix includes all liquid depths, salt/stagnant flags, all14 flow
+types/dead exclusion, fire/campfire, and material/item spatter thresholds.
+Protected `build/hover-spoor-native-20261025-001134` adds64 spoor cases across
+all four types/levels and known/unknown, lit/unlit states;16 eligible entries
+match native text/colors/order, with the paused source preserved. Spoor uses
+native block-event lookup `0x5317f0` and encountered-track coordinates populated
+by perception at `0x14ab48f..0x14ab5d3`. These coordinates represent player
+knowledge; tracking menu selection/count and `viewing_spoor` are not inputs.
+Protocol56 now carries the collector's ordered entries through the pointer-free
+model to Godot, with native text/colors, kinds and stable object IDs. The response
+bounds4096 entries/320KiB text, with4096 bytes per entry, within the512KiB region.
+The protected main-scene and eligibility comparisons below establish the
+implemented integration. These finite captures do not enumerate every terrain,
+plant, unit or building variant; formatting and visibility use the checked
+native routines rather than a captured-name lookup.
+
+`fixtures/hover/layout.json` records protected native capture
+`build/hover-layout-native-20261025-001310`: short, long spaced and long unbroken
+unit names, plus182 entries on a crowded tile. Native draws one line per entry,
+without wrapping, allowing text beyond the61-column frame to the viewport edge.
+Crowded lists continue below the viewport. Godot retains all entries but creates
+labels only for complete visible cell rows. Native caller `0x8b58f7..0x8b597f`
+refreshes on coordinate change or500ms, matching the viewer's asynchronous cadence.
+`build/qa/world-hover-render-utf8` matches all captured frame-region pixels for
+terrain and those four cases, with documented Godot diagnostics only. Additional resize and overflow comparisons are recorded below. Fixture extraction
+must explicitly decode UTF-8; Windows' default encoding corrupts accented glyphs.
+Core19 tests pass in `build/qa/world-hover-list`; the corrected lifecycle test
+passes in `build/qa/world-hover-render`.
+Protected main-scene `build/tile-hover-live-20261025-002421` compares all20
+natural target lists through real pointer picks and asynchronous requests,
+including the182-entry crowded tile. Counts/order/text/colors, HUD suppression
+and recovery, Settings suppression, elevation changes and service invalidation
+pass. Only the known rendering-thread notice remains; paused frame0 and source
+manifest preservation pass. This establishes the installed protocol56 integration for those targets.
+Controlled effects are verified against native collection separately, with the
+same typed transport and renderer used by the main scene.
+Protected `build/hover-eligibility-native-20261025-002622` adds56 native comparisons:
+unit inactive/caged/ambush flags, a25-cell footprint grid, visible/hidden vermin
+with amounts/colony flags, and eligible/excluded item projectiles. Native MT,
+stream indices, SplitMix and main-interface raw memory remain byte-identical
+around each collector call; hover lists and the paused source are preserved.
+Controlled state mutations remain unsaved test setups, not naturally evolved
+simulation evidence.
+Protected `build/hover-hidden-native-20261025-002930` confirms hidden tiles
+produce no native entries and no semantic result, while the visible tile recovers.
+`build/hover-resize-native-20261025-003030` adds960x600,1600x900 and1237x805
+captures. The frame is right-anchored at character column `columns-98`, not
+centered; partial-cell viewport margins use integer halves. GPU
+`build/qa/world-hover-resize` matches all frame pixels and opaque overflow glyph
+pixels for16 recorded panels plus the terrain reference. Outside-frame world
+backgrounds intentionally differ in3D and are not compared. Only documented
+Godot diagnostics remain. Wire bounds tests cover4096 ordered entries/320KiB,
+mailbox fit, preserved text/colors/IDs, and rejected oversize or invalid metadata.
+Final gate `build/qa/world-hover-final-regressions` passes root19 tests,
+hover lifecycle, semantic service and main-scene composition. The service tests
+cover transport replacement, generation/epoch invalidation and late results;
+the hover owner drops prior target/generation responses, clears on the same
+session signal, and is exercised through actual pointer movement in the live lane.
+The supported surface is fortress map hover: unit, vermin, item/projectile,
+physical building, flow, fire/campfire, floor, liquid, spatter and known spoor.
+Adventure-only memory, sound and extra-sense views are not DF3D fortress routes.
+Unknown executable fingerprints, hidden/invalid targets and responses exceeding
+the documented bounds remain unavailable. No native UI state is borrowed and
+no native artwork is distributed. The older terrain diagnostic remains useful
+for isolated native-format comparisons; runtime queries use the full collector.
+
+ Loader and remaining HUD/feedback copy audits are separate work.
 
 
 ### Staged red ALERT launcher

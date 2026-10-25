@@ -3293,6 +3293,19 @@
         "upright_weapon_fixture",
         "real_renderer"
       ]
+    },
+    {
+      "id": "terrain_hover_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/terrain_hover_view_capture.gd",
+      "completion": "TERRAIN_HOVER_VIEW_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
     }
   ],
   "exclusions": [
@@ -3615,6 +3628,11 @@
       "path": "presentations/godot/project/tests/native_planned_pixels.gd",
       "status": "helper",
       "reason": "Shared native RGBA assertion helper invoked by Track Stop, Roller, Water Wheel and Windmill GPU checks; not a standalone test."
+    },
+    {
+      "path": "presentations/godot/project/tests/tile_hover_live.gd",
+      "status": "manual",
+      "reason": "Protected pointer acceptance via tools/smoke/terrain_hover_acceptance.ps1 -SavePath <verified oracle clone> -OwnedSaveManifest <manifest>. Uses a visible viewer because hidden-desktop Windows mouse coordinates are invalid."
     }
   ]
 }

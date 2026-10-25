@@ -11,10 +11,8 @@ const AVAILABLE = [
 const PANEL_ROUTES = {"Build / construction":"construction", "Stockpiles / zones":"areas", "Stockpiles":"areas", "Zones":"areas", "Residents":"readouts", "Work Details":"readouts", "Work orders":"readouts", "Reports":"reports"}
 const PANEL_SCRIPTS = {"construction":"res://scripts/construction.gd", "areas":"res://scripts/areas.gd", "readouts":"res://scripts/read_only_info.gd", "inspector":"res://scripts/context_inspector.gd", "reports":"res://scripts/reports_panel.gd", "alerts":"res://scripts/alert_popup_panel.gd"}
 
-# Tile facts currently carry enum/token identifiers, not native hover copy.
-# Keep the generated-description prototype out of the product until native
-# mapping/semantic description and rendered parity have been accepted.
-const TILE_HOVER_AVAILABLE = false
+# Native ordered world-hover entries from independently owned bridge inputs.
+const TILE_HOVER_AVAILABLE = true
 
 const READ_ONLY = ["Residents", "Work Details", "Work orders"]
 const READ_LAUNCHERS = {"Citizens":"Residents", "Labor":"Work Details", "Work Details":"Work Details", "Work orders":"Work orders"}

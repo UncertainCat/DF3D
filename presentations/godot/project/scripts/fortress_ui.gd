@@ -85,6 +85,7 @@ func setup(owner, audio_panel, original_ui) -> void:
 		hover.world = world
 		hover.hud = hud
 		hover.camera = view.camera_rig.get_node("Camera3D")
+		hover.actions = actions
 		add_child(hover)
 	view._interaction.enable_shell()
 	audio_panel.launcher.hide()

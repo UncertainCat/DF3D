@@ -1,4 +1,5 @@
 #include "bed_appearance_native.h"
+#include "tile_description_native.h"
 #include "management.h"
 #include "construction_track_route.h"
 #include "construction_material_native.h"
@@ -309,7 +310,10 @@ uint16_t required = 0, jobs = 0;
 int32_t building = -1;
 int16_t stage = -1, maxStage = -1;
 bool valid = false, removing = false;
+std::optional<std::vector<df3d_hover::Description>> worldHover;
+m::TilePos worldHoverTile;
 void clearResult() {
+  worldHover.reset();
   construction = {};
   production = {};
   workOrders = {};
@@ -523,10 +527,16 @@ void publish() {
   auto tradeResult=m::CreateTradeState(b,b.CreateVector(td),b.CreateVector(tc),b.CreateVector(tg),trade.nextCursor,trade.selectedDepot,b.CreateString(trade.detail));
   auto agreementResult=m::CreateAgreementState(b,b.CreateVector(agreementRows),agreements.nextBeforeId,agreements.pendingOnly,b.CreateString(agreements.detail));
   auto creatureResult=creature_data::build(b,creature);
+  flatbuffers::Offset<m::WorldHover> terrainResult;
+  if(worldHover) {
+    std::vector<flatbuffers::Offset<m::WorldHoverEntry>> entries;
+    for(const auto& e:*worldHover) entries.push_back(m::CreateWorldHoverEntry(b,b.CreateString(e.text),uint8_t(e.foreground),uint8_t(e.background),e.bright,e.kind,e.id));
+    terrainResult=m::CreateWorldHover(b,&worldHoverTile,b.CreateVector(entries));
+  }
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -1888,6 +1898,11 @@ void runPaintCounts(const m::AreaRequest& a) {
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;areaSquadRetired={};areaUnitRetired=nullptr;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->action()==m::ManagementAction::WorldHover) {
+    worldHoverTile=*r->origin();
+    worldHover=df3d_hover::collect(r->origin()->x(),r->origin()->y(),r->origin()->z());
+    message.clear();status=m::ManagementStatus::Ok;publish();return;
+  }
   // Read and edit share the same epoch/target/dependency-bound receipt.
   static df3d_area::LocationStaffCandidateSnapshot staffSnapshot;
   if(r->area() && r->area()->operation()==m::AreaOperation::LocationStaffCandidates) {

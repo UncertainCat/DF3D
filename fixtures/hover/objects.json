@@ -1,0 +1,6242 @@
+{
+  "provenance": {
+    "game": "DF53.16 Steam24557528",
+    "capture": "build\\hover-object-native-20261024-235613",
+    "save_unchanged": true,
+    "paused_frame": 0,
+    "limitations": "Owned formatter comparisons only; collector was native UI capture, not runtime. Repeated objects across targets are retained. Activation clock was forced; no timing acceptance."
+  },
+  "targets": [
+    {
+      "kind": "StoneWallSmoothRD",
+      "pos": {
+        "x": 118,
+        "y": 45,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "MineralWallSmoothLR",
+      "pos": {
+        "x": 129,
+        "y": 45,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "StoneFloorSmooth",
+      "pos": {
+        "x": 119,
+        "y": 46,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "ConstructedWallUD",
+      "pos": {
+        "x": 127,
+        "y": 46,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "ConstructedStairD",
+      "pos": {
+        "x": 153,
+        "y": 57,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "RampTop",
+      "pos": {
+        "x": 99,
+        "y": 70,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 139,
+          "kind": "Building",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 3,
+            "text": "dolomite Floor Grate",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "ConstructedFloor",
+      "pos": {
+        "x": 103,
+        "y": 70,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 1378,
+          "kind": "Building",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 3,
+            "text": "microcline Bridge",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "StoneFortification",
+      "pos": {
+        "x": 102,
+        "y": 71,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "OpenSpace",
+      "pos": {
+        "x": 103,
+        "y": 71,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 1378,
+          "kind": "Building",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 3,
+            "text": "microcline Bridge",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "StoneStairD",
+      "pos": {
+        "x": 159,
+        "y": 72,
+        "z": 165
+      },
+      "entries": []
+    },
+    {
+      "kind": "Unit_988",
+      "pos": {
+        "x": 127,
+        "y": 61,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 988,
+          "kind": "Unit",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 7,
+            "text": "\u00eeton Unibmamot, Dwarven Child",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Unit_996",
+      "pos": {
+        "x": 191,
+        "y": 180,
+        "z": 175
+      },
+      "entries": []
+    },
+    {
+      "kind": "Unit_1017",
+      "pos": {
+        "x": 126,
+        "y": 75,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 1017,
+          "kind": "Unit",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 7,
+            "text": "Stodir Tangakurvad, bookkeeper",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Unit_2335",
+      "pos": {
+        "x": 126,
+        "y": 76,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 2335,
+          "kind": "Unit",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 7,
+            "text": "Ihhi K\u00e1dpar, Human Pikeman",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Unit_2345",
+      "pos": {
+        "x": 128,
+        "y": 57,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 2345,
+          "kind": "Unit",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 7,
+            "text": "Leto Jamaslonel, Human Bard",
+            "valid": true
+          }
+        },
+        {
+          "id": 427,
+          "kind": "Building",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 3,
+            "text": "saltpeter Table",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Item_41",
+      "pos": {
+        "x": 190,
+        "y": 105,
+        "z": 163
+      },
+      "entries": [
+        {
+          "id": 41,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Unknown Lever",
+            "valid": true
+          }
+        },
+        {
+          "id": 45,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Do We Understand The Lever?",
+            "valid": true
+          }
+        },
+        {
+          "id": 64,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Lever Explained",
+            "valid": true
+          }
+        },
+        {
+          "id": 236,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Give Me Sources",
+            "valid": true
+          }
+        },
+        {
+          "id": 1129,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{kaolinite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1189,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1198,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1202,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1206,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1219,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1221,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1226,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1294,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1298,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1301,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1302,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1307,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1309,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1314,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1331,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1334,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1407,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1420,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1430,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1435,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1437,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1439,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1443,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1446,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1448,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1450,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1451,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1968,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1969,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1970,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2057,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2212,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2245,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2683,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2684,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2735,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2782,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2784,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2814,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2815,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 3119,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 3157,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "XX({pig tail trousers})XX",
+            "valid": true
+          }
+        },
+        {
+          "id": 4539,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite blocks}",
+            "valid": true
+          }
+        },
+        {
+          "id": 5276,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{iron bars}",
+            "valid": true
+          }
+        },
+        {
+          "id": 5819,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({\u00ab-custard-apple wood bucket-\u00bb})",
+            "valid": true
+          }
+        },
+        {
+          "id": 6104,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6106,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6108,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6110,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6121,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6126,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6128,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6131,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6133,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6136,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6161,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6170,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6171,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6176,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6184,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6187,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6189,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6195,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6202,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6204,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6208,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6209,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6212,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6218,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6219,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6225,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6227,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6232,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6235,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6239,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6240,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6242,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6343,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6411,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog bone [12]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6460,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe bone [8]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6464,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6479,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe hoof [4]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6496,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray gander skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6517,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray alpaca skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6520,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray alpaca wool [7]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6540,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6543,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6552,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6616,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6625,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6632,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar bone [8]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6636,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6651,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar hoof [4]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6685,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6694,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6714,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6809,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Pobe Ecenpapos's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6811,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ero Escuino's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7276,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({giant sparrow leather trousers})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7278,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({sheep wool sock})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7279,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({pig tail shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7281,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({pig tail shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7306,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "XX({cave spider silk sock})XX",
+            "valid": true
+          }
+        },
+        {
+          "id": 7453,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Interpretation of Reproduction (copy)",
+            "valid": true
+          }
+        },
+        {
+          "id": 7634,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ber Endoksibrek's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7636,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{donkey skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7645,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{D\u00eeshmab Oltar\u00fbz's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7647,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Bim Ensebzon's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7820,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ingish Ed\u00ebmnefek's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 8518,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray mule skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 13002,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray cat skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 13850,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Mori Kunodus's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 15197,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Dastot \u00e8zumral's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16508,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog bone [12]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16539,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray donkey foal skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16572,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf bone [16]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16573,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf horn [2]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16603,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16615,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18764,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Smunstu Kugmeomosp's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18810,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zolak Ostaono's upper front tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18819,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zolak Ostaono's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 20986,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray cow skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21174,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21175,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21176,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 22947,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({llama wool sock})",
+            "valid": true
+          }
+        },
+        {
+          "id": 22948,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({coati leather shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 22950,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({coati leather shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 23239,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Dostngosp Oguspngom's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23248,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ngom Urarobxog's left hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23249,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ngom Urarobxog's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23332,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's upper left back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23334,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's upper left back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23336,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23337,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23338,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23339,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23348,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23355,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Tun Dod\u00f3ktom\u00eam's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23369,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Monom Eggutmeng's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23378,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Aban Th\u00eekutsolon's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23386,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Goden Abanshig\u00f3s's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23495,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Therset Damsouthra Candolalgi's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23813,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Udib Keshans\u00e5kzul's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23843,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Vadane Nelolefari's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 24531,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Fikod Atheldar\u00f9d's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25671,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Lum Licpuja's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25843,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Vab\u00f4k Odg\u00fabl\u00f2r's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25913,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zulban Bakustoslan's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26007,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Momuz Zulbanastis's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26418,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray baby llama skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26419,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Datan Mosustom\u00eam's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26750,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray baby alpaca skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26884,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray donkey foal skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27386,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray reindeer calf skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27500,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27675,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray reindeer calf skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27844,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Olng\u00f6 Stekugzolak's left hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27853,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Olng\u00f6 Stekugzolak's bone [17]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27860,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Utes Ngamurar's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27873,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Song Uslangosnun's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27976,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Oddom Tekkudzaneg's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 28024,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34700,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Nako Amxuosnuk's right hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34704,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Nako Amxuosnuk's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34709,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's right hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34710,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Utes Angotstrodno's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34719,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's upper right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34721,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's left upper arm bone [2]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34723,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 37574,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Stozu Stosb\u00fbbuxzo's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 37576,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Osta Ozudsnosstrosp's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 39042,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{S\u00e5kzul Uzolr\u00e4m's skeleton}",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Item_45",
+      "pos": {
+        "x": 190,
+        "y": 105,
+        "z": 163
+      },
+      "entries": [
+        {
+          "id": 41,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Unknown Lever",
+            "valid": true
+          }
+        },
+        {
+          "id": 45,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Do We Understand The Lever?",
+            "valid": true
+          }
+        },
+        {
+          "id": 64,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Lever Explained",
+            "valid": true
+          }
+        },
+        {
+          "id": 236,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Give Me Sources",
+            "valid": true
+          }
+        },
+        {
+          "id": 1129,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{kaolinite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1189,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1198,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1202,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1206,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1219,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1221,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1226,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1294,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1298,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1301,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1302,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1307,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1309,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1314,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1331,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1334,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1407,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1420,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1430,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1435,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1437,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1439,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1443,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1446,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1448,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1450,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1451,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1968,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1969,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1970,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2057,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2212,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2245,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2683,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2684,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2735,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2782,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2784,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2814,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2815,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 3119,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 3157,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "XX({pig tail trousers})XX",
+            "valid": true
+          }
+        },
+        {
+          "id": 4539,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite blocks}",
+            "valid": true
+          }
+        },
+        {
+          "id": 5276,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{iron bars}",
+            "valid": true
+          }
+        },
+        {
+          "id": 5819,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({\u00ab-custard-apple wood bucket-\u00bb})",
+            "valid": true
+          }
+        },
+        {
+          "id": 6104,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6106,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6108,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6110,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6121,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6126,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6128,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6131,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6133,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6136,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6161,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6170,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6171,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6176,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6184,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6187,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6189,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6195,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6202,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6204,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6208,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6209,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6212,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6218,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6219,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6225,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6227,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6232,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6235,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6239,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6240,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6242,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6343,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6411,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog bone [12]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6460,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe bone [8]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6464,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6479,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe hoof [4]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6496,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray gander skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6517,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray alpaca skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6520,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray alpaca wool [7]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6540,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6543,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6552,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6616,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6625,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6632,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar bone [8]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6636,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6651,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar hoof [4]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6685,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6694,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6714,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6809,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Pobe Ecenpapos's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6811,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ero Escuino's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7276,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({giant sparrow leather trousers})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7278,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({sheep wool sock})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7279,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({pig tail shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7281,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({pig tail shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7306,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "XX({cave spider silk sock})XX",
+            "valid": true
+          }
+        },
+        {
+          "id": 7453,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Interpretation of Reproduction (copy)",
+            "valid": true
+          }
+        },
+        {
+          "id": 7634,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ber Endoksibrek's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7636,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{donkey skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7645,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{D\u00eeshmab Oltar\u00fbz's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7647,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Bim Ensebzon's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7820,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ingish Ed\u00ebmnefek's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 8518,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray mule skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 13002,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray cat skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 13850,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Mori Kunodus's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 15197,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Dastot \u00e8zumral's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16508,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog bone [12]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16539,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray donkey foal skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16572,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf bone [16]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16573,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf horn [2]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16603,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16615,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18764,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Smunstu Kugmeomosp's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18810,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zolak Ostaono's upper front tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18819,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zolak Ostaono's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 20986,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray cow skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21174,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21175,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21176,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 22947,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({llama wool sock})",
+            "valid": true
+          }
+        },
+        {
+          "id": 22948,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({coati leather shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 22950,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({coati leather shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 23239,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Dostngosp Oguspngom's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23248,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ngom Urarobxog's left hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23249,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ngom Urarobxog's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23332,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's upper left back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23334,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's upper left back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23336,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23337,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23338,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23339,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23348,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23355,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Tun Dod\u00f3ktom\u00eam's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23369,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Monom Eggutmeng's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23378,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Aban Th\u00eekutsolon's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23386,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Goden Abanshig\u00f3s's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23495,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Therset Damsouthra Candolalgi's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23813,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Udib Keshans\u00e5kzul's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23843,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Vadane Nelolefari's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 24531,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Fikod Atheldar\u00f9d's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25671,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Lum Licpuja's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25843,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Vab\u00f4k Odg\u00fabl\u00f2r's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25913,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zulban Bakustoslan's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26007,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Momuz Zulbanastis's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26418,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray baby llama skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26419,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Datan Mosustom\u00eam's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26750,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray baby alpaca skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26884,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray donkey foal skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27386,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray reindeer calf skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27500,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27675,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray reindeer calf skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27844,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Olng\u00f6 Stekugzolak's left hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27853,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Olng\u00f6 Stekugzolak's bone [17]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27860,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Utes Ngamurar's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27873,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Song Uslangosnun's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27976,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Oddom Tekkudzaneg's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 28024,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34700,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Nako Amxuosnuk's right hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34704,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Nako Amxuosnuk's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34709,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's right hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34710,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Utes Angotstrodno's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34719,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's upper right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34721,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's left upper arm bone [2]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34723,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 37574,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Stozu Stosb\u00fbbuxzo's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 37576,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Osta Ozudsnosstrosp's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 39042,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{S\u00e5kzul Uzolr\u00e4m's skeleton}",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Item_64",
+      "pos": {
+        "x": 190,
+        "y": 105,
+        "z": 163
+      },
+      "entries": [
+        {
+          "id": 41,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Unknown Lever",
+            "valid": true
+          }
+        },
+        {
+          "id": 45,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Do We Understand The Lever?",
+            "valid": true
+          }
+        },
+        {
+          "id": 64,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Lever Explained",
+            "valid": true
+          }
+        },
+        {
+          "id": 236,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Give Me Sources",
+            "valid": true
+          }
+        },
+        {
+          "id": 1129,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{kaolinite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1189,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1198,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1202,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1206,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1219,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1221,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1226,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1294,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1298,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1301,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1302,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1307,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1309,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1314,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1331,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1334,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1407,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1420,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1430,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1435,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1437,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1439,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1443,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1446,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1448,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1450,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1451,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{microcline}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1968,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1969,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 1970,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2057,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2212,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2245,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2683,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2684,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2735,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2782,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2784,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2814,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 2815,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 3119,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{pond turtle shell}",
+            "valid": true
+          }
+        },
+        {
+          "id": 3157,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "XX({pig tail trousers})XX",
+            "valid": true
+          }
+        },
+        {
+          "id": 4539,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite blocks}",
+            "valid": true
+          }
+        },
+        {
+          "id": 5276,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{iron bars}",
+            "valid": true
+          }
+        },
+        {
+          "id": 5819,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({\u00ab-custard-apple wood bucket-\u00bb})",
+            "valid": true
+          }
+        },
+        {
+          "id": 6104,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6106,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6108,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6110,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{talc}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6121,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6126,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6128,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6131,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6133,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6136,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6161,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6170,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6171,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6176,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6184,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6187,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6189,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6195,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6202,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6204,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6208,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6209,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6212,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6218,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6219,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6225,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6227,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6232,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{dolomite}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6235,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6239,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6240,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6242,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{chert}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6343,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6411,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog bone [12]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6460,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe bone [8]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6464,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6479,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray ewe hoof [4]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6496,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray gander skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6517,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray alpaca skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6520,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray alpaca wool [7]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6540,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6543,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6552,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray water buffalo bull cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6616,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6625,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6632,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar bone [8]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6636,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6651,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray boar hoof [4]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6685,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6694,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6714,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak bull hair}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6809,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Pobe Ecenpapos's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 6811,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ero Escuino's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7276,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({giant sparrow leather trousers})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7278,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({sheep wool sock})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7279,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({pig tail shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7281,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({pig tail shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 7306,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "XX({cave spider silk sock})XX",
+            "valid": true
+          }
+        },
+        {
+          "id": 7453,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Interpretation of Reproduction (copy)",
+            "valid": true
+          }
+        },
+        {
+          "id": 7634,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ber Endoksibrek's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7636,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{donkey skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7645,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{D\u00eeshmab Oltar\u00fbz's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7647,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Bim Ensebzon's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 7820,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ingish Ed\u00ebmnefek's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 8518,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray mule skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 13002,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray cat skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 13850,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Mori Kunodus's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 15197,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Dastot \u00e8zumral's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16508,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray dog bone [12]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16539,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray donkey foal skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16572,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf bone [16]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16573,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf horn [2]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16603,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf skull}",
+            "valid": true
+          }
+        },
+        {
+          "id": 16615,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray yak calf cartilage}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18764,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Smunstu Kugmeomosp's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18810,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zolak Ostaono's upper front tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 18819,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zolak Ostaono's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 20986,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray cow skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21174,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21175,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 21176,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Rimtar Ebalrovod's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 22947,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({llama wool sock})",
+            "valid": true
+          }
+        },
+        {
+          "id": 22948,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({coati leather shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 22950,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "({coati leather shoe})",
+            "valid": true
+          }
+        },
+        {
+          "id": 23239,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Dostngosp Oguspngom's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23248,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ngom Urarobxog's left hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23249,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Ngom Urarobxog's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23332,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's upper left back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23334,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's upper left back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23336,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23337,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23338,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23339,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's lower right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23348,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zas Rig\u00f2throsat's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23355,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Tun Dod\u00f3ktom\u00eam's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23369,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Monom Eggutmeng's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23378,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Aban Th\u00eekutsolon's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23386,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Goden Abanshig\u00f3s's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23495,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Therset Damsouthra Candolalgi's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23813,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Udib Keshans\u00e5kzul's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 23843,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Vadane Nelolefari's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 24531,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Fikod Atheldar\u00f9d's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25671,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Lum Licpuja's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25843,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Vab\u00f4k Odg\u00fabl\u00f2r's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 25913,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Zulban Bakustoslan's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26007,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Momuz Zulbanastis's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26418,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray baby llama skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26419,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Datan Mosustom\u00eam's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26750,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray baby alpaca skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 26884,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray donkey foal skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27386,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray reindeer calf skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27500,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27675,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray reindeer calf skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27844,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Olng\u00f6 Stekugzolak's left hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27853,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Olng\u00f6 Stekugzolak's bone [17]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27860,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Utes Ngamurar's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27873,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Song Uslangosnun's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 27976,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Oddom Tekkudzaneg's skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 28024,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{stray horse skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34700,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Nako Amxuosnuk's right hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34704,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Nako Amxuosnuk's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34709,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's right hand}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34710,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Utes Angotstrodno's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34719,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's upper right back tooth}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34721,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's left upper arm bone [2]}",
+            "valid": true
+          }
+        },
+        {
+          "id": 34723,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{\u00fbsbu L\u00e2smolng\u00f6's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 37574,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Stozu Stosb\u00fbbuxzo's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 37576,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{Osta Ozudsnosstrosp's mangled skeleton}",
+            "valid": true
+          }
+        },
+        {
+          "id": 39042,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "{S\u00e5kzul Uzolr\u00e4m's skeleton}",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Item_89",
+      "pos": {
+        "x": 133,
+        "y": 57,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 89,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "Introduction To Thur Thronepleated",
+            "valid": true
+          }
+        }
+      ]
+    },
+    {
+      "kind": "Item_174",
+      "pos": {
+        "x": 134,
+        "y": 74,
+        "z": 165
+      },
+      "entries": [
+        {
+          "id": 5698,
+          "kind": "Unit",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 7,
+            "text": "Doren Thosbutal\u00e5th, Dwarven Child",
+            "valid": true
+          }
+        },
+        {
+          "id": 6808,
+          "kind": "Unit",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 7,
+            "text": "Erush Tabardeler, Potash Maker",
+            "valid": true
+          }
+        },
+        {
+          "id": 174,
+          "kind": "Item",
+          "result": {
+            "background": 0,
+            "bright": true,
+            "foreground": 6,
+            "text": "The Humans For Everyone",
+            "valid": true
+          }
+        }
+      ]
+    }
+  ]
+}

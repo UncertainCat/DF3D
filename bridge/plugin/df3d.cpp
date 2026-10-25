@@ -8,6 +8,7 @@
 
 #include "PluginManager.h"
 #include "construction_site_native.h"
+#include "tile_description_native.h"
 #include "bed_appearance_native.h"
 #include "contact_capture.h"
 #include "room_discovery_native.h"
@@ -1512,6 +1513,59 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           out.print("{{\"connections\":{}}}\n",df3d_construction::verticalBarsConnections(p[0],p[1],p[2]));
           return CR_OK;
+      }
+        if(parameters[0]=="hover-list-read") {
+            if(parameters.size()!=4)return CR_WRONG_USAGE;
+            int32_t p[3]{};
+            for(size_t i=0;i<3;++i) {
+                const auto& raw=parameters[i+1];
+                const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),p[i]);
+                if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+            }
+            if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+            const auto rows=df3d_hover::collect(p[0],p[1],p[2]);
+            Json::Value value(Json::objectValue);value["valid"]=rows.has_value();
+            value["entries"]=Json::Value(Json::arrayValue);
+            if(rows)for(const auto& row:*rows) {
+                Json::Value entry(Json::objectValue);
+                entry["kind"]=row.kind;entry["id"]=row.id;entry["text"]=row.text;
+                entry["foreground"]=row.foreground;entry["background"]=row.background;entry["bright"]=row.bright;
+                value["entries"].append(entry);
+            }
+            out.print("{}",Json::FastWriter().write(value));return CR_OK;
+        }
+        if(parameters[0]=="hover-object-read") {
+            if(parameters.size()!=3)return CR_WRONG_USAGE;
+            df3d_hover::ObjectKind kind;
+            if(parameters[1]=="Item")kind=df3d_hover::ObjectKind::Item;
+            else if(parameters[1]=="Unit")kind=df3d_hover::ObjectKind::Unit;
+            else if(parameters[1]=="Building")kind=df3d_hover::ObjectKind::Building;
+            else return CR_WRONG_USAGE;
+            int32_t id=-1;const auto& raw=parameters[2];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+            if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+            const auto description=df3d_hover::object(kind,id);
+            Json::Value value(Json::objectValue);value["valid"]=description.has_value();
+            if(description) {
+                value["text"]=description->text;value["foreground"]=description->foreground;
+                value["background"]=description->background;value["bright"]=description->bright;
+            }
+            out.print("{}",Json::FastWriter().write(value));return CR_OK;
+        }
+        if(parameters[0]=="tile-description-read") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t p[3]{};
+          for(size_t i=0;i<3;++i) {
+              const auto& v=parameters[i+1];
+              const auto parsed=std::from_chars(v.data(),v.data()+v.size(),p[i]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=v.data()+v.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto description=df3d_hover::terrain(p[0],p[1],p[2]);
+          Json::Value value(Json::objectValue);value["valid"]=description.has_value();
+          if(description)value["text"]=*description;
+          out.print("{}",Json::FastWriter().write(value));return CR_OK;
       }
       if(parameters[0]=="door-support-read" || parameters[0]=="site-support-read") {
           const bool typed=parameters[0]=="site-support-read";

@@ -10,6 +10,7 @@ ENUMS = ("ConstructionOutcome", "ManagementAction", "ManagementStatus", "AreaKin
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "hover": ("WorldHover", "WorldHover"),
     "construction": ("Catalog", "RemoveConstruction"),
     "areas": ("AreaCatalog", "AreaCandidates"),
     "production": ("ProductionList", "FarmSetCrop"),

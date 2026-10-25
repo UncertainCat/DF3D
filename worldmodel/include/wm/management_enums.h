@@ -80,6 +80,7 @@ enum class ManagementAction : uint8_t {
   CitizenWorkScope = 67,
   PrepareAlertDismissal = 68,
   DismissAlert = 69,
+  WorldHover = 70,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -314,11 +315,13 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::CitizenWorkScope: return true;
   case ManagementAction::PrepareAlertDismissal: return true;
   case ManagementAction::DismissAlert: return true;
+  case ManagementAction::WorldHover: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::WorldHover: return "hover";
   case ManagementAction::Catalog: return "construction";
   case ManagementAction::Preview: return "construction";
   case ManagementAction::Place: return "construction";

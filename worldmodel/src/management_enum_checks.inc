@@ -75,7 +75,8 @@ static_assert(static_cast<int>(wm::ManagementAction::WorkDetailEdit) == static_c
 static_assert(static_cast<int>(wm::ManagementAction::CitizenWorkScope) == static_cast<int>(df3d::mirror::ManagementAction::CitizenWorkScope));
 static_assert(static_cast<int>(wm::ManagementAction::PrepareAlertDismissal) == static_cast<int>(df3d::mirror::ManagementAction::PrepareAlertDismissal));
 static_assert(static_cast<int>(wm::ManagementAction::DismissAlert) == static_cast<int>(df3d::mirror::ManagementAction::DismissAlert));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 70);
+static_assert(static_cast<int>(wm::ManagementAction::WorldHover) == static_cast<int>(df3d::mirror::ManagementAction::WorldHover));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 71);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -311,3 +312,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailEdit) == df3d:
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CitizenWorkScope) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CitizenWorkScope));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::PrepareAlertDismissal) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PrepareAlertDismissal));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::DismissAlert) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::DismissAlert));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::WorldHover) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorldHover));

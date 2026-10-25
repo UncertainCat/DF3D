@@ -9,6 +9,61 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("world hover preserves native prose and rejects malformed tile replies") {
+  for(int mode=0;mode<5;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const wire::TilePos tile(mode==1?-1:118,45,165);
+    const auto text=b.CreateString(mode==2?std::string(4097,'x'):"Smooth dolomite Floor");
+    const auto entry=wire::CreateWorldHoverEntry(b,text,1,0,true,1);
+    const auto hover=wire::CreateWorldHover(b,mode==3?nullptr:&tile,b.CreateVector(std::vector{entry}));
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_status(wire::ManagementStatus::Ok);
+    root.add_action(mode==4?wire::ManagementAction::Catalog:wire::ManagementAction::WorldHover);
+    root.add_world_hover(hover);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(wire::validateManagementState(*state).has_value()==(mode!=0));
+    if(mode==0) {
+      const auto value=codec::decodeState(state);REQUIRE(value.worldHover);
+      CHECK(value.worldHover->x==118);CHECK(value.worldHover->z==165);
+      CHECK(value.worldHover->entries.at(0).text=="Smooth dolomite Floor");
+    }
+  }
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorldHover;
+  request.x=118;request.y=45;request.z=165;
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+  CHECK_FALSE(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
+  request.x=32768;b.Clear();codec::encodeRequest(b,request,1,3,3);
+  CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())).has_value());
+}
+
+TEST_CASE("world hover bounds fit the mailbox and retain ordered native entry metadata") {
+  for(int mode=0;mode<7;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const wire::TilePos tile(118,45,165);
+    std::vector<flatbuffers::Offset<wire::WorldHoverEntry>> entries;
+    const int count=mode==1?4097:4096;
+    for(int i=0;i<count;++i) {
+      const auto text=b.CreateString(std::string(mode==2?81:80,'a'+i%26));
+      entries.push_back(wire::CreateWorldHoverEntry(b,text,mode==3?8:i%8,mode==4?8:7-i%8,
+        i%2,mode==5?16:i%16,mode==6?-2:i));
+    }
+    const auto data=wire::CreateWorldHover(b,&tile,b.CreateVector(entries));
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_status(wire::ManagementStatus::Ok);
+    root.add_action(wire::ManagementAction::WorldHover);root.add_world_hover(data);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(wire::validateManagementState(*state).has_value()==(mode!=0));
+    if(mode==0) {
+      CHECK(b.GetSize()<wire::kManagementCapacity);
+      const auto decoded=codec::decodeState(state);REQUIRE(decoded.worldHover);
+      REQUIRE(decoded.worldHover->entries.size()==4096);
+      for(int i=0;i<4096;++i) {
+        const auto& e=decoded.worldHover->entries[i];
+        CHECK(e.text==std::string(80,'a'+i%26));CHECK(e.foreground==i%8);
+        CHECK(e.background==7-i%8);CHECK(e.bright==bool(i%2));CHECK(e.kind==i%16);CHECK(e.objectId==i);
+      }
+    }
+  }
+}
+
 TEST_CASE("construction warnings are bounded advisory data independent of refusal status") {
   for(bool rejected:{false,true})for(size_t size:{size_t(0),size_t(512),size_t(513)}) {
     flatbuffers::FlatBufferBuilder b;

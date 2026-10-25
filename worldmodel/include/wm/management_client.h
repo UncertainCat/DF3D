@@ -473,6 +473,8 @@ struct ManagementRequest {
   std::optional<TilePos> materialAnchor;
   std::vector<ConstructionSelection> selections; int64_t expectedListRevision=0;
 };
+struct WorldHoverEntry { std::string text; uint8_t foreground=7,background=0; bool bright=false; uint8_t kind=0; int32_t objectId=-1; };
+struct WorldHover { int32_t x=-1,y=-1,z=-1; std::vector<WorldHoverEntry> entries; };
 struct ManagementState {
   uint64_t revision = 0, worldEpoch = 0, requestSeq = 0;
   ManagementAction action = ManagementAction::Catalog;
@@ -501,6 +503,7 @@ struct ManagementState {
   SelectionState selection;
   CreatureInfo creature;
   ConstructionState construction;
+  std::optional<WorldHover> worldHover;
 };
 // Independent per-connection replies; reconnect first refreshes a read-only catalog.
 // No request is replayed after process/world change. One pending request per client.

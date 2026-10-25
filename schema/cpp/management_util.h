@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 54;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v54";
+inline constexpr uint32_t kManagementVersion = 56;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v56";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -206,7 +206,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::DismissAlert &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::WorldHover &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -262,9 +262,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::DismissAlert)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorldHover)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
+  if (r.action()==ManagementAction::WorldHover &&
+      (!r.origin() || r.origin()->x()<0 || r.origin()->y()<0 || r.origin()->z()<0 ||
+       r.origin()->x()>32767 || r.origin()->y()>32767 || r.origin()->z()>32767))
+    return "invalid terrain description tile";
   if(r.action()==ManagementAction::CreatureInspect) {
     if(!r.creature() || r.creature()->unit_id()<0) return "creature identity required";
   } else if(r.creature()) return "unexpected creature payload";
@@ -570,10 +574,23 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::DismissAlert ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorldHover ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
+  if (const auto* t=s.world_hover()) {
+    if(s.action()!=ManagementAction::WorldHover || !t->tile() ||
+       t->tile()->x()<0 || t->tile()->y()<0 || t->tile()->z()<0 ||
+       t->tile()->x()>32767 || t->tile()->y()>32767 || t->tile()->z()>32767 ||
+       !t->entries() || t->entries()->size()>4096) return "invalid world hover";
+    size_t bytes=0;
+    for(const auto* e:*t->entries()) {
+      if(!e || !e->text() || e->text()->size()>4096 || e->foreground()>7 ||
+         e->background()>7 || e->kind()>15 || e->object_id()<-1) return "invalid hover entry";
+      bytes+=e->text()->size();
+    }
+    if(bytes>320*1024) return "hover text too large";
+  }
   if(s.action()==ManagementAction::CreatureInspect && s.status()==ManagementStatus::Ok && !s.creature()) return "creature result required";
   if(s.creature() && s.action()!=ManagementAction::CreatureInspect) return "unexpected creature result";
   if(const auto* c=s.creature()) {

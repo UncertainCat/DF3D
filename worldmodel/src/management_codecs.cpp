@@ -26,6 +26,11 @@ ManagementState decodeState(const m::ManagementState* s) {
   next.selection = decodeSelection(s->selection());
   next.alert = decodeAlert(s->alert());
   next.report = decodeReport(s->report());
+  if (const auto* t=s->world_hover()) {
+    WorldHover hover;hover.x=t->tile()->x();hover.y=t->tile()->y();hover.z=t->tile()->z();
+    for(const auto* e:*t->entries()) hover.entries.push_back({e->text()->str(),e->foreground(),e->background(),e->bright(),e->kind(),e->object_id()});
+    next.worldHover=std::move(hover);
+  }
   return next;
 }
 

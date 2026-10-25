@@ -141,10 +141,37 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     management::writeAgreement(result, s.agreement);
     management::writeTrade(result, s.trade);
     management::writeReport(result, s.report);
+    if(s.worldHover) {
+        const auto& t=*s.worldHover;Dictionary description;
+        description["tile"]=Vector3i(t.x,t.y,t.z);
+        Array entries;
+        for(const auto& e:t.entries) {
+            Dictionary row;row["text"]=String::utf8(e.text.c_str());row["foreground"]=e.foreground;
+            row["background"]=e.background;row["bright"]=e.bright;row["kind"]=e.kind;row["object_id"]=e.objectId;
+            entries.push_back(row);
+        }
+        description["entries"]=entries;
+        result["world_hover"]=description;
+    }
     return result;
 }
 
 namespace {
+bool validateHover(const Dictionary& data,String& error) {
+    if(!data.has("origin") || data["origin"].get_type()!=Variant::VECTOR3I || data.size()!=2) {
+        error="World hover requires only action and origin";return false;
+    }
+    const Vector3i tile=data["origin"];
+    if(tile.x<0 || tile.y<0 || tile.z<0 || tile.x>32767 || tile.y>32767 || tile.z>32767) {
+        error="Invalid world hover tile";return false;
+    }
+    return true;
+}
+bool readHover(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    const Vector3i tile=data["origin"];
+    request.action=wm::ManagementAction::WorldHover;
+    request.x=tile.x;request.y=tile.y;request.z=tile.z;return true;
+}
 struct ManagementCodec {
     const char* domain;
     bool (*validate)(const Dictionary&, String&);
@@ -159,6 +186,7 @@ const ManagementCodec managementCodecs[] = {
     {"reports", management::validateReportShape, management::readReport},
     {"agreements", management::validateAgreementShape, management::readAgreement},
     {"trade", management::validateTradeShape, management::readTrade},
+    {"hover", validateHover, readHover},
 };
 }
 
@@ -169,7 +197,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::DismissAlert)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorldHover)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -1081,6 +1081,26 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     if mode>=40 and mode<=43 then
+      local rows={}
+      for i,value in ipairs(b.settings.stone.mats)do
+       local raw=df.global.world.raws.inorganics.all[i]
+       if raw then
+        local f=raw.material.flags;local ores=raw.metal_ore and #raw.metal_ore.mat_index>0
+        local economic=raw.economic_uses and #raw.economic_uses>0
+        local fired=raw.flags.SOIL_ANY and raw.material.fixture_fired_product
+        local member=not f.NO_STONE_STOCKPILE and
+         (mode==40 and f.IS_STONE and ores or mode==41 and f.IS_STONE and not ores and economic or
+          mode==42 and f.IS_STONE and not fired and not ores and not economic or mode==43 and not f.IS_STONE and fired)
+        if member then
+         local label=raw.material.stone_name or 'Native stone '..(i-1)
+         rows[#rows+1]={field='stone.mats',index=i-1,label=label,enabled=value~=0,visible=label:lower():find(query:lower(),1,true)~=nil}
+        end
+       end
+      end
+      table.sort(rows,function(a,b)return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      if mode>=58 and mode<=62 then
       local field=({[58]='rough_other_mats',[59]='cut_other_mats',[60]='rough_mats',[61]='cut_mats',[62]='cut_mats'})[mode]
       local rows={}
@@ -1402,7 +1422,7 @@ def main():
     for i=1,6 do values[i]={flags={},material={flags={IS_STONE=true}},metal_ore={mat_index={}},economic_uses={}} end
     values[1].metal_ore.mat_index={1};values[1].economic_uses={1};values[1].flags.SOIL=true
     values[2].economic_uses={1};values[2].flags.SOIL=true
-    values[3].flags.SOIL=true
+    values[3].flags.SOIL=true;values[3].flags.SOIL_ANY=true;values[3].material.flags.IS_STONE=false;values[3].material.fixture_fired_product=true
     values[5].material.flags.NO_STONE_STOCKPILE=true
     values[6].material.flags.IS_STONE=false;values[6].flags.SOIL=true;values[6].flags.AQUIFER=true
     make_setting('stone.mats',6,{1,1,1,1,1,1})
@@ -1420,7 +1440,7 @@ def main():
     changed = settings_adapter(lua.globals().request(11, lua.table_from({"operation": 13, "organic": 0,
                                "expected_revision": current["areas"][1]["revision"]})))
     assert changed["ok"] and not setting_page("wood", expected_list_revision=observed["list_revision"])[0]["ok"]
-    queued = settings_adapter(setting_request("stone/metal_ores", query="unique pending query"))
+    queued = settings_adapter(setting_request("food/meat", query="unique pending query"))
     assert queued["active_kinds"] == 32
     for builder in [6, 7]:
         step = settings_adapter(lua.table_from({"step": 2048, "builder_kind": builder, "epoch": 1}))
@@ -1598,7 +1618,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if list_key.startswith("gems/") or extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if list_key.startswith(("gems/", "stone/")) or extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1849,6 +1869,17 @@ def main():
     assert mixed_edit(value=1)["ok"]
     assert lua.eval("pile.settings.refuse.type[1]==0 and pile.settings.refuse.type[2]==0 and pile.settings.refuse.type[3]==9 and not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide")
     lua.execute("settings_rows=saved_rows;pile.settings.refuse.type=saved_refuse_type;settings_fields['refuse.type']=saved_refuse_layout;pile.settings.refuse.fresh_raw_hide=saved_fresh;pile.settings.refuse.rotten_raw_hide=saved_rotten")
+    lua.execute("saved_stone_raws=df.global.world.raws.inorganics.all;saved_stone_values=pile.settings.stone.mats;saved_stone_layout=settings_fields['stone.mats'];df.global.world.raws.inorganics.all={{flags={},material={stone_name='Native ore',flags={IS_STONE=true}},metal_ore={mat_index={1}},economic_uses={1}},{flags={SOIL_ANY=true,AQUIFER=true},material={stone_name='Native clay',flags={},fixture_fired_product=true},metal_ore={mat_index={}},economic_uses={}}}")
+    for values in ("{}", "{0}", "{0,0,9}"):
+        lua.execute(f"make_setting('stone.mats',2,{values})")
+        before = list(lua.eval("pile.settings.stone.mats").values())
+        assert settings_adapter(fixed_edit("stone/metal_ores", value=2))["ok"]
+        assert list(lua.eval("pile.settings.stone.mats").values()) == [1 if i==0 else v for i,v in enumerate(before)]
+    assert settings_adapter(fixed_edit("stone/clay", value=2, query="clay"))["ok"]
+    assert lua.eval("#pile.settings.stone.mats==3 and pile.settings.stone.mats[1]==1 and pile.settings.stone.mats[2]==1 and pile.settings.stone.mats[3]==9")
+    assert not settings_adapter(fixed_edit("stone/economic", "stone/economic/0"))["ok"]
+    assert not settings_adapter(fixed_edit("stone/clay", "stone/clay/2"))["ok"]
+    lua.execute("df.global.world.raws.inorganics.all=saved_stone_raws;pile.settings.stone.mats=saved_stone_values;settings_fields['stone.mats']=saved_stone_layout")
     for key, field in [("gems/rough_glass", "gems.rough_other_mats"), ("gems/cut_glass", "gems.cut_other_mats")]:
         for values in ("{}", "{9}", "{9,9,9,0}", "{9,9,9,0,0,0,7}"):
             lua.execute(f"make_setting('{field}',6,{values})")

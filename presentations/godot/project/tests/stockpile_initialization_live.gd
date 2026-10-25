@@ -102,8 +102,10 @@ func header_actions(pile: int, categories: Array) -> void:
 
 func native_filter_lists(pile: int) -> void:
 	var exercised: Array = []
-	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192,"coins":128,"gems":512}
-	for entry in [["gems/rough_glass","gems.rough_other_mats",58],["gems/cut_glass","gems.cut_other_mats",59],
+	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192,"coins":128,"gems":512,"stone":32}
+	for entry in [["stone/metal_ores","stone.mats",40],["stone/economic","stone.mats",41],
+		["stone/other_stone","stone.mats",42],["stone/clay","stone.mats",43],
+		["gems/rough_glass","gems.rough_other_mats",58],["gems/cut_glass","gems.cut_other_mats",59],
 		["gems/rough_gem","gems.rough_mats",60],["gems/cut_gem","gems.cut_mats",61],["gems/cut_stone","gems.cut_mats",62],
 		["furniture/stone","furniture.mats",23],["furniture/metal","furniture.mats",24],
 		["ammo/metal","ammo.mats",47],["coins","coins.mats",50],

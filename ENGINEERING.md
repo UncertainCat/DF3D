@@ -167,7 +167,7 @@ overlapping flags. Edits use stored vector lengths and visible native rows;
 empty/short vectors are not expanded. Coins can retain a native fallback row
 for an out-of-range stored index, unlike flagged lists whose fallback lacks the
 required flag. Do not replace this behavior with a blanket raw-count rejection.
-Staged summary counts and Stone-category lists remain separate.
+Staged summary counts remain separate.
 
 Protected run `build/stockpile-presets-native-20261025-044259` passed156 exact
 native list/search comparisons and312 actual All/None actions across full,
@@ -208,6 +208,31 @@ native observations,15 page reads and45 edits, plus creation/removal. Complete
 settings and unrelated-state snapshots matched; diagnostics were clean, source
 hashes unchanged and owned DF closed without saving. Full workflow acceptance
 and launcher exposure remain separate.
+
+Stone Metal ores, Economic, Other stone and Clay use native modes40..43.
+The native branches select using raw stone/stockpile flags, ore/economic vectors,
+and the SOIL_ANY plus FIRED_MAT reaction-product predicate. Clay requires a
+non-stone material; Other stone excludes fired soil as well as ores/economic
+materials. Names come from DF's stone-name formatter with material-name fallback.
+All formatting uses type0 and owned output; historical-material caches are
+unreachable. Missing/stale raw indices are skipped; referenced null reaction
+product strings are rejected before the native scan. Leaf edits preserve stored
+vector size. Summary membership still uses staged logic and is not established
+by these leaf integrations.
+
+Protected run `build/stockpile-presets-native-20261025-050605` passed48 exact
+native Stone list/search comparisons and96 actual All/None actions across full,
+short, empty and stale vectors. The313-raw fixture has16 ores,12 economic stones,
+55 other stones and5 clays. Row identity, names, order, visibility and state
+matched. Provider calls preserved native UI bytes and source settings; owned DF
+closed without saving and source hashes were unchanged. Bounded evidence is in
+`native_stockpile_filters.json.stone_lists`; non-ASCII and rendered acceptance
+remain unverified.
+Focused command run `build/stockpile-initialization-20261025-051147` passed99
+native observations,12 page reads and36 edits, plus creation/removal. Complete
+settings/unrelated-state snapshots matched; diagnostics were clean. Owned DF
+closed without saving and source save hashes were unchanged. The full stockpile
+workflow and launcher exposure remain unfinished.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

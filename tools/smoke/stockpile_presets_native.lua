@@ -361,7 +361,11 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
-  for _,entry in ipairs{{'Gems','gems','rough_mats',60,'Rough gem','gem','Cut gem'},
+  for _,entry in ipairs{{'Stone','stone','mats',40,'Metal ores','stone','Economic'},
+   {'Stone','stone','mats',41,'Economic','stone','Metal ores'},
+   {'Stone','stone','mats',42,'Other stone','stone','Metal ores'},
+   {'Stone','stone','mats',43,'Clay','stone','Metal ores'},
+   {'Gems','gems','rough_mats',60,'Rough gem','gem','Cut gem'},
    {'Gems','gems','cut_mats',61,'Cut gem','gem','Rough gem'},
    {'Gems','gems','cut_mats',62,'Cut stone','gem','Rough gem'},
    {'Furniture','furniture','mats',23,'Stone/clay','inorganic','Type'},
@@ -386,8 +390,8 @@ require('gui.script').start(function()
    view:render(dfhack.getTickCount());label_click(entry[1])
    local values=b.settings[entry[2]][entry[3]];local original={}
    for _,v in ipairs(values)do original[#original+1]=v end
-   local wood=entry[4]==85;local inorganic=entry[6]=='inorganic';local gem=entry[6]=='gem'
-   local raw_count=(inorganic or gem) and #df.global.world.raws.inorganics.all or wood and #df.global.world.raws.plants.all or #df.global.world.raws.creatures.all
+   local wood=entry[4]==85;local inorganic=entry[6]=='inorganic';local gem=entry[6]=='gem';local stone=entry[6]=='stone'
+   local raw_count=(inorganic or gem or stone) and #df.global.world.raws.inorganics.all or wood and #df.global.world.raws.plants.all or #df.global.world.raws.creatures.all
    for _,count in ipairs{raw_count,1,0,raw_count+1}do
     c.spec_filter='';c.entering_spec_filter=false
     values:resize(count);for i=0,count-1 do values[i]=i%2 end
@@ -396,7 +400,7 @@ require('gui.script').start(function()
      c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo');label_click(entry[1])
     end
     assert((entry[5] and c.cur_sub_mode or c.cur_main_mode)==entry[4],'wrong creature mode')
-    for _,query in ipairs{'',gem and 'quartz' or inorganic and 'iron' or wood and 'maple' or 'aard','zzzznomatch'}do
+    for _,query in ipairs{'',stone and 'ite' or gem and 'quartz' or inorganic and 'iron' or wood and 'maple' or 'aard','zzzznomatch'}do
      c.spec_filter='';c.entering_spec_filter=true
      for i=1,#query do
       df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
@@ -424,7 +428,7 @@ require('gui.script').start(function()
       label_click(action[1],0,3);assert(#values==count,'creature action resized vector')
       for i,v in ipairs(values)do assert(v==expected[i],'creature action changed excluded row')end
      end
-     records[#records+1]={probe=gem and 'gem_rows' or inorganic and 'inorganic_rows' or wood and 'wood_leaf_rows' or 'creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
+     records[#records+1]={probe=stone and 'stone_rows' or gem and 'gem_rows' or inorganic and 'inorganic_rows' or wood and 'wood_leaf_rows' or 'creature_rows',mode=entry[4],stored_count=count,raw_count=raw_count,query=query,rows=rows,bulk_actions=2}
     end
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end

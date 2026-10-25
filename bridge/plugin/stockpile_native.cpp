@@ -4,6 +4,7 @@
 #include "df/building_stockpilest.h"
 #include "df/custom_stockpile_interfacest.h"
 #include "df/custom_stockpile_itemst.h"
+#include "df/inorganic_raw.h"
 #include "df/itemdef_ammost.h"
 #include "df/itemdef_armorst.h"
 #include "df/itemdef_glovesst.h"
@@ -184,6 +185,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
       case 23:case 24:case 47:case 50:case 52:case 54:case 55:
       case 65:case 66:case 67:case 89:case 90:case 101:break;
       case 58:case 59:case 60:case 61:case 62:break;
+      case 40:case 41:case 42:case 43:break;
       case 22:case 30:case 64:break;
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
@@ -202,6 +204,12 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         return true;
     };
     const auto& raws=df::global::world->raws;
+    // Stone's raw getter skips missing/stale indices. Its fired-material
+    // predicate scans string pointers in reaction products without null checks.
+    if(mode==42 || mode==43)
+        for(size_t i=0;i<owned.stone.mats.size() && i<raws.inorganics.all.size();++i)
+            if(const auto* raw=raws.inorganics.all[i])
+                for(const auto* id:raw->material.reaction_product.id)if(!id)return std::nullopt;
     // Wood's int32 getter skips out-of-range indices, including stale tails.
     // A referenced in-range raw must still exist before entering native code.
     if(mode==85)for(size_t i=0;i<owned.wood.mats.size() && i<raws.plants.all.size();++i)
@@ -257,6 +265,14 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
+        hash(base+0x14d16f0,0x91)==0x38ac9ecba29364f4ULL &&
+        hash(base+0x14d7f0,0x5a)==0xdfbefbe76328d1c2ULL &&
+        hash(base+0x14d850,0x22)==0xcc724b0919b345caULL &&
+        hash(base+0x145b740,0x37)==0xc69a243bb9df4070ULL &&
+        hash(base+0x6b8af0,0x96)==0x8f67f7a1b9d42698ULL &&
+        hash(base+0x6f370,0xc)==0xe8009075ae23e49bULL &&
+        hash(base+0x6f450,0xb)==0xab3f98567ea8847dULL &&
+        hash(base+0x67e30,0x5)==0xa06f937403b4a5fdULL &&
         hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
         hash(base+0x14d1790,0x181)==0x4a5b855077250003ULL &&
         hash(base+0x724a30,0xd9)==0x5121a9264bd432feULL &&

@@ -229,6 +229,7 @@ for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
 local native_setting_modes={
+ ['stone/metal_ores']=40,['stone/economic']=41,['stone/other_stone']=42,['stone/clay']=43,
  ['gems/rough_glass']=58,['gems/cut_glass']=59,
  ['gems/rough_gem']=60,['gems/cut_gem']=61,['gems/cut_stone']=62,
  ['furniture/stone']=23,['furniture/metal']=24,['ammo/metal']=47,['coins']=50,
@@ -372,8 +373,7 @@ local function setting_caption(d,index,values)
   else part=f.IS_METAL and 'metal' or f.IS_STONE and 'stone' or nil end
   if not part or d.partition and d.partition~=part then return nil end
   if d.selector=='rough_gem' or d.selector=='cut_gem' then return '',part end -- Summary membership only.
-  local material=dfhack.matinfo.decode(0,index)
-  return material and material:toString() or '',part
+  return '',part -- Summary membership only; native rows own inorganic names.
 
  elseif d.source=='creature' then
   if v.flags.GENERATED or v.creature_id=='EQUIPMENT_WAGON' then return nil end

@@ -30026,5 +30026,1424 @@
       "diagnostics": "clean",
       "scope": "Five gem/glass lists; creation/removal, filtered/individual edits, short/empty backing vectors; shared fixture restored between lists"
     }
+  },
+  "stone_lists": {
+    "run": "build/stockpile-presets-native-20261025-050605",
+    "status": "passed",
+    "comparisons": 48,
+    "native_bulk_actions": 96,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 16,
+        "visible_count": 16,
+        "rows_sha256": "73b54f90826345171e10ec9dcbdc115ea71fbc8d5a1372027623de0b49e052a8",
+        "visible_indices_sha256": "3ed5aa82354e43654286749dc8617fdb3523142df23fb8efc3c50924183b93ca",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 211,
+            "name": "Bismuthinite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 195,
+            "name": "Cassiterite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 194,
+            "name": "Sphalerite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 16,
+        "visible_count": 9,
+        "rows_sha256": "b6e737f5fa90009dd7c7ab2b2f8d2f63d7aadbcb175c6adb61e31e4933d45f72",
+        "visible_indices_sha256": "3ca6696b9d1bcd8b31f1216d85939ee40c0a2c573abbc2450b493a6acd6b301e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 211,
+            "name": "Bismuthinite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 195,
+            "name": "Cassiterite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 194,
+            "name": "Sphalerite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 16,
+        "visible_count": 0,
+        "rows_sha256": "50f417c3c70eb1a4c30fd84ac5b64aa75f25da5df8189ebe2d64359a264df6e0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 211,
+            "name": "Bismuthinite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 195,
+            "name": "Cassiterite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 194,
+            "name": "Sphalerite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 16,
+        "visible_count": 16,
+        "rows_sha256": "73b54f90826345171e10ec9dcbdc115ea71fbc8d5a1372027623de0b49e052a8",
+        "visible_indices_sha256": "3ed5aa82354e43654286749dc8617fdb3523142df23fb8efc3c50924183b93ca",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 211,
+            "name": "Bismuthinite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 195,
+            "name": "Cassiterite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 194,
+            "name": "Sphalerite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 16,
+        "visible_count": 9,
+        "rows_sha256": "b6e737f5fa90009dd7c7ab2b2f8d2f63d7aadbcb175c6adb61e31e4933d45f72",
+        "visible_indices_sha256": "3ca6696b9d1bcd8b31f1216d85939ee40c0a2c573abbc2450b493a6acd6b301e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 211,
+            "name": "Bismuthinite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 195,
+            "name": "Cassiterite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 194,
+            "name": "Sphalerite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 40,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 16,
+        "visible_count": 0,
+        "rows_sha256": "50f417c3c70eb1a4c30fd84ac5b64aa75f25da5df8189ebe2d64359a264df6e0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 211,
+            "name": "Bismuthinite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 195,
+            "name": "Cassiterite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 194,
+            "name": "Sphalerite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 201,
+            "name": "Tetrahedrite",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 12,
+        "visible_count": 12,
+        "rows_sha256": "b6b340511c0b5362cf53212a71355f3dab070b8505084ecbb37c5ce2c0b2afbe",
+        "visible_indices_sha256": "918bf32e0e2e3f5f522771b4676102bb6db291f058d5073512a238b0ae19dd5b",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 196,
+            "name": "Bituminous coal",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 239,
+            "name": "Satinspar",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 238,
+            "name": "Selenite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 12,
+        "visible_count": 5,
+        "rows_sha256": "da93270e323cedc34a4a53d9111f97feda3ea7ddabdd4efde0abe37daf84f3c6",
+        "visible_indices_sha256": "a7ddd5df58781a482ce661b8ebc1019f14c77fe37a9aa3b259081a0528639434",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 196,
+            "name": "Bituminous coal",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 239,
+            "name": "Satinspar",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 238,
+            "name": "Selenite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 12,
+        "visible_count": 0,
+        "rows_sha256": "cbf241d3be39261d572a97e090270c45ac831bb39d2db519987f18af5dae69dc",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 196,
+            "name": "Bituminous coal",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 239,
+            "name": "Satinspar",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 238,
+            "name": "Selenite",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 12,
+        "visible_count": 12,
+        "rows_sha256": "b6b340511c0b5362cf53212a71355f3dab070b8505084ecbb37c5ce2c0b2afbe",
+        "visible_indices_sha256": "918bf32e0e2e3f5f522771b4676102bb6db291f058d5073512a238b0ae19dd5b",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 196,
+            "name": "Bituminous coal",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 239,
+            "name": "Satinspar",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 238,
+            "name": "Selenite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 12,
+        "visible_count": 5,
+        "rows_sha256": "da93270e323cedc34a4a53d9111f97feda3ea7ddabdd4efde0abe37daf84f3c6",
+        "visible_indices_sha256": "a7ddd5df58781a482ce661b8ebc1019f14c77fe37a9aa3b259081a0528639434",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 196,
+            "name": "Bituminous coal",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 239,
+            "name": "Satinspar",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 238,
+            "name": "Selenite",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 41,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 12,
+        "visible_count": 0,
+        "rows_sha256": "cbf241d3be39261d572a97e090270c45ac831bb39d2db519987f18af5dae69dc",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 237,
+            "name": "Alabaster",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 196,
+            "name": "Bituminous coal",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 239,
+            "name": "Satinspar",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 238,
+            "name": "Selenite",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 55,
+        "visible_count": 55,
+        "rows_sha256": "48a97e2bf46559db440d7fb1c7ed4c7c35ebb0e0b163e8985806fb27619a4889",
+        "visible_indices_sha256": "24075fe673e1cc6430992231aa06a96e5033c3762a5fa8f5c51ea52c5aea2398",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 177,
+            "name": "Andesite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 216,
+            "name": "Sylvite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 204,
+            "name": "Talc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 55,
+        "visible_count": 20,
+        "rows_sha256": "385b6c642577898ef751e56ad69937662f60c6c50843664ea6ebf21415863b0b",
+        "visible_indices_sha256": "9c322837f07d505c2db62e85857d7d4947d19da840dc8123ebab2ccd5126fbce",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 177,
+            "name": "Andesite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 216,
+            "name": "Sylvite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 204,
+            "name": "Talc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 55,
+        "visible_count": 0,
+        "rows_sha256": "094e10bb877631697a6317e2e061c4870da409d64e956f7ce24e54ff4d8b1b3a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 177,
+            "name": "Andesite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 216,
+            "name": "Sylvite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 204,
+            "name": "Talc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 55,
+        "visible_count": 55,
+        "rows_sha256": "48a97e2bf46559db440d7fb1c7ed4c7c35ebb0e0b163e8985806fb27619a4889",
+        "visible_indices_sha256": "24075fe673e1cc6430992231aa06a96e5033c3762a5fa8f5c51ea52c5aea2398",
+        "first_rows": [
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 177,
+            "name": "Andesite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 216,
+            "name": "Sylvite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 204,
+            "name": "Talc",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 55,
+        "visible_count": 20,
+        "rows_sha256": "385b6c642577898ef751e56ad69937662f60c6c50843664ea6ebf21415863b0b",
+        "visible_indices_sha256": "9c322837f07d505c2db62e85857d7d4947d19da840dc8123ebab2ccd5126fbce",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 177,
+            "name": "Andesite",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 216,
+            "name": "Sylvite",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 204,
+            "name": "Talc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 42,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 55,
+        "visible_count": 0,
+        "rows_sha256": "094e10bb877631697a6317e2e061c4870da409d64e956f7ce24e54ff4d8b1b3a",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 241,
+            "name": "Alunite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 177,
+            "name": "Andesite",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 216,
+            "name": "Sylvite",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 204,
+            "name": "Talc",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 5,
+        "visible_count": 5,
+        "rows_sha256": "b4c69f867b1505cc265827b9551d718c7be9c4e872e2914480e094b62cc1b860",
+        "visible_indices_sha256": "d99e33bbc7f19306b9a7a0b020fda23d5f7b60fcec12bf131958f69a6fb49a25",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 244,
+            "name": "Clay",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 247,
+            "name": "Clay loam",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 246,
+            "name": "Sandy clay",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 245,
+            "name": "Silty clay",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 5,
+        "visible_count": 0,
+        "rows_sha256": "b37acf2f688dddcdaab929700bbc01709091d6fdef0faec99dc6ceb270e078f0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 244,
+            "name": "Clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 247,
+            "name": "Clay loam",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 246,
+            "name": "Sandy clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 245,
+            "name": "Silty clay",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 313,
+        "row_count": 5,
+        "visible_count": 0,
+        "rows_sha256": "b37acf2f688dddcdaab929700bbc01709091d6fdef0faec99dc6ceb270e078f0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 244,
+            "name": "Clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 247,
+            "name": "Clay loam",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 246,
+            "name": "Sandy clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 245,
+            "name": "Silty clay",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 5,
+        "visible_count": 5,
+        "rows_sha256": "b4c69f867b1505cc265827b9551d718c7be9c4e872e2914480e094b62cc1b860",
+        "visible_indices_sha256": "d99e33bbc7f19306b9a7a0b020fda23d5f7b60fcec12bf131958f69a6fb49a25",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 244,
+            "name": "Clay",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 247,
+            "name": "Clay loam",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 246,
+            "name": "Sandy clay",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "stone.mats",
+            "index": 245,
+            "name": "Silty clay",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "ite",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 5,
+        "visible_count": 0,
+        "rows_sha256": "b37acf2f688dddcdaab929700bbc01709091d6fdef0faec99dc6ceb270e078f0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 244,
+            "name": "Clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 247,
+            "name": "Clay loam",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 246,
+            "name": "Sandy clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 245,
+            "name": "Silty clay",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 43,
+        "probe": "stone_rows",
+        "query": "zzzznomatch",
+        "raw_count": 313,
+        "stored_count": 314,
+        "row_count": 5,
+        "visible_count": 0,
+        "rows_sha256": "b37acf2f688dddcdaab929700bbc01709091d6fdef0faec99dc6ceb270e078f0",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 244,
+            "name": "Clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 247,
+            "name": "Clay loam",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 246,
+            "name": "Sandy clay",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "stone.mats",
+            "index": 245,
+            "name": "Silty clay",
+            "visible": false
+          }
+        ]
+      }
+    ],
+    "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
+    "omissions": [
+      "Non-ASCII search",
+      "Rendered settings-panel parity",
+      "Summary membership remains staged"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-051147",
+      "status": "passed",
+      "native_observations": 99,
+      "page_reads": 12,
+      "edits": 36,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "Four Stone lists; creation/removal, filtered/individual edits, short/empty backing vectors; shared fixture restored between lists"
+    }
   }
 }

@@ -1,3 +1,4 @@
+#include "area_links.h"
 #include "bed_appearance_native.h"
 #include "stockpile_native.h"
 #include <json/json.h>
@@ -1984,6 +1985,7 @@ int areaSnapshot(lua_State* L) {
   }
   std::vector<int32_t> gives,takes,givesWorkshops,takesWorkshops;
   const auto links=[&](const auto& source,auto& ids) {
+    if(!df3d_area::validStockpileLinkVector(source,b->id))return false;
     hash.add(source.size());
     for(const auto* target:source){if(!target)return false;ids.push_back(target->id);hash.add(target->id);}
     return true;

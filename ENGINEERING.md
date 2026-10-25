@@ -35,8 +35,35 @@ workshop give/take reversal/unlink and the prior paint/donor-cleanup regressions
 Picker and workshop captures were inspected. Only the known separate-thread
 notice remains; both save manifests are unchanged and owned DF closed unsaved.
 Offline `build/qa/stockpile-native-link-ready` passes root CTest, controller and
-adapter checks, including synchronous link work accounting. Boundary/malformed
-endpoint cases remain outside this scoped acceptance.
+adapter checks, including synchronous link work accounting. Boundary and malformed
+endpoint coverage is recorded below.
+
+Stockpile snapshots, native link target lookup and native link mutation share
+`bridge/plugin/area_links.h` validation: at most 1,024 entries per vector,
+nonnull endpoints, strictly increasing nonnegative IDs and no self-links.
+Snapshots reject malformed vectors before publishing a semantic response;
+previously duplicate IDs reached the model as an invalid management response.
+This is validation of native data, not a replacement link algorithm. Native
+lookup/insertion/erasure and owned endpoint publication remain unchanged.
+
+The protected `-StockpileResizeOnly` lane includes 60 link boundary cases. It
+injects null, duplicate and unsorted entries into each of four vectors on both
+pile endpoints and a workshop endpoint. For give/take and pile/workshop pairs,
+it tests both insertion sides at 1,023, 1,024 and 1,025 entries. A 1,023-entry side
+accepts its last insertion with the reciprocal endpoint updated; full/oversized
+sides refuse without changing either endpoint. All three fixture endpoints are
+compared and restored after each command; temporary endpoint objects are owned
+by the paused, unsaved fixture and never registered in the world.
+
+Protected `build/areas-acceptance-20261025-145931` passes 270 native observations,
+including all 60 boundary cases and the existing resize/transfer regressions.
+Both save manifests remain unchanged and owned DF closes unsaved; no engine
+diagnostics were reported. Offline `build/qa/stockpile-link-boundaries-final`
+passes root CTest19/19 and link-controller tests, including null, negative,
+duplicate, unsorted, self and oversized vector validation. Negative/self pointer
+fixtures remain unit evidence; the live malformed matrix covers null/duplicate/
+unsorted entries. Actual transport interruption during link picking and unloaded
+in-map target coverage remain separate acceptance gaps.
 
 Native invalid-target run `build/stockpile-storage-native-links-20261025-124453`
 also verifies empty ground and a non-linkable door: neither changes links or

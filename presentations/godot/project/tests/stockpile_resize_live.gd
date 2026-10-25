@@ -147,4 +147,51 @@ func exercise() -> void:
 			await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(target.revision)})
 			if stopped: return
 			await native("removed",{"id":int(target.id)})
+	await link_boundaries()
 	await native("final")
+
+func link_boundaries() -> void:
+	var cases: Array = []
+	for endpoint in [1,2,3]:
+		for key in ["give_to_pile","take_from_pile","give_to_workshop","take_from_workshop"]:
+			for malformed in ["duplicate","unsorted","null"]:
+				cases.append({"endpoint":endpoint,"key":key,"case":malformed,"give":true})
+	for give in [true,false]:
+		for workshop in [false,true]:
+			var source_key := "give_to_pile" if give else "take_from_pile"
+			var reverse_key := ("take_from_workshop" if give else "give_to_workshop") if workshop else ("take_from_pile" if give else "give_to_pile")
+			for endpoint in [3 if workshop else 1,2]:
+				for count in [1023,1024,1025]:
+					cases.append({"endpoint":endpoint,"key":source_key if endpoint != 2 else reverse_key,
+						"case":"capacity","count":count,"give":give,"workshop":workshop,"success":count == 1023})
+	for scenario in cases:
+		step = "link boundary " + JSON.stringify(scenario)
+		var setup := await native("resize_link_setup")
+		if stopped: return
+		var workshop: bool = bool(scenario.get("workshop",int(scenario.endpoint) == 3))
+		var source: int = int(setup.workshop if workshop else setup.source)
+		var observed: int = int(setup.target if workshop else setup.source)
+		var before := await inspect(observed)
+		if stopped: return
+		await native("resize_link_inject",scenario)
+		if stopped: return
+		var inspector_rejects: bool = int(scenario.endpoint) != 3 and (scenario.case != "capacity" or int(scenario.get("count",0)) > 1024)
+		if not inspector_rejects:
+			before = await inspect(observed)
+			if stopped: return
+		var intent := {"action":13,"kind":0,"id":source,"link_id":int(setup.target),
+			"expected_revision":int(before.revision),"give":bool(scenario.give)}
+		if workshop:
+			intent.operation = Contract.AreaOperation.WorkshopLink
+			intent.kind = Contract.AreaKind.Workshop
+		var succeeds: bool = bool(scenario.get("success",false))
+		var rejection := ""
+		if inspector_rejects:
+			rejection = "Area no longer exists" if scenario.case != "capacity" else "This pile exceeds the bounded link inspector (1024 per direction)"
+		await request(intent,rejection,not succeeds)
+		# Restore fixture state even when the production assertion fails.
+		var prior_stopped := stopped; stopped = false
+		var expected: Dictionary = scenario.duplicate(); expected.workshop = workshop; expected.success = succeeds
+		await native("resize_link_check_restore",expected)
+		stopped = stopped or prior_stopped
+		if stopped: return

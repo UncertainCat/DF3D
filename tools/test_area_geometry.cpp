@@ -1,3 +1,4 @@
+#include "../bridge/plugin/area_links.h"
 #include "doctest.h"
 #include "../bridge/plugin/area_geometry.h"
 #include <array>
@@ -362,4 +363,18 @@ TEST_CASE("native cage scan enforces aggregate cage and membership bounds before
   cages={nullptr};CHECK(area::scanAssignedCages(cages,7,1).error==area::AssignmentScanError::Invalid);
   cages.clear();scan=area::scanAssignedCages(cages,7,0);
   CHECK(scan.error==area::AssignmentScanError::None);CHECK(scan.steps==0);CHECK(scan.entries==0);
+}
+
+TEST_CASE("stockpile link snapshots and native edits share endpoint validation") {
+  struct Endpoint {int32_t id;};
+  Endpoint first{1},second{2},negative{-1};
+  CHECK(area::validStockpileLinkVector(std::vector<Endpoint*>{&first,&second},3));
+  for(auto rows:{std::vector<Endpoint*>{nullptr},std::vector<Endpoint*>{&negative},
+      std::vector<Endpoint*>{&first,&first},std::vector<Endpoint*>{&second,&first}})
+    CHECK_FALSE(area::validStockpileLinkVector(rows,3));
+  CHECK_FALSE(area::validStockpileLinkVector(std::vector<Endpoint*>{&first,&second},2));
+  std::vector<Endpoint> storage(1025);std::vector<Endpoint*> rows;
+  for(int i=0;i<1025;++i){storage[i].id=i;rows.push_back(&storage[i]);}
+  CHECK_FALSE(area::validStockpileLinkVector(rows,2000));
+  rows.pop_back();CHECK(area::validStockpileLinkVector(rows,2000));
 }

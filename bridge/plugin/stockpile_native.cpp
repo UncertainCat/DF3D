@@ -1,3 +1,4 @@
+#include "area_links.h"
 #include "stockpile_native.h"
 #include "df/global_objects.h"
 #include "df/world.h"
@@ -719,13 +720,7 @@ std::optional<df::building*> nativeStockpileLinkTarget(df::building_stockpilest&
     if(!compatible)return std::nullopt;
     const auto& piles=give?source.links.give_to_pile:source.links.take_from_pile;
     const auto& workshops=give?source.links.give_to_workshop:source.links.take_from_workshop;
-    const auto valid=[](const auto& rows) {
-        if(rows.size()>1024)return false;
-        int32_t last=-1;
-        for(const auto* row:rows){if(!row || row->id<=last)return false;last=row->id;}
-        return true;
-    };
-    if(!valid(piles) || !valid(workshops))return std::nullopt;
+    if(!validStockpileLinkVector(piles,source.id) || !validStockpileLinkVector(workshops,source.id))return std::nullopt;
     using Contains=uint8_t (*)(df::building*,int16_t,int16_t,int16_t);
     using Find=int32_t (*)(int32_t,const void*);
     const auto contains=reinterpret_cast<Contains>(base+0x5587b0);
@@ -759,20 +754,11 @@ std::optional<bool> nativeStockpileLink(df::building& source,
     if(!compatible || source.id==target.id)return std::nullopt;
     auto* original=source.getStockpileLinks();
     if(!original)return std::nullopt;
-    const auto valid=[](const auto& rows) {
-        if(rows.size()>1024)return false;
-        int32_t last=-1;
-        for(const auto* row:rows) {
-            if(!row || row->id<=last)return false;
-            last=row->id;
-        }
-        return true;
+    const auto validLinks=[&](const auto& links,int32_t ownerId) {
+        return validStockpileLinkVector(links.give_to_pile,ownerId) && validStockpileLinkVector(links.take_from_pile,ownerId) &&
+            validStockpileLinkVector(links.give_to_workshop,ownerId) && validStockpileLinkVector(links.take_from_workshop,ownerId);
     };
-    const auto validLinks=[&](const auto& links) {
-        return valid(links.give_to_pile) && valid(links.take_from_pile) &&
-            valid(links.give_to_workshop) && valid(links.take_from_workshop);
-    };
-    if(!validLinks(*original) || !validLinks(target.links))return std::nullopt;
+    if(!validLinks(*original,source.id) || !validLinks(target.links,target.id))return std::nullopt;
     using Find=int32_t (*)(int32_t,const void*);
     using Insert=int32_t (*)(df::building*,void*);
     using Erase=void (*)(df::building*,void*);

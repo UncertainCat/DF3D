@@ -11,7 +11,92 @@ local function snapshot(b)
  for i,id in ipairs(b.storage.container_item_id)do r.containers[#r.containers+1]={id=id,type=b.storage.container_type[i],x=b.storage.container_x[i],y=b.storage.container_y[i]}end
  return r
 end
-if request.op=='resize_setup' then
+local link_keys={'give_to_pile','take_from_pile','give_to_workshop','take_from_workshop'}
+local function copy_links(b)
+ local out={};local links=b:getStockpileLinks()
+ for _,key in ipairs(link_keys)do
+  local rows={};for i=0,#links[key]-1 do rows[i+1]=links[key][i] or false end
+  out[key]=rows
+ end
+ return out
+end
+local function set_rows(vector,rows)
+ vector:resize(0)
+ for _,value in ipairs(rows)do vector:insert('#',value or nil)end
+end
+local function restore_link_fixture(s)
+ for i,b in ipairs(s.endpoints)do for _,key in ipairs(link_keys)do set_rows(b:getStockpileLinks()[key],s.original[i][key])end end
+ for _,b in ipairs(s.owned)do b:delete()end
+ _G.df3d_link_boundary=nil
+end
+local function same_links(b,expected)
+ local actual=copy_links(b)
+ for _,key in ipairs(link_keys)do
+  if #actual[key]~=#expected[key]then return false end
+  for i,value in ipairs(expected[key])do if actual[key][i]~=value then return false end end
+ end
+ return true
+end
+if request.op=='resize_link_setup' then
+ assert(not _G.df3d_link_boundary)
+ local endpoints={}
+ local function shown(b)
+  for y=b.y1,b.y2 do for x=b.x1,b.x2 do
+   local block=dfhack.maps.getTileBlock(x,y,b.z)
+   if block and not block.designation[x%16][y%16].hidden then return true end
+  end end
+  return false
+ end
+ for _,b in ipairs(df.global.world.buildings.other.STOCKPILE)do
+  if shown(b)then endpoints[#endpoints+1]=b;if #endpoints==2 then break end end
+ end
+ assert(#endpoints==2,'two revealed stockpiles required')
+ local workshop
+ for _,b in ipairs(df.global.world.buildings.other.IN_PLAY)do
+  if b:canLinkToStockpile() and not df.building_stockpilest:is_instance(b) and shown(b)then workshop=b;break end
+ end
+ assert(workshop,'revealed linkable workshop required')
+ endpoints[3]=workshop
+ local s={endpoints=endpoints,original={},owned={}}
+ _G.df3d_link_boundary=s
+ for i,b in ipairs(endpoints)do s.original[i]=copy_links(b)end
+ for _,b in ipairs(endpoints)do for _,key in ipairs(link_keys)do b:getStockpileLinks()[key]:resize(0)end end
+ result.source=endpoints[1].id;result.target=endpoints[2].id;result.workshop=workshop.id
+elseif request.op=='resize_link_inject' then
+ local s=assert(_G.df3d_link_boundary)
+ local ok,why=pcall(function()
+  local vector=s.endpoints[request.endpoint]:getStockpileLinks()[request.key]
+  if request.case=='null' then vector:resize(1)
+  else
+   local n=request.count or 2
+   for i=1,n do
+    local b=request.key:find('workshop') and df.building_workshopst:new() or df.building_stockpilest:new()
+    b.id=1000000000+i;s.owned[#s.owned+1]=b;vector:insert('#',b)
+   end
+   if request.case=='duplicate' then vector[1]=vector[0]
+   elseif request.case=='unsorted' then local b=vector[0];vector[0]=vector[1];vector[1]=b end
+  end
+  s.before={};for i,b in ipairs(s.endpoints)do s.before[i]=copy_links(b)end
+ end)
+ if not ok then restore_link_fixture(s);error(why)end
+elseif request.op=='resize_link_check_restore' then
+ local s=assert(_G.df3d_link_boundary)
+ local ok,why=pcall(function()
+  local expected=s.before
+  if request.success then
+   local source=s.endpoints[request.workshop and 3 or 1];local target=s.endpoints[2]
+   local a=request.give and 'give_to_pile' or 'take_from_pile'
+   local b=request.workshop and (request.give and 'take_from_workshop' or 'give_to_workshop') or
+    (request.give and 'take_from_pile' or 'give_to_pile')
+   table.insert(expected[request.workshop and 3 or 1][a],1,target)
+   table.insert(expected[2][b],1,source)
+  end
+  for i,b in ipairs(s.endpoints)do assert(same_links(b,expected[i]),'endpoint '..i..' changed unexpectedly')end
+ end)
+ restore_link_fixture(s)
+ assert(ok,why)
+ result.restored=true
+elseif request.op=='resize_setup' then
  local b
  for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
   if #candidate.storage.container_item_id>1 and dfhack.buildings.countExtentTiles(candidate,-1)>2 then b=candidate;break end

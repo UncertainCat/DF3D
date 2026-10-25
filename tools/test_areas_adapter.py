@@ -1798,7 +1798,7 @@ def main():
     assert lua.eval("not pile.settings.armor.quality_core[1] and not pile.settings.armor.quality_core[3] and not pile.settings.armor.quality_core[7]")
     assert settings_adapter(fixed_edit("armor/quality_core", value=2))["ok"]
     assert lua.eval("pile.settings.armor.quality_core[1] and pile.settings.armor.quality_core[7] and not pile.settings.flags.armor")
-    assert settings_adapter(fixed_edit("armor", "armor/quality_core", value=1))["ok"]
+    assert settings_adapter(fixed_edit("armor/quality_core", value=1))["ok"]
     assert lua.eval("not pile.settings.armor.quality_core[1] and not pile.settings.armor.quality_core[7] and pile.settings.armor.quality_total[1]")
     for category in ["ammo", "armor", "finished_goods", "furniture", "weapons"]:
         for quality in ["quality_core", "quality_total"]:
@@ -1808,8 +1808,8 @@ def main():
     assert lua.eval("not pile.settings.food.prepared_meals")
     assert settings_adapter(fixed_edit("", "organic", value=1))["ok"]
     assert lua.eval("not pile.settings.misc.allow_organic")
-    # Native Ammo middle-column actions reach the corresponding quality vector.
-    assert settings_adapter(fixed_edit("ammo", "ammo/quality_core", value=1))["ok"]
+    # Native leaf All/None reaches the corresponding quality vector.
+    assert settings_adapter(fixed_edit("ammo/quality_core", value=1))["ok"]
     assert lua.eval("not pile.settings.ammo.quality_core[1] and not pile.settings.ammo.quality_core[7] and pile.settings.ammo.quality_total[1]")
     # Filtered All/None selects native caption matches, independent of paging.
     assert settings_adapter(fixed_edit("ammo/quality_core", value=1, query="CRAFTED"))["ok"]
@@ -1868,46 +1868,23 @@ def main():
     observed, _ = summary_page("food")
     assert observed["build_phase"] == 0
     assert next(r for r in observed["settings"].values() if r["key"] == "food/prepared_meals")["state"] == 2
-    # Classified masks carry bounded semantic selectors, not raw pointers or
-    # cached captions. This stand-in checks dispatch and whole-operation budget;
-    # native classification parity is a separate producer/live acceptance item.
+    # Native row membership arrives as explicit masks; no raw classifier fallback.
     lua.execute(r"""
     local fixed_fill=settings_fill
-    all_fill_calls={};fixture_partitions={['wood.mats']={1,1,0}}
+    all_fill_calls={}
     function settings_fill(b,field,members,allowed,enabled,budget)
      all_fill_calls[#all_fill_calls+1]=field
      if fail_fill_at and #all_fill_calls==fail_fill_at then return {ok=false,message='fixture later refusal',steps=1} end
      if type(members)=='string' and not settings_fields[field].fixed then
       local cat,key=field:match('^([^%.]+)%.(.+)$');local values=b.settings[cat][key]
-      local resize=#values<#members
+      assert(#values==#members and #allowed==#members)
       for i=1,#members do
-       if resize and allowed:byte(i)==0 then values[i]=1
-       elseif members:byte(i)~=0 then values[i]=enabled and 1 or 0
-       elseif values[i]==nil then values[i]=0 end
+       if members:byte(i)~=0 and allowed:byte(i)~=0 then values[i]=enabled and 1 or 0 end
       end
       return {ok=true,steps=1+((#members+255)//256)}
      end
-     if type(members)~='table' then return fixed_fill(b,field,members,allowed,enabled,budget) end
-     assert(allowed=='' and settings_fields[field].fixed==false)
-     assert(members.count==settings_fields[field].count)
-     local count,selection,row=members.count,members.selection,members.row
-     local cost=1+2*((count+255)//256)
-     if budget<cost then return {ok=false,message='fill budget',steps=1} end
-     local cat,key=field:match('^([^%.]+)%.(.+)$');local values=b.settings[cat][key]
-     local parts=fixture_partitions[field] or {}
-     local function member(i)
-      local part=parts[i] or 1
-      return part~=0 and (selection==0 or (part & selection)~=0) and (row<0 or row==i-1),part~=0
-     end
-     if row>=0 and (row>=count or not member(row+1)) then return {ok=false,message='Unknown stockpile settings row',steps=1+((count+255)//256)} end
-     local resize=#values<count
-     if resize then for i=#values+1,count do values[i]=0 end end
-     for i=1,count do
-      local selected,eligible=member(i)
-      if resize and not eligible then values[i]=1
-      elseif selected then values[i]=enabled and 1 or 0 end
-     end
-     return {ok=true,steps=cost,resized=resize}
+     assert(type(members)=='string','classified masks are retired')
+     return fixed_fill(b,field,members,allowed,enabled,budget)
     end
     make_setting('wood.mats',3,{0})
     """)
@@ -2081,30 +2058,33 @@ def main():
     assert not setting_page("wood")[0]["ok"]
     assert not settings_adapter(fixed_edit("wood", value=2))["ok"]
     lua.execute("force_rows_failure=false;make_setting('wood.mats',3,{0,0,7,9})")
-    lua.execute("df.global.world.raws.inorganics.all={{flags={},material={flags={IS_GEM=true}}},{flags={},material={flags={IS_METAL=true}}},{flags={},material={flags={IS_STONE=true}}}};make_setting('finished_goods.mats',3,{0,0,0,9});fixture_partitions['finished_goods.mats']={8,2,4}")
+    lua.execute("df.global.world.raws.inorganics.all={{flags={},material={flags={IS_GEM=true}}},{flags={},material={flags={IS_METAL=true}}},{flags={},material={flags={IS_STONE=true}}}};make_setting('finished_goods.mats',3,{0,0,0,9})")
     assert settings_adapter(fixed_edit("finished_goods/metal"))["ok"]
     assert lua.eval("pile.settings.finished_goods.mats[1]==0 and pile.settings.finished_goods.mats[2]==1 and pile.settings.finished_goods.mats[3]==0 and pile.settings.finished_goods.mats[4]==9")
     assert settings_adapter(fixed_edit("finished_goods/gem", "finished_goods/gem/1"))["message"] == "Unknown stockpile settings row"
-    assert settings_adapter(fixed_edit("finished_goods", "finished_goods/gem"))["ok"]
+    assert settings_adapter(fixed_edit("finished_goods/gem"))["ok"]
     assert lua.eval("pile.settings.finished_goods.mats[1]==1 and pile.settings.finished_goods.mats[3]==0")
-    # A whole middle page merges partitions of the same backing vector into
-    # one helper call, and does not implicitly enable its category flag.
+    # Protocol59 retires non-native category-row and whole-page leaf edits.
+    # Rejection happens before any settings helper is called.
     lua.execute("all_fill_calls={};pile.settings.flags.finished_goods=false")
-    assert settings_adapter(fixed_edit("finished_goods"))["ok"]
-    fields = list(lua.globals().all_fill_calls.values())
-    assert len(fields) == len(set(fields)) and fields.count("finished_goods.mats") == 1
-    assert lua.eval("pile.settings.finished_goods.mats[3]==1 and not pile.settings.flags.finished_goods")
+    for retired in [fixed_edit("finished_goods"), fixed_edit("finished_goods", "finished_goods/gem"),
+                    fixed_edit("", "finished_goods"), fixed_edit("armor", "armor/quality_core")]:
+        assert not settings_adapter(retired)["ok"]
+    assert len(lua.globals().all_fill_calls) == 0
+    assert lua.eval("pile.settings.finished_goods.mats[3]==0 and not pile.settings.flags.finished_goods")
     lua.execute("pile.settings.refuse.fresh_raw_hide=false;pile.settings.refuse.rotten_raw_hide=false")
-    assert settings_adapter(fixed_edit("refuse"))["ok"]
+    assert not settings_adapter(fixed_edit("refuse"))["ok"]
     assert lua.eval("not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide")
     lua.execute("pile.settings.flags.refuse=false")
     assert settings_adapter(fixed_edit("refuse", scope=3))["ok"]
     assert lua.eval("pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide and not pile.settings.flags.refuse")
-    assert settings_adapter(fixed_edit("", "refuse", value=1))["ok"]
-    assert lua.eval("not pile.settings.refuse.fresh_raw_hide and not pile.settings.refuse.rotten_raw_hide and not pile.settings.flags.refuse")
-    lua.execute("make_setting('animals.enabled',1,{0});fixture_partitions['animals.enabled']={1}")
-    assert settings_adapter(fixed_edit("animals"))["ok"]
-    assert lua.eval("pile.settings.animals.enabled[1]==0 and pile.settings.animals.empty_cages")
+    assert not settings_adapter(fixed_edit("", "refuse", value=1))["ok"]
+    assert lua.eval("pile.settings.refuse.fresh_raw_hide and pile.settings.refuse.rotten_raw_hide and not pile.settings.flags.refuse")
+    lua.execute("make_setting('animals.enabled',1,{0})")
+    empty_cages_before = lua.eval("pile.settings.animals.empty_cages")
+    assert not settings_adapter(fixed_edit("animals"))["ok"]
+    assert lua.eval("pile.settings.animals.enabled[1]==0")
+    assert lua.eval("pile.settings.animals.empty_cages") == empty_cages_before
     lua.execute("pile.settings.flags.animals=false")
     assert settings_adapter(fixed_edit("animals", scope=3))["ok"]
     assert lua.eval("pile.settings.animals.enabled[1]==1 and not pile.settings.flags.animals")
@@ -2151,7 +2131,7 @@ def main():
     # Category headers likewise preserve a short vector and its category flag.
     lua.execute(r"""
     local active={};for _,field in ipairs(fixture_vector_keys)do if field~='ore.mats' then active[#active+1]=field end end
-    assert(#active==77);fixture_partitions={};settings_raw_count=65536
+    assert(#active==77);settings_raw_count=65536
     for i,field in ipairs(active)do make_setting(field,i==77 and 65460 or 1,{}) end
     all_fill_calls={}
     """)

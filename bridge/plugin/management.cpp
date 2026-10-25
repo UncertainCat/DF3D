@@ -602,8 +602,8 @@ void field(lua_State* L, const char* key, T value) {
   Lua::SetField(L, value, -1, key);
 }
 // One catalog for native vector access and structural revision sizes.
-// Lua owns hierarchy and write selection; native classified fills reacquire
-// current raw membership without borrowing a cached label-builder result.
+// Owned native rows supply vector membership; Lua builds explicit masks for
+// those rows. No local raw classifier or cached menu result is consulted.
 auto areaSettingVectors(df::building_stockpilest* pile) {
   using Entry=std::pair<const char*,std::vector<char>*>;
   return std::array<Entry,78>{{
@@ -808,97 +808,6 @@ int areaSettingsLayout(lua_State* L) {
     lua_setfield(L,-2,entry.key);
   }
   lua_setfield(L,-2,"fields");return 1;
-}
-enum class AreaSettingRule { Any, Metal, MetalStone, Gem, GemStone, GemMetalStone,
-                             Stone, Inorganic, Glass, Creature, Plant, FinishedType, RefuseType };
-AreaSettingRule areaSettingRule(std::string_view key) {
-  using R=AreaSettingRule;
-  if(key=="ammo.mats" || key=="armor.mats" || key=="bars_blocks.bars_mats")return R::Metal;
-  if(key=="weapons.mats" || key=="furniture.mats" || key=="bars_blocks.blocks_mats")return R::MetalStone;
-  if(key=="finished_goods.mats")return R::GemMetalStone;
-  if(key=="gems.rough_mats")return R::Gem;
-  if(key=="gems.cut_mats")return R::GemStone;
-  if(key=="stone.mats")return R::Stone;
-  if(key=="coins.mats")return R::Inorganic;
-  if(key=="gems.rough_other_mats" || key=="gems.cut_other_mats")return R::Glass;
-  if(key=="animals.enabled" || key=="corpses.corpses" ||
-      (key.substr(0,7)=="refuse." && key!="refuse.type"))return R::Creature;
-  if(key=="wood.mats")return R::Plant;
-  if(key=="finished_goods.type")return R::FinishedType;
-  if(key=="refuse.type")return R::RefuseType;
-  return R::Any;
-}
-uint16_t areaSettingPartitions(AreaSettingRule rule) {
-  using R=AreaSettingRule;using namespace df3d_area;
-  switch(rule) {
-    case R::Metal:return Metal;
-    case R::MetalStone:return Metal|Stone;
-    case R::Gem:return Gem;
-    case R::GemStone:return Gem|Stone;
-    case R::GemMetalStone:return Gem|Metal|Stone;
-    case R::Stone:return MetalOres|Economic|Clay|OtherStone;
-    default:return Any;
-  }
-}
-uint16_t areaSettingPartition(AreaSettingRule rule,size_t index) {
-  using R=AreaSettingRule;using namespace df3d_area;
-  const auto& raws=df::global::world->raws;
-  if(rule==R::Any)return Any;
-  if(rule==R::Creature) {
-    const auto* raw=raws.creatures.all[index];
-    return raw && !raw->flags.is_set(df::creature_raw_flags::GENERATED) && raw->creature_id!="EQUIPMENT_WAGON" ? Any : 0;
-  }
-  if(rule==R::Plant) {
-    const auto* raw=raws.plants.all[index];
-    return raw && raw->flags.is_set(df::plant_raw_flags::TREE) ? Any : 0;
-  }
-  if(rule==R::FinishedType) {
-    using T=df::item_type;
-    switch(T(index)) {
-      case T::CHAIN:case T::FLASK:case T::GOBLET:case T::INSTRUMENT:case T::TOY:
-      case T::ARMOR:case T::SHOES:case T::HELM:case T::GLOVES:case T::FIGURINE:
-      case T::AMULET:case T::SCEPTER:case T::CROWN:case T::RING:case T::EARRING:
-      case T::BRACELET:case T::GEM:case T::TOTEM:case T::PANTS:case T::BACKPACK:
-      case T::QUIVER:case T::SPLINT:case T::CRUTCH:case T::TOOL:case T::BOOK:return Any;
-      default:return 0;
-    }
-  }
-  if(rule==R::RefuseType) {
-    using T=df::item_type;
-    switch(T(index)) {
-      case T::NONE:case T::BAR:case T::SMALLGEM:case T::BLOCKS:case T::ROUGH:
-      case T::BOULDER:case T::CORPSE:case T::CORPSEPIECE:case T::ROCK:case T::ORTHOPEDIC_CAST:case T::BRANCH:return 0;
-      default:return Any;
-    }
-  }
-  if(rule==R::Glass) {
-    MaterialInfo mi(int16_t(index),-1);
-    if(!mi.isValid())return 0;
-    const auto token=mi.getToken();
-    return token=="GLASS_GREEN" || token=="GLASS_CLEAR" || token=="GLASS_CRYSTAL" ? Any : 0;
-  }
-  MaterialInfo mi(0,int32_t(index));
-  if(!mi.isValid() || !mi.material || !mi.inorganic)return 0;
-  const auto& flags=mi.material->flags;
-  const bool metal=flags.is_set(df::material_flags::IS_METAL),stone=flags.is_set(df::material_flags::IS_STONE),
-      gem=flags.is_set(df::material_flags::IS_GEM);
-  switch(rule) {
-    case R::Inorganic:return Any;
-    case R::Metal:return metal ? Metal : 0;
-    case R::MetalStone:return metal ? Metal : stone ? Stone : 0;
-    case R::Gem:return gem ? Gem : 0;
-    case R::GemStone:return gem ? Gem : stone ? Stone : 0;
-    case R::GemMetalStone:return gem ? Gem : metal ? Metal : stone ? Stone : 0;
-    case R::Stone: {
-      const bool soil=mi.inorganic->flags.is_set(df::inorganic_flags::SOIL);
-      if(!(soil && !mi.inorganic->flags.is_set(df::inorganic_flags::AQUIFER)) &&
-          !(stone && !flags.is_set(df::material_flags::NO_STONE_STOCKPILE)))return 0;
-      if(!mi.inorganic->metal_ore.mat_index.empty())return MetalOres;
-      if(!mi.inorganic->economic_uses.empty())return Economic;
-      return soil ? Clay : OtherStone;
-    }
-    default:return 0;
-  }
 }
 // Bound both current raws and stored vectors before copying owned native settings.
 // A changed raw inventory can leave larger old vectors in a loaded stockpile.
@@ -1450,13 +1359,12 @@ int areaSettingsFill(lua_State* L) {
   if(!budget)return fail("Settings fill exceeds remaining step budget",0);
   auto* pile=Lua::GetDFObject<df::building_stockpilest>(L,1);
   if(!pile)return fail("Area no longer exists");
-  const bool classified=lua_istable(L,3);
-  if(lua_type(L,2)!=LUA_TSTRING || (!classified && lua_type(L,3)!=LUA_TSTRING) ||
+  if(lua_type(L,2)!=LUA_TSTRING || lua_type(L,3)!=LUA_TSTRING ||
       lua_type(L,4)!=LUA_TSTRING || lua_type(L,5)!=LUA_TBOOLEAN)
     return fail("Invalid settings fill arguments");
   size_t keyLength=0,membersLength=0,allowedLength=0;
   const char* key=lua_tolstring(L,2,&keyLength);
-  const char* members=classified ? nullptr : lua_tolstring(L,3,&membersLength);
+  const char* members=lua_tolstring(L,3,&membersLength);
   const char* allowed=lua_tolstring(L,4,&allowedLength);
   if(keyLength>64)return fail("Unknown stockpile settings vector");
   if(membersLength!=allowedLength)return fail("Settings masks have different lengths");
@@ -1468,29 +1376,6 @@ int areaSettingsFill(lua_State* L) {
   if(!values)for(const auto& setting:areaFixedSettings(pile))
     if(std::string_view(key,keyLength)==setting.key){fixed=setting;break;}
   if(!values && !fixed.values)return fail("Unknown stockpile settings vector");
-  if(classified) {
-    if(!values || !df::global::world || allowedLength)return fail("Invalid classified settings field");
-    const auto getInteger=[&](const char* name,int64_t& value) {
-      lua_getfield(L,3,name);const bool isInteger=lua_isinteger(L,-1);
-      if(isInteger)value=lua_tointeger(L,-1);lua_pop(L,1);return isInteger;
-    };
-    int64_t count=0,selection=0,row=0;
-    if(!getInteger("count",count) || !getInteger("selection",selection) || !getInteger("row",row) ||
-        count<0 || count>df3d_area::kMaxRaws || selection<0 || selection>255 || row< -1 || row>=count)
-      return fail("Invalid classified settings mask");
-    const std::string_view fieldKey(key,keyLength);
-    const auto counts=areaSettingRawCounts();const auto found=counts.find(fieldKey);
-    if(found==counts.end() || found->second!=size_t(count))return fail("Stockpile settings layout changed");
-    const auto rule=areaSettingRule(fieldKey);
-    if(selection & ~areaSettingPartitions(rule))return fail("Invalid settings partition");
-    const auto result=df3d_area::fillClassifiedSettings(*values,size_t(count),uint16_t(selection),int32_t(row),
-        [rule](size_t i){return areaSettingPartition(rule,i);},lua_toboolean(L,5)!=0,budget);
-    if(result.error==df3d_area::Error::InvalidMask)return fail("Unknown stockpile settings row",result.steps);
-    if(result.error!=df3d_area::Error::None)return fail("Settings fill exceeds remaining step budget",result.steps);
-    mutated=true;
-    lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",result.steps);
-    field(L,"resized",result.resized);return 1;
-  }
   // Masks are private producer bit strings: zero excludes, any nonzero byte
   // includes. Their string lengths bound every access without a pre-scan.
   struct Mask {

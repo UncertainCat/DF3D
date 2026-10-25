@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 58;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v58";
+inline constexpr uint32_t kManagementVersion = 59;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v59";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;

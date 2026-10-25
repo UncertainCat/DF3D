@@ -1,3 +1,29 @@
+## Stockpile settings ownership and protocol59
+
+Management59 retires legacy SettingsSet requests that treated category rows or
+whole middle pages as locally classified bulk edits. Individual native leaf rows
+and scalar switches use scope1; leaf All/None uses scope2; category and global
+headers use scopes3 and4. The current viewer already uses these native actions.
+Old clients use a separate v58 region: rebuild bridge, model and Godot together.
+
+All leaf descriptors must have an owned native row provider. Lua no longer has
+raw-based caption/membership fallback or category-merge edit templates. The C++
+classified-mask path and its raw/material rule table are removed. Vector writes
+require an explicit native-membership mask matching the exact stored vector
+size; they cannot resize or initialize excluded entries. Scalar and quality
+fixed-storage masks retain their separate bounds checks. Category activation,
+presets and header actions retain the native routines documented below.
+
+`build/qa/stockpile-native-mask-cleanup` passes root CTest19/19, the areas
+adapter, area/settings controllers and settings-state checks. The adapter verifies
+retired requests fail before any fill call; fixed masks and native leaf/header
+paths still pass. Root and viewer extension builds use management59. The bridge
+build passes. Protected `build/areas-acceptance-20261025-173156` passes236 native
+observations through the full main-scene stockpile driver, including five viewport
+sizes. Only the known separate-thread notice remains; owned DF120452 closes
+unsaved and both save manifests match. This is stockpile acceptance, not Zones
+completion. `native_stockpile_filters.json.native_mask_cleanup` retains hashes.
+
 ## Native stockpile links (DF 53.16)
 
 Run `tools/smoke/stockpile_storage_native.ps1 -Links` for the protected pointer

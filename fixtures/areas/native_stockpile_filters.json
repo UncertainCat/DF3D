@@ -43439,5 +43439,15 @@
       "Settings scrollbar integration and range loading remain outstanding",
       "Full stockpile workflow acceptance remains separate"
     ]
+  },
+  "native_mask_cleanup": {
+    "management_version": 59,
+    "source": "build/areas-acceptance-20261025-173156",
+    "scope": "Full main-scene stockpile viewport input and native readback after retiring reconstructed membership and legacy category-row/whole-page edits. 236 observations; known separate-thread notice only. Owned DF120452 closed unsaved; two save manifests unchanged. Zones excluded.",
+    "hashes": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234"
+    }
   }
 }

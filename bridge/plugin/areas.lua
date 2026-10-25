@@ -345,87 +345,15 @@ setting_leaf('gems/cut_glass','gems.cut_other_mats','builtin')
 setting_leaf('finished_goods/type','finished_goods.type','itemtype','finished_goods')
 setting_leaf('refuse/type','refuse.type','itemtype','refuse')
 setting_leaf('furniture/type','furniture.type','furniture')
-local other_material_counts={ammo=2,armor=10,furniture=15,finished_goods=16,weapons=10,bars=5,blocks=4}
 for _,cat in ipairs{'ammo','armor','furniture','finished_goods','weapons'} do
  setting_leaf(cat..'/other_materials',cat..'.other_mats','other',cat)
 end
 setting_leaf('bars_blocks/bars_other','bars_blocks.bars_other_mats','other','bars')
 setting_leaf('bars_blocks/blocks_other','bars_blocks.blocks_other_mats','other','blocks')
-local finished_item_types={CHAIN=true,FLASK=true,GOBLET=true,INSTRUMENT=true,TOY=true,ARMOR=true,SHOES=true,
- HELM=true,GLOVES=true,FIGURINE=true,AMULET=true,SCEPTER=true,CROWN=true,RING=true,EARRING=true,BRACELET=true,
- GEM=true,TOTEM=true,PANTS=true,BACKPACK=true,QUIVER=true,SPLINT=true,CRUTCH=true,TOOL=true,BOOK=true}
-local refused_item_types={NONE=true,BAR=true,SMALLGEM=true,BLOCKS=true,ROUGH=true,BOULDER=true,CORPSE=true,
- CORPSEPIECE=true,ROCK=true,ORTHOPEDIC_CAST=true,BRANCH=true}
 -- Native Refuse/Item types mixes item-type bits with two independent booleans.
 local embedded_settings={['refuse/type']={
  {key='refuse/type/fresh_raw_hide',field='refuse.fresh_raw_hide',source='toggle',label='Fresh raw hide'},
  {key='refuse/type/rotten_raw_hide',field='refuse.rotten_raw_hide',source='toggle',label='Rotten raw hide'}}}
-local function setting_source(d)
- local raws=df.global.world.raws
- if d.source=='toggle' then return nil,1
- elseif d.source=='quality' then return nil,7
- elseif d.source=='other' then return nil,other_material_counts[d.selector]
- elseif d.source=='inorganic' then return raws.inorganics.all,#raws.inorganics.all
- elseif d.source=='builtin' then return raws.mat_table.builtin,#raws.mat_table.builtin
- elseif d.source=='itemtype' then return nil,df.item_type._last_item+1
- elseif d.source=='furniture' then return nil,df.furniture_type._last_item+1
- elseif d.source=='color' then return raws.descriptors.colors,#raws.descriptors.colors
- elseif d.source=='itemdef' then return raws.itemdefs[d.selector],#raws.itemdefs[d.selector]
- elseif d.source=='organic' then
-  local values=raws.mat_table.organic_types[df.organic_mat_category[d.selector]];return values,#values
- elseif d.source=='creature' then return raws.creatures.all,#raws.creatures.all
- elseif d.source=='plant' then return raws.plants.all,#raws.plants.all end
-end
-local function setting_caption(d,index,values)
- if d.source=='toggle' then return '' end
- -- Summary counting needs membership only. Leaf labels/search come from DF.
- if d.source=='quality' or d.source=='other' or d.source=='color' or d.source=='itemdef' then return '' end
- if d.source=='furniture' then
-  return '' -- Summary membership only; native rows own furniture captions.
- end
- if d.source=='itemtype' then
-  local key=df.item_type[index]
-  if d.selector=='finished_goods' and not finished_item_types[key] or d.selector=='refuse' and refused_item_types[key] then return nil end
-  return '' -- Summary membership only; native rows own item-type captions.
- end
- if d.source=='builtin' then
-  -- Builtin slots outside glass may be null (notably INORGANIC). Filter their
-  -- native indices before trying to read a material object.
-  local token=df.builtin_mats[index]
-  if token~='GLASS_GREEN' and token~='GLASS_CLEAR' and token~='GLASS_CRYSTAL' then return nil end
-  return '' -- Summary membership only; native rows own glass names.
- end
- local v=element(values,index)
- if v==nil then error('Settings source changed') end
- if d.source=='inorganic' then
-  local f=v.material.flags;local part
-  if d.selector=='any' then part='any'
-  elseif d.selector=='stone' then
-   if not (v.flags.SOIL and not v.flags.AQUIFER or f.IS_STONE and not f.NO_STONE_STOCKPILE) then return nil end
-   if #v.metal_ore.mat_index>0 then part='metal_ores'
-   elseif #v.economic_uses>0 then part='economic'
-   elseif v.flags.SOIL then part='clay'
-   else part='other_stone' end
-  elseif d.selector=='rough_gem' then part=f.IS_GEM and 'gem' or nil
-  elseif d.selector=='cut_gem' then part=f.IS_GEM and 'gem' or f.IS_STONE and 'stone' or nil
-  elseif d.selector=='finished_goods' then part=f.IS_GEM and 'gem' or f.IS_METAL and 'metal' or f.IS_STONE and 'stone' or nil
-  elseif d.selector=='ammo' or d.selector=='armor' or d.selector=='metal' then part=f.IS_METAL and 'metal' or nil
-  else part=f.IS_METAL and 'metal' or f.IS_STONE and 'stone' or nil end
-  if not part or d.partition and d.partition~=part then return nil end
-  if d.selector=='rough_gem' or d.selector=='cut_gem' then return '',part end -- Summary membership only.
-  return '',part -- Summary membership only; native rows own inorganic names.
-
- elseif d.source=='creature' then
-  if v.flags.GENERATED or v.creature_id=='EQUIPMENT_WAGON' then return nil end
-  return '' -- Summary membership only; native rows own creature names.
- elseif d.source=='plant' then
-  if not v.flags.TREE then return nil end
-  return '' -- Summary membership only; native rows own plant names.
- elseif d.source=='organic' then
-  return '' -- Staged summary membership only; native rows own organic names.
- end
- return ''
-end
 local function setting_state(b,d,index)
  local cat,field=d.field:match('^([^%.]+)%.(.+)$');local values=b.settings[cat][field]
  if d.source=='toggle' then return values and 2 or 1 end
@@ -489,86 +417,26 @@ setting_columns('weapons',{{'weapons','Weapons'},{'trap_components','Trap compon
  {'stone','Stone'},{'other_materials','Other materials'},{'quality_core','Core quality'},
  {'quality_total','Total quality'},{'usable','Usable weapons',true},{'unusable','Unusable weapons',true}})
 -- Coins/Corpses/Wood have direct leaves without an intermediate native column.
-local summary_groups={}
-do
- local by_field={}
- for key,d in pairs(setting_leaves) do
-  local group=by_field[d.field]
-  if not group then
-   group={field=d.field,source=d.source,selector=d.selector,views={},cat=d.field:match('^([^%.]+)')}
-   by_field[d.field]=group;summary_groups[#summary_groups+1]=group
-  end
-  group.views[#group.views+1]={key=key,partition=d.partition}
- end
- for _,field in ipairs{'animals.empty_cages','animals.empty_traps','armor.usable','armor.unusable',
-  'armor.dyed','armor.undyed','cloth.dyed','cloth.undyed','finished_goods.dyed','finished_goods.undyed',
-  'food.prepared_meals','leather.dyed','leather.undyed','misc.allow_organic','misc.allow_inorganic',
-  'refuse.fresh_raw_hide','refuse.rotten_raw_hide','weapons.usable','weapons.unusable'} do
-  local views={{key=field}}
-  if field=='refuse.fresh_raw_hide' or field=='refuse.rotten_raw_hide' then views[#views+1]={key='refuse/type'} end
-  summary_groups[#summary_groups+1]={field=field,source='toggle',cat=field:match('^([^%.]+)'),views=views}
- end
- table.sort(summary_groups,function(a,b)return a.field<b.field end)
-end
--- Immutable edit templates parallel the visible hierarchy. Category actions
--- include all backing fields (including fields without a separate visible row);
--- List actions include only that page's members. Direct leaves win over empty
--- middle pages for Coins/Corpses/Wood. All scopes share one preflight/commit path.
-local setting_partitions={metal=2,stone=4,gem=8,metal_ores=16,economic=32,clay=64,other_stone=128}
-local edit_categories,edit_lists,edit_rows={},{},{}
-local function edit_template() return {entries={},fields={},flags={}} end
-local function merge_edit(target,source)
- for _,entry in ipairs(source.entries) do
-  local prior=target.fields[entry.field]
-  if prior then prior.selection=(prior.selection==0 or entry.selection==0) and 0 or (prior.selection | entry.selection)
-  else
-   local copy={field=entry.field,source=entry.source,selection=entry.selection}
-   target.entries[#target.entries+1]=copy;target.fields[entry.field]=copy
-  end
- end
- for key in pairs(source.flags) do target.flags[key]=true end
-end
-for _,cat in ipairs(cats) do edit_categories[cat]=edit_template();edit_categories[cat].flags[cat]=true end
-for _,group in ipairs(summary_groups) do
- local one=edit_template();local entry={field=group.field,source=group.source,selection=0}
- one.entries[1]=entry;one.fields[entry.field]=entry
- if edit_categories[group.cat] then merge_edit(edit_categories[group.cat],one) end
-end
+-- Leaf masks come exclusively from owned native rows. Header actions use
+-- settings_header; only scalar rows have local fixed-storage edit templates.
+local edit_lists,edit_rows,embedded_edits={},{},{}
 for key,d in pairs(setting_leaves) do
- local one=edit_template();local entry={field=d.field,source=d.source,selection=setting_partitions[d.partition] or 0}
- one.entries[1]=entry;one.fields[entry.field]=entry;edit_lists[key]=one
+ assert(native_setting_modes[key], 'stockpile leaf has no native row provider: '..key)
+ edit_lists[key]={entries={{field=d.field,source=d.source}}}
 end
 for parent,nodes in pairs(setting_pages) do
- local page=edit_template();local rows={};edit_rows[parent]=rows
+ local rows={};edit_rows[parent]=rows
  for _,node in ipairs(nodes) do
-  local target
-  if node.kind==1 then target=edit_categories[node.key]
-  elseif node.kind==2 then target=edit_lists[node.key]
-  else
-   target=edit_template();local entry={field=node.field,source='toggle',selection=0}
-   target.entries[1]=entry;target.fields[entry.field]=entry
-  end
-  if target then rows[node.key]=target;merge_edit(page,target) end
+  if node.kind==3 then rows[node.key]={entries={{field=node.field,source='toggle'}}} end
  end
- if not edit_lists[parent] then edit_lists[parent]=page end
 end
-local embedded_edits={}
 for list,rows in pairs(embedded_settings) do
  for _,row in ipairs(rows) do
-  local target=edit_template();local entry={field=row.field,source='toggle',selection=0}
-  target.entries[1]=entry;target.fields[row.field]=entry;embedded_edits[row.key]=target
-  merge_edit(edit_lists[list],target)
+  local entry={field=row.field,source='toggle'}
+  embedded_edits[row.key]={entries={entry}}
+  edit_lists[list].entries[#edit_lists[list].entries+1]=entry
  end
 end
-local function order_edit_flags(target)
- if target.flag_order then return end
- target.flag_order={}
- for _,cat in ipairs(cats) do if target.flags[cat] then target.flag_order[#target.flag_order+1]=cat end end
-end
-for _,target in pairs(edit_categories) do order_edit_flags(target) end
-for _,target in pairs(edit_lists) do order_edit_flags(target) end
-for _,target in pairs(embedded_edits) do order_edit_flags(target) end
-for _,rows in pairs(edit_rows) do for _,target in pairs(rows) do order_edit_flags(target) end end
 local function native_setting_identity(list,row)
  local d=setting_leaves[list]
  if not d or not integer(row.index) or row.index<0 then return nil end
@@ -587,7 +455,7 @@ local function settings_edit_plan(a,layout,available,native_rows)
   if row:sub(1,#list+1)~=list..'/' or not integer(index) or index<0 or suffix~=tostring(index) then
    return nil,'Unknown stockpile settings row',0
   end
-  target={entries={target.entries[1]},flag_order={}}
+  target={entries={target.entries[1]}}
  else target=edit_rows[list] and edit_rows[list][row] end
  if not target then return nil,'Unknown stockpile settings list or row',0 end
  if native_rows then
@@ -604,7 +472,7 @@ local function settings_edit_plan(a,layout,available,native_rows)
  end
  local used=1+#target.entries
  if available<used then return nil,'Area request exceeds remaining step budget',0 end
- local plan={entries={},flags=target.flag_order,cost=#target.flag_order}
+ local plan={entries={},cost=0}
  for _,d in ipairs(target.entries) do
   local entry=type(layout.fields)=='table' and layout.fields[d.field]
   local fixed=d.source=='quality' or d.source=='toggle';local count=entry and entry.count
@@ -620,13 +488,6 @@ local function settings_edit_plan(a,layout,available,native_rows)
   end
   if index and index>=count then return nil,'Unknown stockpile settings row',used end
   local members,allowed,cost
-  local leaf=scope==2 and setting_leaves[list]
-  local embedded
-  for _,candidate in ipairs(embedded_settings[list] or {}) do
-   if candidate.field==d.field then embedded=candidate;break end
-  end
-  if leaf and embedded then leaf=embedded end
-  local query=default(a,'query',''):lower()
   if native_rows then
    local selected,eligible={},{}
    for i=1,count do selected[i]='\0';eligible[i]='\0' end
@@ -637,25 +498,11 @@ local function settings_edit_plan(a,layout,available,native_rows)
    end
    if index and selected[index+1]~='\1' then return nil,'Unknown stockpile settings row',used end
    members=table.concat(selected);allowed=table.concat(eligible);cost=fixed and 2 or 1+((count+255)//256)
-  elseif leaf and query~='' then
-   local values,raw_count=setting_source(leaf)
-   if raw_count~=count then return nil,'Stockpile settings layout changed',used end
-   if available-used<2*count then return nil,'Area request exceeds remaining step budget',used end
-   local backing={};for key,value in pairs(leaf) do backing[key]=value end;backing.partition=nil
-   local selected,eligible={},{}
-   for i=0,count-1 do
-    local label=embedded and embedded.label or setting_caption(leaf,i,values)
-    eligible[i+1]=setting_caption(backing,i,values)~=nil and '\1' or '\0'
-    selected[i+1]=label and dfhack.df2utf(label):lower():find(query,1,true) and '\1' or '\0'
-   end
-   used=used+2*count
-   members=table.concat(selected);allowed=table.concat(eligible)
-   cost=fixed and 2 or 1+((count+255)//256)
   elseif fixed then
    allowed=string.rep('\1',count)
    members=index and string.rep('\0',index)..'\1'..string.rep('\0',count-index-1) or allowed
    cost=2
-  else members={count=count,selection=d.selection,row=index or -1};allowed='';cost=1+2*((count+255)//256) end
+  else return nil,'Unknown stockpile settings list or row',used end
   plan.entries[#plan.entries+1]={field=d.field,members=members,allowed=allowed,cost=cost}
   plan.cost=plan.cost+cost
  end
@@ -1321,7 +1168,7 @@ local function native_operation(r)
   local category=0
   if a.scope==3 then
    local key=default(a,'list_key','')
-   if not edit_lists[key] then return reject('Unknown stockpile settings list or row') end
+   if not edit_lists[key] and not setting_pages[key] then return reject('Unknown stockpile settings list or row') end
    local name=key:match('^([^/]+)')
    for bit,cat in ipairs(cats)do if cat==name then category=1 << (bit-1);break end end
    if category==0 then return reject('Unknown stockpile settings list or row') end
@@ -1365,8 +1212,8 @@ local function native_operation(r)
    steps=steps+used
    if not plan then return reject(problem) end
    -- Build all selection masks and reserve every field and the reply before
-   -- the first native write. Migrated masks use fresh native row membership;
-   -- remaining staged lists scan current raws, never a partially paged result.
+   -- the first native write. Vector masks use fresh native row membership,
+   -- never a partially paged result or locally reconstructed raw rules.
    if budget-steps<plan.cost+reply_reserve then return reject('Area request exceeds remaining step budget') end
    if type(r.settings_fill)~='function' then return reject('Native area helper unavailable') end
    local remaining=plan.cost;local wrote=false
@@ -1380,12 +1227,7 @@ local function native_operation(r)
     end
     wrote=true
    end
-   if #plan.flags>0 then
-    clear_lists();steps=steps+#plan.flags
-    for _,cat in ipairs(plan.flags) do
-     b.settings.flags[cat]=a.value==2
-    end
-   end
+
    local after,why=observe(b,false)
    if not after then return reject(why..'; native edit may have completed; inspect before retrying') end
    return finish{ok=true,message='Native stockpile filters updated',areas={info(b,after)},building_id=b.id}

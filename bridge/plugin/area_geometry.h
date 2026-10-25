@@ -111,11 +111,6 @@ struct Revision {
 enum class Error { None, InvalidExtent, InvalidSpan, TooManySpans, TooManyTiles,
                    TooLarge, Empty, InvalidMode, Budget, TooManyRaws, InvalidMask, InvalidSite };
 struct FillResult { Error error=Error::None; uint32_t steps=0; bool resized=false; };
-// Private settings partitions. Zero from a classifier means ineligible; a
-// zero selection means all eligible members, not every raw entry.
-enum SettingPartition : uint16_t { Any=1, Metal=2, Stone=4, Gem=8,
-                                  MetalOres=16, Economic=32, Clay=64, OtherStone=128 };
-
 struct SettingsRawTotal {bool valid=true;uint32_t count=0;};
 template<class Counts> SettingsRawTotal settingsRawTotal(const Counts& counts) {
   SettingsRawTotal total;
@@ -143,46 +138,18 @@ FillResult fillFixedSettings(Value* values,size_t count,const Members& members,c
   return {Error::None,steps,false};
 }
 
-// Masks are indexed by raw id, allowing one counted pass across each vector.
-// On resize the serializer's rule covers ALL disallowed entries, not just the
-// appended tail. Without resize only allowed members change. Never shrink.
+// Native leaf edits preserve the stored vector size. Require an exact mask
+// for that storage, including excluded/stale entries, before writing any byte.
 template<class Vector,class Members,class Allowed>
 FillResult fillSettings(Vector& values,size_t raws,const Members& members,const Allowed& allowed,
                         bool enabled,uint32_t budget) {
   if(!budget)return {Error::Budget,0,false};
   if(raws>kMaxRaws)return {Error::TooManyRaws,1,false};
-  if(members.size()!=raws || allowed.size()!=raws)return {Error::InvalidMask,1,false};
+  if(values.size()!=raws || members.size()!=raws || allowed.size()!=raws)return {Error::InvalidMask,1,false};
   const uint32_t steps=1+bulkSteps(raws);
   if(steps>budget)return {Error::Budget,1,false};
-  const bool resize=values.size()<raws;
-  if(resize)values.resize(raws,0);
-  for(size_t i=0;i<raws;++i) {
-    if(resize && !allowed[i])values[i]=1;
-    else if(members[i] && allowed[i])values[i]=enabled?1:0;
-  }
-  return {Error::None,steps,resize};
-}
-
-// Build eligibility from current raws inside this update; never require a
-// warmed label cache. One counted classification pass precedes the existing
-// fill pass. All masks and row validity are ready before touching native data.
-template<class Vector,class Classify>
-FillResult fillClassifiedSettings(Vector& values,size_t raws,uint16_t selection,int32_t row,
-                                 Classify classify,bool enabled,uint32_t budget) {
-  if(!budget)return {Error::Budget,0,false};
-  if(raws>kMaxRaws)return {Error::TooManyRaws,1,false};
-  if(row< -1 || (row>=0 && size_t(row)>=raws))return {Error::InvalidMask,1,false};
-  const auto scan=bulkSteps(raws),cost=1+2*scan;
-  if(cost>budget)return {Error::Budget,1,false};
-  std::vector<uint8_t> members(raws),allowed(raws);
-  for(size_t i=0;i<raws;++i) {
-    const uint16_t partition=classify(i);
-    allowed[i]=partition!=0;
-    members[i]=partition && (!selection || (partition&selection)) && (row<0 || size_t(row)==i);
-  }
-  if(row>=0 && !members[size_t(row)])return {Error::InvalidMask,1+scan,false};
-  auto result=fillSettings(values,raws,members,allowed,enabled,budget-scan);
-  result.steps+=scan;return result;
+  for(size_t i=0;i<raws;++i)if(members[i] && allowed[i])values[i]=enabled?1:0;
+  return {Error::None,steps,false};
 }
 
 struct Span { int32_t y=0,x=0,length=0; };

@@ -1222,6 +1222,8 @@ table AreaRequest {
   expected_list_revision:uint64;
   list_key:string;
   row_key:string;
+  // SettingsSet:1 individual native leaf/scalar,2 native leaf All/None,
+  // 3 category header,4 global header. v59 rejects legacy whole-page/category-row edits.
   scope:uint8;
   // SettingsSet uses1..2; LocationAccess uses0 Visitors,1 Residents,2 Citizens,3 Members.
   value:uint8;
@@ -1702,7 +1704,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 58;
+  schema_version:uint32 = 59;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1748,7 +1750,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 58;
+  schema_version:uint32 = 59;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

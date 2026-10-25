@@ -61,48 +61,6 @@ TEST_CASE("area raw cap counts the complete backing inventory without overflow")
   counts={};total=area::settingsRawTotal(counts);CHECK(total.valid);CHECK(total.count==0);
 }
 
-TEST_CASE("classified settings validate membership before bounded native fills") {
-  const std::array<uint16_t,5> parts{{area::Gem,area::Metal,area::Stone,0,area::Gem}};
-  size_t visits=0;
-  const auto classify=[&](size_t i){++visits;return parts[i];};
-  std::vector<char> values{0,1};const auto before=values;
-  auto result=area::fillClassifiedSettings(values,5,area::Gem,-1,classify,true,2);
-  CHECK(result.error==area::Error::Budget);CHECK(values==before);CHECK(visits==0);
-  result=area::fillClassifiedSettings(values,5,area::Gem,-1,classify,true,3);
-  REQUIRE(result.error==area::Error::None);CHECK(result.steps==3);CHECK(result.resized);
-  CHECK(visits==5);CHECK(values==std::vector<char>{1,1,0,1,1});
-  // Switching one partition does not change another; no shrink or rewriting
-  // disallowed entries when already sized. A raw-index row must be a member.
-  values={1,1,1,0,1,9};visits=0;
-  result=area::fillClassifiedSettings(values,5,area::Metal|area::Stone,-1,classify,false,3);
-  REQUIRE(result.error==area::Error::None);CHECK_FALSE(result.resized);
-  CHECK(values==std::vector<char>{1,0,0,0,1,9});CHECK(visits==5);
-  const auto saved=values;
-  for(int32_t row:{-2,5}) {
-    visits=0;result=area::fillClassifiedSettings(values,5,0,row,classify,true,3);
-    CHECK(result.error==area::Error::InvalidMask);CHECK(values==saved);CHECK(visits==0);
-  }
-  for(int32_t row:{1,3}) {
-    result=area::fillClassifiedSettings(values,5,area::Gem,row,classify,true,3);
-    CHECK(result.error==area::Error::InvalidMask);CHECK(values==saved);CHECK(result.steps==2);
-  }
-  REQUIRE(area::fillClassifiedSettings(values,5,area::Gem,4,classify,false,3).error==area::Error::None);
-  CHECK(values==std::vector<char>{1,0,0,0,0,9});
-  visits=0;values.clear();
-  const auto all=[&](size_t){++visits;return uint16_t(area::Any);};
-  result=area::fillClassifiedSettings(values,65536,0,-1,all,true,512);
-  CHECK(result.error==area::Error::Budget);CHECK(visits==0);CHECK(values.empty());
-  result=area::fillClassifiedSettings(values,65536,0,-1,all,true,513);
-  REQUIRE(result.error==area::Error::None);CHECK(result.steps==513);CHECK(visits==65536);
-  CHECK(values.size()==65536);CHECK(values.front()==1);CHECK(values.back()==1);
-  visits=0;result=area::fillClassifiedSettings(values,65537,0,-1,all,false,1536);
-  CHECK(result.error==area::Error::TooManyRaws);CHECK(visits==0);CHECK(values.back()==1);
-  result=area::fillClassifiedSettings(values,0,0,-1,all,false,1);
-  CHECK(result.error==area::Error::None);CHECK(result.steps==1);CHECK(values.size()==65536);
-  // ceil contributions for 77 raw vectors are <=256+76 at total65536.
-  const uint32_t allFields=77+2*(256+76)+29*2;
-  CHECK(allFields==799);CHECK(10+282+108+107+allFields+17+154==1477);
-}
 
 TEST_CASE("fixed area settings write only selected qualities and switches") {
   std::array<bool,7> quality{{false,true,false,true,false,true,false}};
@@ -136,20 +94,21 @@ TEST_CASE("fixed area settings write only selected qualities and switches") {
   CHECK(switches==std::array<bool,3>{{true,false,true}});
 }
 
-TEST_CASE("area settings fill respects shared members resize and budget") {
+TEST_CASE("area settings fill preserves native storage and respects masks and budget") {
   std::vector<char> values{0,0,1,0};
   const std::vector<uint8_t> members{1,1,0,0},allowed{1,0,1,0};
   auto r=area::fillSettings(values,4,members,allowed,true,2);
   CHECK(r.error==area::Error::None);CHECK_FALSE(r.resized);CHECK(r.steps==2);
   CHECK(values==std::vector<char>{1,0,1,0}); // disallowed entries unchanged without resize
   values={1,0};r=area::fillSettings(values,4,members,allowed,false,2);
-  CHECK(r.error==area::Error::None);CHECK(r.resized);CHECK(values==std::vector<char>{0,1,0,1});
+  CHECK(r.error==area::Error::InvalidMask);CHECK_FALSE(r.resized);CHECK(values==std::vector<char>{1,0});
   values={1,1,1,1,1};r=area::fillSettings(values,4,members,allowed,false,2);
-  CHECK_FALSE(r.resized);CHECK(values==std::vector<char>{0,1,1,1,1}); // retained tail
+  CHECK(r.error==area::Error::InvalidMask);CHECK_FALSE(r.resized);CHECK(values==std::vector<char>{1,1,1,1,1});
+  values.resize(4);
   const auto before=values;
   CHECK(area::fillSettings(values,4,members,allowed,true,1).error==area::Error::Budget);CHECK(values==before);
   CHECK(area::fillSettings(values,3,members,allowed,true,20).error==area::Error::InvalidMask);CHECK(values==before);
-  std::vector<uint8_t> large(65536,1);std::vector<char> native;
+  std::vector<uint8_t> large(65536,1);std::vector<char> native(65536,0);
   r=area::fillSettings(native,65536,large,large,true,257);
   CHECK(r.error==area::Error::None);CHECK(r.steps==257);CHECK(native.size()==65536);CHECK(native.back()==1);
   CHECK(area::fillSettings(native,65537,large,large,false,1536).error==area::Error::TooManyRaws);

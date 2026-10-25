@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,width_probe,historical=...
+local out,width_probe,historical,text_chunks=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -65,6 +65,19 @@ require('gui.script').start(function()
     gui.simulateInput(view,string.format('STRING_A%03d',text:byte(i)))
    end
    view:render(dfhack.getTickCount());c.entering_spec_filter=false
+  end
+  if text_chunks then
+   for _,prefix in ipairs{'',string.rep('a',75),string.rep('a',76)}do
+    for _,chunk in ipairs{'abc XYZ','aéα中b','ab\r\ncd\tef','ab\ncd','ab\tcd',string.rep('b',31)}do
+     input(prefix);c.entering_spec_filter=true
+     assert(#chunk<32)
+     for j=0,31 do df.global.enabler.last_text_input[j]=j<#chunk and chunk:byte(j+1) or 0 end
+     -- A STRING_A key overwrites the supplied buffer inside DFHack.
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+     records[#records+1]={probe='committed_text_chunk',prefix_length=#prefix,chunk=chunk,stored=dfhack.df2utf(c.spec_filter),stored_length=#c.spec_filter}
+    end
+   end
+   input('');return
   end
   for byte=32,255 do
    local key=string.format('STRING_A%03d',byte)

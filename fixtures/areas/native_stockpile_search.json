@@ -5027,5 +5027,138 @@
         "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
       }
     }
+  },
+  "text_chunk_helper": {
+    "source": "build/stockpile-search-native-20261025-174148/1200x800-0/result.json",
+    "sha256": "2cc216fbafb081bc897773078a65c8818276725a1f46cdd262dc065085048bf0",
+    "scope": "Oracle-supplied UTF8 buffer with empty key set, bypassing DFHack STRING_A replacement. This tests native field helper behavior, NOT actual OS clipboard or IME composition delivery. DF2UTF renders accepted byte10 as CP437 symbol U+25D9; the helper stops the chunk there. Source unchanged; owned DF116044 closed unsaved.",
+    "cases": [
+      {
+        "chunk": "abc XYZ",
+        "prefix_length": 0,
+        "probe": "committed_text_chunk",
+        "stored": "ABC XYZ",
+        "stored_length": 7
+      },
+      {
+        "chunk": "a\u00e9\u03b1\u4e2db",
+        "prefix_length": 0,
+        "probe": "committed_text_chunk",
+        "stored": "AB",
+        "stored_length": 2
+      },
+      {
+        "chunk": "ab\r\ncd\tef",
+        "prefix_length": 0,
+        "probe": "committed_text_chunk",
+        "stored": "AB\u25d9",
+        "stored_length": 3
+      },
+      {
+        "chunk": "ab\ncd",
+        "prefix_length": 0,
+        "probe": "committed_text_chunk",
+        "stored": "AB\u25d9",
+        "stored_length": 3
+      },
+      {
+        "chunk": "ab\tcd",
+        "prefix_length": 0,
+        "probe": "committed_text_chunk",
+        "stored": "ABCD",
+        "stored_length": 4
+      },
+      {
+        "chunk": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "prefix_length": 0,
+        "probe": "committed_text_chunk",
+        "stored": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "stored_length": 31
+      },
+      {
+        "chunk": "abc XYZ",
+        "prefix_length": 75,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "a\u00e9\u03b1\u4e2db",
+        "prefix_length": 75,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "ab\r\ncd\tef",
+        "prefix_length": 75,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "ab\ncd",
+        "prefix_length": 75,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "ab\tcd",
+        "prefix_length": 75,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "prefix_length": 75,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB",
+        "stored_length": 76
+      },
+      {
+        "chunk": "abc XYZ",
+        "prefix_length": 76,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "a\u00e9\u03b1\u4e2db",
+        "prefix_length": 76,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "ab\r\ncd\tef",
+        "prefix_length": 76,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "ab\ncd",
+        "prefix_length": 76,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "ab\tcd",
+        "prefix_length": 76,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      },
+      {
+        "chunk": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "prefix_length": 76,
+        "probe": "committed_text_chunk",
+        "stored": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "stored_length": 76
+      }
+    ]
   }
 }

@@ -1220,7 +1220,7 @@ rejected characters do not consume the native allowance.
 `tools/smoke/stockpile_search_native.ps1` records the supported input path in
 `native_stockpile_search.json`. Protected run
 `build/stockpile-search-native-20261025-141555` verifies223 available printable
-STRING keys with UTF-8 `last_text_input`, plus length boundaries at four grid/
+STRING keys with DFHack-generated one-byte text, plus length boundaries at four grid/
 scale configurations. All yield the same character map and76-character cap.
 Five temporary accented/non-ASCII Ammo names verify12 native/provider filter
 comparisons per configuration, preserving native UI bytes during provider calls.
@@ -1242,6 +1242,20 @@ clipboard newline handling or IME composition. An earlier unpaced burst
 capture165458 retained only the final character per burst; it is not an ordinary
 typing oracle. Preparation runs165304/165332 failed layout setup and165415 failed
 JSON parsing; each closed its owned process unsaved and preserved the source.
+
+`-TextChunks` separately probes the field helper with a supplied UTF-8 buffer
+and an empty key set. DFHack `screen_doSimulateInput` replaces `last_text_input`
+with one byte for STRING_A keys; such a key cannot test a supplied multi-character
+chunk. Preliminary174025 demonstrated that replacement and is not chunk evidence.
+Corrected `build/stockpile-search-native-20261025-174148` records18 cases across
+empty,75-character and full76-character prefixes. Ordinary letters/spaces and
+Unicode rejection match the viewer normalizer. An injected LF is instead stored
+as byte10 (displayed as CP437 U+25D9), and terminates that chunk. CR/tab are
+ignored. This is helper-input behavior, not proof that OS paste or IME can deliver
+such a chunk. Do not substitute it for the separate Windows-message observations
+or change product paste behavior solely from this synthetic path. The fixture's
+`text_chunk_helper` section retains the scope and raw-result hash. Source hashes
+match and owned DF116044 closes unsaved;174025 also preserved its source.
 
 Settings captions are displayed verbatim from the owned native row builder.
 That builder already applies DF's capitalization; applying Unicode uppercase

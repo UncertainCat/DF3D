@@ -1,4 +1,4 @@
-param([string]$CloneEvidence="build/native-save-effects-20260930-081415",[switch]$TruncationWidths,[switch]$TextMessages,[switch]$HistoricalMaterials)
+param([string]$CloneEvidence="build/native-save-effects-20260930-081415",[switch]$TruncationWidths,[switch]$TextMessages,[switch]$HistoricalMaterials,[switch]$TextChunks)
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 $env:Path='C:/msys64/mingw64/bin;'+$env:Path
@@ -78,7 +78,7 @@ try {
  & "$repo/build/tools/session_client.exe" load $clone *> "$out/load.log"
  if($LASTEXITCODE -ne 0){throw 'Source load failed'}
  $sizes=if($TruncationWidths){@(@(912,600,0),@(920,600,0),@(928,600,0),@(936,600,0),@(944,600,0),@(952,600,0))}else{@(@(1200,800,0),@(960,600,0),@(1920,1080,0),@(1920,1080,150))}
- if($TextMessages -or $HistoricalMaterials){$sizes=,@(1200,800,0)}
+ if($TextMessages -or $HistoricalMaterials -or $TextChunks){$sizes=,@(1200,800,0)}
  foreach($size in $sizes) {
   $stageOut="$out/$($size[0])x$($size[1])-$($size[2])";New-Item -ItemType Directory -Path $stageOut | Out-Null
   $config=Invoke-DfhackRaw -CommandArgs @('lua',"local d=df.global.init.display;d.flag.INTERFACE_SCALING_TO_DESIRED_HEIGHT_WIDTH=$(([bool]($size[2] -eq 0)).ToString().ToLower());d.interface_scaling_percentage=$($size[2]);print('LAYOUT_CONFIGURED')")
@@ -87,7 +87,7 @@ try {
   Start-Sleep -Milliseconds 300
   [Shot]::Resize([Shot]::Find($owned.Id),$size[0],$size[1]) | Set-Content "$stageOut/requested-size.txt"
   Start-Sleep -Milliseconds 1000
- $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_search_native.lua]==]))([==[$stageOut]==],$($TruncationWidths.ToString().ToLower()),$($HistoricalMaterials.ToString().ToLower()))")
+ $r=Invoke-DfhackRaw -CommandArgs @('lua',"df.global.d_init.feature.autosave=df.d_init_autosave.NONE;assert(loadfile([==[$repo/tools/smoke/stockpile_search_native.lua]==]))([==[$stageOut]==],$($TruncationWidths.ToString().ToLower()),$($HistoricalMaterials.ToString().ToLower()),$($TextChunks.ToString().ToLower()))")
  $r | ConvertTo-Json | Set-Content "$stageOut/native.log"
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_SEARCH_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(240)

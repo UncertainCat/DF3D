@@ -2420,5 +2420,589 @@
         "visible_indices": []
       }
     ]
+  },
+  "quality_lists": {
+    "provenance": {
+      "run": "build/stockpile-presets-native-20261025-022058",
+      "comparison": "Actual native Core quality and Total quality clicks in all five categories, with alternating enabled values. Every label, order, stable field/index, enabled state and visibility compared against the owned row service. Main interface bytes preserved.",
+      "source_save_changed": false,
+      "simulation_advanced": false,
+      "omissions": [
+        "This capture uses empty quality search.",
+        "No rendered Godot comparison."
+      ]
+    },
+    "comparisons": [
+      {
+        "mode": 26,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": true,
+            "field": "furniture.quality_core",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.quality_core",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.quality_core",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.quality_core",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.quality_core",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.quality_core",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.quality_core",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 27,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": false,
+            "field": "furniture.quality_total",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.quality_total",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.quality_total",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.quality_total",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.quality_total",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "furniture.quality_total",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.quality_total",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 48,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": true,
+            "field": "ammo.quality_core",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.quality_core",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.quality_core",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.quality_core",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.quality_core",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.quality_core",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.quality_core",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 49,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": false,
+            "field": "ammo.quality_total",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.quality_total",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.quality_total",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.quality_total",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.quality_total",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.quality_total",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.quality_total",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 69,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_core",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_core",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_core",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_core",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_core",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_core",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_core",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 70,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_total",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_total",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_total",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_total",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_total",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "finished_goods.quality_total",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.quality_total",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 92,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": true,
+            "field": "weapons.quality_core",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.quality_core",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.quality_core",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.quality_core",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.quality_core",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.quality_core",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.quality_core",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 93,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": false,
+            "field": "weapons.quality_total",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.quality_total",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.quality_total",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.quality_total",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.quality_total",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.quality_total",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.quality_total",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 103,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": true,
+            "field": "armor.quality_core",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.quality_core",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.quality_core",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.quality_core",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.quality_core",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.quality_core",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.quality_core",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 104,
+        "probe": "quality_rows",
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.quality_total",
+            "index": 0,
+            "name": "Standard",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.quality_total",
+            "index": 1,
+            "name": "Well-crafted",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.quality_total",
+            "index": 2,
+            "name": "Finely-crafted",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.quality_total",
+            "index": 3,
+            "name": "Superior quality",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.quality_total",
+            "index": 4,
+            "name": "Exceptional",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.quality_total",
+            "index": 5,
+            "name": "Masterwork",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.quality_total",
+            "index": 6,
+            "name": "Artifact",
+            "visible": true
+          }
+        ]
+      }
+    ],
+    "gameplay_acceptance": {
+      "run": "build/stockpile-initialization-20261025-023028",
+      "driver": "presentations/godot/project/tests/stockpile_initialization_live.gd",
+      "native_observations": 201,
+      "quality_reads": 30,
+      "quality_edits": 20,
+      "queries": [
+        "",
+        "CRAFTED",
+        "zzzznomatch"
+      ],
+      "comparison": "Real bridge rows against owned native rows; filtered All/None compared against an independently prepared complete settings snapshot. Other native creation/category/preset/paint/removal checks also passed.",
+      "diagnostics": "clean",
+      "source_save_changed": false,
+      "owned_process_closed": true,
+      "omissions": [
+        "No rendered panel comparison.",
+        "Non-ASCII quality search not covered."
+      ]
+    }
   }
 }

@@ -23,7 +23,18 @@ struct NativeStockpileRow {
     size_t index;
     std::string name;
     bool enabled, visible;
+    std::string field;
 };
+struct NativeStockpileSettingRange {
+    std::string field;
+    const void* begin;
+    size_t count;
+};
+// Caller-owned settings and address ranges remain local to this safe-point call.
+// Only verified list modes are accepted; output contains no native pointers.
+std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
+    df::stockpile_settings& owned,int mode,const std::string& filter,
+    const std::vector<NativeStockpileSettingRange>& ranges);
 // Read-only Wood-list probe. Caller bounds settings before copying. Filter bytes
 // use DF's encoding. Selection activation is deliberately not part of this query.
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(

@@ -37,5 +37,19 @@ func exercise() -> void:
 			await edit(pile,0,{"changed_categories":1 << bit,"categories":1 << bit})
 			await native("category_after",{"id":pile,"category":categories[bit]})
 			if stopped: return
+	for entry in [["furniture",26],["ammo",48],["finished_goods",69],["weapons",92],["armor",103]]:
+		for quality in range(2):
+			var key: String = entry[0] + ("/quality_core" if quality == 0 else "/quality_total")
+			var mode: int = entry[1] + quality
+			step = "native quality " + key
+			for query in ["", "CRAFTED", "zzzznomatch"]:
+				var page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query},"settings")
+				if stopped: return
+				await native("quality_rows",{"id":pile,"mode":mode,"list_key":key,"query":query,"rows":page.settings})
+			for value in [1,2]:
+				await native("quality_before",{"id":pile,"mode":mode,"query":"CRAFTED","value":value})
+				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":"CRAFTED"})
+				await native("quality_after",{"id":pile,"mode":mode})
+				if stopped: return
 	await paint()
 	await native("final")

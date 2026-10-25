@@ -906,6 +906,45 @@ bool areaPresetInventoryFits(df::building_stockpilest* pile) {
   for(const auto& entry:areaSettingVectors(pile))stored[index++]=entry.second->size();
   return df3d_area::settingsRawTotal(raw).valid && df3d_area::settingsRawTotal(stored).valid;
 }
+std::optional<std::vector<df3d_area::NativeStockpileRow>> ownedStockpileRows(
+    df::building_stockpilest* pile,int32_t mode,const std::string& filter) {
+  if(!pile || !areaPresetInventoryFits(pile))return std::nullopt;
+  std::unique_ptr<df::building_stockpilest> scratch(df::allocate<df::building_stockpilest>());
+  if(!scratch)return std::nullopt;
+  scratch->settings=pile->settings;
+  std::vector<df3d_area::NativeStockpileSettingRange> ranges;
+  for(const auto& entry:areaSettingVectors(scratch.get()))
+    ranges.push_back({entry.first,entry.second->data(),entry.second->size()});
+  for(const auto& entry:areaFixedSettings(scratch.get()))
+    ranges.push_back({entry.key,entry.values,entry.count});
+  return df3d_area::nativeStockpileRows(scratch->settings,mode,filter,ranges);
+}
+int areaSettingsRows(lua_State* L) {
+  bool attempted=false;
+  const auto fail=[&]() {
+    lua_newtable(L);field(L,"ok",false);field(L,"message","");field(L,"steps",0);
+    field(L,"work_unknown",attempted);return 1;
+  };
+  auto* pile=Lua::GetDFObject<df::building_stockpilest>(L,1);
+  if(!pile || !lua_isinteger(L,2) || lua_type(L,3)!=LUA_TSTRING || !lua_isnil(L,4))return fail();
+  const auto mode=lua_tointeger(L,2);
+  size_t length=0;const auto* query=lua_tolstring(L,3,&length);
+  if(mode<0 || mode>109 || length>512)return fail();
+  try {
+    attempted=true;
+    const auto rows=ownedStockpileRows(pile,int32_t(mode),UTF2DF(std::string(query,length)));
+    if(!rows || rows->size()>65536)return fail();
+    for(const auto& row:*rows)if(DF2UTF(row.name).size()>512)return fail();
+    lua_newtable(L);field(L,"ok",true);field(L,"steps",0);field(L,"work_unknown",true);
+    lua_createtable(L,int(rows->size()),0);int index=0;
+    for(const auto& row:*rows) {
+      lua_newtable(L);field(L,"field",row.field);field(L,"index",int64_t(row.index));
+      field(L,"label",DF2UTF(row.name));field(L,"enabled",row.enabled);field(L,"visible",row.visible);
+      lua_rawseti(L,-2,++index);
+    }
+    lua_setfield(L,-2,"rows");return 1;
+  } catch(...) {return fail();}
+}
 int areaSettingsCategories(lua_State* L) {
   const auto result=[&](bool ok,const char* message,uint32_t steps,bool unknown=false) {
     lua_newtable(L);field(L,"ok",ok);field(L,"message",message);field(L,"steps",steps);
@@ -2043,6 +2082,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSettingsLayout);lua_setfield(L,-2,"settings_layout");
     lua_pushcfunction(L,areaSettingsPreset);lua_setfield(L,-2,"settings_preset");
     lua_pushcfunction(L,areaSettingsCategories);lua_setfield(L,-2,"settings_categories");
+    lua_pushcfunction(L,areaSettingsRows);lua_setfield(L,-2,"settings_rows");
     lua_pushcfunction(L,areaLocationSet);lua_setfield(L,-2,"set_location");
     lua_pushcfunction(L,areaLocationCreate);lua_setfield(L,-2,"create_location");
     lua_pushcfunction(L,areaCreate);lua_setfield(L,-2,"create_area");
@@ -2667,6 +2707,21 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
+bool printStockpileRows(color_ostream& out,int32_t id,int32_t mode,const std::string& filter) {
+  auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
+  if(!pile || !areaPresetInventoryFits(pile))return false;
+  try {
+    const auto rows=ownedStockpileRows(pile,mode,filter);
+    if(!rows)return false;
+    Json::Value result(Json::arrayValue);
+    for(const auto& row:*rows) {
+      Json::Value value(Json::objectValue);
+      value["field"]=row.field;value["index"]=Json::UInt64(row.index);value["name"]=DF2UTF(row.name);
+      value["enabled"]=row.enabled;value["visible"]=row.visible;result.append(value);
+    }
+    out.print("{}",Json::FastWriter().write(result));return true;
+  } catch(...) {return false;}
+}
 bool printStockpileWoodRows(color_ostream& out,int32_t id,const std::string& filter) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !areaPresetInventoryFits(pile))return false;

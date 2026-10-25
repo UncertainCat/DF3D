@@ -228,6 +228,13 @@ end
 for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
+local native_setting_modes={
+ ['furniture/quality_core']=26,['furniture/quality_total']=27,
+ ['ammo/quality_core']=48,['ammo/quality_total']=49,
+ ['finished_goods/quality_core']=69,['finished_goods/quality_total']=70,
+ ['weapons/quality_core']=92,['weapons/quality_total']=93,
+ ['armor/quality_core']=103,['armor/quality_total']=104,
+}
 for _,cat in ipairs{'armor','cloth','finished_goods','leather'} do setting_leaf(cat..'/color',cat..'.color','color') end
 for _,entry in ipairs{{'ammo/type','ammo.type','ammo'},{'armor/body','armor.body','armor'},
  {'armor/head','armor.head','helms'},{'armor/feet','armor.feet','shoes'},{'armor/hands','armor.hands','gloves'},
@@ -342,14 +349,14 @@ local function setting_source(d)
  elseif d.source=='plant' then return raws.plants.all,#raws.plants.all end
 end
 -- Verbatim native settings copy captured in the supported build (2011 audit).
-local quality_captions={'Standard','Well-crafted','Finely-crafted','Superior quality','Exceptional','Masterwork','Artifact'}
 local other_captions={WOOD='Wood',BONE='Bone',LEATHER='Leather',SHELL='Shell',SILK='Silk',YARN='Yarn',
  PLANT_CLOTH='Plant Cloth',CLEAR_GLASS='Clear Glass',CRYSTAL_GLASS='Crystal Glass',GREEN_GLASS='Green Glass',
  AMBER='Amber',CORAL='Coral',HORN='Horn',PEARL='Pearl',TOOTH='Tooth',WAX='Wax',
  ASH='Ash',COAL='Coal',PEARLASH='Pearlash',POTASH='Potash',SOAP='Soap'}
 local function setting_caption(d,index,values)
  if d.source=='toggle' then return '' end
- if d.source=='quality' then return quality_captions[index+1] or '' end
+ -- Summary counting needs membership only. Leaf labels/search come from DF.
+ if d.source=='quality' then return '' end
  if d.source=='furniture' then
   local token=df.furniture_type[index];return furniture_captions[token] or token or ''
  end
@@ -593,7 +600,7 @@ for _,target in pairs(edit_categories) do order_edit_flags(target) end
 for _,target in pairs(edit_lists) do order_edit_flags(target) end
 for _,target in pairs(embedded_edits) do order_edit_flags(target) end
 for _,rows in pairs(edit_rows) do for _,target in pairs(rows) do order_edit_flags(target) end end
-local function settings_edit_plan(a,layout,available)
+local function settings_edit_plan(a,layout,available,native_rows)
  local list=default(a,'list_key','');local row=default(a,'row_key','');local scope=a.scope
  local target,index
  if scope==4 then target=edit_all
@@ -627,7 +634,15 @@ local function settings_edit_plan(a,layout,available)
   end
   if leaf and embedded then leaf=embedded end
   local query=default(a,'query',''):lower()
-  if leaf and query~='' then
+  if leaf and native_rows then
+   local selected,eligible={},{}
+   for i=1,count do selected[i]='\0';eligible[i]='\0' end
+   for _,row in ipairs(native_rows) do
+    if row.field~=d.field or row.index<0 or row.index>=count then return nil,'',used end
+    eligible[row.index+1]='\1';selected[row.index+1]=row.visible and '\1' or '\0'
+   end
+   members=table.concat(selected);allowed=table.concat(eligible);cost=2
+  elseif leaf and query~='' then
    local values,raw_count=setting_source(leaf)
    if raw_count~=count then return nil,'Stockpile settings layout changed',used end
    if available-used<2*count then return nil,'Area request exceeds remaining step budget',used end
@@ -963,6 +978,35 @@ local function summary_page(r,a,b,area_revision,layout,available)
  end
  out.truncated=out.next_cursor~=0
  return out,used
+end
+local function native_settings_page(r,a,b,area_revision,layout,rows)
+ local key=a.list_key;local d=setting_leaves[key];local cursor=default(a,'cursor',0)
+ if not integer(cursor) or cursor<0 or cursor>2147483647 then return fail('invalid area cursor') end
+ local hash=hash_integer(hash_integer(hash_integer(0xcbf29ce484222325,r.epoch),b.id),area_revision)
+ hash=hash_integer(hash,layout.raw_revision or 0)
+ for _,text in ipairs{key,default(a,'query','')} do
+  hash=hash_integer(hash,#text);for i=1,#text do hash=hash_integer(hash,text:byte(i)) end
+ end
+ local visible={}
+ for _,row in ipairs(rows) do
+  if row.field~=d.field then return fail('') end
+  hash=hash_integer(hash,row.index);hash=hash_integer(hash,row.enabled and 1 or 0)
+  hash=hash_integer(hash,row.visible and 1 or 0);hash=hash_integer(hash,#row.label)
+  for i=1,#row.label do hash=hash_integer(hash,row.label:byte(i)) end
+  if row.visible then visible[#visible+1]=row end
+ end
+ local revision=hash & 0x7fffffffffffffff;if revision==0 then revision=1 end
+ local expected=default(a,'expected_list_revision',0)
+ if expected~=0 and expected~=revision then return fail('List changed; refresh') end
+ local out={ok=true,message='',list_key=key,query=default(a,'query',''),list_revision=revision,
+  build_phase=0,build_done=#rows,build_total=#rows,captured_tick=tick(),omitted=0,next_cursor=0,settings={}}
+ for i=cursor+1,math.min(cursor+128,#visible) do
+  local row=visible[i]
+  out.settings[#out.settings+1]={key=key..'/'..row.index,index=row.index,label=row.label,
+   kind=4,state=row.enabled and 2 or 1,estimated=false}
+ end
+ if cursor+128<#visible then out.next_cursor=cursor+128 end
+ out.truncated=out.next_cursor~=0;return out
 end
 local function settings_page(r,a,b,area_revision,layout,available)
  local list_key=default(a,'list_key','');local d=setting_leaves[list_key]
@@ -1392,13 +1436,21 @@ local function native_operation(r)
   -- contribute once per backing vector and no native reference is cached.
   local layout,problem=invoke(r.settings_layout,0,b)
   if not layout then return reject(problem) end
+  local mode=native_setting_modes[default(a,'list_key','')]
+  local native_rows
+  if mode and (op==1 or a.scope==2 and default(a,'query','')~='') then
+   local result,why=invoke(r.settings_rows,0,b,mode,default(a,'query',''))
+   if not result then return reject(why) end
+   native_rows=result.rows
+  end
   if op==1 then
+   if native_rows then return finish(native_settings_page(r,a,b,before.revision,layout,native_rows)) end
    local page,used=settings_page(r,a,b,before.revision,layout,budget-steps)
    steps=steps+used;return finish(page)
   end
   if op==2 then
    if expected==0 then return reject('Area revision required; inspect again') end
-   local plan,problem,used=settings_edit_plan(a,layout,budget-steps)
+   local plan,problem,used=settings_edit_plan(a,layout,budget-steps,native_rows)
    steps=steps+used
    if not plan then return reject(problem) end
    -- Build all selection masks and reserve every field and the reply before

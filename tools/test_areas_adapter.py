@@ -160,6 +160,7 @@ def main():
      r.settings_layout=settings_layout
      r.settings_preset=settings_preset
      r.settings_categories=settings_categories
+     r.settings_rows=settings_rows
      r.set_location=set_location
      r.create_location=create_location
      r.create_area=create_area
@@ -1048,6 +1049,24 @@ def main():
     df.global.world.raws={plants={all={}},creatures={all={}},itemdefs={},
       descriptors={colors={}},inorganics={all={}},mat_table={organic_types={},organic_indexes={},builtin={}}}
     settings_fields={};settings_raw_count=0
+    function settings_rows(b,mode,query,budget)
+     if force_rows_failure then return {ok=false,message='',steps=0} end
+     assert(budget==nil)
+     local fields={[26]='furniture',[48]='ammo',[69]='finished_goods',[92]='weapons',[103]='armor'}
+     local category=fields[mode] or fields[mode-1]
+     local quality=fields[mode] and 'quality_core' or 'quality_total'
+     local captions={'Standard','Well-crafted','Finely-crafted','Superior quality','Exceptional','Masterwork','Artifact'}
+     local rows={}
+     for i,label in ipairs(captions) do
+      rows[#rows+1]={field=category..'.'..quality,index=i-1,label=label,
+       enabled=b.settings[category][quality][i],visible=label:lower():find(query:lower(),1,true)~=nil}
+      if native_visible_index then rows[#rows].visible=i==native_visible_index end
+     end
+     if reverse_native_rows then
+      local reversed={};for i=#rows,1,-1 do reversed[#reversed+1]=rows[i] end;rows=reversed
+     end
+     return {ok=true,steps=0,work_unknown=true,rows=rows}
+    end
     function settings_layout(b,budget)
      budget=budget or math.huge
      if budget<108 then return {ok=false,message='Settings layout exceeds remaining step budget',steps=0} end
@@ -1193,6 +1212,17 @@ def main():
     assert [r["label"] for r in qualities["settings"].values()] == ["Standard", "Well-crafted", "Finely-crafted", "Superior quality", "Exceptional", "Masterwork", "Artifact"]
     assert [r["index"] for r in qualities["settings"].values()] == list(range(7))
     assert {r["index"]: r["state"] for r in qualities["settings"].values()} == {i: 2 if i % 2 else 1 for i in range(7)}
+    assert qualities["work_unknown"] and qualities["build_phase"] == 0
+    lua.execute("reverse_native_rows=true")
+    reversed_quality, _ = setting_page("armor/quality_core")
+    assert [r["index"] for r in reversed_quality["settings"].values()] == list(reversed(range(7)))
+    assert not setting_page("armor/quality_core", expected_list_revision=qualities["list_revision"])[0]["ok"]
+    lua.execute("reverse_native_rows=false;force_rows_failure=true")
+    assert not setting_page("armor/quality_core")[0]["ok"]  # No reconstructed fallback.
+    lua.execute("force_rows_failure=false")
+    lua.execute("pile.settings.armor.quality_core[1]=true")
+    assert not setting_page("armor/quality_core", expected_list_revision=qualities["list_revision"])[0]["ok"]
+    lua.execute("pile.settings.armor.quality_core[1]=false")
     assert setting_indices("armor/color") == [1, 0]
     assert [r["label"] for r in setting_page("armor/body")[0]["settings"].values()] == ["bulky coats", "coats"]
     assert setting_indices("ammo/other_materials") == [1, 0]
@@ -1383,6 +1413,7 @@ def main():
     lua.execute(r"""
     fixed_fill_calls=0
     function settings_fill(b,field,members,allowed,enabled,budget)
+     budget=budget or math.huge
      fixed_fill_calls=fixed_fill_calls+1
      assert(#members==#allowed and (#members==1 or #members==7))
      if budget<2 then return {ok=false,message='fill budget',steps=1} end
@@ -1409,6 +1440,8 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
+        if extra.get("query") and "/quality_" in list_key:
+            request["synchronous_write"] = True
         return request
     def fill_count():
         return lua.globals().fixed_fill_calls
@@ -1452,6 +1485,14 @@ def main():
     assert lua.eval("not pile.settings.ammo.quality_core[1] and pile.settings.ammo.quality_core[2] and pile.settings.ammo.quality_core[3] and not pile.settings.ammo.quality_core[4]")
     assert settings_adapter(fixed_edit("ammo/quality_core", value=1, query="no such grade"))["ok"]
     assert lua.eval("pile.settings.ammo.quality_core[2] and pile.settings.ammo.quality_core[3]")
+    lua.execute("native_visible_index=7")
+    assert settings_adapter(fixed_edit("ammo/quality_core", value=2, query="no such grade"))["ok"]
+    assert lua.eval("pile.settings.ammo.quality_core[7]")  # Uses provider visibility, not local search.
+    lua.execute("native_visible_index=nil;force_rows_failure=true")
+    previous_calls=fill_count()
+    assert not settings_adapter(fixed_edit("ammo/quality_core", value=1, query="CRAFTED"))["ok"]
+    assert fill_count()==previous_calls and lua.eval("pile.settings.ammo.quality_core[2]")
+    lua.execute("force_rows_failure=false")
     # A producer's larger post-write snapshot must be reserved before mutation.
     lua.execute(r"""
     snapshot_without_reserve=area_snapshot

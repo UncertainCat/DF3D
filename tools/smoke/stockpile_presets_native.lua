@@ -69,19 +69,20 @@ require('gui.script').start(function()
   end
   -- Native list oracle: select the Wood preset, open Custom, select Wood.
   -- Runtime probe uses only its own settings/list storage; native UI is test-only.
-  local function label_click(label,offset)
+  local function label_click(label,offset,column)
    local screen={};local px,py
    for y=0,g.dimy-1 do
     local chars={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);chars[#chars+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' ' end
     local line=table.concat(chars);screen[#screen+1]=line;local x=line:find(label,1,true)
-    if x and x<40 and not px then px=x-1+(offset or 0);py=y end
+    local in_column=x and (column==2 and x>=40 and x<75 or column~=2 and x<40)
+    if in_column and not px then px=x-1+(offset or 0);py=y end
    end
    if px then click(px,py);return end
    local custom=df.global.game.main_interface.custom_stockpile
-   if custom.open and custom.scroll_position_main==0 then
+   if column~=2 and custom.open and custom.scroll_position_main==0 then
     -- Oracle-only viewport setup; selection itself still uses the native click.
     custom.scroll_position_main=4;view:render(dfhack.getTickCount())
-    return label_click(label,offset)
+    return label_click(label,offset,column)
    end
    local f=assert(io.open(out..'/missing-'..label..'.txt','w'));f:write(table.concat(screen,'\n'));f:close()
    error('Native label absent: '..label)
@@ -194,6 +195,31 @@ require('gui.script').start(function()
     assert(row.name==dfhack.df2utf(actual.name) and row.visible==actual.on,'native search row differs '..i)
    end
    records[#records+1]={probe='wood_search',query=query,native_query=c.spec_filter,rows=rows}
+  end
+  c.entering_spec_filter=false;c.spec_filter=''
+  for _,category in ipairs{{'Furniture/siege ammo','furniture',26,27},{'Ammo','ammo',48,49},
+   {'Finished goods','finished_goods',69,70},{'Weapons/trap comps','weapons',92,93},{'Armor','armor',103,104}}do
+   c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click(category[1])
+   for quality=1,2 do
+    local field=quality==1 and 'quality_core' or 'quality_total'
+    local values=b.settings[category[2]][field]
+    for i=0,#values-1 do values[i]=(i%2)==quality-1 end
+    label_click(quality==1 and 'Core quality' or 'Total quality',0,2)
+    assert(c.cur_sub_mode==category[quality+2],'native quality selection differs')
+    local size,address=df.sizeof(df.global.game.main_interface)
+    local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+    local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(category[quality+2]))
+    assert(code==0,text)
+    assert(dfhack.internal.memcmp(guard,address,size)==0,'quality probe changed native UI');df.delete(guard)
+    local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'quality row count')
+    for i,row in ipairs(rows)do
+     local actual=c.spec_item[i-1]
+     assert(row.name==dfhack.df2utf(actual.name) and row.visible==actual.on,'quality name/order '..i)
+     assert(row.field==category[2]..'.'..field and row.index==i-1,'quality setting identity')
+     assert(row.enabled==values[row.index],'quality setting value')
+    end
+    records[#records+1]={probe='quality_rows',mode=category[quality+2],rows=rows}
+   end
   end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)

@@ -126,9 +126,16 @@ std::optional<df::stockpile_settings> nativeStockpileCategory(
     reinterpret_cast<Clear>(base+clears[index])(fields[index]);
     return owned;
 }
-std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(
-    const df::stockpile_settings& source,const std::string& filter) {
-    if(!df::global::world || source.wood.mats.size()>65536 || filter.size()>256)return std::nullopt;
+std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
+    df::stockpile_settings& owned,int mode,const std::string& filter,
+    const std::vector<NativeStockpileSettingRange>& ranges) {
+    if(!df::global::world || filter.size()>256)return std::nullopt;
+    // Wood and the ten quality lists have no material/historical-cache path.
+    switch(mode) {
+      case 85:case 26:case 27:case 48:case 49:case 69:case 70:
+      case 92:case 93:case 103:case 104:break;
+      default:return std::nullopt;
+    }
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
@@ -144,30 +151,42 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(
     if(!compatible)return std::nullopt;
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);
-    auto owned=source;
     struct Rows {
         df::custom_stockpile_interfacest scratch;
         ~Rows(){for(auto* row:scratch.spec_item)delete row;}
     } rows;
     rows.scratch.sp=&owned;
     rows.scratch.spec_filter=filter;
-    // Fixed Wood branch365d1f: raw TREE flag, native plural plant name, row
-    // formatter, native comparator and search. Flag0 skips category activation.
+    // Wood reads TREE flags/plural names. Quality branches read fixed labels and
+    // preserve native quality order. Flag0 skips category activation.
     // Never call open-wrapper35f3c0, which writes global UI/graphics state.
     using Build=void (*)(df::custom_stockpile_interfacest*,int32_t,uint32_t);
-    reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,85,0);
+    reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,mode,0);
     if(rows.scratch.cur_spec_item_sz<0 ||
        size_t(rows.scratch.cur_spec_item_sz)>rows.scratch.spec_item.size())return std::nullopt;
     std::vector<NativeStockpileRow> result;
     result.reserve(rows.scratch.cur_spec_item_sz);
-    const auto start=reinterpret_cast<uintptr_t>(owned.wood.mats.data());
     for(int32_t i=0;i<rows.scratch.cur_spec_item_sz;++i) {
         const auto* row=rows.scratch.spec_item[i];
         if(!row)return std::nullopt;
         const auto pointer=reinterpret_cast<uintptr_t>(row->set_pointer);
-        if(pointer<start || pointer-start>=owned.wood.mats.size())return std::nullopt;
-        result.push_back({size_t(pointer-start),row->name,*row->set_pointer!=0,row->on});
+        const NativeStockpileSettingRange* matched=nullptr;size_t index=0;
+        for(const auto& range:ranges) {
+            const auto start=reinterpret_cast<uintptr_t>(range.begin);
+            if(pointer>=start && pointer-start<range.count) {
+                if(matched)return std::nullopt;
+                matched=&range;index=size_t(pointer-start);
+            }
+        }
+        if(!matched)return std::nullopt;
+        result.push_back({index,row->name,*row->set_pointer!=0,row->on,matched->field});
     }
     return result;
+}
+std::optional<std::vector<NativeStockpileRow>> nativeStockpileWoodRows(
+    const df::stockpile_settings& source,const std::string& filter) {
+    if(source.wood.mats.size()>65536)return std::nullopt;
+    auto owned=source;
+    return nativeStockpileRows(owned,85,filter,{{"wood.mats",owned.wood.mats.data(),owned.wood.mats.size()}});
 }
 }

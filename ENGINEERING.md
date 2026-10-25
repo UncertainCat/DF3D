@@ -10,8 +10,35 @@ indices, labels and booleans; native pointers remain local. Protected run
 with an empty search, preserving native UI, row values, source Wood filters and
 RNG buffers. Run `build/stockpile-presets-native-20261025-020901` also matched
 native filtering for `maple`, `TREE` and an unmatched ASCII query, checking all72
-rows and preserving native UI bytes. Non-ASCII search, other filter categories
-and gameplay list integration remain under audit.
+rows and preserving native UI bytes. Wood gameplay list integration, non-ASCII
+search and the remaining material/item branches remain under audit.
+
+The shared `df3d stockpile-rows-read <building-id> <native-mode> [filter]`
+diagnostic also supports the ten Core/Total quality lists. Their native branches
+use fixed quality labels and settings, without material or historical-figure
+lookup. Protected run `build/stockpile-presets-native-20261025-022058` compared
+all ten against actual native selections with alternating enabled values;
+labels, order, field/index identities and visibility matched, native UI bytes
+were preserved and the owned source save stayed unchanged. Recorded comparisons
+are in `fixtures/areas/native_stockpile_filters.json`.
+
+Gameplay quality pages and filtered All/None now use this owned row service.
+Wire queries convert from UTF-8 to DF encoding; labels convert back. Native
+visibility determines the edit mask, independently of paging. Reads preserve
+native order and hash row identities, labels, states, visibility, query and
+area/raw revisions so same-size changes invalidate continuation receipts.
+The synchronous safe-point callback reports unknown work while Godot remains
+asynchronous. Unsupported service calls fail closed; local quality caption and
+search reconstruction have been removed. Other list branches still use the
+staged implementation and are not covered by this migration.
+
+Protected run `build/stockpile-initialization-20261025-023028` passed201 native
+observations through the real Godot bridge driver. For each quality list, empty,
+matching and unmatched searches matched the owned native service; filtered None
+and All changed exactly the expected settings while preserving all other fields.
+Creation, category activation, presets, painting and removal also passed. Engine
+diagnostics were clean, source save hashes were unchanged and owned DF closed.
+This is command-path acceptance, not a rendered settings-panel comparison.
 
 `df3d stockpile-category-read <building-id> <category-bit>` predicts native
 category selection on owned settings. The selection prelude at `0x35fdde`

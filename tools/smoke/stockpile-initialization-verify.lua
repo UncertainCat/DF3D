@@ -3,6 +3,45 @@ local out,index=...
 local json=require('json')
 local f=assert(io.open(out..'/request-'..index..'.json','r'))
 local request=json.decode(f:read('*a'));f:close()
+if request.op:match('^quality_') then
+ assert(df.global.pause_state,'quality observation requires pause')
+ local b=assert(df.building.find(request.id))
+ local function snapshot(v)
+  if type(v)~='userdata' then return v end
+  local parts={}
+  for k,x in pairs(v)do
+   if type(x)~='function' and tostring(k):sub(1,1)~='_' then
+    parts[#parts+1]=tostring(k)..'='..tostring(snapshot(x))
+   end
+  end
+  table.sort(parts);return '{'..table.concat(parts,';')..'}'
+ end
+ local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(request.mode),request.query or '')
+ assert(code==0,text);local rows=json.decode(text)
+ if request.op=='quality_rows' then
+  local visible={};for _,row in ipairs(rows)do if row.visible then visible[#visible+1]=row end end
+  assert(#visible==#request.rows,'quality visible count')
+  for i,row in ipairs(visible)do
+   local actual=request.rows[i]
+   assert(actual.index==row.index and actual.label==row.name and actual.state==(row.enabled and 2 or 1),'bridge quality row '..i)
+   assert(actual.key==request.list_key..'/'..row.index,'bridge quality identity')
+  end
+ elseif request.op=='quality_before' then
+  -- Build an independent expected settings snapshot, then restore before the
+  -- bridge mutation. The oracle never supplies settings to the product.
+  local category,field=rows[1].field:match('^([^%.]+)%.(.+)$')
+  local values=b.settings[category][field];local original={}
+  for i=0,#values-1 do original[i]=values[i]end
+  for _,row in ipairs(rows)do if row.visible then values[row.index]=request.value==2 end end
+  _G.df3d_quality_expected=snapshot(b.settings)
+  for i=0,#values-1 do values[i]=original[i]end
+ elseif request.op=='quality_after' then
+  assert(_G.df3d_quality_expected==snapshot(b.settings),'filtered edit changed unexpected settings')
+  _G.df3d_quality_expected=nil
+ else error('unknown quality operation')end
+ f=assert(io.open(out..'/response-'..index..'.json','w'));f:write(json.encode{status='passed'});f:close()
+ print('SEMANTIC_PASS '..request.op..' '..request.mode);return
+end
 if request.op~='stockpile_initialization' then
  local script=debug.getinfo(1,'S').source:sub(2)
  local directory=assert(script:match('^(.*[/\\])'))

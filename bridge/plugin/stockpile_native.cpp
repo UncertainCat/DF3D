@@ -168,23 +168,35 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
       case 92:case 93:case 103:case 104:break;
       case 25:case 46:case 53:case 56:case 68:case 91:case 102:break;
       case 71:case 74:case 84:case 105:break;
+      case 45:case 87:case 88:case 95:case 96:case 97:case 98:case 99:case 100:break;
       default:return std::nullopt;
     }
-    // Color branches index world descriptors by stored setting length through
-    // an unchecked native getter. Reject stale or missing raws before entry;
-    // short/empty settings remain valid and must not be expanded.
-    const std::vector<char>* colors=nullptr;
+    // Typed raw branches index by stored settings length through an unchecked
+    // native getter. Reject stale or missing raws before entry; preserve short
+    // and empty settings instead of expanding them to the current raw count.
+    const auto fits=[](const auto& values,const auto& raws) {
+        if(values.size()>raws.size())return false;
+        for(size_t i=0;i<values.size();++i)if(!raws[i])return false;
+        return true;
+    };
+    const auto& raws=df::global::world->raws;
+    bool valid=true;
     switch(mode) {
-      case 71:colors=&owned.finished_goods.color;break;
-      case 74:colors=&owned.leather.color;break;
-      case 84:colors=&owned.cloth.color;break;
-      case 105:colors=&owned.armor.color;break;
+      case 71:valid=fits(owned.finished_goods.color,raws.descriptors.colors);break;
+      case 74:valid=fits(owned.leather.color,raws.descriptors.colors);break;
+      case 84:valid=fits(owned.cloth.color,raws.descriptors.colors);break;
+      case 105:valid=fits(owned.armor.color,raws.descriptors.colors);break;
+      case 45:valid=fits(owned.ammo.type,raws.itemdefs.ammo);break;
+      case 87:valid=fits(owned.weapons.weapon_type,raws.itemdefs.weapons);break;
+      case 88:valid=fits(owned.weapons.trapcomp_type,raws.itemdefs.trapcomps);break;
+      case 95:valid=fits(owned.armor.body,raws.itemdefs.armor);break;
+      case 96:valid=fits(owned.armor.head,raws.itemdefs.helms);break;
+      case 97:valid=fits(owned.armor.feet,raws.itemdefs.shoes);break;
+      case 98:valid=fits(owned.armor.hands,raws.itemdefs.gloves);break;
+      case 99:valid=fits(owned.armor.legs,raws.itemdefs.pants);break;
+      case 100:valid=fits(owned.armor.shield,raws.itemdefs.shields);break;
     }
-    if(colors) {
-        const auto& raws=df::global::world->raws.descriptors.colors;
-        if(colors->size()>raws.size())return std::nullopt;
-        for(size_t i=0;i<colors->size();++i)if(!raws[i])return std::nullopt;
-    }
+    if(!valid)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
@@ -201,7 +213,11 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         hash(base+0x6f520,0x3d)==0xaceb003bf538dbfcULL &&
         hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL &&
         hash(base+0x6f220,0x8)==0x2bba791d9cd7ac1dULL &&
-        hash(base+0x6f5d0,0xc0)==0xd7cc734d277fe129ULL;
+        hash(base+0x6f5d0,0xc0)==0xd7cc734d277fe129ULL &&
+        hash(base+0x6f560,0x20)==0xd0ebc9e82e46ffe8ULL &&
+        hash(base+0xb9d10,0x13)==0x5ad8171f894aa0c8ULL &&
+        hash(base+0x6f690,0x1d)==0x53c89dc946758be9ULL &&
+        hash(base+0x6fa10,0x161)==0xdf2151da834b95e7ULL;
     if(!compatible)return std::nullopt;
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);

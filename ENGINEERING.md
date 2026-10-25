@@ -58,6 +58,29 @@ Other-material page reads and63 edits:42 bulk actions, seven individual rows and
 edit. Owned DF closed without saving. These checks establish command effects,
 not rendered settings-panel parity or the remaining material-list branches.
 
+The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
+Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
+optional adjectives, sorting and search. Leaf edits use the native visible-row
+membership. The bridge bounds each stored vector against its corresponding
+item-definition raw vector and rejects missing referenced raws before native
+entry. Local item-name construction and search were removed; category summary
+membership remains staged. These branches only append raw strings to owned
+strings and do not enter material formatting or historical-figure cache paths.
+
+Protected native run `build/stockpile-presets-native-20261025-034410` matched81
+list/search cases and162 actual All/None actions across full, short and empty
+vectors. Labels, order, backing-field/index identities, enabled state and search
+visibility matched. Nine oversized-vector probes rejected without mutation;
+probe calls preserved settings and native UI bytes. The source save remained
+unchanged and owned DF closed without saving. The fixture retains the cases;
+rendered and non-ASCII verification remain separate.
+
+Protected command run `build/stockpile-initialization-20261025-034615` passed824
+native observations, including27 item-definition page reads and81 edits. Native
+order/search, filtered and individual edits, and short/empty-vector behavior
+matched, with complete settings and unrelated state checks. Diagnostics were
+clean, source save hashes unchanged and owned DF closed without saving.
+
 The four Color lists (Finished goods, Leather, Cloth, Armor) also use owned
 native row generation and native visible-row membership for edits. These
 branches copy raw descriptor names and do not enter the historical-material

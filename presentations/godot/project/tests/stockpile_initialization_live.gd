@@ -87,7 +87,11 @@ func native_filter_lists(pile: int) -> void:
 		["weapons/other_materials","weapons.other_mats",91],
 		["armor/other_materials","armor.other_mats",102],
 		["finished_goods/color","finished_goods.color",71],["leather/color","leather.color",74],
-		["cloth/color","cloth.color",84],["armor/color","armor.color",105]]:
+		["cloth/color","cloth.color",84],["armor/color","armor.color",105],
+		["ammo/type","ammo.type",45],["weapons/weapons","weapons.weapon_type",87],
+		["weapons/trap_components","weapons.trapcomp_type",88],["armor/body","armor.body",95],
+		["armor/head","armor.head",96],["armor/feet","armor.feet",97],
+		["armor/hands","armor.hands",98],["armor/legs","armor.legs",99],["armor/shield","armor.shield",100]]:
 		var key: String = entry[0]
 		var field: String = entry[1]
 		var mode: int = entry[2]

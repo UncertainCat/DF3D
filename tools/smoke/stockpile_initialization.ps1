@@ -37,7 +37,7 @@ try {
  $project="$repo/presentations/godot/project"
  $godot=if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}
  $g=Start-ContainedProcess -Exe $godot -Arguments "--headless --render-thread safe --path `"$project`" --script res://tests/stockpile_initialization_live.gd --log-file `"$out/godot.log`"" -WorkingDir $project
- $deadline=(Get-Date).AddSeconds(600)
+ $deadline=(Get-Date).AddSeconds(900)
  while(-not $g.HasExited -and (Get-Date) -lt $deadline) {
   if(Test-Path "$out/verify.txt") {
    $index=[int](Get-Content "$out/verify.txt" -Raw)

@@ -298,27 +298,37 @@ require('gui.script').start(function()
    table.sort(parts);return '{'..table.concat(parts,';')..'}'
   end
   for _,entry in ipairs{{'Finished goods','finished_goods',71,'Type'},
-   {'Leather','leather',74,'Type'},{'Cloth','cloth',84,'Thread (silk)'},{'Armor','armor',105,'Body'}}do
+   {'Leather','leather',74,'Type'},{'Cloth','cloth',84,'Thread (silk)'},{'Armor','armor',105,'Body'},
+   {'Ammo','ammo',45,'Metal','type','ammo','Type'},
+   {'Weapons/trap comps','weapons',87,'Metal','weapon_type','weapons','Weapons'},
+   {'Weapons/trap comps','weapons',88,'Metal','trapcomp_type','trapcomps','Trap components'},
+   {'Armor','armor',95,'Metal','body','armor','Body'},
+   {'Armor','armor',96,'Metal','head','helms','Head'},
+   {'Armor','armor',97,'Metal','feet','shoes','Feet'},
+   {'Armor','armor',98,'Metal','hands','gloves','Hands'},
+   {'Armor','armor',99,'Metal','legs','pants','Legs'},
+   {'Armor','armor',100,'Metal','shield','shields','Shield'}}do
    c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
    view:render(dfhack.getTickCount());label_click(entry[1])
-   local values=b.settings[entry[2]].color;local original={}
+   local field=entry[5] or 'color';local probe=entry[5] and 'itemdef' or 'color'
+   local values=b.settings[entry[2]][field];local original={}
    for _,v in ipairs(values)do original[#original+1]=v end
-   local raw_count=#df.global.world.raws.descriptors.colors
-   -- Do not select native Color with this deliberately stale length. Only the
+   local raw_count=entry[6] and #df.global.world.raws.itemdefs[entry[6]] or #df.global.world.raws.descriptors.colors
+   -- Do not select the native list with this deliberately stale length. Only the
    -- owned service may be asked: it must reject before the unchecked getter.
    values:resize(raw_count+1)
    local before=settings_snapshot(b.settings)
    local _,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[3]))
-   assert(code~=0 and settings_snapshot(b.settings)==before,'stale color vector was accepted or changed')
-   records[#records+1]={probe='color_bounds',mode=entry[3],stored_count=#values,raw_count=raw_count,rejected=true}
+   assert(code~=0 and settings_snapshot(b.settings)==before,'stale typed vector was accepted or changed')
+   records[#records+1]={probe=probe..'_bounds',mode=entry[3],stored_count=#values,raw_count=raw_count,rejected=true}
    for _,count in ipairs{raw_count,1,0}do
     c.spec_filter='';c.entering_spec_filter=false
     values:resize(count);for i=0,count-1 do values[i]=i%2 end
     -- Rebuild after oracle-only settings changes; a repeated sublist click
     -- intentionally keeps native's existing rows.
-    label_click(entry[4],0,2);label_click('Color',0,2)
-    assert(c.cur_sub_mode==entry[3],'wrong Color mode')
-    for _,query in ipairs{'','blue','zzzznomatch'}do
+    label_click(entry[4],0,2);label_click(entry[7] or 'Color',0,2)
+    assert(c.cur_sub_mode==entry[3],'wrong Typed list mode')
+    for _,query in ipairs{'',entry[5] and 'a' or 'blue','zzzznomatch'}do
      c.spec_filter='';c.entering_spec_filter=true
      for i=1,#query do
       df.global.enabler.last_text_input[0]=query:byte(i);df.global.enabler.last_text_input[1]=0
@@ -330,23 +340,23 @@ require('gui.script').start(function()
      local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
      local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[3]),query)
      assert(code==0,text)
-     assert(dfhack.internal.memcmp(guard,address,size)==0,'Color probe changed UI');df.delete(guard)
-     assert(settings_snapshot(b.settings)==before,'Color probe changed settings')
-     local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'Color row count')
+     assert(dfhack.internal.memcmp(guard,address,size)==0,'Typed list probe changed UI');df.delete(guard)
+     assert(settings_snapshot(b.settings)==before,'Typed list probe changed settings')
+     local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'Typed list row count')
      for i,row in ipairs(rows)do
       local native=c.spec_item[i-1]
       local _,expected_pointer=df.sizeof(values:_field(row.index));local _,actual_pointer=df.sizeof(native.set_pointer)
-      assert(row.field==entry[2]..'.color' and expected_pointer==actual_pointer,'Color identity')
-      assert(row.name==dfhack.df2utf(native.name) and row.visible==native.on,'Color labels/order/search')
-      assert(row.enabled==(values[row.index]~=0),'Color selection')
+      assert(row.field==entry[2]..'.'..field and expected_pointer==actual_pointer,'Typed list identity')
+      assert(row.name==dfhack.df2utf(native.name) and row.visible==native.on,'Typed list labels/order/search')
+      assert(row.enabled==(values[row.index]~=0),'Typed list selection')
      end
      for _,action in ipairs{{'All',1},{'None',0}}do
       local expected={};for i,v in ipairs(values)do expected[i]=v end
       for _,row in ipairs(rows)do if row.visible then expected[row.index]=action[2]end end
-      label_click(action[1],0,3);assert(#values==count,'Color bulk action resized vector')
-      for i,v in ipairs(values)do assert(v==expected[i],'Color bulk action changed hidden row')end
+      label_click(action[1],0,3);assert(#values==count,'Typed list bulk action resized vector')
+      for i,v in ipairs(values)do assert(v==expected[i],'Typed list bulk action changed hidden row')end
      end
-     records[#records+1]={probe='color_rows',mode=entry[3],stored_count=count,query=query,rows=rows,bulk_actions=2}
+     records[#records+1]={probe=probe..'_rows',mode=entry[3],stored_count=count,query=query,rows=rows,bulk_actions=2}
     end
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end

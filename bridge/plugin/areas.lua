@@ -238,6 +238,8 @@ local native_setting_modes={
  ['bars_blocks/bars_other']=53,['bars_blocks/blocks_other']=56,
  ['finished_goods/other_materials']=68,['weapons/other_materials']=91,
  ['armor/other_materials']=102,
+ ['ammo/type']=45,['weapons/weapons']=87,['weapons/trap_components']=88,
+ ['armor/body']=95,['armor/head']=96,['armor/feet']=97,['armor/hands']=98,['armor/legs']=99,['armor/shield']=100,
  ['finished_goods/color']=71,['leather/color']=74,['cloth/color']=84,['armor/color']=105,
 }
 for _,cat in ipairs{'armor','cloth','finished_goods','leather'} do setting_leaf(cat..'/color',cat..'.color','color') end
@@ -350,7 +352,7 @@ end
 local function setting_caption(d,index,values)
  if d.source=='toggle' then return '' end
  -- Summary counting needs membership only. Leaf labels/search come from DF.
- if d.source=='quality' or d.source=='other' or d.source=='color' then return '' end
+ if d.source=='quality' or d.source=='other' or d.source=='color' or d.source=='itemdef' then return '' end
  if d.source=='furniture' then
   local token=df.furniture_type[index];return furniture_captions[token] or token or ''
  end
@@ -393,10 +395,6 @@ local function setting_caption(d,index,values)
   local material=dfhack.matinfo.decode(0,index)
   return material and material:toString() or '',part
 
- elseif d.source=='itemdef' then
-  local label=v.name_plural or v.name or ''
-  if v.adjective and v.adjective~='' and label~='' then label=v.adjective..' '..label end
-  return label
  elseif d.source=='creature' then
   if v.flags.GENERATED or v.creature_id=='EQUIPMENT_WAGON' then return nil end
   return v.name[1] or ''

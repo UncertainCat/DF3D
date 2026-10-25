@@ -13679,5 +13679,2211 @@
       "source_save": "unchanged",
       "owned_df": "closed without saving"
     }
+  },
+  "itemdef_lists": {
+    "run": "build/stockpile-presets-native-20261025-034410",
+    "status": "passed",
+    "native_list_comparisons": 81,
+    "native_bulk_actions": 162,
+    "bounds_rejections": [
+      {
+        "mode": 45,
+        "probe": "itemdef_bounds",
+        "raw_count": 11,
+        "rejected": true,
+        "stored_count": 12
+      },
+      {
+        "mode": 87,
+        "probe": "itemdef_bounds",
+        "raw_count": 44,
+        "rejected": true,
+        "stored_count": 45
+      },
+      {
+        "mode": 88,
+        "probe": "itemdef_bounds",
+        "raw_count": 5,
+        "rejected": true,
+        "stored_count": 6
+      },
+      {
+        "mode": 95,
+        "probe": "itemdef_bounds",
+        "raw_count": 20,
+        "rejected": true,
+        "stored_count": 21
+      },
+      {
+        "mode": 96,
+        "probe": "itemdef_bounds",
+        "raw_count": 16,
+        "rejected": true,
+        "stored_count": 17
+      },
+      {
+        "mode": 97,
+        "probe": "itemdef_bounds",
+        "raw_count": 14,
+        "rejected": true,
+        "stored_count": 15
+      },
+      {
+        "mode": 98,
+        "probe": "itemdef_bounds",
+        "raw_count": 11,
+        "rejected": true,
+        "stored_count": 12
+      },
+      {
+        "mode": 99,
+        "probe": "itemdef_bounds",
+        "raw_count": 17,
+        "rejected": true,
+        "stored_count": 18
+      },
+      {
+        "mode": 100,
+        "probe": "itemdef_bounds",
+        "raw_count": 6,
+        "rejected": true,
+        "stored_count": 7
+      }
+    ],
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 11,
+        "row_count": 11,
+        "visible_indices": [
+          1,
+          2,
+          0,
+          8,
+          5,
+          4,
+          3,
+          7,
+          6,
+          10,
+          9
+        ],
+        "rows": [
+          {
+            "enabled": true,
+            "field": "ammo.type",
+            "index": 1,
+            "name": "Arrows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 2,
+            "name": "Blowdarts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 0,
+            "name": "Bolts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 8,
+            "name": "Cone-headed arrows",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.type",
+            "index": 5,
+            "name": "Cone-headed arrows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 4,
+            "name": "Double-tipped blowdarts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.type",
+            "index": 3,
+            "name": "Jagged arrows",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.type",
+            "index": 7,
+            "name": "Jagged bolts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 6,
+            "name": "Long bolts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 10,
+            "name": "Tapered blowdarts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "ammo.type",
+            "index": 9,
+            "name": "Wide-headed arrows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 11,
+        "row_count": 11,
+        "visible_indices": [
+          1,
+          2,
+          8,
+          5,
+          4,
+          3,
+          7,
+          10,
+          9
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 11,
+        "row_count": 11,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "ammo.type",
+            "index": 0,
+            "name": "Bolts",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 45,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 44,
+        "row_count": 44,
+        "visible_indices": [
+          1,
+          9,
+          8,
+          6,
+          39,
+          18,
+          15,
+          11,
+          42,
+          24,
+          35,
+          40,
+          30,
+          33,
+          16,
+          29,
+          13,
+          28,
+          5,
+          14,
+          19,
+          7,
+          10,
+          41,
+          20,
+          17,
+          3,
+          32,
+          4,
+          36,
+          25,
+          27,
+          43,
+          31,
+          37,
+          21,
+          23,
+          22,
+          38,
+          12,
+          2,
+          26,
+          34,
+          0
+        ],
+        "rows": [
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 1,
+            "name": "Battle axes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 9,
+            "name": "Blowguns",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 8,
+            "name": "Bows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 6,
+            "name": "Crossbows",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 39,
+            "name": "Curved blades",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 18,
+            "name": "Flails",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 15,
+            "name": "Great axes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 11,
+            "name": "Halberds",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 42,
+            "name": "Jagged battle axes",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 24,
+            "name": "Jagged bows",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 35,
+            "name": "Jagged crossbows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 40,
+            "name": "Jagged nails",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 30,
+            "name": "Jagged spears",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 33,
+            "name": "Jagged war hammers",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 16,
+            "name": "Large daggers",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 29,
+            "name": "Long lashes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 13,
+            "name": "Long swords",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 28,
+            "name": "Long whips",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 5,
+            "name": "Maces",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 14,
+            "name": "Mauls",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 19,
+            "name": "Morningstars",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 7,
+            "name": "Picks",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 10,
+            "name": "Pikes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 41,
+            "name": "Pointed bows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 20,
+            "name": "Scimitars",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 17,
+            "name": "Scourges",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 3,
+            "name": "Short swords",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 32,
+            "name": "Sleek crossbows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 4,
+            "name": "Spears",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 36,
+            "name": "Tall bows",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 25,
+            "name": "Tall maces",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 27,
+            "name": "Thin blowguns",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 43,
+            "name": "Thin blowguns",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 31,
+            "name": "Thin bows",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 37,
+            "name": "Thin lashes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 21,
+            "name": "Training axes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.weapon_type",
+            "index": 23,
+            "name": "Training spears",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 22,
+            "name": "Training swords",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 38,
+            "name": "Twisted spikes",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 12,
+            "name": "Two-handed swords",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 2,
+            "name": "War hammers",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 26,
+            "name": "Wavy blades",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 34,
+            "name": "Wavy blades",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 0,
+            "name": "Whips",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 44,
+        "row_count": 44,
+        "visible_indices": [
+          1,
+          39,
+          18,
+          15,
+          11,
+          42,
+          24,
+          35,
+          40,
+          30,
+          33,
+          16,
+          29,
+          5,
+          14,
+          19,
+          20,
+          4,
+          36,
+          25,
+          37,
+          21,
+          23,
+          22,
+          12,
+          2,
+          26,
+          34
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 44,
+        "row_count": 44,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "weapons.weapon_type",
+            "index": 0,
+            "name": "Whips",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 87,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 5,
+        "row_count": 5,
+        "visible_indices": [
+          1,
+          0,
+          3,
+          4,
+          2
+        ],
+        "rows": [
+          {
+            "enabled": true,
+            "field": "weapons.trapcomp_type",
+            "index": 1,
+            "name": "Enormous corkscrews",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.trapcomp_type",
+            "index": 0,
+            "name": "Giant axe blades",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "weapons.trapcomp_type",
+            "index": 3,
+            "name": "Large, serrated discs",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.trapcomp_type",
+            "index": 4,
+            "name": "Menacing spikes",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "weapons.trapcomp_type",
+            "index": 2,
+            "name": "Spiked balls",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 5,
+        "row_count": 5,
+        "visible_indices": [
+          0,
+          3,
+          4,
+          2
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 5,
+        "row_count": 5,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "weapons.trapcomp_type",
+            "index": 0,
+            "name": "Giant axe blades",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 88,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 20,
+        "row_count": 20,
+        "visible_indices": [
+          2,
+          0,
+          18,
+          16,
+          15,
+          13,
+          8,
+          5,
+          3,
+          10,
+          19,
+          17,
+          1,
+          11,
+          14,
+          4,
+          12,
+          7,
+          6,
+          9
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 2,
+            "name": "Armor",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 0,
+            "name": "Breastplates",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 18,
+            "name": "Bulging breastplates",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 16,
+            "name": "Bulging breastplates",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 15,
+            "name": "Bulky shirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 13,
+            "name": "Bulky tunics",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 8,
+            "name": "Capes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 5,
+            "name": "Cloaks",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 3,
+            "name": "Coats",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 10,
+            "name": "Dresses",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 19,
+            "name": "Frilly cloaks",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 17,
+            "name": "Frilly vests",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 1,
+            "name": "Mail shirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 11,
+            "name": "Robes",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 14,
+            "name": "Segmented breastplates",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 4,
+            "name": "Shirts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 12,
+            "name": "Square breastplates",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 7,
+            "name": "Togas",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 6,
+            "name": "Tunics",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.body",
+            "index": 9,
+            "name": "Vests",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 20,
+        "row_count": 20,
+        "visible_indices": [
+          2,
+          0,
+          18,
+          16,
+          8,
+          5,
+          3,
+          19,
+          1,
+          14,
+          12,
+          7
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 20,
+        "row_count": 20,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.body",
+            "index": 0,
+            "name": "Breastplates",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 95,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 16,
+        "row_count": 16,
+        "visible_indices": [
+          9,
+          1,
+          6,
+          13,
+          11,
+          15,
+          5,
+          7,
+          0,
+          2,
+          14,
+          10,
+          12,
+          4,
+          8,
+          3
+        ],
+        "rows": [
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 9,
+            "name": "Bulky hoods",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 1,
+            "name": "Caps",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 6,
+            "name": "Face veils",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 13,
+            "name": "Frilly head veils",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 11,
+            "name": "Frilly hoods",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 15,
+            "name": "Frilly masks",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 5,
+            "name": "Head veils",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 7,
+            "name": "Headscarves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 0,
+            "name": "Helms",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 2,
+            "name": "Hoods",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 14,
+            "name": "Jagged caps",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 10,
+            "name": "Jagged caps",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 12,
+            "name": "Jagged helms",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 4,
+            "name": "Masks",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 8,
+            "name": "Rounded caps",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.head",
+            "index": 3,
+            "name": "Turbans",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 16,
+        "row_count": 16,
+        "visible_indices": [
+          1,
+          6,
+          13,
+          15,
+          5,
+          7,
+          14,
+          10,
+          12,
+          4,
+          8,
+          3
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 16,
+        "row_count": 16,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.head",
+            "index": 0,
+            "name": "Helms",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 96,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 14,
+        "row_count": 14,
+        "visible_indices": [
+          8,
+          10,
+          4,
+          13,
+          1,
+          2,
+          3,
+          11,
+          9,
+          7,
+          0,
+          12,
+          6,
+          5
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 8,
+            "name": "Blocky high boots",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 10,
+            "name": "Blocky low boots",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 4,
+            "name": "Chausses",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 13,
+            "name": "Frilly sandals",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 1,
+            "name": "High boots",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 2,
+            "name": "Low boots",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 3,
+            "name": "Sandals",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 11,
+            "name": "Sheer sandals",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 9,
+            "name": "Sheer shoes",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 7,
+            "name": "Sheer socks",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 0,
+            "name": "Shoes",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 12,
+            "name": "Sleek high boots",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 6,
+            "name": "Sleek low boots",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.feet",
+            "index": 5,
+            "name": "Socks",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 14,
+        "row_count": 14,
+        "visible_indices": [
+          4,
+          13,
+          3,
+          11
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 14,
+        "row_count": 14,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.feet",
+            "index": 0,
+            "name": "Shoes",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 97,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 11,
+        "row_count": 11,
+        "visible_indices": [
+          3,
+          5,
+          4,
+          6,
+          8,
+          10,
+          0,
+          1,
+          2,
+          9,
+          7
+        ],
+        "rows": [
+          {
+            "enabled": true,
+            "field": "armor.hands",
+            "index": 3,
+            "name": "Bulky gauntlets",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.hands",
+            "index": 5,
+            "name": "Bulky gauntlets",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 4,
+            "name": "Bulky gloves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 6,
+            "name": "Bulky mittens",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 8,
+            "name": "Frilly gloves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 10,
+            "name": "Frilly gloves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 0,
+            "name": "Gauntlets",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.hands",
+            "index": 1,
+            "name": "Gloves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 2,
+            "name": "Mittens",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.hands",
+            "index": 9,
+            "name": "Thin gauntlets",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.hands",
+            "index": 7,
+            "name": "Thin gauntlets",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 11,
+        "row_count": 11,
+        "visible_indices": [
+          3,
+          5,
+          0,
+          9,
+          7
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 11,
+        "row_count": 11,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.hands",
+            "index": 0,
+            "name": "Gauntlets",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 98,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 17,
+        "row_count": 17,
+        "visible_indices": [
+          10,
+          16,
+          9,
+          8,
+          12,
+          1,
+          2,
+          3,
+          7,
+          13,
+          14,
+          6,
+          5,
+          11,
+          15,
+          4,
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 10,
+            "name": "Bell-shaped skirts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 16,
+            "name": "Bell-shaped skirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 9,
+            "name": "Blocky greaves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 8,
+            "name": "Braies",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 12,
+            "name": "Frilly skirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 1,
+            "name": "Greaves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 2,
+            "name": "Leggings",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 3,
+            "name": "Loincloths",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 7,
+            "name": "Long skirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 13,
+            "name": "Rounded greaves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 14,
+            "name": "Sheer skirts",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 6,
+            "name": "Short skirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 5,
+            "name": "Skirts",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 11,
+            "name": "Thin greaves",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.legs",
+            "index": 15,
+            "name": "Thin greaves",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 4,
+            "name": "Thongs",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 0,
+            "name": "Trousers",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 17,
+        "row_count": 17,
+        "visible_indices": [
+          10,
+          16,
+          9,
+          8,
+          1,
+          13,
+          11,
+          15
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 17,
+        "row_count": 17,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.legs",
+            "index": 0,
+            "name": "Trousers",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 99,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 6,
+        "row_count": 6,
+        "visible_indices": [
+          1,
+          5,
+          3,
+          0,
+          2,
+          4
+        ],
+        "rows": [
+          {
+            "enabled": true,
+            "field": "armor.shield",
+            "index": 1,
+            "name": "Bucklers",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.shield",
+            "index": 5,
+            "name": "Curved shields",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "armor.shield",
+            "index": 3,
+            "name": "Rectangular shields",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.shield",
+            "index": 0,
+            "name": "Shields",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.shield",
+            "index": 2,
+            "name": "Square shields",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "armor.shield",
+            "index": 4,
+            "name": "Tall shields",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 6,
+        "row_count": 6,
+        "visible_indices": [
+          3,
+          2,
+          4
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 6,
+        "row_count": 6,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": [
+          0
+        ],
+        "rows": [
+          {
+            "enabled": false,
+            "field": "armor.shield",
+            "index": 0,
+            "name": "Shields",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": [],
+        "rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 100,
+        "probe": "itemdef_rows",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_indices": []
+      }
+    ],
+    "omissions": [
+      "Rendered list parity",
+      "Non-ASCII item queries"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-034615",
+      "status": "passed",
+      "native_observations": 824,
+      "itemdef_reads": 27,
+      "itemdef_edits": 81,
+      "coverage": "Native order/search/identity; filtered All/None, individual rows, short/empty-vector edits; complete settings and unrelated state compared.",
+      "diagnostics": "clean",
+      "source_save": "unchanged",
+      "owned_df": "closed without saving"
+    }
   }
 }

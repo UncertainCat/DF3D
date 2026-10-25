@@ -290,6 +290,21 @@ matched native results. Complete settings and unrelated state checks passed;
 diagnostics were clean, source hashes unchanged and owned DF closed without
 saving. This establishes leaf command effects, not full stockpile acceptance.
 
+The owned row service also accepts Food parent mode1 for its initial Meat list.
+It uses the same guarded Meat raw domain, calls the native builder with flag0,
+and owns the sublist vectors and row pointers. Parent code `0x36029b..0x36071a`
+builds sublist metadata, recursively invokes Meat, then applies the outer native
+sort/filter pass. Equal-name row identities can therefore differ from explicit
+Meat mode2 even though captions are identical. Protected
+`build/stockpile-parent-native-20261025-064832` matched24 category/leaf comparisons
+across full, one-entry, empty and stale vectors and three search queries. All
+row identities, labels, order, selection and visibility matched; probe calls
+preserved source settings and native interface bytes. Owned DF closed without
+saving and source hashes stayed unchanged. Bounded evidence is retained in
+`native_stockpile_filters.json.food_category_order`. Gameplay still needs explicit
+navigation-context transport and receipt handling before this initial-order gap
+is resolved; other category opening contexts also require verification.
+
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
 all; parent slots are unused. The bridge combines native sublist states and the

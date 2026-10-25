@@ -40640,5 +40640,214 @@
       "Remaining scrolling/search/hover/viewport size interactions",
       "Complete stockpile acceptance"
     ]
+  },
+  "food_category_order": {
+    "run": "build/stockpile-parent-native-20261025-064832",
+    "status": "passed",
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "result_sha256": "24c64e481cc72a1fb258013147a43bf98ae1687f5fd5b18e1b11a139d23e5f47",
+    "cases": [
+      {
+        "mode": 1,
+        "query": "",
+        "row_count": 12328,
+        "stored_count": 12328,
+        "visible_count": 12328,
+        "indices_sha256": "c45057a11cbbee2d40d5766e41b01a788bbfa0279ec5c3666748841950e6be86"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "row_count": 12328,
+        "stored_count": 12328,
+        "visible_count": 12328,
+        "indices_sha256": "9cb0aaba1dd344b32ea16a9240891c249a96b41a85eb0d2465cfef1604560c13"
+      },
+      {
+        "mode": 1,
+        "query": "MEAT",
+        "row_count": 12328,
+        "stored_count": 12328,
+        "visible_count": 1031,
+        "indices_sha256": "c45057a11cbbee2d40d5766e41b01a788bbfa0279ec5c3666748841950e6be86"
+      },
+      {
+        "mode": 2,
+        "query": "MEAT",
+        "row_count": 12328,
+        "stored_count": 12328,
+        "visible_count": 1031,
+        "indices_sha256": "9cb0aaba1dd344b32ea16a9240891c249a96b41a85eb0d2465cfef1604560c13"
+      },
+      {
+        "mode": 1,
+        "query": "ZZZZNOMATCH",
+        "row_count": 12328,
+        "stored_count": 12328,
+        "visible_count": 0,
+        "indices_sha256": "c45057a11cbbee2d40d5766e41b01a788bbfa0279ec5c3666748841950e6be86"
+      },
+      {
+        "mode": 2,
+        "query": "ZZZZNOMATCH",
+        "row_count": 12328,
+        "stored_count": 12328,
+        "visible_count": 0,
+        "indices_sha256": "9cb0aaba1dd344b32ea16a9240891c249a96b41a85eb0d2465cfef1604560c13"
+      },
+      {
+        "mode": 1,
+        "query": "",
+        "row_count": 1,
+        "stored_count": 1,
+        "visible_count": 1,
+        "indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "row_count": 1,
+        "stored_count": 1,
+        "visible_count": 1,
+        "indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      },
+      {
+        "mode": 1,
+        "query": "MEAT",
+        "row_count": 1,
+        "stored_count": 1,
+        "visible_count": 1,
+        "indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      },
+      {
+        "mode": 2,
+        "query": "MEAT",
+        "row_count": 1,
+        "stored_count": 1,
+        "visible_count": 1,
+        "indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      },
+      {
+        "mode": 1,
+        "query": "ZZZZNOMATCH",
+        "row_count": 1,
+        "stored_count": 1,
+        "visible_count": 0,
+        "indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      },
+      {
+        "mode": 2,
+        "query": "ZZZZNOMATCH",
+        "row_count": 1,
+        "stored_count": 1,
+        "visible_count": 0,
+        "indices_sha256": "d0bca111f8628137adc4c16f123496dcdd1d590d06cb5d9acd68b39fe656fb97"
+      },
+      {
+        "mode": 1,
+        "query": "",
+        "row_count": 0,
+        "stored_count": 0,
+        "visible_count": 0,
+        "indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "row_count": 0,
+        "stored_count": 0,
+        "visible_count": 0,
+        "indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 1,
+        "query": "MEAT",
+        "row_count": 0,
+        "stored_count": 0,
+        "visible_count": 0,
+        "indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 2,
+        "query": "MEAT",
+        "row_count": 0,
+        "stored_count": 0,
+        "visible_count": 0,
+        "indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 1,
+        "query": "ZZZZNOMATCH",
+        "row_count": 0,
+        "stored_count": 0,
+        "visible_count": 0,
+        "indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 2,
+        "query": "ZZZZNOMATCH",
+        "row_count": 0,
+        "stored_count": 0,
+        "visible_count": 0,
+        "indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 1,
+        "query": "",
+        "row_count": 12328,
+        "stored_count": 12329,
+        "visible_count": 12328,
+        "indices_sha256": "c45057a11cbbee2d40d5766e41b01a788bbfa0279ec5c3666748841950e6be86"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "row_count": 12328,
+        "stored_count": 12329,
+        "visible_count": 12328,
+        "indices_sha256": "9cb0aaba1dd344b32ea16a9240891c249a96b41a85eb0d2465cfef1604560c13"
+      },
+      {
+        "mode": 1,
+        "query": "MEAT",
+        "row_count": 12328,
+        "stored_count": 12329,
+        "visible_count": 1031,
+        "indices_sha256": "c45057a11cbbee2d40d5766e41b01a788bbfa0279ec5c3666748841950e6be86"
+      },
+      {
+        "mode": 2,
+        "query": "MEAT",
+        "row_count": 12328,
+        "stored_count": 12329,
+        "visible_count": 1031,
+        "indices_sha256": "9cb0aaba1dd344b32ea16a9240891c249a96b41a85eb0d2465cfef1604560c13"
+      },
+      {
+        "mode": 1,
+        "query": "ZZZZNOMATCH",
+        "row_count": 12328,
+        "stored_count": 12329,
+        "visible_count": 0,
+        "indices_sha256": "c45057a11cbbee2d40d5766e41b01a788bbfa0279ec5c3666748841950e6be86"
+      },
+      {
+        "mode": 2,
+        "query": "ZZZZNOMATCH",
+        "row_count": 12328,
+        "stored_count": 12329,
+        "visible_count": 0,
+        "indices_sha256": "9cb0aaba1dd344b32ea16a9240891c249a96b41a85eb0d2465cfef1604560c13"
+      }
+    ],
+    "comparisons": "Exact row field/index pointer identity, labels/order, selection and visibility against actual category/leaf selections; complete source settings and native interface bytes preserved by probe",
+    "native_entry": "35fd70 mode1, flag0; recursively builds mode2 at360710 then native parent sort/filter at366fd2",
+    "scope": "Owned provider/diagnostic only. Gameplay currently uses explicit leaf mode2.",
+    "omissions": [
+      "Gameplay navigation-context request/receipt integration",
+      "Other category opening versus leaf order",
+      "Full rendered workflow acceptance"
+    ]
   }
 }

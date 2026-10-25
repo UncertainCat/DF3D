@@ -344,6 +344,12 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
     const std::vector<NativeStockpileSettingRange>& ranges) {
     if(!df::global::world || filter.size()>256)return std::nullopt;
+    // Food category entry recursively builds Meat and performs the parent's
+    // native sort/filter pass afterward. Validate the same Meat input domain;
+    // pass mode1 only to the owned builder so equal-name row identities follow
+    // native category-opening order without borrowing its UI state.
+    const int buildMode=mode;
+    if(mode==1)mode=2;
     // Inorganic branches pass material type0, state0 and flags0 to14d1920;
     // bounds-checked14add70 reads raws/fallback material without historical lookup.
     // Gems use type0 plural formatting; glass uses builtin types3..5/index-1.
@@ -544,7 +550,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     // preserve native quality order. Flag0 skips category activation.
     // Never call open-wrapper35f3c0, which writes global UI/graphics state.
     using Build=void (*)(df::custom_stockpile_interfacest*,int32_t,uint32_t);
-    reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,mode,0);
+    reinterpret_cast<Build>(base+0x35fd70)(&rows.scratch,buildMode,0);
     if(rows.scratch.cur_spec_item_sz<0 ||
        size_t(rows.scratch.cur_spec_item_sz)>rows.scratch.spec_item.size())return std::nullopt;
     std::vector<NativeStockpileRow> result;

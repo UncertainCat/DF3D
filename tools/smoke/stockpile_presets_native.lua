@@ -486,6 +486,42 @@ require('gui.script').start(function()
    end
    for i,v in ipairs(original)do values[i-1]=v end
   end
+  -- Food category entry and explicit Meat selection have separate native sort passes.
+  do
+  label_click('Food')
+  local values=b.settings.food.meat;local original={};for _,v in ipairs(values)do original[#original+1]=v end
+  local count_types=#df.global.world.raws.mat_table.organic_types[0]
+  for _,count in ipairs{#original,1,0,count_types+1}do
+   values:resize(count);for i=0,count-1 do values[i]=i%2 end
+   for _,query in ipairs{'','MEAT','ZZZZNOMATCH'}do
+    for _,mode in ipairs{1,2}do
+     c.spec_filter=query;c.entering_spec_filter=false;c.scroll_position_main=0
+     view:render(dfhack.getTickCount());label_click('Ammo');label_click('Food')
+     if mode==2 then label_click('Fish',0,2);label_click('Meat',0,2)end
+     assert(c.cur_main_mode==1 and c.cur_sub_mode==2)
+     local before=settings_snapshot(b.settings)
+     local size,address=df.sizeof(df.global.game.main_interface)
+     local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+     local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(mode),query)
+     assert(code==0,text)
+     assert(dfhack.internal.memcmp(guard,address,size)==0,'parent probe changed UI');df.delete(guard)
+     assert(settings_snapshot(b.settings)==before,'parent probe changed settings')
+     local rows=json.decode(text);assert(#rows==c.cur_spec_item_sz,'parent row count')
+     local indices={};local visible=0
+     for i,row in ipairs(rows)do
+      local native=c.spec_item[i-1]
+      local _,expected=df.sizeof(values:_field(row.index));local _,actual=df.sizeof(native.set_pointer)
+      assert(row.field=='food.meat' and expected==actual,'parent identity '..i)
+      assert(row.name==dfhack.df2utf(native.name) and row.visible==native.on,'parent label/order/search')
+      assert(row.enabled==(values[row.index]~=0),'parent state')
+      indices[#indices+1]=row.index;if row.visible then visible=visible+1 end
+     end
+     records[#records+1]={probe='food_parent_rows',mode=mode,query=query,stored_count=count,row_count=#rows,visible_count=visible,indices=indices}
+    end
+   end
+  end
+  values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
+  end
   for _,entry in ipairs{{'Stone','stone','mats',40,'Metal ores','stone','Economic'},
    {'Stone','stone','mats',41,'Economic','stone','Metal ores'},
    {'Stone','stone','mats',42,'Other stone','stone','Metal ores'},

@@ -102,8 +102,38 @@ func header_actions(pile: int, categories: Array) -> void:
 
 func native_filter_lists(pile: int) -> void:
 	var exercised: Array = []
-	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192,"coins":128,"gems":512,"stone":32}
-	for entry in [["stone/metal_ores","stone.mats",40],["stone/economic","stone.mats",41],
+	var category_bits := {"food":2,"sheet":65536,"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192,"coins":128,"gems":512,"stone":32}
+	for entry in [["food/meat","food.meat",2],
+		["food/fish","food.fish",3],
+		["food/unprepared_fish","food.unprepared_fish",4],
+		["food/egg","food.egg",5],
+		["food/plants","food.plants",6],
+		["food/drink_plant","food.drink_plant",7],
+		["food/drink_animal","food.drink_animal",8],
+		["food/cheese_plant","food.cheese_plant",9],
+		["food/cheese_animal","food.cheese_animal",10],
+		["food/seeds","food.seeds",11],
+		["food/leaves","food.leaves",12],
+		["food/powder_plant","food.powder_plant",13],
+		["food/powder_creature","food.powder_creature",14],
+		["food/glob","food.glob",15],
+		["food/glob_paste","food.glob_paste",16],
+		["food/glob_pressed","food.glob_pressed",17],
+		["food/liquid_plant","food.liquid_plant",18],
+		["food/liquid_animal","food.liquid_animal",19],
+		["food/liquid_misc","food.liquid_misc",20],
+		["leather/type","leather.mats",73],
+		["cloth/thread_silk","cloth.thread_silk",76],
+		["cloth/thread_plant","cloth.thread_plant",77],
+		["cloth/thread_yarn","cloth.thread_yarn",78],
+		["cloth/thread_metal","cloth.thread_metal",79],
+		["cloth/cloth_silk","cloth.cloth_silk",80],
+		["cloth/cloth_plant","cloth.cloth_plant",81],
+		["cloth/cloth_yarn","cloth.cloth_yarn",82],
+		["cloth/cloth_metal","cloth.cloth_metal",83],
+		["sheet/paper","sheet.paper",107],
+		["sheet/parchment","sheet.parchment",108],
+		["stone/metal_ores","stone.mats",40],["stone/economic","stone.mats",41],
 		["stone/other_stone","stone.mats",42],["stone/clay","stone.mats",43],
 		["gems/rough_glass","gems.rough_other_mats",58],["gems/cut_glass","gems.cut_other_mats",59],
 		["gems/rough_gem","gems.rough_mats",60],["gems/cut_gem","gems.cut_mats",61],["gems/cut_stone","gems.cut_mats",62],
@@ -150,10 +180,13 @@ func native_filter_lists(pile: int) -> void:
 				await edit(pile,0,{"operation":2,"scope":2,"value":value,"list_key":key,"query":query})
 				await native("filter_after",{"id":pile,"mode":mode})
 				if stopped: return
-		if not check(first_row >= 0,"fixture has no eligible rows for " + key): return
-		await native("filter_before",{"id":pile,"mode":mode,"field":field,"row":first_row,"value":1})
-		await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/"+str(first_row)})
-		await native("filter_after",{"id":pile,"mode":mode})
+		if mode in [9,14]:
+			if not check(first_row == -1,"expected empty native organic category"): return
+		else:
+			if not check(first_row >= 0,"fixture has no eligible rows for " + key): return
+			await native("filter_before",{"id":pile,"mode":mode,"field":field,"row":first_row,"value":1})
+			await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/"+str(first_row)})
+			await native("filter_after",{"id":pile,"mode":mode})
 		if mode == 30:
 			for scalar in ["fresh_raw_hide","rotten_raw_hide"]:
 				await native("filter_before",{"id":pile,"mode":mode,"field":"refuse."+scalar,"row":0,"value":1})

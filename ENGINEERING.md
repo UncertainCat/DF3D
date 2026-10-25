@@ -250,10 +250,9 @@ blind material-type validator. No historical-material types219..418 appeared in
 the ordinary material lists on this fixture; that observation does not prove a
 universal input invariant or authorize historical-cache access. Native table
 lookup bounds-checks types but assumes a matching index array. The owned provider described below adds paired-array and raw-pointer guards;
-gameplay integration and the historical table domain remain unfinished.
+the historical table domain remains unfinished.
 
-The owned native row provider implements the30 organic modes separately from
-the still-staged gameplay adapter. It validates the paired organic table index
+The gameplay adapter uses the owned native row provider for all30 organic modes. It validates the paired organic table index
 range and referenced raw/caste/growth pointers before entering DF. Creature/caste
 pairs for fish and eggs have their own validation. Ordinary material entries in
 219..418 are explicitly rejected because DF can populate a historical-material
@@ -264,7 +263,10 @@ The Food branch excludes TREE/GRASS from Plants and matches growth item/material
 identity for Fruit/leaves. Native material states and item-name routines supply
 meat prefixes, fish sex glyphs, seed/growth names, thread/cloth/sheet labels and
 liquid/powder/paste/pressed names. No local label approximation is used by this
-provider. The gameplay adapter and summary logic are not yet migrated.
+provider. Gameplay pages and individual/filtered All/None actions use native
+row identities and visibility, preserving stored vector sizes and excluded
+entries. Local organic caption reconstruction is removed. Summary membership
+remains staged and is not established by leaf integration.
 
 A native parent category sorts again after building its default leaf. Identical
 Meat names can consequently have a different identity order from an explicit
@@ -279,8 +281,16 @@ name, order, visibility and selection matched explicit native leaf selection.
 The same run exercised168 native All/None actions. Provider calls preserved
 native UI bytes and source settings; DF closed without saving and source hashes
 were unchanged. Bounded evidence is in `native_stockpile_filters.json.organic_provider`.
-Gameplay command acceptance, injected malformed/null-table cases, historical
-materials, non-ASCII search and rendered-panel parity remain unverified.
+Injected malformed/null-table cases, historical materials, non-ASCII search
+and rendered-panel parity remain unverified.
+
+Protected command run `build/stockpile-initialization-20261025-054445` passed719
+native observations across all30 organic lists:90 complete page reads and268
+edits, plus creation/removal. Pagination covered all12,328 Meat rows. Both empty
+native categories, filtered/individual actions and short/empty stored vectors
+matched native results. Complete settings and unrelated state checks passed;
+diagnostics were clean, source hashes unchanged and owned DF closed without
+saving. This establishes leaf command effects, not full stockpile acceptance.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

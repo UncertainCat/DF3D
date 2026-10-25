@@ -38517,11 +38517,21 @@
     ],
     "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
     "omissions": [
-      "Gameplay adapter integration and command acceptance",
       "Initial parent-opening equal-name identity order",
       "Historical-material tables explicitly rejected",
       "Malformed table/null pointer rejection injection",
       "Non-ASCII search and rendered panel parity"
-    ]
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-054445",
+      "status": "passed",
+      "native_observations": 719,
+      "page_reads": 90,
+      "edits": 268,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "All30 organic lists; creation/removal, complete pagination including12328 Meat rows, filtered/individual edits, empty native categories, short/empty backing vectors; shared fixture restored between lists"
+    }
   }
 }

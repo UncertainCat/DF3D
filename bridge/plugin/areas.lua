@@ -229,6 +229,36 @@ for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
 local native_setting_modes={
+ ['food/meat']=2,
+ ['food/fish']=3,
+ ['food/unprepared_fish']=4,
+ ['food/egg']=5,
+ ['food/plants']=6,
+ ['food/drink_plant']=7,
+ ['food/drink_animal']=8,
+ ['food/cheese_plant']=9,
+ ['food/cheese_animal']=10,
+ ['food/seeds']=11,
+ ['food/leaves']=12,
+ ['food/powder_plant']=13,
+ ['food/powder_creature']=14,
+ ['food/glob']=15,
+ ['food/glob_paste']=16,
+ ['food/glob_pressed']=17,
+ ['food/liquid_plant']=18,
+ ['food/liquid_animal']=19,
+ ['food/liquid_misc']=20,
+ ['leather/type']=73,
+ ['cloth/thread_silk']=76,
+ ['cloth/thread_plant']=77,
+ ['cloth/thread_yarn']=78,
+ ['cloth/thread_metal']=79,
+ ['cloth/cloth_silk']=80,
+ ['cloth/cloth_plant']=81,
+ ['cloth/cloth_yarn']=82,
+ ['cloth/cloth_metal']=83,
+ ['sheet/paper']=107,
+ ['sheet/parchment']=108,
  ['stone/metal_ores']=40,['stone/economic']=41,['stone/other_stone']=42,['stone/clay']=43,
  ['gems/rough_glass']=58,['gems/cut_glass']=59,
  ['gems/rough_gem']=60,['gems/cut_gem']=61,['gems/cut_stone']=62,
@@ -382,26 +412,7 @@ local function setting_caption(d,index,values)
   if not v.flags.TREE then return nil end
   return '' -- Summary membership only; native rows own plant names.
  elseif d.source=='organic' then
-  local raws=df.global.world.raws;local category=df.organic_mat_category[d.selector]
-  local indexes=raws.mat_table.organic_indexes[category]
-  if #indexes~=#values then error('Settings source changed') end
-  local mat_index=element(indexes,index)
-  if d.selector=='Fish' or d.selector=='UnpreparedFish' or d.selector=='Eggs' then
-   local creature=element(raws.creatures.all,v)
-   local caste=creature and element(creature.caste,mat_index)
-   return caste and caste.caste_name[0] or ''
-  end
-  local material=dfhack.matinfo.decode(v,mat_index)
-  local caption=material and material:toString() or ''
-  -- Captured e5 thread(silk)/paper lists include these product nouns.
-  if caption~='' then
-   if d.field=='cloth.thread_silk' or d.field=='cloth.thread_plant' then caption=caption..' thread'
-   elseif d.field=='cloth.thread_yarn' then caption=caption..' yarn'
-   elseif d.field=='cloth.thread_metal' then caption=caption..' strands'
-   elseif d.field:match('^cloth%.cloth_') then caption=caption..' cloth'
-   elseif d.field=='sheet.paper' or d.field=='sheet.parchment' then caption=caption..' sheet' end
-  end
-  return caption
+  return '' -- Staged summary membership only; native rows own organic names.
  end
  return ''
 end

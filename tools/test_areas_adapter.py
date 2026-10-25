@@ -1081,6 +1081,51 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     local organic_modes={
+      [2]={'food','meat','Meat'},
+      [3]={'food','fish','Fish'},
+      [4]={'food','unprepared_fish','UnpreparedFish'},
+      [5]={'food','egg','Eggs'},
+      [6]={'food','plants','Plants'},
+      [7]={'food','drink_plant','PlantDrink'},
+      [8]={'food','drink_animal','CreatureDrink'},
+      [9]={'food','cheese_plant','PlantCheese'},
+      [10]={'food','cheese_animal','CreatureCheese'},
+      [11]={'food','seeds','Seed'},
+      [12]={'food','leaves','PlantGrowth'},
+      [13]={'food','powder_plant','PlantPowder'},
+      [14]={'food','powder_creature','CreaturePowder'},
+      [15]={'food','glob','Glob'},
+      [16]={'food','glob_paste','Paste'},
+      [17]={'food','glob_pressed','Pressed'},
+      [18]={'food','liquid_plant','PlantLiquid'},
+      [19]={'food','liquid_animal','CreatureLiquid'},
+      [20]={'food','liquid_misc','MiscLiquid'},
+      [73]={'leather','mats','Leather'},
+      [76]={'cloth','thread_silk','Silk'},
+      [77]={'cloth','thread_plant','PlantFiber'},
+      [78]={'cloth','thread_yarn','Yarn'},
+      [79]={'cloth','thread_metal','MetalThread'},
+      [80]={'cloth','cloth_silk','Silk'},
+      [81]={'cloth','cloth_plant','PlantFiber'},
+      [82]={'cloth','cloth_yarn','Yarn'},
+      [83]={'cloth','cloth_metal','MetalThread'},
+      [107]={'sheet','paper','Paper'},
+      [108]={'sheet','parchment','Parchment'},
+     }
+     if organic_modes[mode]then
+      local category,field,selector=table.unpack(organic_modes[mode]);local rows={}
+      local raw_category=df.organic_mat_category[selector]
+      local indexes=df.global.world.raws.mat_table.organic_indexes[raw_category] or {}
+      for i,value in ipairs(b.settings[category][field])do
+       if indexes[i]~=nil then
+        local label='Fixture native '..selector..' '..indexes[i]
+        rows[#rows+1]={field=category..'.'..field,index=i-1,label=label,enabled=value~=0,
+         visible=label:lower():find(query:lower(),1,true)~=nil}
+       end
+      end
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      if mode>=40 and mode<=43 then
       local rows={}
       for i,value in ipairs(b.settings.stone.mats)do
@@ -1378,8 +1423,8 @@ def main():
     lua.execute("df.global.world.raws.inorganics.all[1].material.gem_name2='NP'")
     assert setting_page("gems/rough_gem")[0]["settings"][1]["label"] == "alexandrite"
     lua.execute("df.global.world.raws.inorganics.all[1].material.gem_name2='STP'")
-    assert setting_page("cloth/thread_silk")[0]["settings"][1]["label"] == "Organic 6 thread"
-    assert setting_page("sheet/paper")[0]["settings"][1]["label"] == "Organic 7 sheet"
+    assert setting_page("cloth/thread_silk")[0]["settings"][1]["label"] == "Fixture native Silk 6"
+    assert setting_page("sheet/paper")[0]["settings"][1]["label"] == "Fixture native Paper 7"
     assert setting_indices("gems/rough_glass") == [3, 4, 5]
     qualities, _ = setting_page("armor/quality_core")
     assert len(qualities["settings"]) == 7
@@ -1415,8 +1460,31 @@ def main():
     lua.execute("df.item_type[2]='BOOK';df.furniture_type[1]='UNCAPTURED_TOOL'")
     settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
     assert setting_indices("corpses") == [0]
-    assert [r["label"] for r in setting_page("food/meat")[0]["settings"].values()] == ["Organic 6", "Organic 7"]
-    assert setting_page("food/fish")[0]["settings"][1]["label"] == "bird hen"
+    assert [r["label"] for r in setting_page("food/meat")[0]["settings"].values()] == ["Fixture native Meat 6", "Fixture native Meat 7"]
+    assert setting_page("food/fish")[0]["settings"][1]["label"] == "Fixture native Fish 0"
+    # Organic pages preserve provider identity across a multi-page list and
+    # refuse stale continuations without falling back to local material names.
+    lua.execute(r"""
+    local category=df.organic_mat_category.Meat
+    local types,indexes,values={},{},{}
+    for i=1,300 do types[i]=9;indexes[i]=i;values[i]=i%2 end
+    df.global.world.raws.mat_table.organic_types[category]=types
+    df.global.world.raws.mat_table.organic_indexes[category]=indexes
+    make_setting('food.meat',300,values)
+    """)
+    meat_page, _ = setting_page("food/meat")
+    meat_revision = meat_page["list_revision"]
+    meat_indices = [row["index"] for row in meat_page["settings"].values()]
+    while meat_page["next_cursor"]:
+        meat_page, _ = setting_page("food/meat", cursor=meat_page["next_cursor"], expected_list_revision=meat_revision)
+        assert meat_page["ok"]
+        meat_indices.extend(row["index"] for row in meat_page["settings"].values())
+    assert meat_indices == list(range(300))
+    lua.execute("pile.settings.food.meat[1]=0")
+    assert not setting_page("food/meat", cursor=128, expected_list_revision=meat_revision)[0]["ok"]
+    lua.execute("force_rows_failure=true")
+    assert not setting_page("food/meat")[0]["ok"]
+    lua.execute("force_rows_failure=false")
     lua.execute(r"""
     local values=df.global.world.raws.inorganics.all
     for i=1,6 do values[i]={flags={},material={flags={IS_STONE=true}},metal_ore={mat_index={}},economic_uses={}} end
@@ -1440,15 +1508,8 @@ def main():
     changed = settings_adapter(lua.globals().request(11, lua.table_from({"operation": 13, "organic": 0,
                                "expected_revision": current["areas"][1]["revision"]})))
     assert changed["ok"] and not setting_page("wood", expected_list_revision=observed["list_revision"])[0]["ok"]
-    queued = settings_adapter(setting_request("food/meat", query="unique pending query"))
-    assert queued["active_kinds"] == 32
-    for builder in [6, 7]:
-        step = settings_adapter(lua.table_from({"step": 2048, "builder_kind": builder, "epoch": 1}))
-        assert step["steps"] == 0 and step["active_kinds"] == 32
-    candidates = settings_adapter(lua.globals().request(14, lua.table_from({"kind": 1})))
-    assert candidates["active_kinds"] == 160
-    step = settings_adapter(lua.table_from({"step": 1, "builder_kind": 5, "epoch": 1}))
-    assert step["steps"] == 1 and step["active_kinds"] == 160
+    native_meat = settings_adapter(setting_request("food/meat", query="unique pending query"))
+    assert native_meat["ok"] and native_meat["build_phase"] == 0 and native_meat["active_kinds"] == 0
     # Give the summary fixture the complete private native field inventory.
     # Counts and raw data remain synthetic and independent of stored settings.
     management_source = (Path(__file__).resolve().parents[1] / "bridge/plugin/management.cpp").read_text()
@@ -1506,6 +1567,12 @@ def main():
       local result=previous_layout(b,budget);result.raw_revision=fixture_raw_revision;return result
     end
     """)
+    settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
+    candidates = settings_adapter(lua.globals().request(14, lua.table_from({"kind": 1})))
+    assert candidates["active_kinds"] == 128
+    for builder in [5, 6]:
+        step = settings_adapter(lua.table_from({"step": 2048, "builder_kind": builder, "epoch": 1}))
+        assert step["steps"] == 0 and step["active_kinds"] == 128
     settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
     summary_step_counts = []
     def summary_page(key="", **extra):
@@ -1618,7 +1685,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if list_key.startswith(("gems/", "stone/")) or extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if list_key.startswith(("gems/", "stone/", "food/", "cloth/", "sheet/")) or list_key == "leather/type" or extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "coins" or list_key.endswith(("/metal","/stone","/gem","/bars_metal","/blocks_metal","/blocks_stone")) or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():

@@ -9,7 +9,7 @@ extern "C" {
 namespace df3d_management {
 inline bool synchronousAreaRead(df3d::mirror::ManagementAction action,df3d::mirror::AreaOperation operation) {
     return action==df3d::mirror::ManagementAction::AreaInspect &&
-        (operation==df3d::mirror::AreaOperation::SettingsPage || operation==df3d::mirror::AreaOperation::None);
+        (operation==df3d::mirror::AreaOperation::SettingsPage || operation==df3d::mirror::AreaOperation::None || operation==df3d::mirror::AreaOperation::LinkTarget);
 }
 // Existing reads retain their builder/inline scheduling. Selected synchronous
 // operations report measured work plus opaque work outside those budgets.
@@ -97,7 +97,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
     if(!number("revision",0,INT64_MAX) || !number("list_revision",0,INT64_MAX) ||
         !number("build_phase",0,3) || !number("build_done",0,UINT32_MAX) || !number("build_total",0,UINT32_MAX) ||
         !number("settings_count",-1,INT32_MAX) || !number("omitted",0,UINT32_MAX) || !number("captured_tick",-1,INT64_MAX) ||
-        !number("operation",0,15) || !number("area_id",-1,INT32_MAX) || !number("candidate_kind",0,3) ||
+        !number("operation",0,26) || !number("area_id",-1,INT32_MAX) || !number("candidate_kind",0,3) ||
         !number("sort",0,3) || !number("next_cursor",0,UINT32_MAX) ||
         !boolean("sort_descending") || !boolean("truncated") || !text("list_key",64,false) || !text("query",128,false))return error;
     if(value("build_done")>value("build_total"))return "build_done exceeds build_total";
@@ -142,6 +142,9 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
         uint64_t(settingsCount)<count("settings") || settingsCount<value("next_cursor") || settingsCount>value("build_total")))
       return "invalid filtered settings count";
     const unsigned families=(count("settings")!=0)+(count("locations")!=0)+(count("candidates")!=0)+(count("links")!=0);
+    if(operation==df3d::mirror::AreaOperation::LinkTarget &&
+        (count("links")>1 || count("areas") || count("choices") || count("settings") || count("locations") || count("candidates") || value("next_cursor")))
+        return "invalid stockpile link target response";
     if(families>1 || (count("choices") && (count("areas") || families)) || (families && count("areas")>1))
         return "area response mixes list families";
     if(payload>224*1024)return "area response exceeds bounded payload";

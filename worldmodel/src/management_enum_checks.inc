@@ -112,7 +112,8 @@ static_assert(static_cast<int>(wm::AreaOperation::LocationOpen) == static_cast<i
 static_assert(static_cast<int>(wm::AreaOperation::LocationAccess) == static_cast<int>(df3d::mirror::AreaOperation::LocationAccess));
 static_assert(static_cast<int>(wm::AreaOperation::LocationStaffCandidates) == static_cast<int>(df3d::mirror::AreaOperation::LocationStaffCandidates));
 static_assert(static_cast<int>(wm::AreaOperation::LocationStaffEdit) == static_cast<int>(df3d::mirror::AreaOperation::LocationStaffEdit));
-static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 26);
+static_assert(static_cast<int>(wm::AreaOperation::LinkTarget) == static_cast<int>(df3d::mirror::AreaOperation::LinkTarget));
+static_assert(sizeof(df3d::mirror::EnumValuesAreaOperation()) / sizeof(df3d::mirror::AreaOperation) == 27);
 static_assert(static_cast<int>(wm::AreaRoomOutcome::None) == static_cast<int>(df3d::mirror::AreaRoomOutcome::None));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Completed) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Completed));
 static_assert(static_cast<int>(wm::AreaRoomOutcome::Rejected) == static_cast<int>(df3d::mirror::AreaRoomOutcome::Rejected));

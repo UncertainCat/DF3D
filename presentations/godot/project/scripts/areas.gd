@@ -873,10 +873,13 @@ func begin_link_pick(give: bool) -> void:
 	links_picking = true; links_give = give; mode = "link_pick"
 	update_controls()
 
-func link_target_tile(tile: Vector3i, cursor := 0) -> void:
-	if not links_picking or selected.is_empty(): return
-	overlap_tile = tile
-	send({"action":Action.AreaInspectAtTile,"origin":tile,"cursor":cursor})
+func link_target_tile(tile: Vector3i) -> void:
+	if not links_picking or selected.is_empty() or request_ticket != 0 or not available: return
+	var request := selected_request(Action.AreaInspect)
+	request.operation = Contract.AreaOperation.LinkTarget
+	request.origin = tile; request.give = links_give
+	request.expected_revision = int(selected.revision)
+	send(request)
 
 func change_link(id: int, kind: int, give: bool, unlink: bool) -> void:
 	if selected.is_empty() or int(selected.kind) != 0 or not available or request_ticket != 0 or kind not in [0,2] or id < 0: return
@@ -1362,15 +1365,11 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 			links_revision = int(page.list_revision); links_cursor = int(page.get("next_cursor",0))
 			links_pending = {}; links_delay = -1
 		update_controls(); return
-	if links_picking and action == Action.AreaInspectAtTile:
-		for target in s.get("areas",[]):
-			if int(target.kind) == 0:
-				change_link(int(target.id),0,links_give,false); return
-		if int(s.get("area_next_cursor",0)) != 0: link_target_tile(overlap_tile,int(s.area_next_cursor))
-		else: send({"action":Action.InspectAtTile,"origin":overlap_tile})
-		return
-	if links_picking and action == Action.InspectAtTile:
-		change_link(int(s.get("building_id",-1)),2,links_give,false)
+	if action == Action.AreaInspect and int(_request.get("operation",0)) == Contract.AreaOperation.LinkTarget:
+		if not links_picking or stockpile_page != "links" or int(selected.get("id",-1)) != int(_request.get("id",-2)) or int(selected.get("revision",0)) != int(_request.get("expected_revision",-1)): return
+		var targets: Array = s.get("area",{}).get("links",[])
+		if targets.is_empty(): update_controls()
+		else: change_link(int(targets[0].id),int(targets[0].kind),bool(_request.give),false)
 		return
 	if action == Action.AreaInspect and int(_request.get("operation",0)) == Contract.AreaOperation.SettingsPage:
 		if stockpile_page == "settings": settings_state.accept(s.get("area",{}),_request)

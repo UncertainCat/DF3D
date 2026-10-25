@@ -171,7 +171,7 @@ def main():
      r.create_location=create_location
      r.create_area=create_area
      r.remove_area=remove_area
-     r.synchronous_read=action==9 and r.area.operation==1
+     r.synchronous_read=action==9 and (r.area.operation==1 or r.area.operation==26)
      r.synchronous_write=action==13 or action==10 or action==12 or action==11 and (r.area.operation==nil or r.area.operation==0 or r.area.operation==3 or r.area.operation==5 or r.area.operation==7 or r.area.operation==8 or r.area.operation==9 or r.area.operation==2 and (r.area.scope==3 or r.area.scope==4))
      return r
     end
@@ -697,6 +697,32 @@ def main():
     pile.links={give_to_pile={linked_pile},take_from_pile={linked_pile},
      give_to_workshop={linked_workshop},take_from_workshop={linked_workshop}}
     """)
+    # Target lookup is synchronous, revision-bound and does not edit links.
+    lua.execute("""
+    target_result_id=-1;target_calls=0
+    local previous_request=request
+    function request(action,extra)
+     local r=previous_request(action,extra)
+     r.link_target=function(b,budget)
+      assert(b==pile and budget==nil);target_calls=target_calls+1
+      return {ok=true,steps=1,work_unknown=true,building_id=target_result_id}
+     end
+     return r
+    end
+    """)
+    target_revision = call(9, {"id": 5})["areas"][1]["revision"]
+    target_query = {"operation": 26, "kind": 0, "id": 5, "x": 1, "y": 2, "z": 3,
+                    "expected_revision": target_revision, "give": False}
+    empty_target = call(9, target_query)
+    assert empty_target["ok"] and len(empty_target["links"]) == 0 and empty_target["work_unknown"]
+    lua.execute("target_result_id=40")
+    found_target = call(9, target_query)
+    assert found_target["ok"] and found_target["operation"] == 26
+    assert found_target["links"][1]["id"] == 40 and found_target["links"][1]["kind"] == 2
+    assert found_target["links"][1]["direction"] == 2
+    calls_before_stale = lua.globals().target_calls
+    assert not call(9, dict(target_query, expected_revision=target_revision+1))["ok"]
+    assert lua.globals().target_calls == calls_before_stale
     link_selector = {"operation": 10, "kind": 0, "id": 5}
     pending = raw_call(9, link_selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0

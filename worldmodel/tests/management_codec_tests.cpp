@@ -2110,6 +2110,29 @@ TEST_CASE("Location entry requires a mutation action, exact receipt and owned id
     CAPTURE(mode);CHECK(bool(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())))==(mode!=0));
   }
 }
+TEST_CASE("Stockpile target query owns coordinates direction and source receipt") {
+  wm::ManagementRequest base;base.action=wm::ManagementAction::AreaInspect;
+  base.area.operation=wm::AreaOperation::LinkTarget;base.area.id=7;
+  base.area.expectedRevision=9007199254740993ull;base.area.x=12;base.area.y=34;base.area.z=56;base.area.give=false;
+  for(int mode=0;mode<9;++mode) {
+    auto r=base;
+    if(mode==1)r.action=wm::ManagementAction::AreaUpdate;
+    if(mode==2)r.area.expectedRevision=0;
+    if(mode==3)r.area.kind=wm::AreaKind::Zone;
+    if(mode==4)r.area.x=-1;
+    if(mode==5)r.area.linkId=8;
+    if(mode==6)r.area.unlink=true;
+    if(mode==7)r.area.cursor=1;
+    if(mode==8)r.area.query="foreign";
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* request=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CAPTURE(mode);CHECK(bool(wire::validateConstructionRequest(*request))==(mode!=0));
+    if(mode==0) {
+      REQUIRE(request->area()->origin());CHECK(request->area()->origin()->y()==34);
+      CHECK_FALSE(request->area()->give());CHECK(request->area()->expected_revision()==9007199254740993ull);
+    }
+  }
+}
 TEST_CASE("Location access requests own an exact receipt and native mode") {
   wm::ManagementRequest base;base.action=wm::ManagementAction::AreaUpdate;
   base.area.kind=wm::AreaKind::Zone;base.area.operation=wm::AreaOperation::LocationAccess;

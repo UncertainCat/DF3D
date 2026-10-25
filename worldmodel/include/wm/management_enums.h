@@ -120,6 +120,7 @@ enum class AreaOperation : uint8_t {
   LocationAccess = 23,
   LocationStaffCandidates = 24,
   LocationStaffEdit = 25,
+  LinkTarget = 26,
 };
 enum class AreaRoomOutcome : uint8_t {
   None = 0,

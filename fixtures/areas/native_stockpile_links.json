@@ -904,5 +904,21 @@
     "diagnostic": "df3d stockpile-link-target-read <source-pile-id> <x> <y> <z> <give0-or-1>",
     "implementation": "Forward world.buildings.other.STOCKPILE then IN_PLAY, excluding source and requested-direction duplicates; native isSettingOccupancy/isExtentShaped/canLinkToStockpile, pinned extent predicate5587b0 and ID lookup3c9ff0. No link interface input. Validates source endpoint vector order/caps. Diagnostic requires revealed loaded target tile.",
     "failed_probe": "build/stockpile-storage-native-links-20261025-125116 refused incorrect extent hash range 0x4f; fixed to previously audited 0x79. Owned session closed unsaved/source unchanged."
+  },
+  "target_owner_acceptance": {
+    "run": "build/areas-acceptance-20261025-130840",
+    "status": "passed_with_known_issues",
+    "known_issue": "separate-thread notice",
+    "native_observations": 55,
+    "owned_df_pid": 89192,
+    "save_preservation": "Two unchanged save manifests; owned DF closed unsaved",
+    "capture_inspected": "scene_stockpiles_link_no_target.png",
+    "scope": "Management57 LinkTarget production query and actual viewport empty ground, non-linkable door, self, duplicate pile picks; pile/workshop give/take reversal and removal; no-target native state guard. Prior paint regressions retained.",
+    "omissions": [
+      "Production overlap progression",
+      "Hidden/boundary target acceptance",
+      "Full picker lifecycle and scaled/scroll input"
+    ],
+    "offline": "build/qa/stockpile-link-target-ready"
   }
 }

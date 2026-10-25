@@ -402,7 +402,7 @@ bool validateAreaShape(const Dictionary& data, String& error) {
       if(!typed(row,key,Variant::INT))return false;
   }
   const auto operation=int64_t(data.get("operation",0));
-  if(operation!=0 && operation!=int64_t(wm::AreaOperation::MultiCreate) && data.has("origin")) {
+  if(operation!=0 && operation!=int64_t(wm::AreaOperation::MultiCreate) && operation!=int64_t(wm::AreaOperation::LinkTarget) && data.has("origin")) {
     error="Legacy area fields cannot be combined with an operation";return false;
   }
   return true;
@@ -420,6 +420,9 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
                                     actionValue(Action::AreaCatalog),
                                     actionValue(Action::AreaCandidates)));
   auto& a = r.area;
+  if(int64_t(data.get("operation",0))==int64_t(wm::AreaOperation::LinkTarget) && !data.has("origin")) {
+    error="invalid stockpile link target request";return false;
+  }
   a.kind = wm::AreaKind(n("kind", 0, 0, 2));
   a.id = int32_t(n("id", -1, -1, INT32_MAX));
   Vector3i p = data.get("origin", Vector3i());
@@ -442,7 +445,7 @@ bool readArea(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   a.give = data.get("give", true);
   a.unlink = data.get("unlink", false);
   a.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
-  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LocationStaffEdit)));
+  a.operation=wm::AreaOperation(n("operation",0,0,int64_t(wm::AreaOperation::LinkTarget)));
   a.countGeneration=n("count_generation",0,0,INT64_MAX);
   a.locationSiteId=int32_t(n("location_site_id",-1,-1,INT32_MAX));
   a.occupationId=int32_t(n("occupation_id",-1,-1,INT32_MAX));

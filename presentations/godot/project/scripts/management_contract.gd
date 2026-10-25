@@ -118,6 +118,7 @@ enum AreaOperation {
 	LocationAccess = 23,
 	LocationStaffCandidates = 24,
 	LocationStaffEdit = 25,
+	LinkTarget = 26,
 }
 enum AreaRoomOutcome {
 	None = 0,

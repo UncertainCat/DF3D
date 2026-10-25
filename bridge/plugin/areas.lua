@@ -51,22 +51,22 @@ local function integer(v) return type(v)=='number' and math.type(v)=='integer' e
 local function default(a,key,value) local v=a[key];if v==nil then return value end;return v end
 local function validate_operation(r,a)
  local op=default(a,'operation',0)
- if not integer(op) or op<0 or op>15 then return 'Unsupported area operation' end
- local actions={[1]=9,[2]=11,[3]=11,[4]=11,[6]=9,[7]=11,[8]=11,[9]=11,[10]=9,[11]=11,[12]=11,[13]=11,[14]=14,[15]=13}
+ if not integer(op) or op<0 or (op>15 and op~=26) then return 'Unsupported area operation' end
+ local actions={[1]=9,[2]=11,[3]=11,[4]=11,[6]=9,[7]=11,[8]=11,[9]=11,[10]=9,[11]=11,[12]=11,[13]=11,[14]=14,[15]=13,[26]=9}
  if op~=0 and not (op==5 and (r.action==10 or r.action==11) or actions[op]==r.action) then
   return 'Area operation is not valid for this action'
  end
  local k=default(a,'kind',0)
  if not integer(k) or k<0 or k>2 or (k==2)~=(op==15) then return 'Workshop kind is only valid for workshop links' end
- local stock=op==1 or op==2 or op==3 or op==10 or op==13
+ local stock=op==1 or op==2 or op==3 or op==10 or op==13 or op==26
  local zone=(op>=6 and op<=9) or op==11 or op==12 or op==14
  if stock and k~=0 or zone and k~=1 then return 'Area kind is not valid for this operation' end
- if op~=0 and (a.x~=nil or a.y~=nil or a.z~=nil or default(a,'width',1)~=1 or default(a,'height',1)~=1 or
+ if op~=0 and (op~=26 and (a.x~=nil or a.y~=nil or a.z~=nil) or default(a,'width',1)~=1 or default(a,'height',1)~=1 or
   (default(a,'zone_type',-1)~=-1 and not(op==5 and r.action==10)) or default(a,'categories',0)~=0 or
   default(a,'changed_categories',0)~=0 or default(a,'barrels',-1)~=-1 or default(a,'bins',-1)~=-1 or
   default(a,'wheelbarrows',-1)~=-1 or default(a,'links_only',-1)~=-1 or default(a,'active',-1)~=-1 or
   default(a,'owner_id',-2)~=-2 or (op~=15 and (default(a,'link_id',-1)~=-1 or
-  default(a,'give',true)~=true or default(a,'unlink',false)~=false))) then
+  (op~=26 and default(a,'give',true)~=true) or default(a,'unlink',false)~=false))) then
   return 'Legacy area fields cannot be combined with an operation'
  end
  local foreign={
@@ -99,6 +99,13 @@ local function validate_operation(r,a)
  end
  if not integer(default(a,'id',-1)) or default(a,'id',-1)<-1 then return 'invalid area identity' end
  if op~=0 and not(op==5 and r.action==10) and default(a,'id',-1)<0 then return 'area id required' end
+ if op==26 then
+  for _,key in ipairs{'x','y','z'} do
+   if not integer(a[key]) or a[key]<0 or a[key]>32767 then return 'invalid stockpile link target request' end
+  end
+  if default(a,'expected_revision',0)==0 or default(a,'cursor',0)~=0 or default(a,'query','')~='' or
+   type(default(a,'give',true))~='boolean' then return 'invalid stockpile link target request' end
+ end
  for _,key in ipairs{'list_key','row_key','name','query'} do
   local v=default(a,key,'');local cap=(key=='name' and 512) or (key=='query' and 128) or 64
   if type(v)~='string' or #v>cap then return key=='name' and 'area name too long' or 'area key too long' end
@@ -994,12 +1001,12 @@ end
 local function native_operation(r)
  sync_epoch(r.epoch)
  local a=r.area or {};local op=default(a,'operation',0);local steps=0
- local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1) or
+ local synchronous=r.synchronous_read==true and r.action==9 and (op==0 or op==1 or op==26) or
   r.synchronous_write==true and (r.action==13 and (op==0 or op==15) or r.action==11 and (op==0 or op==2 or op==3 or op==5 or op==7 or op==8 or op==9) or r.action==12 and op==0 or r.action==10 and (op==0 or op==5))
  local budget=synchronous and math.huge or default(r,'step_budget',0)
  local unknown_work=false
  local function finish(result)
-  result.steps=steps;result.active_kinds=active_kinds();result.operation=integer(op) and op>=0 and op<=15 and op or 0
+  result.steps=steps;result.active_kinds=active_kinds();result.operation=integer(op) and op>=0 and (op<=15 or op==26) and op or 0
   if synchronous then result.work_unknown=unknown_work end
   local id=default(a,'id',-1);result.area_id=integer(id) and id>=-1 and id<=2147483647 and id or -1;return result
  end
@@ -1236,6 +1243,17 @@ local function native_operation(r)
  if not before.visible then return reject('Area is not visible') end
  local expected=default(a,'expected_revision',0)
  if expected~=0 and expected~=before.revision then return reject('Area changed; inspect again') end
+ if op==26 then
+  local found,problem=invoke(r.link_target,0,b)
+  if not found then return reject(problem) end
+  local rows={}
+  if found.building_id>=0 then
+   local target=df.building.find(found.building_id)
+   if not target then return reject('Area no longer exists') end
+   rows[1]={id=target.id,kind=kind(target)==0 and 0 or 2,direction=default(a,'give',true) and 1 or 2,name=name(target)}
+  end
+  return finish{ok=true,message='',links=rows}
+ end
  if r.action==12 then
   if expected==0 then return reject('Area revision required; inspect again') end
   -- Save reply geometry before native destruction; neither this handler nor

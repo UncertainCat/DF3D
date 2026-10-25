@@ -718,6 +718,21 @@ func pointer_stockpile_transfer(origin: Vector3i) -> void:
 	if not await wait_ui(func(): return settled(),"self link selection"): return
 	if not check(editor.links_picking and not editor.request_problem and not editor.message.visible and not editor.stockpile_view.controls.links.disabled,"self selection changed picker"): return
 	await capture("stockpiles_link_duplicate_self")
+	await native("guard_before")
+	await pointer_click(tile_screen(origin+Vector3i(1,0,0)))
+	if not await wait_ui(func(): return settled(),"empty link target"): return
+	if not check(editor.links_picking and not editor.request_problem and not editor.message.visible,"empty ground changed picker"): return
+	var dp: Dictionary = fixture.link_door_origin
+	var door_tile := Vector3i(int(dp.x),int(dp.y),int(dp.z))
+	scene.camera_rig.focus_on(Vector3(door_tile.x+0.5,door_tile.z+1.0,door_tile.y+0.5),30)
+	for frame in 12: await process_frame
+	await pointer_click(tile_screen(door_tile))
+	if not await wait_ui(func(): return settled(),"ineligible door target"): return
+	if not check(editor.links_picking and not editor.request_problem and not editor.message.visible,"door changed picker"): return
+	await native("guard_after")
+	await capture("stockpiles_link_no_target")
+	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
+	for frame in 12: await process_frame
 	await click_control(editor.links_view.close)
 	await click_control(editor.links_view.add_buttons[0])
 	await pointer_click(tile_screen(origin+Vector3i(5,0,0)))

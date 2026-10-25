@@ -26,8 +26,8 @@ Workshop helpers `0x5832b0`/`0x583320` establish the reciprocal/opposite-directi
 mapping; the runtime uses the same native vector primitives with owned storage.
 Link commands now use explicit synchronous work accounting, retaining honest
 unknown-work reporting without spending the paginated read budget. Native UI
-state is not consulted. Target eligibility, broader ordering, scrolling and
-scaled link input remain unverified.
+state is not consulted. Production target selection now uses the verified native query described below.
+Broader ordering, scrolling and scaled link input remain unverified.
 
 Protected `build/areas-acceptance-20261025-124144` passes53 native observations
 through actual viewport input: duplicate/self selection, pile reversal/unlink,
@@ -42,10 +42,8 @@ Native invalid-target run `build/stockpile-storage-native-links-20261025-124453`
 also verifies empty ground and a non-linkable door: neither changes links or
 closes the picker, and no rejection copy appears. The source stayed unchanged
 and owned DF closed unsaved. The non-linkable picker capture was inspected.
-DF3D's current area-then-generic-building lookup does not implement this contract:
-generic construction inspection rejects no building and link mutation rejects
-non-linkable buildings. Replace that fallback with a semantic eligible-target
-query that returns an empty successful result for no target. The native handler
+DF3D uses a semantic eligible-target query that returns an empty successful
+result for no target. The former area-then-generic-building fallback is removed. The native handler
 uses `isSettingOccupancy`, `isExtentShaped`, the native extent predicate and
 `canLinkToStockpile`; its global UI inputs remain prohibited.
 
@@ -64,7 +62,29 @@ target and requires a revealed loaded tile. Protected run
 with actual native pointer effects, including invalid targets, duplicates,
 reversal and overlap progression. Each probe preserves native main-interface
 memory; simulation stays paused, source hashes are unchanged and owned DF closes
-unsaved. The semantic request and Godot owner do not yet use this service.
+unsaved.
+
+Management57 exposes `AreaInspect/LinkTarget` with a source pile ID/revision,
+world tile and give/take direction. The result contains zero or one link row.
+The source is checked for visibility and revision before lookup; hidden,
+unloaded and outside-map tiles disclose no target. The native scan reports
+opaque synchronous work. The viewer sends a mutation only after a matching
+current pick receipt; cancellation detaches pending reads and ignores late
+results. A no-target reply leaves the picker open without rejection copy.
+Bridge and viewer must be rebuilt together; v57 isolates older peers, and old
+generic building hits cannot be migrated into target eligibility.
+
+Protected `build/areas-acceptance-20261025-130840` passes55 native observations,
+including viewport empty-ground/door picks with an unchanged native-state guard,
+duplicate/self picks, pile and workshop reversal/removal, and paint regressions.
+The no-target capture was inspected. Owned DF89192 closed unsaved and both save
+manifests remained unchanged. The run is passed_with_known_issues solely for
+the recorded separate-thread notice. Offline
+`build/qa/stockpile-link-target-ready` passes root CTest19/19, link controller,
+paint session and adapter checks. Obsolete whole-draft repaint expectations in
+the link controller test were replaced with per-gesture request assertions.
+Production overlap progression and hidden/boundary target checks, broader
+lifecycle and scaled/scroll input remain outside this scoped acceptance.
 
 ## Native stockpile storage input (DF 53.16)
 

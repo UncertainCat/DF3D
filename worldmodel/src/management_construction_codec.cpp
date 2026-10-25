@@ -203,7 +203,7 @@ flatbuffers::Offset<m::AreaRequest> encodeArea(flatbuffers::FlatBufferBuilder& b
   }
   m::AreaRequestBuilder r(b);
   r.add_kind(m::AreaKind(a.kind));r.add_id(a.id);
-  if(a.operation==AreaOperation::None || a.operation==AreaOperation::MultiCreate)r.add_origin(&ap);
+  if(a.operation==AreaOperation::None || a.operation==AreaOperation::MultiCreate || a.operation==AreaOperation::LinkTarget)r.add_origin(&ap);
   r.add_width(a.width);r.add_height(a.height);r.add_zone_type(a.zoneType);
   r.add_categories(a.categories);r.add_changed_categories(a.changedCategories);
   r.add_barrels(a.barrels);r.add_bins(a.bins);r.add_wheelbarrows(a.wheelbarrows);

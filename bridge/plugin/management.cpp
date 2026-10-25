@@ -1641,6 +1641,25 @@ int areaSquadUse(lua_State* L) {
 }
 // Lua checks the pile revision and reserves reply-snapshot work first. Native
 // virtual methods include every supported workshop without guessing its type.
+int areaLinkTarget(lua_State* L) {
+  bool unknownWork=false;
+  const auto reply=[&](bool ok,int32_t id=-1) {
+    lua_newtable(L);field(L,"ok",ok);field(L,"message","");field(L,"steps",1);
+    field(L,"work_unknown",unknownWork);field(L,"building_id",id);return 1;
+  };
+  auto* source=Lua::GetDFObject<df::building_stockpilest>(L,1);
+  if(!source || !lua_isnil(L,2) || action!=m::ManagementAction::AreaInspect || request.empty())return reply(false);
+  const auto* a=flatbuffers::GetRoot<m::ConstructionRequest>(request.data())->area();
+  if(!a || a->operation()!=m::AreaOperation::LinkTarget || a->id()!=source->id || !a->origin())return reply(false);
+  const auto x=a->origin()->x(),y=a->origin()->y(),z=a->origin()->z();
+  auto* block=Maps::isValidTilePos(x,y,z)?Maps::getTileBlock(x,y,z):nullptr;
+  // Hidden/unloaded/outside-map tiles cannot disclose targets and are ordinary
+  // misses. Source visibility and revision were checked by the semantic owner.
+  if(!block || block->designation[x&15][y&15].bits.hidden)return reply(true);
+  unknownWork=true;
+  const auto target=df3d_area::nativeStockpileLinkTarget(*source,x,y,z,a->give());
+  return target?reply(true,*target?(*target)->id:-1):reply(false);
+}
 int areaLink(lua_State* L) {
   const auto fail=[&](const char* reason,uint32_t steps=1) {
     lua_newtable(L);field(L,"ok",false);field(L,"message",reason);field(L,"steps",steps);return 1;
@@ -2253,6 +2272,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaRemove);lua_setfield(L,-2,"remove_area");
     lua_pushcfunction(L,areaRepaint);lua_setfield(L,-2,"repaint");
     lua_pushcfunction(L,areaLink);lua_setfield(L,-2,"link_areas");
+    lua_pushcfunction(L,areaLinkTarget);lua_setfield(L,-2,"link_target");
     lua_pushcfunction(L,areaSquadUse);lua_setfield(L,-2,"squad_use");
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
   }

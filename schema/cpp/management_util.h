@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 56;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v56";
+inline constexpr uint32_t kManagementVersion = 57;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v57";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -30,7 +30,8 @@ inline bool validAreaZoneSettings(const AreaZoneSettings* z) {
 // ownership, new-field ownership/requirements, identities, then bounded sizes.
 inline std::optional<std::string> validateAreaOperation(ManagementAction action, const AreaRequest& a) {
   const auto op=static_cast<uint8_t>(a.operation());
-  if(op>25) return "Unsupported area operation";
+  if(op>26) return "Unsupported area operation";
+  const bool linkTarget=op==26;
   const bool multi=op>=16 && op<=18;
   const bool counts=op==19;
   const bool locationChoices=op==20;
@@ -44,7 +45,7 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   const bool update=action==ManagementAction::AreaUpdate;
   bool allowed=op==0;
   switch(a.operation()) {
-    case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links: case AreaOperation::PaintCounts: case AreaOperation::LocationChoices: case AreaOperation::LocationDetails: case AreaOperation::LocationStaffCandidates:
+    case AreaOperation::LinkTarget: case AreaOperation::SettingsPage: case AreaOperation::LocationList: case AreaOperation::Links: case AreaOperation::PaintCounts: case AreaOperation::LocationChoices: case AreaOperation::LocationDetails: case AreaOperation::LocationStaffCandidates:
       allowed=inspect; break;
     case AreaOperation::SettingsSet: case AreaOperation::Preset: case AreaOperation::Rename:
     case AreaOperation::LocationSet: case AreaOperation::LocationCreate: case AreaOperation::ZoneSettings:
@@ -60,15 +61,15 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   if(!allowed) return "Area operation is not valid for this action";
   if(a.kind()>AreaKind::Workshop || (a.kind()==AreaKind::Workshop)!=(op==15))
     return "Workshop kind is only valid for workshop links";
-  const bool stock=op==1 || op==2 || op==3 || op==10 || op==13;
+  const bool stock=op==1 || op==2 || op==3 || op==10 || op==13 || linkTarget;
   const bool zone=(op>=6 && op<=9) || op==11 || op==12 || op==14 || multi || counts || locationChoices || locationDetails || staffCandidates;
   if((stock && a.kind()!=AreaKind::Stockpile) || (zone && a.kind()!=AreaKind::Zone))
     return "Area kind is not valid for this operation";
-  if(op && ((op!=16 && (a.origin() || a.width()!=1 || a.height()!=1)) ||
+  if(op && ((op!=16 && ((!linkTarget && a.origin()) || a.width()!=1 || a.height()!=1)) ||
       (a.zone_type()!=-1 && !(op==5 && create) && !counts) || a.categories() || a.changed_categories() ||
       a.barrels()!=-1 || a.bins()!=-1 || a.wheelbarrows()!=-1 || a.links_only()!=-1 ||
       a.active()!=-1 || a.owner_id()!=-2 ||
-      (op!=15 && (a.link_id()!=-1 || !a.give() || a.unlink()))))
+      (op!=15 && (a.link_id()!=-1 || (!linkTarget && !a.give()) || a.unlink()))))
     return "Legacy area fields cannot be combined with an operation";
   if(!op) {
     if(!a.origin()) return "invalid area request";
@@ -84,6 +85,9 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
     if(action==ManagementAction::AreaLink && (a.link_id()<0 || a.id()==a.link_id())) return "invalid area link";
   }
   const auto present=[](const auto* p){return p && p->size()!=0;};
+  if(linkTarget && (!a.origin() || a.origin()->x()<0 || a.origin()->y()<0 || a.origin()->z()<0 ||
+      a.origin()->x()>32767 || a.origin()->y()>32767 || a.origin()->z()>32767 ||
+      !a.expected_revision() || a.cursor() || present(a.query()))) return "invalid stockpile link target request";
   // Ordered like the appended schema fields, so malformed requests have stable errors.
   const std::pair<bool,const char*> foreign[]{
     {a.expected_list_revision()!=0 && !(op==1 || op==6 || op==10 || op==14 || locationChoices || staffCandidates || staffEdit), "expected_list_revision"},
@@ -803,7 +807,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if ((a->areas() && a->areas()->size()>64) || (a->choices() && a->choices()->size()>128)) return "area response too large";
     const auto count=[](const auto* v)->size_t{return v ? v->size() : 0;};
     const auto textSize=[](const flatbuffers::String* v)->size_t{return v ? v->size() : 0;};
-    if(a->operation()>AreaOperation::LocationStaffEdit || a->area_id()<-1 ||
+    if(a->operation()>AreaOperation::LinkTarget || a->area_id()<-1 ||
         textSize(a->list_key())>64 || textSize(a->query())>128 ||
         a->candidate_kind()>3 || a->sort()>3 || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
@@ -898,6 +902,9 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         count(a->candidates())>128 || count(a->links())>128) return "area response too large";
     const unsigned families=(count(a->settings())!=0)+(count(a->locations())!=0)+
         (count(a->candidates())!=0)+(count(a->links())!=0);
+    if(a->operation()==AreaOperation::LinkTarget &&
+        (count(a->links())>1 || count(a->areas()) || count(a->choices()) || count(a->settings()) || count(a->locations()) || count(a->candidates()) || a->next_cursor()))
+      return "invalid stockpile link target response";
     if(families>1 || (count(a->choices()) && (count(a->areas()) || families)) ||
         (families && count(a->areas())>1)) return "area response mixes list families";
     // Sum variable payloads across the entire reply, not just each page's

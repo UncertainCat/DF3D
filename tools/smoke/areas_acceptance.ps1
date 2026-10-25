@@ -32,13 +32,14 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  return $r
 }
 try {
+ if($StockpilePaintOnly -and $ControllerRestart){throw 'StockpilePaintOnly does not support ControllerRestart'}
  if($StockpilePaintOnly) {
   $StockpilesOnly=$true
   Write-Lf "$out/stockpile-paint-only.json" '{"scope":"stockpile paint viewport lifecycle only"}'
  }
  if($StockpileResizeOnly -and ($Controller -or $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $StockpilesOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene)){throw 'StockpileResizeOnly is a separate protected semantic lane'}
  if($StockpilesOnly) {
-  if(-not $ControllerScene -or $ControllerRestart -or $BoundaryOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'StockpilesOnly requires ControllerScene without other focused scopes'}
+  if(-not $ControllerScene -or $BoundaryOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'StockpilesOnly requires ControllerScene without other focused scopes'}
   Write-Lf "$out/stockpiles-only.json" '{"scope":"stockpile main-scene pointer workflow; zones excluded"}'
  }
  if($StaffScene){$StaffOnly=$true;Write-Lf "$out/staff-scene.txt" 'viewport'}
@@ -102,6 +103,7 @@ try {
  $project="$repo/presentations/godot/project"
  $driver=if($MultiOnly -and $ControllerRestart){'areas_multi_restart_live.gd'}elseif($MultiOnly -and $ControllerScene){'areas_multi_scene_live.gd'}elseif($MultiOnly -and $Controller){'areas_multi_controller_live.gd'}elseif($MultiOnly){'areas_multi_live.gd'}elseif($BoundaryOnly){'areas_controller_scene_boundary_live.gd'}elseif($ControllerRestart -and $ControllerScene){'areas_controller_scene_restart_live.gd'}elseif($ControllerRestart){'areas_controller_restart_live.gd'}elseif($ControllerScene){'areas_controller_scene_live.gd'}elseif($Controller){'areas_controller_live.gd'}else{'areas_acceptance_live.gd'}
  $renderer=if($ControllerScene -or $LocationScene -or $StaffScene){''}else{'--headless --render-thread safe'}
+ if($StockpilesOnly -and $ControllerRestart){$driver='stockpile_links_restart_live.gd'}
  if($StockpileResizeOnly){$driver='stockpile_resize_live.gd'}
  if($PaintCountsOnly){$driver='areas_paint_counts_live.gd'}
  if($LocationScene){$driver='areas_location_scene_live.gd'}
@@ -121,7 +123,11 @@ try {
     $loaded=$false
     $oldFixtureProcess=$fixtureProcess
     try {
-     $restart=Restart-Df3dFortress -SaveId $clone -SaveRoots $saveRoots -EvidenceDir "$out/restart-$index"
+     # Stockpile acceptance already owns verified source/clone manifests. Keep
+     # restart protection on those same two saves, not unrelated past clones.
+     $restartRoots=if($StockpilesOnly){@($source,$clone)}else{$saveRoots}
+     Write-Lf "$out/restart-save-scope.json" (@{roots=@($restartRoots);stockpilesOnly=[bool]$StockpilesOnly} | ConvertTo-Json -Compress)
+     $restart=Restart-Df3dFortress -SaveId $clone -SaveRoots $restartRoots -EvidenceDir "$out/restart-$index"
      if($restart.Status -eq 'ready') {
       $fixtureProcess=Get-Process -Id $restart.Pid
       $loaded=$true

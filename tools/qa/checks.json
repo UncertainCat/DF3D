@@ -3432,6 +3432,11 @@
       "reason": "Protected live workflow; launched by tools/smoke/areas_acceptance.ps1 on a never-saved disposable clone. Prepared inputs: DF3D_AREAS_ACCEPTANCE."
     },
     {
+      "path": "presentations/godot/project/tests/stockpile_links_restart_live.gd",
+      "status": "manual",
+      "reason": "Protected GPU link-picker producer restart through areas_acceptance.ps1 -ControllerScene -ControllerRestart -StockpilesOnly. Holds an actual target-query receipt at the service polling boundary, verifies transport loss and no replay across epochs, then explicitly reopens and links/unlinks."
+    },
+    {
       "path": "presentations/godot/project/tests/stockpile_resize_live.gd",
       "status": "manual",
       "reason": "Protected stocked-pile shrink/regrow, assignment cleanup and malformed/stale refusal checks through areas_acceptance.ps1 -StockpileResizeOnly on an owned never-saved clone. Semantic effects only, not rendered paint lifecycle acceptance."

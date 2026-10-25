@@ -124,6 +124,25 @@ known separate-thread notice remains. Offline
 controller, including stale/cancelled lookups and disconnect/new-epoch late
 results that dispatch no mutation or replay.
 
+The protected stockpile-only restart lane is
+`areas_acceptance.ps1 -ControllerScene -ControllerRestart -StockpilesOnly`.
+It holds an actual native target-query reply at the semantic service polling
+boundary, replaces the owned producer, observes transport loss, and verifies
+that the old picker, ticket and selection retire without replay. Fresh viewport
+input then reopens the pile and links/unlinks a workshop with reciprocal native
+readback. This covers an undelivered read reply, not an in-flight mutation.
+
+`build/areas-acceptance-20261025-155121` passes this scenario: ticket/sequence8,
+three service invalidations, and distinct producer epochs. The retired and
+reopened captures were inspected. Both owned processes closed unsaved and the
+source/clone manifests stayed unchanged; only the known separate-thread notice
+remains. Stockpile-only restart hashes those same two protected saves (1368
+files), recorded in `restart-save-scope.json`; other restart lanes retain their
+existing scope. The earlier `150519` attempt timed out in the UI driver while
+hashing all historical saves; its helper completed preservation and teardown,
+but it is not lifecycle acceptance. Offline
+`build/qa/stockpile-fit-restart-ready` passes root CTest19/19 and the link checks.
+
 Native link-list handler `0x33616d..0x33633b` indexes link vectors in reverse
 struct order: offsets0x48,0x30,0x18,0, corresponding to workshop take, workshop
 give, pile take, pile give. The Lua list producer preserves this order and each

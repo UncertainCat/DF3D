@@ -475,6 +475,7 @@ TEST_CASE("entities: SyntheticFort Full then Deltas reach the store through the 
   bridge.z = 5;
   bridge.material = granite;
   bridge.stage = m::BuildingStage::InProgress;
+  bridge.bridge={1,true,false,true,false};
   fort.placeBuilding(5, bridge);
   m::SyntheticFort::ItemSpec log;
   log.kind = m::ItemKind::Wood;
@@ -494,6 +495,9 @@ TEST_CASE("entities: SyntheticFort Full then Deltas reach the store through the 
   CHECK(model.itemsKnown());
   REQUIRE(model.building(5));
   CHECK(model.building(5)->stage == BuildingStage::Complete);
+  CHECK(model.building(5)->bridge.direction==1);
+  CHECK(model.building(5)->bridge.raised);
+  CHECK(model.building(5)->bridge.lowering);
   CHECK(model.building(5)->version == 2);
   CHECK(model.building(5)->tick == 11);
   CHECK(model.materialName(model.building(5)->material) == "GRANITE");
@@ -683,4 +687,369 @@ TEST_CASE("pending construction entity retains subtype and retires on removal or
   full.tick=4;model.ingest(full,0.0);REQUIRE(model.building(90));
   model.ingest(snap(5,ChangeScope::Full,ChangeScope::Full),0.0);
   CHECK(model.building(90)==nullptr);
+}
+
+TEST_CASE("bridge movement invalidates artwork and absent state clears prior facts") {
+  WorldModel model;SnapshotData snapshot;snapshot.tick=1;snapshot.mapSize={16,16,2};
+  snapshot.buildingScope=ChangeScope::Full;
+  BuildingObservation bridge;bridge.id=5;bridge.kind=BuildingKind::Bridge;
+  snapshot.buildings.push_back(bridge);model.ingest(snapshot,1.0);
+  REQUIRE(model.building(5));CHECK(model.building(5)->bridge.direction==-2);
+  auto version=model.building(5)->version;
+  snapshot.buildings[0].bridge={0,false,true,false,false};snapshot.tick=2;model.ingest(snapshot,2.0);
+  CHECK(model.building(5)->version>version);CHECK(model.building(5)->bridge.raising);
+  version=model.building(5)->version;
+  snapshot.buildings[0].bridge={0,true,false,false,false};snapshot.tick=3;model.ingest(snapshot,3.0);
+  CHECK(model.building(5)->version>version);CHECK(model.building(5)->bridge.raised);
+  version=model.building(5)->version;
+  snapshot.buildings[0].bridge={};snapshot.tick=4;model.ingest(snapshot,4.0);
+  CHECK(model.building(5)->version>version);CHECK(model.building(5)->bridge.direction==-2);
+}
+
+TEST_CASE("bedding changes invalidate beds and unknown snapshots clear choices") {
+  WorldModel model;
+  SnapshotData snapshot; snapshot.tick=1; snapshot.mapSize={16,16,2};
+  snapshot.buildingScope=ChangeScope::Full; snapshot.itemScope=ChangeScope::Full;
+  BuildingObservation bed; bed.id=5; bed.kind=BuildingKind::Bed;
+  ItemObservation item; item.id=6; item.kind=ItemKind::Bed;
+  snapshot.buildings.push_back(bed); snapshot.items.push_back(item);
+  model.ingest(snapshot,1.0);
+  REQUIRE(model.building(5)); REQUIRE(model.item(6));
+  CHECK(model.building(5)->bedding.sheet==-1);
+  auto before=model.building(5)->version;
+  snapshot.buildings[0].bedding={1,2,"CLEAR","BLUE"};
+  snapshot.items[0].bedding=snapshot.buildings[0].bedding;
+  snapshot.tick=2; model.ingest(snapshot,2.0);
+  CHECK(model.building(5)->version>before);
+  CHECK(model.item(6)->bedding.sheetColor=="BLUE");
+  before=model.building(5)->version;
+  snapshot.buildings[0].bedding={}; snapshot.items[0].bedding={};
+  snapshot.tick=3; model.ingest(snapshot,3.0);
+  CHECK(model.building(5)->version>before);
+  CHECK(model.item(6)->bedding.sheet==-1);
+}
+
+TEST_CASE("pump direction survives transport and invalidates changed artwork") {
+  m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec pump;
+  pump.kind=m::BuildingKind::ScrewPump;pump.pumpDirection=3;
+  fort.placeBuilding(5,pump);fort.snapshot(1);
+  WorldModel model;std::string error;
+  REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+  REQUIRE(model.building(5));CHECK(model.building(5)->pumpDirection==3);
+  auto version=model.building(5)->version;
+  SnapshotData snapshot;snapshot.tick=2;snapshot.mapSize={16,16,2};
+  snapshot.buildingScope=ChangeScope::Full;
+  BuildingObservation changed;changed.id=5;changed.kind=BuildingKind::ScrewPump;changed.pumpDirection=1;
+  snapshot.buildings.push_back(changed);model.ingest(snapshot,2.0);
+  CHECK(model.building(5)->pumpDirection==1);CHECK(model.building(5)->version>version);
+  version=model.building(5)->version;snapshot.tick=3;snapshot.buildings[0].pumpDirection=-1;
+  model.ingest(snapshot,3.0);
+  CHECK(model.building(5)->pumpDirection==-1);CHECK(model.building(5)->version>version);
+}
+
+TEST_CASE("calendar updates preserve geometry revisions and reset with session state") {
+  m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec pump;
+  pump.kind=m::BuildingKind::ScrewPump;pump.pumpRunning=1;
+  fort.placeBuilding(5,pump);fort.snapshot(100,1000,6049);
+  WorldModel model;std::string error;
+  REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+  CHECK(model.calendarYearTick()==6049);REQUIRE(model.building(5));CHECK(model.building(5)->pumpRunning==1);
+  const auto version=model.building(5)->version,buildingsVersion=model.buildingsVersion();
+  SnapshotData next;next.tick=101;next.mapSize={16,16,2};next.calendarYearTick=6050;
+  model.ingest(next,1.01);CHECK(model.calendarYearTick()==6050);
+  CHECK(model.building(5)->version==version);CHECK(model.buildingsVersion()==buildingsVersion);
+  next.tick=102;next.calendarYearTick=-1;model.ingest(next,1.02);CHECK(model.calendarYearTick()==-1);
+  next.tick=1;next.calendarYearTick=0;model.ingest(next,1.03);
+  CHECK(model.calendarYearTick()==0);CHECK(model.building(5)==nullptr);
+  model.resetSession();CHECK(model.calendarYearTick()==-1);
+}
+
+TEST_CASE("pump activity changes revise buildings and unknown observations clear activity") {
+  WorldModel model;SnapshotData s;s.tick=1;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+  BuildingObservation b;b.id=5;b.kind=BuildingKind::ScrewPump;b.pumpRunning=1;s.buildings.push_back(b);
+  model.ingest(s,1);REQUIRE(model.building(5));auto version=model.building(5)->version;
+  s.tick=2;s.buildings[0].pumpRunning=0;model.ingest(s,2);
+  CHECK(model.building(5)->version>version);CHECK(model.building(5)->pumpRunning==0);
+  version=model.building(5)->version;s.tick=3;s.buildings[0].pumpRunning=-1;model.ingest(s,3);
+  CHECK(model.building(5)->version>version);CHECK(model.building(5)->pumpRunning==-1);
+}
+
+TEST_CASE("first construction item survives transport changes and clears on unknown") {
+ m::SyntheticFort fort(16,16,2);const auto mat=fort.material("GRANITE");
+ m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::Trap;b.subtype=5;
+ b.constructionItemIsLog=1;b.constructionItemMaterial=mat;fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->constructionItemIsLog==1);CHECK(model.building(5)->constructionItemMaterial==mat);
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+ s.materials={"GRANITE"};
+ BuildingObservation o;o.id=5;o.kind=BuildingKind::Trap;o.subtype=5;o.constructionItemIsLog=0;o.constructionItemMaterial=mat;s.buildings.push_back(o);
+ auto version=model.building(5)->version;model.ingest(s,2);
+ CHECK(model.building(5)->constructionItemIsLog==0);CHECK(model.building(5)->version>version);
+ version=model.building(5)->version;s.tick=3;s.buildings[0].constructionItemMaterial=kNoMaterial;model.ingest(s,3);
+ CHECK(model.building(5)->version>version);CHECK(model.building(5)->constructionItemMaterial==kNoMaterial);
+ version=model.building(5)->version;s.tick=4;s.buildings[0].constructionItemIsLog=-1;model.ingest(s,4);
+ CHECK(model.building(5)->version>version);CHECK(model.building(5)->constructionItemIsLog==-1);
+}
+
+TEST_CASE("roller native state survives transport, changes and clears") {
+  m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+  b.kind=m::BuildingKind::Rollers;b.rollerDirection=3;b.rollerMachinePosition=127;
+  b.constructionItemIsLog=1;fort.placeBuilding(5,b);fort.snapshot(1);
+  WorldModel model;std::string error;
+  REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+  REQUIRE(model.building(5));CHECK(model.building(5)->rollerDirection==3);
+  CHECK(model.building(5)->rollerMachinePosition==127);CHECK(model.building(5)->constructionItemIsLog==1);
+  auto version=model.building(5)->version;
+  SnapshotData snapshot;snapshot.tick=2;snapshot.mapSize={16,16,2};snapshot.buildingScope=ChangeScope::Full;
+  BuildingObservation changed;changed.id=5;changed.kind=BuildingKind::Rollers;
+  changed.rollerDirection=1;changed.rollerMachinePosition=0;snapshot.buildings.push_back(changed);
+  model.ingest(snapshot,2);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->rollerDirection==1);CHECK(model.building(5)->rollerMachinePosition==0);
+  snapshot.tick=3;snapshot.buildings[0].rollerMachinePosition=-128;model.ingest(snapshot,3);
+  CHECK(model.building(5)->rollerMachinePosition==-128);
+  snapshot.tick=4;snapshot.buildings[0].rollerMachinePosition=-129;snapshot.buildings[0].rollerDirection=-1;
+  model.ingest(snapshot,4);CHECK(model.building(5)->rollerMachinePosition==-129);
+  CHECK(model.building(5)->rollerDirection==-1);
+}
+
+TEST_CASE("instrument definition changes invalidate and clear model state") {
+  m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+  b.kind=m::BuildingKind::Instrument;b.instrumentFamily=2;b.instrumentPlaced=1;
+  fort.placeBuilding(5,b);fort.snapshot(1);
+  WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+  REQUIRE(model.building(5));CHECK(model.building(5)->instrumentFamily==2);CHECK(model.building(5)->instrumentPlaced==1);
+  auto version=model.building(5)->version;
+  SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+  BuildingObservation o;o.id=5;o.kind=BuildingKind::Instrument;o.instrumentFamily=2;o.instrumentPlaced=0;
+  s.buildings.push_back(o);model.ingest(s,2);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->instrumentPlaced==0);version=model.building(5)->version;
+  s.tick=3;s.buildings[0].instrumentFamily=3;model.ingest(s,3);
+  CHECK(model.building(5)->instrumentFamily==3);CHECK(model.building(5)->version>version);
+  s.tick=4;s.buildings[0].instrumentFamily=-1;s.buildings[0].instrumentPlaced=-1;model.ingest(s,4);
+  CHECK(model.building(5)->instrumentFamily==-1);CHECK(model.building(5)->instrumentPlaced==-1);
+}
+
+TEST_CASE("construction item materials remap snapshot-local indices across tables") {
+  for(auto kind:{BuildingKind::Instrument,BuildingKind::Rollers,BuildingKind::Trap}) {
+    WorldModel model;
+    auto s=snap(1,ChangeScope::Full,ChangeScope::None,{"OAK","IRON"});
+    auto b=bld(5,kind,1,1,1,1,0);b.subtype=5;b.constructionItemIsLog=0;b.constructionItemMaterial=1;
+    s.buildings.push_back(b);model.ingest(s,1);
+    REQUIRE(model.building(5));CHECK(model.materialName(model.building(5)->constructionItemMaterial)=="IRON");
+    auto version=model.building(5)->version;
+    s.tick=2;s.materials={"IRON","OAK"};s.buildings[0].constructionItemMaterial=0;model.ingest(s,2);
+    CHECK(model.materialName(model.building(5)->constructionItemMaterial)=="IRON");
+    CHECK(model.building(5)->version==version);
+    s.tick=3;s.buildings[0].constructionItemMaterial=1;model.ingest(s,3);
+    CHECK(model.materialName(model.building(5)->constructionItemMaterial)=="OAK");
+    CHECK(model.building(5)->version>version);
+    s.tick=4;s.buildings[0].constructionItemMaterial=9;model.ingest(s,4);
+    CHECK(model.building(5)->constructionItemMaterial==kNoMaterial);
+  }
+}
+
+TEST_CASE("water wheel native state survives transport, changes and clears") {
+  m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+  b.kind=m::BuildingKind::WaterWheel;b.waterwheelMachinePosition=127;
+  b.constructionItemIsLog=1;fort.placeBuilding(5,b);fort.snapshot(1);
+  WorldModel model;std::string error;
+  REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+  REQUIRE(model.building(5));
+  CHECK(model.building(5)->waterwheelMachinePosition==127);CHECK(model.building(5)->constructionItemIsLog==1);
+  auto version=model.building(5)->version;
+  SnapshotData snapshot;snapshot.tick=2;snapshot.mapSize={16,16,2};snapshot.buildingScope=ChangeScope::Full;
+  BuildingObservation changed;changed.id=5;changed.kind=BuildingKind::WaterWheel;
+  changed.waterwheelMachinePosition=0;snapshot.buildings.push_back(changed);
+  model.ingest(snapshot,2);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->waterwheelMachinePosition==0);
+  snapshot.tick=3;snapshot.buildings[0].waterwheelMachinePosition=-128;model.ingest(snapshot,3);
+  CHECK(model.building(5)->waterwheelMachinePosition==-128);
+  snapshot.tick=4;snapshot.buildings[0].waterwheelMachinePosition=-129;
+  model.ingest(snapshot,4);CHECK(model.building(5)->waterwheelMachinePosition==-129);
+
+}
+
+TEST_CASE("windmill simulation changes invalidate and clear transported state") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::Windmill;
+ b.windmillOrientX=-1;b.windmillOrientY=1;b.windmillRotation=-128;fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->windmillOrientX==-1);CHECK(model.building(5)->windmillOrientY==1);CHECK(model.building(5)->windmillRotation==-128);
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+ BuildingObservation o;o.id=5;o.kind=BuildingKind::Windmill;o.windmillOrientX=0;o.windmillOrientY=-1;o.windmillRotation=127;s.buildings.push_back(o);
+ auto version=model.building(5)->version;model.ingest(s,2);CHECK(model.building(5)->version>version);
+ CHECK(model.building(5)->windmillOrientX==0);CHECK(model.building(5)->windmillOrientY==-1);CHECK(model.building(5)->windmillRotation==127);
+ version=model.building(5)->version;s.tick=3;s.buildings[0].windmillRotation=0;model.ingest(s,3);CHECK(model.building(5)->version>version);
+ s.tick=4;s.buildings[0].windmillOrientX=-2;s.buildings[0].windmillOrientY=-2;s.buildings[0].windmillRotation=-129;model.ingest(s,4);
+ CHECK(model.building(5)->windmillOrientX==-2);CHECK(model.building(5)->windmillOrientY==-2);CHECK(model.building(5)->windmillRotation==-129);
+}
+
+TEST_CASE("horizontal axle native state survives transport, changes and clears") {
+  m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+  b.kind=m::BuildingKind::AxleHorizontal;b.gearAxleMachinePosition=127;b.horizontalAxleVertical=1;
+  b.constructionItemIsLog=1;fort.placeBuilding(5,b);fort.snapshot(1);
+  WorldModel model;std::string error;
+  REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+  REQUIRE(model.building(5));CHECK(model.building(5)->horizontalAxleVertical==1);
+  CHECK(model.building(5)->gearAxleMachinePosition==127);CHECK(model.building(5)->constructionItemIsLog==1);
+  auto version=model.building(5)->version;
+  SnapshotData snapshot;snapshot.tick=2;snapshot.mapSize={16,16,2};snapshot.buildingScope=ChangeScope::Full;
+  BuildingObservation changed;changed.id=5;changed.kind=BuildingKind::AxleHorizontal;
+  changed.gearAxleMachinePosition=0;changed.horizontalAxleVertical=0;snapshot.buildings.push_back(changed);
+  model.ingest(snapshot,2);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->gearAxleMachinePosition==0);CHECK(model.building(5)->horizontalAxleVertical==0);
+  snapshot.tick=3;snapshot.buildings[0].gearAxleMachinePosition=-128;model.ingest(snapshot,3);
+  CHECK(model.building(5)->gearAxleMachinePosition==-128);
+  snapshot.tick=4;snapshot.buildings[0].gearAxleMachinePosition=-129;snapshot.buildings[0].horizontalAxleVertical=-1;
+  model.ingest(snapshot,4);CHECK(model.building(5)->gearAxleMachinePosition==-129);CHECK(model.building(5)->horizontalAxleVertical==-1);
+
+}
+
+TEST_CASE("slab engraving survives transport and invalidates changed artwork") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::Slab;b.slabEngraving=26;fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->slabEngraving==26);auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::Slab;o.slabEngraving=-1;s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->slabEngraving==-1);
+ s.tick=3;s.buildings[0].slabEngraving=-2;model.ingest(s,3);CHECK(model.building(5)->slabEngraving==-2);
+}
+
+TEST_CASE("vertical bars adjacency survives ingestion and changes building identity") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::BarsVertical;b.verticalBarsConnections=15;fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->verticalBarsConnections==15);auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::BarsVertical;o.verticalBarsConnections=0;s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->verticalBarsConnections==0);
+ s.tick=3;s.buildings[0].verticalBarsConnections=-1;model.ingest(s,3);CHECK(model.building(5)->verticalBarsConnections==-1);
+}
+
+TEST_CASE("Well chain updates revise model artwork facts") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::Well;b.wellChainIsMetal=1;fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->wellChainIsMetal==1);auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::Well;o.wellChainIsMetal=0;s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->wellChainIsMetal==0);
+ s.tick=3;s.buildings[0].wellChainIsMetal=-1;model.ingest(s,3);CHECK(model.building(5)->wellChainIsMetal==-1);
+}
+
+TEST_CASE("Building solid material color updates invalidate artwork and absent facts clear") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::WindowGlass;b.materialSolidColor="EMERALD";fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->materialSolidColor=="EMERALD");auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::WindowGlass;o.materialSolidColor="WHITE";s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->materialSolidColor=="WHITE");
+ s.tick=3;s.buildings[0].materialSolidColor.clear();model.ingest(s,3);CHECK(model.building(5)->materialSolidColor.empty());
+}
+
+TEST_CASE("Opening component identity and color revise model artwork") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::Door;b.constructionItemIsLog=0;b.constructionItemId=42;b.constructionItemSolidColor="CLEAR";fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->constructionItemId==42);CHECK(model.building(5)->constructionItemSolidColor=="CLEAR");auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::Door;o.constructionItemIsLog=0;o.constructionItemId=43;o.constructionItemSolidColor="GRAY";s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->constructionItemId==43);CHECK(model.building(5)->constructionItemSolidColor=="GRAY");
+ s.tick=3;s.buildings[0].constructionItemId=-1;s.buildings[0].constructionItemSolidColor.clear();model.ingest(s,3);CHECK(model.building(5)->constructionItemId==-1);CHECK(model.building(5)->constructionItemSolidColor.empty());
+}
+
+TEST_CASE("Building contents change and clear owned furniture state") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::Coffin;b.containedItemCount=1;fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->containedItemCount==1);auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::Coffin;o.containedItemCount=2;s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->containedItemCount==2);version=model.building(5)->version;
+ s.tick=3;s.buildings[0].containedItemCount=-1;model.ingest(s,3);CHECK(model.building(5)->containedItemCount==-1);CHECK(model.building(5)->version>version);
+}
+
+TEST_CASE("Selected construction tool changes and clears owned state") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;b.kind=m::BuildingKind::DisplayFurniture;b.constructionToolRaw="ITEM_TOOL_PEDESTAL";fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->constructionToolRaw=="ITEM_TOOL_PEDESTAL");auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;BuildingObservation o;o.id=5;o.kind=BuildingKind::DisplayFurniture;o.constructionToolRaw="ITEM_TOOL_DISPLAY_CASE";s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->constructionToolRaw=="ITEM_TOOL_DISPLAY_CASE");
+ s.tick=3;s.buildings[0].constructionToolRaw.clear();model.ingest(s,3);CHECK(model.building(5)->constructionToolRaw.empty());
+}
+
+TEST_CASE("Exact intermediate construction stage changes revise the owned building") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+ b.kind=m::BuildingKind::Workshop;b.stage=m::BuildingStage::InProgress;b.constructionStage=1;
+ fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->constructionStage==1);
+ const auto version=model.building(5)->version;
+ SnapshotData s;s.tick=2;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+ BuildingObservation o;o.id=5;o.kind=BuildingKind::Workshop;o.stage=BuildingStage::InProgress;o.constructionStage=2;s.buildings.push_back(o);
+ model.ingest(s,2);CHECK(model.building(5)->version>version);CHECK(model.building(5)->constructionStage==2);
+ const auto secondVersion=model.building(5)->version;
+ s.tick=3;s.buildings[0].constructionStage=-1;model.ingest(s,3);
+ CHECK(model.building(5)->constructionStage==-1);CHECK(model.building(5)->version>secondVersion);
+}
+
+TEST_CASE("Siege facing timer and contents roundtrip and independently revise owned state") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+ b.kind=m::BuildingKind::SiegeEngine;b.siegeFacing=7;b.siegeFireTimer=-128;b.containedItemCount=3;
+ fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->siegeFacing==7);
+ CHECK(model.building(5)->siegeFireTimer==-128);CHECK(model.building(5)->containedItemCount==3);
+ SnapshotData s;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+ BuildingObservation o;o.id=5;o.kind=BuildingKind::SiegeEngine;o.siegeFacing=7;o.siegeFireTimer=-128;o.containedItemCount=3;s.buildings.push_back(o);
+ for(int step=0;step<4;++step) {
+  auto version=model.building(5)->version;
+  if(step==0)s.buildings[0].siegeFacing=2;
+  if(step==1)s.buildings[0].siegeFireTimer=5;
+  if(step==2)s.buildings[0].containedItemCount=2;
+  if(step==3){s.buildings[0].siegeFacing=-1;s.buildings[0].siegeFireTimer=-129;}
+  s.tick=step+2;model.ingest(s,s.tick);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->siegeFacing==s.buildings[0].siegeFacing);
+  CHECK(model.building(5)->siegeFireTimer==s.buildings[0].siegeFireTimer);
+ }
+}
+
+TEST_CASE("Trap timers flags and mechanism survive transport and independently revise state") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+ b.kind=m::BuildingKind::Trap;b.subtype=1;b.trapState=-128;b.trapReadyTimeout=-32768;
+ b.trapFillTimer=32767;b.trapTriggerFlags=63;b.containedItemCount=2;
+ b.constructionItemId=42;b.constructionItemIsLog=0;b.constructionItemSolidColor="BROWN";
+ fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->trapState==-128);
+ CHECK(model.building(5)->trapReadyTimeout==-32768);CHECK(model.building(5)->trapFillTimer==32767);
+ CHECK(model.building(5)->trapTriggerFlags==63);CHECK(model.building(5)->constructionItemId==42);
+ CHECK(model.building(5)->constructionItemSolidColor=="BROWN");
+ SnapshotData s;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+ BuildingObservation o;o.id=5;o.kind=BuildingKind::Trap;o.subtype=1;o.trapState=-128;
+ o.trapReadyTimeout=-32768;o.trapFillTimer=32767;o.trapTriggerFlags=63;s.buildings.push_back(o);
+ model.ingest(s,2);
+ for(int step=0;step<5;++step) {
+  auto version=model.building(5)->version;
+  if(step==0)s.buildings[0].trapState=1;
+  if(step==1)s.buildings[0].trapReadyTimeout=0;
+  if(step==2)s.buildings[0].trapFillTimer=1;
+  if(step==3)s.buildings[0].trapTriggerFlags=4;
+  if(step==4){s.buildings[0].trapState=-129;s.buildings[0].trapReadyTimeout=-32769;s.buildings[0].trapFillTimer=-32769;s.buildings[0].trapTriggerFlags=-1;}
+  s.tick=step+3;model.ingest(s,s.tick);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->trapState==s.buildings[0].trapState);
+  CHECK(model.building(5)->trapReadyTimeout==s.buildings[0].trapReadyTimeout);
+  CHECK(model.building(5)->trapFillTimer==s.buildings[0].trapFillTimer);
+  CHECK(model.building(5)->trapTriggerFlags==s.buildings[0].trapTriggerFlags);
+ }
+}
+
+TEST_CASE("Weapon count retraction and selected definition roundtrip and revise independently") {
+ m::SyntheticFort fort(16,16,2);m::SyntheticFort::BuildingSpec b;
+ b.kind=m::BuildingKind::Weapon;b.weaponCount=10;b.weaponRetracted=1;b.containedItemCount=11;
+ b.constructionItemId=42;b.constructionItemIsLog=0;b.constructionWeaponRaw="ITEM_TRAPCOMP_MENACINGSPIKE";
+ fort.placeBuilding(5,b);fort.snapshot(1);
+ WorldModel model;std::string error;REQUIRE_MESSAGE(loadFixtureBytes(model,fort.serialize(),error),error);
+ REQUIRE(model.building(5));CHECK(model.building(5)->weaponCount==10);CHECK(model.building(5)->weaponRetracted==1);
+ CHECK(model.building(5)->constructionWeaponRaw=="ITEM_TRAPCOMP_MENACINGSPIKE");
+ SnapshotData s;s.mapSize={16,16,2};s.buildingScope=ChangeScope::Full;
+ BuildingObservation o;o.id=5;o.kind=BuildingKind::Weapon;o.weaponCount=10;o.weaponRetracted=1;o.constructionWeaponRaw="ITEM_TRAPCOMP_MENACINGSPIKE";s.buildings.push_back(o);model.ingest(s,2);
+ for(int step=0;step<4;++step) {
+  auto version=model.building(5)->version;
+  if(step==0)s.buildings[0].weaponCount=2;
+  if(step==1)s.buildings[0].weaponRetracted=0;
+  if(step==2)s.buildings[0].constructionWeaponRaw="ITEM_WEAPON_SWORD_SHORT";
+  if(step==3){s.buildings[0].weaponCount=-1;s.buildings[0].weaponRetracted=-1;s.buildings[0].constructionWeaponRaw.clear();}
+  s.tick=step+3;model.ingest(s,s.tick);CHECK(model.building(5)->version>version);
+  CHECK(model.building(5)->weaponCount==s.buildings[0].weaponCount);CHECK(model.building(5)->weaponRetracted==s.buildings[0].weaponRetracted);CHECK(model.building(5)->constructionWeaponRaw==s.buildings[0].constructionWeaponRaw);
+ }
 }

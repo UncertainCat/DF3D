@@ -28,10 +28,15 @@ subterranean status, brook-surface identity and native building occupancy.
 The fixed snapshot TileState remains eight bytes; environment facts use a
 sparse per-block vector. Resident tiles are fourteen bytes. Rebuild/reinstall
 bridge and viewer together; older schema/grid readers reject the new layouts.
-Management is **53**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
+Management is **54**. Session **12** adds authoritative moon phase (0..27,-1 unavailable) to
 the original fortress name, rank and capital status from session11. Rebuild/reinstall bridge and viewer together; the v12 session
 region rejects older peers. Missing old identity facts must remain unavailable,
 not be inferred from the translated name. Snapshot/grid versions are unchanged.
+
+Management protocol **54** adds owned native construction warning text, separate
+from placement validity and refusal messages. Rebuild/install bridge and viewer
+together; v54 isolates peers without this field. Missing warning text in older
+recordings remains unavailable and must not be inferred from refusal messages.
 
 Management protocol **53** adds explicit `cancel_removal` intent for building
 removal. Rebuild/install bridge and viewer together: v53 isolates older peers

@@ -339,6 +339,9 @@ struct ConstructionFilter {
 };
 struct ConstructionItemAppearance {
   std::string materialToken,subtypeRaw,colorToken; uint32_t stack=1; uint8_t flags=0;
+  BeddingFacts bedding;
+  int8_t instrumentFamily=-1, instrumentPlaced=-1, slabEngraving=-2;
+  std::string gemShapeRaw;
 };
 struct ConstructionMaterialCandidate {
   int32_t id=-1; std::string name; uint32_t distance=0;
@@ -366,7 +369,7 @@ struct ConstructionState {
   std::vector<PressureCreatureExample> pressureCreatures;
   std::optional<ConnectedTrackPreview> connectedTrack;
   ConstructionOutcome outcome=ConstructionOutcome::None;
-  uint32_t updated=0;int32_t failedIndex=-1;
+  uint32_t updated=0;int32_t failedIndex=-1;std::string warnings;
 };
 struct BuildingDefinition {
   std::string key, name;

@@ -130,8 +130,15 @@ void SyntheticFort::setDesignationDetail(int32_t x, int32_t y, int32_t z, uint8_
   dirty_.insert(BlockKey{x / kBlockSize, y / kBlockSize, z});
 }
 
+void SyntheticFort::setCompletedTrack(int32_t x,int32_t y,int32_t z,uint8_t mask) {
+  ensureTerrain();denseIndex(x,y,z);
+  if(mask>15)throw std::out_of_range("completed track mask");
+  completedTracks_[{x,y,z}]=mask;
+  dirty_.insert(BlockKey{x/kBlockSize,y/kBlockSize,z});
+}
+
 SyntheticFort::BlockRec SyntheticFort::copyBlock(int32_t bx, int32_t by, int32_t bz) const {
-  BlockRec b{bx, by, bz, {}, {}};
+  BlockRec b{bx, by, bz, {}, {}, {}};
   for (int32_t ly = 0; ly < kBlockSize; ++ly)
     for (int32_t lx = 0; lx < kBlockSize; ++lx) {
       b.tiles[tileIndex(lx, ly)] =
@@ -142,6 +149,11 @@ SyntheticFort::BlockRec SyntheticFort::copyBlock(int32_t bx, int32_t by, int32_t
     if (x / kBlockSize != bx || y / kBlockSize != by || z != bz) continue;
     b.details.emplace_back(static_cast<uint16_t>(tileIndex(x % kBlockSize, y % kBlockSize)),
                            detail.first, detail.second);
+  }
+  for(const auto& [pos,mask]:completedTracks_) {
+    const auto [x,y,z]=pos;
+    if(x/kBlockSize!=bx || y/kBlockSize!=by || z!=bz || !mask)continue;
+    b.indicators.emplace_back(static_cast<uint16_t>(tileIndex(x%kBlockSize,y%kBlockSize)),0,0,0,mask);
   }
   return b;
 }
@@ -272,9 +284,10 @@ void SyntheticFort::requestFullItems() {
 
 // --- snapshots ---
 
-void SyntheticFort::snapshot(uint64_t tick, uint64_t emittedAtMs) {
+void SyntheticFort::snapshot(uint64_t tick, uint64_t emittedAtMs, int32_t calendarYearTick) {
   SnapRec rec;
   rec.tick = tick;
+  rec.calendarYearTick = calendarYearTick;
   rec.emittedAtMs = emittedAtMs ? emittedAtMs : tick * 10;
   rec.units.assign(live_.begin(), live_.end());
   rec.materialCount = materials_.size();
@@ -423,7 +436,8 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
         auto tiles = fbb.CreateVectorOfStructs(b.tiles.data(), b.tiles.size());
         flatbuffers::Offset<flatbuffers::Vector<const DesignationDetail*>> details = 0;
         if (!b.details.empty()) details = fbb.CreateVectorOfStructs(b.details);
-        blocks.push_back(CreateMapBlock(fbb, b.bx, b.by, b.bz, tiles, details));
+        const auto indicators=b.indicators.empty()?0:fbb.CreateVectorOfStructs(b.indicators);
+        blocks.push_back(CreateMapBlock(fbb, b.bx, b.by, b.bz, tiles, details, indicators));
       }
       blocksVec = fbb.CreateVector(blocks);
     }
@@ -434,6 +448,10 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
       materialsVec = fbb.CreateVector(mats);
     }
 
+    const auto beddingFacts = [&](const BeddingSpec& b) -> flatbuffers::Offset<BeddingFacts> {
+      if (b.sheet==-1 && b.pillow==-1 && b.baseColor.empty() && b.sheetColor.empty()) return 0;
+      return CreateBeddingFactsDirect(fbb,b.sheet,b.pillow,b.baseColor.c_str(),b.sheetColor.c_str());
+    };
     const auto statueFacts = [&](const StatueSpec& s) -> flatbuffers::Offset<StatueFacts> {
       if (s.quality<0 && s.subject==ArtSubject::Unknown) return 0;
       return CreateStatueFactsDirect(fbb,s.quality,s.subject,s.subjectRaw.c_str(),s.casteRaw.c_str(),s.event);
@@ -449,7 +467,8 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
         list.push_back(CreateBuildingDirect(
             fbb, id, b.kind, b.subtype, b.custom.empty() ? nullptr : b.custom.c_str(), b.x1,
             b.y1, b.x2, b.y2, b.z, b.centerX, b.centerY, b.extents.empty() ? nullptr : &b.extents,
-            b.material, b.stage, b.flags, statueFacts(b.statue)));
+            b.material, b.stage, b.flags, statueFacts(b.statue),beddingFacts(b.bedding),
+            b.bridge.direction==-2 ? 0 : CreateBridgeState(fbb,b.bridge.direction,b.bridge.raised,b.bridge.raising,b.bridge.lowering,b.bridge.collapsing),b.pumpDirection,b.pumpRunning,b.constructionItemIsLog,b.constructionItemMaterial,b.rollerDirection,b.rollerMachinePosition,b.instrumentFamily,b.instrumentPlaced,b.waterwheelMachinePosition,b.windmillOrientX,b.windmillOrientY,b.windmillRotation,b.gearAxleMachinePosition,b.horizontalAxleVertical,b.slabEngraving,b.verticalBarsConnections,b.wellChainIsMetal,b.materialSolidColor.empty()?nullptr:b.materialSolidColor.c_str(),b.constructionItemId,b.constructionItemSolidColor.empty()?nullptr:b.constructionItemSolidColor.c_str(),b.containedItemCount,b.constructionToolRaw.empty()?nullptr:b.constructionToolRaw.c_str(),b.constructionStage,b.siegeFacing,b.siegeFireTimer,b.trapState,b.trapReadyTimeout,b.trapFillTimer,b.trapTriggerFlags,b.weaponCount,b.weaponRetracted,b.constructionWeaponRaw.empty()?nullptr:b.constructionWeaponRaw.c_str()));
       }
       buildingsVec = fbb.CreateVector(list);
       removedBuildingsVec = fbb.CreateVector(rec.removedBuildings);
@@ -464,7 +483,7 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
         list.push_back(CreateMapItemDirect(fbb, id, it.kind, it.subtype,
                                            it.subtypeRaw.empty() ? nullptr : it.subtypeRaw.c_str(),
                                            it.material, &pos, it.stack, it.flags, it.corpseFlags, it.corpseUnitId, it.containedCount, it.containedKind,
-                                           it.containedMaterial, it.containedSubtypeRaw.c_str(), statueFacts(it.statue), it.containedColor.c_str()));
+                                           it.containedMaterial, it.containedSubtypeRaw.c_str(), statueFacts(it.statue), it.containedColor.c_str(),beddingFacts(it.bedding)));
       }
       itemsVec = fbb.CreateVector(list);
       removedItemsVec = fbb.CreateVector(rec.removedItems);
@@ -560,12 +579,34 @@ std::vector<uint8_t> SyntheticFort::serialize() const {
     }
 
     TilePos dims(sizeX_, sizeY_, sizeZ_);
-    auto snap = CreateSnapshot(fbb, schemaVersion_, rec.tick, rec.emittedAtMs, &dims, unitsVec,
-                               rec.scope, blocksVec, materialsVec, rec.appScope, appsVec,
-                               pagesVec, palettesVec, rec.buildingScope, buildingsVec,
-                               removedBuildingsVec, rec.itemScope, itemsVec, removedItemsVec,
-                               rec.itemAppScope, itemAppsVec, rec.glyphScope, creatureGlyphsVec,
-                               materialGlyphsVec, itemDefGlyphsVec, resultsVec);
+    SnapshotBuilder snapshot(fbb);
+    snapshot.add_schema_version(schemaVersion_);
+    snapshot.add_tick(rec.tick);
+    snapshot.add_emitted_at_ms(rec.emittedAtMs);
+    snapshot.add_map_size(&dims);
+    snapshot.add_units(unitsVec);
+    snapshot.add_terrain_scope(rec.scope);
+    snapshot.add_blocks(blocksVec);
+    snapshot.add_materials(materialsVec);
+    snapshot.add_appearance_scope(rec.appScope);
+    snapshot.add_appearances(appsVec);
+    snapshot.add_tile_pages(pagesVec);
+    snapshot.add_palettes(palettesVec);
+    snapshot.add_building_scope(rec.buildingScope);
+    snapshot.add_buildings(buildingsVec);
+    snapshot.add_removed_buildings(removedBuildingsVec);
+    snapshot.add_item_scope(rec.itemScope);
+    snapshot.add_items(itemsVec);
+    snapshot.add_removed_items(removedItemsVec);
+    snapshot.add_item_appearance_scope(rec.itemAppScope);
+    snapshot.add_item_appearances(itemAppsVec);
+    snapshot.add_glyph_scope(rec.glyphScope);
+    snapshot.add_creature_glyphs(creatureGlyphsVec);
+    snapshot.add_material_glyphs(materialGlyphsVec);
+    snapshot.add_itemdef_glyphs(itemDefGlyphsVec);
+    snapshot.add_command_results(resultsVec);
+    snapshot.add_calendar_year_tick(rec.calendarYearTick);
+    auto snap = snapshot.Finish();
     fbb.FinishSizePrefixed(snap, SnapshotIdentifier());
     buffers.emplace_back(fbb.GetBufferPointer(), fbb.GetBufferPointer() + fbb.GetSize());
   }

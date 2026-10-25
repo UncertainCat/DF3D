@@ -21,7 +21,7 @@ void decodeConstruction(const m::ManagementState* s, ManagementState& next) {
   }
   if(const auto* c=s->construction()) {
     auto& v=next.construction;
-    v.outcome=ConstructionOutcome(c->outcome());v.updated=c->updated();v.failedIndex=c->failed_index();
+    v.outcome=ConstructionOutcome(c->outcome());v.updated=c->updated();v.failedIndex=c->failed_index();v.warnings=text(c->warnings());
     v.connectedTrack.reset();
     if(const auto* track=c->connected_track()) {
       v.connectedTrack.emplace();v.connectedTrack->status=ConnectedTrackStatus(track->status());
@@ -36,6 +36,16 @@ void decodeConstruction(const m::ManagementState* s, ManagementState& next) {
         ConstructionMaterialCandidate candidate{item->id(),text(item->name()),item->distance()};
         if(const auto* a=item->appearance())candidate.appearance=ConstructionItemAppearance{
           text(a->material_token()),text(a->subtype_raw()),text(a->color_token()),a->stack(),a->flags()};
+        if(const auto* a=item->appearance()) {
+          candidate.appearance->gemShapeRaw=a->gem_shape_raw()?a->gem_shape_raw()->str():std::string{};
+          candidate.appearance->slabEngraving=a->slab_engraving();
+          candidate.appearance->instrumentFamily=a->instrument_family();
+          candidate.appearance->instrumentPlaced=a->instrument_placed();
+        }
+        if(item->appearance() && item->appearance()->bedding()) {
+          const auto* facts=item->appearance()->bedding();
+          candidate.appearance->bedding={facts->sheet(),facts->pillow(),text(facts->base_color()),text(facts->sheet_color())};
+        }
         row.candidates->push_back(std::move(candidate)); } }
       v.materials.push_back(std::move(row));
     }

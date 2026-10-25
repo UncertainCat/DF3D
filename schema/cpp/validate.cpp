@@ -260,6 +260,16 @@ std::optional<std::string> checkRemoved(const flatbuffers::Vector<uint32_t>* rem
   return std::nullopt;
 }
 
+std::optional<std::string> validateBedding(const BeddingFacts* b, bool bed) {
+  if (!b) return std::nullopt;
+  if (!bed) return "bedding facts on a non-bed";
+  if (b->sheet()<0 || b->sheet()>1 || b->pillow()<0 || b->pillow()>2)
+    return "invalid bedding variant";
+  if ((b->base_color() && b->base_color()->size()>128) ||
+      (b->sheet_color() && b->sheet_color()->size()>128)) return "bedding color token too long";
+  return std::nullopt;
+}
+
 std::optional<std::string> validateStatue(const StatueFacts* s, bool statue) {
   if (!s) return std::nullopt;
   if (!statue) return "statue facts on a non-statue";
@@ -274,6 +284,71 @@ std::optional<std::string> validateStatue(const StatueFacts* s, bool statue) {
 
 std::optional<std::string> validateBuilding(const Building& b, const TilePos& dims,
                                             uint32_t materialCount) {
+  if (auto error=validateBedding(b.bedding(),b.kind()==BuildingKind::Bed)) return error;
+  const bool weaponBuilding=b.kind()==BuildingKind::Weapon || (b.kind()==BuildingKind::Trap && b.subtype()==4);
+  const bool mechanismTrap=b.kind()==BuildingKind::Trap && b.subtype()>=0 && b.subtype()<=3;
+  if (b.construction_item_is_log() < -1 || b.construction_item_is_log() > 1) return "invalid construction item log fact";
+  if ((b.construction_item_is_log()!=-1 || b.construction_item_material()!=kNoMaterial) &&
+      !mechanismTrap && !weaponBuilding && b.kind()!=BuildingKind::SiegeEngine && b.kind()!=BuildingKind::Workshop && b.kind()!=BuildingKind::Furnace && b.kind()!=BuildingKind::TradeDepot && b.kind()!=BuildingKind::Door && b.kind()!=BuildingKind::Hatch && b.kind()!=BuildingKind::Chair && b.kind()!=BuildingKind::Table && b.kind()!=BuildingKind::Box && b.kind()!=BuildingKind::Cabinet && b.kind()!=BuildingKind::Coffin && b.kind()!=BuildingKind::Cage && b.kind()!=BuildingKind::AnimalTrap && b.kind()!=BuildingKind::Bookcase && b.kind()!=BuildingKind::DisplayFurniture && b.kind()!=BuildingKind::OfferingPlace && b.kind()!=BuildingKind::NestBox && b.kind()!=BuildingKind::Bed && b.kind()!=BuildingKind::BarsFloor && b.kind()!=BuildingKind::Support && b.kind()!=BuildingKind::BarsVertical && b.kind()!=BuildingKind::Slab && b.kind()!=BuildingKind::Instrument && b.kind()!=BuildingKind::Rollers && b.kind()!=BuildingKind::WaterWheel && b.kind()!=BuildingKind::Windmill && b.kind()!=BuildingKind::GearAssembly && b.kind()!=BuildingKind::AxleHorizontal && b.kind()!=BuildingKind::AxleVertical && (b.kind()!=BuildingKind::Trap || b.subtype()!=5)) return "construction item facts on unsupported building";
+  if (b.construction_item_is_log()==-1 && b.construction_item_material()!=kNoMaterial) return "material without construction item";
+  if (b.construction_item_material()!=kNoMaterial && b.construction_item_material()>=materialCount) return "construction item material out of range";
+  if (b.instrument_family() < -1 || b.instrument_family() > 3) return "invalid instrument family";
+  if (b.instrument_placed() < -1 || b.instrument_placed() > 1) return "invalid instrument placement flag";
+  if ((b.instrument_family()==-1)!=(b.instrument_placed()==-1)) return "incomplete instrument definition facts";
+  if (b.instrument_family()!=-1 && b.kind()!=BuildingKind::Instrument) return "instrument facts on non-instrument";
+  if (b.gear_axle_machine_position() < -129 || b.gear_axle_machine_position() > 127) return "invalid gear/axle machine position";
+  if (b.gear_axle_machine_position()!=-129 && b.kind()!=BuildingKind::GearAssembly && b.kind()!=BuildingKind::AxleHorizontal && b.kind()!=BuildingKind::AxleVertical) return "gear/axle state on other building";
+  if (b.construction_tool_raw() && b.construction_tool_raw()->size()>128) return "construction tool raw too long";
+  if (b.construction_tool_raw() && b.construction_tool_raw()->size()>0 && b.kind()!=BuildingKind::Bookcase && b.kind()!=BuildingKind::DisplayFurniture && b.kind()!=BuildingKind::OfferingPlace && b.kind()!=BuildingKind::NestBox && b.kind()!=BuildingKind::Hive) return "construction tool raw on unsupported building";
+  if (b.siege_facing() < -1 || b.siege_facing() > 7) return "invalid siege facing";
+  if (b.siege_fire_timer() < -129 || b.siege_fire_timer() > 127) return "invalid siege fire timer";
+  if ((b.siege_facing()!=-1 || b.siege_fire_timer()!=-129) && b.kind()!=BuildingKind::SiegeEngine) return "siege state on other building";
+  if (b.trap_state() < -129 || b.trap_state() > 127) return "invalid trap_state";
+  if (b.trap_ready_timeout() < -32769 || b.trap_ready_timeout() > 32767) return "invalid trap_ready_timeout";
+  if (b.trap_fill_timer() < -32769 || b.trap_fill_timer() > 32767) return "invalid trap_fill_timer";
+  if (b.trap_trigger_flags() < -1 || b.trap_trigger_flags() > 63) return "invalid trap_trigger_flags";
+  if ((b.trap_ready_timeout()!=-32769 || b.trap_fill_timer()!=-32769 || b.trap_trigger_flags()!=-1) && !mechanismTrap) return "trap state on unsupported building";
+  if (b.trap_state()!=-129 && !(b.kind()==BuildingKind::Trap && b.subtype()<=4)) return "trap state on unsupported building";
+  if (b.weapon_count() < -1) return "invalid weapon count";
+  if (b.weapon_count()!=-1 && !weaponBuilding) return "weapon count on unsupported building";
+  if (b.weapon_retracted() < -1 || b.weapon_retracted() > 1) return "invalid weapon retracted flag";
+  if (b.weapon_retracted()!=-1 && b.kind()!=BuildingKind::Weapon) return "weapon retracted flag on unsupported building";
+  if (b.construction_weapon_raw() && b.construction_weapon_raw()->size()>128) return "construction weapon raw too long";
+  if (b.construction_weapon_raw() && b.construction_weapon_raw()->size()>0 && (!weaponBuilding || b.construction_item_id()==-1)) return "construction weapon raw without supported component";
+  if (b.construction_stage() < -1) return "invalid construction stage";
+  if (b.contained_item_count() < -1) return "invalid building contained item count";
+  if (b.contained_item_count()!=-1 && !mechanismTrap && !weaponBuilding && b.kind()!=BuildingKind::SiegeEngine && b.kind()!=BuildingKind::Coffin && b.kind()!=BuildingKind::Armorstand && b.kind()!=BuildingKind::Weaponrack) return "contained item count on unsupported building";
+  if (b.construction_item_id() < -1) return "invalid construction item id";
+  if (b.construction_item_id()!=-1 && (!mechanismTrap && !weaponBuilding && b.kind()!=BuildingKind::SiegeEngine && b.kind()!=BuildingKind::Workshop && b.kind()!=BuildingKind::Furnace && b.kind()!=BuildingKind::TradeDepot && b.kind()!=BuildingKind::Door && b.kind()!=BuildingKind::Hatch && b.kind()!=BuildingKind::Chair && b.kind()!=BuildingKind::Table && b.kind()!=BuildingKind::Box && b.kind()!=BuildingKind::Cabinet && b.kind()!=BuildingKind::Coffin && b.kind()!=BuildingKind::Cage && b.kind()!=BuildingKind::AnimalTrap && b.kind()!=BuildingKind::Bookcase && b.kind()!=BuildingKind::DisplayFurniture && b.kind()!=BuildingKind::OfferingPlace && b.kind()!=BuildingKind::NestBox)) return "construction item identity on unsupported building";
+  if (b.construction_item_id()!=-1 && b.construction_item_is_log()==-1) return "construction item identity without item facts";
+  if (b.construction_item_solid_color() && b.construction_item_solid_color()->size()>128) return "construction item color token too long";
+  if (b.construction_item_solid_color() && b.construction_item_solid_color()->size()>0 && b.construction_item_id()==-1) return "construction item color without identity";
+  if (b.material_solid_color() && b.material_solid_color()->size()>128) return "building material color token too long";
+  if (b.well_chain_is_metal() < -1 || b.well_chain_is_metal() > 1) return "invalid well chain material class";
+  if (b.well_chain_is_metal()!=-1 && b.kind()!=BuildingKind::Well) return "well chain material class on other building";
+  if (b.vertical_bars_connections() < -1 || b.vertical_bars_connections() > 15) return "invalid vertical bars connections";
+  if (b.vertical_bars_connections()!=-1 && b.kind()!=BuildingKind::BarsVertical) return "vertical bars connections on other building";
+  if (b.slab_engraving() < -2 || b.slab_engraving() > 26) return "invalid slab engraving";
+  if (b.slab_engraving()!=-2 && b.kind()!=BuildingKind::Slab) return "slab engraving on other building";
+  if (b.horizontal_axle_vertical() < -1 || b.horizontal_axle_vertical() > 1) return "invalid horizontal axle orientation";
+  if (b.horizontal_axle_vertical()!=-1 && b.kind()!=BuildingKind::AxleHorizontal) return "horizontal axle orientation on other building";
+  if (b.windmill_orient_x() < -2 || b.windmill_orient_x() > 1 || b.windmill_orient_y() < -2 || b.windmill_orient_y() > 1) return "invalid windmill orientation";
+  if ((b.windmill_orient_x()==-2)!=(b.windmill_orient_y()==-2)) return "incomplete windmill orientation";
+  if (b.windmill_rotation() < -129 || b.windmill_rotation() > 127) return "invalid windmill rotation";
+  if ((b.windmill_orient_x()!=-2 || b.windmill_rotation()!=-129) && b.kind()!=BuildingKind::Windmill) return "windmill state on other building";
+  if (b.waterwheel_machine_position() < -129 || b.waterwheel_machine_position() > 127) return "invalid water wheel machine position";
+  if (b.waterwheel_machine_position()!=-129 && b.kind()!=BuildingKind::WaterWheel) return "water wheel state on other building";
+  if (b.roller_direction() < -1 || b.roller_direction() > 3) return "invalid roller direction";
+  if (b.roller_machine_position() < -129 || b.roller_machine_position() > 127) return "invalid roller machine position";
+  if ((b.roller_direction()!=-1 || b.roller_machine_position()!=-129) && b.kind()!=BuildingKind::Rollers) return "roller state on non-roller";
+  if (b.pump_running() < -1 || b.pump_running() > 1) return "invalid pump activity";
+  if (b.pump_running()!=-1 && b.kind()!=BuildingKind::ScrewPump) return "pump activity on non-pump";
+  if (b.pump_direction() < -1 || b.pump_direction() > 3) return "invalid pump direction";
+  if (b.pump_direction()!=-1 && b.kind()!=BuildingKind::ScrewPump) return "pump direction on non-pump";
+  if (const auto* bridge=b.bridge()) {
+    if (b.kind()!=BuildingKind::Bridge) return "bridge state on non-bridge";
+    if (bridge->direction() < -1 || bridge->direction() > 3) return "invalid bridge direction";
+  }
   if (auto error=validateStatue(b.statue(),b.kind()==BuildingKind::Statue)) return error;
   if (b.kind() < BuildingKind::MIN || b.kind() > BuildingKind::MAX) {
     return "invalid kind value " + std::to_string(static_cast<uint8_t>(b.kind()));
@@ -341,6 +416,7 @@ std::optional<std::string> validateBuildings(const Snapshot& snap, const TilePos
 
 std::optional<std::string> validateItem(const MapItem& it, const TilePos& dims,
                                         uint32_t materialCount) {
+  if (auto error=validateBedding(it.bedding(),it.kind()==ItemKind::Bed)) return error;
   if (auto error=validateStatue(it.statue(),it.kind()==ItemKind::Statue)) return error;
   if (it.kind() < ItemKind::MIN || it.kind() > ItemKind::MAX) {
     return "invalid kind value " + std::to_string(static_cast<uint8_t>(it.kind()));
@@ -652,6 +728,7 @@ std::optional<std::string> validateCommand(const Command& cmd, const TilePos* di
 }
 
 std::optional<std::string> validateSnapshot(const Snapshot& snap) {
+  if (snap.calendar_year_tick() < -1 || snap.calendar_year_tick() >= 403200) return "invalid calendar year tick";
   if (snap.schema_version() != static_cast<uint32_t>(SchemaVersion::Current)) {
     return "schema version mismatch: snapshot has " + std::to_string(snap.schema_version()) +
            ", consumer expects " +

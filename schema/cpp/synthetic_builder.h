@@ -74,10 +74,22 @@ class SyntheticFort {
   // Sparse DesignationDetail for one tile (priority 1..7, marker-only work);
   // emitted with every block that carries the tile. Marks the block dirty.
   void setDesignationDetail(int32_t x, int32_t y, int32_t z, uint8_t priority, bool marker);
+  // Finished track connectivity (N=1,S=2,E=4,W=8), separate from pending carving.
+  void setCompletedTrack(int32_t x, int32_t y, int32_t z, uint8_t mask);
   // The next snapshot emits Full regardless of dirty state.
   void requestFullTerrain();
   bool terrainEnabled() const { return terrainEnabled_; }
 
+  struct BridgeSpec {
+    int8_t direction=-2;
+    bool raised=false, raising=false, lowering=false, collapsing=false;
+    friend bool operator==(const BridgeSpec&,const BridgeSpec&)=default;
+  };
+  struct BeddingSpec {
+    int8_t sheet=-1, pillow=-1;
+    std::string baseColor, sheetColor;
+    friend bool operator==(const BeddingSpec&,const BeddingSpec&)=default;
+  };
   struct StatueSpec {
     int8_t quality = -1;
     ArtSubject subject = ArtSubject::Unknown;
@@ -100,6 +112,37 @@ class SyntheticFort {
     BuildingStage stage = BuildingStage::Complete;
     BuildingFlags flags = BuildingFlags::NONE;
     StatueSpec statue;
+    BeddingSpec bedding;
+    BridgeSpec bridge;
+    int8_t pumpDirection=-1, pumpRunning=-1;
+  int8_t rollerDirection=-1;
+  int16_t rollerMachinePosition=-129;
+  int16_t waterwheelMachinePosition=-129;
+  int8_t windmillOrientX=-2, windmillOrientY=-2;
+  int16_t windmillRotation=-129;
+  int16_t gearAxleMachinePosition=-129;
+  int8_t horizontalAxleVertical=-1;
+  int8_t slabEngraving=-2;
+  int8_t verticalBarsConnections=-1;
+  int8_t wellChainIsMetal=-1;
+  std::string materialSolidColor;
+  int32_t constructionItemId=-1;
+  std::string constructionItemSolidColor;
+  int32_t containedItemCount=-1;
+  std::string constructionToolRaw;
+  int32_t constructionStage = -1;
+  int8_t siegeFacing = -1;
+  int16_t siegeFireTimer = -129;
+  int16_t trapState = -129;
+  int32_t trapReadyTimeout = -32769;
+  int32_t trapFillTimer = -32769;
+  int16_t trapTriggerFlags = -1;
+  int32_t weaponCount = -1;
+  int8_t weaponRetracted = -1;
+  std::string constructionWeaponRaw;
+  int8_t instrumentFamily=-1, instrumentPlaced=-1;
+    int8_t constructionItemIsLog=-1;
+    uint16_t constructionItemMaterial=kNoMaterial;
     friend bool operator==(const BuildingSpec&, const BuildingSpec&) = default;
   };
   // Adds or replaces a building; the next snapshot carries it if it
@@ -136,6 +179,7 @@ class SyntheticFort {
     std::string containedSubtypeRaw;
   std::string containedColor;
     StatueSpec statue;
+    BeddingSpec bedding;
     CorpseFlags corpseFlags = CorpseFlags::NONE;  // v5, Corpse / CorpsePiece only
     friend bool operator==(const ItemSpec&, const ItemSpec&) = default;
   };
@@ -195,7 +239,7 @@ class SyntheticFort {
 
   // Records the current state at `tick`. If emittedAtMs is 0 it defaults to
   // tick * 10 (a synthetic 100 ticks/sec bridge clock).
-  void snapshot(uint64_t tick, uint64_t emittedAtMs = 0);
+  void snapshot(uint64_t tick, uint64_t emittedAtMs = 0, int32_t calendarYearTick = -1);
 
   std::vector<uint8_t> serialize() const;
 
@@ -220,6 +264,7 @@ class SyntheticFort {
     int32_t bx, by, bz;
     std::array<TileState, kTilesPerBlock> tiles;
     std::vector<DesignationDetail> details;
+    std::vector<MapIndicator> indicators;
   };
   struct AppRec {
     uint64_t unit;
@@ -229,6 +274,7 @@ class SyntheticFort {
   struct SnapRec {
     uint64_t tick;
     uint64_t emittedAtMs;
+    int32_t calendarYearTick=-1;
     std::vector<std::pair<uint64_t, UnitRec>> units;
     TerrainScope scope = TerrainScope::None;
     std::vector<BlockRec> blocks;
@@ -266,6 +312,7 @@ class SyntheticFort {
   std::vector<TileState> terrain_;
   std::set<BlockKey> dirty_;
   std::map<std::tuple<int32_t, int32_t, int32_t>, std::pair<uint8_t, bool>> designationDetails_;
+  std::map<std::tuple<int32_t, int32_t, int32_t>, uint8_t> completedTracks_;
   std::vector<std::string> materials_;
   std::map<std::string, uint16_t> materialIndex_;
   TerrainScope forgedScope_ = TerrainScope::None;

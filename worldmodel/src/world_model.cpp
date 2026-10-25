@@ -288,6 +288,7 @@ bool WorldModel::ingest(const SnapshotData& snap, double arrivalWallSeconds) {
   }
   if (!firstTick_) firstTick_ = snap.tick;
   latestTick_ = snap.tick;
+  calendarYearTick_ = snap.calendarYearTick;
   const bool terrain = cfg_.ingestTerrain && snap.terrainScope != TerrainScope::None;
   const bool buildings = cfg_.ingestBuildings && snap.buildingScope != ChangeScope::None;
   const bool items = cfg_.ingestItems && snap.itemScope != ChangeScope::None;
@@ -771,7 +772,7 @@ bool sameBuilding(const Building& a, const Building& b) {
   return a.kind == b.kind && a.subtype == b.subtype && a.custom == b.custom && a.x1 == b.x1 &&
          a.y1 == b.y1 && a.x2 == b.x2 && a.y2 == b.y2 && a.z == b.z && a.centerX == b.centerX &&
          a.centerY == b.centerY && a.extents == b.extents && a.material == b.material &&
-         a.stage == b.stage && a.flags == b.flags && a.statue == b.statue;
+         a.stage == b.stage && a.flags == b.flags && a.statue == b.statue && a.bedding == b.bedding && a.bridge == b.bridge && a.pumpDirection == b.pumpDirection && a.pumpRunning == b.pumpRunning && a.constructionItemIsLog == b.constructionItemIsLog && a.constructionItemMaterial == b.constructionItemMaterial && a.rollerDirection==b.rollerDirection && a.rollerMachinePosition==b.rollerMachinePosition && a.waterwheelMachinePosition==b.waterwheelMachinePosition && a.windmillOrientX==b.windmillOrientX && a.windmillOrientY==b.windmillOrientY && a.windmillRotation==b.windmillRotation && a.gearAxleMachinePosition==b.gearAxleMachinePosition && a.horizontalAxleVertical==b.horizontalAxleVertical && a.slabEngraving==b.slabEngraving && a.verticalBarsConnections==b.verticalBarsConnections && a.wellChainIsMetal==b.wellChainIsMetal && a.materialSolidColor==b.materialSolidColor && a.constructionItemId==b.constructionItemId && a.constructionItemSolidColor==b.constructionItemSolidColor && a.containedItemCount==b.containedItemCount && a.constructionToolRaw==b.constructionToolRaw && a.constructionStage==b.constructionStage && a.siegeFacing==b.siegeFacing && a.siegeFireTimer==b.siegeFireTimer && a.trapState==b.trapState && a.trapReadyTimeout==b.trapReadyTimeout && a.trapFillTimer==b.trapFillTimer && a.trapTriggerFlags==b.trapTriggerFlags && a.weaponCount==b.weaponCount && a.weaponRetracted==b.weaponRetracted && a.constructionWeaponRaw==b.constructionWeaponRaw && a.instrumentFamily==b.instrumentFamily && a.instrumentPlaced==b.instrumentPlaced;
 }
 
 bool sameItem(const MapItem& a, const MapItem& b) {
@@ -779,7 +780,7 @@ bool sameItem(const MapItem& a, const MapItem& b) {
          a.material == b.material && a.pos == b.pos && a.stack == b.stack && a.flags == b.flags &&
          a.corpseFlags == b.corpseFlags && a.corpseUnitId == b.corpseUnitId &&
          a.containedCount == b.containedCount && a.containedKind == b.containedKind &&
-         a.containedMaterial == b.containedMaterial && a.containedSubtypeRaw == b.containedSubtypeRaw && a.containedColor == b.containedColor && a.statue == b.statue;
+         a.containedMaterial == b.containedMaterial && a.containedSubtypeRaw == b.containedSubtypeRaw && a.containedColor == b.containedColor && a.statue == b.statue && a.bedding == b.bedding;
 }
 
 Building toBuilding(const BuildingObservation& o, const std::vector<MaterialId>& remap) {
@@ -800,6 +801,19 @@ Building toBuilding(const BuildingObservation& o, const std::vector<MaterialId>&
   b.stage = o.stage;
   b.flags = o.flags;
   b.statue = o.statue;
+  b.bedding = o.bedding;
+  b.bridge = o.bridge;
+  b.pumpDirection = o.pumpDirection;
+  b.pumpRunning = o.pumpRunning;
+  b.instrumentFamily = o.instrumentFamily;
+  b.instrumentPlaced = o.instrumentPlaced;
+  b.rollerDirection = o.rollerDirection;
+  b.rollerMachinePosition = o.rollerMachinePosition;
+  b.waterwheelMachinePosition = o.waterwheelMachinePosition;
+  b.windmillOrientX=o.windmillOrientX;b.windmillOrientY=o.windmillOrientY;b.windmillRotation=o.windmillRotation;
+  b.gearAxleMachinePosition=o.gearAxleMachinePosition;b.horizontalAxleVertical=o.horizontalAxleVertical;b.slabEngraving=o.slabEngraving;b.verticalBarsConnections=o.verticalBarsConnections;b.wellChainIsMetal=o.wellChainIsMetal;b.materialSolidColor=o.materialSolidColor;b.constructionItemId=o.constructionItemId;b.constructionItemSolidColor=o.constructionItemSolidColor;b.containedItemCount=o.containedItemCount;b.constructionToolRaw=o.constructionToolRaw;b.constructionStage=o.constructionStage;b.siegeFacing=o.siegeFacing;b.siegeFireTimer=o.siegeFireTimer;b.trapState=o.trapState;b.trapReadyTimeout=o.trapReadyTimeout;b.trapFillTimer=o.trapFillTimer;b.trapTriggerFlags=o.trapTriggerFlags;b.weaponCount=o.weaponCount;b.weaponRetracted=o.weaponRetracted;b.constructionWeaponRaw=o.constructionWeaponRaw;
+  b.constructionItemIsLog = o.constructionItemIsLog;
+  b.constructionItemMaterial = remapOne(o.constructionItemMaterial, remap);
   return b;
 }
 
@@ -821,6 +835,7 @@ MapItem toItem(const ItemObservation& o, const std::vector<MaterialId>& remap) {
   it.containedSubtypeRaw = o.containedSubtypeRaw;
   it.containedColor = o.containedColor;
   it.statue = o.statue;
+  it.bedding = o.bedding;
   return it;
 }
 

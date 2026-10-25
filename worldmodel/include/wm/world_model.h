@@ -87,6 +87,37 @@ struct BuildingObservation {
   BuildingStage stage = BuildingStage::Complete;
   uint8_t flags = 0;  // kBuilding* bits
   StatueFacts statue;
+  BeddingFacts bedding;
+  BridgeState bridge;
+  int8_t pumpDirection=-1, pumpRunning=-1;
+  int8_t rollerDirection=-1;
+  int16_t rollerMachinePosition=-129;
+  int16_t waterwheelMachinePosition=-129;
+  int8_t windmillOrientX=-2, windmillOrientY=-2;
+  int16_t windmillRotation=-129;
+  int16_t gearAxleMachinePosition=-129;
+  int8_t horizontalAxleVertical=-1;
+  int8_t slabEngraving=-2;
+  int8_t verticalBarsConnections=-1;
+  int8_t wellChainIsMetal=-1;
+  std::string materialSolidColor;
+  int32_t constructionItemId=-1;
+  std::string constructionItemSolidColor;
+  int32_t containedItemCount=-1;
+  std::string constructionToolRaw;
+  int32_t constructionStage = -1;
+  int8_t siegeFacing = -1;
+  int16_t siegeFireTimer = -129;
+  int16_t trapState = -129;
+  int32_t trapReadyTimeout = -32769;
+  int32_t trapFillTimer = -32769;
+  int16_t trapTriggerFlags = -1;
+  int32_t weaponCount = -1;
+  int8_t weaponRetracted = -1;
+  std::string constructionWeaponRaw;
+  int8_t instrumentFamily=-1, instrumentPlaced=-1;
+  int8_t constructionItemIsLog=-1;
+  uint16_t constructionItemMaterial=kNoMaterial;
 };
 
 // One observed map item; `material` as for buildings.
@@ -107,6 +138,7 @@ struct ItemObservation {
   std::string containedSubtypeRaw;
   std::string containedColor;
   StatueFacts statue;
+  BeddingFacts bedding;
 };
 
 // One corpse item's observed layer stack (v5); tables as for units.
@@ -141,6 +173,7 @@ struct CommandResultObservation {
 
 struct SnapshotData {
   Tick tick = 0;
+  int32_t calendarYearTick = -1;
   uint64_t emittedAtMs = 0;
   TilePos mapSize;
   std::vector<UnitObservation> units;
@@ -268,6 +301,37 @@ struct Building {
   BuildingStage stage = BuildingStage::Complete;
   uint8_t flags = 0;  // kBuilding* bits
   StatueFacts statue;
+  BeddingFacts bedding;
+  BridgeState bridge;
+  int8_t pumpDirection=-1, pumpRunning=-1;
+  int8_t rollerDirection=-1;
+  int16_t rollerMachinePosition=-129;
+  int16_t waterwheelMachinePosition=-129;
+  int8_t windmillOrientX=-2, windmillOrientY=-2;
+  int16_t windmillRotation=-129;
+  int16_t gearAxleMachinePosition=-129;
+  int8_t horizontalAxleVertical=-1;
+  int8_t slabEngraving=-2;
+  int8_t verticalBarsConnections=-1;
+  int8_t wellChainIsMetal=-1;
+  std::string materialSolidColor;
+  int32_t constructionItemId=-1;
+  std::string constructionItemSolidColor;
+  int32_t containedItemCount=-1;
+  std::string constructionToolRaw;
+  int32_t constructionStage = -1;
+  int8_t siegeFacing = -1;
+  int16_t siegeFireTimer = -129;
+  int16_t trapState = -129;
+  int32_t trapReadyTimeout = -32769;
+  int32_t trapFillTimer = -32769;
+  int16_t trapTriggerFlags = -1;
+  int32_t weaponCount = -1;
+  int8_t weaponRetracted = -1;
+  std::string constructionWeaponRaw;
+  int8_t instrumentFamily=-1, instrumentPlaced=-1;
+  int8_t constructionItemIsLog=-1;
+  uint16_t constructionItemMaterial=kNoMaterial;
   uint64_t version = 0;
   Tick tick = 0;
 
@@ -300,6 +364,7 @@ struct MapItem {
   std::string containedSubtypeRaw;
   std::string containedColor;
   StatueFacts statue;
+  BeddingFacts bedding;
   uint16_t corpseFlags = 0;  // kCorpse* bits: what a corpse / body part counts as (v5)
   uint64_t version = 0;
   Tick tick = 0;
@@ -408,6 +473,7 @@ class WorldModel {
   // of an empty world.
   double renderTickAt(double wallSeconds) const;
   Tick latestTick() const { return latestTick_.value_or(0); }
+  int32_t calendarYearTick() const { return calendarYearTick_; }
 
   // --- queries ---
   TilePos mapSize() const { return mapSize_; }
@@ -682,6 +748,7 @@ class WorldModel {
   std::vector<LifecycleEvent> pendingEvents_;
   std::optional<Tick> firstTick_;
   std::optional<Tick> latestTick_;
+  int32_t calendarYearTick_ = -1;
   TilePos mapSize_;
 
   // Terrain payloads are shared between value snapshots and detached only

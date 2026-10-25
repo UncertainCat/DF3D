@@ -16,6 +16,18 @@ struct StatueFacts {
   friend bool operator==(const StatueFacts&,const StatueFacts&) = default;
 };
 
+struct BridgeState {
+  int8_t direction = -2; // unknown; -1 retracting, 0 west, 1 east, 2 north, 3 south
+  bool raised=false, raising=false, lowering=false, collapsing=false;
+  friend bool operator==(const BridgeState&,const BridgeState&)=default;
+};
+
+struct BeddingFacts {
+  int8_t sheet = -1, pillow = -1;
+  std::string baseColor, sheetColor;
+  friend bool operator==(const BeddingFacts&, const BeddingFacts&) = default;
+};
+
 using Tick = uint64_t;
 using UnitId = uint64_t;
 
@@ -488,6 +500,7 @@ enum class ItemKind : uint8_t {
   Book,
   Sheet,
   Branch,
+  BoltThrowerParts,
 };
 
 // MapItem::flags bits (DF item.flags of the same name).

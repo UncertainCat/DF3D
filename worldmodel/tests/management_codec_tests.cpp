@@ -9,6 +9,20 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("construction warnings are bounded advisory data independent of refusal status") {
+  for(bool rejected:{false,true})for(size_t size:{size_t(0),size_t(512),size_t(513)}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto warning=b.CreateString(std::string(size,'x'));
+    wire::ConstructionStateBuilder domain(b);domain.add_warnings(warning);auto c=domain.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_construction(c);
+    root.add_status(rejected?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(wire::validateManagementState(*state).has_value()==(size>512));
+    if(size<=512) {wm::ManagementState decoded;codec::decodeConstruction(state,decoded);
+      CHECK(decoded.construction.warnings==std::string(size,'x'));}
+  }
+}
+
 TEST_CASE("building removal cancellation is explicit and isolated from older peers") {
   wm::ManagementRequest q;q.action=wm::ManagementAction::Remove;q.definition="Bed";q.buildingId=9;q.cancelRemoval=true;
   flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,1,2,3);
@@ -2307,5 +2321,77 @@ TEST_CASE("Alert Group pages preserve duplicates and enforce exact cursor progre
   const auto* root=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
   CHECK(bool(wire::validateManagementState(*root))==(mode!=0));
   if(mode==0){auto decoded=codec::decodeReport(root->report());CHECK(decoded.notificationCategory==20);CHECK_FALSE(decoded.alertButton);CHECK(decoded.reports.size()==2);CHECK(decoded.units.size()==2);}
+ }
+}
+
+TEST_CASE("construction bedding preserves owned values and rejects invalid contexts") {
+  for(int mode=0;mode<5;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    auto bedding=wire::CreateBeddingFactsDirect(b,mode==1?2:1,mode==2?3:2,"CLEAR",mode==4?std::string(129,'x').c_str():"BLUE");
+    auto appearance=wire::CreateConstructionItemAppearance(b,b.CreateString("INORGANIC:GRANITE"),{}, {},1,0,bedding);
+    auto candidate=wire::CreateConstructionMaterialCandidate(b,10,b.CreateString("granite bed"),2,appearance);
+    auto row=wire::CreateConstructionMaterial(b,mode==3?0:8,-1,0,3,b.CreateString("granite beds"),{},1,b.CreateVector(std::vector{candidate}));
+    auto rows=b.CreateVector(std::vector{row});
+    wire::ConstructionStateBuilder domain(b);domain.add_materials(rows);auto construction=domain.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_construction(construction);
+    root.add_action(wire::ManagementAction::ConstructionMaterials);root.add_status(wire::ManagementStatus::Ok);
+    b.Finish(root.Finish());auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(wire::validateManagementState(*state).has_value()==(mode!=0));
+    if(mode==0) {
+      wm::ManagementState decoded;codec::decodeConstruction(state,decoded);b.Clear();
+      const auto& facts=decoded.construction.materials[0].candidates->at(0).appearance->bedding;
+      CHECK(facts.sheet==1);CHECK(facts.pillow==2);CHECK(facts.baseColor=="CLEAR");CHECK(facts.sheetColor=="BLUE");
+    }
+  }
+}
+
+TEST_CASE("construction instrument facts preserve absence and reject malformed pairs") {
+ for(int family=-2;family<=4;++family)for(int placed=-2;placed<=2;++placed)for(int type:{8,13}) {
+  flatbuffers::FlatBufferBuilder b;
+  auto appearance=wire::CreateConstructionItemAppearance(b,b.CreateString("INORGANIC:IRON"),{}, {},1,0,{},int8_t(family),int8_t(placed));
+  auto candidate=wire::CreateConstructionMaterialCandidate(b,10,b.CreateString("fixture instrument"),2,appearance);
+  auto row=wire::CreateConstructionMaterial(b,type,-1,0,3,b.CreateString("fixture instruments"),{},1,b.CreateVector(std::vector{candidate}));
+  auto rows=b.CreateVector(std::vector{row});
+  wire::ConstructionStateBuilder domain(b);domain.add_materials(rows);auto construction=domain.Finish();
+  wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_construction(construction);
+  root.add_action(wire::ManagementAction::ConstructionMaterials);root.add_status(wire::ManagementStatus::Ok);
+  b.Finish(root.Finish());const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  const bool valid=(family==-1 && placed==-1) || (type==13 && family>=0 && family<=3 && placed>=0 && placed<=1);
+  CHECK(wire::validateManagementState(*state).has_value()==!valid);
+  if(valid) {
+   wm::ManagementState decoded;codec::decodeConstruction(state,decoded);b.Clear();
+   const auto& facts=*decoded.construction.materials[0].candidates->at(0).appearance;
+   CHECK(facts.instrumentFamily==family);CHECK(facts.instrumentPlaced==placed);
+  }
+ }
+}
+
+TEST_CASE("construction slab engraving survives owned decoding and rejects wrong contexts") {
+ for(int engraving=-3;engraving<=27;++engraving)for(int type:{8,87}) {
+  flatbuffers::FlatBufferBuilder b;
+  auto appearance=wire::CreateConstructionItemAppearance(b,b.CreateString("INORGANIC:GRANITE"),{}, {},1,0,{},-1,-1,int8_t(engraving));
+  auto candidate=wire::CreateConstructionMaterialCandidate(b,10,b.CreateString("fixture slab"),2,appearance);
+  auto row=wire::CreateConstructionMaterial(b,type,-1,0,3,b.CreateString("fixture slabs"),{},1,b.CreateVector(std::vector{candidate}));
+  auto rows=b.CreateVector(std::vector{row});wire::ConstructionStateBuilder domain(b);domain.add_materials(rows);auto construction=domain.Finish();
+  wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_construction(construction);root.add_action(wire::ManagementAction::ConstructionMaterials);root.add_status(wire::ManagementStatus::Ok);
+  b.Finish(root.Finish());const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  const bool valid=engraving==-2 || (type==87 && engraving>=-1 && engraving<=26);
+  CHECK(wire::validateManagementState(*state).has_value()==!valid);
+  if(valid){wm::ManagementState decoded;codec::decodeConstruction(state,decoded);b.Clear();CHECK(decoded.construction.materials[0].candidates->at(0).appearance->slabEngraving==engraving);}
+ }
+}
+
+TEST_CASE("construction gem shape survives owned decoding and rejects wrong contexts") {
+ for(const std::string shape:{std::string{},std::string("BAGUETTE_CUT_GEM"),std::string(129,'X')})for(int type:{1,8}) {
+  flatbuffers::FlatBufferBuilder b;
+  auto appearance=wire::CreateConstructionItemAppearance(b,b.CreateString("INORGANIC:GRANITE"),{}, {},1,0,{},-1,-1,-2,b.CreateString(shape));
+  auto candidate=wire::CreateConstructionMaterialCandidate(b,10,b.CreateString("fixture slab"),2,appearance);
+  auto row=wire::CreateConstructionMaterial(b,type,-1,0,3,b.CreateString("fixture slabs"),{},1,b.CreateVector(std::vector{candidate}));
+  auto rows=b.CreateVector(std::vector{row});wire::ConstructionStateBuilder domain(b);domain.add_materials(rows);auto construction=domain.Finish();
+  wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_construction(construction);root.add_action(wire::ManagementAction::ConstructionMaterials);root.add_status(wire::ManagementStatus::Ok);
+  b.Finish(root.Finish());const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  const bool valid=shape.empty() || (type==1 && shape.size()<=128);
+  CHECK(wire::validateManagementState(*state).has_value()==!valid);
+  if(valid){wm::ManagementState decoded;codec::decodeConstruction(state,decoded);b.Clear();CHECK(decoded.construction.materials[0].candidates->at(0).appearance->gemShapeRaw==shape);}
  }
 }

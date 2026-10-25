@@ -603,3 +603,299 @@ TEST_CASE("EntityStreamState tracks Full per table") {
   EntityStreamState fresh;
   CHECK(fresh.check(*fs.snapshots[2]));  // both Deltas without a Full
 }
+
+TEST_CASE("bridge state is optional and validates direction and building kind") {
+  SyntheticFort fort(20,20,3);
+  SyntheticFort::BuildingSpec bridge;bridge.kind=BuildingKind::Bridge;
+  fort.placeBuilding(1,bridge);fort.snapshot(1);
+  bridge.bridge={2,true,false,true,false};fort.placeBuilding(1,bridge);fort.snapshot(2);
+  const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+  CHECK(fixture.snapshots[0]->buildings()->Get(0)->bridge()==nullptr);
+  const auto* state=fixture.snapshots[1]->buildings()->Get(0)->bridge();
+  REQUIRE(state);CHECK(state->direction()==2);CHECK(state->raised());CHECK(state->lowering());
+  bridge.bridge.direction=4;CHECK(validateBuildingSpec(bridge).has_value());
+  bridge.bridge.direction=-3;CHECK(validateBuildingSpec(bridge).has_value());
+  bridge.bridge.direction=-1;bridge.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(bridge).has_value());
+}
+
+TEST_CASE("bedding is optional and validates variants and entity kind") {
+  SyntheticFort fort(20,20,3);
+  SyntheticFort::BuildingSpec bed; bed.kind=BuildingKind::Bed;
+  fort.placeBuilding(1,bed); fort.snapshot(1);
+  bed.bedding={1,2,"CLEAR","BLUE"};
+  fort.placeBuilding(1,bed); fort.snapshot(2);
+  const auto fixture=mustParse(fort);
+  REQUIRE_FALSE(validateStream(fixture));
+  CHECK(fixture.snapshots[0]->buildings()->Get(0)->bedding()==nullptr);
+  const auto* facts=fixture.snapshots[1]->buildings()->Get(0)->bedding();
+  REQUIRE(facts); CHECK(facts->sheet()==1); CHECK(facts->pillow()==2);
+  CHECK(facts->sheet_color()->str()=="BLUE");
+  bed.bedding.pillow=3; CHECK(validateBuildingSpec(bed).has_value());
+  bed.bedding.pillow=2; bed.bedding.sheet=-1; CHECK(validateBuildingSpec(bed).has_value());
+  bed.bedding.sheet=0; bed.kind=BuildingKind::Chair; CHECK(validateBuildingSpec(bed).has_value());
+}
+
+TEST_CASE("pump direction defaults unknown and rejects invalid contexts") {
+  SyntheticFort fort(20,20,3);SyntheticFort::BuildingSpec pump;
+  pump.kind=BuildingKind::ScrewPump;fort.placeBuilding(1,pump);fort.snapshot(1);
+  pump.pumpDirection=3;fort.placeBuilding(1,pump);fort.snapshot(2);
+  const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+  CHECK(fixture.snapshots[0]->buildings()->Get(0)->pump_direction()==-1);
+  CHECK(fixture.snapshots[1]->buildings()->Get(0)->pump_direction()==3);
+  pump.pumpDirection=4;CHECK(validateBuildingSpec(pump).has_value());
+  pump.pumpDirection=-2;CHECK(validateBuildingSpec(pump).has_value());
+  pump.pumpDirection=0;pump.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(pump).has_value());
+}
+
+TEST_CASE("calendar time and pump activity validate independently of presentation") {
+  for(int32_t value:{-1,0,403199}) {
+    SyntheticFort fort(16,16,2);fort.snapshot(1,10,value);
+    const auto parsed=mustParse(fort);REQUIRE_FALSE(validateStream(parsed));
+    CHECK(parsed.snapshots[0]->calendar_year_tick()==value);
+  }
+  for(int32_t value:{-2,403200}) {
+    SyntheticFort fort(16,16,2);fort.snapshot(1,10,value);
+    CHECK(validateBytes(fort.serialize()).has_value());
+  }
+  SyntheticFort::BuildingSpec pump;pump.kind=BuildingKind::ScrewPump;
+  for(int8_t running:{-1,0,1}) {pump.pumpRunning=running;CHECK_FALSE(validateBuildingSpec(pump));}
+  for(int8_t running:{-2,2}) {pump.pumpRunning=running;CHECK(validateBuildingSpec(pump).has_value());}
+  pump.pumpRunning=0;pump.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(pump).has_value());
+}
+
+TEST_CASE("track stop construction item facts serialize and validate") {
+ SyntheticFort fort(16,16,2);const auto material=fort.material("GRANITE");
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Trap;b.subtype=5;
+ fort.placeBuilding(1,b);fort.snapshot(1);
+ b.constructionItemIsLog=1;b.constructionItemMaterial=material;fort.placeBuilding(1,b);fort.snapshot(2);
+ const auto parsed=mustParse(fort);REQUIRE_FALSE(validateStream(parsed));
+ CHECK(parsed.snapshots[0]->buildings()->Get(0)->construction_item_is_log()==-1);
+ CHECK(parsed.snapshots[1]->buildings()->Get(0)->construction_item_is_log()==1);
+ CHECK(parsed.snapshots[1]->buildings()->Get(0)->construction_item_material()==material);
+ b.constructionItemMaterial=kNoMaterial;b.constructionItemIsLog=2;CHECK(validateBuildingSpec(b).has_value());
+ b.constructionItemIsLog=0;b.subtype=4;CHECK_FALSE(validateBuildingSpec(b));
+ b.subtype=6;CHECK(validateBuildingSpec(b).has_value());
+ b.subtype=5;b.constructionItemIsLog=-1;b.constructionItemMaterial=0;CHECK(validateBuildingSpec(b).has_value());
+ b.constructionItemIsLog=1;b.constructionItemMaterial=65000;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("roller native direction and machine position preserve unknown and signed values") {
+  SyntheticFort fort(20,20,3);SyntheticFort::BuildingSpec b;
+  b.kind=BuildingKind::Rollers;fort.placeBuilding(1,b);fort.snapshot(1);
+  b.rollerDirection=3;b.rollerMachinePosition=-128;b.constructionItemIsLog=0;
+  fort.placeBuilding(1,b);fort.snapshot(2);
+  const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+  const auto* absent=fixture.snapshots[0]->buildings()->Get(0);
+  CHECK(absent->roller_direction()==-1);CHECK(absent->roller_machine_position()==-129);
+  const auto* present=fixture.snapshots[1]->buildings()->Get(0);
+  CHECK(present->roller_direction()==3);CHECK(present->roller_machine_position()==-128);
+  CHECK(present->construction_item_is_log()==0);
+  for(int16_t position:{-129,-128,0,2,127}) {b.rollerMachinePosition=position;CHECK_FALSE(validateBuildingSpec(b));}
+  for(int16_t position:{-130,128}) {b.rollerMachinePosition=position;CHECK(validateBuildingSpec(b).has_value());}
+  b.rollerMachinePosition=0;
+  for(int8_t direction:{-2,4}) {b.rollerDirection=direction;CHECK(validateBuildingSpec(b).has_value());}
+  b.rollerDirection=0;b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("instrument definition facts preserve absence and reject malformed contracts") {
+  SyntheticFort fort(16,16,2);SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Instrument;
+  fort.placeBuilding(1,b);fort.snapshot(1);
+  b.instrumentFamily=3;b.instrumentPlaced=0;b.constructionItemIsLog=0;
+  b.constructionItemMaterial=fort.material("GRANITE");fort.placeBuilding(1,b);fort.snapshot(2);
+  const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+  CHECK(fixture.snapshots[0]->buildings()->Get(0)->instrument_family()==-1);
+  CHECK(fixture.snapshots[0]->buildings()->Get(0)->instrument_placed()==-1);
+  CHECK(fixture.snapshots[1]->buildings()->Get(0)->instrument_family()==3);
+  CHECK(fixture.snapshots[1]->buildings()->Get(0)->instrument_placed()==0);
+  b.constructionItemMaterial=kNoMaterial;
+  for(int8_t family:{0,1,2,3})for(int8_t placed:{0,1}) {
+    b.instrumentFamily=family;b.instrumentPlaced=placed;CHECK_FALSE(validateBuildingSpec(b));
+  }
+  for(int8_t family:{-2,-1,4}) {b.instrumentFamily=family;CHECK(validateBuildingSpec(b).has_value());}
+  b.instrumentFamily=0;
+  for(int8_t placed:{-2,-1,2}) {b.instrumentPlaced=placed;CHECK(validateBuildingSpec(b).has_value());}
+  b.instrumentPlaced=0;b.constructionItemIsLog=-1;b.kind=BuildingKind::Chair;
+  CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("water wheel machine position preserve unknown and signed values") {
+  SyntheticFort fort(20,20,3);SyntheticFort::BuildingSpec b;
+  b.kind=BuildingKind::WaterWheel;fort.placeBuilding(1,b);fort.snapshot(1);
+  b.waterwheelMachinePosition=-128;b.constructionItemIsLog=0;
+  fort.placeBuilding(1,b);fort.snapshot(2);
+  const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+  const auto* absent=fixture.snapshots[0]->buildings()->Get(0);
+  CHECK(absent->waterwheel_machine_position()==-129);
+  const auto* present=fixture.snapshots[1]->buildings()->Get(0);
+  CHECK(present->waterwheel_machine_position()==-128);
+  CHECK(present->construction_item_is_log()==0);
+  for(int16_t position:{-129,-128,0,2,127}) {b.waterwheelMachinePosition=position;CHECK_FALSE(validateBuildingSpec(b));}
+  for(int16_t position:{-130,128}) {b.waterwheelMachinePosition=position;CHECK(validateBuildingSpec(b).has_value());}
+  b.waterwheelMachinePosition=0;
+  b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("windmill native vector and signed rotation validate and preserve absence") {
+ SyntheticFort fort(20,20,3);SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Windmill;
+ fort.placeBuilding(1,b);fort.snapshot(1);
+ b.windmillOrientX=-1;b.windmillOrientY=1;b.windmillRotation=-128;
+ b.constructionItemIsLog=1;fort.placeBuilding(1,b);fort.snapshot(2);
+ const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+ CHECK(fixture.snapshots[0]->buildings()->Get(0)->windmill_orient_x()==-2);
+ CHECK(fixture.snapshots[0]->buildings()->Get(0)->windmill_rotation()==-129);
+ const auto* actual=fixture.snapshots[1]->buildings()->Get(0);
+ CHECK(actual->windmill_orient_x()==-1);CHECK(actual->windmill_orient_y()==1);CHECK(actual->windmill_rotation()==-128);
+ for(int x=-1;x<=1;++x)for(int y=-1;y<=1;++y)for(int phase:{-129,-128,-1,0,1,127}) {
+  b.windmillOrientX=x;b.windmillOrientY=y;b.windmillRotation=phase;CHECK_FALSE(validateBuildingSpec(b));
+ }
+ b.windmillOrientX=-2;CHECK(validateBuildingSpec(b).has_value());
+ b.windmillOrientX=2;CHECK(validateBuildingSpec(b).has_value());
+ b.windmillOrientX=0;b.windmillRotation=128;CHECK(validateBuildingSpec(b).has_value());
+ b.windmillRotation=-130;CHECK(validateBuildingSpec(b).has_value());
+ b.windmillRotation=0;b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("gear and axle machine position preserve unknown and signed values") {
+  SyntheticFort fort(20,20,3);SyntheticFort::BuildingSpec b;
+  b.kind=BuildingKind::GearAssembly;fort.placeBuilding(1,b);fort.snapshot(1);
+  b.gearAxleMachinePosition=-128;b.constructionItemIsLog=0;
+  fort.placeBuilding(1,b);fort.snapshot(2);
+  const auto fixture=mustParse(fort);REQUIRE_FALSE(validateStream(fixture));
+  const auto* absent=fixture.snapshots[0]->buildings()->Get(0);
+  CHECK(absent->gear_axle_machine_position()==-129);
+  const auto* present=fixture.snapshots[1]->buildings()->Get(0);
+  CHECK(present->gear_axle_machine_position()==-128);
+  CHECK(present->construction_item_is_log()==0);
+  for(int16_t position:{-129,-128,0,2,127}) {b.gearAxleMachinePosition=position;CHECK_FALSE(validateBuildingSpec(b));}
+  for(int16_t position:{-130,128}) {b.gearAxleMachinePosition=position;CHECK(validateBuildingSpec(b).has_value());}
+  b.gearAxleMachinePosition=0;
+  for(auto kind:{BuildingKind::AxleHorizontal,BuildingKind::AxleVertical}) {b.kind=kind;CHECK_FALSE(validateBuildingSpec(b));}
+  b.kind=BuildingKind::AxleHorizontal;b.horizontalAxleVertical=0;CHECK_FALSE(validateBuildingSpec(b));
+  b.horizontalAxleVertical=1;CHECK_FALSE(validateBuildingSpec(b));
+  b.horizontalAxleVertical=2;CHECK(validateBuildingSpec(b).has_value());b.horizontalAxleVertical=0;
+  b.kind=BuildingKind::AxleVertical;CHECK(validateBuildingSpec(b).has_value());
+  b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("slab engraving is an optional native semantic field") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Slab;
+ for(int engraving=-2;engraving<=26;++engraving){b.slabEngraving=engraving;CHECK_FALSE(validateBuildingSpec(b));}
+ b.slabEngraving=-3;CHECK(validateBuildingSpec(b).has_value());b.slabEngraving=27;CHECK(validateBuildingSpec(b).has_value());
+ b.slabEngraving=0;b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("vertical bars connection masks preserve unknown and reject other building context") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::BarsVertical;
+ for(int mask=-1;mask<=15;++mask){b.verticalBarsConnections=mask;CHECK_FALSE(validateBuildingSpec(b));}
+ b.verticalBarsConnections=-2;CHECK(validateBuildingSpec(b).has_value());
+ b.verticalBarsConnections=16;CHECK(validateBuildingSpec(b).has_value());
+ b.verticalBarsConnections=0;b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("Well chain semantic facts are bounded and contextual") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Well;
+ for(int v=-1;v<=1;++v){b.wellChainIsMetal=v;CHECK_FALSE(validateBuildingSpec(b));}
+ b.wellChainIsMetal=2;CHECK(validateBuildingSpec(b).has_value());
+ b.wellChainIsMetal=-2;CHECK(validateBuildingSpec(b).has_value());
+ b.wellChainIsMetal=0;b.kind=BuildingKind::Chair;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("Building solid material color is optional and bounded") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::WindowGlass;
+ CHECK_FALSE(validateBuildingSpec(b));b.materialSolidColor="EMERALD";CHECK_FALSE(validateBuildingSpec(b));
+ b.materialSolidColor=std::string(129,'A');CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("Opening construction item identity requires bounded contextual facts") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Door;b.constructionItemId=42;
+ CHECK(validateBuildingSpec(b).has_value());b.constructionItemIsLog=0;CHECK_FALSE(validateBuildingSpec(b));
+ b.constructionItemSolidColor="GRAY";CHECK_FALSE(validateBuildingSpec(b));
+ b.constructionItemSolidColor=std::string(129,'X');CHECK(validateBuildingSpec(b).has_value());
+ b.constructionItemSolidColor.clear();b.constructionItemId=-2;CHECK(validateBuildingSpec(b).has_value());
+ b.constructionItemId=42;b.kind=BuildingKind::Bed;CHECK(validateBuildingSpec(b).has_value());
+ b.kind=BuildingKind::Hatch;CHECK_FALSE(validateBuildingSpec(b));
+}
+
+TEST_CASE("Building contained item count is optional and contextual") {
+ SyntheticFort::BuildingSpec b;
+ for(auto kind:{BuildingKind::Coffin,BuildingKind::Armorstand,BuildingKind::Weaponrack}) {
+  b.kind=kind;b.containedItemCount=-1;CHECK_FALSE(validateBuildingSpec(b));
+  b.containedItemCount=2;CHECK_FALSE(validateBuildingSpec(b));
+  b.containedItemCount=-2;CHECK(validateBuildingSpec(b).has_value());
+ }
+ b.kind=BuildingKind::Bed;b.containedItemCount=1;CHECK(validateBuildingSpec(b).has_value());
+ b.containedItemCount=-1;b.constructionItemIsLog=0;b.constructionItemId=42;b.constructionItemSolidColor="GRAY";
+ for(auto kind:{BuildingKind::Coffin,BuildingKind::Cage,BuildingKind::AnimalTrap}) {b.kind=kind;CHECK_FALSE(validateBuildingSpec(b));}
+}
+
+TEST_CASE("Construction tool raw is optional bounded and contextual") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::DisplayFurniture;b.constructionToolRaw="ITEM_TOOL_PEDESTAL";CHECK_FALSE(validateBuildingSpec(b));
+ b.constructionToolRaw=std::string(129,'X');CHECK(validateBuildingSpec(b).has_value());
+ b.constructionToolRaw="ITEM_TOOL_PEDESTAL";b.kind=BuildingKind::Bed;CHECK(validateBuildingSpec(b).has_value());
+ b.constructionToolRaw.clear();b.constructionItemIsLog=0;CHECK_FALSE(validateBuildingSpec(b));
+ for(auto kind:{BuildingKind::Bookcase,BuildingKind::DisplayFurniture,BuildingKind::OfferingPlace,BuildingKind::NestBox}) {
+  b.kind=kind;b.constructionItemId=42;b.constructionItemSolidColor="CLEAR";CHECK_FALSE(validateBuildingSpec(b));
+ }
+}
+
+TEST_CASE("Exact construction stages preserve unknown recordings and reject invalid negatives") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Workshop;
+ CHECK_FALSE(validateBuildingSpec(b));
+ b.constructionStage=0;CHECK_FALSE(validateBuildingSpec(b));
+ b.constructionStage=2;CHECK_FALSE(validateBuildingSpec(b));
+ b.constructionStage=-2;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("Layout construction material facts are supported") {
+ SyntheticFort::BuildingSpec b;b.constructionItemIsLog=0;b.constructionItemId=1000;b.constructionItemSolidColor="DARK_GREEN";
+ for(auto kind:{BuildingKind::Workshop,BuildingKind::Furnace,BuildingKind::TradeDepot}) {b.kind=kind;CHECK_FALSE(validateBuildingSpec(b));}
+}
+
+TEST_CASE("Siege state preserves unknown values and validates bounds and context") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::SiegeEngine;
+ CHECK_FALSE(validateBuildingSpec(b));
+ b.siegeFacing=7;b.siegeFireTimer=-128;b.containedItemCount=3;
+ b.constructionItemIsLog=0;b.constructionItemId=42;b.constructionItemSolidColor="GRAY";
+ CHECK_FALSE(validateBuildingSpec(b));
+ b.siegeFacing=8;CHECK(validateBuildingSpec(b).has_value());b.siegeFacing=0;
+ b.siegeFireTimer=128;CHECK(validateBuildingSpec(b).has_value());
+ b.siegeFireTimer=-130;CHECK(validateBuildingSpec(b).has_value());
+ b.siegeFireTimer=127;CHECK_FALSE(validateBuildingSpec(b));
+ b={};b.siegeFacing=0;CHECK(validateBuildingSpec(b).has_value());
+ b.siegeFacing=-1;b.siegeFireTimer=0;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("Mechanism trap facts retain unknowns and validate native bounds and context") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Trap;b.subtype=0;
+ CHECK_FALSE(validateBuildingSpec(b));
+ b.trapState=-128;b.trapReadyTimeout=-32768;b.trapFillTimer=32767;b.trapTriggerFlags=63;
+ b.containedItemCount=2;b.constructionItemId=42;b.constructionItemIsLog=0;b.constructionItemSolidColor="BROWN";
+ for(int subtype=0;subtype<=3;++subtype){b.subtype=subtype;CHECK_FALSE(validateBuildingSpec(b));}
+ b.subtype=4;CHECK(validateBuildingSpec(b).has_value());b.subtype=1;
+ b.trapState=128;CHECK(validateBuildingSpec(b).has_value());b.trapState=-130;CHECK(validateBuildingSpec(b).has_value());b.trapState=127;
+ b.trapReadyTimeout=32768;CHECK(validateBuildingSpec(b).has_value());b.trapReadyTimeout=-32770;CHECK(validateBuildingSpec(b).has_value());b.trapReadyTimeout=32767;
+ b.trapFillTimer=32768;CHECK(validateBuildingSpec(b).has_value());b.trapFillTimer=-32770;CHECK(validateBuildingSpec(b).has_value());b.trapFillTimer=-32768;
+ b.trapTriggerFlags=64;CHECK(validateBuildingSpec(b).has_value());b.trapTriggerFlags=-2;CHECK(validateBuildingSpec(b).has_value());b.trapTriggerFlags=0;
+ CHECK_FALSE(validateBuildingSpec(b));
+ b={};b.trapState=0;CHECK(validateBuildingSpec(b).has_value());
+ b={};b.trapReadyTimeout=0;CHECK(validateBuildingSpec(b).has_value());
+ b={};b.trapFillTimer=0;CHECK(validateBuildingSpec(b).has_value());
+ b={};b.trapTriggerFlags=0;CHECK(validateBuildingSpec(b).has_value());
+}
+
+TEST_CASE("Weapon component facts validate counts context and unknown values") {
+ SyntheticFort::BuildingSpec b;b.kind=BuildingKind::Weapon;
+ CHECK_FALSE(validateBuildingSpec(b));
+ b.weaponCount=10;b.weaponRetracted=1;b.containedItemCount=11;
+ b.constructionItemId=42;b.constructionItemIsLog=0;b.constructionWeaponRaw="ITEM_TRAPCOMP_MENACINGSPIKE";
+ CHECK_FALSE(validateBuildingSpec(b));
+ b.weaponCount=-2;CHECK(validateBuildingSpec(b).has_value());b.weaponCount=0;
+ b.weaponRetracted=2;CHECK(validateBuildingSpec(b).has_value());b.weaponRetracted=-2;CHECK(validateBuildingSpec(b).has_value());b.weaponRetracted=-1;
+ b.constructionWeaponRaw=std::string(129,'X');CHECK(validateBuildingSpec(b).has_value());b.constructionWeaponRaw="ITEM_WEAPON_SWORD_SHORT";
+ b.kind=BuildingKind::Trap;b.subtype=4;b.trapState=127;CHECK_FALSE(validateBuildingSpec(b));
+ b.weaponRetracted=0;CHECK(validateBuildingSpec(b).has_value());b.weaponRetracted=-1;
+ b.constructionItemId=-1;CHECK(validateBuildingSpec(b).has_value());b.constructionItemId=42;
+ b.subtype=3;CHECK(validateBuildingSpec(b).has_value());
+ b={};b.weaponCount=0;CHECK(validateBuildingSpec(b).has_value());
+ b={};b.weaponRetracted=0;CHECK(validateBuildingSpec(b).has_value());
+}

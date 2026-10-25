@@ -35,7 +35,7 @@ void writeConstruction(Dictionary& result, const wm::ManagementState& s) {
   };
   auto footprint=[](const wm::ConstructionFootprint& v){Dictionary row;row["direction"]=v.direction;row["width"]=v.width;row["height"]=v.height;row["center_x"]=v.centerX;row["center_y"]=v.centerY;return row;};
   const auto& c=s.construction;Dictionary construction;
-  construction["outcome"]=int(c.outcome);construction["updated"]=int64_t(c.updated);construction["failed_index"]=c.failedIndex;
+  construction["outcome"]=int(c.outcome);construction["updated"]=int64_t(c.updated);construction["failed_index"]=c.failedIndex;construction["warnings"]=godot::String(c.warnings.c_str());
   construction["building_key"]=String::utf8(c.buildingKey.c_str());construction["filter"]=c.filter;construction["filters"]=filters(c.filters);
   construction["total"]=int64_t(c.total);construction["list_revision"]=c.listRevision;construction["estimated"]=c.estimated;
   construction["build_phase"]=c.buildPhase;construction["build_done"]=int64_t(c.buildDone);construction["build_total"]=int64_t(c.buildTotal);
@@ -60,6 +60,17 @@ void writeConstruction(Dictionary& result, const wm::ManagementState& s) {
       if(item.appearance) { const auto& a=*item.appearance;Dictionary appearance;
         appearance["material_token"]=String::utf8(a.materialToken.c_str());appearance["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());
         appearance["color_token"]=String::utf8(a.colorToken.c_str());appearance["stack"]=int64_t(a.stack);appearance["flags"]=a.flags;
+        if(!a.gemShapeRaw.empty())appearance["gem_shape_raw"]=String::utf8(a.gemShapeRaw.c_str());
+        if(a.slabEngraving>=-1)appearance["slab_engraving"]=a.slabEngraving;
+        if(a.instrumentFamily>=0) {
+          Dictionary instrument;instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;
+          appearance["instrument"]=instrument;
+        }
+        if(a.bedding.sheet>=0) {
+          Dictionary bedding;bedding["sheet"]=a.bedding.sheet;bedding["pillow"]=a.bedding.pillow;
+          bedding["base_color"]=String::utf8(a.bedding.baseColor.c_str());bedding["sheet_color"]=String::utf8(a.bedding.sheetColor.c_str());
+          appearance["bedding"]=bedding;
+        }
         candidate["appearance"]=appearance; }
       candidates.push_back(candidate); }
       row["candidates"]=candidates; }

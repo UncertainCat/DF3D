@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 53;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v53";
+inline constexpr uint32_t kManagementVersion = 54;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v54";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -643,6 +643,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         v->center_x() >= -1 && v->center_x() < v->width() && v->center_y() >= -1 && v->center_y() < v->height());
   };
   if (const auto* c = s.construction()) {
+    if(!constructionTextOk(c->warnings(),512))return "invalid construction warnings";
     if(c->outcome()>ConstructionOutcome::Unknown || c->updated()>16384 || c->failed_index() < -1 ||
        c->failed_index()==0 || c->failed_index()>16384) return "invalid construction outcome";
     if(c->outcome()==ConstructionOutcome::None) {
@@ -720,6 +721,21 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
                  !constructionTokenOk(a->color_token(),128) || !a->stack() || a->stack()>INT32_MAX ||
                  (a->flags() & ~uint8_t(96)) || v->item_type()<0)
                 return "invalid construction item appearance";
+              if(!constructionTokenOk(a->gem_shape_raw(),128) ||
+                 (a->gem_shape_raw() && a->gem_shape_raw()->size() && v->item_type()!=1))
+                return "invalid construction gem shape";
+              if(a->slab_engraving() < -2 || a->slab_engraving() > 26 || (a->slab_engraving()!=-2 && v->item_type()!=87))
+                return "invalid construction slab facts";
+              if(a->instrument_family() < -1 || a->instrument_family() > 3 ||
+                 a->instrument_placed() < -1 || a->instrument_placed() > 1 ||
+                 (a->instrument_family()==-1)!=(a->instrument_placed()==-1) ||
+                 (a->instrument_family()!=-1 && v->item_type()!=13))
+                return "invalid construction instrument facts";
+              if(const auto* bedding=a->bedding()) {
+                if(v->item_type()!=8 || bedding->sheet()<0 || bedding->sheet()>1 || bedding->pillow()<0 || bedding->pillow()>2 ||
+                   !constructionTokenOk(bedding->base_color(),128) || !constructionTokenOk(bedding->sheet_color(),128))
+                  return "invalid construction bedding facts";
+              }
             }
             const auto key=std::pair{item->distance(),item->id()};
             if(previous && key<=*previous)return "unordered construction candidates";

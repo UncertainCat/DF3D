@@ -366,6 +366,23 @@ table StatueFacts {
   event: ArtEvent = Unknown;
 }
 
+// Native bed choices, independent of texture/cache identifiers.
+// Absent table means unknown (including recordings made before this field).
+table BridgeState {
+  direction:int8 = -2; // -1 retracting, 0 west, 1 east, 2 north, 3 south
+  raised:bool;
+  raising:bool;
+  lowering:bool;
+  collapsing:bool;
+}
+
+table BeddingFacts {
+  sheet: int8 = -1;
+  pillow: int8 = -1;
+  base_color: string;
+  sheet_color: string;
+}
+
 /// One DF building: a rectangle at one z, optionally masked by `extents`.
 table Building {
   /// DF `building.id`.
@@ -399,6 +416,41 @@ table Building {
   stage: BuildingStage = Complete;
   flags: BuildingFlags = 0;
   statue: StatueFacts;
+  bedding: BeddingFacts;
+  bridge: BridgeState;
+  pump_direction:int8 = -1; // unknown; intake from north/east/south/west = 0/1/2/3
+  pump_running:int8 = -1; // unknown; 0 idle, 1 active (native pump energy is nonzero)
+  /// Construction component facts for supported artwork. Layouts prefer first PERM, else entry zero; other supported families use entry zero.
+  construction_item_is_log:int8 = -1; // unknown/absent=-1, non-log=0, log=1
+  construction_item_material:uint16 = 65535; // actual material; unknown=65535
+  roller_direction:int8 = -1; // unknown; native direction 0..3
+  roller_machine_position:int16 = -129; // unknown; native signed byte, 0 without linked machine
+  instrument_family:int8 = -1; // unknown; keyboard/stringed/wind/percussion = 0/1/2/3
+  instrument_placed:int8 = -1; // unknown; definition is portable=0, placed=1
+  waterwheel_machine_position:int16 = -129; // unknown; native signed byte, 0 without linked machine
+  windmill_orient_x:int8 = -2; // unknown; native east-positive vector -1..1
+  windmill_orient_y:int8 = -2; // unknown; native south-positive vector -1..1
+  windmill_rotation:int16 = -129; // unknown; native signed byte
+  gear_axle_machine_position:int16 = -129; // unknown; native signed byte, 0 without linked machine
+  horizontal_axle_vertical:int8 = -1; // unknown; native is_vertical: 0 WE, 1 NS
+  slab_engraving:int8 = -2; // unknown; native slab_engraving_type -1..26
+  vertical_bars_connections:int8 = -1; // unknown; native adjacency N=1,S=2,W=4,E=8
+  well_chain_is_metal:int8 = -1; // unknown=-1; no metal chain component=0, metal chain present=1
+  material_solid_color:string; // Native descriptor token; absent in older recordings
+  construction_item_id:int32 = -1; // Selected component for supported furniture/layouts; unknown/absent=-1
+  construction_item_solid_color:string; // Its native solid descriptor token
+  contained_item_count:int32 = -1; // Coffin/Armorstand/Weaponrack/SiegeEngine/Trap0..3 entries; unknown=-1
+  construction_tool_raw:string; // Selected job tool while planned, first contained tool when complete
+  construction_stage:int32 = -1; // Exact native getBuildStage(); unknown in older recordings
+  siege_facing:int8 = -1; // Native eight-way facing; unknown=-1
+  siege_fire_timer:int16 = -129; // Native signed-byte timer; unknown=-129
+  trap_state:int16 = -129; // Native Trap0..4 fact; unknown=-129
+  trap_ready_timeout:int32 = -32769; // Native Trap0..3 fact; unknown=-32769
+  trap_fill_timer:int32 = -32769; // Native Trap0..3 fact; unknown=-32769
+  trap_trigger_flags:int16 = -1; // Native Trap0..3 fact; unknown=-1
+  weapon_count:int32 = -1; // Weapon/Trap4 WEAPON or TRAPCOMP entries; unknown=-1
+  weapon_retracted:int8 = -1; // Weapon retracted flag; unknown=-1
+  construction_weapon_raw:string; // First WEAPON/TRAPCOMP definition token, independent of role
 }
 
 /// Mirrors DF's `item_type` (df-structures), same order, offset by one so
@@ -497,6 +549,7 @@ enum ItemKind : uint8 {
   Book,              // BOOK
   Sheet,             // SHEET
   Branch,            // BRANCH
+  BoltThrowerParts,  // BOLT_THROWER_PARTS (DF 53.x; appended)
 }
 
 /// Per-item flags (bitfield): DF `item.flags` bits of the same name.
@@ -571,6 +624,7 @@ table MapItem {
   statue: StatueFacts;
   /// Observed first-item color descriptor, including dye; absent = unknown.
   contained_color: string;
+  bedding: BeddingFacts;
 }
 
 
@@ -881,6 +935,8 @@ table Snapshot {
   projectile_combat_events:[ProjectileCombatEvent];
   projectile_combat_events_dropped:uint64;
   projectile_combat_events_available:bool;
+  /// Fortress calendar position within the year; -1 means unavailable.
+  calendar_year_tick:int32 = -1;
 }
 
 // --- Command path (presentation → bridge) ---
@@ -1640,7 +1696,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 53;
+  schema_version:uint32 = 54;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1682,7 +1738,7 @@ table ConstructionRequest {
   cancel_removal:bool;
 }
 table ManagementState {
-  schema_version:uint32 = 53;
+  schema_version:uint32 = 54;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -1746,6 +1802,11 @@ table ConstructionFilter {
 table ConstructionItemAppearance {
   material_token:string; subtype_raw:string; color_token:string;
   stack:uint32 = 1; flags:uint8;
+  bedding:BeddingFacts;
+  instrument_family:int8 = -1; // unknown; keyboard/stringed/wind/percussion=0/1/2/3
+  instrument_placed:int8 = -1; // unknown; raw definition portable=0, placed=1
+  slab_engraving:int8 = -2; // unknown; native slab_engraving_type -1..26
+  gem_shape_raw:string; // descriptor shape raw ID; absent means unknown
 }
 table ConstructionMaterialCandidate { id:int32 = -1; name:string; distance:uint32; appearance:ConstructionItemAppearance; }
 table ConstructionMaterial {
@@ -1785,6 +1846,7 @@ table ConstructionState {
   outcome:ConstructionOutcome = None;
   updated:uint32; // Confirmed existing-job updates, distinct from newly placed jobs.
   failed_index:int32 = -1; // One-based plan index, or -1 when unavailable.
+  warnings:string; // Native advisory copy, independent of placement validity and refusals.
 }
 
 root_type Snapshot;

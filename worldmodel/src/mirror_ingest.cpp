@@ -253,7 +253,8 @@ DF3D_SAME(ItemKind::Egg, m::ItemKind::Egg);
 DF3D_SAME(ItemKind::Book, m::ItemKind::Book);
 DF3D_SAME(ItemKind::Sheet, m::ItemKind::Sheet);
 DF3D_SAME(ItemKind::Branch, m::ItemKind::Branch);
-static_assert(static_cast<int>(m::ItemKind::MAX) == static_cast<int>(ItemKind::Branch),
+DF3D_SAME(ItemKind::BoltThrowerParts, m::ItemKind::BoltThrowerParts);
+static_assert(static_cast<int>(m::ItemKind::MAX) == static_cast<int>(ItemKind::BoltThrowerParts),
               "schema ItemKind grew: extend wm::ItemKind and itemKindName()");
 DF3D_SAME(BuildingStage::Planned, m::BuildingStage::Planned);
 DF3D_SAME(BuildingStage::InProgress, m::BuildingStage::InProgress);
@@ -362,6 +363,7 @@ inline TileState toTile(const m::TileState& t) {
 SnapshotData detail::toSnapshotData(const m::Snapshot& s, bool withTerrain) {
   SnapshotData out;
   out.tick = s.tick();
+  out.calendarYearTick = s.calendar_year_tick();
   out.emittedAtMs = s.emitted_at_ms();
   out.mapSize = TilePos{s.map_size()->x(), s.map_size()->y(), s.map_size()->z()};
   if (const auto* units = s.units()) {
@@ -429,6 +431,25 @@ SnapshotData detail::toSnapshotData(const m::Snapshot& s, bool withTerrain) {
         obs.material = b->material();
         obs.stage = static_cast<BuildingStage>(static_cast<uint8_t>(b->stage()));
         obs.flags = static_cast<uint8_t>(b->flags());
+        obs.pumpDirection=b->pump_direction();
+        obs.pumpRunning=b->pump_running();
+        obs.instrumentFamily=b->instrument_family();
+        obs.instrumentPlaced=b->instrument_placed();
+        obs.rollerDirection=b->roller_direction();
+        obs.rollerMachinePosition=b->roller_machine_position();
+        obs.waterwheelMachinePosition=b->waterwheel_machine_position();
+        obs.windmillOrientX=b->windmill_orient_x();obs.windmillOrientY=b->windmill_orient_y();obs.windmillRotation=b->windmill_rotation();
+        obs.gearAxleMachinePosition=b->gear_axle_machine_position();obs.horizontalAxleVertical=b->horizontal_axle_vertical();obs.slabEngraving=b->slab_engraving();obs.verticalBarsConnections=b->vertical_bars_connections();obs.wellChainIsMetal=b->well_chain_is_metal();obs.materialSolidColor=b->material_solid_color()?b->material_solid_color()->str():std::string();obs.containedItemCount=b->contained_item_count();obs.constructionToolRaw=b->construction_tool_raw()?b->construction_tool_raw()->str():std::string();obs.constructionStage=b->construction_stage();obs.siegeFacing=b->siege_facing();obs.siegeFireTimer=b->siege_fire_timer();obs.trapState=b->trap_state();obs.trapReadyTimeout=b->trap_ready_timeout();obs.trapFillTimer=b->trap_fill_timer();obs.trapTriggerFlags=b->trap_trigger_flags();obs.weaponCount=b->weapon_count();obs.weaponRetracted=b->weapon_retracted();obs.constructionWeaponRaw=b->construction_weapon_raw()?b->construction_weapon_raw()->str():std::string();obs.constructionItemId=b->construction_item_id();obs.constructionItemSolidColor=b->construction_item_solid_color()?b->construction_item_solid_color()->str():std::string();
+        obs.constructionItemIsLog=b->construction_item_is_log();
+        obs.constructionItemMaterial=b->construction_item_material();
+        if (const auto* bridge=b->bridge())
+          obs.bridge={bridge->direction(),bridge->raised(),bridge->raising(),bridge->lowering(),bridge->collapsing()};
+        if (const auto* bedding=b->bedding()) {
+          obs.bedding.sheet=bedding->sheet();
+          obs.bedding.pillow=bedding->pillow();
+          if (bedding->base_color()) obs.bedding.baseColor=bedding->base_color()->str();
+          if (bedding->sheet_color()) obs.bedding.sheetColor=bedding->sheet_color()->str();
+        }
         if (const auto* statue=b->statue()) {
           obs.statue.quality=statue->quality();
           obs.statue.subject=static_cast<ArtSubject>(statue->subject());
@@ -457,6 +478,12 @@ SnapshotData detail::toSnapshotData(const m::Snapshot& s, bool withTerrain) {
         if (const auto* p = it->pos()) obs.pos = TilePos{p->x(), p->y(), p->z()};
         obs.stack = it->stack();
         obs.flags = static_cast<uint8_t>(it->flags());
+        if (const auto* bedding=it->bedding()) {
+          obs.bedding.sheet=bedding->sheet();
+          obs.bedding.pillow=bedding->pillow();
+          if (bedding->base_color()) obs.bedding.baseColor=bedding->base_color()->str();
+          if (bedding->sheet_color()) obs.bedding.sheetColor=bedding->sheet_color()->str();
+        }
         if (const auto* statue=it->statue()) {
           obs.statue.quality=statue->quality();
           obs.statue.subject=static_cast<ArtSubject>(statue->subject());

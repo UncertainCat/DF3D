@@ -112,8 +112,13 @@ inline std::optional<std::string> validateAreaOperation(ManagementAction action,
   };
   for(const auto& field:foreign) if(field.first)
     return std::string("Field ")+field.second+" does not belong to this operation";
-  if(a.category_opening() && (!a.list_key() || a.list_key()->str()!="food/meat"))
-    return "invalid settings opening context";
+  if(a.category_opening()) {
+    const auto key=a.list_key()?a.list_key()->str():std::string{};
+    bool known=false;
+    for(const char* initial:{"food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"})
+      known|=key==initial;
+    if(!known)return "invalid settings opening context";
+  }
   if(op==2 && (a.scope()<1 || a.scope()>4 || a.value()<1 || a.value()>2 ||
       present(a.row_key())!=(a.scope()==1))) return "invalid area settings edit";
   if(op==3 && (a.preset()<1 || a.preset()>19)) return "invalid area preset";

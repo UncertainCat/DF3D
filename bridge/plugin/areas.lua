@@ -1,5 +1,6 @@
 -- Fixed semantic area helper, embedded in the versioned native bridge.
 local B,U=dfhack.buildings,dfhack.units
+local native_parent_modes={['food/meat']=1,['furniture/type']=21,['refuse/type']=29,['stone/metal_ores']=39,['ammo/type']=44,['bars_blocks/bars_metal']=51,['gems/rough_gem']=57,['finished_goods/type']=63,['leather/type']=72,['cloth/thread_silk']=75,['weapons/weapons']=86,['armor/body']=94,['sheet/paper']=106}
 local utils=require('utils')
 local cats={'animals','food','furniture','corpses','refuse','stone','ammo','coins',
  'bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
@@ -103,7 +104,7 @@ local function validate_operation(r,a)
   if type(v)~='string' or #v>cap then return key=='name' and 'area name too long' or 'area key too long' end
  end
  if type(default(a,'category_opening',false))~='boolean' or
-  default(a,'category_opening',false) and default(a,'list_key','')~='food/meat' then return 'invalid settings opening context' end
+  default(a,'category_opening',false) and not native_parent_modes[default(a,'list_key','')] then return 'invalid settings opening context' end
  if op==2 then
   local scope,value=default(a,'scope',0),default(a,'value',0)
   if not integer(scope) or scope<1 or scope>4 or not integer(value) or value<1 or value>2 or
@@ -1313,7 +1314,7 @@ local function native_operation(r)
   local layout,problem=invoke(r.settings_layout,0,b)
   if not layout then return reject(problem) end
   local mode=native_setting_modes[default(a,'list_key','')]
-  if default(a,'category_opening',false) then mode=1 end
+  if default(a,'category_opening',false) then mode=native_parent_modes[a.list_key] end
   local native_rows
   local native_leaf_edit=mode and setting_leaves[a.list_key].source~='quality' and (a.scope==1 or a.scope==2)
   if mode and (op==1 or native_leaf_edit or a.scope==2 and default(a,'query','')~='') then

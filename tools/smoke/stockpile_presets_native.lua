@@ -554,6 +554,61 @@ require('gui.script').start(function()
   label_click('Fish',0,2);label_click('Meat',0,2)
   label_click('None');classify('global_none',1)
   end
+  -- Compare every category entry and default-leaf reopening with owned rows.
+  do
+  local entries={
+   {'Ammo','Type','Metal',47},{'Animals'}, {'Armor','Body','Head',96},
+   {'Bars/blocks','Bars: metal','Bars: other materials',53}, {'Cloth','Thread (silk)','Color',84},
+   {'Coins'},{'Finished goods','Type','Stone/clay',65},{'Food','Meat','Fish',3},
+   {'Furniture','Type','Stone/clay',23},{'Gems','Rough gem','Cut gem',61},
+   {'Leather','Type','Color',74},{'Corpses'},{'Refuse','Item types','Corpses',31},
+   {'Sheet','Paper','Parchment',108},{'Stone','Metal ores','Economic',41},
+   {'Weapons/trap comps','Weapons','Trap components',88},{'Wood'}}
+  local function compare(category,context,query)
+   local mode=context=='category' and c.cur_main_mode or c.cur_sub_mode
+   local before=settings_snapshot(b.settings)
+   local size,address=df.sizeof(df.global.game.main_interface)
+   local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+   local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(mode),query)
+   assert(code==0,text);local rows=json.decode(text)
+   assert(dfhack.internal.memcmp(guard,address,size)==0,'probe changed UI');df.delete(guard)
+   assert(settings_snapshot(b.settings)==before,'probe changed settings')
+   assert(#rows==c.cur_spec_item_sz,'row count '..category)
+   local addresses={};local expected={}
+   for i,row in ipairs(rows)do
+    local cat,field=row.field:match('^([^%.]+)%.(.+)$');local v=b.settings[cat][field]
+    local _,address=df.sizeof(type(v)=='boolean' and b.settings[cat]:_field(field) or v:_field(row.index))
+    assert(not addresses[address],'duplicate provider pointer');addresses[address]=row;expected[i]=address
+   end
+   local different=0;local examples={};local hash1=0xcbf29ce484222325;local hash2=hash1
+   local function digest(h,text)for i=1,#text do h=(h~text:byte(i))*0x100000001b3 end;return h end
+   for i,row in ipairs(rows)do
+    local native=c.spec_item[i-1];local _,address=df.sizeof(native.set_pointer)
+    local identity=assert(addresses[address],'native row outside provider membership')
+    assert(identity.name==dfhack.df2utf(native.name) and identity.visible==native.on,'native identity label/search')
+    assert(identity.enabled==(native.set_pointer.value~=0),'native identity selection')
+    hash1=digest(hash1,identity.field..'/'..identity.index..';');hash2=digest(hash2,row.field..'/'..row.index..';')
+    if address~=expected[i] then
+     assert(row.name==identity.name,'different-name ordering mismatch')
+     different=different+1;if #examples<5 then examples[#examples+1]={position=i,name=row.name,native_index=identity.index,leaf_index=row.index}end
+    end
+   end
+   assert(different==0,'native parent/leaf mismatch '..category)
+   records[#records+1]={probe='category_entry_order',category=category,mode=mode,context=context,query=query,rows=#rows,differing_positions=different,examples=examples,native_order=string.format('%016x',hash1),provider_order=string.format('%016x',hash2)}
+  end
+  for _,entry in ipairs(entries)do
+   for _,query in ipairs{'','A','ZZZZNOMATCH'}do
+    c.entering_spec_filter=false;c.spec_filter=query;c.scroll_position_main=0;view:render(dfhack.getTickCount())
+    label_click(entry[1]);compare(entry[1],'category',query)
+    if entry[2] then
+     local ordinal;for i,mode in ipairs(c.sub_mode)do if mode==entry[4]then ordinal=i end end
+     assert(ordinal,'alternate mode absent');c.scroll_position_sub=math.max(0,ordinal-5);view:render(dfhack.getTickCount())
+     label_click(entry[3],0,2);c.scroll_position_sub=0;view:render(dfhack.getTickCount());label_click(entry[2],0,2)
+     compare(entry[1],'leaf',query)
+    end
+   end
+  end
+  end
   for _,entry in ipairs{{'Stone','stone','mats',40,'Metal ores','stone','Economic'},
    {'Stone','stone','mats',41,'Economic','stone','Metal ores'},
    {'Stone','stone','mats',42,'Other stone','stone','Metal ores'},

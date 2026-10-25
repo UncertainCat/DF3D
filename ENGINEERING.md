@@ -290,7 +290,8 @@ matched native results. Complete settings and unrelated state checks passed;
 diagnostics were clean, source hashes unchanged and owned DF closed without
 saving. This establishes leaf command effects, not full stockpile acceptance.
 
-The owned row service also accepts Food parent mode1 for its initial Meat list.
+The owned row service accepts parent modes for all13 categories with sublists.
+Food parent mode1 returns its initial Meat list.
 It uses the same guarded Meat raw domain, calls the native builder with flag0,
 and owns the sublist vectors and row pointers. Parent code `0x36029b..0x36071a`
 builds sublist metadata, recursively invokes Meat, then applies the outer native
@@ -304,18 +305,17 @@ saving and source hashes stayed unchanged. Bounded evidence is retained in
 `native_stockpile_filters.json.food_category_order`.
 
 Gameplay SettingsPage requests carry additive `category_opening` context for
-`food/meat`. Missing/false retains explicit leaf ordering for older requests and
+the13 verified initial sublist keys. Missing/false retains explicit leaf ordering for older requests and
 recordings; schema/version56 is unchanged. Validators reject true on unrelated
-lists or writes. The bridge dispatches native mode1 for category entry and mode2
-for explicit leaf selection, and hashes the context into continuation receipts,
+lists or writes. The bridge maps an initial sublist to its native parent on entry (Food1 versus
+explicit Meat2), and hashes the context into continuation receipts,
 including empty results. Presentation navigation preserves context across paging,
 search, refresh and edits; selecting another leaf clears it. The already selected
 leaf is a no-op. Clicking Food again or accepting global All/None restores parent
 context. Protected `build/stockpile-order-navigation-native-20261025-065911`
 verified these eight native transitions: parent and leaf orders differ at89
 identically named row positions in this fixture. Category All preserves leaf
-order. Source hashes were unchanged and owned DF closed unsaved. Other category
-opening contexts and full rendered workflows still require verification.
+order. Source hashes were unchanged and owned DF closed unsaved. Full rendered workflows still require verification.
 Focused command run `build/stockpile-initialization-20261025-070119` passed42
 native observations: six complete paginated reads (three in each context), three
 cross-context receipt refusals and nine leaf edits, plus creation, activation and
@@ -324,6 +324,30 @@ hashes unchanged and owned DF closed without saving. Offline
 `build/qa/stockpile-parent-gameplay-final` passed root CTest, the wire contract,
 adapter, settings state and controller checks. Older requests retain false context;
 no migration invents navigation history absent from a recording.
+
+The broader category-order audit `build/stockpile-category-order-native-20261025-070650`
+found additional same-caption identity permutations in Ammo, Armor, Leather and
+Weapons. Parent paths build metadata in owned vectors through already fingerprinted
+helpers and recursively invoke their default leaf; Finished goods joins the common
+Furniture tail at `0x361c46` with its own leaf mode64. All parent paths skip category
+activation with flag0 and reuse the leaf's raw/storage guards. Protected
+`build/stockpile-all-parent-native-20261025-071638` passed90 exact comparisons:
+all17 category entries and13 default-leaf reopenings, each with three queries.
+Field/index identities, labels/order, selection and search visibility matched;
+probe calls preserved source settings/native interface bytes, saves were unchanged
+and owned DF closed unsaved. Four direct lists need no parent context. Bounded
+records and native parent/leaf mappings are in
+`native_stockpile_filters.json.category_entry_order`.
+Focused gameplay run `build/stockpile-initialization-20261025-071837` passed514
+native observations across all13 initial sublists:78 complete paginated reads,
+39 cross-context continuation refusals and119 edits, plus creation/removal.
+Native interface and source settings guards passed; diagnostics were clean,
+save hashes unchanged and owned DF closed without saving. Offline
+`build/qa/stockpile-all-parent-gameplay` passed root CTest and the wire contract,
+settings state and controller checks. Its new adapter routing fixture initially
+failed because unrelated raw tables were incomplete; after isolating dispatch
+from those tables, `build/qa/stockpile-all-parent-adapter-final` passed the adapter
+check. Actual native row results are covered by the protected runs above.
 
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2

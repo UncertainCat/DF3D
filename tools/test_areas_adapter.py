@@ -1080,9 +1080,10 @@ def main():
      return {ok=true,steps=158,work_unknown=true}
     end
     function settings_rows(b,mode,query,budget)
-     last_settings_mode=mode;if mode==1 then mode=2 end
+     last_settings_mode=mode;local parents={[1]=2,[21]=22,[29]=30,[39]=40,[44]=45,[51]=52,[57]=60,[63]=64,[72]=73,[75]=76,[86]=87,[94]=95,[106]=107};mode=parents[mode] or mode
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     if capture_parent_only then return {ok=true,steps=0,work_unknown=true,rows={}} end
      local organic_modes={
       [2]={'food','meat','Meat'},
       [3]={'food','fish','Fish'},
@@ -1483,6 +1484,16 @@ def main():
     assert setting_page("food/meat", category_opening=True, cursor=128, expected_list_revision=parent_page["list_revision"])[0]["ok"]
     assert not setting_page("food/fish", category_opening=True)[0]["ok"]
     assert not setting_page("food/meat", category_opening=1)[0]["ok"]
+    # Routing is independent of the unrelated partially populated raw fixture.
+    lua.execute("capture_parent_only=true")
+    for key, mode in {"food/meat":1,"furniture/type":21,"refuse/type":29,"stone/metal_ores":39,
+                      "ammo/type":44,"bars_blocks/bars_metal":51,"gems/rough_gem":57,
+                      "finished_goods/type":63,"leather/type":72,"cloth/thread_silk":75,
+                      "weapons/weapons":86,"armor/body":94,"sheet/paper":106}.items():
+        parent, _ = setting_page(key, category_opening=True)
+        assert parent["ok"] and lua.globals().last_settings_mode == mode, key
+    lua.execute("capture_parent_only=false")
+
 
     meat_indices = [row["index"] for row in meat_page["settings"].values()]
     while meat_page["next_cursor"]:

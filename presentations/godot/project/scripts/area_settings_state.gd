@@ -6,6 +6,7 @@ signal failed_page(message: String)
 const C = preload("res://scripts/management_contract.gd")
 # AreaInfo.categories / legacy AreaUpdate flag order, independent of display order.
 const CATEGORY_FLAGS = ["animals","food","furniture","corpses","refuse","stone","ammo","coins","bars_blocks","gems","finished_goods","leather","cloth","wood","weapons","armor","sheet"]
+const INITIAL_LISTS = ["food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"]
 var area: Dictionary = {}
 var rows: Array = [[],[],[]]
 var receipts: Array = [{},{},{}]
@@ -58,7 +59,7 @@ func open(value: Dictionary, keep_navigation := false) -> void:
 	if not keep_navigation:
 		# Native Custom opens Ammo/Type and activates Ammo even when every flag
 		# was disabled. Background refreshes must never perform this mutation.
-		category = "ammo"
+		category = "ammo"; category_opening = true
 		if activate_category(): return
 	read(0, "")
 
@@ -79,7 +80,7 @@ func reset_sublist() -> void:
 	# Applied only after an accepted native global All/None. This is a navigation
 	# reset, so do not restore the old sublist's rows or loaded page depth.
 	subcategory = ""; leaf = ""
-	category_opening = category == "food"
+	category_opening = true
 	rows[1] = []; rows[2] = []; receipts[1] = {}; receipts[2] = {}
 
 func busy() -> bool:
@@ -91,7 +92,7 @@ func read(column: int, key: String, cursor := 0) -> void:
 	pending = {"action":C.ManagementAction.AreaInspect,"operation":C.AreaOperation.SettingsPage,
 		"id":int(area.id),"kind":0,"expected_revision":int(area.revision),"list_key":key,
 		"query":query if column == 2 else "","cursor":cursor}
-	if column == 2 and key == "food/meat" and category_opening: pending.category_opening = true
+	if column == 2 and key in INITIAL_LISTS and category_opening: pending.category_opening = true
 	if column == 1 and key in ["coins","corpses","wood"]: pending.query = query
 	if cursor != 0: pending.expected_list_revision = int(receipts[column].get("list_revision",0))
 	delay = -1
@@ -185,7 +186,7 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 			if int(row.kind) != 1: continue
 			if first.is_empty(): first = str(row.key)
 			if str(row.key) == category: found = true
-		if not found: category_opening = first == "food"
+		if not found: category_opening = true
 		category = category if found else first
 		if not category.is_empty(): read(1,category)
 	elif column == 1:
@@ -210,7 +211,7 @@ func select(column: int, row: Dictionary) -> void:
 		edit(column,1,1 if int(row.state) == 2 else 2,str(row.key)); return
 	if column == 0:
 		category = str(row.key); subcategory = ""; leaf = ""
-		category_opening = category == "food"
+		category_opening = true
 		rows[1] = []; rows[2] = []; receipts[1] = {}; receipts[2] = {}
 		# Native category-label selection enables this flag without filling its
 		# filters. Keep this explicit write separate from automatic page reads.

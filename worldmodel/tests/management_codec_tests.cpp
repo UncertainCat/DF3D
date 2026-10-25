@@ -9,6 +9,17 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("verified category default lists accept parent ordering") {
+  for(const char* key:{"food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"}) {
+    wm::ManagementRequest q;q.action=wm::ManagementAction::AreaInspect;
+    q.area.operation=wm::AreaOperation::SettingsPage;q.area.id=39;
+    q.area.listKey=key;q.area.categoryOpening=true;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,1,2,3);
+    const auto* r=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK_FALSE(wire::validateConstructionRequest(*r).has_value());
+  }
+}
+
 TEST_CASE("stockpile category opening context is read-only and scoped to the verified leaf") {
   for(int mode=0;mode<5;++mode) {
     wm::ManagementRequest q;q.action=wm::ManagementAction::AreaInspect;

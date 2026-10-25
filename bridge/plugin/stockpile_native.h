@@ -45,7 +45,7 @@ struct NativeStockpileSettingRange {
 };
 // Caller-owned settings and address ranges remain local to this safe-point call.
 // Only verified list modes are accepted; output contains no native pointers.
-// Food parent mode1 returns its initial Meat rows in category-opening order.
+// Verified parent modes return initial leaf rows in category-opening order.
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
     const std::vector<NativeStockpileSettingRange>& ranges);

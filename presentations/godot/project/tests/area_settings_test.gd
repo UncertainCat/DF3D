@@ -153,5 +153,13 @@ func _initialize() -> void:
 	check(state.pending.get("category_opening",false),"global header navigation reset restores parent context")
 	state.clear()
 	check(not state.category_opening,"close clears ordering context")
+	for key in ["ammo/type","armor/body","bars_blocks/bars_metal","cloth/thread_silk","finished_goods/type","food/meat","furniture/type","gems/rough_gem","leather/type","refuse/type","sheet/paper","stone/metal_ores","weapons/weapons"]:
+		state.open({"id":39,"revision":108,"categories":131071})
+		var category: String = key.get_slice("/",0)
+		page(state,[{"key":category,"kind":1,"state":1}])
+		page(state,[{"key":key,"kind":2,"state":1}])
+		check(state.pending.get("category_opening",false),"native category opening context for " + key)
+		page(state,[])
+	state.clear()
 	print("AREA_SETTINGS PASS" if failures == 0 else "AREA_SETTINGS FAIL")
 	quit(failures)

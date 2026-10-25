@@ -40845,7 +40845,6 @@
     "native_entry": "35fd70 mode1, flag0; recursively builds mode2 at360710 then native parent sort/filter at366fd2",
     "scope": "Owned native Food parent service and gameplay SettingsPage category_opening context",
     "omissions": [
-      "Other category opening versus leaf order",
       "Full rendered workflow acceptance"
     ],
     "navigation_acceptance": {
@@ -40917,6 +40916,2343 @@
       "owned_df": "closed without saving",
       "diagnostics": "clean",
       "scope": "Full12328 Meat pagination in parent and leaf contexts, three searches, rejection of opposite-context continuation receipts, existing filtered/individual/short/empty edits, creation/activation/removal"
+    }
+  },
+  "category_entry_order": {
+    "reference": {
+      "run": "build/stockpile-category-order-native-20261025-070650",
+      "status": "passed",
+      "cases": [
+        {
+          "category": "Ammo",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 8,
+              "name": "Cone-headed arrows",
+              "native_index": 5,
+              "position": 4
+            },
+            {
+              "leaf_index": 5,
+              "name": "Cone-headed arrows",
+              "native_index": 8,
+              "position": 5
+            }
+          ],
+          "leaf_order": "0194c200895df97b",
+          "mode": 45,
+          "native_order": "54427b38bf997027",
+          "query": "",
+          "rows": 11
+        },
+        {
+          "category": "Ammo",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "0194c200895df97b",
+          "mode": 45,
+          "native_order": "0194c200895df97b",
+          "query": "",
+          "rows": 11
+        },
+        {
+          "category": "Ammo",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 8,
+              "name": "Cone-headed arrows",
+              "native_index": 5,
+              "position": 4
+            },
+            {
+              "leaf_index": 5,
+              "name": "Cone-headed arrows",
+              "native_index": 8,
+              "position": 5
+            }
+          ],
+          "leaf_order": "0194c200895df97b",
+          "mode": 45,
+          "native_order": "54427b38bf997027",
+          "query": "A",
+          "rows": 11
+        },
+        {
+          "category": "Ammo",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "0194c200895df97b",
+          "mode": 45,
+          "native_order": "0194c200895df97b",
+          "query": "A",
+          "rows": 11
+        },
+        {
+          "category": "Ammo",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 8,
+              "name": "Cone-headed arrows",
+              "native_index": 5,
+              "position": 4
+            },
+            {
+              "leaf_index": 5,
+              "name": "Cone-headed arrows",
+              "native_index": 8,
+              "position": 5
+            }
+          ],
+          "leaf_order": "0194c200895df97b",
+          "mode": 45,
+          "native_order": "54427b38bf997027",
+          "query": "ZZZZNOMATCH",
+          "rows": 11
+        },
+        {
+          "category": "Ammo",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "0194c200895df97b",
+          "mode": 45,
+          "native_order": "0194c200895df97b",
+          "query": "ZZZZNOMATCH",
+          "rows": 11
+        },
+        {
+          "category": "Animals",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "78fe586bd507e065",
+          "mode": 0,
+          "native_order": "78fe586bd507e065",
+          "query": "",
+          "rows": 778
+        },
+        {
+          "category": "Animals",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "78fe586bd507e065",
+          "mode": 0,
+          "native_order": "78fe586bd507e065",
+          "query": "A",
+          "rows": 778
+        },
+        {
+          "category": "Animals",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "78fe586bd507e065",
+          "mode": 0,
+          "native_order": "78fe586bd507e065",
+          "query": "ZZZZNOMATCH",
+          "rows": 778
+        },
+        {
+          "category": "Armor",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 18,
+              "name": "Bulging breastplates",
+              "native_index": 16,
+              "position": 3
+            },
+            {
+              "leaf_index": 16,
+              "name": "Bulging breastplates",
+              "native_index": 18,
+              "position": 4
+            }
+          ],
+          "leaf_order": "f2db8c221014b3d5",
+          "mode": 95,
+          "native_order": "bea7ff4c87ff5381",
+          "query": "",
+          "rows": 20
+        },
+        {
+          "category": "Armor",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f2db8c221014b3d5",
+          "mode": 95,
+          "native_order": "f2db8c221014b3d5",
+          "query": "",
+          "rows": 20
+        },
+        {
+          "category": "Armor",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 18,
+              "name": "Bulging breastplates",
+              "native_index": 16,
+              "position": 3
+            },
+            {
+              "leaf_index": 16,
+              "name": "Bulging breastplates",
+              "native_index": 18,
+              "position": 4
+            }
+          ],
+          "leaf_order": "f2db8c221014b3d5",
+          "mode": 95,
+          "native_order": "bea7ff4c87ff5381",
+          "query": "A",
+          "rows": 20
+        },
+        {
+          "category": "Armor",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f2db8c221014b3d5",
+          "mode": 95,
+          "native_order": "f2db8c221014b3d5",
+          "query": "A",
+          "rows": 20
+        },
+        {
+          "category": "Armor",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 18,
+              "name": "Bulging breastplates",
+              "native_index": 16,
+              "position": 3
+            },
+            {
+              "leaf_index": 16,
+              "name": "Bulging breastplates",
+              "native_index": 18,
+              "position": 4
+            }
+          ],
+          "leaf_order": "f2db8c221014b3d5",
+          "mode": 95,
+          "native_order": "bea7ff4c87ff5381",
+          "query": "ZZZZNOMATCH",
+          "rows": 20
+        },
+        {
+          "category": "Armor",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f2db8c221014b3d5",
+          "mode": 95,
+          "native_order": "f2db8c221014b3d5",
+          "query": "ZZZZNOMATCH",
+          "rows": 20
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f795fd36419adc33",
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "",
+          "rows": 36
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f795fd36419adc33",
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "",
+          "rows": 36
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f795fd36419adc33",
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "A",
+          "rows": 36
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f795fd36419adc33",
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "A",
+          "rows": 36
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f795fd36419adc33",
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "ZZZZNOMATCH",
+          "rows": 36
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "f795fd36419adc33",
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "ZZZZNOMATCH",
+          "rows": 36
+        },
+        {
+          "category": "Cloth",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3a60b3f9042f7da1",
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "",
+          "rows": 39
+        },
+        {
+          "category": "Cloth",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3a60b3f9042f7da1",
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "",
+          "rows": 39
+        },
+        {
+          "category": "Cloth",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3a60b3f9042f7da1",
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "A",
+          "rows": 39
+        },
+        {
+          "category": "Cloth",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3a60b3f9042f7da1",
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "A",
+          "rows": 39
+        },
+        {
+          "category": "Cloth",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3a60b3f9042f7da1",
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "ZZZZNOMATCH",
+          "rows": 39
+        },
+        {
+          "category": "Cloth",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3a60b3f9042f7da1",
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "ZZZZNOMATCH",
+          "rows": 39
+        },
+        {
+          "category": "Coins",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae515539f2d6bf74",
+          "mode": 50,
+          "native_order": "ae515539f2d6bf74",
+          "query": "",
+          "rows": 313
+        },
+        {
+          "category": "Coins",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae515539f2d6bf74",
+          "mode": 50,
+          "native_order": "ae515539f2d6bf74",
+          "query": "A",
+          "rows": 313
+        },
+        {
+          "category": "Coins",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae515539f2d6bf74",
+          "mode": 50,
+          "native_order": "ae515539f2d6bf74",
+          "query": "ZZZZNOMATCH",
+          "rows": 313
+        },
+        {
+          "category": "Finished goods",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "8625ec79ae334870",
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "",
+          "rows": 25
+        },
+        {
+          "category": "Finished goods",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "8625ec79ae334870",
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "",
+          "rows": 25
+        },
+        {
+          "category": "Finished goods",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "8625ec79ae334870",
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "A",
+          "rows": 25
+        },
+        {
+          "category": "Finished goods",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "8625ec79ae334870",
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "A",
+          "rows": 25
+        },
+        {
+          "category": "Finished goods",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "8625ec79ae334870",
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "ZZZZNOMATCH",
+          "rows": 25
+        },
+        {
+          "category": "Finished goods",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "8625ec79ae334870",
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "ZZZZNOMATCH",
+          "rows": 25
+        },
+        {
+          "category": "Food",
+          "context": "category",
+          "differing_positions": 89,
+          "examples": [
+            {
+              "leaf_index": 11173,
+              "name": "Brush titan sweetbread",
+              "native_index": 11197,
+              "position": 252
+            },
+            {
+              "leaf_index": 11197,
+              "name": "Brush titan sweetbread",
+              "native_index": 11173,
+              "position": 253
+            },
+            {
+              "leaf_index": 11195,
+              "name": "Brush titan tripe",
+              "native_index": 11171,
+              "position": 254
+            },
+            {
+              "leaf_index": 11171,
+              "name": "Brush titan tripe",
+              "native_index": 11195,
+              "position": 255
+            },
+            {
+              "leaf_index": 11157,
+              "name": "Chopped hill titan liver",
+              "native_index": 11073,
+              "position": 1026
+            }
+          ],
+          "leaf_order": "7811a00e191a3a6b",
+          "mode": 2,
+          "native_order": "3d97b6364906a4e7",
+          "query": "",
+          "rows": 12328
+        },
+        {
+          "category": "Food",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "7811a00e191a3a6b",
+          "mode": 2,
+          "native_order": "7811a00e191a3a6b",
+          "query": "",
+          "rows": 12328
+        },
+        {
+          "category": "Food",
+          "context": "category",
+          "differing_positions": 89,
+          "examples": [
+            {
+              "leaf_index": 11173,
+              "name": "Brush titan sweetbread",
+              "native_index": 11197,
+              "position": 252
+            },
+            {
+              "leaf_index": 11197,
+              "name": "Brush titan sweetbread",
+              "native_index": 11173,
+              "position": 253
+            },
+            {
+              "leaf_index": 11195,
+              "name": "Brush titan tripe",
+              "native_index": 11171,
+              "position": 254
+            },
+            {
+              "leaf_index": 11171,
+              "name": "Brush titan tripe",
+              "native_index": 11195,
+              "position": 255
+            },
+            {
+              "leaf_index": 11157,
+              "name": "Chopped hill titan liver",
+              "native_index": 11073,
+              "position": 1026
+            }
+          ],
+          "leaf_order": "7811a00e191a3a6b",
+          "mode": 2,
+          "native_order": "3d97b6364906a4e7",
+          "query": "A",
+          "rows": 12328
+        },
+        {
+          "category": "Food",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "7811a00e191a3a6b",
+          "mode": 2,
+          "native_order": "7811a00e191a3a6b",
+          "query": "A",
+          "rows": 12328
+        },
+        {
+          "category": "Food",
+          "context": "category",
+          "differing_positions": 89,
+          "examples": [
+            {
+              "leaf_index": 11173,
+              "name": "Brush titan sweetbread",
+              "native_index": 11197,
+              "position": 252
+            },
+            {
+              "leaf_index": 11197,
+              "name": "Brush titan sweetbread",
+              "native_index": 11173,
+              "position": 253
+            },
+            {
+              "leaf_index": 11195,
+              "name": "Brush titan tripe",
+              "native_index": 11171,
+              "position": 254
+            },
+            {
+              "leaf_index": 11171,
+              "name": "Brush titan tripe",
+              "native_index": 11195,
+              "position": 255
+            },
+            {
+              "leaf_index": 11157,
+              "name": "Chopped hill titan liver",
+              "native_index": 11073,
+              "position": 1026
+            }
+          ],
+          "leaf_order": "7811a00e191a3a6b",
+          "mode": 2,
+          "native_order": "3d97b6364906a4e7",
+          "query": "ZZZZNOMATCH",
+          "rows": 12328
+        },
+        {
+          "category": "Food",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "7811a00e191a3a6b",
+          "mode": 2,
+          "native_order": "7811a00e191a3a6b",
+          "query": "ZZZZNOMATCH",
+          "rows": 12328
+        },
+        {
+          "category": "Furniture",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "66bd8d228ef94585",
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "",
+          "rows": 35
+        },
+        {
+          "category": "Furniture",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "66bd8d228ef94585",
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "",
+          "rows": 35
+        },
+        {
+          "category": "Furniture",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "66bd8d228ef94585",
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "A",
+          "rows": 35
+        },
+        {
+          "category": "Furniture",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "66bd8d228ef94585",
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "A",
+          "rows": 35
+        },
+        {
+          "category": "Furniture",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "66bd8d228ef94585",
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "ZZZZNOMATCH",
+          "rows": 35
+        },
+        {
+          "category": "Furniture",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "66bd8d228ef94585",
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "ZZZZNOMATCH",
+          "rows": 35
+        },
+        {
+          "category": "Gems",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "d8db6b2ce7319892",
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "",
+          "rows": 127
+        },
+        {
+          "category": "Gems",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "d8db6b2ce7319892",
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "",
+          "rows": 127
+        },
+        {
+          "category": "Gems",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "d8db6b2ce7319892",
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "A",
+          "rows": 127
+        },
+        {
+          "category": "Gems",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "d8db6b2ce7319892",
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "A",
+          "rows": 127
+        },
+        {
+          "category": "Gems",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "d8db6b2ce7319892",
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "ZZZZNOMATCH",
+          "rows": 127
+        },
+        {
+          "category": "Gems",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "d8db6b2ce7319892",
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "ZZZZNOMATCH",
+          "rows": 127
+        },
+        {
+          "category": "Leather",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 817,
+              "name": "Werewarthog leather",
+              "native_index": 821,
+              "position": 814
+            },
+            {
+              "leaf_index": 821,
+              "name": "Werewarthog leather",
+              "native_index": 817,
+              "position": 815
+            }
+          ],
+          "leaf_order": "3d54cfe0c82a0193",
+          "mode": 73,
+          "native_order": "cf641a0dd95e2b51",
+          "query": "",
+          "rows": 839
+        },
+        {
+          "category": "Leather",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3d54cfe0c82a0193",
+          "mode": 73,
+          "native_order": "3d54cfe0c82a0193",
+          "query": "",
+          "rows": 839
+        },
+        {
+          "category": "Leather",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 817,
+              "name": "Werewarthog leather",
+              "native_index": 821,
+              "position": 814
+            },
+            {
+              "leaf_index": 821,
+              "name": "Werewarthog leather",
+              "native_index": 817,
+              "position": 815
+            }
+          ],
+          "leaf_order": "3d54cfe0c82a0193",
+          "mode": 73,
+          "native_order": "cf641a0dd95e2b51",
+          "query": "A",
+          "rows": 839
+        },
+        {
+          "category": "Leather",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3d54cfe0c82a0193",
+          "mode": 73,
+          "native_order": "3d54cfe0c82a0193",
+          "query": "A",
+          "rows": 839
+        },
+        {
+          "category": "Leather",
+          "context": "category",
+          "differing_positions": 2,
+          "examples": [
+            {
+              "leaf_index": 817,
+              "name": "Werewarthog leather",
+              "native_index": 821,
+              "position": 814
+            },
+            {
+              "leaf_index": 821,
+              "name": "Werewarthog leather",
+              "native_index": 817,
+              "position": 815
+            }
+          ],
+          "leaf_order": "3d54cfe0c82a0193",
+          "mode": 73,
+          "native_order": "cf641a0dd95e2b51",
+          "query": "ZZZZNOMATCH",
+          "rows": 839
+        },
+        {
+          "category": "Leather",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "3d54cfe0c82a0193",
+          "mode": 73,
+          "native_order": "3d54cfe0c82a0193",
+          "query": "ZZZZNOMATCH",
+          "rows": 839
+        },
+        {
+          "category": "Corpses",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "6539b21b8214be9d",
+          "mode": 28,
+          "native_order": "6539b21b8214be9d",
+          "query": "",
+          "rows": 778
+        },
+        {
+          "category": "Corpses",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "6539b21b8214be9d",
+          "mode": 28,
+          "native_order": "6539b21b8214be9d",
+          "query": "A",
+          "rows": 778
+        },
+        {
+          "category": "Corpses",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "6539b21b8214be9d",
+          "mode": 28,
+          "native_order": "6539b21b8214be9d",
+          "query": "ZZZZNOMATCH",
+          "rows": 778
+        },
+        {
+          "category": "Refuse",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae5b4739bf5d76db",
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "",
+          "rows": 85
+        },
+        {
+          "category": "Refuse",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae5b4739bf5d76db",
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "",
+          "rows": 85
+        },
+        {
+          "category": "Refuse",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae5b4739bf5d76db",
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "A",
+          "rows": 85
+        },
+        {
+          "category": "Refuse",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae5b4739bf5d76db",
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "A",
+          "rows": 85
+        },
+        {
+          "category": "Refuse",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae5b4739bf5d76db",
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "ZZZZNOMATCH",
+          "rows": 85
+        },
+        {
+          "category": "Refuse",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "ae5b4739bf5d76db",
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "ZZZZNOMATCH",
+          "rows": 85
+        },
+        {
+          "category": "Sheet",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "a9f99e1f68a62878",
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "",
+          "rows": 9
+        },
+        {
+          "category": "Sheet",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "a9f99e1f68a62878",
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "",
+          "rows": 9
+        },
+        {
+          "category": "Sheet",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "a9f99e1f68a62878",
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "A",
+          "rows": 9
+        },
+        {
+          "category": "Sheet",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "a9f99e1f68a62878",
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "A",
+          "rows": 9
+        },
+        {
+          "category": "Sheet",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "a9f99e1f68a62878",
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "ZZZZNOMATCH",
+          "rows": 9
+        },
+        {
+          "category": "Sheet",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "a9f99e1f68a62878",
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "ZZZZNOMATCH",
+          "rows": 9
+        },
+        {
+          "category": "Stone",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "4bb7fc521c1fc3b4",
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "",
+          "rows": 16
+        },
+        {
+          "category": "Stone",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "4bb7fc521c1fc3b4",
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "",
+          "rows": 16
+        },
+        {
+          "category": "Stone",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "4bb7fc521c1fc3b4",
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "A",
+          "rows": 16
+        },
+        {
+          "category": "Stone",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "4bb7fc521c1fc3b4",
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "A",
+          "rows": 16
+        },
+        {
+          "category": "Stone",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "4bb7fc521c1fc3b4",
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "ZZZZNOMATCH",
+          "rows": 16
+        },
+        {
+          "category": "Stone",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "4bb7fc521c1fc3b4",
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "ZZZZNOMATCH",
+          "rows": 16
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "category",
+          "differing_positions": 4,
+          "examples": [
+            {
+              "leaf_index": 27,
+              "name": "Thin blowguns",
+              "native_index": 43,
+              "position": 32
+            },
+            {
+              "leaf_index": 43,
+              "name": "Thin blowguns",
+              "native_index": 27,
+              "position": 33
+            },
+            {
+              "leaf_index": 26,
+              "name": "Wavy blades",
+              "native_index": 34,
+              "position": 42
+            },
+            {
+              "leaf_index": 34,
+              "name": "Wavy blades",
+              "native_index": 26,
+              "position": 43
+            }
+          ],
+          "leaf_order": "faf8dc07113b662f",
+          "mode": 87,
+          "native_order": "62c9578ab7b3372d",
+          "query": "",
+          "rows": 44
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "faf8dc07113b662f",
+          "mode": 87,
+          "native_order": "faf8dc07113b662f",
+          "query": "",
+          "rows": 44
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "category",
+          "differing_positions": 4,
+          "examples": [
+            {
+              "leaf_index": 27,
+              "name": "Thin blowguns",
+              "native_index": 43,
+              "position": 32
+            },
+            {
+              "leaf_index": 43,
+              "name": "Thin blowguns",
+              "native_index": 27,
+              "position": 33
+            },
+            {
+              "leaf_index": 26,
+              "name": "Wavy blades",
+              "native_index": 34,
+              "position": 42
+            },
+            {
+              "leaf_index": 34,
+              "name": "Wavy blades",
+              "native_index": 26,
+              "position": 43
+            }
+          ],
+          "leaf_order": "faf8dc07113b662f",
+          "mode": 87,
+          "native_order": "62c9578ab7b3372d",
+          "query": "A",
+          "rows": 44
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "faf8dc07113b662f",
+          "mode": 87,
+          "native_order": "faf8dc07113b662f",
+          "query": "A",
+          "rows": 44
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "category",
+          "differing_positions": 4,
+          "examples": [
+            {
+              "leaf_index": 27,
+              "name": "Thin blowguns",
+              "native_index": 43,
+              "position": 32
+            },
+            {
+              "leaf_index": 43,
+              "name": "Thin blowguns",
+              "native_index": 27,
+              "position": 33
+            },
+            {
+              "leaf_index": 26,
+              "name": "Wavy blades",
+              "native_index": 34,
+              "position": 42
+            },
+            {
+              "leaf_index": 34,
+              "name": "Wavy blades",
+              "native_index": 26,
+              "position": 43
+            }
+          ],
+          "leaf_order": "faf8dc07113b662f",
+          "mode": 87,
+          "native_order": "62c9578ab7b3372d",
+          "query": "ZZZZNOMATCH",
+          "rows": 44
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "faf8dc07113b662f",
+          "mode": 87,
+          "native_order": "faf8dc07113b662f",
+          "query": "ZZZZNOMATCH",
+          "rows": 44
+        },
+        {
+          "category": "Wood",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "667631cf8df5589e",
+          "mode": 85,
+          "native_order": "667631cf8df5589e",
+          "query": "",
+          "rows": 72
+        },
+        {
+          "category": "Wood",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "667631cf8df5589e",
+          "mode": 85,
+          "native_order": "667631cf8df5589e",
+          "query": "A",
+          "rows": 72
+        },
+        {
+          "category": "Wood",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "leaf_order": "667631cf8df5589e",
+          "mode": 85,
+          "native_order": "667631cf8df5589e",
+          "query": "ZZZZNOMATCH",
+          "rows": 72
+        }
+      ],
+      "result_sha256": "585b024732de13981dd7909d995dedc4f38650534b515eeeba811b07ea7c0b74",
+      "source_save": "unchanged",
+      "owned_df": "closed without saving"
+    },
+    "owned_provider": {
+      "run": "build/stockpile-all-parent-native-20261025-071638",
+      "status": "passed",
+      "cases": [
+        {
+          "category": "Ammo",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 44,
+          "native_order": "54427b38bf997027",
+          "query": "",
+          "rows": 11,
+          "provider_order": "54427b38bf997027"
+        },
+        {
+          "category": "Ammo",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 45,
+          "native_order": "0194c200895df97b",
+          "query": "",
+          "rows": 11,
+          "provider_order": "0194c200895df97b"
+        },
+        {
+          "category": "Ammo",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 44,
+          "native_order": "54427b38bf997027",
+          "query": "A",
+          "rows": 11,
+          "provider_order": "54427b38bf997027"
+        },
+        {
+          "category": "Ammo",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 45,
+          "native_order": "0194c200895df97b",
+          "query": "A",
+          "rows": 11,
+          "provider_order": "0194c200895df97b"
+        },
+        {
+          "category": "Ammo",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 44,
+          "native_order": "54427b38bf997027",
+          "query": "ZZZZNOMATCH",
+          "rows": 11,
+          "provider_order": "54427b38bf997027"
+        },
+        {
+          "category": "Ammo",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 45,
+          "native_order": "0194c200895df97b",
+          "query": "ZZZZNOMATCH",
+          "rows": 11,
+          "provider_order": "0194c200895df97b"
+        },
+        {
+          "category": "Animals",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 0,
+          "native_order": "78fe586bd507e065",
+          "query": "",
+          "rows": 778,
+          "provider_order": "78fe586bd507e065"
+        },
+        {
+          "category": "Animals",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 0,
+          "native_order": "78fe586bd507e065",
+          "query": "A",
+          "rows": 778,
+          "provider_order": "78fe586bd507e065"
+        },
+        {
+          "category": "Animals",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 0,
+          "native_order": "78fe586bd507e065",
+          "query": "ZZZZNOMATCH",
+          "rows": 778,
+          "provider_order": "78fe586bd507e065"
+        },
+        {
+          "category": "Armor",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 94,
+          "native_order": "bea7ff4c87ff5381",
+          "query": "",
+          "rows": 20,
+          "provider_order": "bea7ff4c87ff5381"
+        },
+        {
+          "category": "Armor",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 95,
+          "native_order": "f2db8c221014b3d5",
+          "query": "",
+          "rows": 20,
+          "provider_order": "f2db8c221014b3d5"
+        },
+        {
+          "category": "Armor",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 94,
+          "native_order": "bea7ff4c87ff5381",
+          "query": "A",
+          "rows": 20,
+          "provider_order": "bea7ff4c87ff5381"
+        },
+        {
+          "category": "Armor",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 95,
+          "native_order": "f2db8c221014b3d5",
+          "query": "A",
+          "rows": 20,
+          "provider_order": "f2db8c221014b3d5"
+        },
+        {
+          "category": "Armor",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 94,
+          "native_order": "bea7ff4c87ff5381",
+          "query": "ZZZZNOMATCH",
+          "rows": 20,
+          "provider_order": "bea7ff4c87ff5381"
+        },
+        {
+          "category": "Armor",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 95,
+          "native_order": "f2db8c221014b3d5",
+          "query": "ZZZZNOMATCH",
+          "rows": 20,
+          "provider_order": "f2db8c221014b3d5"
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 51,
+          "native_order": "f795fd36419adc33",
+          "query": "",
+          "rows": 36,
+          "provider_order": "f795fd36419adc33"
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "",
+          "rows": 36,
+          "provider_order": "f795fd36419adc33"
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 51,
+          "native_order": "f795fd36419adc33",
+          "query": "A",
+          "rows": 36,
+          "provider_order": "f795fd36419adc33"
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "A",
+          "rows": 36,
+          "provider_order": "f795fd36419adc33"
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 51,
+          "native_order": "f795fd36419adc33",
+          "query": "ZZZZNOMATCH",
+          "rows": 36,
+          "provider_order": "f795fd36419adc33"
+        },
+        {
+          "category": "Bars/blocks",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 52,
+          "native_order": "f795fd36419adc33",
+          "query": "ZZZZNOMATCH",
+          "rows": 36,
+          "provider_order": "f795fd36419adc33"
+        },
+        {
+          "category": "Cloth",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 75,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "",
+          "rows": 39,
+          "provider_order": "3a60b3f9042f7da1"
+        },
+        {
+          "category": "Cloth",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "",
+          "rows": 39,
+          "provider_order": "3a60b3f9042f7da1"
+        },
+        {
+          "category": "Cloth",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 75,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "A",
+          "rows": 39,
+          "provider_order": "3a60b3f9042f7da1"
+        },
+        {
+          "category": "Cloth",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "A",
+          "rows": 39,
+          "provider_order": "3a60b3f9042f7da1"
+        },
+        {
+          "category": "Cloth",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 75,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "ZZZZNOMATCH",
+          "rows": 39,
+          "provider_order": "3a60b3f9042f7da1"
+        },
+        {
+          "category": "Cloth",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 76,
+          "native_order": "3a60b3f9042f7da1",
+          "query": "ZZZZNOMATCH",
+          "rows": 39,
+          "provider_order": "3a60b3f9042f7da1"
+        },
+        {
+          "category": "Coins",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 50,
+          "native_order": "ae515539f2d6bf74",
+          "query": "",
+          "rows": 313,
+          "provider_order": "ae515539f2d6bf74"
+        },
+        {
+          "category": "Coins",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 50,
+          "native_order": "ae515539f2d6bf74",
+          "query": "A",
+          "rows": 313,
+          "provider_order": "ae515539f2d6bf74"
+        },
+        {
+          "category": "Coins",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 50,
+          "native_order": "ae515539f2d6bf74",
+          "query": "ZZZZNOMATCH",
+          "rows": 313,
+          "provider_order": "ae515539f2d6bf74"
+        },
+        {
+          "category": "Finished goods",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 63,
+          "native_order": "8625ec79ae334870",
+          "query": "",
+          "rows": 25,
+          "provider_order": "8625ec79ae334870"
+        },
+        {
+          "category": "Finished goods",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "",
+          "rows": 25,
+          "provider_order": "8625ec79ae334870"
+        },
+        {
+          "category": "Finished goods",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 63,
+          "native_order": "8625ec79ae334870",
+          "query": "A",
+          "rows": 25,
+          "provider_order": "8625ec79ae334870"
+        },
+        {
+          "category": "Finished goods",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "A",
+          "rows": 25,
+          "provider_order": "8625ec79ae334870"
+        },
+        {
+          "category": "Finished goods",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 63,
+          "native_order": "8625ec79ae334870",
+          "query": "ZZZZNOMATCH",
+          "rows": 25,
+          "provider_order": "8625ec79ae334870"
+        },
+        {
+          "category": "Finished goods",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 64,
+          "native_order": "8625ec79ae334870",
+          "query": "ZZZZNOMATCH",
+          "rows": 25,
+          "provider_order": "8625ec79ae334870"
+        },
+        {
+          "category": "Food",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 1,
+          "native_order": "3d97b6364906a4e7",
+          "query": "",
+          "rows": 12328,
+          "provider_order": "3d97b6364906a4e7"
+        },
+        {
+          "category": "Food",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 2,
+          "native_order": "7811a00e191a3a6b",
+          "query": "",
+          "rows": 12328,
+          "provider_order": "7811a00e191a3a6b"
+        },
+        {
+          "category": "Food",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 1,
+          "native_order": "3d97b6364906a4e7",
+          "query": "A",
+          "rows": 12328,
+          "provider_order": "3d97b6364906a4e7"
+        },
+        {
+          "category": "Food",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 2,
+          "native_order": "7811a00e191a3a6b",
+          "query": "A",
+          "rows": 12328,
+          "provider_order": "7811a00e191a3a6b"
+        },
+        {
+          "category": "Food",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 1,
+          "native_order": "3d97b6364906a4e7",
+          "query": "ZZZZNOMATCH",
+          "rows": 12328,
+          "provider_order": "3d97b6364906a4e7"
+        },
+        {
+          "category": "Food",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 2,
+          "native_order": "7811a00e191a3a6b",
+          "query": "ZZZZNOMATCH",
+          "rows": 12328,
+          "provider_order": "7811a00e191a3a6b"
+        },
+        {
+          "category": "Furniture",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 21,
+          "native_order": "66bd8d228ef94585",
+          "query": "",
+          "rows": 35,
+          "provider_order": "66bd8d228ef94585"
+        },
+        {
+          "category": "Furniture",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "",
+          "rows": 35,
+          "provider_order": "66bd8d228ef94585"
+        },
+        {
+          "category": "Furniture",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 21,
+          "native_order": "66bd8d228ef94585",
+          "query": "A",
+          "rows": 35,
+          "provider_order": "66bd8d228ef94585"
+        },
+        {
+          "category": "Furniture",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "A",
+          "rows": 35,
+          "provider_order": "66bd8d228ef94585"
+        },
+        {
+          "category": "Furniture",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 21,
+          "native_order": "66bd8d228ef94585",
+          "query": "ZZZZNOMATCH",
+          "rows": 35,
+          "provider_order": "66bd8d228ef94585"
+        },
+        {
+          "category": "Furniture",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 22,
+          "native_order": "66bd8d228ef94585",
+          "query": "ZZZZNOMATCH",
+          "rows": 35,
+          "provider_order": "66bd8d228ef94585"
+        },
+        {
+          "category": "Gems",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 57,
+          "native_order": "d8db6b2ce7319892",
+          "query": "",
+          "rows": 127,
+          "provider_order": "d8db6b2ce7319892"
+        },
+        {
+          "category": "Gems",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "",
+          "rows": 127,
+          "provider_order": "d8db6b2ce7319892"
+        },
+        {
+          "category": "Gems",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 57,
+          "native_order": "d8db6b2ce7319892",
+          "query": "A",
+          "rows": 127,
+          "provider_order": "d8db6b2ce7319892"
+        },
+        {
+          "category": "Gems",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "A",
+          "rows": 127,
+          "provider_order": "d8db6b2ce7319892"
+        },
+        {
+          "category": "Gems",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 57,
+          "native_order": "d8db6b2ce7319892",
+          "query": "ZZZZNOMATCH",
+          "rows": 127,
+          "provider_order": "d8db6b2ce7319892"
+        },
+        {
+          "category": "Gems",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 60,
+          "native_order": "d8db6b2ce7319892",
+          "query": "ZZZZNOMATCH",
+          "rows": 127,
+          "provider_order": "d8db6b2ce7319892"
+        },
+        {
+          "category": "Leather",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 72,
+          "native_order": "cf641a0dd95e2b51",
+          "query": "",
+          "rows": 839,
+          "provider_order": "cf641a0dd95e2b51"
+        },
+        {
+          "category": "Leather",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 73,
+          "native_order": "3d54cfe0c82a0193",
+          "query": "",
+          "rows": 839,
+          "provider_order": "3d54cfe0c82a0193"
+        },
+        {
+          "category": "Leather",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 72,
+          "native_order": "cf641a0dd95e2b51",
+          "query": "A",
+          "rows": 839,
+          "provider_order": "cf641a0dd95e2b51"
+        },
+        {
+          "category": "Leather",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 73,
+          "native_order": "3d54cfe0c82a0193",
+          "query": "A",
+          "rows": 839,
+          "provider_order": "3d54cfe0c82a0193"
+        },
+        {
+          "category": "Leather",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 72,
+          "native_order": "cf641a0dd95e2b51",
+          "query": "ZZZZNOMATCH",
+          "rows": 839,
+          "provider_order": "cf641a0dd95e2b51"
+        },
+        {
+          "category": "Leather",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 73,
+          "native_order": "3d54cfe0c82a0193",
+          "query": "ZZZZNOMATCH",
+          "rows": 839,
+          "provider_order": "3d54cfe0c82a0193"
+        },
+        {
+          "category": "Corpses",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 28,
+          "native_order": "6539b21b8214be9d",
+          "query": "",
+          "rows": 778,
+          "provider_order": "6539b21b8214be9d"
+        },
+        {
+          "category": "Corpses",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 28,
+          "native_order": "6539b21b8214be9d",
+          "query": "A",
+          "rows": 778,
+          "provider_order": "6539b21b8214be9d"
+        },
+        {
+          "category": "Corpses",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 28,
+          "native_order": "6539b21b8214be9d",
+          "query": "ZZZZNOMATCH",
+          "rows": 778,
+          "provider_order": "6539b21b8214be9d"
+        },
+        {
+          "category": "Refuse",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 29,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "",
+          "rows": 85,
+          "provider_order": "ae5b4739bf5d76db"
+        },
+        {
+          "category": "Refuse",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "",
+          "rows": 85,
+          "provider_order": "ae5b4739bf5d76db"
+        },
+        {
+          "category": "Refuse",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 29,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "A",
+          "rows": 85,
+          "provider_order": "ae5b4739bf5d76db"
+        },
+        {
+          "category": "Refuse",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "A",
+          "rows": 85,
+          "provider_order": "ae5b4739bf5d76db"
+        },
+        {
+          "category": "Refuse",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 29,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "ZZZZNOMATCH",
+          "rows": 85,
+          "provider_order": "ae5b4739bf5d76db"
+        },
+        {
+          "category": "Refuse",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 30,
+          "native_order": "ae5b4739bf5d76db",
+          "query": "ZZZZNOMATCH",
+          "rows": 85,
+          "provider_order": "ae5b4739bf5d76db"
+        },
+        {
+          "category": "Sheet",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 106,
+          "native_order": "a9f99e1f68a62878",
+          "query": "",
+          "rows": 9,
+          "provider_order": "a9f99e1f68a62878"
+        },
+        {
+          "category": "Sheet",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "",
+          "rows": 9,
+          "provider_order": "a9f99e1f68a62878"
+        },
+        {
+          "category": "Sheet",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 106,
+          "native_order": "a9f99e1f68a62878",
+          "query": "A",
+          "rows": 9,
+          "provider_order": "a9f99e1f68a62878"
+        },
+        {
+          "category": "Sheet",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "A",
+          "rows": 9,
+          "provider_order": "a9f99e1f68a62878"
+        },
+        {
+          "category": "Sheet",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 106,
+          "native_order": "a9f99e1f68a62878",
+          "query": "ZZZZNOMATCH",
+          "rows": 9,
+          "provider_order": "a9f99e1f68a62878"
+        },
+        {
+          "category": "Sheet",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 107,
+          "native_order": "a9f99e1f68a62878",
+          "query": "ZZZZNOMATCH",
+          "rows": 9,
+          "provider_order": "a9f99e1f68a62878"
+        },
+        {
+          "category": "Stone",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 39,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "",
+          "rows": 16,
+          "provider_order": "4bb7fc521c1fc3b4"
+        },
+        {
+          "category": "Stone",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "",
+          "rows": 16,
+          "provider_order": "4bb7fc521c1fc3b4"
+        },
+        {
+          "category": "Stone",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 39,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "A",
+          "rows": 16,
+          "provider_order": "4bb7fc521c1fc3b4"
+        },
+        {
+          "category": "Stone",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "A",
+          "rows": 16,
+          "provider_order": "4bb7fc521c1fc3b4"
+        },
+        {
+          "category": "Stone",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 39,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "ZZZZNOMATCH",
+          "rows": 16,
+          "provider_order": "4bb7fc521c1fc3b4"
+        },
+        {
+          "category": "Stone",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 40,
+          "native_order": "4bb7fc521c1fc3b4",
+          "query": "ZZZZNOMATCH",
+          "rows": 16,
+          "provider_order": "4bb7fc521c1fc3b4"
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 86,
+          "native_order": "62c9578ab7b3372d",
+          "query": "",
+          "rows": 44,
+          "provider_order": "62c9578ab7b3372d"
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 87,
+          "native_order": "faf8dc07113b662f",
+          "query": "",
+          "rows": 44,
+          "provider_order": "faf8dc07113b662f"
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 86,
+          "native_order": "62c9578ab7b3372d",
+          "query": "A",
+          "rows": 44,
+          "provider_order": "62c9578ab7b3372d"
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 87,
+          "native_order": "faf8dc07113b662f",
+          "query": "A",
+          "rows": 44,
+          "provider_order": "faf8dc07113b662f"
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 86,
+          "native_order": "62c9578ab7b3372d",
+          "query": "ZZZZNOMATCH",
+          "rows": 44,
+          "provider_order": "62c9578ab7b3372d"
+        },
+        {
+          "category": "Weapons/trap comps",
+          "context": "leaf",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 87,
+          "native_order": "faf8dc07113b662f",
+          "query": "ZZZZNOMATCH",
+          "rows": 44,
+          "provider_order": "faf8dc07113b662f"
+        },
+        {
+          "category": "Wood",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 85,
+          "native_order": "667631cf8df5589e",
+          "query": "",
+          "rows": 72,
+          "provider_order": "667631cf8df5589e"
+        },
+        {
+          "category": "Wood",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 85,
+          "native_order": "667631cf8df5589e",
+          "query": "A",
+          "rows": 72,
+          "provider_order": "667631cf8df5589e"
+        },
+        {
+          "category": "Wood",
+          "context": "category",
+          "differing_positions": 0,
+          "examples": [],
+          "mode": 85,
+          "native_order": "667631cf8df5589e",
+          "query": "ZZZZNOMATCH",
+          "rows": 72,
+          "provider_order": "667631cf8df5589e"
+        }
+      ],
+      "result_sha256": "27cc34dff1000361ffc3cd1b157562571f86d47468bc13ef04c0dc305673a952",
+      "source_save": "unchanged",
+      "owned_df": "closed without saving"
+    },
+    "parent_to_initial_leaf": {
+      "1": 2,
+      "21": 22,
+      "29": 30,
+      "39": 40,
+      "44": 45,
+      "51": 52,
+      "57": 60,
+      "63": 64,
+      "72": 73,
+      "75": 76,
+      "86": 87,
+      "94": 95,
+      "106": 107
+    },
+    "scope": "90 exact native category/default-leaf comparisons across all17 roots and three queries, including13 parent paths; native UI/source settings preserved around provider calls",
+    "omissions": [
+      "Full native-data rendered workflow and lifecycle acceptance",
+      "Non-ASCII search and malformed/historical input domains"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-071837",
+      "status": "passed",
+      "native_observations": 514,
+      "complete_page_reads": 78,
+      "parent_context_reads": 39,
+      "explicit_leaf_reads": 39,
+      "cross_context_receipt_refusals": 39,
+      "filter_edits": 119,
+      "native_modes": [
+        2,
+        22,
+        30,
+        40,
+        45,
+        52,
+        60,
+        64,
+        73,
+        76,
+        87,
+        95,
+        107
+      ],
+      "diagnostics": {
+        "known_engine": [],
+        "unclassified": []
+      },
+      "source_save_unchanged": true,
+      "owned_df_closed_without_saving": true,
+      "scope": "Focused initial-sublist commands, complete pagination with three queries, native UI/settings guards, individual and filtered edits, short/empty storage, creation and removal; not full rendered workflow acceptance."
     }
   }
 }

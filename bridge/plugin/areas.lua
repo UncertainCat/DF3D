@@ -229,6 +229,7 @@ for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
 local native_setting_modes={
+ ['furniture/type']=22,['refuse/type']=30,['finished_goods/type']=64,
  ['wood']=85,
  ['animals/animals']=0,['corpses']=28,
  ['refuse/corpses']=31,['refuse/body_parts']=32,['refuse/skulls']=33,['refuse/bones']=34,
@@ -312,31 +313,6 @@ local refused_item_types={NONE=true,BAR=true,SMALLGEM=true,BLOCKS=true,ROUGH=tru
 local embedded_settings={['refuse/type']={
  {key='refuse/type/fresh_raw_hide',field='refuse.fresh_raw_hide',source='toggle',label='Fresh raw hide'},
  {key='refuse/type/rotten_raw_hide',field='refuse.rotten_raw_hide',source='toggle',label='Rotten raw hide'}}}
--- Native e5 Finished goods/Refuse rows and e20 d3_type_picker compare/type
--- pairs. Enum captions are often singular and are not the stockpile captions.
-local item_type_captions={AMMO='ammunition',AMULET='amulets',ANIMALTRAP='animal traps',ANVIL='anvils',
- ARMOR='armor',ARMORSTAND='armor stands',BACKPACK='backpacks',BAG='bags',
- BALLISTAARROWHEAD='ballista arrow heads',BALLISTAPARTS='ballista parts',BARREL='barrels',
- BED='beds',BIN='bins',BOLT_THROWER_PARTS='bolt thrower parts',BOX='boxes',BRACELET='bracelets',
- BRANCH='branches',BUCKET='buckets',CABINET='cabinets',CAGE='cages',CATAPULTPARTS='catapult parts',
- BOOK='codices',CHAIN='chains',CROWN='crowns',CRUTCH='crutches',EARRING='earrings',
- FIGURINE='figurines',FLASK='flasks',SHOES='footwear',GOBLET='goblets',GLOVES='handwear',
- HELM='headwear',GEM='large gems',PANTS='legwear',INSTRUMENT='musical instruments',QUIVER='quivers',
- RING='rings',SCEPTER='scepters',SPLINT='splints',TOOL='tools',TOTEM='totems',TOY='toys',
- CHAIR='thrones',COFFIN='coffins',COIN='coins',DOOR='doors',DRINK='drinks',FLOODGATE='floodgates',
- GRATE='grates',HATCH_COVER='hatch covers',SKIN_TANNED='tanned hides',TRAPPARTS='mechanisms',
- MILLSTONE='millstones',PLANT='plants',PLANT_GROWTH='leaves and fruit',FOOD='prepared meals',QUERN='querns',
- SHIELD='shields/bucklers',SLAB='slabs',STATUE='statues',TABLE='tables',PET='small tame animals',
- TRACTION_BENCH='traction benches',TRAPCOMP='trap components',VERMIN='small live animals',
- WEAPON='weapons',WEAPONRACK='weapon racks',WINDOW='windows'}
- -- Complete native Furniture/Type captions captured on the supported DF build.
-local furniture_captions={ANVIL='Anvils',ARMORSTAND='Armor stands',BAG='Bags',BALLISTAARROWHEAD='Ballista arrow heads',
- BALLISTAPARTS='Ballista parts',BARREL='Barrels',BED='Beds',BIN='Bins',BOLT_THROWER_PARTS='Bolt thrower parts',
- BOX='Boxes',BUCKET='Buckets',CABINET='Cabinets',CATAPULTPARTS='Catapult parts',COFFIN='Coffins',DOOR='Doors',FLOODGATE='Floodgates',
- GRATE='Grates',HATCH_COVER='Hatch covers',FOOD_STORAGE='Large pots/food storage',TRAPPARTS='Mechanisms',
- MILLSTONE='Millstones',MINECART='Minecarts',OTHER_LARGE_TOOLS='Other large tools',PIPE_SECTION='Pipe section',
- QUERN='Querns',SAND_BAG='Sand bags',SIEGEAMMO='Siege ammo',SLAB='Slabs',STATUE='Statues',TABLE='Tables',
- CHAIR='Thrones',TRACTION_BENCH='Traction benches',WEAPONRACK='Weapon racks',WHEELBARROW='Wheelbarrows',WINDOW='Windows'}
 local function setting_source(d)
  local raws=df.global.world.raws
  if d.source=='toggle' then return nil,1
@@ -358,12 +334,12 @@ local function setting_caption(d,index,values)
  -- Summary counting needs membership only. Leaf labels/search come from DF.
  if d.source=='quality' or d.source=='other' or d.source=='color' or d.source=='itemdef' then return '' end
  if d.source=='furniture' then
-  local token=df.furniture_type[index];return furniture_captions[token] or token or ''
+  return '' -- Summary membership only; native rows own furniture captions.
  end
  if d.source=='itemtype' then
   local key=df.item_type[index]
   if d.selector=='finished_goods' and not finished_item_types[key] or d.selector=='refuse' and refused_item_types[key] then return nil end
-  return item_type_captions[key] or df.item_type.attrs[index].caption or ''
+  return '' -- Summary membership only; native rows own item-type captions.
  end
  if d.source=='builtin' then
   -- Builtin slots outside glass may be null (notably INORGANIC). Filter their

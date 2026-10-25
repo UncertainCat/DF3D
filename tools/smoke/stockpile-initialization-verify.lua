@@ -31,22 +31,30 @@ if request.op:match('^quality_') or request.op:match('^filter_') then
   for i,row in ipairs(visible)do
    local actual=request.rows[i]
    assert(actual.index==row.index and actual.label==row.name and actual.state==(row.enabled and 2 or 1),'bridge quality row '..i)
-   assert(actual.key==request.list_key..'/'..row.index,'bridge quality identity')
+   local suffix=row.field:match('^refuse%.(.*raw_hide)$')
+   assert(actual.key==request.list_key..'/'..(suffix or row.index),'bridge quality identity')
   end
  elseif request.op=='quality_before' or request.op=='filter_before' then
   -- Build an independent expected settings snapshot, then restore before the
   -- bridge mutation. The oracle never supplies settings to the product.
-  local category,field=(request.field or rows[1].field):match('^([^%.]+)%.(.+)$')
-  local values=b.settings[category][field];local original={}
-  for i=0,#values-1 do original[i]=values[i]end
+  local original={}
   for _,row in ipairs(rows)do
-   if row.visible and (not request.row or row.index==request.row) then
-    if type(values[row.index])=='boolean' then values[row.index]=request.value==2
+   local category,field=row.field:match('^([^%.]+)%.(.+)$')
+   local values=b.settings[category][field]
+   local scalar=type(values)=='boolean'
+   local value=scalar and values or not scalar and values[row.index]
+   original[#original+1]={category=category,field=field,index=row.index,scalar=scalar,value=value}
+   if row.visible and (request.row==nil or row.index==request.row and row.field==request.field) then
+    if scalar then b.settings[category][field]=request.value==2
+    elseif type(value)=='boolean' then values[row.index]=request.value==2
     else values[row.index]=request.value==2 and 1 or 0 end
    end
   end
   _G.df3d_quality_expected=snapshot(b.settings)
-  for i=0,#values-1 do values[i]=original[i]end
+  for _,v in ipairs(original)do
+   if v.scalar then b.settings[v.category][v.field]=v.value
+   else b.settings[v.category][v.field][v.index]=v.value end
+  end
  elseif request.op=='quality_after' or request.op=='filter_after' then
   assert(_G.df3d_quality_expected==snapshot(b.settings),'filtered edit changed unexpected settings')
   _G.df3d_quality_expected=nil

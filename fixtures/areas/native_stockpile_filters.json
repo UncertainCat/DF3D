@@ -20478,7 +20478,7 @@
     "native_bulk_actions": 18,
     "source_save": "unchanged",
     "owned_df": "closed without saving",
-    "runtime_integration": "pending formatter ownership audit and mixed-field support",
+    "runtime_integration": "Implemented; see itemtype_provider for subsequent native and command evidence",
     "omissions": [
       "Runtime native provider comparison",
       "Short vectors: native fixed-index access requires prior safety work",
@@ -21779,5 +21779,1195 @@
         "visible_rows": []
       }
     ]
+  },
+  "itemtype_provider": {
+    "run": "build/stockpile-presets-native-20261025-043331",
+    "status": "passed",
+    "comparisons": 36,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 35,
+        "row_count": 35,
+        "visible_count": 35,
+        "rows_sha256": "29ec29176aa592ddb44a41e1f1f6e8789bf9a843e8fafb3081468cbd2270063d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "35c0790eafae02ead92e779d1ed93034476cace0dd8b9d6e47e8bd583f68d403",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 36,
+        "row_count": 35,
+        "visible_count": 35,
+        "rows_sha256": "29ec29176aa592ddb44a41e1f1f6e8789bf9a843e8fafb3081468cbd2270063d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 35,
+        "row_count": 35,
+        "visible_count": 24,
+        "rows_sha256": "5a820c069105cef25278b342ce0bb7b3494df6d64238b5b24d456f4673279156",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "35c0790eafae02ead92e779d1ed93034476cace0dd8b9d6e47e8bd583f68d403",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 36,
+        "row_count": 35,
+        "visible_count": 24,
+        "rows_sha256": "5a820c069105cef25278b342ce0bb7b3494df6d64238b5b24d456f4673279156",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 35,
+        "row_count": 35,
+        "visible_count": 0,
+        "rows_sha256": "86cc612c81748b83a5cdf5dd472e60b17062bcf38b1cf46234afe21973a9ff2e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "d0f8a75e03c63355862b559a38dc85849a8cd1deb4fd7355f9c32e2ba2cca43a",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 0,
+            "name": "Floodgates",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 22,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 36,
+        "row_count": 35,
+        "visible_count": 0,
+        "rows_sha256": "86cc612c81748b83a5cdf5dd472e60b17062bcf38b1cf46234afe21973a9ff2e",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 20,
+            "name": "Anvils",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 17,
+            "name": "Armor stands",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 31,
+            "name": "Wheelbarrows",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "furniture.type",
+            "index": 9,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 93,
+        "row_count": 25,
+        "visible_count": 25,
+        "rows_sha256": "bfa7be06d1f51c1cef69c7346cc44d54723c5d18dae6236d6148555d2e7b74ac",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 94,
+        "row_count": 25,
+        "visible_count": 25,
+        "rows_sha256": "bfa7be06d1f51c1cef69c7346cc44d54723c5d18dae6236d6148555d2e7b74ac",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 93,
+        "row_count": 25,
+        "visible_count": 13,
+        "rows_sha256": "3cf51cbb51f999332b825a09999c6a44424fbeee546715e0cea3e788998155ab",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 94,
+        "row_count": 25,
+        "visible_count": 13,
+        "rows_sha256": "3cf51cbb51f999332b825a09999c6a44424fbeee546715e0cea3e788998155ab",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 93,
+        "row_count": 25,
+        "visible_count": 0,
+        "rows_sha256": "fc0f525f4c67296b7f1e59e5d840cd421fe79edf249fab116fac2f5d6c752a93",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "mode": 64,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 94,
+        "row_count": 25,
+        "visible_count": 0,
+        "rows_sha256": "fc0f525f4c67296b7f1e59e5d840cd421fe79edf249fab116fac2f5d6c752a93",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 25,
+            "name": "Armor",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 59,
+            "name": "Totems",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "finished_goods.type",
+            "index": 14,
+            "name": "Toys",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 93,
+        "row_count": 85,
+        "visible_count": 85,
+        "rows_sha256": "17c390bef73555b129372d9667976f851f6ff5a4847e85b2bd6c0663b8b591e2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 1,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "9ac7d0c5efe33e16e35bf42a90d95c6caf06304aad9ca20af3a5095a45b3caf6",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 0,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "9ac7d0c5efe33e16e35bf42a90d95c6caf06304aad9ca20af3a5095a45b3caf6",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "",
+        "stored_count": 94,
+        "row_count": 85,
+        "visible_count": 85,
+        "rows_sha256": "17c390bef73555b129372d9667976f851f6ff5a4847e85b2bd6c0663b8b591e2",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 93,
+        "row_count": 85,
+        "visible_count": 49,
+        "rows_sha256": "abb46e21feba39342e2156452c34deb8f2811cf30c2bd773f286e409c9808318",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "9ac7d0c5efe33e16e35bf42a90d95c6caf06304aad9ca20af3a5095a45b3caf6",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "9ac7d0c5efe33e16e35bf42a90d95c6caf06304aad9ca20af3a5095a45b3caf6",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "a",
+        "stored_count": 94,
+        "row_count": 85,
+        "visible_count": 49,
+        "rows_sha256": "abb46e21feba39342e2156452c34deb8f2811cf30c2bd773f286e409c9808318",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 93,
+        "row_count": 85,
+        "visible_count": 0,
+        "rows_sha256": "101e1849778eeeed3293ac3465e456f065ac751ad05f97d60eed9d660f3764f0",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "0591dfe02725bf1e78c1c0b2f59afc5c244e6020246637bff48ded3a4ded5814",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "0591dfe02725bf1e78c1c0b2f59afc5c244e6020246637bff48ded3a4ded5814",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.fresh_raw_hide",
+            "index": 0,
+            "name": "Fresh raw hide",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.rotten_raw_hide",
+            "index": 0,
+            "name": "Rotten raw hide",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "mode": 30,
+        "probe": "itemtype_provider",
+        "query": "zzzznomatch",
+        "stored_count": 94,
+        "row_count": 85,
+        "visible_count": 0,
+        "rows_sha256": "101e1849778eeeed3293ac3465e456f065ac751ad05f97d60eed9d660f3764f0",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 39,
+            "name": "Ammunition",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 37,
+            "name": "Amulets",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 24,
+            "name": "Weapons",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "refuse.type",
+            "index": 15,
+            "name": "Windows",
+            "visible": false
+          }
+        ]
+      }
+    ],
+    "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
+    "short_vectors": "Only owned service builds short vectors; native UI retains full storage. Returned rows match native rows for existing source indices, including independent scalars.",
+    "omissions": [
+      "Non-ASCII search",
+      "Rendered settings-panel parity"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-043711",
+      "status": "passed",
+      "native_observations": 76,
+      "page_reads": 9,
+      "edits": 29,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "Modes22,30,64; individual hide scalars, filtered bulk, short/empty vectors, creation and removal"
+    }
   }
 }

@@ -4,6 +4,20 @@
 #include "df/building_stockpilest.h"
 #include "df/custom_stockpile_interfacest.h"
 #include "df/custom_stockpile_itemst.h"
+#include "df/itemdef_ammost.h"
+#include "df/itemdef_armorst.h"
+#include "df/itemdef_glovesst.h"
+#include "df/itemdef_helmst.h"
+#include "df/itemdef_instrumentst.h"
+#include "df/itemdef_pantsst.h"
+#include "df/itemdef_shieldst.h"
+#include "df/itemdef_shoesst.h"
+#include "df/itemdef_siegeammost.h"
+#include "df/itemdef_toolst.h"
+#include "df/itemdef_toyst.h"
+#include "df/itemdef_trapcompst.h"
+#include "df/itemdef_weaponst.h"
+#include <algorithm>
 #include <windows.h>
 #include <cstdint>
 
@@ -164,6 +178,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     // These branches have no historical-cache path. Color branches copy raw
     // descriptor names; constant branches use native labels and owned settings.
     switch(mode) {
+      case 22:case 30:case 64:break;
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
       case 25:case 46:case 53:case 56:case 68:case 91:case 102:break;
@@ -185,6 +200,19 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     // A referenced in-range raw must still exist before entering native code.
     if(mode==85)for(size_t i=0;i<owned.wood.mats.size() && i<raws.plants.all.size();++i)
         if(!raws.plants.all[i])return std::nullopt;
+    if(mode==22 || mode==30 || mode==64) {
+        // Formatter subtype -1 must not match a loaded item definition. These
+        // branches scan raw vectors even when no subtype was requested.
+        const auto validTypes=[](const auto& values) {
+            for(const auto* raw:values)if(!raw || raw->subtype<0)return false;
+            return true;
+        };
+        const auto& d=raws.itemdefs;
+        if(!validTypes(d.instruments) || !validTypes(d.toys) || !validTypes(d.tools) ||
+           !validTypes(d.weapons) || !validTypes(d.ammo) || !validTypes(d.siege_ammo) ||
+           !validTypes(d.armor) || !validTypes(d.gloves) || !validTypes(d.shields) ||
+           !validTypes(d.shoes) || !validTypes(d.helms) || !validTypes(d.pants))return std::nullopt;
+    }
     bool valid=true;
     switch(mode) {
       case 71:valid=fits(owned.finished_goods.color,raws.descriptors.colors);break;
@@ -223,6 +251,15 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
     static const bool compatible=supported(base) &&
+        hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
+        hash(base+0x14add70,0x12f)==0x1f897b15772d540ULL &&
+        hash(base+0x145bee0,0x5e)==0x6abc4e374e372eefULL &&
+        hash(base+0x14e1ec0,0xb68)==0x1d38184423ba8a35ULL &&
+        hash(base+0x6f850,0x5f)==0x5ab94e1bc2548275ULL &&
+        hash(base+0xb9b80,0x144)==0x91ddb6c319015f9bULL &&
+        hash(base+0x707d0,0x59)==0xeaa671999c0fd514ULL &&
+        hash(base+0x681f0,0xb8)==0x84219afebe998ea0ULL &&
+        hash(base+0x68150,0x37)==0xffedcb68657803eaULL &&
         hash(base+0x35fd70,0x77f0)==0x9826ec82d86ebf51ULL &&
         hash(base+0x35fb50,0x188)==0x0370358adf30598bULL &&
         hash(base+0x35fce0,0x89)==0x60a96499876e0c98ULL &&
@@ -256,6 +293,30 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);
     static_assert(sizeof(bool)==1); // Fixed settings ranges use byte indices.
+    // Fixed enum branches assume full storage. Supply it only in owned scratch,
+    // restore the caller's vector afterwards, and omit padded rows from output.
+    struct TypeBacking {
+        std::vector<char>* target=nullptr;
+        std::vector<char> saved;
+        ~TypeBacking(){if(target)target->swap(saved);}
+    } backing;
+    auto localRanges=ranges;
+    size_t stored=0;const char* padded=nullptr;size_t paddedCount=0;
+    std::vector<char>* types=nullptr;const char* typeField=nullptr;size_t required=0;
+    if(mode==22){types=&owned.furniture.type;typeField="furniture.type";required=35;}
+    if(mode==30){types=&owned.refuse.type;typeField="refuse.type";required=93;}
+    if(mode==64){types=&owned.finished_goods.type;typeField="finished_goods.type";required=93;}
+    if(types && types->size()<required) {
+        stored=types->size();backing.saved=*types;backing.saved.resize(required,0);
+        backing.target=types;types->swap(backing.saved);
+        padded=types->data();paddedCount=types->size();
+        bool found=false;
+        for(auto& range:localRanges)if(range.field==typeField) {
+            if(found || range.count!=stored)return std::nullopt;
+            found=true;range.begin=padded;
+        }
+        if(!found)return std::nullopt;
+    }
     struct Rows {
         df::custom_stockpile_interfacest scratch;
         ~Rows(){for(auto* row:scratch.spec_item)delete row;}
@@ -276,7 +337,11 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         if(!row)return std::nullopt;
         const auto pointer=reinterpret_cast<uintptr_t>(row->set_pointer);
         const NativeStockpileSettingRange* matched=nullptr;size_t index=0;
-        for(const auto& range:ranges) {
+        if(padded) {
+            const auto start=reinterpret_cast<uintptr_t>(padded);
+            if(pointer>=start && pointer-start>=stored && pointer-start<paddedCount)continue;
+        }
+        for(const auto& range:localRanges) {
             const auto start=reinterpret_cast<uintptr_t>(range.begin);
             if(pointer>=start && pointer-start<range.count) {
                 if(matched)return std::nullopt;

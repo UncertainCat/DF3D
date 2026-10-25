@@ -103,7 +103,7 @@ func header_actions(pile: int, categories: Array) -> void:
 func native_filter_lists(pile: int) -> void:
 	var exercised: Array = []
 	var category_bits := {"furniture":4,"ammo":64,"bars_blocks":256,"finished_goods":1024,"weapons":16384,"armor":32768,"leather":2048,"cloth":4096,"animals":1,"corpses":8,"refuse":16,"wood":8192}
-	for entry in [["wood","wood.mats",85],["furniture/other_materials","furniture.other_mats",25],
+	for entry in [["furniture/type","furniture.type",22],["refuse/type","refuse.type",30],["finished_goods/type","finished_goods.type",64],["wood","wood.mats",85],["furniture/other_materials","furniture.other_mats",25],
 		["ammo/other_materials","ammo.other_mats",46],
 		["bars_blocks/bars_other","bars_blocks.bars_other_mats",53],
 		["bars_blocks/blocks_other","bars_blocks.blocks_other_mats",56],
@@ -144,6 +144,11 @@ func native_filter_lists(pile: int) -> void:
 		await native("filter_before",{"id":pile,"mode":mode,"field":field,"row":first_row,"value":1})
 		await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/"+str(first_row)})
 		await native("filter_after",{"id":pile,"mode":mode})
+		if mode == 30:
+			for scalar in ["fresh_raw_hide","rotten_raw_hide"]:
+				await native("filter_before",{"id":pile,"mode":mode,"field":"refuse."+scalar,"row":0,"value":1})
+				await edit(pile,0,{"operation":2,"scope":1,"value":1,"list_key":key,"row_key":key+"/"+scalar})
+				await native("filter_after",{"id":pile,"mode":mode})
 		for count in [1,0]:
 			await native("filter_setup",{"id":pile,"field":field,"count":count})
 			await native("filter_before",{"id":pile,"mode":mode,"field":field,"value":2})

@@ -1081,6 +1081,20 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     if mode==22 or mode==30 or mode==64 then
+      local category=mode==22 and 'furniture' or mode==30 and 'refuse' or 'finished_goods'
+      local rows={};local captions={CHAIN='Chains',BOOK='Codices',INSTRUMENT='Musical instruments',ANVIL='Anvils',CHAIR='Thrones',UNCAPTURED_TOOL='Native tool'}
+      for i,value in ipairs(b.settings[category].type)do
+       local token=mode==22 and df.furniture_type[i-1] or df.item_type[i-1]
+       if captions[token] then rows[#rows+1]={field=category..'.type',index=i-1,label=captions[token],enabled=value~=0}end
+      end
+      if mode==30 then for _,entry in ipairs{{'fresh_raw_hide','Fresh raw hide'},{'rotten_raw_hide','Rotten raw hide'}}do
+       rows[#rows+1]={field='refuse.'..entry[1],index=0,label=entry[2],enabled=b.settings.refuse[entry[1]]}
+      end end
+      for _,row in ipairs(rows)do row.visible=row.label:lower():find(query:lower(),1,true)~=nil end
+      table.sort(rows,function(a,b)return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      if mode==85 then
       local rows={};local raws=df.global.world.raws.plants.all
       for i,value in ipairs(b.settings.wood.mats)do
@@ -1277,6 +1291,7 @@ def main():
     make_setting('ammo.other_mats',2,{1,0})
     make_setting('finished_goods.type',4,{1,0,1,1})
     make_setting('refuse.type',4,{1,1,1,1})
+    for _,key in ipairs{'fresh_raw_hide','rotten_raw_hide'}do settings_fields['refuse.'..key]={count=1,stored_count=1,fixed=true};pile.settings.refuse[key]=false end
     make_setting('furniture.type',2,{1,1})
     raws.creatures.all={{creature_id='BIRD',name={[0]='bird',[1]='birds'},flags={},caste={{caste_name={[0]='bird hen'}}}},
       {creature_id='GENERATED',name={[0]='generated',[1]='generated'},flags={GENERATED=true}},
@@ -1327,14 +1342,14 @@ def main():
     assert [r["label"] for r in setting_page("ammo/other_materials")[0]["settings"].values()] == ["Bone", "Wood"]
     assert setting_indices("finished_goods/type") == [1, 2]
     refuse_page, _ = setting_page("refuse/type")
-    assert [r["label"] for r in refuse_page["settings"].values()] == ["chains", "codices", "Fresh raw hide", "Rotten raw hide"]
-    assert [r["label"] for r in setting_page("finished_goods/type")[0]["settings"].values()] == ["chains", "codices"]
+    assert [r["label"] for r in refuse_page["settings"].values()] == ["Chains", "Codices", "Fresh raw hide", "Rotten raw hide"]
+    assert [r["label"] for r in setting_page("finished_goods/type")[0]["settings"].values()] == ["Chains", "Codices"]
     furniture, _ = setting_page("furniture/type")
     assert furniture["omitted"] == 0 and furniture["settings"][1]["label"] == "Anvils"
-    assert furniture["settings"][2]["label"] == "UNCAPTURED_TOOL"  # unknown future enum fallback
+    assert furniture["settings"][2]["label"] == "Native tool"  # supplied by the provider, not an enum fallback
     lua.execute("df.item_type[2]='INSTRUMENT';df.furniture_type[1]='CHAIR'")
     settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
-    assert [r["label"] for r in setting_page("finished_goods/type")[0]["settings"].values()] == ["chains", "musical instruments"]
+    assert [r["label"] for r in setting_page("finished_goods/type")[0]["settings"].values()] == ["Chains", "Musical instruments"]
     assert [r["label"] for r in setting_page("furniture/type")[0]["settings"].values()] == ["Anvils", "Thrones"]
     lua.execute("df.item_type[2]='BOOK';df.furniture_type[1]='UNCAPTURED_TOOL'")
     settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
@@ -1542,7 +1557,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") and list_key != "refuse/type" or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") or list_key in ("furniture/type","finished_goods/type") or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1741,10 +1756,8 @@ def main():
         assert not settings_adapter(fixed_edit(key, value=2))["ok"]
         assert lua.eval(f"pile.settings.{category}.color[1]==0 and pile.settings.{category}.color[3]==9")
         lua.execute(f"make_setting('{category}.color',2,{{0,0}})")
-    # Exercise mixed-field routing with a test-only mode injection. Runtime
-    # mode30 remains disabled until its formatter ownership audit is complete.
+    # Exercise mixed-field routing with an injected native provider.
     mixed_source = (Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text()
-    mixed_source = mixed_source.replace("local native_setting_modes={", "local native_setting_modes={['refuse/type']=30,", 1)
     mixed_adapter = lua.execute(mixed_source)
     lua.execute(r"""
     saved_rows=settings_rows;saved_refuse_type=pile.settings.refuse.type;saved_refuse_layout=settings_fields['refuse.type']

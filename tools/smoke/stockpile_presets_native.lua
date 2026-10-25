@@ -418,11 +418,12 @@ require('gui.script').start(function()
   for _,entry in ipairs{{'Furniture','furniture',22,35,'Type'},
    {'Finished goods','finished_goods',64,93,'Type'},{'Refuse','refuse',30,93,'Item types'}}do
    c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
-   view:render(dfhack.getTickCount());label_click(entry[1])
+   view:render(dfhack.getTickCount());label_click('Ammo')
    local values=b.settings[entry[2]].type;local original={}
    for _,v in ipairs(values)do original[#original+1]=v end
    local fresh,rotten=b.settings.refuse.fresh_raw_hide,b.settings.refuse.rotten_raw_hide
-   values:resize(entry[4]);for i=0,#values-1 do values[i]=i%2 end
+   values:resize(entry[4]+1);values:resize(entry[4]);for i=0,#values-1 do values[i]=i%2 end
+   label_click(entry[1])
    label_click(entry[5],0,2)
    assert(c.cur_sub_mode==entry[3],'wrong item-type mode')
    local pointers={}
@@ -460,6 +461,32 @@ require('gui.script').start(function()
      for i,v in ipairs(values)do assert(v==expected[i],'item-type action changed excluded row')end
      assert(b.settings.refuse.fresh_raw_hide==ef and b.settings.refuse.rotten_raw_hide==er,'item-type scalar effect')
     end
+    -- Only the owned provider sees short vectors: the native UI builder uses
+    -- unchecked fixed indices and must retain full backing storage.
+    local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
+    for _,count in ipairs{entry[4],1,0,entry[4]+1}do
+     values:resize(count)
+     for j=0,count-1 do values[j]=j<#saved and saved[j+1] or 9 end
+     local before=settings_snapshot(b.settings)
+     local size,address=df.sizeof(df.global.game.main_interface)
+     local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+     local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[3]),query)
+     assert(code==0,text)
+     assert(dfhack.internal.memcmp(guard,address,size)==0,'item-type provider changed UI');df.delete(guard)
+     assert(settings_snapshot(b.settings)==before,'item-type provider changed settings')
+     local actual=json.decode(text);local expected={}
+     for _,row in ipairs(rows)do if row.field~=entry[2]..'.type' or row.index<count then expected[#expected+1]=row end end
+     assert(#actual==#expected,'item-type provider row count')
+     for j,row in ipairs(actual)do
+      local e=expected[j]
+      assert(row.field==e.field and row.index==e.index and row.name==e.name and row.visible==e.visible,'item-type provider row identity/order/search')
+      local category,field=row.field:match('^([^%.]+)%.(.+)$')
+      local v=b.settings[category][field];local enabled=type(v)=='boolean' and v or type(v)~='boolean' and v[row.index]~=0
+      assert(row.enabled==enabled,'item-type provider state')
+     end
+     records[#records+1]={probe='itemtype_provider',mode=entry[3],stored_count=count,query=query,rows=actual}
+    end
+    values:resize(#saved);for j,v in ipairs(saved)do values[j-1]=v end
     records[#records+1]={probe='itemtype_reference',mode=entry[3],stored_count=#values,query=query,rows=rows,bulk_actions=2}
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end

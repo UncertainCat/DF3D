@@ -109,34 +109,50 @@ option retains the full suite. Individual-row checks choose an actually returned
 native row instead of assuming raw index0 is eligible.
 
 Furniture Type (mode22), Finished goods Type (64), and Refuse Item types (30)
-remain staged. Protected reference run
-`build/stockpile-presets-native-20261025-041740` captured35,25 and85 rows,
-respectively, and verified18 actual filtered All/None actions. The Refuse list
-contains83 type-vector entries and two independent hide booleans; native order
-interleaves those scalar rows with ordinary types. Pointer-to-field/index checks
-and action effects are retained in `native_stockpile_filters.json.itemtype_reference`.
-The source save was unchanged and owned DF closed without saving.
+use owned native rows for gameplay labels, eligibility, sorting, search and
+individual/filtered bulk edits. Local caption tables were removed; summary
+membership remains staged. Refuse interleaves83 type-vector entries with its two
+independent hide booleans. Existing semantic keys distinguish scalar fields from
+vector indices. Receipts include those identities, and bulk masks route native
+visibility to each field. Unknown fields, duplicate identities and invalid
+indices reject before writes; individual edits require a visible native row.
 
-These branches iterate fixed native enum ranges (Furniture35; item types93),
-using unchecked vector indexing. Their general formatter receives material and
-subtype -1, but complete reachable-path ownership remains under audit. Do not
-whitelist these modes or test short vectors by entering the native builder
-without safe backing storage. The adapter supports mixed-field rows using
-existing semantic keys: type-vector indices and named hide toggles retain
-separate identities even when their numeric indices coincide. Page receipts
-include that identity; bulk masks route native visibility to each backing field.
-Unknown fields, duplicate identities and invalid indices reject before writes.
-Individual edits require a matching visible native row, including scalar rows.
+These DF branches iterate fixed enum ranges (Furniture35; item types93) through
+unchecked vector indexing. The provider temporarily swaps in padded owned
+storage when necessary, filters out padded rows, and restores the original
+owned vector before returning. Real settings never grow, and Refuse's scalar
+rows remain available when its type vector is empty. Oversized tails remain
+untouched. Native UI is never entered with short vectors in the protected oracle.
 
-Adapter tests inject mode30 only in a private test instance to check ordering,
-filtered bulk and individual effects, missing/foreign/duplicate rows, and receipt
-invalidation when scalar identities swap. Runtime mode30 remains disabled pending
-the formatter audit. Protected regression
-`build/stockpile-initialization-20261025-042525` passed118 native observations
-across Animals, Furniture Other materials, Ammo Type, Finished goods Color and
-Wood, with clean diagnostics and unchanged source save hashes. Owned DF closed
-without saving. This verifies the shared service's existing native callers;
-it does not establish the pending Refuse provider or rendered acceptance.
+The formatter receives subtype/material/item IDs -1, zero flags/count and the
+skip-size flag. Guards require nonnull scanned item definitions with nonnegative
+subtypes, so native subtype scans cannot select the sentinel. Material helpers
+return through bounds checks; gem-shape lookup returns before world lookup;
+slab item lookup stops at the sentinel. Native paths write owned string storage
+and use its allocation/free helpers. Fingerprints cover formatter, dispatch
+tables and reviewed helpers. This does not authorize other formatter arguments
+or the historical-material cache path.
+
+Protected native run `build/stockpile-presets-native-20261025-043331` passed36
+provider comparisons over full, short, empty and oversized vectors, with empty,
+matching and unmatched searches. Exact field/index identities, names, order,
+visibility and state matched the native reference restricted to existing source
+indices. Probe calls preserved native UI bytes and source settings; owned DF
+closed without saving and source hashes were unchanged. Bounded comparisons
+are in `native_stockpile_filters.json.itemtype_provider`; the separate
+`itemtype_reference` captures35/25/85 native rows and18 actual All/None actions.
+Non-ASCII search and rendered settings-panel parity remain unverified.
+
+Adapter tests cover mixed-field ordering, filtered bulk and individual effects,
+invalid/missing/duplicate rows, and receipt invalidation when scalar identities
+swap. Protected regression `build/stockpile-initialization-20261025-042525`
+passed118 observations across five earlier native list families after the shared
+mixed-field routing change. This run is separate from item-type integration.
+Focused item-type command run `build/stockpile-initialization-20261025-043711` passed76
+observations: nine page reads,29 edits including both individual hide toggles,
+creation and removal. Complete settings/unrelated-state snapshots matched;
+diagnostics were clean, source hashes unchanged and owned DF closed without
+saving. This focused scope does not claim the full stockpile regression suite.
 
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,

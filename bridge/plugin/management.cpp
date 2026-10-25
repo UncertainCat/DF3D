@@ -2872,6 +2872,14 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
+bool printStockpileLinkTarget(color_ostream& out,int32_t id,int16_t x,int16_t y,int16_t z,bool give) {
+  auto* source=virtual_cast<df::building_stockpilest>(df::building::find(id));
+  auto* block=Maps::isValidTilePos(x,y,z)?Maps::getTileBlock(x,y,z):nullptr;
+  if(!source || !block || block->designation[x&15][y&15].bits.hidden)return false;
+  const auto target=df3d_area::nativeStockpileLinkTarget(*source,x,y,z,give);
+  if(!target)return false;
+  out.print("{{\"id\":{}}}\n",*target?(*target)->id:-1);return true;
+}
 bool printStockpileSummaries(color_ostream& out,int32_t id,uint32_t categories) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !areaPresetInventoryFits(pile))return false;

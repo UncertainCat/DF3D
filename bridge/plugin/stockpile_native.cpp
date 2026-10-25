@@ -710,6 +710,45 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     }
     return result;
 }
+std::optional<df::building*> nativeStockpileLinkTarget(df::building_stockpilest& source,
+    int16_t x,int16_t y,int16_t z,bool give) {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!df::global::world || !base || !supported(base))return std::nullopt;
+    static const bool compatible=hash(base+0x5587b0,0x79)==0x14b4f3f138690067ULL &&
+        hash(base+0x3c9ff0,0x9c)==0xabd985a880f5b6dcULL;
+    if(!compatible)return std::nullopt;
+    const auto& piles=give?source.links.give_to_pile:source.links.take_from_pile;
+    const auto& workshops=give?source.links.give_to_workshop:source.links.take_from_workshop;
+    const auto valid=[](const auto& rows) {
+        if(rows.size()>1024)return false;
+        int32_t last=-1;
+        for(const auto* row:rows){if(!row || row->id<=last)return false;last=row->id;}
+        return true;
+    };
+    if(!valid(piles) || !valid(workshops))return std::nullopt;
+    using Contains=uint8_t (*)(df::building*,int16_t,int16_t,int16_t);
+    using Find=int32_t (*)(int32_t,const void*);
+    const auto contains=reinterpret_cast<Contains>(base+0x5587b0);
+    const auto find=reinterpret_cast<Find>(base+0x3c9ff0);
+    const auto occupies=[&](df::building* candidate) {
+        if(candidate->id==source.id || !candidate->isSettingOccupancy() || candidate->z!=z)return false;
+        if(candidate->isExtentShaped() && candidate->room.extents)
+            return contains(candidate,x,y,z)!=0;
+        return x>=candidate->x1 && x<=candidate->x2 && y>=candidate->y1 && y<=candidate->y2;
+    };
+    // Native3c2d14..3c3179: forward STOCKPILE pass, then forward IN_PLAY.
+    // Unlike generic nativeStockpileAt, duplicates are skipped and the search
+    // continues to another overlapping candidate. No link UI object is used.
+    for(auto* candidate:df::global::world->buildings.other.STOCKPILE) {
+        if(!candidate)return std::nullopt;
+        if(occupies(candidate) && find(candidate->id,&piles)<0)return candidate;
+    }
+    for(auto* candidate:df::global::world->buildings.other.IN_PLAY) {
+        if(!candidate)return std::nullopt;
+        if(candidate->canLinkToStockpile() && occupies(candidate) && find(candidate->id,&workshops)<0)return candidate;
+    }
+    return static_cast<df::building*>(nullptr);
+}
 std::optional<bool> nativeStockpileLink(df::building& source,
     df::building_stockpilest& target,bool give,bool unlink) {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

@@ -47,8 +47,24 @@ generic construction inspection rejects no building and link mutation rejects
 non-linkable buildings. Replace that fallback with a semantic eligible-target
 query that returns an empty successful result for no target. The native handler
 uses `isSettingOccupancy`, `isExtentShaped`, the native extent predicate and
-`canLinkToStockpile`; its global UI inputs remain prohibited. Vector identity and
-overlap ordering need verification before exposing the replacement query.
+`canLinkToStockpile`; its global UI inputs remain prohibited.
+
+`nativeStockpileLinkTarget` now implements the audited search with explicit
+source/coordinates/direction, native virtual predicates and pinned extent/ID
+lookup routines. It scans forward through `STOCKPILE`, then `IN_PLAY`, skipping
+the source and requested-direction duplicates. The protected oracle verified
+the vector addresses against DF structures. Two synthetic overlaid piles and a
+workshop are selected in that order on successive clicks; a fourth click finds
+no target. These fixture changes are confined to the unsaved oracle session.
+
+Run `df3d stockpile-link-target-read <pile-id> <x> <y> <z> <give0-or-1>` only
+through a protected lane. The read-only diagnostic returns an ID or-1 for no
+target and requires a revealed loaded tile. Protected run
+`build/stockpile-storage-native-links-20261025-125230` compares15 service results
+with actual native pointer effects, including invalid targets, duplicates,
+reversal and overlap progression. Each probe preserves native main-interface
+memory; simulation stays paused, source hashes are unchanged and owned DF closes
+unsaved. The semantic request and Godot owner do not yet use this service.
 
 ## Native stockpile storage input (DF 53.16)
 

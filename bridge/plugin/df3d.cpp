@@ -1554,6 +1554,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             }
             out.print("{}",Json::FastWriter().write(value));return CR_OK;
         }
+        if(parameters[0]=="stockpile-link-target-read") {
+          if(parameters.size()!=6)return CR_WRONG_USAGE;
+          int32_t values[5]{};
+          for(size_t i=0;i<5;++i) {
+            const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[0]<0 || values[4]<0 || values[4]>1)return CR_WRONG_USAGE;
+          for(size_t i=1;i<4;++i)if(values[i]<0 || values[i]>32767)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          return df3d_management::printStockpileLinkTarget(out,values[0],int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),values[4]!=0)?CR_OK:CR_FAILURE;
+        }
         if(parameters[0]=="stockpile-tile-types-read") {
           if(parameters.size()!=3)return CR_WRONG_USAGE;
           uint32_t values[2]{};
@@ -2215,6 +2228,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d stockpile-header-read <building-id> <category-bit-or-0-global> <1-none-or-2-all> (read-only native header action)\n"
         "df3d stockpile-wood-read <building-id> [filter] (read-only native Wood rows)\n"
         "df3d stockpile-summary-read <building-id> [category-mask] (read-only native summary indicators)\n"
+        "df3d stockpile-link-target-read <pile-id> <x> <y> <z> <give0-or-1> (read-only native target lookup)\n"
         "df3d stockpile-tile-types-read <first-uint16> <count1..1024> (read-only native tile predicates)\n"
         "df3d stockpile-rows-read <building-id> <native-mode> [filter] (read-only verified list modes)\n"
         "df3d door-support-read <x> <y> <z> (read-only wall support, not full placement)\n"

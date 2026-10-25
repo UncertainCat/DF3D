@@ -12,6 +12,10 @@ namespace df3d_area {
 // native duplicate no-op. No native link interface or menu state is consulted.
 std::optional<bool> nativeStockpileLink(df::building& source,
     df::building_stockpilest& target,bool give,bool unlink);
+// Read-only native picker semantics for a stockpile source. Engaged nullptr is
+// no eligible target. Caller validates visibility and source revision.
+std::optional<df::building*> nativeStockpileLinkTarget(df::building_stockpilest& source,
+    int16_t x,int16_t y,int16_t z,bool give);
 // Scalar native placement predicates; no map, UI or mutable scratch inputs.
 std::optional<bool> nativeStockpileTileType(uint16_t tile);
 // Safe-point diagnostic/service building block. The caller bounds raw counts.

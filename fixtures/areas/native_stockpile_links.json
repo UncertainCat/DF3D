@@ -614,5 +614,295 @@
     ],
     "scope": "Actual native empty-ground and non-linkable door clicks retain picker without links or error text. Full prior reversal/duplicate/removal oracle repeats and passes. Non-linkable picker screenshot inspected."
   },
-  "target_audit": "Native target handler 3c2d40 checks source identity, isSettingOccupancy (virtual0x130), z, isExtentShaped (virtual0x140) and extent predicate5587b0 or inclusive bounds. Stockpile pass precedes building pass; latter calls canLinkToStockpile (virtual0x28). Generic construction InspectAtTile uses DFHack findAtTile and returns a rejection for no building, which does not implement this selection contract. Need verify vector identities and overlap order before exposing target lookup. No runtime UI handler calls."
+  "target_audit": "Native vector addresses verified in live process: buildings.all at0x23edf10, IN_PLAY at0x23edf28, STOCKPILE at0x23edf40. Handler3c2d14..3c3179 uses forward stockpile then IN_PLAY passes, skipping same source and existing requested direction. Three overlaid candidates choose pile158, pile163, workshop3, then no target. Verified helper now exists; production semantic query/owner integration remains pending.",
+  "target_service": {
+    "run": "build/stockpile-storage-native-links-20261025-125230",
+    "status": "passed",
+    "result_sha256": "13e03d40fa093088536be09cecf4f44b4a17acccc0d8f5602f87553049c03dd0",
+    "owned_df_closed_without_saving": true,
+    "source_unchanged": "Owned source unchanged",
+    "observations": [
+      {
+        "name": "target-vector-identities",
+        "vectors": {
+          "all": {
+            "count": 921,
+            "rva": 37674768,
+            "size": 24
+          },
+          "IN_PLAY": {
+            "count": 921,
+            "rva": 37674792,
+            "size": 24
+          },
+          "STOCKPILE": {
+            "count": 34,
+            "rva": 37674816,
+            "size": 24
+          }
+        }
+      },
+      {
+        "give": true,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 117,
+        "y": 72,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 118,
+        "y": 53,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 121,
+        "y": 99,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": 158,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 99,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 99,
+        "z": 165
+      },
+      {
+        "give": false,
+        "id": 158,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 99,
+        "z": 165
+      },
+      {
+        "give": false,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 99,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": 3,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "give": false,
+        "id": 3,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "give": false,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "name": "overlap-inputs",
+        "stockpiles": [
+          158,
+          163
+        ],
+        "workshop": 3,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "give": true,
+        "id": 158,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "adding": false,
+        "context": 0,
+        "direction": 1,
+        "name": "overlap-1",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [
+            158
+          ],
+          "give_to_workshop": [],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 3,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "ui_rva": 25838056
+      },
+      {
+        "give": true,
+        "id": 163,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "adding": false,
+        "context": 0,
+        "direction": 1,
+        "name": "overlap-2",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [
+            158,
+            163
+          ],
+          "give_to_workshop": [],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 3,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "ui_rva": 25838056
+      },
+      {
+        "give": true,
+        "id": 3,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "adding": false,
+        "context": 0,
+        "direction": 1,
+        "name": "overlap-3",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [
+            158,
+            163
+          ],
+          "give_to_workshop": [
+            3
+          ],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 3,
+          "take_from_pile": [
+            121
+          ],
+          "take_from_workshop": []
+        },
+        "ui_rva": 25838056
+      },
+      {
+        "give": true,
+        "id": -1,
+        "name": "target-service",
+        "ui_unchanged": true,
+        "x": 106,
+        "y": 95,
+        "z": 165
+      },
+      {
+        "adding": true,
+        "context": 0,
+        "direction": 1,
+        "name": "overlap-4",
+        "open": true,
+        "selected": 121,
+        "source": {
+          "give_to_pile": [
+            158,
+            163
+          ],
+          "give_to_workshop": [
+            3
+          ],
+          "id": 121,
+          "take_from_pile": [],
+          "take_from_workshop": []
+        },
+        "target": {
+          "give_to_pile": [],
+          "give_to_workshop": [],
+          "id": 3,
+          "take_from_pile": [
+            121
+          ],
+          "take_from_workshop": []
+        },
+        "ui_rva": 25838056
+      }
+    ],
+    "scope": "Read-only nativeStockpileLinkTarget called before actual native pointer effects, comparing exact selected ID (or -1) for self/empty/nonlinkable, new/duplicate pile and workshop give/take, and synthetic overlapping two piles plus workshop. Full main-interface bytes unchanged by each probe. Not production request/owner acceptance.",
+    "diagnostic": "df3d stockpile-link-target-read <source-pile-id> <x> <y> <z> <give0-or-1>",
+    "implementation": "Forward world.buildings.other.STOCKPILE then IN_PLAY, excluding source and requested-direction duplicates; native isSettingOccupancy/isExtentShaped/canLinkToStockpile, pinned extent predicate5587b0 and ID lookup3c9ff0. No link interface input. Validates source endpoint vector order/caps. Diagnostic requires revealed loaded target tile.",
+    "failed_probe": "build/stockpile-storage-native-links-20261025-125116 refused incorrect extent hash range 0x4f; fixed to previously audited 0x79. Owned session closed unsaved/source unchanged."
+  }
 }

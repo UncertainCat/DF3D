@@ -60,6 +60,12 @@ require('gui.script').start(function()
   capture('pile')
   if test_links then
    local ui=df.global.game.main_interface.stockpile_link
+   local vectors={name='target-vector-identities',vectors={}}
+   for key,value in pairs{all=df.global.world.buildings.all,IN_PLAY=df.global.world.buildings.other.IN_PLAY,STOCKPILE=df.global.world.buildings.other.STOCKPILE}do
+    local size,address=df.sizeof(value)
+    vectors.vectors[key]={rva=address-dfhack.internal.getImageBase(),size=size,count=#value}
+   end
+   records[#records+1]=vectors
    local function snapshot(name,target)
     local function endpoint(building)
      local ls=building:getStockpileLinks();local r={id=building.id}
@@ -73,8 +79,17 @@ require('gui.script').start(function()
      open=ui.open,adding=ui.adding_new_link,direction=ui.adding_new_link_type,context=ui.context,
      selected=ui.bld_id,ui_rva=address-dfhack.internal.getImageBase()}
    end
-   local function mapclick(target)
+   local function mapclick(target,expected)
     local p={x=target.centerx,y=target.centery,z=target.z}
+    if expected~=nil then
+     local size,address=df.sizeof(df.global.game.main_interface)
+     local copy=df.new('uint8_t',size);dfhack.internal.memmove(copy,address,size)
+     local text,code=dfhack.run_command_silent('df3d','stockpile-link-target-read',tostring(b.id),tostring(p.x),tostring(p.y),tostring(p.z),ui.adding_new_link_type==1 and '1' or '0')
+     assert(code==0,text);local prediction=json.decode(text)
+     assert(prediction.id==expected,'semantic target differs: '..prediction.id..' / '..expected)
+     assert(dfhack.internal.memcmp(copy,address,size)==0,'semantic target changed native UI');df.delete(copy)
+     records[#records+1]={name='target-service',x=p.x,y=p.y,z=p.z,give=ui.adding_new_link_type==1,id=prediction.id,ui_unchanged=true}
+    end
     dfhack.gui.revealInDwarfmodeMap(p,true);view:render(dfhack.getTickCount())
     for y=16,g.dimy-4 do for x=45,g.dimx-25 do
      g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
@@ -86,7 +101,7 @@ require('gui.script').start(function()
    click(42,12);assert(ui.open and ui.bld_id==b.id)
    capture('links');snapshot('initial')
    click(48,6);assert(ui.adding_new_link)
-   capture('links-give-pick');mapclick(b);snapshot('give-self',b)
+   capture('links-give-pick');mapclick(b,-1);snapshot('give-self',b)
    assert(ui.adding_new_link,'self-selection closed picker')
    local empty
    for y=b.y1-8,b.y2+8 do for x=b.x1-8,b.x2+8 do
@@ -95,13 +110,13 @@ require('gui.script').start(function()
        not block.designation[x%16][y%16].pile and block.occupancy[x%16][y%16].building==0 and
        not dfhack.buildings.findAtTile{x=x,y=y,z=b.z} then empty={id=-1,centerx=x,centery=y,z=b.z};break end
    end if empty then break end end
-   assert(empty,'missing empty ground');mapclick(empty);snapshot('give-empty')
+   assert(empty,'missing empty ground');mapclick(empty,-1);snapshot('give-empty')
    assert(ui.adding_new_link,'empty target closed picker');capture('links-empty-pick')
    local invalid
    for _,candidate in ipairs(df.global.world.buildings.all)do
     if candidate.z==b.z and candidate:getType()==df.building_type.Door and not candidate:canLinkToStockpile() then invalid=candidate;break end
    end
-   assert(invalid,'missing non-linkable door');mapclick(invalid);snapshot('give-nonlinkable',invalid)
+   assert(invalid,'missing non-linkable door');mapclick(invalid,-1);snapshot('give-nonlinkable',invalid)
    assert(ui.adding_new_link,'non-linkable target closed picker');capture('links-nonlinkable-pick')
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
    capture('links-give-escape');snapshot('escape')
@@ -121,7 +136,7 @@ require('gui.script').start(function()
      for repeat_index=1,2 do
       if ui.adding_new_link then click(79,6)end
       click(x,6);assert(ui.adding_new_link)
-      mapclick(target);snapshot(direction..'-'..target.id..'-'..repeat_index,target)
+      mapclick(target,repeat_index==1 and target.id or -1);snapshot(direction..'-'..target.id..'-'..repeat_index,target)
       local stock=df.building_stockpilest:is_instance(target)
       local suffix=stock and '_pile' or '_workshop'
       local function has(v,id)for _,entry in ipairs(v)do if entry.id==id then return true end end;return false end
@@ -144,6 +159,31 @@ require('gui.script').start(function()
    for _,target in ipairs{other,workshop}do for _,key in ipairs{'give_to_pile','take_from_pile'}do
     for _,entry in ipairs(target:getStockpileLinks()[key])do assert(entry.id~=b.id,'reciprocal removal incomplete')end
    end end
+   -- Controlled overlap is confined to this disposable paused oracle. Native
+   -- map target selection uses building bounds/extents, not drawn occupancy.
+   local overlaps={}
+   for _,candidate in ipairs(df.global.world.buildings.other.STOCKPILE)do
+    if candidate.id~=b.id and candidate.room.extents then overlaps[#overlaps+1]=candidate end
+    if #overlaps==2 then break end
+   end
+   assert(#overlaps==2)
+   local inputs={name='overlap-inputs',stockpiles={},workshop=workshop.id,x=workshop.centerx,y=workshop.centery,z=workshop.z}
+   for _,candidate in ipairs(overlaps)do
+    candidate.x1=workshop.centerx;candidate.x2=workshop.centerx;candidate.centerx=workshop.centerx
+    candidate.y1=workshop.centery;candidate.y2=workshop.centery;candidate.centery=workshop.centery;candidate.z=workshop.z
+    candidate.room.x=candidate.x1;candidate.room.y=candidate.y1;candidate.room.width=1;candidate.room.height=1;candidate.room.extents[0]=1
+    inputs.stockpiles[#inputs.stockpiles+1]=candidate.id
+   end
+   records[#records+1]=inputs
+   for index=1,4 do
+    click(48,6);assert(ui.adding_new_link);mapclick(workshop,index<=2 and overlaps[index].id or index==3 and workshop.id or -1)
+    snapshot('overlap-'..index,workshop)
+    assert(ui.adding_new_link==(index==4),'overlap picker progression')
+    assert(#b.links.give_to_pile==math.min(index,2),'overlap pile progression')
+    for i=1,math.min(index,2)do assert(b.links.give_to_pile[i-1].id==overlaps[i].id,'native overlap order')end
+    assert(#b.links.give_to_workshop==(index>=3 and 1 or 0),'workshop pass precedence')
+    capture('links-overlap-'..index)
+   end
    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
    return
   end

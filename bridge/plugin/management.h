@@ -9,6 +9,7 @@ namespace df3d_management {
 void update(DFHack::color_ostream& out, uint64_t worldEpoch, bool saving);
 void stop();
 void printTiming(DFHack::color_ostream& out);
+bool printStockpileLinkTarget(DFHack::color_ostream& out,int32_t id,int16_t x,int16_t y,int16_t z,bool give);
 bool printStockpilePreset(DFHack::color_ostream& out, int32_t id, int32_t preset);
 bool printStockpileCategory(DFHack::color_ostream& out,int32_t id,uint32_t category);
 bool printStockpileHeader(DFHack::color_ostream& out,int32_t id,uint32_t category,bool enabled);

@@ -1,0 +1,1109 @@
+{
+  "provenance": {
+    "run": "build/stockpile-storage-native-20261025-083759",
+    "result_sha256": "794700594b41d9e105cfdead737a96d4d079e077c77df8a66d8146fe8ec9ae6b",
+    "game": "DF53.16 Steam24557528",
+    "source_save_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "runner": "tools/smoke/stockpile_storage_native.ps1",
+    "oracle": "tools/smoke/stockpile_storage_native.lua",
+    "scope": "Actual native pointer and keyboard input on a272-tile stockpile; source state is set only to establish each boundary case. No DF3D runtime acceptance."
+  },
+  "native_code": [
+    {
+      "start_rva": "0x334fa9",
+      "end_rva": "0x33561b",
+      "sha256": "3f14ce8c7060e4d7be098b1c597849fb484e0bbd9c831cd9ab1574935c9a24ae",
+      "meaning": "Pointer storage edits: native occupied tile count and inline three-field arrows."
+    },
+    {
+      "start_rva": "0x8ba405",
+      "end_rva": "0x8ba683",
+      "sha256": "fd507d6216d7ae1b1416e9b81e0e8fbe105d7404e06dd985e07800e3d4c6be80",
+      "meaning": "Text storage edits: three-digit numeric helper; inline native tile count and signed16 field clamp. UI globals prevent calling this block directly."
+    },
+    {
+      "start_rva": "0x3aef70",
+      "end_rva": "0x3afd54",
+      "sha256": "1a3e45f239a740a7e1fb1212e0d481c0206c1d36e74352e9181bce7cee097a84",
+      "meaning": "Native storage popup renderer and field labels."
+    }
+  ],
+  "records": [
+    {
+      "barrels": 136,
+      "bins": 136,
+      "name": "pile",
+      "wheelbarrows": 1
+    },
+    {
+      "barrels": 136,
+      "bins": 136,
+      "name": "storage",
+      "wheelbarrows": 1
+    },
+    {
+      "after": 1,
+      "before": 0,
+      "entering": false,
+      "key": "barrels",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 0,
+      "before": 0,
+      "entering": false,
+      "key": "barrels",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 271,
+      "entering": false,
+      "key": "barrels",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 270,
+      "before": 271,
+      "entering": false,
+      "key": "barrels",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 272,
+      "entering": false,
+      "key": "barrels",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 271,
+      "before": 272,
+      "entering": false,
+      "key": "barrels",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 273,
+      "entering": false,
+      "key": "barrels",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 273,
+      "entering": false,
+      "key": "barrels",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": -32768,
+      "before": 32767,
+      "entering": false,
+      "key": "barrels",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 32766,
+      "before": 32767,
+      "entering": false,
+      "key": "barrels",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed-1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit-1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed-272",
+      "open": true,
+      "text": "272",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit-272",
+      "open": true,
+      "text": "272",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed-273",
+      "open": true,
+      "text": "273",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit-273",
+      "open": true,
+      "text": "273",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed-99999",
+      "open": true,
+      "text": "999",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit-99999",
+      "open": true,
+      "text": "999",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed--1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit--1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed-abc",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit-abc",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "entry-typed-",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": false,
+      "key": "barrels",
+      "name": "entry-submit-",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 12,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "before-escape",
+      "open": true,
+      "text": "12",
+      "tiles": 272
+    },
+    {
+      "after": 12,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "after-escape",
+      "open": false,
+      "text": "12",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "backspace-one",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 0,
+      "before": 7,
+      "entering": true,
+      "key": "barrels",
+      "name": "backspace-empty",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 0,
+      "entering": false,
+      "key": "bins",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 0,
+      "before": 0,
+      "entering": false,
+      "key": "bins",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 271,
+      "entering": false,
+      "key": "bins",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 270,
+      "before": 271,
+      "entering": false,
+      "key": "bins",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 272,
+      "entering": false,
+      "key": "bins",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 271,
+      "before": 272,
+      "entering": false,
+      "key": "bins",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 273,
+      "entering": false,
+      "key": "bins",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 273,
+      "entering": false,
+      "key": "bins",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": -32768,
+      "before": 32767,
+      "entering": false,
+      "key": "bins",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 32766,
+      "before": 32767,
+      "entering": false,
+      "key": "bins",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed-1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit-1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed-272",
+      "open": true,
+      "text": "272",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit-272",
+      "open": true,
+      "text": "272",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed-273",
+      "open": true,
+      "text": "273",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit-273",
+      "open": true,
+      "text": "273",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed-99999",
+      "open": true,
+      "text": "999",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit-99999",
+      "open": true,
+      "text": "999",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed--1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit--1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed-abc",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit-abc",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "entry-typed-",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": false,
+      "key": "bins",
+      "name": "entry-submit-",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 12,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "before-escape",
+      "open": true,
+      "text": "12",
+      "tiles": 272
+    },
+    {
+      "after": 12,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "after-escape",
+      "open": false,
+      "text": "12",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "backspace-one",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 0,
+      "before": 7,
+      "entering": true,
+      "key": "bins",
+      "name": "backspace-empty",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 0,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 0,
+      "before": 0,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 271,
+      "before": 270,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 269,
+      "before": 270,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 271,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 270,
+      "before": 271,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 272,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 271,
+      "before": 272,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": -32768,
+      "before": 32767,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "plus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 32766,
+      "before": 32767,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "minus",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed-1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit-1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 271,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed-271",
+      "open": true,
+      "text": "271",
+      "tiles": 272
+    },
+    {
+      "after": 271,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit-271",
+      "open": true,
+      "text": "271",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed-272",
+      "open": true,
+      "text": "272",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit-272",
+      "open": true,
+      "text": "272",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed-99999",
+      "open": true,
+      "text": "999",
+      "tiles": 272
+    },
+    {
+      "after": 272,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit-99999",
+      "open": true,
+      "text": "999",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed--1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit--1",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed-abc",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit-abc",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-open",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "entry-typed-",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 7,
+      "before": 7,
+      "entering": false,
+      "key": "wheelbarrows",
+      "name": "entry-submit-",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "after": 12,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "before-escape",
+      "open": true,
+      "text": "12",
+      "tiles": 272
+    },
+    {
+      "after": 12,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "after-escape",
+      "open": false,
+      "text": "12",
+      "tiles": 272
+    },
+    {
+      "after": 1,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "backspace-one",
+      "open": true,
+      "text": "1",
+      "tiles": 272
+    },
+    {
+      "after": 0,
+      "before": 7,
+      "entering": true,
+      "key": "wheelbarrows",
+      "name": "backspace-empty",
+      "open": true,
+      "text": "",
+      "tiles": 272
+    },
+    {
+      "barrels": 0,
+      "bins": 0,
+      "name": "storage-after-input",
+      "wheelbarrows": 0
+    }
+  ],
+  "omissions": [
+    "holes and zero/one-tile stockpiles",
+    "scaled UI",
+    "DF3D rendered/effect parity",
+    "safe standalone mutation service",
+    "concurrent edits and disconnected numeric input"
+  ]
+}

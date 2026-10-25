@@ -1,3 +1,40 @@
+## Native stockpile storage input (DF 53.16)
+
+Run `tools/smoke/stockpile_storage_native.ps1 -CloneEvidence <verified-run-folder>`
+for the protected native storage oracle. The folder must contain a matching
+`clone-path.txt` and `clone-manifest.txt`. The owned lane disables autosave,
+remains paused, captures native pointer/keyboard effects and screenshots, closes
+without saving, and verifies the source manifest. Setup changes are confined to
+the disposable session; this is not DF3D gameplay acceptance.
+
+Protected `build/stockpile-storage-native-20261025-083759` recorded108 observations
+on a272-tile pile. All three fields use the occupied tile count as their ordinary
+upper bound, including wheelbarrows. The number field starts blank, accepts three
+digits and ignores non-digits. Accepted text changes immediately update the
+stored field, clamping to the tile count; Enter only finishes entry. Backspacing
+to empty writes zero. Escape closes the popup and retains already applied edits.
+Opening an empty field and immediately submitting leaves the old value intact.
+The fixture `native_stockpile_storage.json` retains exact input/output records,
+binary-range hashes and omissions. Source save hashes were unchanged and owned
+DF closed unsaved.
+
+The existing staged DF3D storage surface is inconsistent with that evidence:
+it subtracts one from the wheelbarrow cap, permits five digits, treats typing as
+a draft, rejects oversized entry, and uses Escape to cancel that draft. These
+are unresolved product defects. The native pointer path at
+`0x334fa9..0x33561b` counts tiles through `0x57b770` and performs inline field
+updates. The text path at `0x8ba405..0x8ba683` uses numeric input helper
+`0xc39700` with length3, native containment checks and inline field conversion/
+clamping. Both paths borrow native UI globals and must not be invoked as runtime
+semantic services. No standalone storage mutation routine is established by this
+audit. The renderer is `0x3aef70..0x3afd54`.
+
+Artificial out-of-range stored values expose separate native arrow quirks:
+incrementing32767 wraps to-32768; decrementing an oversized value only subtracts
+one, without clamping it to tile count. These observations do not authorize a
+parity exception or establish support for malformed limits. Holes, zero/one-tile
+piles, scaled input and DF3D asynchronous edits still need acceptance.
+
 ## Native stockpile initialization (DF 53.16)
 
 The read-only `df3d stockpile-wood-read <building-id> [filter]` probe calls the

@@ -17,7 +17,7 @@ func wait_ui(predicate: Callable, label: String) -> bool:
 	return check(false,label+" timed out; no command replay")
 
 func settled() -> bool:
-	return editor.request_ticket == 0
+	return editor.request_ticket == 0 and (editor.paint_session == null or (editor.paint_session.ticket == 0 and editor.paint_session._queue.is_empty()))
 
 func exercise() -> void:
 	step = "controller setup"

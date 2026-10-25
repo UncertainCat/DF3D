@@ -90,10 +90,10 @@ func pointer_areas() -> void:
 		var picked: Vector3i = world.pick_tile(editor.camera.project_ray_origin(position),editor.camera.project_ray_normal(position),world.get_top_z())
 		if not check(picked == origin,"rendered picking disagrees with area fixture"): return
 		await pointer_click(position)
-		if not await wait_ui(func(): return settled() and not editor.paint_lookup,"pointer footprint lookup"): return
+		if not await wait_ui(func(): return settled(),"pointer footprint lookup"): return
 		if not check(editor.dragging and editor.paint_state.cells.is_empty(),"first rectangle click must retain a corner without painting"): return
 		await pointer_click(position)
-		if not await wait_ui(func(): return settled() and not editor.paint_lookup,"pointer second corner lookup"): return
+		if not await wait_ui(func(): return settled(),"pointer second corner lookup"): return
 		if not check(editor.paint_state.cells.size() == 1,"pointer painting did not retain one tile"): return
 		await elevation_round_trip(origin,destination+"_new")
 		if stopped: return
@@ -109,7 +109,7 @@ func pointer_areas() -> void:
 		await capture(destination.to_lower()+"_created")
 		if stopped: return
 		if destination == "Zones": await pointer_owner(id,origin)
-		else:
+		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
 			await pointer_storage_limits()
 			if not stopped: await pointer_settings()
 		if stopped: return
@@ -509,6 +509,8 @@ func pointer_drag(first: Vector2, last: Vector2) -> void:
 	await process_frame; await process_frame
 
 func pointer_repaint(origin: Vector3i, id: int, destination: String) -> void:
+	if destination == "Stockpiles":
+		await pointer_stockpile_repaint(origin,id); return
 	step = "viewport repaint "+destination
 	for cancel in ["right","escape","reset",""]:
 		await native("guard_before")
@@ -550,6 +552,51 @@ func pointer_repaint(origin: Vector3i, id: int, destination: String) -> void:
 			if not check(receipts.size() == before+1,"accepted viewport repaint submitted more than one request"): return
 			await native("snapshot",{"id":id,"expected":{"tile_count":2,"x":origin.x+1,"y":origin.y,"width":2,"height":1}})
 			await capture(destination.to_lower()+"_repainted")
+
+func pointer_stockpile_repaint(origin: Vector3i, id: int) -> void:
+	for ending in ["right","escape","reset","accept"]:
+		step = "immediate stockpile repaint "+ending
+		await click_control(editor.stockpile_view.controls.repaint)
+		if not check(editor.mode == "paint" and int(editor.selected.get("id",-1)) == id,"repaint click lost inspected identity; mode="+str(editor.mode)+" selected="+str(editor.selected)): return
+		await click_control(editor.paint_view.buttons.brush)
+		if not check(int(editor.selected.get("id",-1)) == id,"brush tool click lost inspected identity"): return
+		await pointer_drag(tile_screen(origin),tile_screen(origin+Vector3i(2,0,0)))
+		if not await wait_ui(func(): return settled(),"sampled brush receipts"): return
+		if not check(editor.paint_state.cells.size() == 2 and not editor.paint_state.cells.has(Vector2i(origin.x+1,origin.y)),"unexpected brush cells="+str(editor.paint_state.cells)+" selected="+str(editor.selected)+" tool="+str(editor.paint_tool)+" erase="+str(editor.paint_erasing)): return
+		await native("snapshot",{"id":id,"expected":{"tile_count":2,"extents":[1,0,1]}})
+		await elevation_round_trip(origin,"stockpiles_repaint_"+ending)
+		if stopped: return
+		await click_control(editor.paint_view.buttons.erase)
+		await pointer_click(tile_screen(origin))
+		if not await wait_ui(func(): return settled(),"erase receipt before exit"): return
+		await native("snapshot",{"id":id,"expected":{"tile_count":1,"x":origin.x,"y":origin.y,"width":3,"height":1,"extents":[0,0,1]}})
+		await capture("stockpiles_immediate_"+ending)
+		if ending == "accept":
+			var before := receipts.size()
+			await click_control(editor.paint_view.accept_button)
+			if not await wait_ui(func(): return settled() and editor.mode == "inspect","repaint Accept"): return
+			if not check(receipts.size() == before,"Accept replayed already committed paint"): return
+		else:
+			# A pending rectangle does not change Escape/right-click's whole-tool exit.
+			await click_control(editor.paint_view.buttons.rectangle)
+			await pointer_click(tile_screen(origin+Vector3i(1,0,0)))
+			if not check(editor.dragging,"partial rectangle corner missing"): return
+			if ending == "right": await pointer_click(tile_screen(origin),MOUSE_BUTTON_RIGHT)
+			elif ending == "escape": await pointer_key(KEY_ESCAPE)
+			else: await pointer_key(KEY_F10)
+			if not check(not editor.panel.visible,"paint exit left panel visible"): return
+			await native("snapshot",{"id":id,"expected":{"tile_count":1,"extents":[0,0,1]}})
+			var launcher: Button = scene._fortress_hud.navigation.Stockpiles
+			for frame in 4:
+				launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+			launcher.show(); await click_control(launcher,true)
+			if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"reopen stockpiles"): return
+			# Exercise initial brush-hit lookup against an existing pile.
+			await click_control(editor.paint_view.buttons.brush)
+			await pointer_click(tile_screen(origin+Vector3i(2,0,0)))
+			if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"existing pile hit"): return
+			if not check(int(editor.selected.id) == id and editor.mode == "inspect","initial brush hit created instead of selecting"): return
+			await native("snapshot",{"id":id,"expected":{"tile_count":1,"extents":[0,0,1]}})
 
 func pointer_key(key: Key) -> void:
 	for pressed in [true,false]:

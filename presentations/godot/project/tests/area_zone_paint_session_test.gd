@@ -1,5 +1,5 @@
 extends SceneTree
-const Session = preload("res://scripts/area_zone_paint_session.gd")
+const Session = preload("res://scripts/area_paint_session.gd")
 const Service = preload("res://scripts/semantic_action_service.gd")
 const FakeWorld = preload("res://tests/areas_test.gd").FakeWorld
 var failures := 0
@@ -112,6 +112,55 @@ func run() -> void:
 	reply(service,world,[observed(2,84)])
 	new_session.finish("exit")
 	await process_frame
+
+	var pile := observed(2,90)
+	pile.kind = 0; pile.erase("zone_type")
+	session = Session.new(); service.add_child(session)
+	session.configure(service,pile,-1,Vector2i(48,48),2,0)
+	session.rectangle(first,last,true); service.poll()
+	check(world.calls[-1].kind == 0 and world.calls[-1].paint_mode == 2,"stockpile erase commits as its own gesture")
+	pile.extents = PackedByteArray([0,0]); pile.tile_count = 0; pile.revision += 1
+	reply(service,world,[pile])
+	check(not session.finish("accept") and not session.stopped,"empty stockpile retains identity with Accept disabled")
+	session.stroke(first,first); service.poll()
+	check(world.calls[-1].kind == 0 and world.calls[-1].id == 90,"stockpile regrowth reuses its empty identity")
+	pile.extents = PackedByteArray([1,0]); pile.tile_count = 1; pile.revision += 1
+	reply(service,world,[pile]); session.finish("exit")
+	check(session.stopped,"exiting nonempty stockpile retains completed gestures")
+	await process_frame
+	session = Session.new(); service.add_child(session)
+	session.configure(service,{},-1,Vector2i(48,48),2,0)
+	session.rectangle(first,first); service.poll()
+	check(world.calls[-1].kind == 0 and world.calls[-1].action == 10 and not world.calls[-1].has("zone_type"),"new stockpile creation has no zone fields")
+	session.rectangle(first,first,true); session.finish("exit")
+	pile.id = 91; reply(service,world,[pile])
+	check(world.calls[-1].kind == 0 and world.calls[-1].paint_mode == 2,"closed stockpile painter drains its queued erase")
+	pile.extents = PackedByteArray([0,0]); pile.tile_count = 0; pile.revision += 1
+	reply(service,world,[pile])
+	check(world.calls[-1].action == 12 and world.calls[-1].kind == 0 and world.calls[-1].id == 91,"empty stockpile exit waits for erase then removes the same pile")
+	reply(service,world,[]); await process_frame
+
+	for hit in ["existing","accepted-existing","empty","rejected"]:
+		session = Session.new(); service.add_child(session)
+		session.configure(service,{},-1,Vector2i(48,48),2,0)
+		before = world.calls.size()
+		session.resolve_initial_hit(first); session.stroke(first,first); service.poll()
+		session.finish("accept" if hit == "accepted-existing" else "exit")
+		check(world.calls.size() == before+1 and world.calls[-1].action == 8,"first brush waits for initial hit lookup")
+		if hit in ["existing","accepted-existing"]:
+			reply(service,world,[pile])
+			check(session.stopped and world.calls.size() == before+1,"existing empty pile hit must not create or delete on exit")
+			if hit == "accepted-existing": check(session.ending == "inspect","Accept during lookup still requires inspecting the existing pile summary")
+		elif hit == "empty":
+			reply(service,world,[])
+			check(world.calls[-1].action == 10,"closed painter preserves completed brush after empty lookup")
+			pile.extents = PackedByteArray([1,0]); pile.tile_count = 1; pile.id = 92
+			reply(service,world,[pile])
+			check(session.stopped,"closed painter completes after creation receipt")
+		else:
+			reply(service,world,[],3)
+			check(session.stopped and world.calls.size() == before+1,"failed lookup never dispatches queued creation")
+		await process_frame
 
 	session = start(service); session.rectangle(first,last); service.poll()
 	session.rectangle(last,last,true)

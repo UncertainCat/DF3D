@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint=...
+local out,repaint,gestures=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -62,19 +62,66 @@ require('gui.script').start(function()
     end
     records[#records+1]={name=name,containers=rows,items=items}
    end
-   local function mapclick(p)
+   local function mapclick(p,phase)
     dfhack.gui.revealInDwarfmodeMap(p,true);view:render(dfhack.getTickCount())
     for y=0,g.dimy-1 do for x=0,g.dimx-1 do
      g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
      local hit=dfhack.gui.getMousePos(true)
-     if hit and hit.x==p.x and hit.y==p.y and hit.z==p.z then click(x,y);return end
+     if hit and hit.x==p.x and hit.y==p.y and hit.z==p.z then
+      if phase then
+       local e=df.global.enabler;local lift=e.mouse_lbut_lift
+       e.mouse_lbut_lift=phase=='release' and 1 or 0
+       local ok,why=pcall(function()
+        gui.simulateInput(view,phase=='press' and {'_MOUSE_L','_MOUSE_L_DOWN'} or phase=='hold' and {'_MOUSE_L_DOWN'} or {})
+        view:render(dfhack.getTickCount())
+       end)
+       e.mouse_lbut_lift=lift;assert(ok,why)
+      else click(x,y)end
+      return
+     end
     end end
     error('repaint tile is not visible')
    end
    local function record(name)
     b=assert(df.building.find(pile_id),'pile unexpectedly removed before '..name)
     records[#records+1]={name=name,tiles=dfhack.buildings.countExtentTiles(b,-1),barrels=b.storage.max_barrels,bins=b.storage.max_bins,wheelbarrows=b.storage.max_wheelbarrows,
-     bounds={b.x1,b.y1,b.x2,b.y2},repainting=paint.repainting,erasing=paint.erasing}
+     bounds={b.x1,b.y1,b.x2,b.y2},repainting=paint.repainting,erasing=paint.erasing,
+     current=paint.cur_bld and paint.cur_bld.id or -1,bottom_mode=df.global.game.main_interface.bottom_mode_selected,
+     corner={df.global.selection_rect.start_x,df.global.selection_rect.start_y,df.global.selection_rect.start_z}}
+   end
+   if gestures=='brush' then
+    click(81,61);click(84,61);assert(paint.erasing and not paint.doing_rectangle)
+    local first,last
+    for _,p in ipairs(cells)do
+     if dfhack.buildings.containsTile(b,p.x+1,p.y) and dfhack.buildings.containsTile(b,p.x+2,p.y)then
+      first=p;last={x=p.x+2,y=p.y,z=p.z};break
+     end
+    end
+    assert(first,'no three-cell brush span')
+    record('brush-before');mapclick(first,'press');record('brush-press')
+    mapclick(last,'hold');record('brush-held-jump');mapclick(last,'release');record('brush-release')
+    records[#records+1]={name='brush-cells',first=first,last=last,
+     start_present=dfhack.buildings.containsTile(b,first.x,first.y),
+     middle_present=dfhack.buildings.containsTile(b,first.x+1,first.y),
+     end_present=dfhack.buildings.containsTile(b,last.x,last.y)}
+    capture('brush-completed')
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+    return
+   end
+   if gestures then
+    click(84,61);assert(paint.erasing and paint.doing_rectangle)
+    record('gesture-before')
+    mapclick(cells[#cells]);record('first-corner')
+    mapclick(cells[#cells]);record('completed-erase')
+    capture('gesture-committed')
+    if gestures:find('partial',1,true)then
+     mapclick(cells[#cells-1]);record('partial-before-exit')
+    end
+    local key=gestures:find('right',1,true)and '_MOUSE_R' or 'LEAVESCREEN'
+    gui.simulateInput(view,key);view:render(dfhack.getTickCount());record(gestures)
+    capture(gestures)
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+    return
    end
    for _,key in ipairs{'barrels','bins','wheelbarrows'}do b.storage['max_'..key]=#cells end
    record('before-shrink')

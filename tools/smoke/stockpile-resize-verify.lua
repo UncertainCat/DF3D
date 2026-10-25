@@ -28,7 +28,7 @@ if request.op=='resize_setup' then
  local count=dfhack.buildings.countExtentTiles(b,-1)
  b.storage.max_barrels=count;b.storage.max_bins=count;b.storage.max_wheelbarrows=count
  _G.df3d_resize_check={id=b.id,keep=keep,before=snapshot(b)}
- result.id=b.id;result.erase=erase;result.grow={grow};result.before=_G.df3d_resize_check.before
+ result.id=b.id;result.erase=erase;result.grow={grow};result.keep={{x=keep.x,y=keep.y,length=1}};result.before=_G.df3d_resize_check.before
 elseif request.op=='resize_malformed' then
  local s=assert(_G.df3d_resize_check);local b=assert(df.building.find(s.id))
  s.last_y=b.storage.container_y[#b.storage.container_y-1];b.storage.container_y:erase(#b.storage.container_y-1)
@@ -54,6 +54,14 @@ elseif request.op=='resize_check' then
  assert(#actual.containers==#expected,'wrong container vector length')
  for i,row in ipairs(expected)do for key,value in pairs(row)do assert(actual.containers[i][key]==value,'parallel vectors differ')end end
  result.area=actual;result.released=released;result.retained=#expected
+elseif request.op=='resize_deleted' then
+ local s=assert(_G.df3d_resize_check)
+ assert(not df.building.find(s.id),'empty stockpile still exists after deletion')
+ for _,row in ipairs(s.before.containers)do
+  local item=assert(df.item.find(row.id));local ref=assert(item:getStockpile2())
+  assert(ref.id==-1 and ref.x==-30000 and ref.y==-30000,'deletion retained item assignment')
+ end
+ result.deleted=s.id;result.released=#s.before.containers
 else error('unknown resize verification '..tostring(request.op))end
 f=assert(io.open(out..'/response-'..index..'.json','w'));f:write(json.encode(result));f:close()
 print('SEMANTIC_PASS '..index..' '..request.op)

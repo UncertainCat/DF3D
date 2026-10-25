@@ -93,11 +93,12 @@ The preceding path checks emptiness through `0x559580`, skips the active empty
 pile, and counts through `0x57b770`. This is evidence, not a callable semantic
 service. The bridge now preflights parallel container vectors, uses the native
 extent predicate and item assignment method to release removed assignments,
-and clamps all three limits to the native count. The painter still submits a
-replacement only at Accept and rejects an empty footprint. Native resize parity
-therefore remains unfinished. The geometry planner already preserves bounds for erase,
-but the presentation's replacement path can choose a different bounding basis.
-Do not treat the native oracle as acceptance of those product paths.
+and clamps all three limits to the native count. The staged painter submits each
+completed gesture through an action-service-owned session. It preserves bounds
+on erase and retains an empty pile until exit. Accept is disabled while empty.
+The empty area's allocated bounds must remain fully loaded and revealed for
+inspection or regrowth; its occupied and visible-cell counts stay zero.
+Do not treat the native oracle as acceptance of unverified product paths.
 
 Extended protected run `build/stockpile-storage-native-repaint-20261025-100535`
 tracked46 actual assigned containers through292 observations. Shrinking to one
@@ -135,6 +136,40 @@ removal workflow. Both save manifests were unchanged and owned DF closed
 unsaved. Final offline `build/qa/stockpile-repaint-cleanup-final` passed root
 CTest. This regression retains the existing deferred-commit painter; it does
 not establish native immediate-gesture or empty-pile lifecycle parity.
+
+Native gesture runs `build/stockpile-storage-native-gestures-*` at102921,
+102947,103013 and103039 on2026-10-25 independently establish that Escape and
+right-click exit the whole stockpile paint tool and retain completed rectangles,
+including when a first corner is pending. Native raw corner/repainting fields can
+remain stale after exit; the visible mode is authoritative. The104410 brush run
+establishes sampled endpoints: a two-tile pointer jump erases the endpoints and
+retains the middle tile. Release adds no edit. These records, result digests and
+save-preservation evidence are retained in the resize fixture. Reproduce with
+`-PaintGestures -GestureCase partial-escape|partial-right|complete-escape|complete-right|brush`.
+
+The generic `area_paint_session.gd` owns queued gestures and receipts independently
+of panel lifetime. Initial stockpile hits resolve before any creation is sent;
+finding an existing pile discards creation strokes and selects that identity.
+An empty lookup releases queued strokes even after the panel closes. Rejection,
+unknown outcomes and epoch changes stop the queue without replay. Successful
+mutation receipts carry subsequent gestures/deletion through the service's
+continuation contract. Accept sends no replacement for already applied geometry.
+
+Focused protected `build/areas-acceptance-20261025-104023` passes the empty
+stockpile lifecycle through the semantic transport: erase to zero, retain the
+identity and assignment, regrow that same pile, erase again and delete with final
+assignment release. Both save manifests were unchanged; owned DF closed unsaved.
+Offline `build/qa/stockpile-initial-hit-final` passes root CTest and owner/controller
+checks; rendered menu capture has only known engine diagnostics. Focused main-scene `build/areas-acceptance-20261025-105311` passes17 native
+observations and11 captures with only the separate-thread notice. It exercises
+create, sparse brush, immediate erase, retained bounds, both exit keys with a
+pending corner, UI reset, reopen, existing-pile brush selection, Accept without
+resubmission and removal. Tile-hit summaries require a fresh inspection before
+editing; their zero revision is not mutation authority. Both save manifests stayed
+unchanged and owned DF closed unsaved. Reproduce with
+`areas_acceptance.ps1 -SaveId <new-id> -ControllerScene -StockpilePaintOnly`.
+This focused scope excludes settings. Empty lifecycle through viewport, placement
+eligibility and links remain separate acceptance requirements.
 
 ## Native stockpile initialization (DF 53.16)
 

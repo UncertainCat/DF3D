@@ -3103,5 +3103,685 @@
       "scope": "Existing staged settings/storage/stale/repaint/cancel/removal workflow; not immediate paint lifecycle parity."
     },
     "offline": "build/qa/stockpile-repaint-cleanup-final"
+  },
+  "native_gestures": {
+    "scope": "DF 53.16 native pointer input; each exit case uses a fresh owned session. Native UI fields are oracle observations only, never runtime inputs.",
+    "runs": [
+      {
+        "run": "build/stockpile-storage-native-gestures-partial-escape-20261025-102921",
+        "result_sha256": "743518b6b2221b584b419d1c2cef5f40ecf292f7951471ae8e322f7ffe3e26bb",
+        "records": [
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "pile",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "repaint",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "gesture-before",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              118,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "first-corner",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "completed-erase",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "gesture-committed",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              117,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "partial-before-exit",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "bottom_mode": -1,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              117,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "partial-escape",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "name": "partial-escape",
+            "wheelbarrows": 1
+          }
+        ],
+        "save_preservation": "Owned source unchanged"
+      },
+      {
+        "run": "build/stockpile-storage-native-gestures-partial-right-20261025-102947",
+        "result_sha256": "06f418f9750dcf9ecc995f89a8891792dcc37e78882663f8e5189da2d7eac396",
+        "records": [
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "pile",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "repaint",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "gesture-before",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              118,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "first-corner",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "completed-erase",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "gesture-committed",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              117,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "partial-before-exit",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "bottom_mode": -1,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              117,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "partial-right",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "name": "partial-right",
+            "wheelbarrows": 1
+          }
+        ],
+        "save_preservation": "Owned source unchanged"
+      },
+      {
+        "run": "build/stockpile-storage-native-gestures-complete-escape-20261025-103013",
+        "result_sha256": "537281301a59c784a3b1a8bb925887f711e9d10ecb6bb228efaac5a18f570353",
+        "records": [
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "pile",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "repaint",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "gesture-before",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              118,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "first-corner",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "completed-erase",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "gesture-committed",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "bottom_mode": -1,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "complete-escape",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "name": "complete-escape",
+            "wheelbarrows": 1
+          }
+        ],
+        "save_preservation": "Owned source unchanged"
+      },
+      {
+        "run": "build/stockpile-storage-native-gestures-complete-right-20261025-103039",
+        "result_sha256": "849be7d3b5ab000f79bbe2bd6cdea72471978ac6bd1e26f377f829a43ff64d72",
+        "records": [
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "pile",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "repaint",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "gesture-before",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              118,
+              84,
+              165
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "first-corner",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "completed-erase",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "gesture-committed",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "bottom_mode": -1,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "complete-right",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 135,
+            "bins": 136,
+            "name": "complete-right",
+            "wheelbarrows": 1
+          }
+        ],
+        "save_preservation": "Owned source unchanged"
+      },
+      {
+        "run": "build/stockpile-storage-native-gestures-brush-20261025-104410",
+        "result_sha256": "1a58104fafbfbdf12bbfc7c73991b7eb1cb3349ba881898a33711484a433b179",
+        "records": [
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "pile",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "repaint",
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "brush-before",
+            "repainting": true,
+            "tiles": 272,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "brush-press",
+            "repainting": true,
+            "tiles": 271,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "brush-held-jump",
+            "repainting": true,
+            "tiles": 270,
+            "wheelbarrows": 1
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "bottom_mode": 6,
+            "bounds": [
+              111,
+              61,
+              123,
+              84
+            ],
+            "corner": [
+              -30000,
+              -30000,
+              -30000
+            ],
+            "current": 121,
+            "erasing": true,
+            "name": "brush-release",
+            "repainting": true,
+            "tiles": 270,
+            "wheelbarrows": 1
+          },
+          {
+            "end_present": false,
+            "first": {
+              "x": 111,
+              "y": 61,
+              "z": 165
+            },
+            "last": {
+              "x": 113,
+              "y": 61,
+              "z": 165
+            },
+            "middle_present": true,
+            "name": "brush-cells",
+            "start_present": false
+          },
+          {
+            "barrels": 136,
+            "bins": 136,
+            "name": "brush-completed",
+            "wheelbarrows": 1
+          }
+        ],
+        "save_preservation": "Owned source unchanged"
+      }
+    ]
+  },
+  "empty_lifecycle_acceptance": {
+    "run": "build/areas-acceptance-20261025-104023",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "status": "passed",
+    "scope": "Semantic transport and independent DF observation: empty footprint retains identity/assignment, same-ID regrowth succeeds, explicit empty deletion releases remaining assignment. Rendered owner exit remains a separate check.",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "offline": "build/qa/stockpile-empty-visibility"
+  },
+  "gesture_acceptance": {
+    "run": "build/areas-acceptance-20261025-105311",
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "status": "passed_with_known_issues",
+    "native_observations": 17,
+    "screenshots": 11,
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "scope": "Actual viewport create, sampled brush, immediate erase, retained bounds, Escape/right-click with partial corner, F10 reset, reopen, initial brush-hit selection with fresh revision, Accept without repeat mutation and Remove. Settings excluded in this focused run.",
+    "omissions": [
+      "empty lifecycle through viewport",
+      "growth placement eligibility",
+      "native links",
+      "held brush timing across receipt and closure"
+    ]
   }
 }

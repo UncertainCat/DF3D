@@ -11,17 +11,48 @@ var service
 var area: Dictionary = {}
 var created_here := false
 var zone_type := -1
+var area_kind := 1
 var ticket := 0
 var ending := ""
 var stopped := false
 var _queue: Array[Dictionary] = []
 var _deleting := false
+var _initial_hit_started := false
+var _initial_hit := Vector3i()
 
-func configure(owner_service, observed: Dictionary, type: int, bounds: Vector2i, level: int) -> void:
+func resolve_initial_hit(tile: Vector3i) -> void:
+	if stopped or _initial_hit_started or area_kind != 0 or not area.is_empty(): return
+	_initial_hit_started = true; _initial_hit = tile
+	_read_initial_hit(0)
+
+func _read_initial_hit(cursor: int) -> void:
+	ticket = service.submit("areas",{"action":Contract.ManagementAction.AreaInspectAtTile,"origin":_initial_hit,"cursor":cursor},_initial_hit_received)
+	if ticket == 0: _fail({})
+
+func _initial_hit_received(receipt: int, result: Dictionary, request: Dictionary) -> void:
+	if stopped or receipt != ticket: return
+	ticket = 0
+	if int(result.get("status",Contract.ManagementStatus.Rejected)) != Contract.ManagementStatus.Ok or str(result.get("outcome","")) == "unknown":
+		_fail(result); return
+	for observed in result.get("areas",[]):
+		if int(observed.get("kind",-1)) == 0:
+			# Selecting an existing pile never applies the queued creation strokes.
+			_queue.clear(); area = observed.duplicate(true)
+			if ending.is_empty() or ending == "accept": ending = "inspect"
+			_complete(); return
+	var cursor := int(result.get("area_next_cursor",0))
+	if cursor != 0:
+		if cursor <= int(request.cursor): _fail({}); return
+		_read_initial_hit(cursor); return
+	_drain()
+	changed.emit()
+
+func configure(owner_service, observed: Dictionary, type: int, bounds: Vector2i, level: int, kind := 1) -> void:
 	service = owner_service
 	area = observed.duplicate(true)
 	created_here = observed.is_empty()
 	zone_type = type
+	area_kind = int(observed.get("kind",kind))
 	geometry.open(observed,bounds,level)
 	service.session_changed.connect(_session_changed)
 
@@ -77,15 +108,16 @@ func _drain(previous := 0) -> void:
 		if area.is_empty() and int(gesture.mode) == 2:
 			_drain(previous); return
 		request = {"action":Contract.ManagementAction.AreaCreate if area.is_empty() else Contract.ManagementAction.AreaUpdate,
-			"kind":1,"operation":Contract.AreaOperation.Paint,"paint_mode":gesture.mode,
+			"kind":area_kind,"operation":Contract.AreaOperation.Paint,"paint_mode":gesture.mode,
 			"paint_z":geometry.z,"spans":gesture.spans}
-		if area.is_empty(): request.zone_type = zone_type
+		if area.is_empty():
+			if area_kind == 1: request.zone_type = zone_type
 		else:
 			request.id = int(area.id); request.expected_revision = int(area.revision)
 	elif not ending.is_empty():
 		if not area.is_empty() and (ending in ["cancel","remove","multi"] or (ending == "exit" and Geometry.footprint(area).is_empty())):
 			_deleting = true
-			request = {"action":Contract.ManagementAction.AreaDelete,"kind":1,"id":int(area.id),"expected_revision":int(area.revision)}
+			request = {"action":Contract.ManagementAction.AreaDelete,"kind":area_kind,"id":int(area.id),"expected_revision":int(area.revision)}
 		else:
 			_complete(); return
 	else: return
@@ -103,7 +135,7 @@ func _received(receipt: int, result: Dictionary, _request: Dictionary) -> void:
 	if rows.size() != 1:
 		_fail(result); return
 	var observed: Dictionary = rows[0]
-	if int(observed.get("kind",-1)) != 1 or int(observed.get("id",-1)) < 0 or int(observed.get("revision",0)) <= 0 or (not area.is_empty() and int(observed.id) != int(area.id)):
+	if int(observed.get("kind",-1)) != area_kind or int(observed.get("id",-1)) < 0 or int(observed.get("revision",0)) <= 0 or (not area.is_empty() and int(observed.id) != int(area.id)):
 		_fail(result); return
 	area = observed.duplicate(true)
 	geometry.area = area.duplicate(true)

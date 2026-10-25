@@ -177,7 +177,7 @@ func exercise() -> void:
 		editor.choose_zone_type(92)
 		await exercise_counts()
 		if not stopped:
-			var retained: Dictionary = editor.zone_paint.area.duplicate(true)
+			var retained: Dictionary = editor.paint_session.area.duplicate(true)
 			editor.handle_back()
 			if await wait_ui(func(): return actions._active == 0 and actions._queue.is_empty(),"exit drains transport"):
 				check(not editor.panel.visible,"Escape must close the actual painter")
@@ -210,23 +210,23 @@ func exercise_mode_switch() -> void:
 	var first := Vector3i(170,57,164); var last := Vector3i(172,59,164)
 	complete_rectangle(first,last)
 	if not await wait_ui(zone_ready,"zone before Multi switch"): return
-	var id := int(editor.zone_paint.area.id)
+	var id := int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	# Start a partial rectangle, as in the native transition control.
 	editor.paint_pointer(first,true); editor.paint_pointer(first,false)
 	editor.paint_view.multi_button.pressed.emit()
-	if not check(editor.mode == "paint" and editor.zone_paint.ending == "multi","Multi input must wait for ordinary deletion receipt"): return
+	if not check(editor.mode == "paint" and editor.paint_session.ending == "multi","Multi input must wait for ordinary deletion receipt"): return
 	if not await wait_ui(func(): return editor.mode == "multi","Multi after deletion"): return
 	await native("paint_counts_absent",{"id":id})
 	if stopped: return
 	editor.multi_pointer(first,true); editor.multi_pointer(first,false)
 	if not await wait_ui(settled,"shared corner completes Multi selection"): return
 	editor.paint_view.paint_button.pressed.emit()
-	if not check(editor.mode == "paint" and editor.zone_paint.area.is_empty() and not editor.dragging,"completed Multi rectangle must leave no pending corner or ordinary identity"): return
+	if not check(editor.mode == "paint" and editor.paint_session.area.is_empty() and not editor.dragging,"completed Multi rectangle must leave no pending corner or ordinary identity"): return
 	complete_rectangle(first,last)
 	if not await wait_ui(zone_ready,"fresh zone after mode return"): return
-	id = int(editor.zone_paint.area.id)
+	id = int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_view.cancel_button.pressed.emit()
@@ -244,7 +244,7 @@ func exercise_mode_switch() -> void:
 	editor.paint_view.buttons.erase.pressed.emit()
 	editor.paint_pointer(last,true); editor.paint_pointer(last,false)
 	if not await wait_ui(zone_ready,"Paint completes carried Multi corner"): return
-	id = int(editor.zone_paint.area.id)
+	id = int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_view.cancel_button.pressed.emit()
@@ -252,7 +252,7 @@ func exercise_mode_switch() -> void:
 	await native("paint_counts_absent",{"id":id})
 
 func zone_ready() -> bool:
-	return editor.zone_paint != null and editor.zone_paint.ticket == 0 and not editor.zone_paint.area.is_empty()
+	return editor.paint_session != null and editor.paint_session.ticket == 0 and not editor.paint_session.area.is_empty()
 
 func exercise_corner_elevation() -> void:
 	for tool in ["rectangle","brush","brush-multi"]:
@@ -270,7 +270,7 @@ func exercise_corner_elevation() -> void:
 		if not check(editor.dragging and editor.drag_start == Vector3i(170,57,165),"saved corner must follow ending elevation: "+tool): return
 		editor.paint_pointer(Vector3i(172,59,165),true); editor.paint_pointer(Vector3i(172,59,165),false)
 		if not await wait_ui(zone_ready,"complete rectangle on ending elevation"): return
-		var id := int(editor.zone_paint.area.id)
+		var id := int(editor.paint_session.area.id)
 		await native("paint_counts_track",{"id":id,"tiles":9,"z":165})
 		if stopped: return
 		editor.paint_view.cancel_button.pressed.emit()
@@ -288,12 +288,12 @@ func exercise_repaint_elevation() -> void:
 		var first := Vector3i(170,57,164); var last := Vector3i(171,58,164)
 		complete_rectangle(first,Vector3i(172,59,164))
 		if not await wait_ui(zone_ready,"zone before elevation"): return
-		var id := int(editor.zone_paint.area.id)
+		var id := int(editor.paint_session.area.id)
 		await native("paint_counts_track",{"id":id,"tiles":9})
 		if stopped: return
 		if existing:
 			editor.paint_view.accept_button.pressed.emit()
-			if not await wait_ui(func(): return editor.zone_paint == null and not editor.selected.is_empty(),"accept before repaint"): return
+			if not await wait_ui(func(): return editor.paint_session == null and not editor.selected.is_empty(),"accept before repaint"): return
 			editor.begin_paint()
 		editor.paint_view.buttons.erase.pressed.emit()
 		if brush: editor.paint_view.buttons.brush.pressed.emit()
@@ -318,7 +318,7 @@ func exercise_brush_inputs() -> void:
 	var first := Vector3i(170,57,164); var last := Vector3i(172,59,164)
 	editor.paint_pointer(first,true)
 	if not await wait_ui(zone_ready,"brush press"): return
-	var id := int(editor.zone_paint.area.id)
+	var id := int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":1,"width":1,"height":1,"extents":[1]})
 	if stopped: return
 	editor.paint_motion(last)
@@ -340,14 +340,14 @@ func exercise_brush_inputs() -> void:
 	if stopped: return
 	step = "controller rectangle release and tool switch"
 	editor.choose_zone_type(92); editor.paint_pointer(first,true); editor.paint_motion(last); editor.paint_pointer(last,false)
-	if not check(editor.dragging and editor.zone_paint.area.is_empty() and editor.paint_state.cells.is_empty(),"held first-corner drag must not commit on release"): return
+	if not check(editor.dragging and editor.paint_session.area.is_empty() and editor.paint_state.cells.is_empty(),"held first-corner drag must not commit on release"): return
 	editor.paint_view.buttons.brush.pressed.emit(); editor.paint_motion(last)
 	if not check(editor.paint_state.cells.is_empty(),"switching to Brush must not paint unheld motion"): return
 	editor.paint_view.buttons.rectangle.pressed.emit()
 	if not check(editor.dragging and editor.drag_start == first,"Rectangle/Brush round trip must retain first corner"): return
 	editor.paint_pointer(last,true)
 	if not await wait_ui(zone_ready,"second rectangle press"): return
-	id = int(editor.zone_paint.area.id)
+	id = int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_pointer(last,false); editor.paint_view.cancel_button.pressed.emit()
@@ -368,7 +368,7 @@ func exercise_brush_inputs() -> void:
 	editor.paint_view.buttons.rectangle.pressed.emit()
 	editor.paint_pointer(last,true); editor.paint_pointer(last,false)
 	if not await wait_ui(zone_ready,"rectangle after Brush Multi round trip"): return
-	id = int(editor.zone_paint.area.id)
+	id = int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_view.cancel_button.pressed.emit()
@@ -407,7 +407,7 @@ func exercise_reopen_order() -> void:
 	if stopped: return
 	editor.choose_zone_type(92); complete_rectangle(first,first+Vector3i(2,2,0))
 	if not await wait_ui(zone_ready,"reopened painter creation"): return
-	var new_id := int(editor.zone_paint.area.id)
+	var new_id := int(editor.paint_session.area.id)
 	if not check(new_id != old_id,"reopened painter reused retired identity"): return
 	await native("paint_counts_track",{"id":new_id,"tiles":9})
 	if stopped: return
@@ -426,7 +426,7 @@ func exercise_zone_lifecycle() -> void:
 	var first := Vector3i(170,57,164); var last := Vector3i(172,59,164)
 	complete_rectangle(first,last)
 	if not await wait_ui(zone_ready,"create before Cancel"): return
-	var id := int(editor.zone_paint.area.id)
+	var id := int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_view.cancel_button.pressed.emit()
@@ -437,7 +437,7 @@ func exercise_zone_lifecycle() -> void:
 	step = "controller empty Paint Escape"
 	editor.choose_zone_type(92); complete_rectangle(first,last)
 	if not await wait_ui(zone_ready,"create before erase-all"): return
-	id = int(editor.zone_paint.area.id)
+	id = int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_view.buttons.erase.pressed.emit(); complete_rectangle(first,last)
@@ -445,7 +445,7 @@ func exercise_zone_lifecycle() -> void:
 	await native("paint_counts_track",{"id":id,"tiles":0})
 	if stopped: return
 	editor.paint_view.accept_button.pressed.emit()
-	if not check(editor.mode == "paint" and editor.zone_paint != null,"empty Accept must remain in Paint"): return
+	if not check(editor.mode == "paint" and editor.paint_session != null,"empty Accept must remain in Paint"): return
 	editor.handle_back()
 	if not await wait_ui(transport_idle,"empty Escape deletion"): return
 	if not check(not editor.panel.visible,"empty Escape must exit"): return
@@ -456,7 +456,7 @@ func exercise_zone_lifecycle() -> void:
 	if not await wait_ui(func(): return editor.available and settled(),"reopen for repaint"): return
 	editor.choose_zone_type(92); complete_rectangle(first,last)
 	if not await wait_ui(zone_ready,"new zone before Accept"): return
-	id = int(editor.zone_paint.area.id)
+	id = int(editor.paint_session.area.id)
 	await native("paint_counts_track",{"id":id,"tiles":9})
 	if stopped: return
 	editor.paint_view.accept_button.pressed.emit()
@@ -674,8 +674,8 @@ func exercise_counts() -> void:
 	if not await caption("Bedroom: 0 + 9"): return
 	step = "local draft"; editor.paint_pointer(tile+Vector3i(2,2,0),true); editor.paint_pointer(tile+Vector3i(2,2,0),false)
 	if not await caption("Bedroom: 9 + 0"): return
-	if not await wait_ui(func(): return editor.zone_paint.ticket == 0,"immediate native creation"): return
-	await native("paint_counts_track",{"id":int(editor.zone_paint.area.id),"tiles":9})
+	if not await wait_ui(func(): return editor.paint_session.ticket == 0,"immediate native creation"): return
+	await native("paint_counts_track",{"id":int(editor.paint_session.area.id),"tiles":9})
 	if stopped: return
 	step = "overlap add preview"
 	editor.paint_pointer(tile+Vector3i(1,0,0),true); editor.paint_pointer(tile+Vector3i(1,0,0),false)
@@ -683,7 +683,7 @@ func exercise_counts() -> void:
 	if not await caption("Bedroom: 9 + 3"): return
 	editor.paint_pointer(tile+Vector3i(3,2,0),true); editor.paint_pointer(tile+Vector3i(3,2,0),false)
 	if not await caption("Bedroom: 12 + 0"): return
-	await native("paint_counts_track",{"id":int(editor.zone_paint.area.id),"tiles":12,"width":4})
+	await native("paint_counts_track",{"id":int(editor.paint_session.area.id),"tiles":12,"width":4})
 	if stopped: return
 	step = "rectangle erase preview"
 	editor.paint_pointer(tile,true); editor.paint_pointer(tile,false)
@@ -698,7 +698,7 @@ func exercise_counts() -> void:
 	if not await caption("Bedroom: 8 + 4"): return
 	editor.paint_pointer(tile+Vector3i(2,1,0),true); editor.paint_pointer(tile+Vector3i(2,1,0),false)
 	if not await caption("Bedroom: 6 + 1"): return
-	await native("paint_counts_track",{"id":int(editor.zone_paint.area.id),"tiles":6,"width":4})
+	await native("paint_counts_track",{"id":int(editor.paint_session.area.id),"tiles":6,"width":4})
 	if stopped: return
 	editor.paint_motion(tile+Vector3i(3,2,0))
 	if not await caption("Bedroom: 6 + 0"): return

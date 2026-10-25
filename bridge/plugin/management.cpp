@@ -1702,7 +1702,7 @@ int areaRepaint(lua_State* L) {
     // Zone extents may include walls and fortifications, as native paint does.
     if(prior!=after)changes.push_back({block,x,y,after==0});
     return true;
-  },zone!=nullptr);
+  },true);
   const uint32_t spent=plan.steps;
   if(plan.error!=df3d_area::Error::None) {
     switch(plan.error) {
@@ -1851,13 +1851,13 @@ int areaSnapshot(lua_State* L) {
       visibleTiles+=visible[index]!=0;
     }
   }
-  // Native Paint can retain a zero-cell zone until exit. Its allocated bounds
+  // Native Paint can retain a zero-cell area until exit. Its allocated bounds
   // remain the redraw target. Permit observing it only when that entire empty
   // footprint is loaded and revealed; do not fabricate visible occupied cells.
-  bool emptyZoneVisible=visibility && zone && tiles==0;
-  if(emptyZoneVisible)for(int y=b->y1;y<=b->y2 && emptyZoneVisible;++y)for(int x=b->x1;x<=b->x2;++x) {
+  bool emptyAreaVisible=visibility && (zone || pile) && tiles==0;
+  if(emptyAreaVisible)for(int y=b->y1;y<=b->y2 && emptyAreaVisible;++y)for(int x=b->x1;x<=b->x2;++x) {
     const auto* block=Maps::getTileBlock(x,y,b->z);
-    if(!block || block->designation[x&15][y&15].bits.hidden){emptyZoneVisible=false;break;}
+    if(!block || block->designation[x&15][y&15].bits.hidden){emptyAreaVisible=false;break;}
   }
   std::vector<int32_t> gives,takes,givesWorkshops,takesWorkshops;
   const auto links=[&](const auto& source,auto& ids) {
@@ -1895,7 +1895,7 @@ int areaSnapshot(lua_State* L) {
   field(L,"storage_limit",storageLimit);
   field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154);
   field(L,"revision",hash.finish());field(L,"tile_count",tiles);field(L,"visible_count",visibleTiles);
-  field(L,"has_visibility",visibility);field(L,"visible",visibleTiles!=0 || emptyZoneVisible);
+  field(L,"has_visibility",visibility);field(L,"visible",visibleTiles!=0 || emptyAreaVisible);
   field(L,"x",b->x1);field(L,"y",b->y1);field(L,"z",b->z);field(L,"width",width);field(L,"height",height);
   const auto array=[&](const char* key,const auto& values) {
     lua_createtable(L,int(values.size()),0);int index=0;

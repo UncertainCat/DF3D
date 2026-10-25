@@ -120,6 +120,7 @@ func run():
 		"origin": Vector3i(3, 4, 2),
 		"width": 50,
 		"tile_count": 2500,
+		"storage_limit": 2500,
 		"height": 50,
 		"extents": PackedByteArray(),
 		"categories": 8202,
@@ -136,11 +137,14 @@ func run():
 	}
 	c.use_area(pile)
 	c.stockpile_control("containers")
+	service.poll()
+	w.state = {"world_epoch":42,"revision":4,"request_seq":w.seq,"status":2,"action":9,"areas":[pile]}
+	service.poll()
 	check(c.storage_view.visible and c.stockpile_view.visible,"storage popup keeps native type panel visible")
 	c.storage_view.controls.bins[1].pressed.emit(); service.poll()
 	check(w.calls[-1] == {"action":11,"id":31,"kind":0,"expected_revision":pile.revision,"bins":1201},"storage edit sends only chosen value and exact inspected revision")
 	var storage_reply: Dictionary = pile.duplicate(true); storage_reply.bins = 1201; storage_reply.revision += 1
-	w.state = {"world_epoch":42,"revision":4,"request_seq":w.seq,"status":2,"action":11,"areas":[storage_reply]}
+	w.state = {"world_epoch":42,"revision":5,"request_seq":w.seq,"status":2,"action":11,"areas":[storage_reply]}
 	service.poll()
 	check(c.stockpile_page == "containers" and c.storage_view.labels.bins.text == "1201","authoritative storage reply updates open popup")
 	c.handle_back(); c.use_area(pile)
@@ -283,7 +287,11 @@ func run():
 	check(w.calls.size() == count and c._candidate_poll_request.is_empty(), "unknown read outcome is not automatically replayed")
 	var overlap := pile.duplicate(true)
 	overlap.revision = 0
-	c.use_area(overlap)
+	c.new_area(); c.select_paint_tool("brush")
+	c.map_paint_pointer(pile.origin,true); c.map_paint_pointer(pile.origin,false)
+	service.poll()
+	check(w.calls[-1].action == 8,"first brush click resolves existing stockpile before creation")
+	w.state = {"world_epoch":42,"revision":6,"request_seq":w.seq,"status":2,"action":8,"areas":[overlap]}
 	service.poll()
 	check(w.calls[-1].action == 9 and c.apply_button.disabled, "revision-free overlap selection triggers inspection before edits")
 	count = w.calls.size()
@@ -430,13 +438,13 @@ func run():
 	# An empty new rectangle uses its ending elevation, as native224155 does.
 	c.new_area(); c.paint_pointer(Vector3i(1,1,2),true)
 	w.top_z = 3; c._process(0)
-	c.paint_pointer(Vector3i(2,2,3),false)
+	c.paint_pointer(Vector3i(2,2,3),true); c.paint_pointer(Vector3i(2,2,3),false)
 	check(c.paint_state.z == 3 and c.paint_state.cells.size() == 4,"empty rectangle follows ending elevation without losing its first corner")
 	c.accept_paint()
-	var pending_paint_ticket: int = c.request_ticket
-	var pending_paint: Dictionary = c.paint_state.pending.duplicate(true)
+	var pending_owner = c.paint_session
+	var pending_paint_ticket: int = pending_owner.ticket
 	w.top_z = 2; c._process(0)
-	check(pending_paint_ticket != 0 and c.request_ticket == pending_paint_ticket and c.paint_state.pending == pending_paint,"elevation change retains pending semantic paint receipt")
+	check(pending_paint_ticket != 0 and c.paint_session == pending_owner and pending_owner.ticket == pending_paint_ticket,"elevation change retains pending semantic paint receipt")
 	# Retired native identities must never remain armed after a rejected edit.
 	c._detach_draft()
 	for reason in ["Area no longer exists","Area is not visible","Area kind changed; inspect again"]:

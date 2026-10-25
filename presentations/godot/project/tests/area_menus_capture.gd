@@ -16,6 +16,12 @@ func settings_reply(controller, world, service, rows: Array) -> void:
 func _initialize() -> void:
 	call_deferred("run")
 
+func paint_reply(world, service, observed: Dictionary) -> void:
+	service.poll()
+	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,
+		"action":world.calls[-1].action,"status":2,"areas":[observed]}
+	service.poll()
+
 func run() -> void:
 	if DisplayServer.get_name() == "headless": quit(77); return
 	var directory := ProjectSettings.globalize_path("res://../../../build/qa/04-U")
@@ -82,18 +88,27 @@ func run() -> void:
 	controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if root.get_texture().get_image().save_png(directory.path_join("controller_repaint_ready.png")) != OK: quit(1); return
+	var repainted: Dictionary = controller.selected.duplicate(true)
+	repainted.width = 3; repainted.extents = PackedByteArray([1,1,1,1,1,0]); repainted.tile_count = 5; repainted.revision += 1
+	paint_reply(world,service,repainted)
 	controller.handle_back()
 	var retained_area: Dictionary = controller.selected.duplicate(true)
+	host.activate(controller); controller.panel.show()
 	controller.new_area(); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if not controller.paint_view.visible or not controller.paint_view.buttons.remove.disabled:
 		push_error("New stockpile did not open native painter"); quit(1); return
 	if root.get_texture().get_image().save_png(directory.path_join("controller_stockpile_new.png")) != OK: quit(1); return
-	controller.paint_pointer(Vector3i(5,4,2),true); controller.paint_pointer(Vector3i(8,7,2),false); controller._process(0)
+	controller.paint_pointer(Vector3i(5,4,2),true); controller.paint_pointer(Vector3i(8,7,2),false)
+	controller.paint_pointer(Vector3i(8,7,2),true); controller.paint_pointer(Vector3i(8,7,2),false); controller._process(0)
 	await process_frame; await RenderingServer.frame_post_draw
 	if controller.paint_view.accept_button.disabled:
 		push_error("New painted stockpile cannot be accepted"); quit(1); return
 	if root.get_texture().get_image().save_png(directory.path_join("controller_stockpile_new_ready.png")) != OK: quit(1); return
+	var created: Dictionary = repainted.duplicate(true)
+	created.id = 40; created.origin = Vector3i(5,4,2); created.width = 4; created.height = 4
+	created.extents = PackedByteArray(); created.extents.resize(16); created.extents.fill(1); created.tile_count = 16
+	paint_reply(world,service,created)
 	controller.kind_picker.select(1)
 	controller.zone_types = []
 	for definition in controller.menu_data.zones:

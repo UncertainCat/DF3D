@@ -16,6 +16,7 @@ var interaction
 var canvas: CanvasLayer
 var panel: PanelContainer
 var content: VBoxContainer
+var stockpile_help: Control
 var stockpile_view: Control
 var candidates_state = preload("res://scripts/area_candidates_state.gd").new()
 var candidates_view: PanelContainer
@@ -329,6 +330,9 @@ func _ready() -> void:
 	new_area()
 
 
+	stockpile_help = preload("res://scripts/area_hover_view.gd").new()
+	canvas.add_child(stockpile_help); stockpile_help.configure(world,self)
+
 func open_panel() -> void:
 	if play_enabled and panel.visible: close_panel(); return
 	if not play_enabled or not ui_host.activate(self): return
@@ -350,6 +354,7 @@ func set_area_kind(value: int) -> void:
 	launcher_destination = "Stockpiles" if value == 0 else "Zones"
 
 func close_panel() -> void:
+	stockpile_help.reset()
 	_release_rename()
 	_release_paint_session("exit")
 	_finish_multi()
@@ -1786,6 +1791,7 @@ func _detach_draft() -> void:
 	request_ticket = 0
 
 func _session_changed() -> void:
+	stockpile_help.reset()
 	paint_saved_corner = Vector3i(-1,-1,-1)
 	# The service notifies the interaction owner separately; never drain an old
 	# interaction while replacing the panel's epoch-bound state.

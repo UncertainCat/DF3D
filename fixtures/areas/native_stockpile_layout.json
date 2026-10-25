@@ -337,5 +337,140 @@
       "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
       "scene_stockpile_storage_pending.png": "625bcb22b27db36cbca95b585918e05dba5533295070c20b96bfbdf9d12e1e0b"
     }
+  },
+  "instruction_hovers": {
+    "native_run": "build\\stockpile-storage-native-tooltips-20261025-184140",
+    "native_scope": "Native rendered text and instruction IDs with refreshed pointer/focus in owned oracle only. Screenshot reference uses existing inspected e5 captures; hidden-desktop asynchronous tooltip PNG attempts were not accepted. Native quill, All and Custom hovers report NONE.",
+    "native_states": [
+      {
+        "bottom": 61,
+        "enabled": false,
+        "hover": "NONE",
+        "left": 0,
+        "name": "hover-state-rename"
+      },
+      {
+        "bottom": 10,
+        "enabled": true,
+        "hover": "STOCKPILE_REPAINT",
+        "left": 46,
+        "name": "hover-state-repaint"
+      },
+      {
+        "bottom": 10,
+        "enabled": true,
+        "hover": "STOCKPILE_REMOVE_EXISTING",
+        "left": 46,
+        "name": "hover-state-remove"
+      },
+      {
+        "bottom": 15,
+        "enabled": true,
+        "hover": "STOCKPILE_TAKE_FROM_ANYWHERE_OR_LINKS",
+        "left": 46,
+        "name": "hover-state-links-only"
+      },
+      {
+        "bottom": 10,
+        "enabled": true,
+        "hover": "STOCKPILE_SET_CONNECTIONS",
+        "left": 46,
+        "name": "hover-state-links"
+      },
+      {
+        "bottom": 10,
+        "enabled": true,
+        "hover": "STOCKPILE_TOOL_SETTINGS",
+        "left": 46,
+        "name": "hover-state-containers"
+      },
+      {
+        "bottom": 61,
+        "enabled": true,
+        "hover": "NONE",
+        "left": 0,
+        "name": "hover-state-preset-all"
+      },
+      {
+        "bottom": 61,
+        "enabled": false,
+        "hover": "NONE",
+        "left": 0,
+        "name": "hover-state-preset-custom"
+      },
+      {
+        "bottom": 58,
+        "enabled": true,
+        "hover": "STOCKPILE_PAINT_RECTANGLE",
+        "left": 75,
+        "name": "hover-state-rectangle"
+      },
+      {
+        "bottom": 58,
+        "enabled": true,
+        "hover": "STOCKPILE_PAINT_FREE",
+        "left": 79,
+        "name": "hover-state-brush"
+      },
+      {
+        "bottom": 58,
+        "enabled": true,
+        "hover": "STOCKPILE_ERASE",
+        "left": 79,
+        "name": "hover-state-erase"
+      },
+      {
+        "bottom": 58,
+        "enabled": true,
+        "hover": "STOCKPILE_PAINT_REMOVE",
+        "left": 87,
+        "name": "hover-state-paint-remove"
+      }
+    ],
+    "reference_images": {
+      "build/evidence/native/e5/areas_stockpile_icon_tip_repaint.png": "63383b4da52b8724a396e23fee9cec3b936a66a45982eb93b1d3e1bd4769e077",
+      "build/evidence/native/e5/areas_stockpile_icon_tip_remove.png": "d9383cca60ee9f288886ed90d3d2fbfe540b61ec9638ed2b7335d8195172a4cb",
+      "build/evidence/native/e5/areas_stockpile_icon_tip_take_anywhere_toggle.png": "3242425cde329f1d9fe5eff303163398626192ce8a8a4a2d24ecc98cdf16e930",
+      "build/evidence/native/e5/areas_stockpile_icon_tip_links.png": "f5fa617ba54a9acdd12890de645b16d752720b5f78a96dbc35004c03f1da4032",
+      "build/evidence/native/e5/areas_stockpile_icon_tip_containers.png": "fa51e1365091afea43e1a081ece6ed8dccfd68f9400905477b7da443929f6b48",
+      "build/evidence/native/e5/areas_stockpile_tool_tip_rect.png": "a52f255ccfe1689de48499c5190dd8dadb6fd05be439889a1101566db4d97432",
+      "build/evidence/native/e5/areas_stockpile_tool_tip_brush.png": "3041ccf16529aab5019c177d84d30b8aebfdc2200248d04f995bcd37c2f884a5",
+      "build/evidence/native/e5/areas_stockpile_tool_tip_erase.png": "b3d47d1a22fd320fe6a8a96dd0c41789be77ac92addc743643dda6939995c276",
+      "build/evidence/native/e5/areas_stockpile_tool_tip_remove.png": "2ea42cefa3925a4d5b9d0baa9e16d8a1b9ff130fef2348bae046dff832089a4a"
+    },
+    "native_hashes": {
+      "hover-brush.txt": "27187931bf818173f1f52fb2c64b11647f660b413442f06ff7769966e1d9863d",
+      "hover-containers.txt": "3b7a2282f1756b5d5d317aa793eaa651c40fb67db0f112aafe0fed47059ded8f",
+      "hover-erase.txt": "4b95de30047be6b5db1e18284aa01efb8d8295d3aee014019b1a413510457056",
+      "hover-links-only.txt": "c9e23bcd36be96f7157e6517dbafdd2aab249276b7842193c510d340b38635fc",
+      "hover-links.txt": "aec9ad3792021cf742a7d9b2e2015dac3fa9f43880df66519eb6dd40dd25ee60",
+      "hover-paint-remove.txt": "1a3fbeb78fc51bcbff439f5332ce175f312c867a37587bab3ada23b576025bc2",
+      "hover-preset-all.txt": "5a19cafcb66ed1e9bf9772fa41c6eb7e2cb975d1badebd5a6936ae6f1ddf8cb5",
+      "hover-preset-custom.txt": "5a19cafcb66ed1e9bf9772fa41c6eb7e2cb975d1badebd5a6936ae6f1ddf8cb5",
+      "hover-rectangle.txt": "0994c804ee81fdc2adaad6653577ddb11e4bb005c329700b12828c4684548f75",
+      "hover-remove.txt": "5f10e153f67fb9ae541b7f1815015ac7c3ac5ea8e84e48fdfb9dfa769f809dc1",
+      "hover-rename.txt": "5a19cafcb66ed1e9bf9772fa41c6eb7e2cb975d1badebd5a6936ae6f1ddf8cb5",
+      "hover-repaint.txt": "8f9063e1d6ebdd000cdd29d2f3978c9162b9136796085057d700c5239ccf1268"
+    },
+    "native_result_sha256": "b6b62ea4779f06bbe26a5f530a987d693d73cfc78feae572193701a79b22e002",
+    "acceptance_run": "build\\areas-acceptance-20261025-184223",
+    "acceptance_scope": "Actual main-scene viewport hover over five palette controls and four paint tools; all nine displays asserted and captured. Navigation retires the paint tooltip. Existing five viewport fit and native-effect checks pass. Tooltip captures themselves use 1200x800 scale1.",
+    "offline": "build/qa/stockpile-hover-final",
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "preservation": "Owned native DF110480 and viewer lane DF122604 close unsaved; native source and both viewer save manifests unchanged.",
+    "acceptance_hashes": {
+      "scene_stockpile_help_paint_brush.png": "510f46044c009958f87fc1df946aaa90b0e9345672e0ea53190f056f602f1fa7",
+      "scene_stockpile_help_paint_erase.png": "f69ea0a1413a90b737cf1c8393d9764f5f8146f8da49bd9be79a94177bc3e5e4",
+      "scene_stockpile_help_paint_rectangle.png": "ce43cb81c6a389e571e616773a12790d67229074afc7ef51e2843ff20b176296",
+      "scene_stockpile_help_paint_remove.png": "87bdf212f6de16b41f03043da3a6e1715555f2385c246570ec23f8e288467257",
+      "scene_stockpile_help_palette_containers.png": "2ed72867189141301c89f2be8dcd45d28b49c6e05e7a500b894ab97d27090243",
+      "scene_stockpile_help_palette_links.png": "6ea16233fbb221b3684e0336bb3cbae2330b3050d6e0eb09df2b1754512dc3cd",
+      "scene_stockpile_help_palette_links_only.png": "a52687d33d08f07719abcdcd8e2ff1e77a756ca22cb33bcc60c810231852d79e",
+      "scene_stockpile_help_palette_remove.png": "38d5834c60419f797741fb1ddbd4f6c3f3c885caa8dc6e936231181a9f332dcf",
+      "scene_stockpile_help_palette_repaint.png": "ab139949a3549cb8f0e14a20fadd655287b463c9ed23e8cde885ce9d445c9397"
+    }
   }
 }

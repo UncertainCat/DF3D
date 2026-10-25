@@ -158,6 +158,17 @@ func run():
 	check(c.stockpile_page == "containers" and c.storage_view.labels.bins.text == "1201","authoritative storage reply updates open popup")
 	c.handle_back(); c.use_area(pile)
 	check(c.stockpile_view.visible and not c.category_grid.visible, "selected stockpile uses native preset panel")
+	check(c.stockpile_view.controls.rename.tooltip_text.is_empty(),"native quill has no tooltip")
+	check(c.stockpile_help.entries.size() == 9,"all native palette and paint instructions registered")
+	var help = c.stockpile_help
+	var help_button: Button = c.stockpile_view.controls.repaint
+	help.state.enter(help_button.get_instance_id(),"palette/repaint",Time.get_ticks_msec()-600)
+	help._process(0)
+	check(help.visible and help.lines == ["Repaint this stockpile."],"native help appears after dwell")
+	help_button.disabled = true; help._process(0)
+	check(not help.visible and help.state.key.is_empty(),"pending mutation retires button help")
+	help_button.disabled = false
+
 	var preset_count := w.calls.size()
 	c.choose_preset(0)
 	check(c.stockpile_page == "settings" and w.calls.size() == preset_count, "Custom opens local settings without a preset command")

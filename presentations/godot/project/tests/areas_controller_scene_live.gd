@@ -112,6 +112,7 @@ func pointer_areas() -> void:
 		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
 			await stockpile_name_contract()
 			if not stopped: await pointer_stockpile_name(origin)
+			if not stopped: await pointer_stockpile_help()
 			if stopped: return
 			await pointer_storage_limits()
 			if not stopped: await pointer_stockpile_fit(origin)
@@ -155,6 +156,30 @@ func name_text(value: String) -> void:
 		for pressed in [true,false]:
 			var event := InputEventKey.new(); event.pressed = pressed; event.unicode = character.unicode_at(0)
 			root.push_input(event,true)
+
+func hover_stockpile_button(control: Button, key: String) -> void:
+	for frame in 3:
+		editor._process(0); await process_frame
+	var motion := InputEventMouseMotion.new()
+	motion.position = control.get_global_transform_with_canvas()*(control.size/2)
+	motion.global_position = motion.position; root.push_input(motion,true)
+	await create_timer(0.65).timeout
+	if not check(editor.stockpile_help.visible and editor.stockpile_help.displayed == key,"native stockpile hover missing: "+key): return
+	await capture("stockpile_help_"+key.replace("/","_"))
+
+func pointer_stockpile_help() -> void:
+	step = "viewport stockpile instruction hovers"
+	for row in editor.menu_data.stockpile_controls:
+		await hover_stockpile_button(editor.stockpile_view.controls[row.key],"palette/"+str(row.key))
+		if stopped: return
+	await click_control(editor.stockpile_view.controls.repaint)
+	if not await wait_ui(func(): return settled() and editor.paint_view.visible,"hover repaint"): return
+	for row in editor.menu_data.paint_tools:
+		await hover_stockpile_button(editor.paint_view.buttons[row.key],"paint/"+str(row.key))
+		if stopped: return
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func(): return settled() and editor.stockpile_view.visible,"hover return"): return
+	if not check(not editor.stockpile_help.visible,"paint tooltip survived navigation"): return
 
 func pointer_stockpile_name(origin: Vector3i) -> void:
 	step = "viewport inline stockpile name"

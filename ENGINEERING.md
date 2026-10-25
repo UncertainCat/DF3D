@@ -77,6 +77,37 @@ effects. The pending capture was inspected; only the known separate-thread notic
 remains. Owned DF96860 closes unsaved and both save manifests match.
 `native_stockpile_layout.json.pending_copy_acceptance` retains the evidence hashes.
 
+## Native stockpile instruction hovers (DF 53.16)
+
+The five palette controls and four paint tools use the native instruction text,
+wrapping, original frame and recorded anchors from `area_menus.json`. A local
+hover owner shares the existing native dwell/warm timing and retires help when
+its control becomes disabled, hidden, closed or loses its session. Stockpile
+buttons no longer invoke generic Godot tooltips. The quill and preset labels
+have no added descriptions. Zones retains its existing tooltips.
+
+`tools/smoke/stockpile_storage_native.ps1 -Tooltips` samples native rendered text
+and instruction IDs with refreshed mouse focus/coordinates in the protected
+oracle only. `build/stockpile-storage-native-tooltips-20261025-184140` verifies
+all nine IDs and NONE for the quill, All and Custom. Existing inspected e5
+screenshots remain the visual reference: the hidden desktop can overwrite the
+injected pointer before asynchronous screenshots. Those earlier attempted
+hover PNGs are not acceptance evidence. The native paint Remove description
+includes “Also removes existing zones!”; the storage description spells
+“barrels” correctly despite the DFHack XML typo. Owned DF110480 closes unsaved
+with the source manifest unchanged.
+
+`build/qa/stockpile-hover-final` passes root CTest19/19 and area, rename and
+storage controllers. Protected `build/areas-acceptance-20261025-184223` uses
+viewport hover events for all nine boxes, verifies paint navigation retires its
+help, and repeats the five viewport fit/native-effect checks. The links-only
+and paint Remove captures were inspected against native. Tooltip captures use
+1200x800 at scale1; they do not establish all scaled tooltip layouts. Only the
+known separate-thread notice remains; owned DF122604 closes unsaved and both
+save manifests match. `native_stockpile_layout.json.instruction_hovers` records
+hashes and native instruction observations. This closes the control-help gap;
+Stockpiles remains staged during the completion audit.
+
 ## Stockpile settings ownership and protocol59
 
 Management59 retires legacy SettingsSet requests that treated category rows or

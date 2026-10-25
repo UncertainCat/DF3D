@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename=...
+local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -47,17 +47,46 @@ require('gui.script').start(function()
    if p and p.x==point.x and p.y==point.y and p.z==point.z then click(x,y);found=true;break end
   end if found then break end end
   assert(found,'no pile pointer');require('gui.script').sleep(2,'frames');view:render(dfhack.getTickCount())
-  local function capture(name)
-   g.mouse_x=0;g.mouse_y=0;view:render(dfhack.getTickCount());require('gui.script').sleep(3,'frames')
+  local function capture(name,keep_pointer)
+   if not keep_pointer then g.mouse_x=0;g.mouse_y=0 end
+   for i=1,3 do if keep_pointer then keep_pointer()end;view:render(dfhack.getTickCount());require('gui.script').sleep(1,'frames')end
+   if keep_pointer then keep_pointer();view:render(dfhack.getTickCount())end
    local lines={};for y=0,g.dimy-1 do local line={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);line[#line+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' ' end;lines[#lines+1]=table.concat(line)end
    local f=assert(io.open(out..'/'..name..'.txt','w'));f:write(table.concat(lines,'\n'));f:close()
    local alive=df.building.find(pile_id)
    records[#records+1]=alive and {name=name,barrels=alive.storage.max_barrels,bins=alive.storage.max_bins,wheelbarrows=alive.storage.max_wheelbarrows} or {name=name,removed=true}
+   -- Tooltip text/state is sampled immediately after native render. The hidden
+   -- desktop's next SDL poll can replace the pointer before a GPU screenshot.
+   if test_tooltips and keep_pointer then return end
    f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
    local limit=dfhack.getTickCount()+30000
-   while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timeout');require('gui.script').sleep(1,'frames')end
+   while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timeout');if keep_pointer then keep_pointer();view:render(dfhack.getTickCount())end;require('gui.script').sleep(1,'frames')end
   end
   capture('pile')
+  if test_tooltips then
+   local function hover(name,x,y)
+    local function move()
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+     gui.simulateInput(view,{})
+    end
+    local deadline=dfhack.getTickCount()+900
+    repeat move();view:render(dfhack.getTickCount());require('gui.script').sleep(1,'frames') until dfhack.getTickCount()>=deadline
+    move();view:render(dfhack.getTickCount())
+    local ui=df.global.game.main_interface
+    records[#records+1]={name='hover-state-'..name,hover=df.main_hover_instruction[ui.current_hover],enabled=ui.hover_instructions_on,left=ui.current_hover_left_x,bottom=ui.current_hover_bot_y}
+    local expected={rename='NONE',repaint='STOCKPILE_REPAINT',remove='STOCKPILE_REMOVE_EXISTING',
+     ['links-only']='STOCKPILE_TAKE_FROM_ANYWHERE_OR_LINKS',links='STOCKPILE_SET_CONNECTIONS',containers='STOCKPILE_TOOL_SETTINGS',
+     ['preset-all']='NONE',['preset-custom']='NONE',rectangle='STOCKPILE_PAINT_RECTANGLE',brush='STOCKPILE_PAINT_FREE',erase='STOCKPILE_ERASE',['paint-remove']='STOCKPILE_PAINT_REMOVE'}
+    assert(df.main_hover_instruction[ui.current_hover]==expected[name],'unexpected native hover: '..name)
+    capture('hover-'..name,move)
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'tooltip simulation advanced')
+   end
+   for _,v in ipairs{{'rename',42,6},{'repaint',38,9},{'remove',42,9},{'links-only',38,12},{'links',42,12},{'containers',42,15},{'preset-all',7,9},{'preset-custom',21,36}}do hover(table.unpack(v))end
+   click(38,9)
+   for _,v in ipairs{{'rectangle',77,61},{'brush',81,61},{'erase',85,61},{'paint-remove',89,61}}do hover(table.unpack(v))end
+   return
+  end
   if test_rename then
    local original=b.name
    local ui=df.global.game.main_interface

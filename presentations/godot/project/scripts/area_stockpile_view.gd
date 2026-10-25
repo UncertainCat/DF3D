@@ -28,14 +28,14 @@ func configure(source) -> void:
 	name_entry.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	name_entry.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(name_entry); name_entry.hide()
-	controls.rename = icon_button("UNIT_SHEET_CUSTOMIZE", Vector2(280, 0), "Rename")
+	controls.rename = icon_button("UNIT_SHEET_CUSTOMIZE", Vector2(280, 0), "")
 	controls.rename.pressed.connect(func(): control_selected.emit("rename"))
 	for index in data.presets.size():
 		var row: Dictionary = data.presets[index]
 		var point := Vector2((index / 10) * 112, 36 + (index % 10) * 36)
 		var button := Button.new()
 		button.position = point; button.size = Vector2(112, 36)
-		button.flat = true; button.tooltip_text = str(row.label)
+		button.flat = true
 		for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 			button.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		add_child(button); preset_buttons.append(button)

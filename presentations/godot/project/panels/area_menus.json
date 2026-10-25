@@ -536,49 +536,103 @@
     {
       "key": "rectangle",
       "icon": "BUTTON_PAINT_RECTANGLE_INACTIVE",
-      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_rect.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_rect.png",
+      "hover_lines": [
+        "Left click to choose",
+        "corners of a rectangle."
+      ],
+      "hover_x_offset": 0
     },
     {
       "key": "brush",
       "icon": "BUTTON_FREE_PAINT_INACTIVE",
-      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_brush.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_brush.png",
+      "hover_lines": [
+        "Hold left button to",
+        "draw."
+      ],
+      "hover_x_offset": 0
     },
     {
       "key": "erase",
       "icon": "STOCKPILE_ERASE_INACTIVE",
-      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_erase.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_erase.png",
+      "hover_lines": [
+        "Erase a portion of this",
+        "stockpile."
+      ],
+      "hover_x_offset": -32
     },
     {
       "key": "remove",
       "icon": "STOCKPILE_REMOVE_EXISTING",
-      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_remove.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_tool_tip_remove.png",
+      "hover_lines": [
+        "Remove the stockpile",
+        "being painted",
+        "permanently.  Also",
+        "removes existing zones!"
+      ],
+      "hover_x_offset": 0
     }
   ],
   "stockpile_controls": [
     {
       "key": "repaint",
       "icon": "STOCKPILE_REPAINT",
-      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_repaint.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_repaint.png",
+      "hover_lines": [
+        "Repaint this stockpile."
+      ],
+      "hover_bottom": 84
     },
     {
       "key": "remove",
       "icon": "STOCKPILE_REMOVE_EXISTING",
-      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_remove.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_remove.png",
+      "hover_lines": [
+        "Remove this stockpile",
+        "permanently."
+      ],
+      "hover_bottom": 84
     },
     {
       "key": "links_only",
       "icon": "STOCKPILE_TAKE_FROM_ANYWHERE",
-      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_take_anywhere_toggle.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_take_anywhere_toggle.png",
+      "hover_lines": [
+        "Toggle whether the",
+        "stockpile can take",
+        "items from anywhere or",
+        "only from specific",
+        "workshops and",
+        "stockpiles."
+      ],
+      "hover_bottom": 144
     },
     {
       "key": "links",
       "icon": "STOCKPILE_SET_CONNECTIONS",
-      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_links.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_links.png",
+      "hover_lines": [
+        "Set from which",
+        "workshops and",
+        "stockpiles this",
+        "stockpile gives and",
+        "takes items."
+      ],
+      "hover_bottom": 84
     },
     {
       "key": "containers",
       "icon": "STOCKPILE_TOOL_SETTINGS",
-      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_containers.png"
+      "evidence": "build/evidence/native/e5/areas_stockpile_icon_tip_containers.png",
+      "hover_lines": [
+        "Set how many barrels,",
+        "bins, and wheelbarrows",
+        "this stockpile can use."
+      ],
+      "hover_bottom": 84
     }
   ],
   "text": {

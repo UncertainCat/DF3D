@@ -49,11 +49,8 @@ func configure(source, rows: Array, tool_host: Node) -> void:
 	tools.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	tools.add_theme_constant_override("separation",0); tool_host.add_child(tools)
 	menu = rows.duplicate(true)
-	var tips := {"rectangle":"Left click to choose corners of a rectangle.","brush":"Hold left button to draw.",
-		"erase":"Erase a portion of this stockpile.","remove":"Remove the stockpile being painted permanently."}
 	for row in rows:
 		var button := Button.new(); button.custom_minimum_size = Vector2(32,36)
-		button.tooltip_text = tips.get(str(row.key),"")
 		for state in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(state,StyleBoxEmpty.new())
 		var icon := TextureRect.new(); icon.size = Vector2(32,36)
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
@@ -130,8 +127,10 @@ func set_zone(row: Dictionary) -> void:
 	var host: Node = self if zone else toolbar_host
 	if tools.get_parent() != host: tools.reparent(host)
 	if zone: tools.position = Vector2(0,72); tools.scale = Vector2.ONE
-	buttons.erase.tooltip_text = "Erase a portion of this zone." if zone else "Erase a portion of this stockpile."
-	buttons.remove.tooltip_text = "Remove the zone being painted permanently." if zone else "Remove the stockpile being painted permanently."
+	buttons.rectangle.tooltip_text = "Left click to choose corners of a rectangle." if zone else ""
+	buttons.brush.tooltip_text = "Hold left button to draw." if zone else ""
+	buttons.erase.tooltip_text = "Erase a portion of this zone." if zone else ""
+	buttons.remove.tooltip_text = "Remove the zone being painted permanently." if zone else ""
 
 func set_counts(label: String, counts: Dictionary) -> void:
 	zone_caption.text = label

@@ -5,6 +5,8 @@
 #include "df/custom_stockpile_interfacest.h"
 #include "df/custom_stockpile_itemst.h"
 #include "df/inorganic_raw.h"
+#include "df/plant_raw.h"
+#include "df/creature_raw.h"
 #include "df/itemdef_ammost.h"
 #include "df/itemdef_armorst.h"
 #include "df/itemdef_glovesst.h"
@@ -186,6 +188,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
       case 65:case 66:case 67:case 89:case 90:case 101:break;
       case 58:case 59:case 60:case 61:case 62:break;
       case 40:case 41:case 42:case 43:break;
+      case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:case 20:case 73:case 76:case 77:case 78:case 79:case 80:case 81:case 82:case 83:case 107:case 108:break;
       case 22:case 30:case 64:break;
       case 85:case 26:case 27:case 48:case 49:case 69:case 70:
       case 92:case 93:case 103:case 104:break;
@@ -204,6 +207,75 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         return true;
     };
     const auto& raws=df::global::world->raws;
+    const std::vector<char>* organic=nullptr;int organicCategory=-1;
+    switch(mode) {
+      case 2:organic=&owned.food.meat;organicCategory=0;break;
+      case 3:organic=&owned.food.fish;organicCategory=1;break;
+      case 4:organic=&owned.food.unprepared_fish;organicCategory=2;break;
+      case 5:organic=&owned.food.egg;organicCategory=3;break;
+      case 6:organic=&owned.food.plants;organicCategory=4;break;
+      case 7:organic=&owned.food.drink_plant;organicCategory=5;break;
+      case 8:organic=&owned.food.drink_animal;organicCategory=6;break;
+      case 9:organic=&owned.food.cheese_plant;organicCategory=7;break;
+      case 10:organic=&owned.food.cheese_animal;organicCategory=8;break;
+      case 11:organic=&owned.food.seeds;organicCategory=9;break;
+      case 12:organic=&owned.food.leaves;organicCategory=10;break;
+      case 13:organic=&owned.food.powder_plant;organicCategory=11;break;
+      case 14:organic=&owned.food.powder_creature;organicCategory=12;break;
+      case 15:organic=&owned.food.glob;organicCategory=13;break;
+      case 16:organic=&owned.food.glob_paste;organicCategory=33;break;
+      case 17:organic=&owned.food.glob_pressed;organicCategory=34;break;
+      case 18:organic=&owned.food.liquid_plant;organicCategory=14;break;
+      case 19:organic=&owned.food.liquid_animal;organicCategory=15;break;
+      case 20:organic=&owned.food.liquid_misc;organicCategory=16;break;
+      case 73:organic=&owned.leather.mats;organicCategory=17;break;
+      case 76:organic=&owned.cloth.thread_silk;organicCategory=18;break;
+      case 77:organic=&owned.cloth.thread_plant;organicCategory=19;break;
+      case 78:organic=&owned.cloth.thread_yarn;organicCategory=35;break;
+      case 79:organic=&owned.cloth.thread_metal;organicCategory=36;break;
+      case 80:organic=&owned.cloth.cloth_silk;organicCategory=18;break;
+      case 81:organic=&owned.cloth.cloth_plant;organicCategory=19;break;
+      case 82:organic=&owned.cloth.cloth_yarn;organicCategory=35;break;
+      case 83:organic=&owned.cloth.cloth_metal;organicCategory=36;break;
+      case 107:organic=&owned.sheet.paper;organicCategory=37;break;
+      case 108:organic=&owned.sheet.parchment;organicCategory=38;break;
+    }
+    if(organic) {
+        const auto& types=raws.mat_table.organic_types[organicCategory];
+        const auto& indexes=raws.mat_table.organic_indexes[organicCategory];
+        // Native d669f0 bounds only types; the paired index read is unchecked.
+        const size_t used=(std::min)(organic->size(),types.size());
+        if(indexes.size()<used)return std::nullopt;
+        const auto creatureExists=[&](int32_t index) {
+            return index<0 || size_t(index)>=raws.creatures.all.size() || raws.creatures.all[index];
+        };
+        for(size_t i=0;i<used;++i) {
+            const int16_t type=types[i];const int32_t index=indexes[i];
+            if(type==-1)continue;
+            if(mode==3 || mode==4 || mode==5) {
+                // These tables encode creature/caste, not material identity.
+                if(!creatureExists(type))return std::nullopt;
+                if(type>=0 && size_t(type)<raws.creatures.all.size()) {
+                    const auto& castes=raws.creatures.all[type]->caste;
+                    const int16_t caste=int16_t(index);
+                    if(caste>=0 && size_t(caste)<castes.size() && !castes[caste])return std::nullopt;
+                }
+                continue;
+            }
+            // Historical material resolution can write DF's derived cache.
+            // No runtime fallback may borrow that cache or native menu state.
+            if(type>=219 && type<=418)return std::nullopt;
+            if(type>=19 && type<=218) {
+                if(!creatureExists(index))return std::nullopt;
+                if(mode==2 && !creatureExists(int16_t(index)))return std::nullopt;
+            }
+            if(type>=419 && type<=618 && index>=0 && size_t(index)<raws.plants.all.size()) {
+                const auto* plant=raws.plants.all[index];
+                if(!plant)return std::nullopt;
+                if(mode==12)for(const auto* growth:plant->growths)if(!growth)return std::nullopt;
+            }
+        }
+    }
     // Stone's raw getter skips missing/stale indices. Its fired-material
     // predicate scans string pointers in reaction products without null checks.
     if(mode==42 || mode==43)
@@ -273,6 +345,20 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         hash(base+0x6f370,0xc)==0xe8009075ae23e49bULL &&
         hash(base+0x6f450,0xb)==0xab3f98567ea8847dULL &&
         hash(base+0x67e30,0x5)==0xa06f937403b4a5fdULL &&
+        hash(base+0xd669f0,0x65)==0xfdd633716041814fULL &&
+        hash(base+0x701e70,0x20e)==0xead0193006374e44ULL &&
+        hash(base+0x701db0,0xba)==0x8fd2bf0e939933fcULL &&
+        hash(base+0xa64cb0,0x45)==0x929e553cfe3f9c62ULL &&
+        hash(base+0xa64d00,0x79)==0x82e1b1bb161f88d0ULL &&
+        hash(base+0xf2680,0x54)==0xcaef8a6056b8eef2ULL &&
+        hash(base+0x6ee00,0x8)==0x45953a731d07973cULL &&
+        hash(base+0x6ee10,0x4)==0xcbb562da69740364ULL &&
+        hash(base+0x6ee20,0x24)==0xc11133a82be341f7ULL &&
+        hash(base+0x6ee50,0xc)==0xe8047875ae27a4aaULL &&
+        hash(base+0x6f230,0xb)==0x902c1224d06de7deULL &&
+        hash(base+0x6f240,0xa)==0xff5fd01446b306acULL &&
+        hash(base+0x657b0,0x7)==0x8ed7b69d3403667eULL &&
+        hash(base+0x6f580,0x1f)==0xdfeca05eb6f047a9ULL &&
         hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
         hash(base+0x14d1790,0x181)==0x4a5b855077250003ULL &&
         hash(base+0x724a30,0xd9)==0x5121a9264bd432feULL &&

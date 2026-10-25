@@ -361,7 +361,7 @@ require('gui.script').start(function()
    end
    values:resize(#original);for i,v in ipairs(original)do values[i-1]=v end
   end
-  -- Native-only organic references; runtime formatter ownership is audited separately.
+  -- Organic native UI references and independently owned provider comparisons.
   for _,entry in ipairs{{'Food','food','meat',2,'Meat',0},
    {'Food','food','fish',3,'Fish',1},
    {'Food','food','unprepared_fish',4,'Unprepared fish',2},
@@ -400,9 +400,45 @@ require('gui.script').start(function()
    local indexes=df.global.world.raws.mat_table.organic_indexes[entry[6]]
    assert(#types==#indexes,'organic paired arrays differ')
    local pairs={};for i,t in ipairs(types)do pairs[#pairs+1]={type=t,index=indexes[i]}end
+   -- Reserve before rebuilding UI pointers; short probes never render the UI.
+   values:resize(math.max(#original,#types+1));values:resize(#original)
+   for i,v in ipairs(original)do values[i-1]=v end
+   c.scroll_position_main=0;view:render(dfhack.getTickCount());label_click('Ammo');label_click(entry[1])
+   local function compare_provider(rows,query,count)
+    local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
+    values:resize(count);for i=0,count-1 do values[i]=i<#saved and saved[i+1] or 9 end
+    local before=settings_snapshot(b.settings)
+    local size,address=df.sizeof(df.global.game.main_interface)
+    local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+    local text,code=dfhack.run_command_silent('df3d','stockpile-rows-read',tostring(b.id),tostring(entry[4]),query)
+    assert(code==0,text)
+    assert(dfhack.internal.memcmp(guard,address,size)==0,'organic provider changed UI');df.delete(guard)
+    assert(settings_snapshot(b.settings)==before,'organic provider changed settings')
+    local actual=json.decode(text);local expected={}
+    for _,row in ipairs(rows)do if row.index<count then expected[#expected+1]=row end end
+    assert(#actual==#expected,'organic provider row count '..entry[4])
+    for i,row in ipairs(actual)do
+     local e=expected[i]
+     if not(row.field==e.field and row.index==e.index and row.name==e.name and row.visible==e.visible)then
+      local f=assert(io.open(out..'/organic-mismatch.json','w'));f:write(json.encode{mode=entry[4],query=query,count=count,ordinal=i,actual=row,expected=e,actual_rows=actual,expected_rows=expected});f:close()
+      error('organic row mismatch '..entry[4])
+     end
+     assert(row.enabled==(values[row.index]~=0),'organic selection mismatch')
+    end
+    records[#records+1]={probe='organic_provider',mode=entry[4],stored_count=count,query=query,rows=actual}
+    values:resize(#saved);for i,v in ipairs(saved)do values[i-1]=v end
+   end
+
    if #values==0 then
+    compare_provider({},'',0);compare_provider({},'',#types+1)
     records[#records+1]={probe='organic_reference_empty',mode=entry[4],field=entry[2]..'.'..entry[3],stored_count=0,materials=pairs}
    else
+    -- A parent category also sorts after its default leaf returns. Switch
+    -- away first so this oracle compares one explicit native leaf rebuild.
+    if c.cur_sub_mode==entry[4]then
+     c.scroll_position_sub=0;view:render(dfhack.getTickCount())
+     label_click(entry[2]=='food' and 'Fish' or entry[2]=='sheet' and 'Parchment' or 'Color',0,2)
+    end
     local sub_index
     for i,mode in ipairs(c.sub_mode)do if mode==entry[4]then sub_index=i;break end end
     assert(sub_index,'organic sublist absent')
@@ -422,6 +458,7 @@ require('gui.script').start(function()
       local index=assert(pointers[address],'organic row outside stored settings')
       rows[#rows+1]={field=entry[2]..'.'..entry[3],index=index,name=dfhack.df2utf(native.name),visible=native.on,enabled=values[index]~=0}
      end
+     for _,count in ipairs{#original,1,0,#types+1}do compare_provider(rows,query,count)end
      for _,action in ipairs{{'All',1},{'None',0}}do
       local expected={};for i,v in ipairs(values)do expected[i]=v end
       for _,row in ipairs(rows)do if row.visible then expected[row.index]=action[2]end end

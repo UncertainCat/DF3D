@@ -35781,5 +35781,2747 @@
       "Summary membership"
     ],
     "scope": "Native UI oracle only; does not authorize runtime formatter calls. The raw record materials field contains organic pairs; fish/egg pairs are creature/caste IDs."
+  },
+  "organic_provider": {
+    "run": "build/stockpile-presets-native-20261025-053203",
+    "status": "passed",
+    "comparisons": 340,
+    "modes": 30,
+    "native_bulk_actions": 168,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "native_ui": "unchanged by provider calls",
+    "source_settings": "unchanged by provider calls",
+    "context": "Explicit native leaf selection after switching away from the default leaf; preserves exact equal-name row identity ordering for this path. Parent/default opening sorts twice and remains separate.",
+    "cases": [
+      {
+        "mode": 2,
+        "query": "",
+        "stored_count": 12328,
+        "row_count": 12328,
+        "visible_count": 12328,
+        "rows_sha256": "f2bfb0d17a9556ce1210152c1495afe209d28674bfe1befb04115d10e4e2ee0d"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d7b83eaf590e51f6f136883bd66fcd68b7be0bead87475553e9428083cca102d"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 2,
+        "query": "",
+        "stored_count": 12329,
+        "row_count": 12328,
+        "visible_count": 12328,
+        "rows_sha256": "f2bfb0d17a9556ce1210152c1495afe209d28674bfe1befb04115d10e4e2ee0d"
+      },
+      {
+        "mode": 2,
+        "query": "a",
+        "stored_count": 12328,
+        "row_count": 12328,
+        "visible_count": 12000,
+        "rows_sha256": "a3fffe4824c9416745ae90a6f77ceee13e9dd0ab204361f315b0dd7b759c3308"
+      },
+      {
+        "mode": 2,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d7b83eaf590e51f6f136883bd66fcd68b7be0bead87475553e9428083cca102d"
+      },
+      {
+        "mode": 2,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 2,
+        "query": "a",
+        "stored_count": 12329,
+        "row_count": 12328,
+        "visible_count": 12000,
+        "rows_sha256": "a3fffe4824c9416745ae90a6f77ceee13e9dd0ab204361f315b0dd7b759c3308"
+      },
+      {
+        "mode": 2,
+        "query": "zzzznomatch",
+        "stored_count": 12328,
+        "row_count": 12328,
+        "visible_count": 0,
+        "rows_sha256": "3a420c4e87fda21f17615db3bc43e4277d1bd20860b63f10f2b3fbcb54393e86"
+      },
+      {
+        "mode": 2,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "32934f519996dde3eedd2d876663f97e81cd2d7ff84511f06c2faf59cf25147d"
+      },
+      {
+        "mode": 2,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 2,
+        "query": "zzzznomatch",
+        "stored_count": 12329,
+        "row_count": 12328,
+        "visible_count": 0,
+        "rows_sha256": "3a420c4e87fda21f17615db3bc43e4277d1bd20860b63f10f2b3fbcb54393e86"
+      },
+      {
+        "mode": 3,
+        "query": "",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "d02e874bff18af533112ccaa6deeaec056c4da7eececb928745eeb8b9e860b51"
+      },
+      {
+        "mode": 3,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f212d201d3b2082ce8b7f51c8ca6e5d093c69adefa7f13f39534f15320f8733d"
+      },
+      {
+        "mode": 3,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 3,
+        "query": "",
+        "stored_count": 76,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "d02e874bff18af533112ccaa6deeaec056c4da7eececb928745eeb8b9e860b51"
+      },
+      {
+        "mode": 3,
+        "query": "a",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 49,
+        "rows_sha256": "55f0e788780cecb3a86f49da0d8f9fe21eb434d0324b9790fbd58989d6271825"
+      },
+      {
+        "mode": 3,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "b9b6bcdc9135702c8b9fe7c71a4e71888e6242b437f59352494e1894aa503c7c"
+      },
+      {
+        "mode": 3,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 3,
+        "query": "a",
+        "stored_count": 76,
+        "row_count": 75,
+        "visible_count": 49,
+        "rows_sha256": "55f0e788780cecb3a86f49da0d8f9fe21eb434d0324b9790fbd58989d6271825"
+      },
+      {
+        "mode": 3,
+        "query": "zzzznomatch",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 0,
+        "rows_sha256": "d4b85b703f8e08253c5c6efd62f2ffcc5de8bcf60845e3b38397856640eaf57f"
+      },
+      {
+        "mode": 3,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "b9b6bcdc9135702c8b9fe7c71a4e71888e6242b437f59352494e1894aa503c7c"
+      },
+      {
+        "mode": 3,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 3,
+        "query": "zzzznomatch",
+        "stored_count": 76,
+        "row_count": 75,
+        "visible_count": 0,
+        "rows_sha256": "d4b85b703f8e08253c5c6efd62f2ffcc5de8bcf60845e3b38397856640eaf57f"
+      },
+      {
+        "mode": 4,
+        "query": "",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "ad8d974a79b3b0becd257ab10dcd708677a68ad8c6536efa726fd3a186731023"
+      },
+      {
+        "mode": 4,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f932aa6d883af37fc4f6dff9053dbf148d5dd4b2ea766429abbb28f3a6c36c0b"
+      },
+      {
+        "mode": 4,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 4,
+        "query": "",
+        "stored_count": 76,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "ad8d974a79b3b0becd257ab10dcd708677a68ad8c6536efa726fd3a186731023"
+      },
+      {
+        "mode": 4,
+        "query": "a",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "ad8d974a79b3b0becd257ab10dcd708677a68ad8c6536efa726fd3a186731023"
+      },
+      {
+        "mode": 4,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f932aa6d883af37fc4f6dff9053dbf148d5dd4b2ea766429abbb28f3a6c36c0b"
+      },
+      {
+        "mode": 4,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 4,
+        "query": "a",
+        "stored_count": 76,
+        "row_count": 75,
+        "visible_count": 75,
+        "rows_sha256": "ad8d974a79b3b0becd257ab10dcd708677a68ad8c6536efa726fd3a186731023"
+      },
+      {
+        "mode": 4,
+        "query": "zzzznomatch",
+        "stored_count": 75,
+        "row_count": 75,
+        "visible_count": 0,
+        "rows_sha256": "9407b5aaf5b587dc486fb44138a83c423d020d746f4cee11da9ddba98ac5d755"
+      },
+      {
+        "mode": 4,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "e4e75bc40b137f551109d4e90e6727ecdb26297039f27a9e551965d8a39c4a06"
+      },
+      {
+        "mode": 4,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 4,
+        "query": "zzzznomatch",
+        "stored_count": 76,
+        "row_count": 75,
+        "visible_count": 0,
+        "rows_sha256": "9407b5aaf5b587dc486fb44138a83c423d020d746f4cee11da9ddba98ac5d755"
+      },
+      {
+        "mode": 5,
+        "query": "",
+        "stored_count": 203,
+        "row_count": 203,
+        "visible_count": 203,
+        "rows_sha256": "239b13d3e28e53a639e9ba2ef8773ea68c52d727fbbb2d7f46a718606bddccd2"
+      },
+      {
+        "mode": 5,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "fa727599ac4c430737b70136cbc608b4d21f2befe4e397c0de71d6cd12b81452"
+      },
+      {
+        "mode": 5,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 5,
+        "query": "",
+        "stored_count": 204,
+        "row_count": 203,
+        "visible_count": 203,
+        "rows_sha256": "239b13d3e28e53a639e9ba2ef8773ea68c52d727fbbb2d7f46a718606bddccd2"
+      },
+      {
+        "mode": 5,
+        "query": "a",
+        "stored_count": 203,
+        "row_count": 203,
+        "visible_count": 172,
+        "rows_sha256": "5a45c9f52237a290e132edde6a82ce3e81ae30b6205271686198798157687aa2"
+      },
+      {
+        "mode": 5,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "fa727599ac4c430737b70136cbc608b4d21f2befe4e397c0de71d6cd12b81452"
+      },
+      {
+        "mode": 5,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 5,
+        "query": "a",
+        "stored_count": 204,
+        "row_count": 203,
+        "visible_count": 172,
+        "rows_sha256": "5a45c9f52237a290e132edde6a82ce3e81ae30b6205271686198798157687aa2"
+      },
+      {
+        "mode": 5,
+        "query": "zzzznomatch",
+        "stored_count": 203,
+        "row_count": 203,
+        "visible_count": 0,
+        "rows_sha256": "55e4608ec8d6cb9233797e678cf006171a34c8c50284793bac85d5622848e84c"
+      },
+      {
+        "mode": 5,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "b86c879fc05605cdd31e22ce1c942db0cacb96dc6ec82758b589f3be542d5cc2"
+      },
+      {
+        "mode": 5,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 5,
+        "query": "zzzznomatch",
+        "stored_count": 204,
+        "row_count": 203,
+        "visible_count": 0,
+        "rows_sha256": "55e4608ec8d6cb9233797e678cf006171a34c8c50284793bac85d5622848e84c"
+      },
+      {
+        "mode": 6,
+        "query": "",
+        "stored_count": 225,
+        "row_count": 112,
+        "visible_count": 112,
+        "rows_sha256": "2c4b48c3a1ca0336ff94bbb2141544087a70d17f021420464c87d4fc98d45413"
+      },
+      {
+        "mode": 6,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "cedb092e8edb49ac3e947ffb0dac87b1376425add7b592ba223fda2ca326dc3f"
+      },
+      {
+        "mode": 6,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 6,
+        "query": "",
+        "stored_count": 226,
+        "row_count": 112,
+        "visible_count": 112,
+        "rows_sha256": "2c4b48c3a1ca0336ff94bbb2141544087a70d17f021420464c87d4fc98d45413"
+      },
+      {
+        "mode": 6,
+        "query": "a",
+        "stored_count": 225,
+        "row_count": 112,
+        "visible_count": 86,
+        "rows_sha256": "cc3ddf13611d73f4d617cd5a7cdd0200e046c5ba305acf8fe91df8842aeafef7"
+      },
+      {
+        "mode": 6,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "cedb092e8edb49ac3e947ffb0dac87b1376425add7b592ba223fda2ca326dc3f"
+      },
+      {
+        "mode": 6,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 6,
+        "query": "a",
+        "stored_count": 226,
+        "row_count": 112,
+        "visible_count": 86,
+        "rows_sha256": "cc3ddf13611d73f4d617cd5a7cdd0200e046c5ba305acf8fe91df8842aeafef7"
+      },
+      {
+        "mode": 6,
+        "query": "zzzznomatch",
+        "stored_count": 225,
+        "row_count": 112,
+        "visible_count": 0,
+        "rows_sha256": "39f5e140561073adadc0c502724a093479ced535adbf22da7af99fe34312cef1"
+      },
+      {
+        "mode": 6,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "88dad84a559ade909ccc8d72963361c273fb705cca854ef1389234d6e77f7c4e"
+      },
+      {
+        "mode": 6,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 6,
+        "query": "zzzznomatch",
+        "stored_count": 226,
+        "row_count": 112,
+        "visible_count": 0,
+        "rows_sha256": "39f5e140561073adadc0c502724a093479ced535adbf22da7af99fe34312cef1"
+      },
+      {
+        "mode": 7,
+        "query": "",
+        "stored_count": 76,
+        "row_count": 76,
+        "visible_count": 76,
+        "rows_sha256": "52de0fbb21a89ae177879a766b532108aa394f8ae099f13b6ccf2b2741f9187b"
+      },
+      {
+        "mode": 7,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "de12b695ae6330bbd2f0a64546de3ea314f6d4fe0a893a25ac7285ba10a9a3a6"
+      },
+      {
+        "mode": 7,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 7,
+        "query": "",
+        "stored_count": 77,
+        "row_count": 76,
+        "visible_count": 76,
+        "rows_sha256": "52de0fbb21a89ae177879a766b532108aa394f8ae099f13b6ccf2b2741f9187b"
+      },
+      {
+        "mode": 7,
+        "query": "a",
+        "stored_count": 76,
+        "row_count": 76,
+        "visible_count": 50,
+        "rows_sha256": "e5c23638f9fdb7e2522dd0c299cdd1cb65afb186c655bf7c8b699a3cbcc30ef6"
+      },
+      {
+        "mode": 7,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "de12b695ae6330bbd2f0a64546de3ea314f6d4fe0a893a25ac7285ba10a9a3a6"
+      },
+      {
+        "mode": 7,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 7,
+        "query": "a",
+        "stored_count": 77,
+        "row_count": 76,
+        "visible_count": 50,
+        "rows_sha256": "e5c23638f9fdb7e2522dd0c299cdd1cb65afb186c655bf7c8b699a3cbcc30ef6"
+      },
+      {
+        "mode": 7,
+        "query": "zzzznomatch",
+        "stored_count": 76,
+        "row_count": 76,
+        "visible_count": 0,
+        "rows_sha256": "5888885963680d0da307e4d87e00342a0457710b4a4e82a175061ea2572940f8"
+      },
+      {
+        "mode": 7,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "0a872500ac33190176bf7e7d00251e2e4d1448fc0010a0f0001bd07bc851a0f4"
+      },
+      {
+        "mode": 7,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 7,
+        "query": "zzzznomatch",
+        "stored_count": 77,
+        "row_count": 76,
+        "visible_count": 0,
+        "rows_sha256": "5888885963680d0da307e4d87e00342a0457710b4a4e82a175061ea2572940f8"
+      },
+      {
+        "mode": 8,
+        "query": "",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "5f0b84054e84975d61cb66ed484c0f37c0c65ee1af7bd0edb97df626a5f3ee95"
+      },
+      {
+        "mode": 8,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "040bd8b84989591545b074df92b2b341f9faf700ce5a8a787e88f907a1504d64"
+      },
+      {
+        "mode": 8,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 8,
+        "query": "",
+        "stored_count": 3,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "5f0b84054e84975d61cb66ed484c0f37c0c65ee1af7bd0edb97df626a5f3ee95"
+      },
+      {
+        "mode": 8,
+        "query": "a",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "5f0b84054e84975d61cb66ed484c0f37c0c65ee1af7bd0edb97df626a5f3ee95"
+      },
+      {
+        "mode": 8,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "040bd8b84989591545b074df92b2b341f9faf700ce5a8a787e88f907a1504d64"
+      },
+      {
+        "mode": 8,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 8,
+        "query": "a",
+        "stored_count": 3,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "5f0b84054e84975d61cb66ed484c0f37c0c65ee1af7bd0edb97df626a5f3ee95"
+      },
+      {
+        "mode": 8,
+        "query": "zzzznomatch",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "a5fd4df171c13924866b52515273dac56bf5bf12c91049507f756c441ed95b55"
+      },
+      {
+        "mode": 8,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "364ca0583ba57e4df87ebdd34093685dd8a79c9ff421ab8e37703d045a65b78b"
+      },
+      {
+        "mode": 8,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 8,
+        "query": "zzzznomatch",
+        "stored_count": 3,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "a5fd4df171c13924866b52515273dac56bf5bf12c91049507f756c441ed95b55"
+      },
+      {
+        "mode": 9,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 9,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 10,
+        "query": "",
+        "stored_count": 24,
+        "row_count": 24,
+        "visible_count": 24,
+        "rows_sha256": "0dfa572baabedd1da8340cffd08d89ce6e7424ca161363bb65ebc957563a17f8"
+      },
+      {
+        "mode": 10,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a9a31f046c60368de8803b71ab28bd02eb848155314cf660886596fc6421e646"
+      },
+      {
+        "mode": 10,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 10,
+        "query": "",
+        "stored_count": 25,
+        "row_count": 24,
+        "visible_count": 24,
+        "rows_sha256": "0dfa572baabedd1da8340cffd08d89ce6e7424ca161363bb65ebc957563a17f8"
+      },
+      {
+        "mode": 10,
+        "query": "a",
+        "stored_count": 24,
+        "row_count": 24,
+        "visible_count": 18,
+        "rows_sha256": "0f07d9e24c5a40d2780773392bfec68041d7b476747f4d740b96df36196bb9e2"
+      },
+      {
+        "mode": 10,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "5e628239d520b46e59f0c261a959c2f10cb7c50ed7d26be8fe01d4b645715a3b"
+      },
+      {
+        "mode": 10,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 10,
+        "query": "a",
+        "stored_count": 25,
+        "row_count": 24,
+        "visible_count": 18,
+        "rows_sha256": "0f07d9e24c5a40d2780773392bfec68041d7b476747f4d740b96df36196bb9e2"
+      },
+      {
+        "mode": 10,
+        "query": "zzzznomatch",
+        "stored_count": 24,
+        "row_count": 24,
+        "visible_count": 0,
+        "rows_sha256": "a23b5569f2dfe21f61c33b922eba4c72f0384f54b5b102189af12e56279425d3"
+      },
+      {
+        "mode": 10,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "5e628239d520b46e59f0c261a959c2f10cb7c50ed7d26be8fe01d4b645715a3b"
+      },
+      {
+        "mode": 10,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 10,
+        "query": "zzzznomatch",
+        "stored_count": 25,
+        "row_count": 24,
+        "visible_count": 0,
+        "rows_sha256": "a23b5569f2dfe21f61c33b922eba4c72f0384f54b5b102189af12e56279425d3"
+      },
+      {
+        "mode": 11,
+        "query": "",
+        "stored_count": 157,
+        "row_count": 157,
+        "visible_count": 157,
+        "rows_sha256": "1cd305ec66ca1d2154c13375bd8eda91d74f9b059d2b8d74bbf3a5204777aa26"
+      },
+      {
+        "mode": 11,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "8b6049bf22f4109baf8e89a5d566c6ebd79dd123bd17af08bf994544479d4eb0"
+      },
+      {
+        "mode": 11,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 11,
+        "query": "",
+        "stored_count": 158,
+        "row_count": 157,
+        "visible_count": 157,
+        "rows_sha256": "1cd305ec66ca1d2154c13375bd8eda91d74f9b059d2b8d74bbf3a5204777aa26"
+      },
+      {
+        "mode": 11,
+        "query": "a",
+        "stored_count": 157,
+        "row_count": 157,
+        "visible_count": 107,
+        "rows_sha256": "0d8d53e006db016b7c5d53ff44bc012ec0929b50aa689abc61c01ecbf2f0b623"
+      },
+      {
+        "mode": 11,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "8b6049bf22f4109baf8e89a5d566c6ebd79dd123bd17af08bf994544479d4eb0"
+      },
+      {
+        "mode": 11,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 11,
+        "query": "a",
+        "stored_count": 158,
+        "row_count": 157,
+        "visible_count": 107,
+        "rows_sha256": "0d8d53e006db016b7c5d53ff44bc012ec0929b50aa689abc61c01ecbf2f0b623"
+      },
+      {
+        "mode": 11,
+        "query": "zzzznomatch",
+        "stored_count": 157,
+        "row_count": 157,
+        "visible_count": 0,
+        "rows_sha256": "51fa57394bf6ed8593880a9a6e88f7d83780bbf24d3ce86953916df66fdffbdb"
+      },
+      {
+        "mode": 11,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "380b1d6056a4f1bfa732e367bc47e21e95a105768f321429c2a353ea92d662c6"
+      },
+      {
+        "mode": 11,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 11,
+        "query": "zzzznomatch",
+        "stored_count": 158,
+        "row_count": 157,
+        "visible_count": 0,
+        "rows_sha256": "51fa57394bf6ed8593880a9a6e88f7d83780bbf24d3ce86953916df66fdffbdb"
+      },
+      {
+        "mode": 12,
+        "query": "",
+        "stored_count": 95,
+        "row_count": 95,
+        "visible_count": 95,
+        "rows_sha256": "fd23460df0f212361d482b5b2d86fa65c088018c0ee5fa4d4b80b3b0a849e142"
+      },
+      {
+        "mode": 12,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "77dafff24d01b34e7895b1eb97d9017bc300e749df3b16a63ec4b03144f67227"
+      },
+      {
+        "mode": 12,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 12,
+        "query": "",
+        "stored_count": 96,
+        "row_count": 95,
+        "visible_count": 95,
+        "rows_sha256": "fd23460df0f212361d482b5b2d86fa65c088018c0ee5fa4d4b80b3b0a849e142"
+      },
+      {
+        "mode": 12,
+        "query": "a",
+        "stored_count": 95,
+        "row_count": 95,
+        "visible_count": 73,
+        "rows_sha256": "83400faefdcceb5aa490aee425636cb34fe82416bf626b4239f25245755ad2e8"
+      },
+      {
+        "mode": 12,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "77dafff24d01b34e7895b1eb97d9017bc300e749df3b16a63ec4b03144f67227"
+      },
+      {
+        "mode": 12,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 12,
+        "query": "a",
+        "stored_count": 96,
+        "row_count": 95,
+        "visible_count": 73,
+        "rows_sha256": "83400faefdcceb5aa490aee425636cb34fe82416bf626b4239f25245755ad2e8"
+      },
+      {
+        "mode": 12,
+        "query": "zzzznomatch",
+        "stored_count": 95,
+        "row_count": 95,
+        "visible_count": 0,
+        "rows_sha256": "2e99590763f167eabf2e077027676b682d0876f72fb19b8bec74da4bfed43c99"
+      },
+      {
+        "mode": 12,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "6cc0de79353c29640dd42807821d93d85ad15317db88cf6cb174a7dd507d2d67"
+      },
+      {
+        "mode": 12,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 12,
+        "query": "zzzznomatch",
+        "stored_count": 96,
+        "row_count": 95,
+        "visible_count": 0,
+        "rows_sha256": "2e99590763f167eabf2e077027676b682d0876f72fb19b8bec74da4bfed43c99"
+      },
+      {
+        "mode": 13,
+        "query": "",
+        "stored_count": 101,
+        "row_count": 101,
+        "visible_count": 101,
+        "rows_sha256": "7bc541f23e04a3883a08b01ce386b24870656f5834647ecbe77d3013b70c5cfb"
+      },
+      {
+        "mode": 13,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "320839b2d39cb5c03d7fedec648955287836ff8f0cdbbf5cdc91ccdae35ffd68"
+      },
+      {
+        "mode": 13,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 13,
+        "query": "",
+        "stored_count": 102,
+        "row_count": 101,
+        "visible_count": 101,
+        "rows_sha256": "7bc541f23e04a3883a08b01ce386b24870656f5834647ecbe77d3013b70c5cfb"
+      },
+      {
+        "mode": 13,
+        "query": "a",
+        "stored_count": 101,
+        "row_count": 101,
+        "visible_count": 81,
+        "rows_sha256": "44affdf1475a77ff5cf1389cb624998b4d14708b98447d3f1bba66bbb8636dc9"
+      },
+      {
+        "mode": 13,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "320839b2d39cb5c03d7fedec648955287836ff8f0cdbbf5cdc91ccdae35ffd68"
+      },
+      {
+        "mode": 13,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 13,
+        "query": "a",
+        "stored_count": 102,
+        "row_count": 101,
+        "visible_count": 81,
+        "rows_sha256": "44affdf1475a77ff5cf1389cb624998b4d14708b98447d3f1bba66bbb8636dc9"
+      },
+      {
+        "mode": 13,
+        "query": "zzzznomatch",
+        "stored_count": 101,
+        "row_count": 101,
+        "visible_count": 0,
+        "rows_sha256": "b48d887d05a779002ef06de7415cdb1fa26238c3aaafd6b568575cabd05a32e5"
+      },
+      {
+        "mode": 13,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "c70f8db2f4682adba2037ffeb99c82ac9f8616e8e4b2c9835b46957adfe34f25"
+      },
+      {
+        "mode": 13,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 13,
+        "query": "zzzznomatch",
+        "stored_count": 102,
+        "row_count": 101,
+        "visible_count": 0,
+        "rows_sha256": "b48d887d05a779002ef06de7415cdb1fa26238c3aaafd6b568575cabd05a32e5"
+      },
+      {
+        "mode": 14,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 14,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 15,
+        "query": "",
+        "stored_count": 2062,
+        "row_count": 2062,
+        "visible_count": 2062,
+        "rows_sha256": "e2b704235ce0681e7d9360ed322bd07ffa4ef9e1f8567849b9bb2b7edd8f6bcd"
+      },
+      {
+        "mode": 15,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "24a55b62d42470166b6d7ba385334140dbd67a9ef86b164fbe2f7bf4e7548601"
+      },
+      {
+        "mode": 15,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 15,
+        "query": "",
+        "stored_count": 2063,
+        "row_count": 2062,
+        "visible_count": 2062,
+        "rows_sha256": "e2b704235ce0681e7d9360ed322bd07ffa4ef9e1f8567849b9bb2b7edd8f6bcd"
+      },
+      {
+        "mode": 15,
+        "query": "a",
+        "stored_count": 2062,
+        "row_count": 2062,
+        "visible_count": 2062,
+        "rows_sha256": "e2b704235ce0681e7d9360ed322bd07ffa4ef9e1f8567849b9bb2b7edd8f6bcd"
+      },
+      {
+        "mode": 15,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "24a55b62d42470166b6d7ba385334140dbd67a9ef86b164fbe2f7bf4e7548601"
+      },
+      {
+        "mode": 15,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 15,
+        "query": "a",
+        "stored_count": 2063,
+        "row_count": 2062,
+        "visible_count": 2062,
+        "rows_sha256": "e2b704235ce0681e7d9360ed322bd07ffa4ef9e1f8567849b9bb2b7edd8f6bcd"
+      },
+      {
+        "mode": 15,
+        "query": "zzzznomatch",
+        "stored_count": 2062,
+        "row_count": 2062,
+        "visible_count": 0,
+        "rows_sha256": "561714b60d3b704659f813be5eb49a04e1f19913dc792277f0f839d35b48e4c1"
+      },
+      {
+        "mode": 15,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "0b87c91247d1a30bafab85880ac7ae4d7676766f69fc1a90ce972d4750fb9327"
+      },
+      {
+        "mode": 15,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 15,
+        "query": "zzzznomatch",
+        "stored_count": 2063,
+        "row_count": 2062,
+        "visible_count": 0,
+        "rows_sha256": "561714b60d3b704659f813be5eb49a04e1f19913dc792277f0f839d35b48e4c1"
+      },
+      {
+        "mode": 16,
+        "query": "",
+        "stored_count": 13,
+        "row_count": 13,
+        "visible_count": 13,
+        "rows_sha256": "aa2c39dc66b7c9a0edec2e3d76b229c0d06620559f3ce4049b8faf5b4cb99036"
+      },
+      {
+        "mode": 16,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "732657f81748c7a7d91810e8eefcad1bf0351fb7c37a4fb5e44a662cf7d34b3c"
+      },
+      {
+        "mode": 16,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 16,
+        "query": "",
+        "stored_count": 14,
+        "row_count": 13,
+        "visible_count": 13,
+        "rows_sha256": "aa2c39dc66b7c9a0edec2e3d76b229c0d06620559f3ce4049b8faf5b4cb99036"
+      },
+      {
+        "mode": 16,
+        "query": "a",
+        "stored_count": 13,
+        "row_count": 13,
+        "visible_count": 8,
+        "rows_sha256": "ef864940c7375c6060f21d1fc7f82fc5ef701a026adcbb502fd7fd6762b418eb"
+      },
+      {
+        "mode": 16,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "732657f81748c7a7d91810e8eefcad1bf0351fb7c37a4fb5e44a662cf7d34b3c"
+      },
+      {
+        "mode": 16,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 16,
+        "query": "a",
+        "stored_count": 14,
+        "row_count": 13,
+        "visible_count": 8,
+        "rows_sha256": "ef864940c7375c6060f21d1fc7f82fc5ef701a026adcbb502fd7fd6762b418eb"
+      },
+      {
+        "mode": 16,
+        "query": "zzzznomatch",
+        "stored_count": 13,
+        "row_count": 13,
+        "visible_count": 0,
+        "rows_sha256": "1cf5870cc306210654df4dd9d15a39fa751ccb0384afedd3595af36b20d3fd04"
+      },
+      {
+        "mode": 16,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "babfe068e8f71c2780b6dce012f3c26beb946db36b22352035c939f221266c84"
+      },
+      {
+        "mode": 16,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 16,
+        "query": "zzzznomatch",
+        "stored_count": 14,
+        "row_count": 13,
+        "visible_count": 0,
+        "rows_sha256": "1cf5870cc306210654df4dd9d15a39fa751ccb0384afedd3595af36b20d3fd04"
+      },
+      {
+        "mode": 17,
+        "query": "",
+        "stored_count": 7,
+        "row_count": 7,
+        "visible_count": 7,
+        "rows_sha256": "c0808aa44c13dde1fc903cee66f9a546ba355e22be2bdd21b2f7fbc6c85bae86"
+      },
+      {
+        "mode": 17,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f418cd81f0fbebbdd0532a3cd4a8c7e83458dc0a4fb64a23868f60fa7777fc4c"
+      },
+      {
+        "mode": 17,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 17,
+        "query": "",
+        "stored_count": 8,
+        "row_count": 7,
+        "visible_count": 7,
+        "rows_sha256": "c0808aa44c13dde1fc903cee66f9a546ba355e22be2bdd21b2f7fbc6c85bae86"
+      },
+      {
+        "mode": 17,
+        "query": "a",
+        "stored_count": 7,
+        "row_count": 7,
+        "visible_count": 7,
+        "rows_sha256": "c0808aa44c13dde1fc903cee66f9a546ba355e22be2bdd21b2f7fbc6c85bae86"
+      },
+      {
+        "mode": 17,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f418cd81f0fbebbdd0532a3cd4a8c7e83458dc0a4fb64a23868f60fa7777fc4c"
+      },
+      {
+        "mode": 17,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 17,
+        "query": "a",
+        "stored_count": 8,
+        "row_count": 7,
+        "visible_count": 7,
+        "rows_sha256": "c0808aa44c13dde1fc903cee66f9a546ba355e22be2bdd21b2f7fbc6c85bae86"
+      },
+      {
+        "mode": 17,
+        "query": "zzzznomatch",
+        "stored_count": 7,
+        "row_count": 7,
+        "visible_count": 0,
+        "rows_sha256": "c89ef7c323465671ace0e625287cead08cf34923bfb934ff53d81ddc2aa96ecb"
+      },
+      {
+        "mode": 17,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "165f50a41dc91ebd28501c640128a606de11c7f47ee7b7825042ea48e1ee134b"
+      },
+      {
+        "mode": 17,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 17,
+        "query": "zzzznomatch",
+        "stored_count": 8,
+        "row_count": 7,
+        "visible_count": 0,
+        "rows_sha256": "c89ef7c323465671ace0e625287cead08cf34923bfb934ff53d81ddc2aa96ecb"
+      },
+      {
+        "mode": 18,
+        "query": "",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 9,
+        "rows_sha256": "a3e74db315317754df6928de76d2b646b1293b3f081027aa2e200ddd9c77dabb"
+      },
+      {
+        "mode": 18,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d156bb360cda8eb19ca0964b583515fcdea7363f89758c280434e5f1cc441aab"
+      },
+      {
+        "mode": 18,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 18,
+        "query": "",
+        "stored_count": 10,
+        "row_count": 9,
+        "visible_count": 9,
+        "rows_sha256": "a3e74db315317754df6928de76d2b646b1293b3f081027aa2e200ddd9c77dabb"
+      },
+      {
+        "mode": 18,
+        "query": "a",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 3,
+        "rows_sha256": "e616511cd5bfd8c4dcc81baf981ae90ed6262b47d2cdf23ef335249aa1f68c17"
+      },
+      {
+        "mode": 18,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "edc896325ea43ec552e1efc0f53dbb5cbcd1db9f2bbceb69e0e15c271790de98"
+      },
+      {
+        "mode": 18,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 18,
+        "query": "a",
+        "stored_count": 10,
+        "row_count": 9,
+        "visible_count": 3,
+        "rows_sha256": "e616511cd5bfd8c4dcc81baf981ae90ed6262b47d2cdf23ef335249aa1f68c17"
+      },
+      {
+        "mode": 18,
+        "query": "zzzznomatch",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 0,
+        "rows_sha256": "eba11bba95cdfc4d01a0e56adaf09205b78848ac4a2fd2cf6f355dfbde92db6e"
+      },
+      {
+        "mode": 18,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "edc896325ea43ec552e1efc0f53dbb5cbcd1db9f2bbceb69e0e15c271790de98"
+      },
+      {
+        "mode": 18,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 18,
+        "query": "zzzznomatch",
+        "stored_count": 10,
+        "row_count": 9,
+        "visible_count": 0,
+        "rows_sha256": "eba11bba95cdfc4d01a0e56adaf09205b78848ac4a2fd2cf6f355dfbde92db6e"
+      },
+      {
+        "mode": 19,
+        "query": "",
+        "stored_count": 277,
+        "row_count": 277,
+        "visible_count": 277,
+        "rows_sha256": "cef029e8e8dfadcb719516a7d9b69615c33488a792b00b462510a72223b0200a"
+      },
+      {
+        "mode": 19,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f15ec53ffcd7c4415882268fe746d05c92a9274c7e4f2af881b05cfeab3c68e5"
+      },
+      {
+        "mode": 19,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 19,
+        "query": "",
+        "stored_count": 278,
+        "row_count": 277,
+        "visible_count": 277,
+        "rows_sha256": "cef029e8e8dfadcb719516a7d9b69615c33488a792b00b462510a72223b0200a"
+      },
+      {
+        "mode": 19,
+        "query": "a",
+        "stored_count": 277,
+        "row_count": 277,
+        "visible_count": 262,
+        "rows_sha256": "6689d5b20600b915ea90d033af6aa617bdc7b937014f681419f294cdd64bd41c"
+      },
+      {
+        "mode": 19,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "f15ec53ffcd7c4415882268fe746d05c92a9274c7e4f2af881b05cfeab3c68e5"
+      },
+      {
+        "mode": 19,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 19,
+        "query": "a",
+        "stored_count": 278,
+        "row_count": 277,
+        "visible_count": 262,
+        "rows_sha256": "6689d5b20600b915ea90d033af6aa617bdc7b937014f681419f294cdd64bd41c"
+      },
+      {
+        "mode": 19,
+        "query": "zzzznomatch",
+        "stored_count": 277,
+        "row_count": 277,
+        "visible_count": 0,
+        "rows_sha256": "4c073da2c5000481df528a60d0a264e0d1192bc0df7bdfcc3756c7615a8dd849"
+      },
+      {
+        "mode": 19,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "36eb189477c6aff5742857279a48ab6b6f67d2cf9ae3e9a2447a1f65b5722578"
+      },
+      {
+        "mode": 19,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 19,
+        "query": "zzzznomatch",
+        "stored_count": 278,
+        "row_count": 277,
+        "visible_count": 0,
+        "rows_sha256": "4c073da2c5000481df528a60d0a264e0d1192bc0df7bdfcc3756c7615a8dd849"
+      },
+      {
+        "mode": 20,
+        "query": "",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "7c3f8e46a758af4d2f8dffeeab845f45937732bec6a8bf81931d1694b599594f"
+      },
+      {
+        "mode": 20,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "e9b4b4a09747ce6b003eab5e826daf0a9df31eff1cc49b96372b9e5e1631b7ac"
+      },
+      {
+        "mode": 20,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 20,
+        "query": "",
+        "stored_count": 3,
+        "row_count": 2,
+        "visible_count": 2,
+        "rows_sha256": "7c3f8e46a758af4d2f8dffeeab845f45937732bec6a8bf81931d1694b599594f"
+      },
+      {
+        "mode": 20,
+        "query": "a",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "4c333b82b08c69e4ef0e2e37c7279caa3e0fd5e3104934b646600c135dc422e1"
+      },
+      {
+        "mode": 20,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "7ebb8fcc2644edd6cd0a21996ef5b06e61f30ba77fb3dff2b206af58cfdf9574"
+      },
+      {
+        "mode": 20,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 20,
+        "query": "a",
+        "stored_count": 3,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "4c333b82b08c69e4ef0e2e37c7279caa3e0fd5e3104934b646600c135dc422e1"
+      },
+      {
+        "mode": 20,
+        "query": "zzzznomatch",
+        "stored_count": 2,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "4c333b82b08c69e4ef0e2e37c7279caa3e0fd5e3104934b646600c135dc422e1"
+      },
+      {
+        "mode": 20,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "7ebb8fcc2644edd6cd0a21996ef5b06e61f30ba77fb3dff2b206af58cfdf9574"
+      },
+      {
+        "mode": 20,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 20,
+        "query": "zzzznomatch",
+        "stored_count": 3,
+        "row_count": 2,
+        "visible_count": 0,
+        "rows_sha256": "4c333b82b08c69e4ef0e2e37c7279caa3e0fd5e3104934b646600c135dc422e1"
+      },
+      {
+        "mode": 73,
+        "query": "",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "1a82346f1ac8604dade2fd3a020e0bd691502aa3bc7a5db88df7154c8a1970d6"
+      },
+      {
+        "mode": 73,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "3a83b2e776f5e5a31223e7db193075a72105b10568ab8f43a62cb3bc6a396d7d"
+      },
+      {
+        "mode": 73,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 73,
+        "query": "",
+        "stored_count": 840,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "1a82346f1ac8604dade2fd3a020e0bd691502aa3bc7a5db88df7154c8a1970d6"
+      },
+      {
+        "mode": 73,
+        "query": "a",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "1a82346f1ac8604dade2fd3a020e0bd691502aa3bc7a5db88df7154c8a1970d6"
+      },
+      {
+        "mode": 73,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "3a83b2e776f5e5a31223e7db193075a72105b10568ab8f43a62cb3bc6a396d7d"
+      },
+      {
+        "mode": 73,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 73,
+        "query": "a",
+        "stored_count": 840,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "1a82346f1ac8604dade2fd3a020e0bd691502aa3bc7a5db88df7154c8a1970d6"
+      },
+      {
+        "mode": 73,
+        "query": "zzzznomatch",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 0,
+        "rows_sha256": "8e2ed3fd70544c0e910e00c177f1e10335263992fce91bcad430bbde0b22ae99"
+      },
+      {
+        "mode": 73,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "9b69644ef555e4a69e8c8a47650c159e02fbc1abdd62085439eea5237ce661c2"
+      },
+      {
+        "mode": 73,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 73,
+        "query": "zzzznomatch",
+        "stored_count": 840,
+        "row_count": 839,
+        "visible_count": 0,
+        "rows_sha256": "8e2ed3fd70544c0e910e00c177f1e10335263992fce91bcad430bbde0b22ae99"
+      },
+      {
+        "mode": 76,
+        "query": "",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "767b3b03a8cf1416dc11ac9ed77471929dedc364df8cc49b9bcedd9788c0fb8b"
+      },
+      {
+        "mode": 76,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "af5c14d5816075d5654f96633e271fa0ff43aa4c869d19636256a24ba5aef8df"
+      },
+      {
+        "mode": 76,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 76,
+        "query": "",
+        "stored_count": 40,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "767b3b03a8cf1416dc11ac9ed77471929dedc364df8cc49b9bcedd9788c0fb8b"
+      },
+      {
+        "mode": 76,
+        "query": "a",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "767b3b03a8cf1416dc11ac9ed77471929dedc364df8cc49b9bcedd9788c0fb8b"
+      },
+      {
+        "mode": 76,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "af5c14d5816075d5654f96633e271fa0ff43aa4c869d19636256a24ba5aef8df"
+      },
+      {
+        "mode": 76,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 76,
+        "query": "a",
+        "stored_count": 40,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "767b3b03a8cf1416dc11ac9ed77471929dedc364df8cc49b9bcedd9788c0fb8b"
+      },
+      {
+        "mode": 76,
+        "query": "zzzznomatch",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 0,
+        "rows_sha256": "e4947f99619ca7d904ed9bbb109a7bd2faf99493ee447d5172c21f64aceea878"
+      },
+      {
+        "mode": 76,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "df8a0e914571035c70f0c1317f5d456caa4e43dab0361d0ef890232e8abb0e85"
+      },
+      {
+        "mode": 76,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 76,
+        "query": "zzzznomatch",
+        "stored_count": 40,
+        "row_count": 39,
+        "visible_count": 0,
+        "rows_sha256": "e4947f99619ca7d904ed9bbb109a7bd2faf99493ee447d5172c21f64aceea878"
+      },
+      {
+        "mode": 77,
+        "query": "",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "efd9e0f501cbeab03dae69d7c55568ff66428f9fc55508805e6f4c04a6925931"
+      },
+      {
+        "mode": 77,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a2ca185ed070636e4cd13c95a1eb60224a27a9ea7b5b97664c6039c8ae574a2b"
+      },
+      {
+        "mode": 77,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 77,
+        "query": "",
+        "stored_count": 9,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "efd9e0f501cbeab03dae69d7c55568ff66428f9fc55508805e6f4c04a6925931"
+      },
+      {
+        "mode": 77,
+        "query": "a",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "efd9e0f501cbeab03dae69d7c55568ff66428f9fc55508805e6f4c04a6925931"
+      },
+      {
+        "mode": 77,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a2ca185ed070636e4cd13c95a1eb60224a27a9ea7b5b97664c6039c8ae574a2b"
+      },
+      {
+        "mode": 77,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 77,
+        "query": "a",
+        "stored_count": 9,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "efd9e0f501cbeab03dae69d7c55568ff66428f9fc55508805e6f4c04a6925931"
+      },
+      {
+        "mode": 77,
+        "query": "zzzznomatch",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 0,
+        "rows_sha256": "131d8745b8efa3c015f4897f7525c2ac87ff3174ac0329eec115ca582c999625"
+      },
+      {
+        "mode": 77,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "e9e5e20cf6305dfec9d2fcead7a65bae9d7cd1b297b3355576f178b1de5abb34"
+      },
+      {
+        "mode": 77,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 77,
+        "query": "zzzznomatch",
+        "stored_count": 9,
+        "row_count": 8,
+        "visible_count": 0,
+        "rows_sha256": "131d8745b8efa3c015f4897f7525c2ac87ff3174ac0329eec115ca582c999625"
+      },
+      {
+        "mode": 78,
+        "query": "",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "778b8b6ab568826bc0425a53720b2ef416d9e96fb8bbebd2ee82edbfd99cda1b"
+      },
+      {
+        "mode": 78,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "350a23729f58b87e04671a5b393aa44158c80b857d0a37d0346d8e5b636fafbc"
+      },
+      {
+        "mode": 78,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 78,
+        "query": "",
+        "stored_count": 5,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "778b8b6ab568826bc0425a53720b2ef416d9e96fb8bbebd2ee82edbfd99cda1b"
+      },
+      {
+        "mode": 78,
+        "query": "a",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "778b8b6ab568826bc0425a53720b2ef416d9e96fb8bbebd2ee82edbfd99cda1b"
+      },
+      {
+        "mode": 78,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "350a23729f58b87e04671a5b393aa44158c80b857d0a37d0346d8e5b636fafbc"
+      },
+      {
+        "mode": 78,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 78,
+        "query": "a",
+        "stored_count": 5,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "778b8b6ab568826bc0425a53720b2ef416d9e96fb8bbebd2ee82edbfd99cda1b"
+      },
+      {
+        "mode": 78,
+        "query": "zzzznomatch",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 0,
+        "rows_sha256": "c5889023b7b9822b3cdfd44f5f5a4fe486417fc2c43e5c1c4b87db46939fbe08"
+      },
+      {
+        "mode": 78,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "dfe4c301d4d470ea8b8679277017ff442a7bcb5ee67cbbeee9f41ff495c003ee"
+      },
+      {
+        "mode": 78,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 78,
+        "query": "zzzznomatch",
+        "stored_count": 5,
+        "row_count": 4,
+        "visible_count": 0,
+        "rows_sha256": "c5889023b7b9822b3cdfd44f5f5a4fe486417fc2c43e5c1c4b87db46939fbe08"
+      },
+      {
+        "mode": 79,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324"
+      },
+      {
+        "mode": 79,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324"
+      },
+      {
+        "mode": 79,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 79,
+        "query": "",
+        "stored_count": 2,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324"
+      },
+      {
+        "mode": 79,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324"
+      },
+      {
+        "mode": 79,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324"
+      },
+      {
+        "mode": 79,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 79,
+        "query": "a",
+        "stored_count": 2,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "d8f301707e65add2f0f89d3c87bbf608152413da6cae663d69cf0926f2fde324"
+      },
+      {
+        "mode": 79,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8361fa8ee653a57dab6e5380500b66755e5ca4defa6474306d59192ee262cfca"
+      },
+      {
+        "mode": 79,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8361fa8ee653a57dab6e5380500b66755e5ca4defa6474306d59192ee262cfca"
+      },
+      {
+        "mode": 79,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 79,
+        "query": "zzzznomatch",
+        "stored_count": 2,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "8361fa8ee653a57dab6e5380500b66755e5ca4defa6474306d59192ee262cfca"
+      },
+      {
+        "mode": 80,
+        "query": "",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "18907ba9eba821991e2644e192a365567ab1a1872f50804177dbed89fe18c71f"
+      },
+      {
+        "mode": 80,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a7d747bb6760360ec9b541d25985c303b929fd99c948c53b7c3d01413b89eee8"
+      },
+      {
+        "mode": 80,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 80,
+        "query": "",
+        "stored_count": 40,
+        "row_count": 39,
+        "visible_count": 39,
+        "rows_sha256": "18907ba9eba821991e2644e192a365567ab1a1872f50804177dbed89fe18c71f"
+      },
+      {
+        "mode": 80,
+        "query": "a",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 29,
+        "rows_sha256": "1513bc598d205f755d6ee72ac4434e15d7d1418befb0afa17319aee155e47a14"
+      },
+      {
+        "mode": 80,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "5173e1b67d3f19b9f0fc7959f5ed6c551e5d69932ed82179c2c9de7059c0444e"
+      },
+      {
+        "mode": 80,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 80,
+        "query": "a",
+        "stored_count": 40,
+        "row_count": 39,
+        "visible_count": 29,
+        "rows_sha256": "1513bc598d205f755d6ee72ac4434e15d7d1418befb0afa17319aee155e47a14"
+      },
+      {
+        "mode": 80,
+        "query": "zzzznomatch",
+        "stored_count": 39,
+        "row_count": 39,
+        "visible_count": 0,
+        "rows_sha256": "768e31ddd19b3b098b5061c83196ef63956647803fab22c510e931eb51e596af"
+      },
+      {
+        "mode": 80,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "5173e1b67d3f19b9f0fc7959f5ed6c551e5d69932ed82179c2c9de7059c0444e"
+      },
+      {
+        "mode": 80,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 80,
+        "query": "zzzznomatch",
+        "stored_count": 40,
+        "row_count": 39,
+        "visible_count": 0,
+        "rows_sha256": "768e31ddd19b3b098b5061c83196ef63956647803fab22c510e931eb51e596af"
+      },
+      {
+        "mode": 81,
+        "query": "",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "82af09eac0232e6cdfc8741e22b277497e47e6280a263d3a2502de5c76ae1256"
+      },
+      {
+        "mode": 81,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "86c2437f9d4608d8495422634f9bc8f1611399a3d39f859bbc4d518ace9e96cc"
+      },
+      {
+        "mode": 81,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 81,
+        "query": "",
+        "stored_count": 9,
+        "row_count": 8,
+        "visible_count": 8,
+        "rows_sha256": "82af09eac0232e6cdfc8741e22b277497e47e6280a263d3a2502de5c76ae1256"
+      },
+      {
+        "mode": 81,
+        "query": "a",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 3,
+        "rows_sha256": "fd82c189ff7be29ffb190ffc5f39519ad35a2ec3740bb740638f882903165208"
+      },
+      {
+        "mode": 81,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "3a8d2dccf8aa2e041a705260fa8515b6559750599f40c658f7716ff40407b4cf"
+      },
+      {
+        "mode": 81,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 81,
+        "query": "a",
+        "stored_count": 9,
+        "row_count": 8,
+        "visible_count": 3,
+        "rows_sha256": "fd82c189ff7be29ffb190ffc5f39519ad35a2ec3740bb740638f882903165208"
+      },
+      {
+        "mode": 81,
+        "query": "zzzznomatch",
+        "stored_count": 8,
+        "row_count": 8,
+        "visible_count": 0,
+        "rows_sha256": "f5c167f857c6fd8fe7827c23517c303e0d86220650ea2e67d71f05356d8a3afb"
+      },
+      {
+        "mode": 81,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "3a8d2dccf8aa2e041a705260fa8515b6559750599f40c658f7716ff40407b4cf"
+      },
+      {
+        "mode": 81,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 81,
+        "query": "zzzznomatch",
+        "stored_count": 9,
+        "row_count": 8,
+        "visible_count": 0,
+        "rows_sha256": "f5c167f857c6fd8fe7827c23517c303e0d86220650ea2e67d71f05356d8a3afb"
+      },
+      {
+        "mode": 82,
+        "query": "",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "861323b07158bf3c4ddd3fc4350206523bd65a4c2e3e22cea1cb25e6b64fb218"
+      },
+      {
+        "mode": 82,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "12317b01410504d25a07ac800b298ff07f79b5c734b918d4117f2c6c1e2dbaad"
+      },
+      {
+        "mode": 82,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 82,
+        "query": "",
+        "stored_count": 5,
+        "row_count": 4,
+        "visible_count": 4,
+        "rows_sha256": "861323b07158bf3c4ddd3fc4350206523bd65a4c2e3e22cea1cb25e6b64fb218"
+      },
+      {
+        "mode": 82,
+        "query": "a",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 2,
+        "rows_sha256": "807bbbc09bcb25b05624a6394781803e744fa881035f291cf12a81efa8725e27"
+      },
+      {
+        "mode": 82,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "3e06122a245058fdbf8d434f0fca8f75306b1c33e794dfc76f9cbd2385c9e482"
+      },
+      {
+        "mode": 82,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 82,
+        "query": "a",
+        "stored_count": 5,
+        "row_count": 4,
+        "visible_count": 2,
+        "rows_sha256": "807bbbc09bcb25b05624a6394781803e744fa881035f291cf12a81efa8725e27"
+      },
+      {
+        "mode": 82,
+        "query": "zzzznomatch",
+        "stored_count": 4,
+        "row_count": 4,
+        "visible_count": 0,
+        "rows_sha256": "d5845c2a9f29f24d8120f5a004007e5c57c00e38d0ae5bee42219a1d3e77ec3f"
+      },
+      {
+        "mode": 82,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "3e06122a245058fdbf8d434f0fca8f75306b1c33e794dfc76f9cbd2385c9e482"
+      },
+      {
+        "mode": 82,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 82,
+        "query": "zzzznomatch",
+        "stored_count": 5,
+        "row_count": 4,
+        "visible_count": 0,
+        "rows_sha256": "d5845c2a9f29f24d8120f5a004007e5c57c00e38d0ae5bee42219a1d3e77ec3f"
+      },
+      {
+        "mode": 83,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c"
+      },
+      {
+        "mode": 83,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c"
+      },
+      {
+        "mode": 83,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 83,
+        "query": "",
+        "stored_count": 2,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c"
+      },
+      {
+        "mode": 83,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c"
+      },
+      {
+        "mode": 83,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c"
+      },
+      {
+        "mode": 83,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 83,
+        "query": "a",
+        "stored_count": 2,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "75cb691293b5bdf47c57bb4f023bde042c16e8329e2bbc649ded9787e06ffe8c"
+      },
+      {
+        "mode": 83,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "e0ff5d2cc1d4b32ed74eb8cc2d42e06fea806724c19d0b9d73bc12dbb8d40156"
+      },
+      {
+        "mode": 83,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "e0ff5d2cc1d4b32ed74eb8cc2d42e06fea806724c19d0b9d73bc12dbb8d40156"
+      },
+      {
+        "mode": 83,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 83,
+        "query": "zzzznomatch",
+        "stored_count": 2,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "e0ff5d2cc1d4b32ed74eb8cc2d42e06fea806724c19d0b9d73bc12dbb8d40156"
+      },
+      {
+        "mode": 107,
+        "query": "",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 9,
+        "rows_sha256": "e9a380ec6bb7dffa651ae8bf556cfaabccbb057519cf1f3d89f9882b143e9789"
+      },
+      {
+        "mode": 107,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "15c7f64898fd58c32b3bc9d40d848377ff9a24f7d4168434f798bb89a91bb5a6"
+      },
+      {
+        "mode": 107,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 107,
+        "query": "",
+        "stored_count": 10,
+        "row_count": 9,
+        "visible_count": 9,
+        "rows_sha256": "e9a380ec6bb7dffa651ae8bf556cfaabccbb057519cf1f3d89f9882b143e9789"
+      },
+      {
+        "mode": 107,
+        "query": "a",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 4,
+        "rows_sha256": "ef3b769b5f9bedaf8f79f71c897d0f035dcbe2ddab4e454642004c87426147d7"
+      },
+      {
+        "mode": 107,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "9fbc7fe5d7d61cf9b559e93b9499b1c6a75b215e346eca6ee2b05a9f75ee3bf9"
+      },
+      {
+        "mode": 107,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 107,
+        "query": "a",
+        "stored_count": 10,
+        "row_count": 9,
+        "visible_count": 4,
+        "rows_sha256": "ef3b769b5f9bedaf8f79f71c897d0f035dcbe2ddab4e454642004c87426147d7"
+      },
+      {
+        "mode": 107,
+        "query": "zzzznomatch",
+        "stored_count": 9,
+        "row_count": 9,
+        "visible_count": 0,
+        "rows_sha256": "9c5ec2a6c4b2d87a8c26b84f908454708c25951b74c67e0ec7e306ead774aa6d"
+      },
+      {
+        "mode": 107,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "9fbc7fe5d7d61cf9b559e93b9499b1c6a75b215e346eca6ee2b05a9f75ee3bf9"
+      },
+      {
+        "mode": 107,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 107,
+        "query": "zzzznomatch",
+        "stored_count": 10,
+        "row_count": 9,
+        "visible_count": 0,
+        "rows_sha256": "9c5ec2a6c4b2d87a8c26b84f908454708c25951b74c67e0ec7e306ead774aa6d"
+      },
+      {
+        "mode": 108,
+        "query": "",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "3f992065cf2f52f4770a8c74599745c5eeda0c6aae106fe1b524b04b7ef2f8b6"
+      },
+      {
+        "mode": 108,
+        "query": "",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a7f87e612983891c9cdc3359205d7ca61f6ad76fa9150c9be293aea37e5c05a3"
+      },
+      {
+        "mode": 108,
+        "query": "",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 108,
+        "query": "",
+        "stored_count": 840,
+        "row_count": 839,
+        "visible_count": 839,
+        "rows_sha256": "3f992065cf2f52f4770a8c74599745c5eeda0c6aae106fe1b524b04b7ef2f8b6"
+      },
+      {
+        "mode": 108,
+        "query": "a",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 838,
+        "rows_sha256": "a654e2cb8d6a047e6ab8e5fd431ff622dd59d90da0a4e56e8b5696865161645a"
+      },
+      {
+        "mode": 108,
+        "query": "a",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 1,
+        "rows_sha256": "a7f87e612983891c9cdc3359205d7ca61f6ad76fa9150c9be293aea37e5c05a3"
+      },
+      {
+        "mode": 108,
+        "query": "a",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 108,
+        "query": "a",
+        "stored_count": 840,
+        "row_count": 839,
+        "visible_count": 838,
+        "rows_sha256": "a654e2cb8d6a047e6ab8e5fd431ff622dd59d90da0a4e56e8b5696865161645a"
+      },
+      {
+        "mode": 108,
+        "query": "zzzznomatch",
+        "stored_count": 839,
+        "row_count": 839,
+        "visible_count": 0,
+        "rows_sha256": "6df3593b680f27335d2c93e97ec12b81a79909d1cd3e15247cf4b1acb937de82"
+      },
+      {
+        "mode": 108,
+        "query": "zzzznomatch",
+        "stored_count": 1,
+        "row_count": 1,
+        "visible_count": 0,
+        "rows_sha256": "c80c41352861796a0f3f9e03ac260bd3578afb5c935d43eae9cb31ca88bcd071"
+      },
+      {
+        "mode": 108,
+        "query": "zzzznomatch",
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "mode": 108,
+        "query": "zzzznomatch",
+        "stored_count": 840,
+        "row_count": 839,
+        "visible_count": 0,
+        "rows_sha256": "6df3593b680f27335d2c93e97ec12b81a79909d1cd3e15247cf4b1acb937de82"
+      }
+    ],
+    "digest_format": "SHA256 UTF-8 JSON; sorted keys, ensure_ascii=true, compact separators",
+    "omissions": [
+      "Gameplay adapter integration and command acceptance",
+      "Initial parent-opening equal-name identity order",
+      "Historical-material tables explicitly rejected",
+      "Malformed table/null pointer rejection injection",
+      "Non-ASCII search and rendered panel parity"
+    ]
   }
 }

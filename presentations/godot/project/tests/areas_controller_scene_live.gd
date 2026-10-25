@@ -119,6 +119,9 @@ func pointer_areas() -> void:
 		await click_control(editor.paint_view.buttons.remove)
 		if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"pointer Remove"): return
 		await native("removed",{"id":id})
+		if destination == "Stockpiles":
+			await pointer_stockpile_empty(origin)
+			if stopped: return
 		editor.close_panel()
 	if not stockpiles_only: await pointer_zone_boundary_cells()
 	if stopped: return
@@ -597,6 +600,41 @@ func pointer_stockpile_repaint(origin: Vector3i, id: int) -> void:
 			if not await wait_ui(func(): return settled() and not editor.selected.is_empty(),"existing pile hit"): return
 			if not check(int(editor.selected.id) == id and editor.mode == "inspect","initial brush hit created instead of selecting"): return
 			await native("snapshot",{"id":id,"expected":{"tile_count":1,"extents":[0,0,1]}})
+
+func pointer_stockpile_empty(origin: Vector3i) -> void:
+	for ending in ["escape","right"]:
+		step = "viewport empty stockpile "+ending
+		if not editor.panel.visible:
+			var launcher: Button = scene._fortress_hud.navigation.Stockpiles
+			for frame in 4:
+				launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+			launcher.show(); await click_control(launcher,true)
+			if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"empty test launcher"): return
+		await pointer_click(tile_screen(origin)); await pointer_click(tile_screen(origin))
+		if not await wait_ui(func(): return settled(),"empty test creation"): return
+		if not check(editor.paint_session != null and not editor.paint_session.area.is_empty(),"empty test missing created pile"): return
+		var id: int = editor.paint_session.area.id
+		await click_control(editor.paint_view.buttons.brush)
+		await click_control(editor.paint_view.buttons.erase)
+		await pointer_click(tile_screen(origin))
+		if not await wait_ui(func(): return settled(),"erase last cell"): return
+		if not check(editor.paint_view.accept_button.disabled and editor.paint_session.area.id == id,"empty pile must retain identity with Accept disabled"): return
+		await native("snapshot",{"id":id,"expected":{"tile_count":0,"extents":[0]}})
+		await capture("stockpiles_empty_"+ending)
+		await click_control(editor.paint_view.buttons.erase)
+		await pointer_click(tile_screen(origin))
+		if not await wait_ui(func(): return settled(),"regrow empty pile"): return
+		await native("snapshot",{"id":id,"expected":{"tile_count":1,"extents":[1]}})
+		if not check(not editor.paint_view.accept_button.disabled,"regrown pile must enable Accept"): return
+		await click_control(editor.paint_view.buttons.erase)
+		await pointer_click(tile_screen(origin))
+		# Exit before polling the final erase receipt. The owner must drain then delete.
+		var owner = editor.paint_session
+		if ending == "escape": await pointer_key(KEY_ESCAPE)
+		else: await pointer_click(tile_screen(origin),MOUSE_BUTTON_RIGHT)
+		if not check(not editor.panel.visible,"empty exit left paint panel open"): return
+		if not await wait_ui(func(): return not is_instance_valid(owner) or owner.stopped,"empty exit deletion receipt"): return
+		await native("removed",{"id":id})
 
 func pointer_key(key: Key) -> void:
 	for pressed in [true,false]:

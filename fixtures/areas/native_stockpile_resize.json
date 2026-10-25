@@ -3783,5 +3783,23 @@
       "native links",
       "held brush timing across receipt and closure"
     ]
+  },
+  "empty_viewport_acceptance": {
+    "run": "build/areas-acceptance-20261025-110112",
+    "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+    "status": "passed_with_known_issues",
+    "native_observations": 23,
+    "screenshots": 13,
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "scope": "Repeats focused gesture workflow after removing deferred replacement path; also erases new piles to empty, verifies disabled Accept and retained identity, regrows same ID, then exits via Escape/right-click before polling final erase, waiting for owner deletion and independent native absence.",
+    "offline": "build/qa/stockpile-paint-cleanup-fixed",
+    "omissions": [
+      "native placement clipping/eligibility",
+      "give/take links",
+      "settings input scaling"
+    ]
   }
 }

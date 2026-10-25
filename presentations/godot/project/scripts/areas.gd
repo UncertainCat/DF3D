@@ -40,7 +40,6 @@ var multi_state = preload("res://scripts/area_multi_state.gd").new()
 var multi_second_corner := false
 var paint_tool := "rectangle"
 var paint_erasing := false
-var paint_second_corner := false
 var paint_saved_corner := Vector3i(-1,-1,-1)
 var paint_last := Vector3i(-1,-1,-1)
 var paint_preview: MeshInstance3D
@@ -413,7 +412,7 @@ func new_area() -> void:
 	if kind_picker.selected == 0:
 		var bounds: Vector3 = world.map_size()
 		paint_state.open({},Vector2i(int(bounds.x),int(bounds.z)),int(world.get_top_z()))
-		paint_tool = "rectangle"; paint_erasing = false; paint_second_corner = false; mode = "paint"; stockpile_page = "repaint"
+		paint_tool = "rectangle"; paint_erasing = false; mode = "paint"; stockpile_page = "repaint"
 		_start_paint_session({})
 	else:
 		mode = "zone_select"
@@ -540,7 +539,7 @@ func choose_zone_type(id: int) -> void:
 		zone_draft = row.duplicate(true)
 		var bounds: Vector3 = world.map_size()
 		paint_state.open({},Vector2i(int(bounds.x),int(bounds.z)),int(world.get_top_z()))
-		paint_tool = "rectangle"; paint_erasing = false; paint_second_corner = false; mode = "paint"
+		paint_tool = "rectangle"; paint_erasing = false; mode = "paint"
 		_start_paint_session({})
 		dragging = false; update_controls(); draw_outline()
 		return
@@ -630,7 +629,7 @@ func begin_paint() -> void:
 	var bounds: Vector3 = world.map_size()
 	paint_state.open(selected,Vector2i(int(bounds.x),int(bounds.z)),int(selected.origin.z))
 	origin = selected.origin; rectangle = Rect2i(origin.x,origin.y,int(selected.width),int(selected.height))
-	paint_tool = "rectangle"; paint_erasing = false; paint_second_corner = false; mode = "paint"; stockpile_page = "repaint"
+	paint_tool = "rectangle"; paint_erasing = false; mode = "paint"; stockpile_page = "repaint"
 	_start_paint_session(selected)
 	dragging = false; update_controls(); draw_outline()
 
@@ -672,7 +671,7 @@ func leave_multi_for_paint() -> void:
 	var bounds: Vector3 = world.map_size()
 	paint_state.open({},Vector2i(int(bounds.x),int(bounds.z)),int(world.get_top_z()))
 	# Preserve the shared first corner and Paint erase state across this switch.
-	paint_second_corner = false; mode = "paint"
+	mode = "paint"
 	_start_paint_session({})
 	if paint_tool == "brush":
 		paint_saved_corner = shared_corner
@@ -748,25 +747,17 @@ func cancel_zone_paint() -> void:
 	new_area()
 
 func _paint_stroke(first: Vector3i, last: Vector3i) -> bool:
-	if paint_session != null: return paint_session.stroke(first,last,paint_erasing)
-	return paint_state.stroke(first,last,paint_erasing)
+	return paint_session != null and paint_session.stroke(first,last,paint_erasing)
 
 func accept_paint() -> void:
-	if mode == "paint" and paint_session != null:
-		if not available: return
-		if paint_session.finish("accept"):
-			dragging = false; paint_preview.mesh = null; update_controls()
-		return
-	if mode != "paint" or dragging or not available or request_ticket != 0: return
-	if not paint_state.prepare():
-		message.text = paint_state.problem; request_problem = not paint_state.problem.is_empty(); update_controls(); return
-	send(paint_state.next_request(kind_picker.selected,int(zone_draft.get("id",-1))))
+	if mode != "paint" or paint_session == null or not available: return
+	if paint_session.finish("accept"):
+		dragging = false; paint_preview.mesh = null; update_controls()
 
 func select_paint_tool(key: String) -> void:
-	if mode != "paint" or not available or request_ticket != 0: return
+	if mode != "paint" or paint_session == null or not available or request_ticket != 0: return
 	if key == "remove":
-		if paint_session != null: paint_session.finish("remove")
-		else: remove_area()
+		paint_session.finish("remove")
 		return
 	if key == "erase":
 		# Native072013 retains the mode and pending first corner on this toggle.
@@ -781,18 +772,18 @@ func select_paint_tool(key: String) -> void:
 				if dragging: drag_start = paint_saved_corner
 				paint_saved_corner = Vector3i(-1,-1,-1)
 		else: dragging = false
-		paint_tool = key; paint_second_corner = false
+		paint_tool = key
 		paint_preview.mesh = null
 	update_controls()
 
 func paint_pointer(tile: Vector3i, pressed: bool) -> void:
-	if paint_session != null and (paint_session.stopped or not paint_session.ending.is_empty()): return
+	if paint_session == null or paint_session.stopped or not paint_session.ending.is_empty(): return
 	paint_hover = tile
 	if tile.z != paint_state.z:
-		# Native084658 ignores other-plane clicks without losing Rectangle's corner.
-		if paint_session == null or paint_tool != "rectangle": dragging = false
+		# Native ignores other-plane clicks without losing Rectangle's corner.
+		if paint_tool != "rectangle": dragging = false
 		paint_preview.mesh = null; update_controls(); return
-	if paint_session != null and paint_tool == "rectangle":
+	if paint_tool == "rectangle":
 		if pressed:
 			if dragging:
 				paint_session.rectangle(drag_start,tile,paint_erasing)
@@ -800,24 +791,11 @@ func paint_pointer(tile: Vector3i, pressed: bool) -> void:
 			else:
 				drag_start = tile; dragging = true; draw_paint_preview(tile)
 		# Native release only releases the mouse; the first corner survives.
-		draw_outline(); update_controls(); return
-	if pressed:
-		paint_second_corner = dragging and paint_tool == "rectangle"
-		if not paint_second_corner: drag_start = tile
-		paint_last = tile; dragging = true
-		if paint_tool != "rectangle": _paint_stroke(tile,tile)
-		else: draw_paint_preview(tile)
-	elif dragging:
-		if paint_tool == "rectangle":
-			if not paint_second_corner and tile == drag_start:
-				update_controls(); return
-			if paint_session != null: paint_session.rectangle(drag_start,tile,paint_erasing)
-			else: paint_state.rectangle(drag_start,tile,paint_erasing)
+	else:
+		if pressed:
+			paint_last = tile; dragging = true; _paint_stroke(tile,tile)
 		else:
-			if paint_last.z != tile.z: paint_last = tile
-			if paint_session == null: _paint_stroke(paint_last,tile)
-		dragging = false
-		paint_preview.mesh = null
+			dragging = false; paint_preview.mesh = null
 	draw_outline(); update_controls()
 
 func map_paint_pointer(tile: Vector3i, pressed: bool) -> void:
@@ -845,7 +823,7 @@ func _show_paint_counts() -> void:
 		paint_view.set_counts(str(zone_draft.get("label","")),paint_counts.values)
 
 func _sync_paint_counts() -> void:
-	if not play_enabled or not panel.visible or not ui_host.allows_panel_input(self) or mode != "paint" or kind_picker.selected != 1 or not available or request_ticket != 0 or paint_state.stopped or not paint_state.pending.is_empty():
+	if not play_enabled or not panel.visible or not ui_host.allows_panel_input(self) or mode != "paint" or kind_picker.selected != 1 or not available or request_ticket != 0 or paint_state.stopped:
 		paint_counts.clear(); return
 	var preview: Dictionary = {}
 	var hover := paint_hover
@@ -1164,8 +1142,8 @@ func update_controls() -> void:
 	paint_view.tools.visible = panel.visible and native_paint
 	if mode == "multi": paint_view.display_multi(multi_state,available and request_ticket == 0)
 	elif native_paint:
-		var ready: bool = not paint_state.cells.is_empty() and (paint_session != null or (not dragging and paint_state.cells != paint_state.original))
-		var editable: bool = available and request_ticket == 0 and not paint_state.stopped and (paint_session == null or paint_session.ending.is_empty())
+		var ready: bool = not paint_state.cells.is_empty() and paint_session != null
+		var editable: bool = available and request_ticket == 0 and not paint_state.stopped and (paint_session != null and paint_session.ending.is_empty())
 		paint_view.display(paint_tool,ready,editable,not selected.is_empty(),paint_erasing,paint_session != null and not paint_session.area.is_empty())
 	_sync_paint_counts()
 	locations_view.visible = panel.visible and not pile and not selected.is_empty() and stockpile_page == "location"
@@ -1282,7 +1260,7 @@ func _process(delta: float) -> void:
 			paint_preview.mesh = null
 			paint_last = Vector3i(-1,-1,-1)
 			paint_hover = Vector3i(-1,-1,-1)
-			if paint_state.area.is_empty() and paint_state.cells.is_empty() and paint_state.pending.is_empty() and request_ticket == 0 and (paint_session == null or paint_session.can_follow_elevation()):
+			if paint_state.area.is_empty() and paint_state.cells.is_empty() and request_ticket == 0 and (paint_session == null or paint_session.can_follow_elevation()):
 				paint_state.z = z
 				# Native084202 preserves the corner while Brush hides Rectangle.
 				if paint_saved_corner.z >= 0: paint_saved_corner.z = z
@@ -1601,15 +1579,7 @@ func handle_back() -> void:
 		_detach_draft(); candidates_state.clear(); stockpile_page = "types"; update_controls(); return
 	if zone_menu.cancel_edit(): return
 	if mode == "paint":
-		if paint_session != null:
-			close_panel(); return
-		if selected.is_empty():
-			if kind_picker.selected == 1 or not paint_state.cells.is_empty() or dragging: new_area()
-			else: close_panel()
-			return
-		var observed := selected.duplicate(true)
-		_detach_draft(); paint_state.clear(); dragging = false
-		use_area(observed,false); return
+		close_panel(); return
 	if links_view.visible and links_picking:
 		_detach_draft(); links_picking = false; mode = "inspect"; update_controls(); return
 	if storage_view.visible:

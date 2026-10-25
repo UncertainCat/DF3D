@@ -168,8 +168,22 @@ resubmission and removal. Tile-hit summaries require a fresh inspection before
 editing; their zero revision is not mutation authority. Both save manifests stayed
 unchanged and owned DF closed unsaved. Reproduce with
 `areas_acceptance.ps1 -SaveId <new-id> -ControllerScene -StockpilePaintOnly`.
-This focused scope excludes settings. Empty lifecycle through viewport, placement
-eligibility and links remain separate acceptance requirements.
+The expanded focused run `build/areas-acceptance-20261025-110112` passes23
+native observations and13 captures after removal of the deferred replacement
+path. It also verifies empty Accept disabling, same-ID regrowth and empty exit
+via both Escape/right-click before the final erase receipt is polled. The owner
+drains the erase and deletes only the confirmed empty identity. Native readback
+confirms removal; both save manifests remain unchanged and DF closes unsaved.
+Its only diagnostic is the known separate-thread notice.
+
+`area_paint_state.gd` now owns geometry only: sampled cells, rectangles, bounds,
+spans and generations. Request preparation, replacement-at-Accept, local brush
+interpolation and the controller's no-owner mutation fallback are removed.
+The session is the sole owner of gesture submission and authoritative replies.
+Offline `build/qa/stockpile-paint-cleanup-fixed` passes core, controller, geometry
+and owner checks; rendered menu captures have known engine diagnostics only.
+The focused live scope excludes settings. Native placement clipping/eligibility,
+links and settings input scaling remain separate acceptance requirements.
 
 ## Native stockpile initialization (DF 53.16)
 

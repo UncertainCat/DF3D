@@ -512,7 +512,7 @@ func run():
 	c.ui_host.activate(c)
 	c.mode = "paint"; c.paint_tool = "rectangle"; w.top_z = 2; c.current_z = 2
 	c.zone_draft = {"id":92,"name":"Bedroom","label":"Bedroom","icon":""}
-	c.paint_state.open({},Vector2i(48,48),2)
+	c._start_paint_session({})
 	c.paint_motion(Vector3i(4,5,2)); c.paint_counts.poll(0)
 	check(count_service.requests[0].paint_preview == {"x":4,"y":5,"width":1,"height":1},"idle map hover is a one-cell count preview")
 	check(c.request_ticket == 0,"count read does not own the mutation ticket")

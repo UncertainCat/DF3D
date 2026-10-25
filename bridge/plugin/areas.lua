@@ -229,6 +229,7 @@ for _,cat in ipairs{'ammo','armor','finished_goods','furniture','weapons'} do
  for _,quality in ipairs{'quality_core','quality_total'} do setting_leaf(cat..'/'..quality,cat..'.'..quality,'quality') end
 end
 local native_setting_modes={
+ ['wood']=85,
  ['animals/animals']=0,['corpses']=28,
  ['refuse/corpses']=31,['refuse/body_parts']=32,['refuse/skulls']=33,['refuse/bones']=34,
  ['refuse/shells']=35,['refuse/teeth']=36,['refuse/horns']=37,['refuse/hair']=38,
@@ -403,7 +404,7 @@ local function setting_caption(d,index,values)
   return '' -- Summary membership only; native rows own creature names.
  elseif d.source=='plant' then
   if not v.flags.TREE then return nil end
-  return v.name_plural or ''
+  return '' -- Summary membership only; native rows own plant names.
  elseif d.source=='organic' then
   local raws=df.global.world.raws;local category=df.organic_mat_category[d.selector]
   local indexes=raws.mat_table.organic_indexes[category]

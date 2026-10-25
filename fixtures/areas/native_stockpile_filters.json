@@ -20053,5 +20053,422 @@
       "source_save": "unchanged",
       "owned_df": "closed without saving"
     }
+  },
+  "wood_lists": {
+    "run": "build/stockpile-presets-native-20261025-041148",
+    "status": "passed",
+    "native_list_comparisons": 12,
+    "native_bulk_actions": 24,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "cases": [
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "",
+        "raw_count": 225,
+        "stored_count": 225,
+        "row_count": 72,
+        "visible_count": 72,
+        "rows_sha256": "91e909271506c597e6d26e925cda78a9f2834028710ea888c51ed0070d5c808d",
+        "visible_indices_sha256": "d1dafa5753c9255a4293486245180d3b77011fbce3a82107d79ef5d3cf459347",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 132,
+            "name": "Abaca trees",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 200,
+            "name": "Acacias",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "wood.mats",
+            "index": 217,
+            "name": "Alders",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 172,
+            "name": "Walnut trees",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "wood.mats",
+            "index": 203,
+            "name": "Willows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "maple",
+        "raw_count": 225,
+        "stored_count": 225,
+        "row_count": 72,
+        "visible_count": 1,
+        "rows_sha256": "7f25d53ac84f829a8ca30f6e12b31f444f6239acb2a922f299eb1311ee45351c",
+        "visible_indices_sha256": "9b611195f2729e6e5757662afabaa40a406581d5111d38dc52849fe9c09ad83d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 132,
+            "name": "Abaca trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 200,
+            "name": "Acacias",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 217,
+            "name": "Alders",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 172,
+            "name": "Walnut trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 203,
+            "name": "Willows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "zzzznomatch",
+        "raw_count": 225,
+        "stored_count": 225,
+        "row_count": 72,
+        "visible_count": 0,
+        "rows_sha256": "e20b13457ea0661d0edefc7c9972e6f7a35d46eaa487bb7736b333b3a2d2f37d",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 132,
+            "name": "Abaca trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 200,
+            "name": "Acacias",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 217,
+            "name": "Alders",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 172,
+            "name": "Walnut trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 203,
+            "name": "Willows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "",
+        "raw_count": 225,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "maple",
+        "raw_count": 225,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "zzzznomatch",
+        "raw_count": 225,
+        "stored_count": 1,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "",
+        "raw_count": 225,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "maple",
+        "raw_count": 225,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "zzzznomatch",
+        "raw_count": 225,
+        "stored_count": 0,
+        "row_count": 0,
+        "visible_count": 0,
+        "rows_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [],
+        "last_rows": []
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "",
+        "raw_count": 225,
+        "stored_count": 226,
+        "row_count": 72,
+        "visible_count": 72,
+        "rows_sha256": "91e909271506c597e6d26e925cda78a9f2834028710ea888c51ed0070d5c808d",
+        "visible_indices_sha256": "d1dafa5753c9255a4293486245180d3b77011fbce3a82107d79ef5d3cf459347",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 132,
+            "name": "Abaca trees",
+            "visible": true
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 200,
+            "name": "Acacias",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "wood.mats",
+            "index": 217,
+            "name": "Alders",
+            "visible": true
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 172,
+            "name": "Walnut trees",
+            "visible": true
+          },
+          {
+            "enabled": true,
+            "field": "wood.mats",
+            "index": 203,
+            "name": "Willows",
+            "visible": true
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "maple",
+        "raw_count": 225,
+        "stored_count": 226,
+        "row_count": 72,
+        "visible_count": 1,
+        "rows_sha256": "7f25d53ac84f829a8ca30f6e12b31f444f6239acb2a922f299eb1311ee45351c",
+        "visible_indices_sha256": "9b611195f2729e6e5757662afabaa40a406581d5111d38dc52849fe9c09ad83d",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 132,
+            "name": "Abaca trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 200,
+            "name": "Acacias",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 217,
+            "name": "Alders",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 172,
+            "name": "Walnut trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 203,
+            "name": "Willows",
+            "visible": false
+          }
+        ]
+      },
+      {
+        "bulk_actions": 2,
+        "mode": 85,
+        "probe": "wood_leaf_rows",
+        "query": "zzzznomatch",
+        "raw_count": 225,
+        "stored_count": 226,
+        "row_count": 72,
+        "visible_count": 0,
+        "rows_sha256": "e20b13457ea0661d0edefc7c9972e6f7a35d46eaa487bb7736b333b3a2d2f37d",
+        "visible_indices_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "first_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 132,
+            "name": "Abaca trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 200,
+            "name": "Acacias",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 217,
+            "name": "Alders",
+            "visible": false
+          }
+        ],
+        "last_rows": [
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 172,
+            "name": "Walnut trees",
+            "visible": false
+          },
+          {
+            "enabled": false,
+            "field": "wood.mats",
+            "index": 203,
+            "name": "Willows",
+            "visible": false
+          }
+        ]
+      }
+    ],
+    "digest_format": "SHA256 of UTF-8 JSON with ensure_ascii=true, sorted keys and compact separators",
+    "omissions": [
+      "Non-ASCII search",
+      "Rendered settings-panel parity",
+      "Full workflow regression after integration"
+    ],
+    "command_acceptance": {
+      "run": "build/stockpile-initialization-20261025-041402",
+      "status": "passed",
+      "native_observations": 26,
+      "page_reads": 3,
+      "edits": 9,
+      "source_save": "unchanged",
+      "owned_df": "closed without saving",
+      "diagnostics": "clean",
+      "scope": "Wood mode85 only, plus creation and removal"
+    }
   }
 }

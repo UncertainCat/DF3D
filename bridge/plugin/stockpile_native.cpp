@@ -181,6 +181,10 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
         return true;
     };
     const auto& raws=df::global::world->raws;
+    // Wood's int32 getter skips out-of-range indices, including stale tails.
+    // A referenced in-range raw must still exist before entering native code.
+    if(mode==85)for(size_t i=0;i<owned.wood.mats.size() && i<raws.plants.all.size();++i)
+        if(!raws.plants.all[i])return std::nullopt;
     bool valid=true;
     switch(mode) {
       case 71:valid=fits(owned.finished_goods.color,raws.descriptors.colors);break;

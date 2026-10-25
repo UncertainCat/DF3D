@@ -1081,6 +1081,20 @@ def main():
     function settings_rows(b,mode,query,budget)
      if force_rows_failure then return {ok=false,message='',steps=0} end
      assert(budget==nil)
+     if mode==85 then
+      local rows={};local raws=df.global.world.raws.plants.all
+      for i,value in ipairs(b.settings.wood.mats)do
+       local raw=raws[i]
+       if raw and raw.flags.TREE then
+        local label=raw.name_plural or ''
+        if #label>512 then return {ok=false,message='',steps=0}end
+        rows[#rows+1]={field='wood.mats',index=i-1,label=label,enabled=value~=0,
+         visible=label:lower():find(query:lower(),1,true)~=nil}
+       end
+      end
+      table.sort(rows,function(a,b)if a.label==b.label then return a.index<b.index end;return a.label<b.label end)
+      return {ok=true,steps=0,work_unknown=true,rows=rows}
+     end
      local creatures={[0]={'animals','enabled'},[28]={'corpses','corpses'},
       [31]={'refuse','corpses'},[32]={'refuse','body_parts'},[33]={'refuse','skulls'},
       [34]={'refuse','bones'},[35]={'refuse','shells'},[36]={'refuse','teeth'},
@@ -1185,14 +1199,8 @@ def main():
             assert 0 <= step["steps"] <= 64 and step["active_kinds"] in (0, 32)
             result = settings_adapter(setting_request(key, **extra))
         raise AssertionError("settings builder did not finish")
-    queued = settings_adapter(setting_request())
-    assert queued["ok"] and queued["build_phase"] == 1 and queued["build_done"] == 0 and queued["build_total"] == 5000
-    assert queued["active_kinds"] == 32 and queued["steps"] == 121 and len(queued["settings"]) == 0
-    for builder in [6, 7]:
-        step = settings_adapter(lua.table_from({"step": 2048, "builder_kind": builder, "epoch": 1}))
-        assert step["steps"] == 0 and step["active_kinds"] == 32
     first, phases = setting_page()
-    assert first["ok"] and phases == {1, 2, 3} and len(first["settings"]) == 128
+    assert first["ok"] and phases == set() and len(first["settings"]) == 128
     assert first["settings"][1]["label"] == "Tree 00001" and first["settings"][1]["index"] == 4999
     assert first["settings"][1]["key"] == "wood/4999" and first["settings"][1]["state"] == 2
     assert not first["settings"][1]["estimated"] and first["next_cursor"] == 128
@@ -1203,26 +1211,23 @@ def main():
     assert not setting_page(expected_list_revision=receipt ^ 1)[0]["ok"]
     lua.execute("pile.settings.wood.mats[5000]=0")
     refreshed, _ = setting_page(expected_list_revision=receipt)
-    assert refreshed["settings"][1]["state"] == 1 and refreshed["list_revision"] == receipt
+    assert not refreshed["ok"]
+    refreshed, _ = setting_page()
+    assert refreshed["settings"][1]["state"] == 1 and refreshed["list_revision"] != receipt
+    receipt = refreshed["list_revision"]
     matched, _ = setting_page(query="TREE 00001")
     assert len(matched["settings"]) == 1 and matched["settings"][1]["index"] == 4999
-    assert matched["query"] == "TREE 00001" and matched["list_revision"] == receipt
+    assert matched["query"] == "TREE 00001" and matched["list_revision"] != receipt
     small_budget = setting_request(expected_list_revision=receipt)
     small_budget["step_budget"] = 0
     page = settings_adapter(small_budget)
     assert page["ok"] and len(page["settings"]) == 128 and page["next_cursor"] == 128
     assert len(setting_page(cursor=5000, expected_list_revision=receipt)[0]["settings"]) == 0
     assert setting_page(cursor=-1)[0]["message"] == "invalid area cursor"
-    # Raw count changes invalidate receipts; a queued source changing length
-    # fails and is evicted, permitting an explicit fresh request.
-    lua.execute("settings_fields['wood.mats'].count=5001")
-    assert setting_page(expected_list_revision=receipt)[0]["message"] == "List changed; refresh"
-    result, _ = setting_page()
-    assert result["message"] == "List changed; refresh"
-    lua.execute("settings_fields['wood.mats'].count=5000")
-    assert setting_page()[0]["ok"]
-    # Duplicate captions retain independent indices; blank captions are omitted
-    # while ineligible plant raws do not count as missing captions.
+    # Native row contents invalidate receipts even when raw count is unchanged.
+    lua.execute("df.global.world.raws.plants.all[1].name_plural='Renamed'")
+    assert not setting_page(expected_list_revision=receipt)[0]["ok"]
+    # Duplicate and blank native captions retain their independent identities.
     lua.execute(r"""
     df.global.world.raws.plants.all={{name_plural='Same',flags={TREE=true}},
       {name_plural='Same',flags={TREE=true}},{name_plural='',flags={TREE=true}},
@@ -1230,13 +1235,13 @@ def main():
     settings_fields['wood.mats'].count=4
     """)
     duplicates, _ = setting_page()
-    assert duplicates["ok"] and duplicates["omitted"] == 1 and len(duplicates["settings"]) == 2
-    assert [r["index"] for r in duplicates["settings"].values()] == [0, 1]
-    assert [r["key"] for r in duplicates["settings"].values()] == ["wood/0", "wood/1"]
-    # Reset the helper cache, as helpers.reset() does, for malformed caption.
+    assert duplicates["ok"] and duplicates["omitted"] == 0 and len(duplicates["settings"]) == 3
+    assert [r["index"] for r in duplicates["settings"].values()] == [2, 0, 1]
+    assert [r["key"] for r in duplicates["settings"].values()] == ["wood/2", "wood/0", "wood/1"]
+    # A native provider refusal has no local-caption fallback.
     lua.execute("df.global.world.raws.plants.all[1].name_plural=string.rep('x',513)")
     settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
-    assert setting_page()[0]["message"] == "Area setting label exceeds 512 bytes"
+    assert not setting_page()[0]["ok"]
     lua.execute("df.global.world.raws.plants.all[1].name_plural='Repaired'")
     assert setting_page()[0]["ok"]
     lua.execute(r"""
@@ -1353,13 +1358,17 @@ def main():
     # Epoch replacement drops label jobs, as do successful DF3D mutations.
     settings_adapter(lua.table_from({"step": 0, "builder_kind": 5, "epoch": 2}))
     assert not setting_page("wood", expected_list_revision=receipt)[0]["ok"]
+    lua.execute("pile.settings.misc.allow_organic=true")
     observed, _ = setting_page("wood")
     current = settings_adapter(lua.globals().request(9, lua.table_from({})))
     changed = settings_adapter(lua.globals().request(11, lua.table_from({"operation": 13, "organic": 0,
                                "expected_revision": current["areas"][1]["revision"]})))
     assert changed["ok"] and not setting_page("wood", expected_list_revision=observed["list_revision"])[0]["ok"]
-    queued = settings_adapter(setting_request("wood", query="unique pending query"))
+    queued = settings_adapter(setting_request("stone/metal_ores", query="unique pending query"))
     assert queued["active_kinds"] == 32
+    for builder in [6, 7]:
+        step = settings_adapter(lua.table_from({"step": 2048, "builder_kind": builder, "epoch": 1}))
+        assert step["steps"] == 0 and step["active_kinds"] == 32
     candidates = settings_adapter(lua.globals().request(14, lua.table_from({"kind": 1})))
     assert candidates["active_kinds"] == 160
     step = settings_adapter(lua.table_from({"step": 1, "builder_kind": 5, "epoch": 1}))
@@ -1533,7 +1542,7 @@ def main():
             values["row_key"] = row_key
         request = lua.globals().request(11, lua.table_from(values))
         request["settings_fill"] = lua.globals().settings_fill
-        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") and list_key != "refuse/type" or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
+        if extra.get("scope") in (3,4) or extra.get("query") and "/quality_" in list_key or "/other_materials" in list_key or list_key.endswith("/color") or list_key == "wood" or list_key == "animals/animals" or list_key == "corpses" or list_key.startswith("refuse/") and list_key != "refuse/type" or list_key in ("ammo/type","weapons/weapons","weapons/trap_components","armor/body","armor/head","armor/feet","armor/hands","armor/legs","armor/shield") or list_key in ("bars_blocks/bars_other", "bars_blocks/blocks_other"):
             request["synchronous_write"] = True
         return request
     def fill_count():
@@ -1669,7 +1678,7 @@ def main():
      end
      return {ok=true,steps=cost,resized=resize}
     end
-    pile.settings.wood.mats={0}
+    make_setting('wood.mats',3,{0})
     """)
     for key,field,raw in [("ammo/type","ammo.type","ammo"),
                          ("weapons/weapons","weapons.weapon_type","weapons"),
@@ -1750,13 +1759,23 @@ def main():
     assert not settings_adapter(fixed_edit("ammo/other_materials", "ammo/other_materials/2"))["ok"]
     lua.execute("make_setting('ammo.other_mats',2,{0,0})")
     rejected = settings_adapter(fixed_edit("wood", "wood/2"))
-    assert rejected["message"] == "Unknown stockpile settings row"
+    assert not rejected["ok"]
     assert lua.eval("#pile.settings.wood.mats==1 and pile.settings.wood.mats[1]==0")
-    assert settings_adapter(fixed_edit("wood", "wood/1"))["ok"]
-    assert lua.eval("#pile.settings.wood.mats==3 and pile.settings.wood.mats[1]==0 and pile.settings.wood.mats[2]==1 and pile.settings.wood.mats[3]==1")
-    lua.execute("pile.settings.wood.mats={1,1,0,9}")
+    assert not settings_adapter(fixed_edit("wood", "wood/1"))["ok"]
+    assert lua.eval("#pile.settings.wood.mats==1 and pile.settings.wood.mats[1]==0")
+    lua.execute("make_setting('wood.mats',3,{1,1,7,9})")
     assert settings_adapter(fixed_edit("wood", value=1))["ok"]
-    assert lua.eval("#pile.settings.wood.mats==4 and pile.settings.wood.mats[1]==0 and pile.settings.wood.mats[2]==0 and pile.settings.wood.mats[3]==0 and pile.settings.wood.mats[4]==9")
+    assert lua.eval("#pile.settings.wood.mats==4 and pile.settings.wood.mats[1]==0 and pile.settings.wood.mats[2]==0 and pile.settings.wood.mats[3]==7 and pile.settings.wood.mats[4]==9")
+    lua.execute("make_setting('wood.mats',3,{0,0,7,9})")
+    assert settings_adapter(fixed_edit("wood", value=2, query="oak"))["ok"]
+    assert lua.eval("#pile.settings.wood.mats==4 and pile.settings.wood.mats[1]==1 and pile.settings.wood.mats[2]==0 and pile.settings.wood.mats[3]==7 and pile.settings.wood.mats[4]==9")
+    lua.execute("make_setting('wood.mats',3,{})")
+    assert settings_adapter(fixed_edit("wood", value=2))["ok"]
+    assert lua.eval("#pile.settings.wood.mats==0")
+    lua.execute("force_rows_failure=true")
+    assert not setting_page("wood")[0]["ok"]
+    assert not settings_adapter(fixed_edit("wood", value=2))["ok"]
+    lua.execute("force_rows_failure=false;make_setting('wood.mats',3,{0,0,7,9})")
     lua.execute("make_setting('finished_goods.mats',3,{0,0,0,9});fixture_partitions['finished_goods.mats']={8,2,4}")
     assert settings_adapter(fixed_edit("finished_goods/metal"))["ok"]
     assert lua.eval("pile.settings.finished_goods.mats[1]==0 and pile.settings.finished_goods.mats[2]==1 and pile.settings.finished_goods.mats[3]==0 and pile.settings.finished_goods.mats[4]==9")
@@ -1959,7 +1978,7 @@ def main():
     assert not unknown["ok"] and unknown["steps"] == 13 and unknown["work_unknown"] and "inspect before retrying" in unknown["message"]
     lua.execute("helper_lost=false")
     # A read cannot opt out of bounded work by supplying the private write flag.
-    ordinary = setting_request("wood");ordinary["step_budget"] = 0;ordinary["synchronous_write"] = True;ordinary["synchronous_read"] = False
+    ordinary = setting_request("stone/metal_ores");ordinary["step_budget"] = 0;ordinary["synchronous_write"] = True;ordinary["synchronous_read"] = False
     assert settings_adapter(ordinary)["message"] == "Area request exceeds remaining step budget"
     # Location IDs belong to sites. Moving/repairing/removing a relationship
     # updates both sorted ID lists before native recategorization. The stand-in

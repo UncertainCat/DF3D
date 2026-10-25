@@ -10,8 +10,27 @@ indices, labels and booleans; native pointers remain local. Protected run
 with an empty search, preserving native UI, row values, source Wood filters and
 RNG buffers. Run `build/stockpile-presets-native-20261025-020901` also matched
 native filtering for `maple`, `TREE` and an unmatched ASCII query, checking all72
-rows and preserving native UI bytes. Wood gameplay list integration, non-ASCII
-search and the remaining material/item branches remain under audit.
+rows and preserving native UI bytes.
+
+Wood gameplay pages and individual/filtered All/None actions use the owned native
+row service (mode85). Native TREE eligibility, formatting, sorting and search
+replace local list construction. The int32 native raw getter skips out-of-range
+indices; referenced null raws are rejected before entry. Edits preserve short,
+empty and stale vectors, touching only native visible rows. Summary counts still
+use staged membership and are not established by this leaf integration.
+
+Protected run `build/stockpile-presets-native-20261025-041148` passed12 Wood
+list/search comparisons and24 actual native All/None actions across full, short,
+empty and stale vectors. Exact row identities, names, order, visibility and
+selection matched; probe calls preserved native UI bytes and source settings.
+Owned DF closed without saving and source save hashes were unchanged. Bounded
+row digests and samples are retained in `native_stockpile_filters.json.wood_lists`.
+Non-ASCII search and rendered settings-panel parity remain unverified.
+Focused command run `build/stockpile-initialization-20261025-041402` passed26
+native observations, including three page reads and nine edits, plus creation
+and removal. Complete settings and unrelated state matched, diagnostics were
+clean, source hashes were unchanged and owned DF closed without saving. This
+focused run does not establish the full stockpile workflow.
 
 The shared `df3d stockpile-rows-read <building-id> <native-mode> [filter]`
 diagnostic also supports the ten Core/Total quality lists. Their native branches

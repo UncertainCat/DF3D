@@ -1368,10 +1368,22 @@ diagnostics only; the 960-pixel Food capture was visually inspected.
 At912 and920 pixels with a scrollbar, DF computes negative text budgets and
 draws full names across the panel border, scrollbar and map. Captured row prefixes
 end at the first zero glyph and do not represent the entire spilled string.
-DF3D currently clips those names inside its existing controls; these two cases
-remain an unresolved native-parity gap pending maintainer direction. They are
-explicitly excluded from the truncation regression's parity claim. The separate
-minimum-width header reachability check is accepted below.
+DF3D reproduces this overflow with a separate text layer below the scrollbar.
+Its clip rectangle spans the full caption width but only the visible page
+height, preserving vertical clipping and asynchronous scroll positioning.
+The two negative-budget cases now join the rendered regression; their full
+native labels are checked rather than the misleading captured prefixes.
+`build/qa/stockpile-native-text-overflow-ready` passes root CTest19/19, settings
+state and rendered checks, with the documented Godot shutdown/thread diagnostics.
+The912-pixel overflow capture was inspected against the native screenshot.
+Protected `build/areas-acceptance-20261025-182558` verifies actual Food selection
+and leaf scrolling at912 pixels alongside the five-size stockpile fit workflow.
+Both main-scene overflow captures were inspected: names cross the panel border,
+the scrollbar occludes glyphs and only visible rows render. Owned DF93172 closes
+unsaved and both save manifests match; only the known separate-thread notice
+remains. This follows native behavior and does not assume approval for the
+previously proposed clipping exception. The separate minimum-width header
+reachability check is accepted below.
 
 `build/qa/stockpile-search-field-final` passes root CTest19/19, the complete
 recorded character/length map, controller caret/selection checks, and rendered

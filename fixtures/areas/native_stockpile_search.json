@@ -2887,7 +2887,19 @@
         ],
         "native_overflow": false
       }
-    ]
+    ],
+    "overflow_acceptance": {
+      "run": "build/areas-acceptance-20261025-182558",
+      "offline_gate": "build/qa/stockpile-native-text-overflow-ready",
+      "files_sha256": {
+        "summary.txt": "cfde984387709d7bd09806c7adb1e3e8c672691793487ad5cbea17e129b285c6",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+        "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+        "scene_stockpile_native_text_overflow.png": "51e44c56b10fc39c9d72154520d21fde3747f6e448eecc8d972feb0df0e70644",
+        "scene_stockpile_native_text_overflow_scrolled.png": "dbcff804daee7be328edfdee121217819e9e2e924d34757521f9a2fceda14525"
+      },
+      "scope": "Native negative-width horizontal spill at912/920 in renderer; actual Food selection and scrolling at912 in main scene. Vertical page clipping and scrollbar occlusion retained; no clipping exception assumed."
+    }
   },
   "windows_text_messages": {
     "source": "build/stockpile-search-native-20261025-165550/1200x800-0/text-messages.json",

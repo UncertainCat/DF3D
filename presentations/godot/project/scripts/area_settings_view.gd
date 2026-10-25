@@ -16,6 +16,7 @@ var scroll_generation: Array[int] = [0,0,0]
 var page_rows := 16
 var column_widths := [280,256,328]
 var layout_pending: Array[bool] = [false,false,false]
+var leaf_overflow: Control
 
 func restore_scroll(column: int, generation: int, offset: int) -> void:
 	# The new VBox must receive its minimum size before ScrollContainer can
@@ -49,6 +50,13 @@ func configure(source, model) -> void:
 		scroll.size = Vector2(width,576); scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		add_child(scroll); scrolls.append(scroll)
 		scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+		if column == 2:
+			# Negative native text widths spill horizontally, but only visible
+			# page rows render. Keep this below the scrollbar, which overwrites
+			# the intervening glyph cells in native DF.
+			leaf_overflow = Control.new(); leaf_overflow.clip_contents = true
+			leaf_overflow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			add_child(leaf_overflow)
 		var native_bar = preload("res://scripts/area_location_scrollbar.gd").new()
 		add_child(native_bar); native_bar.configure(source)
 		native_bar.position = Vector2(x + width - 16,44)
@@ -172,6 +180,8 @@ func render() -> void:
 					if control is Button: control.disabled = busy
 			continue
 		row_cache[column] = snapshot.duplicate(true)
+		if column == 2:
+			for child in leaf_overflow.get_children(): leaf_overflow.remove_child(child); child.queue_free()
 		# Native navigation/search retains the scroll offset. An asynchronous
 		# reply can leave the column empty long enough for Godot to clamp it to
 		# zero; retain its last populated offset across that temporary gap.
@@ -208,6 +218,13 @@ func render() -> void:
 			label.size = Vector2(([208,208][column] - (48 if column == 0 else 0)) if column < 2 else maxi(0,column_widths[2] - 16 - (16 if total > page_rows else 0)),36)
 			label.add_theme_font_size_override("font_size",12); label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			label.clip_text = true; label.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(label)
+			if column == 2 and column_widths[2]/8-5-(2 if total > page_rows else 0) < 0:
+				label.hide()
+				var overflow := Label.new(); overflow.text = label.text
+				overflow.size = Vector2(4096,36); overflow.add_theme_font_size_override("font_size",12)
+				overflow.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+				overflow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				leaf_overflow.add_child(overflow)
 			if column == 0:
 				var picture := TextureRect.new(); picture.texture = art.texture(category_art.get(str(row.key),""))
 				picture.position = Vector2(2,2); picture.size = Vector2(32,32)
@@ -225,6 +242,16 @@ func render() -> void:
 		scroll_generation[column] += 1
 		layout_pending[column] = true
 		restore_scroll(column,scroll_generation[column],previous_scroll)
+	_sync_leaf_overflow()
+
+func _sync_leaf_overflow() -> void:
+	if leaf_overflow == null: return
+	leaf_overflow.position = scrolls[2].position
+	# Response captions are bounded to512 UTF-8 bytes; 4096px covers every
+	# possible native eight-pixel glyph without introducing a second text cap.
+	leaf_overflow.size = Vector2(4104,page_rows*36)
+	for index in leaf_overflow.get_child_count():
+		leaf_overflow.get_child(index).position = Vector2(8,(state.row_starts[2]+index)*36-scrolls[2].scroll_vertical)
 
 func add_spacer(column: int, count: int) -> void:
 	if count <= 0: return
@@ -235,6 +262,7 @@ func add_spacer(column: int, count: int) -> void:
 
 func _process(_delta: float) -> void:
 	if state == null or not is_visible_in_tree(): return
+	_sync_leaf_overflow()
 	for column in 3:
 		native_scrolls[column].set_rows(native_scrolls[column].count,scrolls[column].scroll_vertical / 36)
 	# A drag may move again while a read is outstanding. Reconcile the latest

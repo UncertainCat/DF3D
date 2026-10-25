@@ -120,7 +120,6 @@ func run() -> void:
 		check(view.rendered_rows[2][index].get_child(0).text == captions[index].label,"native-provided caption was recased at row "+str(index))
 	root.get_texture().get_image().save_png(directory.path_join("native-captions.png"))
 	for sample in caption_fixture.caption_truncation.cases:
-		if sample.native_overflow: continue # Negative-width native overflow remains an unresolved parity gap.
 		state.clear(); await settle()
 		view.layout(Vector2(int(sample.grid[0])*8,int(sample.grid[1])*12))
 		state.open({"id":39,"revision":5,"categories":131071})
@@ -130,7 +129,13 @@ func run() -> void:
 		for row in sample.rows: rows.append({"key":"ammo/type/"+str(rows.size()),"label":row.label,"kind":4,"state":1})
 		reply(rows,int(sample.total)); await settle()
 		for index in rows.size():
-			check(view.rendered_rows[2][index].get_child(0).text == sample.rows[index].display,"native truncation differs at "+str(sample.layout)+" "+str(sample.kind)+" row "+str(index))
+			var expected: String = sample.rows[index].label if sample.native_overflow else sample.rows[index].display
+			check(view.rendered_rows[2][index].get_child(0).text == expected,"native truncation differs at "+str(sample.layout)+" "+str(sample.kind)+" row "+str(index))
+		if sample.native_overflow:
+			check(view.leaf_overflow.get_child_count() == rows.size(),"negative-width captions use horizontal overflow")
+			check(view.leaf_overflow.clip_contents and view.leaf_overflow.size.y == int(sample.page)*36,"overflow retains vertical page clipping")
+			check(view.leaf_overflow.get_index() < view.native_scrolls[2].get_index(),"native scrollbar occludes overflow text")
+			root.get_texture().get_image().save_png(directory.path_join("overflow-"+str(sample.layout)+".png"))
 		if sample.layout=="960x600-0": root.get_texture().get_image().save_png(directory.path_join("truncated-"+str(sample.kind)+".png"))
 	view.free(); assets.free(); await process_frame
 	print("AREA_SETTINGS_SCROLL_CAPTURE_PASS" if failures == 0 else "AREA_SETTINGS_SCROLL_CAPTURE_FAIL")

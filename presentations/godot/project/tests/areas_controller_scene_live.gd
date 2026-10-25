@@ -306,6 +306,19 @@ func pointer_stockpile_fit(origin: Vector3i) -> void:
 			var expected: Dictionary = {}
 			for row in editor.settings_state.rows[2]: expected[str(int(row.index))] = 1 if enabled else 0
 			await native("snapshot",{"id":int(editor.selected.id),"expected":{"settings":{"ammo":{"type":expected}}}})
+		if dimensions.x == 912:
+			for button in editor.settings_view.rendered_rows[0]:
+				if button.tooltip_text == "Food":
+					editor.settings_view.scrolls[0].ensure_control_visible(button)
+					await click_control(button); break
+			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"minimum width Food rows"): return
+			var overflow: Control = editor.settings_view.leaf_overflow
+			if not check(overflow.get_child_count() > 0 and overflow.clip_contents,"native narrow text overflow missing"): return
+			await capture("stockpile_native_text_overflow")
+			var bar: Control = editor.settings_view.native_scrolls[2]
+			await pointer_click(bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-6))
+			if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"overflow leaf scroll"): return
+			await capture("stockpile_native_text_overflow_scrolled")
 		await pointer_key(KEY_ESCAPE)
 		if not await wait_ui(func(): return settled() and editor.stockpile_page=="types","scaled settings close"): return
 		await pointer_stockpile_fit_actions(origin,dimensions)

@@ -202,6 +202,85 @@ require('gui.script').start(function()
     for _,target in ipairs(b.links[key])do assert(target.id~=expected.id,'first-row removal selected wrong endpoint')end
    end
    for id,name in pairs(saved_names)do df.building.find(id).name=name end
+   -- Valid reciprocal links are fixture prerequisites for observing a long
+   -- native list. Actual scrolling/removal below is driven through native UI.
+   local scroll_targets={};local scroll_names={}
+   for _,target in ipairs(df.global.world.buildings.all)do
+    if not df.building_stockpilest:is_instance(target) and target:canLinkToStockpile() then
+     scroll_targets[#scroll_targets+1]=target;scroll_names[target.id]=target.name
+     target.name=string.format('Scroll%02d',#scroll_targets)
+     require('utils').insert_sorted(b.links.take_from_workshop,target,'id')
+     require('utils').insert_sorted(target:getStockpileLinks().give_to_pile,b,'id')
+     if #scroll_targets==20 then break end
+    end
+   end
+   assert(#scroll_targets==20,'twenty workshop endpoints required')
+   ui.scroll_position_link_list=0;view:render(dfhack.getTickCount());capture('links-scroll-top')
+   local function scroll_point(x,y)
+    g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
+    df.global.enabler.tracking_on=1
+   end
+   local function scroll_probe(label,start,x,y,keys)
+    ui.scroll_position_link_list=start;ui.scrolling_link_list=false
+    scroll_point(x,y);gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+    gui.simulateInput(view,keys);view:render(dfhack.getTickCount())
+    records[#records+1]={name='link-scroll',label=label,start=start,x=x,y=y,after=ui.scroll_position_link_list,dragging=ui.scrolling_link_list}
+   end
+   for _,key in ipairs{'STANDARDSCROLL_UP','STANDARDSCROLL_DOWN','STANDARDSCROLL_PAGEUP','STANDARDSCROLL_PAGEDOWN',
+     'CONTEXT_SCROLL_UP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEUP','CONTEXT_SCROLL_PAGEDOWN'}do
+    scroll_probe(key,5,60,20,key)
+   end
+   -- Arrow/track positions are sampled over the full native scrollbar column.
+   for y=11,37 do scroll_probe('column-from-top',0,85,y,'_MOUSE_L')end
+   for y=11,37 do scroll_probe('column-from-middle',5,85,y,'_MOUSE_L')end
+   local enabler=df.global.enabler;local old_lift=enabler.mouse_lbut_lift
+   for destination=10,38 do
+    ui.scroll_position_link_list=0;ui.scrolling_link_list=false;scroll_point(85,15)
+    enabler.mouse_lbut_lift=0;gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+    scroll_point(85,destination);gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+    records[#records+1]={name='link-scroll-drag',start=0,y=destination,after=ui.scroll_position_link_list}
+    enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+   end
+   for _,y in ipairs{11,37}do
+    ui.scroll_position_link_list=5;ui.scrolling_link_list=false;scroll_point(85,y)
+    enabler.mouse_lbut_lift=0;gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+    local values={ui.scroll_position_link_list}
+    for i=1,12 do gui.simulateInput(view,{'_MOUSE_L_DOWN'});values[#values+1]=ui.scroll_position_link_list end
+    records[#records+1]={name='link-scroll-held',y=y,values=values}
+    enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+   end
+   enabler.mouse_lbut_lift=old_lift
+   for first=0,11 do
+    ui.scroll_position_link_list=first;ui.scrolling_link_list=false;scroll_point(0,0);view:render(dfhack.getTickCount())
+    local cells={}
+    for y=11,37 do cells[#cells+1]={left=dfhack.screen.readTile(84,y).tile,right=dfhack.screen.readTile(85,y).tile}end
+    records[#records+1]={name='link-scroll-art',first=first,cells=cells,base=df.global.init.scrollbar_texpos[0]}
+   end
+   local row_art={name='link-row-art',samples={},styles={}}
+   for y=11,13 do for _,x in ipairs{47,48,49,50,51,52,55,70,79,80,81,82,83}do
+    row_art.samples[#row_art.samples+1]={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}
+   end end
+   for _,key in ipairs{'texpos_button_rectangle','texpos_button_rectangle_dark','texpos_button_rectangle_light','texpos_button_category_rectangle'}do
+    local values={};for _,row in ipairs(g.graphical_interface[key])do for _,value in ipairs(row)do values[#values+1]=value end end
+    row_art.styles[key]=values
+   end
+   local sampled={};for _,sample in ipairs(row_art.samples)do sampled[sample.tile]=true end
+   row_art.matches={}
+   local function match_art(path,value,depth)
+    if type(value)=='number' and sampled[value]then row_art.matches[#row_art.matches+1]={field=path,tile=value}
+    elseif type(value)=='userdata' and depth<3 then
+     for key,child in pairs(value)do if tostring(key):sub(1,1)~='_' then match_art(path..'.'..tostring(key),child,depth+1)end end
+    end
+   end
+   match_art('graphical_interface',g.graphical_interface,0)
+   records[#records+1]=row_art
+   ui.scroll_position_link_list=11;ui.scrolling_link_list=false;capture('links-scroll-bottom')
+   for _,target in ipairs(scroll_targets)do
+    ui.scroll_position_link_list=0;view:render(dfhack.getTickCount());click(81,12)
+    for _,entry in ipairs(b.links.take_from_workshop)do assert(entry.id~=target.id,'scroll fixture first-row removal')end
+    target.name=scroll_names[target.id]
+   end
+   ui.scroll_position_link_list=0;ui.scrolling_link_list=false
    -- Controlled overlap is confined to this disposable paused oracle. Native
    -- map target selection uses building bounds/extents, not drawn occupancy.
    local overlaps={}

@@ -117,6 +117,28 @@ inspected: workshop-row icons and row backgrounds still differ from the native
 capture. Those graphics, scrolling/scaled input and broader live lifecycle
 remain unfinished.
 
+The protected native long-list oracle is retained in
+`fixtures/areas/native_stockpile_links.json.scroll_oracle`. Run
+`build/stockpile-storage-native-links-20261025-133029` uses20 valid reciprocal
+workshop links as paused fixture setup, then actual native list input and row
+removal. It displays nine rows; arrows move one, track clicks page by nine,
+and dragging maps to whole-row positions. With mouse tracking enabled,
+CONTEXT_SCROLL_UP/DOWN move one and PAGEUP/PAGEDOWN move nine; standard scroll
+commands do nothing. The installed interface bindings map these context commands
+to ordinary/modified mouse-wheel input. This verifies the native command path,
+not OS event delivery. Twelve immediate held-arrow feeds do not repeat; elapsed
+repeat cadence is unverified. The fixture retains drag destinations and native
+scrollbar tiles at top/middle/bottom. The top capture was inspected. Owned
+DF80444 closed unsaved with source unchanged; offline
+`build/qa/stockpile-link-scroll-oracle` passes root CTest19/19.
+
+The earlier `132725` probe failed while reading artwork metadata from the wrong
+structure; its owned session closed unsaved/source unchanged. The final probe
+reads `gps.graphical_interface`, but its candidate style fields do not identify
+the observed row background. The viewer still uses a generic ScrollContainer;
+replace it using the verified native geometry/input, then verify production
+scrolling, scaling and exact row artwork before claiming list parity.
+
 ## Native stockpile storage input (DF 53.16)
 
 Run `tools/smoke/stockpile_storage_native.ps1 -CloneEvidence <verified-run-folder>`

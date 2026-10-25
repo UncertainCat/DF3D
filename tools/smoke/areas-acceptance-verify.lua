@@ -4,8 +4,16 @@ local json=require('json')
 local B=dfhack.buildings
 local function read(path) local f=io.open(path,'r');if not f then return nil end;local s=f:read('*a');f:close();return s end
 local function write(path,value) local f=assert(io.open(path,'w'));f:write(json.encode(value));f:close() end
+local function restore_link_block()
+ local saved=_G.df3d_link_unloaded
+ if not saved then return end
+ saved.column[saved.z]=saved.block
+ assert(dfhack.maps.getTileBlock(saved.x,saved.y,saved.z)==saved.block,'unloaded fixture block restoration')
+ _G.df3d_link_unloaded=nil
+end
 if index=='pause' then df.global.pause_state=true;print('SEMANTIC_PASS paused');return end
 if index=='final' then
+ restore_link_block()
  assert(df.global.pause_state,'DF must be paused before teardown')
  assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE,'autosave must remain disabled')
  print('SEMANTIC_PASS final paused');return
@@ -167,6 +175,21 @@ elseif request.op=='link_overlap_restore' then
   b.centerx=s.centerx;b.centery=s.centery;b.room.x=s.rx;b.room.y=s.ry
  end
  _G.df3d_link_overlap=nil
+elseif request.op=='link_unloaded_prepare' then
+ assert(df.global.pause_state and not _G.df3d_link_unloaded)
+ local block=assert(dfhack.maps.getTileBlock(request.x,request.y,request.z))
+ local source=building()
+ assert(dfhack.maps.getTileBlock(source.centerx,source.centery,source.z)~=block,'source must stay loaded')
+ local column=df.global.world.map.block_index[request.x//16][request.y//16]
+ assert(column[request.z]==block,'block lookup identity')
+ -- Keep the block owned by map_blocks; only its lookup slot is absent. Never
+ -- free it, change its contents, or save this paused fixture.
+ _G.df3d_link_unloaded={column=column,block=block,x=request.x,y=request.y,z=request.z}
+ column[request.z]=nil
+ assert(not dfhack.maps.getTileBlock(request.x,request.y,request.z),'block remained available')
+elseif request.op=='link_unloaded_restore' then
+ assert(_G.df3d_link_unloaded,'missing unloaded fixture')
+ restore_link_block()
 elseif request.op=='link_hidden_prepare' then
  assert(df.global.pause_state and not _G.df3d_link_hidden)
  local block=assert(dfhack.maps.getTileBlock(request.x,request.y,request.z))

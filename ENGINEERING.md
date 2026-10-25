@@ -209,8 +209,22 @@ PowerShell log, which can briefly deny its writer access.
 This earlier scaled-input test scales the links view directly. The responsive
 acceptance below now covers link input through the product canvas at four sizes;
 producer replacement and malformed/capacity boundaries are covered above.
-Unloaded in-map target coverage remains unfinished.
 Stockpiles stays hidden.
+
+Protected `build/areas-acceptance-20261025-162744` covers an unavailable in-map
+target through the semantic command path. The same workshop query returns one
+target while loaded, none with its block lookup slot temporarily absent, and
+one after restoration. The fixture retains the allocated block and its contents,
+keeps the source pile loaded, restores before assertions, and restores again
+during final teardown if an earlier step failed. The native-state guard matches
+before/after; no link mutation or replay occurs. This case runs after the fit
+matrix in both full Stockpiles and `-StockpileFitOnly` acceptance.
+`native_stockpile_links.json.unloaded_target_acceptance` retains the result.
+The run passes53 native observations, owned DF95240 closes unsaved, and both save
+manifests match. Only the known separate-thread notice remains. Offline
+`build/qa/stockpile-unloaded-target-final` passes root CTest19/19 and the link
+controller checks. This validates the existing missing-block guard; no production
+bridge change was needed.
 
 `build/stockpile-storage-native-links-20261025-162058` separately tests elapsed
 arrow holds. After a press moves position5 to4 or6, held input is fed across

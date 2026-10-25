@@ -2450,5 +2450,24 @@
     ],
     "source_unchanged": true,
     "owned_df_closed_without_saving": true
+  },
+  "unloaded_target_acceptance": {
+    "run": "build/areas-acceptance-20261025-162744",
+    "evidence": {
+      "loaded": 1,
+      "restored": 1,
+      "source": 1509,
+      "target": 3,
+      "tile": "(105, 94, 165)",
+      "unloaded": 0
+    },
+    "evidence_sha256": "f3df6e005d1601266091676b68e3111e79b9f0f70ccb43b8b35658655084dcc5",
+    "scope": "Actual semantic LinkTarget query before, during, and after a temporarily absent in-map block lookup. Block allocation retained; contents untouched; native-state guard unchanged.",
+    "save_manifests_unchanged": 2,
+    "owned_df_closed_without_saving": true,
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "offline": "build/qa/stockpile-unloaded-target-final"
   }
 }

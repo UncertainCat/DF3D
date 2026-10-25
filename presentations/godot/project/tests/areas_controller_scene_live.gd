@@ -112,6 +112,7 @@ func pointer_areas() -> void:
 		elif not FileAccess.file_exists(directory+"/stockpile-paint-only.json"):
 			await pointer_storage_limits()
 			if not stopped: await pointer_stockpile_fit(origin)
+			if not stopped: await link_unloaded_target()
 			if not stopped and FileAccess.file_exists(directory+"/stockpile-fit-only.json"):
 				await native("final"); return
 			if not stopped: await pointer_settings()
@@ -238,6 +239,24 @@ func pointer_stockpile_fit(origin: Vector3i) -> void:
 	preferences.ui_auto_scale = old_auto; preferences.ui_scale = old_scale
 	root.size = Vector2i(1200,800); scene._fortress_hud.apply_ui_scale()
 	for frame in 8: editor._process(0); await process_frame
+
+func link_unloaded_target() -> void:
+	step = "unloaded in-map link target"
+	var wp: Dictionary = fixture.workshop_origin
+	var target := Vector3i(int(wp.x),int(wp.y),int(wp.z))
+	var query := {"action":9,"kind":0,"operation":26,"id":int(editor.selected.id),"expected_revision":int(editor.selected.revision),"origin":target,"give":true}
+	await native("guard_before")
+	var loaded := await request(query)
+	if not check(loaded.get("links",[]).size()==1 and int(loaded.links[0].id)==int(fixture.workshop),"loaded control target absent"): return
+	await native("link_unloaded_prepare",{"id":int(editor.selected.id),"x":target.x,"y":target.y,"z":target.z})
+	var missing := await request(query)
+	await native("link_unloaded_restore")
+	if stopped: return # Teardown also restores the block after an early failure.
+	if not check(missing.get("links",[]).is_empty(),"unloaded in-map target disclosed a building"): return
+	var restored := await request(query)
+	if not check(restored.get("links",[]).size()==1 and int(restored.links[0].id)==int(fixture.workshop),"restored target lookup differs"): return
+	await native("guard_after")
+	write_json("link-unloaded-evidence.json",{"source":int(editor.selected.id),"target":int(fixture.workshop),"tile":str(target),"loaded":loaded.links.size(),"unloaded":missing.get("links",[]).size(),"restored":restored.links.size()})
 
 func pointer_stockpile_fit_actions(origin: Vector3i, dimensions: Vector2i) -> void:
 	var id := int(editor.selected.id)

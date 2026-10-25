@@ -97,7 +97,7 @@ try {
         $null = $viewer.Handle
         if (-not $viewer.WaitForExit(180000) -or $viewer.ExitCode -ne 0) { throw 'Exported GPU viewer failed' }
         $frame = Get-Content -LiteralPath "$out\fortress.png.txt" -Raw
-        if ($frame -notmatch 'source=live mirror' -or $frame -notmatch 'terrain_loaded=true' -or $frame -notmatch 'assets_ok=true') { throw 'GPU capture did not load live terrain/assets' }
+        if ($frame -notmatch 'source=live mirror' -or $frame -notmatch 'terrain_loaded=true' -or $frame -notmatch 'assets_ok=true' -or $frame -notmatch 'play_entered=true') { throw 'GPU capture did not enter the live fortress with terrain/assets ready' }
         $gpuLog = Get-Content -LiteralPath "$out\gpu.log" -Raw
         if ($gpuLog -match '(?m)^\s*(SCRIPT ERROR|ERROR):') { throw 'GPU capture emitted errors; inspect gpu.log before accepting the artifact' }
     }

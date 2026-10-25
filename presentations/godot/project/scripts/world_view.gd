@@ -39,6 +39,7 @@ var _combat_effects: Node3D
 # Tier-4 hook: when DF3D_SCREENSHOT is set, save a frame once the terrain
 # window is built (min 3s, max 60s) and quit.
 var _screenshot_path := OS.get_environment("DF3D_SCREENSHOT")
+var _screenshot_pending := false
 var _dump_dir := OS.get_environment("DF3D_DUMP_COMPOSITES")
 var _dump_done := false
 var _screenshot_min := 3.0
@@ -950,9 +951,13 @@ func _focus_on_units() -> void:
 	if not OS.get_environment("DF3D_CAM_MODE").is_empty(): camera_rig.set_mode(OS.get_environment("DF3D_CAM_MODE").to_lower())
 
 func _maybe_screenshot(ready_now: bool) -> void:
-	if _screenshot_path == "":
+	if _screenshot_path == "" or _screenshot_pending:
 		return
+	ready_now = ready_now and (_loader == null or _loader.entered)
 	if (_elapsed >= _screenshot_min and ready_now) or _elapsed >= _screenshot_max:
+		_screenshot_pending = true
+		# Read the frame after the loader has revealed and rendered the map.
+		await RenderingServer.frame_post_draw
 		var img := get_viewport().get_texture().get_image()
 		img.save_png(_screenshot_path)
 		var stats := "source=%s top_z=%d window=%d units=%d sprites=%d composited=%d simple=%d glyph_units=%d cubes=%d composite_cache=%d composite_failed=%d composite_built=%d composite_total_ms=%.2f composite_pending=%d terrain_loaded=%s known_blocks=%d map_blocks=%d built_blocks=%d faces=%d textured=%d placeholder=%d hidden=%d pending=%d total_build_ms=%.1f buildings=%d buildings_unresolved=%d building_pending=%d building_total_ms=%.1f items=%d items_unresolved=%d item_ms=%.2f building_events=%d item_events=%d items_composited=%d items_pieces=%d items_webs=%d items_glyphs=%d item_composite_pending=%d buildings_glyphs=%d item_appearance_events=%d glyph_tileset=\"%s\" draw_calls=%d primitives=%d objects=%d frame_ms=%.2f elapsed_s=%.1f render_tick=%.1f assets_ok=%s" % [
@@ -974,6 +979,7 @@ func _maybe_screenshot(ready_now: bool) -> void:
 			int(Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME)),
 			_frame_ms_sum / maxf(1.0, float(_frame_ms_n)),
 			_elapsed, world.render_tick(), str(_assets_ok)]
+		stats += " play_entered=%s" % str(_loader == null or _loader.entered)
 		print("df3d: screenshot saved to ", _screenshot_path, " ", stats)
 		print("df3d: unresolved entities by kind: ", world.entity_unresolved_summary())
 		var f := FileAccess.open(_screenshot_path + ".txt", FileAccess.WRITE)

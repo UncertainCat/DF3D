@@ -1175,6 +1175,9 @@ local function native_operation(r)
   local created,problem=invoke(r.create_area,0,a)
   clear_lists()
   if not created then return reject(problem) end
+  if a.kind==0 and created.paint_noop==true and created.building_id==-1 then
+   return finish{ok=true,message='',areas={},building_id=-1}
+  end
   local b=df.building.find(created.building_id)
   if not b or kind(b)~=a.kind then return reject('Created area could not be observed; inspect before retrying') end
   -- The native helper has transferred ownership to DF. Initialization is one

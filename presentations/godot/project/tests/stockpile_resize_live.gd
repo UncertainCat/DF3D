@@ -54,4 +54,21 @@ func exercise() -> void:
 	await request({"action":12,"kind":0,"id":int(pile.id),"expected_revision":int(receipt.areas[0].revision)})
 	if stopped: return
 	await native("resize_deleted")
+	for sample in ["floor","wall","wall-left","wall-right","all-wall","water7","magma1","hidden","building"]:
+		step = "native-clipped creation "+sample
+		var site := await native("resize_create_prepare",{"case":sample})
+		if stopped: return
+		var point := Vector3i(int(site.origin.x),int(site.origin.y),int(site.origin.z))
+		var created := await request({"action":10,"kind":0,"operation":5,"paint_mode":1,"paint_z":point.z,
+			"spans":[{"x":point.x,"y":point.y,"length":3}]})
+		if stopped: return
+		if sample == "all-wall":
+			if not check(created.areas.is_empty(),"all-clipped creation returned an identity"): return
+			await native("resize_create_check",{"id":-1})
+		else:
+			if not check(created.areas.size()==1,"clipped creation missing identity"): return
+			var target: Dictionary = created.areas[0]
+			await native("resize_create_check",{"id":int(target.id)})
+			await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(target.revision)})
+			if stopped: return
 	await native("final")

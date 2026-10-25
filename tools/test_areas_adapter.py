@@ -2476,6 +2476,7 @@ def main():
     df.civzone_type[6]='Pen';df.civzone_type[7]='Barracks';df.civzone_type[8]='Office'
     function create_area(a,budget)
      assert(budget==nil);create_calls=create_calls+1
+     if noop_area_creation then return {ok=true,paint_noop=true,building_id=-1,steps=3} end
      if refuse_area_creation then return {ok=false,message='Every selected tile must be visible and loaded',steps=1} end
      if a.kind==0 and a.categories~=0 and settings_raw_count>65536 then
       return {ok=false,message='Stockpile settings exceed 65,536 entries',steps=79}
@@ -2510,6 +2511,10 @@ def main():
         data = {"id": -1, "kind": 0, "x": 10, "y": 11, "z": 1, "width": 2, "height": 2, **values}
         req = lua.globals().request(10, lua.table_from(data));req["step_budget"] = 0
         return req
+    lua.globals().noop_area_creation = True
+    noop = settings_adapter(create_request())
+    assert noop["ok"] and noop["building_id"] == -1 and len(noop["areas"]) == 0 and noop["message"] == ""
+    lua.globals().noop_area_creation = False
     before = lua.globals().create_calls
     for values, message in [({"x": -1}, "invalid area rectangle"), ({"width": 32}, "invalid area rectangle"),
                             ({"width": 0}, "invalid area rectangle"), ({"x": 32767, "width": 2}, "invalid area rectangle"),

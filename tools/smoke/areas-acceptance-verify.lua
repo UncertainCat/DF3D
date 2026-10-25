@@ -128,7 +128,20 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='guard_before' then
+if request.op=='creation_noop_prepare' then
+ assert(df.global.pause_state)
+ local block=assert(dfhack.maps.getTileBlock(request.x,request.y,request.z))
+ local x,y=request.x%16,request.y%16
+ assert(not block.designation[x][y].pile and block.occupancy[x][y].building==0)
+ _G.df3d_creation_noop={block=block,x=x,y=y,occupancy=block.occupancy[x][y].whole,
+  next_id=df.global.building_next_id,count=#df.global.world.buildings.all}
+ block.occupancy[x][y].building=1
+elseif request.op=='creation_noop_restore' then
+ local s=assert(_G.df3d_creation_noop)
+ assert(df.global.building_next_id==s.next_id and #df.global.world.buildings.all==s.count,'all-clipped gesture allocated a building')
+ s.block.occupancy[s.x][s.y].whole=s.occupancy
+ _G.df3d_creation_noop=nil
+elseif request.op=='guard_before' then
  assert(df.global.pause_state,'refusal guard requires paused fortress')
  _G.df3d_areas_guard=fingerprint()
 elseif request.op=='guard_after' then

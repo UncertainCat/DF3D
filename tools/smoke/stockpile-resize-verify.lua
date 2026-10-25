@@ -27,7 +27,7 @@ if request.op=='resize_setup' then
  end end
  local count=dfhack.buildings.countExtentTiles(b,-1)
  b.storage.max_barrels=count;b.storage.max_bins=count;b.storage.max_wheelbarrows=count
- _G.df3d_resize_check={id=b.id,keep=keep,before=snapshot(b)}
+ _G.df3d_resize_check={id=b.id,z=b.z,keep=keep,before=snapshot(b)}
  result.id=b.id;result.erase=erase;result.grow={grow};result.keep={{x=keep.x,y=keep.y,length=1}};result.before=_G.df3d_resize_check.before
 elseif request.op=='resize_malformed' then
  local s=assert(_G.df3d_resize_check);local b=assert(df.building.find(s.id))
@@ -54,6 +54,35 @@ elseif request.op=='resize_check' then
  assert(#actual.containers==#expected,'wrong container vector length')
  for i,row in ipairs(expected)do for key,value in pairs(row)do assert(actual.containers[i][key]==value,'parallel vectors differ')end end
  result.area=actual;result.released=released;result.retained=#expected
+elseif request.op=='resize_create_prepare' then
+ local s=assert(_G.df3d_resize_check);local x,y,z=s.before.bounds[1],s.before.bounds[2],s.z
+ local mask={1,1,1}
+ if request.case=='wall' or request.case=='hidden' or request.case=='building' then mask[2]=0
+ elseif request.case=='wall-left' then mask[1]=0 elseif request.case=='wall-right' then mask[3]=0
+ elseif request.case=='all-wall' then mask={0,0,0}end
+ for i=1,3 do
+  local block=assert(dfhack.maps.getTileBlock(x+i-1,y,z));local bx,by=(x+i-1)%16,y%16
+  block.tiletype[bx][by]=mask[i]==0 and request.case:find('wall',1,true) and df.tiletype.StoneWall or df.tiletype.StoneFloor1
+  block.designation[bx][by].hidden=request.case=='hidden' and i==2
+  block.designation[bx][by].pile=false
+  block.designation[bx][by].flow_size=(request.case=='water7' and 7 or request.case=='magma1' and 1 or 0)
+  block.designation[bx][by].liquid_type=request.case=='magma1'
+  block.occupancy[bx][by].building=request.case=='building' and i==2 and 1 or 0
+ end
+ _G.df3d_create_check={x=x,y=y,z=z,mask=mask,next_id=df.global.building_next_id,count=#df.global.world.buildings.all}
+ result.origin={x=x,y=y,z=z};result.mask=mask
+elseif request.op=='resize_create_check' then
+ local s=assert(_G.df3d_create_check)
+ if request.id==-1 then
+  assert(df.global.building_next_id==s.next_id and #df.global.world.buildings.all==s.count,'no-op creation allocated a building')
+  result.noop=true
+ else
+  local b=assert(df.building.find(request.id));assert(b.x1==s.x and b.x2==s.x+2 and b.y1==s.y and b.y2==s.y and b.z==s.z,'clipped creation changed requested bounds')
+  local count=0
+  for i,value in ipairs(s.mask)do assert(dfhack.buildings.containsTile(b,s.x+i-1,s.y)==(value==1),'wrong clipped cell');count=count+value end
+  assert(dfhack.buildings.countExtentTiles(b,-1)==count,'wrong clipped creation count')
+  result.area=snapshot(b);result.id=b.id
+ end
 elseif request.op=='resize_deleted' then
  local s=assert(_G.df3d_resize_check)
  assert(not df.building.find(s.id),'empty stockpile still exists after deletion')

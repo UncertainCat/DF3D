@@ -14,10 +14,11 @@ func observed(count: int, id := 77, version := 9007199254740993) -> Dictionary:
 	return {"id":id,"revision":version,"kind":1,"origin":Vector3i(3,4,2),"width":2,"height":1,
 		"extents":PackedByteArray([1 if count > 0 else 0,1 if count > 1 else 0]),"tile_count":count,"zone_type":92}
 
-func reply(service, world, rows: Array, status := 2, outcome := "") -> void:
+func reply(service, world, rows: Array, status := 2, outcome := "", noop := false) -> void:
 	revision += 1
 	world.state = {"world_epoch":42,"revision":revision,"request_seq":world.seq,
 		"status":status,"action":world.calls[-1].action,"areas":rows,"outcome":outcome}
+	if noop: world.state.building_id = -1
 	service.poll()
 
 func start(service, area := {}) -> Node:
@@ -187,6 +188,27 @@ func run() -> void:
 	reply(service,world,[pile]) # Native clips the speculative addition.
 	check(not session.stopped and session.ending.is_empty() and session.geometry.cells.is_empty(),"clipped empty result must disarm pending Accept and retain painting")
 	session.finish("exit"); service.poll(); reply(service,world,[]); await process_frame
+
+	for ending in ["", "accept", "exit", "queued", "malformed", "unknown", "rejected"]:
+		session = Session.new(); service.add_child(session)
+		session.configure(service,{},-1,Vector2i(48,48),2,0)
+		session.rectangle(first,last); service.poll()
+		before = world.calls.size()
+		if ending == "queued":
+			session.stroke(first,first,true); session.stroke(last,last)
+		elif ending in ["accept","exit"]: session.finish(ending)
+		reply(service,world,[],3 if ending == "rejected" else 2,"unknown" if ending == "unknown" else "",ending != "malformed")
+		if ending == "queued":
+			check(world.calls.size() == before+1 and world.calls[-1].action == 10 and world.calls[-1].spans == [{"x":last.x,"y":last.y,"length":1}],"no-op drops queued erase and creates next explicit addition")
+			pile = observed(1,94); pile.kind = 0
+			reply(service,world,[pile]); session.finish("exit")
+		elif ending in ["exit","malformed","unknown","rejected"]:
+			check(session.stopped and world.calls.size() == before,"exit or failed creation cannot replay or delete an absent identity")
+		else:
+			check(not session.stopped and session.area.is_empty() and session.geometry.cells.is_empty() and session.ending.is_empty() and world.calls.size() == before,"successful no-op retains empty painting and disarms Accept without replay")
+			check(not session._initial_hit_started,"no-op allows a fresh first-hit lookup")
+			session.finish("exit")
+		await process_frame
 
 	session = start(service); session.rectangle(first,last); service.poll()
 	session.rectangle(last,last,true)

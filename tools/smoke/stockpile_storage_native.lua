@@ -120,6 +120,7 @@ require('gui.script').start(function()
     end
     assert(first,'no three-cell eligibility span')
     local middle={x=first.x+1,y=first.y,z=first.z}
+    if eligibility_case=='wall-left' then middle=first elseif eligibility_case=='wall-right' then middle=last end
     local block=assert(dfhack.maps.getTileBlock(middle));local x,y=middle.x%16,middle.y%16
     local tile=block.tiletype[x][y];local designation=block.designation[x][y].whole;local occupancy=block.occupancy[x][y].whole
     local function restore()
@@ -128,6 +129,7 @@ require('gui.script').start(function()
     local cases={{name='floor'},{name='wall',tile='StoneWall'},{name='water1',depth=1},{name='water2',depth=2},
      {name='water7',depth=7},{name='magma1',depth=1,magma=true},{name='building1',building=1},{name='building2',building=2},
      {name='hidden',hidden=true},{name='ramp',tile='StoneRamp'},{name='open',tile='OpenSpace'},{name='all-wall',tile='StoneWall',all_wall=true}}
+    if eligibility_case=='wall-left' or eligibility_case=='wall-right' then cases={{name=eligibility_case,tile='StoneWall'}}end
     if eligibility_case and eligibility_case~='all' then
      local filtered={};for _,case in ipairs(cases)do if case.name==eligibility_case then filtered[1]=case end end
      assert(#filtered==1,'unknown eligibility case');cases=filtered

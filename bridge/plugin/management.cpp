@@ -1220,7 +1220,7 @@ int areaLocationCreate(lua_State* L) {
 // Construction receives the already validated wire request. Only native code
 // owns unpublished extents/buildings; Lua sees an ID after native publication.
 int areaCreate(lua_State* L) {
-  uint64_t steps=0;bool unknownWork=false;int32_t createdId=-1;
+  uint64_t steps=0;bool unknownWork=false,noOp=false;int32_t createdId=-1;
   const auto execute=[&]() -> const char* {
     if(action!=m::ManagementAction::AreaCreate || request.empty())return "Area creation request required";
     const auto* a=flatbuffers::GetRoot<m::ConstructionRequest>(request.data())->area();
@@ -1248,20 +1248,21 @@ int areaCreate(lua_State* L) {
         if(b->zone_num==INT32_MAX)return "Zone numbers exhausted";
       }
     }
+    std::vector<std::pair<int32_t,int32_t>> clipped;
     const auto checkSite=[&](int32_t x,int32_t y) -> const char* {
       auto* block=Maps::isValidTilePos(x,y,z)?Maps::getTileBlock(x,y,z):nullptr;
-      if(!block || block->designation[x&15][y&15].bits.hidden)return "Every selected tile must be visible and loaded";
+      if(!block)return "Every selected tile must be visible and loaded";
       const auto& designation=block->designation[x&15][y&15];
-      const auto shape=tileShape(block->tiletype[x&15][y&15]);
       if(pile) {
-        using namespace df::enums::tiletype_shape;
-        if(shape!=FLOOR && shape!=BOULDER && shape!=PEBBLES && shape!=STAIR_UP && shape!=STAIR_DOWN &&
-            shape!=STAIR_UPDOWN && shape!=RAMP && shape!=TWIG && shape!=SAPLING && shape!=SHRUB)
-          return "Stockpiles require supported floor on every tile";
-        if(designation.bits.flow_size || block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None)
-          return "Stockpile site contains liquid or a building";
+        const auto eligible=df3d_area::nativeStockpileTileType(uint16_t(block->tiletype[x&15][y&15]));
+        if(!eligible)return "";
+        if(designation.bits.hidden || !*eligible ||
+            (block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None && !designation.bits.pile)) {
+          clipped.emplace_back(x,y);return nullptr;
+        }
+        // Native cross-pile transfer remains a separate ownership audit.
         if(designation.bits.pile)return "Stockpiles cannot overlap another stockpile";
-      }
+      } else if(designation.bits.hidden)return "Every selected tile must be visible and loaded";
       // Native zones retain wall/fortification extent cells, even for a
       // zero-count area. The paint caption counts usable tiles separately.
       return nullptr;
@@ -1288,6 +1289,13 @@ int areaCreate(lua_State* L) {
       expectedTiles=uint32_t(bounds.width*bounds.height);
       extents.resize(expectedTiles,1);steps+=df3d_area::bulkSteps(extents.size());
     }
+    for(const auto& cell:clipped) {
+      const size_t index=size_t(cell.second-bounds.y)*bounds.width+cell.first-bounds.x;
+      if(extents[index]!=df::building_extents_type::None) {
+        extents[index]=df::building_extents_type::None;--expectedTiles;
+      }
+    }
+    if(pile && !expectedTiles){noOp=true;return nullptr;}
     const auto destroyUnpublished=[](df::building* b) {
       if(!b)return;
       delete[] b->room.extents;b->room.extents=nullptr;delete b;
@@ -1309,8 +1317,8 @@ int areaCreate(lua_State* L) {
     }
     unknownWork=true;
     if(!Buildings::setSize(b,df::coord2d(bounds.width,bounds.height)))return "Native area construction rejected: cannot place at this position";
-    // Native setSize may clear unsuitable cells. Creation must preserve the
-    // selected footprint exactly, not silently publish a reduced area.
+    // Native filtering already selected the mask. DFHack's shape check must
+    // preserve that mask (all317 native eligible types are HighPassable).
     if(b->x1!=bounds.x || b->y1!=bounds.y || b->x2!=bounds.x+bounds.width-1 || b->y2!=bounds.y+bounds.height-1 ||
         !b->room.extents || b->room.x!=bounds.x || b->room.y!=bounds.y ||
         b->room.width!=bounds.width || b->room.height!=bounds.height)
@@ -1341,7 +1349,7 @@ int areaCreate(lua_State* L) {
   catch(...) {reason="Native area preparation failed; no area created";}
   // All unpublished owners have unwound before Lua can allocate its response.
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
-  field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);return 1;
+  field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
 }
 int areaRemove(lua_State* L) {
   const auto result=[&](bool ok,const char* reason) {

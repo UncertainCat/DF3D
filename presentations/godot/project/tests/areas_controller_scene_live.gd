@@ -122,6 +122,8 @@ func pointer_areas() -> void:
 		if destination == "Stockpiles":
 			await pointer_stockpile_empty(origin)
 			if stopped: return
+			await pointer_stockpile_noop(origin)
+			if stopped: return
 		editor.close_panel()
 	if not stockpiles_only: await pointer_zone_boundary_cells()
 	if stopped: return
@@ -635,6 +637,28 @@ func pointer_stockpile_empty(origin: Vector3i) -> void:
 		if not check(not editor.panel.visible,"empty exit left paint panel open"): return
 		if not await wait_ui(func(): return not is_instance_valid(owner) or owner.stopped,"empty exit deletion receipt"): return
 		await native("removed",{"id":id})
+
+func pointer_stockpile_noop(origin: Vector3i) -> void:
+	step = "viewport all-clipped stockpile creation"
+	var launcher: Button = scene._fortress_hud.navigation.Stockpiles
+	for frame in 4:
+		launcher.show(); scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
+	launcher.show(); await click_control(launcher,true)
+	if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"no-op test launcher"): return
+	await native("creation_noop_prepare",{"x":origin.x,"y":origin.y,"z":origin.z})
+	await pointer_click(tile_screen(origin)); await pointer_click(tile_screen(origin))
+	if not await wait_ui(func(): return settled(),"all-clipped creation receipt"): return
+	if not check(editor.paint_session != null and editor.paint_session.area.is_empty() and editor.paint_state.cells.is_empty() and editor.paint_view.accept_button.disabled,"no-op must retain empty painter with Accept disabled"): return
+	await capture("stockpiles_noop_creation")
+	await native("creation_noop_restore")
+	await pointer_click(tile_screen(origin)); await pointer_click(tile_screen(origin))
+	if not await wait_ui(func(): return settled(),"valid creation after no-op"): return
+	if not check(not editor.paint_session.area.is_empty() and not editor.paint_view.accept_button.disabled,"valid gesture after no-op must create normally"): return
+	var id: int = editor.paint_session.area.id
+	await native("snapshot",{"id":id,"expected":{"tile_count":1}})
+	await click_control(editor.paint_view.buttons.remove)
+	if not await wait_ui(func(): return settled(),"remove after no-op"): return
+	await native("removed",{"id":id})
 
 func pointer_key(key: Key) -> void:
 	for pressed in [true,false]:

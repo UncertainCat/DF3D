@@ -135,12 +135,21 @@ func _received(receipt: int, result: Dictionary, _request: Dictionary) -> void:
 	if _deleting:
 		area = {}; _complete(); return
 	var rows: Array = result.get("areas",result.get("area",{}).get("areas",[]))
+	if rows.is_empty() and area.is_empty() and area_kind == 0 and int(_request.get("action",-1)) == Contract.ManagementAction.AreaCreate and result.get("building_id") == -1:
+		# Successful all-clipped creation publishes no identity. It is not a
+		# rejection or unknown outcome, and must not replay the consumed gesture.
+		if _queue.is_empty(): _initial_hit_started = false
+		_reconcile(); _drain(receipt); return
 	if rows.size() != 1:
 		_fail(result); return
 	var observed: Dictionary = rows[0]
 	if int(observed.get("kind",-1)) != area_kind or int(observed.get("id",-1)) < 0 or int(observed.get("revision",0)) <= 0 or (not area.is_empty() and int(observed.id) != int(area.id)):
 		_fail(result); return
 	area = observed.duplicate(true)
+	_reconcile()
+	_drain(receipt)
+
+func _reconcile() -> void:
 	geometry.area = area.duplicate(true)
 	geometry.original = Geometry.footprint(area)
 	geometry.cells = geometry.original.duplicate()
@@ -152,7 +161,6 @@ func _received(receipt: int, result: Dictionary, _request: Dictionary) -> void:
 				else: geometry.cells[point] = true
 	geometry.geometry_generation += 1
 	changed.emit()
-	_drain(receipt)
 
 func _session_changed() -> void:
 	# No work crosses epochs. The service separately retains sent receipts.

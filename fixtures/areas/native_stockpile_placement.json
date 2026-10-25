@@ -670,6 +670,94 @@
           }
         }
       ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-wall-left-20261025-112728",
+      "result_sha256": "b7cac3d4912c640df4718f07a21e9a563cbd7cbe7f37308001b4317602036c4f",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561152,
+          "end_present": true,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "wall-left",
+          "occupancy": 32,
+          "setup": {
+            "name": "wall-left",
+            "tile": "StoneWall"
+          },
+          "start_present": false,
+          "tiles": 2,
+          "tiletype": "StoneWall"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-create-wall-right-20261025-112755",
+      "result_sha256": "41ac1d7aaf28553fe10e4d4d4078e6a891af45d0106e85265859609a9c296daa",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "bounds": [
+            111,
+            61,
+            113,
+            61
+          ],
+          "designation": 561152,
+          "end_present": false,
+          "first": {
+            "x": 111,
+            "y": 61,
+            "z": 165
+          },
+          "id": 1490,
+          "last": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle": {
+            "x": 113,
+            "y": 61,
+            "z": 165
+          },
+          "middle_present": false,
+          "name": "wall-right",
+          "occupancy": 32,
+          "setup": {
+            "name": "wall-right",
+            "tile": "StoneWall"
+          },
+          "start_present": true,
+          "tiles": 2,
+          "tiletype": "StoneWall"
+        }
+      ]
     }
   ],
   "native_code": [
@@ -1524,6 +1612,36 @@
       ],
       "save_preservation": "Verified unchanged manifests for 2 save directories.",
       "scope": "Existing focused stockpile pointer workflows, empty/regrow/exit after switching queued work to full explicit gestures."
+    }
+  },
+  "creation_acceptance": {
+    "run": "build/areas-acceptance-20261025-113417",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "status": "passed",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "owned_df_closed_without_saving": true,
+    "cases": [
+      "floor",
+      "wall",
+      "wall-left",
+      "wall-right",
+      "all-wall",
+      "water7",
+      "magma1",
+      "hidden",
+      "building"
+    ],
+    "scope": "Semantic creation effects: exact three-cell bounds/mask, no ID allocation for all-clipped selection, plus stocked-pile resize regression. Repaint clipping and cross-pile transfer remain unfinished.",
+    "viewport": {
+      "run": "build/areas-acceptance-20261025-113545",
+      "result_sha256": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "status": "passed_with_known_issues",
+      "diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "save_preservation": "Verified unchanged manifests for 2 save directories.",
+      "owned_df_closed_without_saving": true,
+      "scope": "Actual pointer all-clipped creation keeps empty Paint and disabled Accept, then valid gesture creates and removes normally; existing empty/regrow/exit regression also passes. Controlled fixture occupancy is restored before valid creation."
     }
   }
 }

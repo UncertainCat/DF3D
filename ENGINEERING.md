@@ -189,8 +189,10 @@ stays open. Unknown/rejected results still stop the owner without replay.
 `build/qa/stockpile-gesture-reconcile-final` checks these clipped-reply boundaries.
 Focused viewport regression `build/areas-acceptance-20261025-112246` passes23
 native observations with the known separate-thread notice, unsaved closure and
-two unchanged save manifests. Production native clipping/no-op creation remains
-unmigrated; synthetic reply tests do not establish that bridge behavior.
+two unchanged save manifests. Creation now uses native tile eligibility and explicitly reports an all-clipped
+success with no identity. The owner consumes that gesture without replay, retains
+empty Paint, disarms pending Accept and drains newer explicit gestures. Malformed,
+rejected and unknown replies still stop the interaction.
 Offline `build/qa/stockpile-paint-cleanup-fixed` passes core, controller, geometry
 and owner checks; rendered menu captures have known engine diagnostics only.
 The focused live scope excludes settings. Native placement clipping/eligibility,
@@ -209,11 +211,24 @@ Native repaint trims wall, hidden, occupied and open-space cells while painting
 the other selected cells. Water depths1/2/7 and magma1 remain eligible. Independent
 creation runs confirm full selected bounds with holes, deep-water/magma acceptance,
 and no building published for an all-wall rectangle; painting remains open.
-These are native observations, not acceptance of DF3D's current placement path.
-The bridge still rejects whole rectangles using a local shape whitelist and
-liquid/occupancy checks. DFHack `Buildings::checkFreeTiles` also reconstructs shape rules and is not
-a substitute native service. Its stockpile caller passes `allow_flow=true`:
-DF3D's precheck, rather than that call, causes the current liquid rejection.
+Creation uses DF's scalar predicates and native hidden/occupancy gates to filter
+its privately owned mask, preserving the full requested bounds even with invalid
+edge cells. An empty mask returns success without allocating a building or ID.
+Protected `build/areas-acceptance-20261025-113417` verifies nine creation cases,
+including invalid edges, hidden/occupied cells, liquids and all-wall no-op, plus
+the existing storage cleanup regression. It passes cleanly with unsaved closure
+and two unchanged save manifests. Viewport run
+`build/areas-acceptance-20261025-113545` verifies all-clipped creation keeps Paint
+open with Accept disabled, then accepts a valid gesture and removal. The capture
+was inspected; only the known separate-thread notice remains, with unsaved
+closure and unchanged manifests. Repaint still requires migration; overlapping
+stockpile transfer remains unaudited.
+
+DFHack `Buildings::checkFreeTiles` reconstructs shape rules and is not the
+eligibility authority. Its stockpile caller passes `allow_flow=true`. All317
+native-accepted tile types have the pinned XML shape's `passable_high` attribute,
+so registration retains that helper after native filtering and checks that its
+output mask/bounds are unchanged.
 
 The native path calls tile-type predicates `0x289050` and `0x2c2f10`. Their complete
 code/data ranges are pinned in the fixture. Both take a uint16 scalar, read only
@@ -229,8 +244,8 @@ visibility/occupancy gating, including liquid and all-wall repaint. UI, RNG and
 source-building memory guards remain unchanged. Owned DF closed unsaved and the
 source manifest is unchanged. Reproduce with `-PaintGestures -GestureCase
 eligibility -TilePredicates`; the fixture retains the accepted IDs and exact
-pointer observations. This establishes the native primitive, not migrated mutation
-behavior. UI handler
+pointer observations. This establishes the native primitive; creation effect
+acceptance is recorded separately above. UI handler
 `0x311c10` is not callable by the bridge. Its inline occupancy and overlapping
 stockpile effects still require an ownership audit; scalar tile eligibility alone
 does not establish full placement parity. Clipped/no-op replies must also be

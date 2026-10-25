@@ -2726,6 +2726,17 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
   builderMaxUs=std::max(builderMaxUs,builderLastUs);
 }
 }  // namespace
+bool printStockpileSummaries(color_ostream& out,int32_t id) {
+  auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
+  if(!pile || !areaPresetInventoryFits(pile))return false;
+  try {
+    const auto states=df3d_area::nativeStockpileSummaries(pile->settings);
+    if(!states)return false;
+    Json::Value result(Json::arrayValue);
+    for(const auto state:*states)result.append(int(state));
+    out.print("{}",Json::FastWriter().write(result));return true;
+  } catch(...) {return false;}
+}
 bool printStockpileRows(color_ostream& out,int32_t id,int32_t mode,const std::string& filter) {
   auto* pile=virtual_cast<df::building_stockpilest>(df::building::find(id));
   if(!pile || !areaPresetInventoryFits(pile))return false;

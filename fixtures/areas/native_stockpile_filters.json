@@ -38533,5 +38533,715 @@
       "diagnostics": "clean",
       "scope": "All30 organic lists; creation/removal, complete pagination including12328 Meat rows, filtered/individual edits, empty native categories, short/empty backing vectors; shared fixture restored between lists"
     }
+  },
+  "native_summaries": {
+    "run": "build/stockpile-summaries-native-20261025-060635",
+    "status": "passed",
+    "full_row_regression_run": "build/stockpile-presets-native-20261025-060003",
+    "entry_rva": "0x55a6d0",
+    "states": {
+      "0": "none or empty",
+      "1": "mixed",
+      "2": "all"
+    },
+    "render_comparisons": 270,
+    "visible_modes": 90,
+    "root_reference_cases": 51,
+    "direct_root_comparisons": 9,
+    "source_save": "unchanged",
+    "owned_df": "closed without saving",
+    "native_ui": "unchanged around provider calls",
+    "source_settings": "unchanged around provider calls",
+    "oracle": "Compare native rendered4x3 status artwork with installed renderer templates selected by state; no captured game art shipped",
+    "result_sha256": "3e5191135309335f296d573d0073c167a8cc33c1d57b36d1e74d016dfb5f2ea5",
+    "cases": [
+      {
+        "category": "animals",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "animals",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "2000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "animals",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "food",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      {
+        "category": "food",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1022222220222202222220000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      {
+        "category": "food",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      {
+        "category": "furniture",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ]
+      },
+      {
+        "category": "furniture",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110222222000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ]
+      },
+      {
+        "category": "furniture",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ]
+      },
+      {
+        "category": "corpses",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "corpses",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111200000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "corpses",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111100000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "refuse",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111100000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "category": "refuse",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111102222222220000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "category": "refuse",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38
+        ]
+      },
+      {
+        "category": "stone",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110000000000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          40,
+          41,
+          42,
+          43
+        ]
+      },
+      {
+        "category": "stone",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110222200000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          40,
+          41,
+          42,
+          43
+        ]
+      },
+      {
+        "category": "stone",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111100000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          40,
+          41,
+          42,
+          43
+        ]
+      },
+      {
+        "category": "ammo",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111100000000000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          45,
+          47,
+          46,
+          48,
+          49
+        ]
+      },
+      {
+        "category": "ammo",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111102222200000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          45,
+          47,
+          46,
+          48,
+          49
+        ]
+      },
+      {
+        "category": "ammo",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111100000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          45,
+          47,
+          46,
+          48,
+          49
+        ]
+      },
+      {
+        "category": "coins",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111100000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "coins",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111120000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "coins",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "bars_blocks",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110000000000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          52,
+          53,
+          54,
+          55,
+          56
+        ]
+      },
+      {
+        "category": "bars_blocks",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110222220000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          52,
+          53,
+          54,
+          55,
+          56
+        ]
+      },
+      {
+        "category": "bars_blocks",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          52,
+          53,
+          54,
+          55,
+          56
+        ]
+      },
+      {
+        "category": "gems",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110000000000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          60,
+          58,
+          61,
+          59,
+          62
+        ]
+      },
+      {
+        "category": "gems",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110222220000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          60,
+          58,
+          61,
+          59,
+          62
+        ]
+      },
+      {
+        "category": "gems",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          60,
+          58,
+          61,
+          59,
+          62
+        ]
+      },
+      {
+        "category": "finished_goods",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110000000000000000000000000000000000000000000000",
+        "compared_modes": [
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71
+        ]
+      },
+      {
+        "category": "finished_goods",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110222222220000000000000000000000000000000000000",
+        "compared_modes": [
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71
+        ]
+      },
+      {
+        "category": "finished_goods",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110000000000000000000000000000000000000",
+        "compared_modes": [
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71
+        ]
+      },
+      {
+        "category": "leather",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110000000000000000000000000000000000000",
+        "compared_modes": [
+          73,
+          74
+        ]
+      },
+      {
+        "category": "leather",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110220000000000000000000000000000000000",
+        "compared_modes": [
+          73,
+          74
+        ]
+      },
+      {
+        "category": "leather",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110000000000000000000000000000000000",
+        "compared_modes": [
+          73,
+          74
+        ]
+      },
+      {
+        "category": "cloth",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110000000000000000000000000000000000",
+        "compared_modes": [
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ]
+      },
+      {
+        "category": "cloth",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110222222222000000000000000000000000",
+        "compared_modes": [
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ]
+      },
+      {
+        "category": "cloth",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101000000000000000000000000",
+        "compared_modes": [
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84
+        ]
+      },
+      {
+        "category": "wood",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101000000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "wood",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101200000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "wood",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101100000000000000000000000",
+        "compared_modes": []
+      },
+      {
+        "category": "weapons",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101100000000000000000000000",
+        "compared_modes": [
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93
+        ]
+      },
+      {
+        "category": "weapons",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101102222222000000000000000",
+        "compared_modes": [
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93
+        ]
+      },
+      {
+        "category": "weapons",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111000000000000000",
+        "compared_modes": [
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93
+        ]
+      },
+      {
+        "category": "armor",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111000000000000000",
+        "compared_modes": [
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ]
+      },
+      {
+        "category": "armor",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111022222222222000",
+        "compared_modes": [
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ]
+      },
+      {
+        "category": "armor",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111011111111111000",
+        "compared_modes": [
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105
+        ]
+      },
+      {
+        "category": "sheet",
+        "variant": 0,
+        "native_root_state": 0,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111011111111111000",
+        "compared_modes": [
+          107,
+          108
+        ]
+      },
+      {
+        "category": "sheet",
+        "variant": 1,
+        "native_root_state": 2,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111011111111111022",
+        "compared_modes": [
+          107,
+          108
+        ]
+      },
+      {
+        "category": "sheet",
+        "variant": 2,
+        "native_root_state": 1,
+        "provider_states_by_mode": "1011111110111101111110111111101111111110111101111110111110111110111111110110111011101101111111011111111111011",
+        "compared_modes": [
+          107,
+          108
+        ]
+      }
+    ],
+    "rejections": [
+      {
+        "field": "gems.rough_other_mats",
+        "probe": "summary_rejection",
+        "stored_count": 0
+      },
+      {
+        "field": "gems.cut_other_mats",
+        "probe": "summary_rejection",
+        "stored_count": 0
+      }
+    ],
+    "omissions": [
+      "Gameplay integration and root aggregation remain staged",
+      "Animals root also includes scalar toggles; provider state0 alone is not its root state",
+      "Two empty organic categories are absent from native middle column",
+      "Disabled category storage requires selective native queries before gameplay integration",
+      "Short glass vectors explicitly rejected; native fixed-index behavior is undefined",
+      "Injected null raw/paired table/reaction ID guard cases",
+      "Non-ASCII, rendered DF3D panel parity and complete stockpile workflow"
+    ]
   }
 }

@@ -692,6 +692,104 @@ require('gui.script').start(function()
     records[#records+1]={probe='sublist_status_click',category=entry[2],label=label,mode=entry[i+2],pointer=pointer,repeated_unchanged=true}
    end
   end
+  -- Compare owned summary states with the actual native 4x3 status artwork.
+  -- Template addresses are renderer inputs observed at380958/61/6a; they are
+  -- oracle-only and never runtime inputs to the provider.
+  local summary_labels={[2]='Meat',[3]='Fish',[4]='Unprepared fish',[5]='Egg',[6]='Plants',[7]='Drink (plant)',[8]='Drink (animal)',[9]='cheese/plant',[10]='Cheese (animal)',[11]='Seeds',[12]='Fruit/leaves',[13]='Milled plant',[14]='powder/animal',[15]='Fat',[16]='Paste',[17]='Pressed material',[18]='Extract (plant)',[19]='Extract (animal)',[20]='Misc. liquid',[22]='Type',[23]='Stone/clay',[24]='Metal',[25]='Other materials',[26]='Core quality',[27]='Total quality',[30]='Item types',[31]='Corpses',[32]='Body parts',[33]='Skulls',[34]='Bones',[35]='Shells',[36]='Teeth',[37]='Horns/hooves',[38]='Hair/wool',[40]='Metal ores',[41]='Economic',[42]='Other stone',[43]='Clay',[45]='Type',[46]='Other materials',[47]='Metal',[48]='Core quality',[49]='Total quality',[52]='Bars: metal',[53]='Bars: other materials',[54]='Blocks: stone/clay',[55]='Blocks: metal',[56]='Blocks: other materials',[58]='Rough glass',[59]='Cut glass',[60]='Rough gem',[61]='Cut gem',[62]='Cut stone',[64]='Type',[65]='Stone/clay',[66]='Metal',[67]='Gem',[68]='Other materials',[69]='Core quality',[70]='Total quality',[71]='Color',[73]='Type',[74]='Color',[76]='Thread (silk)',[77]='Thread (plant)',[78]='Thread (yarn)',[79]='Thread (metal)',[80]='Cloth (silk)',[81]='Cloth (plant)',[82]='Cloth (yarn)',[83]='Cloth (metal)',[84]='Color',[87]='Weapons',[88]='Trap components',[89]='Metal',[90]='Stone',[91]='Other materials',[92]='Core quality',[93]='Total quality',[95]='Body',[96]='Head',[97]='Feet',[98]='Hands',[99]='Legs',[100]='Shield',[101]='Metal',[102]='Other materials',[103]='Core quality',[104]='Total quality',[105]='Color',[107]='Paper',[108]='Parchment'}
+  local templates={}
+  for state,rva in pairs{[0]=0x2651128,[1]=0x26510f8,[2]=0x26510c8}do
+   templates[state]={};for i=0,11 do
+    templates[state][i+1]=df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+rva+i*4).value
+   end
+  end
+  local function screen_state(y,start_x,end_x)
+   local matches={}
+   for state,tiles in pairs(templates)do
+    for x=start_x or 40,end_x or 74 do
+     local found=true
+     for dx=0,3 do for dy=0,2 do
+      local index=(x+dx)*g.dimy+y+dy;local expected=tiles[dx*3+dy+1]
+      if g.screentexpos[index]~=expected and g.screentexpos_lower[index]~=expected and
+         g.screentexpos_top[index]~=expected and g.screentexpos_top_lower[index]~=expected then found=false end
+     end end
+     if found then matches[#matches+1]={state=state,x=x}end
+    end
+   end
+   assert(#matches==1,'native summary artwork missing/ambiguous at '..y..': '..json.encode(matches))
+   return matches[1].state
+  end
+  -- Earlier short-vector probes deliberately leave some categories short.
+  -- Reinitialize each through native category activation before asking DF's
+  -- renderer (which has unchecked fixed glass slots) for summary artwork.
+  for bit,key in ipairs(categories)do
+   b.settings.flags[key]=false;c.scroll_position_main=0;c.spec_filter='';c.entering_spec_filter=false
+   view:render(dfhack.getTickCount());label_click(category_labels[bit])
+  end
+  for _,field in ipairs{'rough_other_mats','cut_other_mats'}do
+   local values=b.settings.gems[field];local saved={};for _,v in ipairs(values)do saved[#saved+1]=v end
+   values:resize(0)
+   local before=settings_snapshot(b.settings)
+   local _,code=dfhack.run_command_silent('df3d','stockpile-summary-read',tostring(b.id))
+   assert(code~=0 and settings_snapshot(b.settings)==before,'short glass summary not rejected unchanged')
+   values:resize(#saved);for i,v in ipairs(saved)do values[i-1]=v end
+   records[#records+1]={probe='summary_rejection',field='gems.'..field,stored_count=0}
+  end
+  for bit,key in ipairs(categories)do
+   b.settings.flags[key]=false
+   c.scroll_position_main=0;c.spec_filter='';c.entering_spec_filter=false
+   view:render(dfhack.getTickCount());label_click(category_labels[bit])
+   local function fill(value)
+    for field,values in pairs(b.settings[key])do
+     if tostring(field):sub(1,1)~='_' and type(values)~='function'then
+      if type(values)=='boolean'then b.settings[key][field]=value~=0
+      elseif type(values)=='userdata'then
+       for i=0,#values-1 do
+        if type(values[i])=='boolean'then values[i]=value==2 and i%2==0 or value==1
+        else values[i]=value==2 and i%2 or value end
+       end
+      end
+     end
+    end
+   end
+   for _,variant in ipairs{0,1,2}do
+    fill(variant)
+    local before=settings_snapshot(b.settings)
+    local size,address=df.sizeof(df.global.game.main_interface)
+    local guard=df.new('uint8_t',size);dfhack.internal.memmove(guard,address,size)
+    local text,code=dfhack.run_command_silent('df3d','stockpile-summary-read',tostring(b.id))
+    assert(code==0,'summary service refused '..key..': '..text)
+    assert(dfhack.internal.memcmp(guard,address,size)==0,'summary probe changed UI');df.delete(guard)
+    assert(settings_snapshot(b.settings)==before,'summary probe changed settings')
+    local states=json.decode(text);assert(#states==109,'summary mode count')
+    view:render(dfhack.getTickCount())
+    local root_y
+    for row=9,g.dimy-1 do
+     local chars={};for x=0,39 do local t=dfhack.screen.readTile(x,row);chars[#chars+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' 'end
+     if table.concat(chars):find(category_labels[bit],1,true)then root_y=row-1;break end
+    end
+    assert(root_y,'root summary label absent '..key)
+    local root_state=screen_state(root_y,0,35)
+    if key=='corpses' or key=='coins' or key=='wood'then
+     assert(root_state==states[modes[bit]+1],'direct root summary differs '..key)
+    end
+    local compared={}
+    for i,mode in ipairs(c.sub_mode)do
+     if c.sub_mode_ptr_type[i]==-1 then
+      c.scroll_position_sub=math.max(0,i-5);view:render(dfhack.getTickCount())
+      local label=assert(summary_labels[mode],'missing summary label '..mode);local y
+      for row=9,g.dimy-1 do
+       local chars={};for x=40,70 do local t=dfhack.screen.readTile(x,row);chars[#chars+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' 'end
+       if table.concat(chars):find(label,1,true)then y=row-1;break end
+      end
+      assert(y,'summary label absent '..label)
+      local actual=screen_state(y)
+      assert(actual==states[mode+1],'native summary state differs mode '..mode)
+      compared[#compared+1]={mode=mode,state=actual}
+     end
+    end
+    records[#records+1]={probe='summary_render',category=key,variant=variant,root_state=root_state,states=states,compared=compared}
+   end
+  end
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)
  local f=assert(io.open(out..'/result.tmp','w'));f:write(require('json').encode{success=ok,error=tostring(why),records=records});f:close();assert(os.rename(out..'/result.tmp',out..'/result.json'))

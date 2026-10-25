@@ -292,6 +292,32 @@ matched native results. Complete settings and unrelated state checks passed;
 diagnostics were clean, source hashes unchanged and owned DF closed without
 saving. This establishes leaf command effects, not full stockpile acceptance.
 
+The read-only `df3d stockpile-summary-read <building-id>` diagnostic calls DF's
+sublist summary routine at `0x55a6d0` with independently owned settings. Its109
+mode slots return0 none/empty,1 mixed or2 all; parent modes return0 and are not
+category aggregates. The native renderer combines these results and scalar
+controls for category indicators. This diagnostic is not yet a gameplay callback.
+
+The routine reads raw tables and settings, writes local strings only, and uses
+inorganic type0 for its material formatting. Historical-material cache paths are
+excluded. Reference guards cover creature/plant/inorganic pointers, Plants'
+parallel organic index table and Stone reaction-product IDs. Native glass summary
+reads fixed slots3..5 without bounds checks, so the diagnostic rejects vectors
+shorter than6. Disabled categories can legitimately have empty storage; gameplay
+integration must query only applicable modes instead of applying this diagnostic's
+all-mode admission rule to every panel. Current summary membership remains staged.
+
+Protected `build/stockpile-presets-native-20261025-060003` passed the existing
+native row comparisons and270 summary comparisons against actual rendered native
+status artwork, including two short-glass refusals. Focused
+`build/stockpile-summaries-native-20261025-060635` repeats270 comparisons across90
+visible sublists in none/all/mixed states and records51 root-category states.
+Corpses, Coins and Wood's nine direct-root cases also match the provider. Calls
+preserved native UI bytes and source settings; both owned sessions closed without
+saving and source save hashes were unchanged. Bounded states and provenance are
+in `native_stockpile_filters.json.native_summaries`. Root aggregation, selective
+queries, further malformed-input injection and rendered DF3D acceptance remain.
+
 The nine item-definition lists (Ammo Type, Weapons, Trap components, and Armor
 Body/Head/Feet/Hands/Legs/Shield) use DF's owned row builder for native names,
 optional adjectives, sorting and search. Leaf edits use the native visible-row

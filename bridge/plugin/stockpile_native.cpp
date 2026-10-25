@@ -174,6 +174,127 @@ std::optional<df::stockpile_settings> nativeStockpileHeader(
     }
     return owned;
 }
+static bool nativeListCompatible(const uint8_t* base) {
+    return supported(base) &&
+        hash(base+0x14d16f0,0x91)==0x38ac9ecba29364f4ULL &&
+        hash(base+0x14d7f0,0x5a)==0xdfbefbe76328d1c2ULL &&
+        hash(base+0x14d850,0x22)==0xcc724b0919b345caULL &&
+        hash(base+0x145b740,0x37)==0xc69a243bb9df4070ULL &&
+        hash(base+0x6b8af0,0x96)==0x8f67f7a1b9d42698ULL &&
+        hash(base+0x6f370,0xc)==0xe8009075ae23e49bULL &&
+        hash(base+0x6f450,0xb)==0xab3f98567ea8847dULL &&
+        hash(base+0x67e30,0x5)==0xa06f937403b4a5fdULL &&
+        hash(base+0xd669f0,0x65)==0xfdd633716041814fULL &&
+        hash(base+0x701e70,0x20e)==0xead0193006374e44ULL &&
+        hash(base+0x701db0,0xba)==0x8fd2bf0e939933fcULL &&
+        hash(base+0xa64cb0,0x45)==0x929e553cfe3f9c62ULL &&
+        hash(base+0xa64d00,0x79)==0x82e1b1bb161f88d0ULL &&
+        hash(base+0xf2680,0x54)==0xcaef8a6056b8eef2ULL &&
+        hash(base+0x6ee00,0x8)==0x45953a731d07973cULL &&
+        hash(base+0x6ee10,0x4)==0xcbb562da69740364ULL &&
+        hash(base+0x6ee20,0x24)==0xc11133a82be341f7ULL &&
+        hash(base+0x6ee50,0xc)==0xe8047875ae27a4aaULL &&
+        hash(base+0x6f230,0xb)==0x902c1224d06de7deULL &&
+        hash(base+0x6f240,0xa)==0xff5fd01446b306acULL &&
+        hash(base+0x657b0,0x7)==0x8ed7b69d3403667eULL &&
+        hash(base+0x6f580,0x1f)==0xdfeca05eb6f047a9ULL &&
+        hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
+        hash(base+0x14d1790,0x181)==0x4a5b855077250003ULL &&
+        hash(base+0x724a30,0xd9)==0x5121a9264bd432feULL &&
+        hash(base+0x1f9bd0,0x8c)==0xe9d8573a55300bd7ULL &&
+        hash(base+0x6f530,0x2d)==0xc2a3fd308b4fc92eULL &&
+        hash(base+0x14d1920,0x459)==0xf48e28715360ed9aULL &&
+        hash(base+0x14add70,0x12f)==0x1f897b15772d540ULL &&
+        hash(base+0x145bee0,0x5e)==0x6abc4e374e372eefULL &&
+        hash(base+0x14e1ec0,0xb68)==0x1d38184423ba8a35ULL &&
+        hash(base+0x6f850,0x5f)==0x5ab94e1bc2548275ULL &&
+        hash(base+0xb9b80,0x144)==0x91ddb6c319015f9bULL &&
+        hash(base+0x707d0,0x59)==0xeaa671999c0fd514ULL &&
+        hash(base+0x681f0,0xb8)==0x84219afebe998ea0ULL &&
+        hash(base+0x68150,0x37)==0xffedcb68657803eaULL &&
+        hash(base+0x35fd70,0x77f0)==0x9826ec82d86ebf51ULL &&
+        hash(base+0x35fb50,0x188)==0x0370358adf30598bULL &&
+        hash(base+0x35fce0,0x89)==0x60a96499876e0c98ULL &&
+        hash(base+0x14d880,0x5a)==0x4aa033209ea95fd2ULL &&
+        hash(base+0x144d90,0xba)==0x97aed5d23117e68fULL &&
+        hash(base+0x52d650,0x2b0)==0xcf43211ff8e2c344ULL &&
+        hash(base+0x52cee0,0x19e)==0xc25c2d8a6eb9fcacULL &&
+        hash(base+0x3bc400,0x14d)==0x038c68edadcc2b69ULL &&
+        hash(base+0x2240f0,0x8)==0x4bfd67e9e540ffc4ULL &&
+        hash(base+0x1b9fa0,0x7)==0xa88a5a439c83b069ULL &&
+        hash(base+0x6f520,0x3d)==0xaceb003bf538dbfcULL &&
+        hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL &&
+        hash(base+0x6f220,0x8)==0x2bba791d9cd7ac1dULL &&
+        hash(base+0x6f5d0,0xc0)==0xd7cc734d277fe129ULL &&
+        hash(base+0x6f560,0x20)==0xd0ebc9e82e46ffe8ULL &&
+        hash(base+0xb9d10,0x13)==0x5ad8171f894aa0c8ULL &&
+        hash(base+0x6f690,0x1d)==0x53c89dc946758be9ULL &&
+        hash(base+0x6fa10,0x161)==0xdf2151da834b95e7ULL &&
+        hash(base+0xe35c0,0x66)==0xab8dd56de421fbe9ULL &&
+        hash(base+0xaa3bd0,0x1c3)==0xf9cd818efc6bad8ULL &&
+        hash(base+0x256880,0xa7)==0xbe498be3e4e4a895ULL &&
+        hash(base+0x6f8d0,0x10d)==0xcc29ed917c3d3bf4ULL &&
+        hash(base+0x3c6a70,0x1d)==0x71d2ae7fe2bf2ddbULL &&
+        hash(base+0x13bbf0,0x1e)==0x1bd597972a2ba0eULL &&
+        hash(base+0x6f410,0x1d)==0xc4deaa9fd6b78e02ULL &&
+        hash(base+0x287020,0x15b)==0xc5cbef45bac88ad3ULL &&
+        hash(base+0x70bd0,0x15c)==0x4f81ccfaa39439f5ULL &&
+        hash(base+0x70e20,0x117)==0x9aba69f846f6c10ULL &&
+        hash(base+0x71830,0x88)==0x929730bf6bcaccccULL;
+}
+std::optional<std::array<uint8_t,109>> nativeStockpileSummaries(
+    const df::stockpile_settings& source) {
+    if(!df::global::world)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!base)return std::nullopt;
+    // DF's renderer calls55a6d0 for sublist state:0 none,1 mixed,2 all.
+    // The entire dispatch table is fingerprinted with the routine. Its only
+    // writes are local strings/stack; all material calls use inorganic type0.
+    static const bool compatible=nativeListCompatible(base) &&
+        hash(base+0x55a6d0,0x387c)==0xe36f6ca1446a23bcULL &&
+        hash(base+0x6b8af0,0x96)==0x8f67f7a1b9d42698ULL;
+    if(!compatible)return std::nullopt;
+    const auto& raws=df::global::world->raws;
+    // Native bounds checks permit stale vector tails, but referenced raw
+    // pointers and Plants' parallel organic index array are unchecked.
+    const size_t creatures=(std::max)({source.animals.enabled.size(),source.corpses.corpses.size(),
+        source.refuse.corpses.size(),source.refuse.body_parts.size(),source.refuse.skulls.size(),
+        source.refuse.bones.size(),source.refuse.shells.size(),source.refuse.teeth.size(),
+        source.refuse.horns.size(),source.refuse.hair.size()});
+    for(size_t i=0;i<creatures && i<raws.creatures.all.size() && i<32768;++i)
+        if(!raws.creatures.all[i])return std::nullopt;
+    for(size_t i=0;i<source.wood.mats.size() && i<raws.plants.all.size();++i)
+        if(!raws.plants.all[i])return std::nullopt;
+    const auto& types=raws.mat_table.organic_types[4];
+    const auto& indexes=raws.mat_table.organic_indexes[4];
+    const auto count=(std::min)(source.food.plants.size(),types.size());
+    if(indexes.size()<count)return std::nullopt;
+    for(size_t i=0;i<count;++i)if(types[i]>=419 && types[i]<=618 && indexes[i]>=0 &&
+        size_t(indexes[i])<raws.plants.all.size() && !raws.plants.all[indexes[i]])return std::nullopt;
+    const size_t inorganic=(std::max)({source.furniture.mats.size(),source.stone.mats.size(),
+        source.ammo.mats.size(),source.coins.mats.size(),source.bars_blocks.bars_mats.size(),
+        source.bars_blocks.blocks_mats.size(),source.gems.rough_mats.size(),source.gems.cut_mats.size(),
+        source.finished_goods.mats.size(),source.weapons.mats.size(),source.armor.mats.size()});
+    for(size_t i=0;i<inorganic && i<raws.inorganics.all.size();++i) {
+        const auto* raw=raws.inorganics.all[i];if(!raw)return std::nullopt;
+        if(i<source.stone.mats.size())for(const auto* id:raw->material.reaction_product.id)
+            if(!id)return std::nullopt;
+    }
+    // Native glass summary reads fixed slots3..5 without checking length.
+    // A missing slot has no defined native summary; reject instead of reading
+    // past storage or inventing a selected state. Ordinary vector tails remain.
+    if(source.gems.rough_other_mats.size()<6 || source.gems.cut_other_mats.size()<6)
+        return std::nullopt;
+    auto owned=source;
+    std::array<uint8_t,109> result{};
+    using Summarize=uint8_t (*)(df::stockpile_settings*,int32_t);
+    const auto summarize=reinterpret_cast<Summarize>(base+0x55a6d0);
+    for(int32_t mode=0;mode<109;++mode) {
+        result[mode]=summarize(&owned,mode);
+        if(result[mode]>2)return std::nullopt;
+    }
+    return result;
+}
 std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     df::stockpile_settings& owned,int mode,const std::string& filter,
     const std::vector<NativeStockpileSettingRange>& ranges) {
@@ -336,72 +457,7 @@ std::optional<std::vector<NativeStockpileRow>> nativeStockpileRows(
     if(!valid)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     if(!base)return std::nullopt;
-    static const bool compatible=supported(base) &&
-        hash(base+0x14d16f0,0x91)==0x38ac9ecba29364f4ULL &&
-        hash(base+0x14d7f0,0x5a)==0xdfbefbe76328d1c2ULL &&
-        hash(base+0x14d850,0x22)==0xcc724b0919b345caULL &&
-        hash(base+0x145b740,0x37)==0xc69a243bb9df4070ULL &&
-        hash(base+0x6b8af0,0x96)==0x8f67f7a1b9d42698ULL &&
-        hash(base+0x6f370,0xc)==0xe8009075ae23e49bULL &&
-        hash(base+0x6f450,0xb)==0xab3f98567ea8847dULL &&
-        hash(base+0x67e30,0x5)==0xa06f937403b4a5fdULL &&
-        hash(base+0xd669f0,0x65)==0xfdd633716041814fULL &&
-        hash(base+0x701e70,0x20e)==0xead0193006374e44ULL &&
-        hash(base+0x701db0,0xba)==0x8fd2bf0e939933fcULL &&
-        hash(base+0xa64cb0,0x45)==0x929e553cfe3f9c62ULL &&
-        hash(base+0xa64d00,0x79)==0x82e1b1bb161f88d0ULL &&
-        hash(base+0xf2680,0x54)==0xcaef8a6056b8eef2ULL &&
-        hash(base+0x6ee00,0x8)==0x45953a731d07973cULL &&
-        hash(base+0x6ee10,0x4)==0xcbb562da69740364ULL &&
-        hash(base+0x6ee20,0x24)==0xc11133a82be341f7ULL &&
-        hash(base+0x6ee50,0xc)==0xe8047875ae27a4aaULL &&
-        hash(base+0x6f230,0xb)==0x902c1224d06de7deULL &&
-        hash(base+0x6f240,0xa)==0xff5fd01446b306acULL &&
-        hash(base+0x657b0,0x7)==0x8ed7b69d3403667eULL &&
-        hash(base+0x6f580,0x1f)==0xdfeca05eb6f047a9ULL &&
-        hash(base+0xa82c10,0x56ec)==0x66347214dfd39a0bULL &&
-        hash(base+0x14d1790,0x181)==0x4a5b855077250003ULL &&
-        hash(base+0x724a30,0xd9)==0x5121a9264bd432feULL &&
-        hash(base+0x1f9bd0,0x8c)==0xe9d8573a55300bd7ULL &&
-        hash(base+0x6f530,0x2d)==0xc2a3fd308b4fc92eULL &&
-        hash(base+0x14d1920,0x459)==0xf48e28715360ed9aULL &&
-        hash(base+0x14add70,0x12f)==0x1f897b15772d540ULL &&
-        hash(base+0x145bee0,0x5e)==0x6abc4e374e372eefULL &&
-        hash(base+0x14e1ec0,0xb68)==0x1d38184423ba8a35ULL &&
-        hash(base+0x6f850,0x5f)==0x5ab94e1bc2548275ULL &&
-        hash(base+0xb9b80,0x144)==0x91ddb6c319015f9bULL &&
-        hash(base+0x707d0,0x59)==0xeaa671999c0fd514ULL &&
-        hash(base+0x681f0,0xb8)==0x84219afebe998ea0ULL &&
-        hash(base+0x68150,0x37)==0xffedcb68657803eaULL &&
-        hash(base+0x35fd70,0x77f0)==0x9826ec82d86ebf51ULL &&
-        hash(base+0x35fb50,0x188)==0x0370358adf30598bULL &&
-        hash(base+0x35fce0,0x89)==0x60a96499876e0c98ULL &&
-        hash(base+0x14d880,0x5a)==0x4aa033209ea95fd2ULL &&
-        hash(base+0x144d90,0xba)==0x97aed5d23117e68fULL &&
-        hash(base+0x52d650,0x2b0)==0xcf43211ff8e2c344ULL &&
-        hash(base+0x52cee0,0x19e)==0xc25c2d8a6eb9fcacULL &&
-        hash(base+0x3bc400,0x14d)==0x038c68edadcc2b69ULL &&
-        hash(base+0x2240f0,0x8)==0x4bfd67e9e540ffc4ULL &&
-        hash(base+0x1b9fa0,0x7)==0xa88a5a439c83b069ULL &&
-        hash(base+0x6f520,0x3d)==0xaceb003bf538dbfcULL &&
-        hash(base+0x6f290,0xe)==0x0b4b5eed70e95db6ULL &&
-        hash(base+0x6f220,0x8)==0x2bba791d9cd7ac1dULL &&
-        hash(base+0x6f5d0,0xc0)==0xd7cc734d277fe129ULL &&
-        hash(base+0x6f560,0x20)==0xd0ebc9e82e46ffe8ULL &&
-        hash(base+0xb9d10,0x13)==0x5ad8171f894aa0c8ULL &&
-        hash(base+0x6f690,0x1d)==0x53c89dc946758be9ULL &&
-        hash(base+0x6fa10,0x161)==0xdf2151da834b95e7ULL &&
-        hash(base+0xe35c0,0x66)==0xab8dd56de421fbe9ULL &&
-        hash(base+0xaa3bd0,0x1c3)==0xf9cd818efc6bad8ULL &&
-        hash(base+0x256880,0xa7)==0xbe498be3e4e4a895ULL &&
-        hash(base+0x6f8d0,0x10d)==0xcc29ed917c3d3bf4ULL &&
-        hash(base+0x3c6a70,0x1d)==0x71d2ae7fe2bf2ddbULL &&
-        hash(base+0x13bbf0,0x1e)==0x1bd597972a2ba0eULL &&
-        hash(base+0x6f410,0x1d)==0xc4deaa9fd6b78e02ULL &&
-        hash(base+0x287020,0x15b)==0xc5cbef45bac88ad3ULL &&
-        hash(base+0x70bd0,0x15c)==0x4f81ccfaa39439f5ULL &&
-        hash(base+0x70e20,0x117)==0x9aba69f846f6c10ULL &&
-        hash(base+0x71830,0x88)==0x929730bf6bcaccccULL;
+    static const bool compatible=nativeListCompatible(base);
     if(!compatible)return std::nullopt;
     static_assert(sizeof(df::custom_stockpile_interfacest)==0xf8);
     static_assert(sizeof(df::custom_stockpile_itemst)==0x60);

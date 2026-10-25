@@ -956,8 +956,10 @@ func _maybe_screenshot(ready_now: bool) -> void:
 	ready_now = ready_now and (_loader == null or _loader.entered)
 	if (_elapsed >= _screenshot_min and ready_now) or _elapsed >= _screenshot_max:
 		_screenshot_pending = true
-		# Read the frame after the loader has revealed and rendered the map.
-		await RenderingServer.frame_post_draw
+		# Let visibility changes reach the separate render thread before readback.
+		for frame in range(2):
+			await get_tree().process_frame
+			await RenderingServer.frame_post_draw
 		var img := get_viewport().get_texture().get_image()
 		img.save_png(_screenshot_path)
 		var stats := "source=%s top_z=%d window=%d units=%d sprites=%d composited=%d simple=%d glyph_units=%d cubes=%d composite_cache=%d composite_failed=%d composite_built=%d composite_total_ms=%.2f composite_pending=%d terrain_loaded=%s known_blocks=%d map_blocks=%d built_blocks=%d faces=%d textured=%d placeholder=%d hidden=%d pending=%d total_build_ms=%.1f buildings=%d buildings_unresolved=%d building_pending=%d building_total_ms=%.1f items=%d items_unresolved=%d item_ms=%.2f building_events=%d item_events=%d items_composited=%d items_pieces=%d items_webs=%d items_glyphs=%d item_composite_pending=%d buildings_glyphs=%d item_appearance_events=%d glyph_tileset=\"%s\" draw_calls=%d primitives=%d objects=%d frame_ms=%.2f elapsed_s=%.1f render_tick=%.1f assets_ok=%s" % [

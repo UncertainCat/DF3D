@@ -1668,10 +1668,35 @@ int areaRepaint(lua_State* L) {
        int64_t(b->room.width)*b->room.height>32768)))
     return fail("Invalid area extents",uint32_t(count));
   if(zone && !df::global::world)return fail("World is not loaded",uint32_t(count));
+  // Native repaint grows its allocation only around accepted cells, unlike
+  // creation which retains the full selected rectangle. Filter before planning
+  // bounds, using owned spans; never borrow the native paint menu's scratch.
+  uint32_t eligibilitySteps=0;
+  if(pile && mode==1) {
+    if(requested>=budget)return fail("Paint exceeds remaining step budget",uint32_t(count));
+    std::vector<df3d_area::Span> eligibleSpans;eligibleSpans.reserve(spans.size());
+    for(const auto& span:spans)for(int32_t x=span.x;x<span.x+span.length;++x) {
+      ++eligibilitySteps;
+      auto* block=Maps::isValidTilePos(x,span.y,b->z)?Maps::getTileBlock(x,span.y,b->z):nullptr;
+      if(!block)return fail("Every selected tile must be visible and loaded",eligibilitySteps);
+      const auto eligible=df3d_area::nativeStockpileTileType(uint16_t(block->tiletype[x&15][span.y&15]));
+      if(!eligible)return fail("",eligibilitySteps);
+      const auto& designation=block->designation[x&15][span.y&15];
+      if(designation.bits.hidden || !*eligible ||
+          (block->occupancy[x&15][span.y&15].bits.building!=df::tile_building_occ::None && !designation.bits.pile))continue;
+      if(!eligibleSpans.empty() && eligibleSpans.back().y==span.y && eligibleSpans.back().x+eligibleSpans.back().length==x)
+        ++eligibleSpans.back().length;
+      else eligibleSpans.push_back({span.y,x,1});
+    }
+    if(eligibleSpans.empty()) {
+      lua_newtable(L);field(L,"ok",true);field(L,"message","");field(L,"steps",eligibilitySteps);return 1;
+    }
+    spans.swap(eligibleSpans);
+  }
   // Site checks run in the planner's counted tile visit. Native occupancy is a
   // second pass over at most requested tiles; reserve it before allocating.
   const uint32_t reserved=requested+(mode==3?uint32_t(width*height):0)+1;
-  if(reserved>=budget || count+reserved>=budget)return fail("Paint exceeds remaining step budget",uint32_t(count));
+  if(uint64_t(reserved)+eligibilitySteps>=budget || uint64_t(count)+reserved+eligibilitySteps>=budget)return fail("Paint exceeds remaining step budget",uint32_t(count)+eligibilitySteps);
   struct ExtentsView {
     const df::building* b;size_t width,height;
     size_t size()const{return width*height;}
@@ -1686,23 +1711,20 @@ int areaRepaint(lua_State* L) {
   std::vector<Change> changes;changes.reserve(requested+(mode==3?size_t(width)*height:0));
   const char* siteError="Invalid paint site";
   auto plan=df3d_area::paint<df3d_area::NativeExtents<df::building_extents_type>>(
-      before,ExtentsView{b,size_t(width),size_t(height)},spans,mode,budget-reserved,
+      before,ExtentsView{b,size_t(width),size_t(height)},spans,mode,budget-reserved-eligibilitySteps,
       [&](int32_t x,int32_t y,int64_t prior,int64_t after) {
     auto* block=Maps::isValidTilePos(x,y,b->z)?Maps::getTileBlock(x,y,b->z):nullptr;
     if(!block || block->designation[x&15][y&15].bits.hidden) {
       siteError="Every selected tile must be visible and loaded";return false;
     }
     const auto& designation=block->designation[x&15][y&15];
-    const auto shape=tileShape(block->tiletype[x&15][y&15]);
     // Retained cells already belong to this area. Its own native occupancy
     // must not make a footprint replacement fail placement validation.
     if(after!=0 && prior==0 && pile) {
-      using namespace df::enums::tiletype_shape;
-      if(shape!=FLOOR && shape!=BOULDER && shape!=PEBBLES && shape!=STAIR_UP && shape!=STAIR_DOWN &&
-          shape!=STAIR_UPDOWN && shape!=RAMP && shape!=TWIG && shape!=SAPLING && shape!=SHRUB) {
-        siteError="Stockpiles require supported floor on every tile";return false;
-      }
-      if(designation.bits.flow_size || block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None) {
+      const auto eligible=df3d_area::nativeStockpileTileType(uint16_t(block->tiletype[x&15][y&15]));
+      if(!eligible){siteError="";return false;}
+      if(!*eligible) {siteError="Stockpiles require supported floor on every tile";return false;}
+      if(block->occupancy[x&15][y&15].bits.building!=df::tile_building_occ::None && !designation.bits.pile) {
         siteError="Stockpile site contains liquid or a building";return false;
       }
       if(designation.bits.pile && !prior){siteError="Stockpiles cannot overlap another stockpile";return false;}
@@ -1711,7 +1733,7 @@ int areaRepaint(lua_State* L) {
     if(prior!=after)changes.push_back({block,x,y,after==0});
     return true;
   },true);
-  const uint32_t spent=plan.steps;
+  const uint32_t spent=plan.steps+eligibilitySteps;
   if(plan.error!=df3d_area::Error::None) {
     switch(plan.error) {
       case df3d_area::Error::Empty:return fail("Erase would remove the whole area; use Remove",spent);

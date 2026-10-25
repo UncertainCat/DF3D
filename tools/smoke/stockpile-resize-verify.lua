@@ -54,6 +54,28 @@ elseif request.op=='resize_check' then
  assert(#actual.containers==#expected,'wrong container vector length')
  for i,row in ipairs(expected)do for key,value in pairs(row)do assert(actual.containers[i][key]==value,'parallel vectors differ')end end
  result.area=actual;result.released=released;result.retained=#expected
+elseif request.op=='resize_grow_prepare' then
+ local b=assert(df.building.find(request.id));local x,y,z=b.x2+1,b.y1,b.z
+ local mask={1,1,1}
+ if request.case=='wall-left' then mask[1]=0 elseif request.case=='wall-right' then mask[3]=0
+ elseif request.case=='all-wall' then mask={0,0,0}end
+ for i=1,3 do
+  local block=assert(dfhack.maps.getTileBlock(x+i-1,y,z));local bx,by=(x+i-1)%16,y%16
+  assert(not block.designation[bx][by].pile and block.occupancy[bx][by].building==0,'growth fixture overlaps building')
+  block.tiletype[bx][by]=mask[i]==0 and df.tiletype.StoneWall or df.tiletype.StoneFloor1
+  block.designation[bx][by].hidden=false;block.designation[bx][by].flow_size=0
+ end
+ _G.df3d_grow_check={id=b.id,x=x,y=y,mask=mask,before=snapshot(b)}
+ result.origin={x=x,y=y,z=z}
+elseif request.op=='resize_grow_check' then
+ local s=assert(_G.df3d_grow_check);local b=assert(df.building.find(s.id));local right=s.before.bounds[3];local count=3
+ for i,v in ipairs(s.mask)do
+  assert(dfhack.buildings.containsTile(b,s.x+i-1,s.y)==(v==1),'wrong growth cell')
+  if v==1 then right=s.x+i-1;count=count+1 end
+ end
+ assert(b.x1==s.before.bounds[1] and b.x2==right and b.y1==s.before.bounds[2] and b.y2==s.before.bounds[4],'growth bounds include rejected edge')
+ assert(dfhack.buildings.countExtentTiles(b,-1)==count,'growth changed retained cells')
+ result.area=snapshot(b)
 elseif request.op=='resize_create_prepare' then
  local s=assert(_G.df3d_resize_check);local x,y,z=s.before.bounds[1],s.before.bounds[2],s.z
  local mask={1,1,1}

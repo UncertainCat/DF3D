@@ -1,6 +1,6 @@
 {
   "game": "DF53.16 Steam24557528",
-  "scope": "Native UI oracle in paused disposable sessions; terrain/occupancy are deliberate fixture setup. No DF3D gameplay acceptance. Creation uses a fresh owned process for each case. Repaint uses an existing stocked pile; created-pile tests use three freshly erased holes in its bounds.",
+  "scope": "Native UI oracles in paused disposable sessions, plus separately scoped DF3D semantic and viewport acceptance. Terrain/occupancy changes are deliberate fixture setup. Native creation and growth cases use fresh owned processes.",
   "runner": "tools/smoke/stockpile_storage_native.ps1 -PaintGestures -GestureCase eligibility; creation: -GestureCase eligibility-create -EligibilityCase <case>",
   "observations": [
     {
@@ -756,6 +756,290 @@
           "start_present": true,
           "tiles": 2,
           "tiletype": "StoneWall"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-grow-all-wall-20261025-114006",
+      "result_sha256": "e1d342ecc9d5c431b9f4109c985a2dbc656c946927a7cc43f143654eaca56516",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "before-grow",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "after-grow",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "case": "all-wall",
+          "first": {
+            "x": 124,
+            "y": 66,
+            "z": 165
+          },
+          "last": {
+            "x": 126,
+            "y": 66,
+            "z": 165
+          },
+          "mask": [
+            false,
+            false,
+            false
+          ],
+          "name": "grow-cells"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-grow-floor-20261025-114032",
+      "result_sha256": "f55ac7c0917bec6c3ffb06fcbf10ac094713b8c6328ba900e229bd3beba0981d",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "before-grow",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            126,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "after-grow",
+          "repainting": true,
+          "tiles": 275,
+          "wheelbarrows": 1
+        },
+        {
+          "case": "floor",
+          "first": {
+            "x": 124,
+            "y": 66,
+            "z": 165
+          },
+          "last": {
+            "x": 126,
+            "y": 66,
+            "z": 165
+          },
+          "mask": [
+            true,
+            true,
+            true
+          ],
+          "name": "grow-cells"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-grow-wall-left-20261025-113940",
+      "result_sha256": "7180863be0b00b442a9b27e477f4c3314e58e985a94c9d2b9c9fdc12459180c3",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "before-grow",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            126,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "after-grow",
+          "repainting": true,
+          "tiles": 274,
+          "wheelbarrows": 1
+        },
+        {
+          "case": "wall-left",
+          "first": {
+            "x": 124,
+            "y": 66,
+            "z": 165
+          },
+          "last": {
+            "x": 126,
+            "y": 66,
+            "z": 165
+          },
+          "mask": [
+            false,
+            true,
+            true
+          ],
+          "name": "grow-cells"
+        }
+      ]
+    },
+    {
+      "run": "build/stockpile-storage-native-gestures-eligibility-grow-wall-right-20261025-113907",
+      "result_sha256": "db9db11e01db3912ff6201096113ffb0a2c84039ec87f811f2ec1fcdde2bfff7",
+      "source_preservation": "Owned source unchanged",
+      "owned_df_closed_without_saving": true,
+      "records": [
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            123,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "before-grow",
+          "repainting": true,
+          "tiles": 272,
+          "wheelbarrows": 1
+        },
+        {
+          "barrels": 136,
+          "bins": 136,
+          "bottom_mode": 6,
+          "bounds": [
+            111,
+            61,
+            125,
+            84
+          ],
+          "corner": [
+            -30000,
+            -30000,
+            -30000
+          ],
+          "current": 121,
+          "erasing": false,
+          "name": "after-grow",
+          "repainting": true,
+          "tiles": 274,
+          "wheelbarrows": 1
+        },
+        {
+          "case": "wall-right",
+          "first": {
+            "x": 124,
+            "y": 66,
+            "z": 165
+          },
+          "last": {
+            "x": 126,
+            "y": 66,
+            "z": 165
+          },
+          "mask": [
+            true,
+            true,
+            false
+          ],
+          "name": "grow-cells"
         }
       ]
     }
@@ -1643,5 +1927,19 @@
       "owned_df_closed_without_saving": true,
       "scope": "Actual pointer all-clipped creation keeps empty Paint and disabled Accept, then valid gesture creates and removes normally; existing empty/regrow/exit regression also passes. Controlled fixture occupancy is restored before valid creation."
     }
+  },
+  "repaint_growth_acceptance": {
+    "run": "build/areas-acceptance-20261025-114153",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "status": "passed",
+    "save_preservation": "Verified unchanged manifests for 2 save directories.",
+    "owned_df_closed_without_saving": true,
+    "cases": [
+      "wall-left",
+      "wall-right",
+      "all-wall",
+      "floor"
+    ],
+    "scope": "Semantic add-paint growth compares every new cell and exact bounds while retaining original three cells; deletion verified per case. Includes prior creation and stocked-container cleanup regressions. Does not establish cross-pile transfer, hidden-cell erasure or legacy replacement semantics."
   }
 }

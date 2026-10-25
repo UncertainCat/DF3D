@@ -71,4 +71,21 @@ func exercise() -> void:
 			await native("resize_create_check",{"id":int(target.id)})
 			await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(target.revision)})
 			if stopped: return
+	for sample in ["wall-left","wall-right","all-wall","floor"]:
+		step = "native-clipped repaint growth "+sample
+		var site := await native("resize_create_prepare",{"case":"floor"})
+		var point := Vector3i(int(site.origin.x),int(site.origin.y),int(site.origin.z))
+		var created := await request({"action":10,"kind":0,"operation":5,"paint_mode":1,"paint_z":point.z,
+			"spans":[{"x":point.x,"y":point.y,"length":3}]})
+		if stopped: return
+		var target: Dictionary = created.areas[0]
+		site = await native("resize_grow_prepare",{"id":int(target.id),"case":sample})
+		point = Vector3i(int(site.origin.x),int(site.origin.y),int(site.origin.z))
+		var grown := await request({"action":11,"kind":0,"id":int(target.id),"expected_revision":int(target.revision),
+			"operation":5,"paint_mode":1,"paint_z":point.z,"spans":[{"x":point.x,"y":point.y,"length":3}]})
+		if stopped: return
+		await native("resize_grow_check")
+		await request({"action":12,"kind":0,"id":int(target.id),"expected_revision":int(grown.areas[0].revision)})
+		if stopped: return
+		await native("removed",{"id":int(target.id)})
 	await native("final")

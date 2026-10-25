@@ -221,8 +221,16 @@ and two unchanged save manifests. Viewport run
 `build/areas-acceptance-20261025-113545` verifies all-clipped creation keeps Paint
 open with Accept disabled, then accepts a valid gesture and removal. The capture
 was inspected; only the known separate-thread notice remains, with unsaved
-closure and unchanged manifests. Repaint still requires migration; overlapping
-stockpile transfer remains unaudited.
+closure and unchanged manifests.
+
+Repaint additions filter owned spans through the same native predicates before
+planning allocation bounds. Native growth probes (`eligibility-grow` with
+`wall-left`, `wall-right`, `all-wall` or `floor`) establish that rejected cells
+do not extend bounds; an all-rejected stroke leaves the pile unchanged. Protected
+`build/areas-acceptance-20261025-114153` passes exact masks/bounds and retained-cell
+checks for all four cases, plus creation and storage cleanup regressions. Owned
+DF closed unsaved with two unchanged manifests. Cross-pile transfer, hidden-cell
+erasure and legacy whole-footprint replacement semantics remain unaudited.
 
 DFHack `Buildings::checkFreeTiles` reconstructs shape rules and is not the
 eligibility authority. Its stockpile caller passes `allow_flow=true`. All317

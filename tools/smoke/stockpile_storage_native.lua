@@ -111,6 +111,40 @@ require('gui.script').start(function()
      current=paint.cur_bld and paint.cur_bld.id or -1,bottom_mode=df.global.game.main_interface.bottom_mode_selected,
      corner={df.global.selection_rect.start_x,df.global.selection_rect.start_y,df.global.selection_rect.start_z}}
    end
+   if gestures=='eligibility-grow' then
+    assert(eligibility_case=='floor' or eligibility_case=='wall-left' or eligibility_case=='wall-right' or eligibility_case=='all-wall')
+    local first,last
+    for ty=b.y1,b.y2 do
+     local free=true
+     for tx=b.x2+1,b.x2+3 do
+      local block=dfhack.maps.getTileBlock(tx,ty,b.z)
+      if not block or block.designation[tx%16][ty%16].pile or block.occupancy[tx%16][ty%16].building~=0 then free=false;break end
+     end
+     if free then first={x=b.x2+1,y=ty,z=b.z};last={x=b.x2+3,y=ty,z=b.z};break end
+    end
+    assert(first,'no free growth span along right edge')
+    local saved={}
+    for tx=first.x,last.x do
+     local block=assert(dfhack.maps.getTileBlock(tx,first.y,first.z));local x,y=tx%16,first.y%16
+     assert(not block.designation[x][y].pile and block.occupancy[x][y].building==0,'growth fixture overlaps existing building')
+     saved[#saved+1]={block=block,x=x,y=y,tile=block.tiletype[x][y],designation=block.designation[x][y].whole}
+     block.tiletype[x][y]=(eligibility_case=='all-wall' or eligibility_case=='wall-left' and tx==first.x or eligibility_case=='wall-right' and tx==last.x) and df.tiletype.StoneWall or df.tiletype.StoneFloor1
+     block.designation[x][y].hidden=false;block.designation[x][y].flow_size=0
+    end
+    record('before-grow')
+    mapclick(first);mapclick(last)
+    record('after-grow')
+    local mask={};for tx=first.x,last.x do mask[#mask+1]=dfhack.buildings.containsTile(b,tx,first.y)end
+    records[#records+1]={name='grow-cells',case=eligibility_case,first=first,last=last,mask=mask}
+    capture('eligibility-grow-'..eligibility_case)
+    for _,s in ipairs(saved)do
+     s.block.tiletype[s.x][s.y]=s.tile
+     local pile=s.block.designation[s.x][s.y].pile
+     s.block.designation[s.x][s.y].whole=s.designation;s.block.designation[s.x][s.y].pile=pile
+    end
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+    return
+   end
    if gestures=='eligibility' or gestures=='eligibility-create' then
     local first,last
     for _,p in ipairs(cells)do

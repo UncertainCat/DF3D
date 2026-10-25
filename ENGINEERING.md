@@ -349,6 +349,24 @@ failed because unrelated raw tables were incomplete; after isolating dispatch
 from those tables, `build/qa/stockpile-all-parent-adapter-final` passed the adapter
 check. Actual native row results are covered by the protected runs above.
 
+Settings scroll positions survive asynchronous row replacement. Native capture
+`build/stockpile-scroll-native-20261025-072912` verified that row offset30 remains
+after selecting the same or a different leaf, reopening Food, searching and
+filtered All. Seven screenshots and native row snapshots were captured; the save
+was unchanged and owned DF closed without saving. The bounded
+`fixtures/areas/native_stockpile_scroll.json` retains those transitions and the
+first128 visible rows for three cases. The rendered `area_settings_scroll_capture`
+check exercises delayed replies with those rows, refresh and close. Its root and
+sublist scaffolding is synthetic; it does not prove full-panel parity. The view
+retains the last populated offset across empty pending columns and restores it
+after layout, guarded against obsolete restorations. Empty-result behavior,
+scrollbar proportions for fully paged lists and full rendered workflows still
+need acceptance.
+Gate `build/qa/stockpile-scroll-accepted` passed root CTest and settings state/
+controller checks cleanly. Both rendered settings-scroll and area-menu checks
+passed with the documented thread-notice, device-finalize and shutdown-object
+diagnostics; they are not clean renderer passes.
+
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
 all; parent slots are unused. The bridge combines native sublist states and the

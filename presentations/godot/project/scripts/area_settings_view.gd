@@ -10,6 +10,15 @@ var search: LineEdit
 var rendered_rows: Array = [[],[],[]]
 var category_art: Dictionary = {}
 var row_cache: Array = [{},{},{}]
+var retained_scroll: Array[int] = [0,0,0]
+var scroll_generation: Array[int] = [0,0,0]
+
+func restore_scroll(column: int, generation: int, offset: int) -> void:
+	# The new VBox must receive its minimum size before ScrollContainer can
+	# admit the old offset. Setting it during rebuild clamps against old bounds.
+	await get_tree().process_frame
+	if scroll_generation[column] == generation:
+		scrolls[column].set_deferred("scroll_vertical",offset)
 
 func configure(source, model) -> void:
 	state = model; art.configure(source); theme = art.theme
@@ -87,6 +96,7 @@ func row_style(value: int, selected: bool) -> StyleBox:
 
 func render() -> void:
 	if state == null: return
+	if state.area.is_empty(): retained_scroll = [0,0,0]
 	var busy: bool = state.busy()
 	for index in headers.size():
 		var column := index / 2
@@ -118,8 +128,12 @@ func render() -> void:
 					if control is Button: control.disabled = busy
 			continue
 		row_cache[column] = snapshot.duplicate(true)
-		# Preserve scroll positions while applying authoritative new row states.
-		var previous_scroll: int = scrolls[column].scroll_vertical
+		# Native navigation/search retains the scroll offset. An asynchronous
+		# reply can leave the column empty long enough for Godot to clamp it to
+		# zero; retain its last populated offset across that temporary gap.
+		if not state.area.is_empty() and not rendered_rows[column].is_empty():
+			retained_scroll[column] = scrolls[column].scroll_vertical
+		var previous_scroll: int = retained_scroll[column]
 		for child in columns[column].get_children(): columns[column].remove_child(child); child.queue_free()
 		rendered_rows[column] = []
 		for row in state.rows[column]:
@@ -153,4 +167,5 @@ func render() -> void:
 				icon.offset_left = -40; icon.offset_right = -8
 				icon.texture = art.texture({1:"STOCKPILE_OFF",2:"STOCKPILE_ON",3:"STOCKPILE_PARTIAL"}.get(int(row.state),""))
 				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
-		scrolls[column].set_deferred("scroll_vertical",previous_scroll)
+		scroll_generation[column] += 1
+		restore_scroll(column,scroll_generation[column],previous_scroll)

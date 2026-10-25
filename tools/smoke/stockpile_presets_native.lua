@@ -554,6 +554,24 @@ require('gui.script').start(function()
   label_click('Fish',0,2);label_click('Meat',0,2)
   label_click('None');classify('global_none',1)
   end
+  -- Native list offsets survive navigation, filtering and bulk edits. The
+  -- presentation must retain them while an asynchronous reply empties a list.
+  do
+  c.entering_spec_filter=false;c.spec_filter='';c.scroll_position_main=0
+  view:render(dfhack.getTickCount());label_click('Food')
+  c.scroll_position_spec=30;view:render(dfhack.getTickCount())
+  local function retained(name)
+   assert(c.scroll_position_spec==30,'native scroll changed: '..name)
+   records[#records+1]={probe='scroll_retention',transition=name,offset=c.scroll_position_spec}
+  end
+  label_click('Meat',0,2);retained('same_leaf')
+  label_click('Fish',0,2);retained('different_leaf')
+  label_click('Food');retained('same_category')
+  c.entering_spec_filter=true;gui.simulateInput(view,'STRING_A097')
+  view:render(dfhack.getTickCount());c.entering_spec_filter=false;retained('search')
+  label_click('All',0,3);retained('filtered_all')
+  c.spec_filter='';c.scroll_position_spec=0
+  end
   -- Compare every category entry and default-leaf reopening with owned rows.
   do
   local entries={

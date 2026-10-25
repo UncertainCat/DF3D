@@ -563,6 +563,15 @@
       ]
     },
     {
+      "id": "area_settings_scroll_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/area_settings_scroll_capture.gd",
+      "completion": "AREA_SETTINGS_SCROLL_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "area_menus_capture",
       "lane": "gpu",
       "kind": "godot",

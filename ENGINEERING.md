@@ -387,13 +387,29 @@ not a fixed diamond or a stretched two-row texture. The existing
 `build/qa/stockpile-scrollbar-reference` passed it and root CTest cleanly. Source
 save hashes were unchanged and owned DF closed without saving.
 
-Settings integration remains outstanding. Current `build_total` counts all native
-rows before search, while a page contains at most128 visible rows. Neither is the
-filtered total required by the scrollbar. Expose that count explicitly, preserving
-unknown counts in legacy recordings, and support requesting a not-yet-loaded row
-range before replacing the current settings scrollbar. Do not infer a total from
-loaded pages or relabel the unfiltered work count. Held repeat, wheel modifiers,
-dragging and scaled viewport behavior still require settings-specific acceptance.
+Completed native settings leaf pages expose `AreaState.settings_count`, the exact
+number of rows visible after native filtering. `build_total` retains its separate
+unfiltered work count, and each page still contains at most128 rows. The additive
+signed field defaults to-1 for older recordings and response families without a
+count; schema/management version56 is unchanged. Bridge and mirror validators
+reject a known count outside SettingsPage, below the returned row count or
+continuation cursor, or above the unfiltered total. The model and Godot dictionary
+preserve known zero and unknown-1 distinctly. No migration invents missing facts.
+Protected `build/stockpile-initialization-20261025-080833` passed131 observations:
+18 complete native list comparisons and37 edits across Meat, empty Plant Cheese,
+Refuse and Wood. Each decoded count matched the complete visible list, including
+12328/12000/0 Meat rows for empty/`A`/unmatched queries in both opening contexts.
+Diagnostics were clean, source hashes unchanged and owned DF closed unsaved.
+This focused count run excludes quality modes. Offline
+`build/qa/stockpile-filtered-count-stable` passed root CTest, adapter and Godot wire
+contract checks, including300-row pagination, a one-row filter, an empty result,
+malformed counts and unknown legacy data.
+
+Settings scrollbar integration remains outstanding: use this filtered count and
+support requesting a not-yet-loaded row range before replacing the current bar.
+Do not infer a total from loaded pages or relabel the unfiltered work count.
+Held repeat, wheel modifiers, dragging and scaled viewport behavior still require
+settings-specific acceptance.
 
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2

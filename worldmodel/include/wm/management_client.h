@@ -174,6 +174,7 @@ struct AreaState {
   std::vector<AreaLinkRow> links;
   int64_t listRevision=0,capturedTick=-1;
   uint32_t buildDone=0,buildTotal=0,omitted=0;
+  int32_t settingsCount=-1;
   int64_t interactionId=0,undoToken=0;
   AreaRoomOutcome roomOutcome=AreaRoomOutcome::None;
   uint32_t roomsCreated=0,roomsInUse=0,roomsUnenclosed=0,roomsRemoved=0;

@@ -901,7 +901,7 @@ local function native_settings_page(r,a,b,area_revision,layout,rows)
  local expected=default(a,'expected_list_revision',0)
  if expected~=0 and expected~=revision then return fail('List changed; refresh') end
  local out={ok=true,message='',list_key=key,query=default(a,'query',''),list_revision=revision,
-  build_phase=0,build_done=#rows,build_total=#rows,captured_tick=tick(),omitted=0,next_cursor=0,settings={}}
+  build_phase=0,build_done=#rows,build_total=#rows,settings_count=#visible,captured_tick=tick(),omitted=0,next_cursor=0,settings={}}
  for i=cursor+1,math.min(cursor+128,#visible) do
   local row=visible[i]
   out.settings[#out.settings+1]={key=native_setting_identity(key,row),index=row.index,label=row.label,

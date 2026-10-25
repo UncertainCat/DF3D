@@ -1386,6 +1386,7 @@ table AreaState {
   location_entry_outcome:LocationEntryOutcome;
   location_edit_outcome:LocationEditOutcome;
   location_staff_candidates:LocationStaffCandidates;
+  settings_count:int32 = -1; // Complete filtered SettingsPage count; -1 unknown in legacy records.
 }
 // Production recipes are opaque semantic keys revalidated against the selected building.
 table ProductionRequest {

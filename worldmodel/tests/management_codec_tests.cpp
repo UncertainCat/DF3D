@@ -9,6 +9,21 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("filtered settings counts preserve unknown legacy data and reject inconsistent pages") {
+  for(int count:{-2,-1,0,1,128,300,301}) {
+    flatbuffers::FlatBufferBuilder b;
+    wire::AreaStateBuilder area(b);area.add_operation(wire::AreaOperation::SettingsPage);
+    area.add_build_total(300);area.add_build_done(300);area.add_settings_count(count);
+    area.add_next_cursor(128);const auto value=area.Finish();
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(value);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*state)) == (count < -1 || (count>=0 && (count<128 || count>300))));
+    CHECK(codec::decodeArea(state->area()).settingsCount==count);
+  }
+  flatbuffers::FlatBufferBuilder b;b.Finish(wire::CreateAreaState(b));
+  CHECK(codec::decodeArea(flatbuffers::GetRoot<wire::AreaState>(b.GetBufferPointer())).settingsCount==-1);
+}
+
 TEST_CASE("verified category default lists accept parent ordering") {
   for(const char* key:{"food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"}) {
     wm::ManagementRequest q;q.action=wm::ManagementAction::AreaInspect;

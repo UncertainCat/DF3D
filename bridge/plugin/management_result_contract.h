@@ -94,7 +94,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
     if(unknownWork && !synchronous)return "unknown work is allowed only for synchronous operations";
     if(!number("revision",0,INT64_MAX) || !number("list_revision",0,INT64_MAX) ||
         !number("build_phase",0,3) || !number("build_done",0,UINT32_MAX) || !number("build_total",0,UINT32_MAX) ||
-        !number("omitted",0,UINT32_MAX) || !number("captured_tick",-1,INT64_MAX) ||
+        !number("settings_count",-1,INT32_MAX) || !number("omitted",0,UINT32_MAX) || !number("captured_tick",-1,INT64_MAX) ||
         !number("operation",0,15) || !number("area_id",-1,INT32_MAX) || !number("candidate_kind",0,3) ||
         !number("sort",0,3) || !number("next_cursor",0,UINT32_MAX) ||
         !boolean("sort_descending") || !boolean("truncated") || !text("list_key",64,false) || !text("query",128,false))return error;
@@ -135,6 +135,10 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
     if(!array("candidates",128,[&](){payload+=9;return table() && number("id",-1,INT32_MAX,true) && text("name",512) && text("profession",512) && number("sex",-1,1) && number("mood",0,7) && boolean("grazer") && boolean("assigned") && number("squad_use",-1,15);}))return error;
     if(!array("links",128,[&](){payload+=6;return table() && number("id",0,INT32_MAX,true) && number("kind",0,2,true) && (value("kind")!=1 || bad("area link kind must be Stockpile or Workshop")) && number("direction",1,2,true) && text("name",512);}))return error;
     const auto count=[&](const char* key){lua_getfield(L,-1,key);const size_t n=lua_istable(L,-1)?lua_rawlen(L,-1):0;lua_pop(L,1);return n;};
+    const auto settingsCount=value("settings_count",-1);
+    if(settingsCount>=0 && (operation!=df3d::mirror::AreaOperation::SettingsPage ||
+        uint64_t(settingsCount)<count("settings") || settingsCount<value("next_cursor") || settingsCount>value("build_total")))
+      return "invalid filtered settings count";
     const unsigned families=(count("settings")!=0)+(count("locations")!=0)+(count("candidates")!=0)+(count("links")!=0);
     if(families>1 || (count("choices") && (count("areas") || families)) || (families && count("areas")>1))
         return "area response mixes list families";

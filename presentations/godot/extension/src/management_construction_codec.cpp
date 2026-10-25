@@ -207,6 +207,7 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
   }
   area["query"]=String::utf8(s.query.c_str());area["list_revision"]=s.listRevision;area["build_phase"]=s.buildPhase;
   area["build_done"]=int64_t(s.buildDone);area["build_total"]=int64_t(s.buildTotal);area["omitted"]=int64_t(s.omitted);
+  area["settings_count"]=s.settingsCount;
   area["captured_tick"]=s.capturedTick;
   Array settings,locations,candidates,links;
   for(const auto& v:s.settings) {

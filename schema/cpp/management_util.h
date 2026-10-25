@@ -808,6 +808,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         a->candidate_kind()>3 || a->sort()>3 || a->list_revision()>INT64_MAX ||
         a->build_phase()>3 || a->build_done()>a->build_total() || a->captured_tick()<-1)
       return "invalid area response header";
+    if(a->settings_count() < -1 || (a->settings_count() >= 0 &&
+        (a->operation()!=AreaOperation::SettingsPage || uint32_t(a->settings_count())<count(a->settings()) ||
+         uint32_t(a->settings_count())<a->next_cursor() || uint32_t(a->settings_count())>a->build_total())))
+      return "invalid filtered settings count";
     const bool multi=a->operation()>=AreaOperation::MultiCreate && a->operation()<=AreaOperation::MultiFinish;
     const bool counts=a->operation()==AreaOperation::PaintCounts;
     const bool locationChoices=a->operation()==AreaOperation::LocationChoices;

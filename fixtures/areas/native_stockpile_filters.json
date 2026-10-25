@@ -43309,5 +43309,135 @@
       "full lifecycle and malformed/historical input acceptance",
       "Stockpiles launcher remains staged; Zones excluded"
     ]
+  },
+  "filtered_counts": {
+    "run": "build/stockpile-initialization-20261025-080833",
+    "status": "passed",
+    "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+    "native_observations": 131,
+    "page_reads": 18,
+    "edits": 37,
+    "counts": [
+      {
+        "native_mode": 2,
+        "list_key": "food/meat",
+        "query": "",
+        "visible_count": 12328
+      },
+      {
+        "native_mode": 1,
+        "list_key": "food/meat",
+        "query": "",
+        "visible_count": 12328
+      },
+      {
+        "native_mode": 2,
+        "list_key": "food/meat",
+        "query": "a",
+        "visible_count": 12000
+      },
+      {
+        "native_mode": 1,
+        "list_key": "food/meat",
+        "query": "a",
+        "visible_count": 12000
+      },
+      {
+        "native_mode": 2,
+        "list_key": "food/meat",
+        "query": "zzzznomatch",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 1,
+        "list_key": "food/meat",
+        "query": "zzzznomatch",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 9,
+        "list_key": "food/cheese_plant",
+        "query": "",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 9,
+        "list_key": "food/cheese_plant",
+        "query": "a",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 9,
+        "list_key": "food/cheese_plant",
+        "query": "zzzznomatch",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 30,
+        "list_key": "refuse/type",
+        "query": "",
+        "visible_count": 85
+      },
+      {
+        "native_mode": 29,
+        "list_key": "refuse/type",
+        "query": "",
+        "visible_count": 85
+      },
+      {
+        "native_mode": 30,
+        "list_key": "refuse/type",
+        "query": "a",
+        "visible_count": 49
+      },
+      {
+        "native_mode": 29,
+        "list_key": "refuse/type",
+        "query": "a",
+        "visible_count": 49
+      },
+      {
+        "native_mode": 30,
+        "list_key": "refuse/type",
+        "query": "zzzznomatch",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 29,
+        "list_key": "refuse/type",
+        "query": "zzzznomatch",
+        "visible_count": 0
+      },
+      {
+        "native_mode": 85,
+        "list_key": "wood",
+        "query": "",
+        "visible_count": 72
+      },
+      {
+        "native_mode": 85,
+        "list_key": "wood",
+        "query": "a",
+        "visible_count": 48
+      },
+      {
+        "native_mode": 85,
+        "list_key": "wood",
+        "query": "zzzznomatch",
+        "visible_count": 0
+      }
+    ],
+    "assertion": "Godot decoded settings_count equals the complete paginated visible list; native filter_rows independently verifies every row identity, label and state. Parent and explicit-leaf contexts checked.",
+    "source_save_unchanged": true,
+    "owned_df_closed_without_saving": true,
+    "diagnostics": {
+      "known_engine": [],
+      "unclassified": []
+    },
+    "omissions": [
+      "This focused runner does not cover quality modes",
+      "Settings scrollbar integration and range loading remain outstanding",
+      "Full stockpile workflow acceptance remains separate"
+    ]
   }
 }

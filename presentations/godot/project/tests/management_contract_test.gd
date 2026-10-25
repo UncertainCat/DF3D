@@ -708,6 +708,7 @@ func test_area_operations() -> void:
 		assert(area.query == "native" and area.list_revision == 9223372036854775807)
 		assert(area.captured_tick == 9876543210 and area.omitted == 2 and area.next_cursor == 128)
 		assert(area.build_phase == 0 and area.build_done == 0 and area.build_total == 0)
+		assert(area.settings_count == -1) # Older/other response families have no filtered count.
 		assert(area.areas == state.areas and area.choices == state.area_choices)
 		var row: Dictionary = area.areas[0]
 		assert(row.revision == 9223372036854775807 and row.zone_label == "observed")

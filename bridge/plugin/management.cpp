@@ -294,6 +294,7 @@ struct NativeAreaPage {
   bool sortDescending=false;
   int64_t listRevision=0,capturedTick=-1;
   uint32_t buildDone=0,buildTotal=0,omitted=0;
+  int32_t settingsCount=-1;
   uint64_t interactionId=0,undoToken=0;
   m::AreaRoomOutcome roomOutcome=m::AreaRoomOutcome::None;
   uint32_t roomsCreated=0,roomsInUse=0,roomsUnenclosed=0,roomsRemoved=0;
@@ -458,7 +459,7 @@ void publish() {
       uint64_t(areaPage.listRevision),areaPage.buildPhase,areaPage.buildDone,areaPage.buildTotal,areaPage.omitted,areaPage.capturedTick,
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
-      areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates);
+      areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount);
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2425,6 +2426,7 @@ void run(color_ostream& out) {
     areaPage.listKey=str("list_key");areaPage.query=str("query");areaPage.candidateKind=uint8_t(number(L,"candidate_kind"));
     areaPage.sort=uint8_t(number(L,"sort"));areaPage.sortDescending=boolean(L,"sort_descending");
     areaPage.listRevision=number(L,"list_revision");areaPage.buildPhase=uint8_t(number(L,"build_phase"));
+    areaPage.settingsCount=int32_t(number(L,"settings_count",-1));
     areaPage.buildDone=uint32_t(number(L,"build_done"));areaPage.buildTotal=uint32_t(number(L,"build_total"));
     areaPage.omitted=uint32_t(number(L,"omitted"));areaPage.capturedTick=number(L,"captured_tick",-1);
     each("areas",[&]() {

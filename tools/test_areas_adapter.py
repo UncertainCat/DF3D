@@ -1476,6 +1476,11 @@ def main():
     make_setting('food.meat',300,values)
     """)
     meat_page, _ = setting_page("food/meat")
+    assert meat_page["settings_count"] == 300 and len(meat_page["settings"]) == 128
+    one_meat, _ = setting_page("food/meat", query="Meat 299")
+    assert one_meat["settings_count"] == 1 and one_meat["build_total"] == 300
+    no_meat, _ = setting_page("food/meat", query="ZZZZNOMATCH")
+    assert no_meat["settings_count"] == 0 and no_meat["build_total"] == 300
     meat_revision = meat_page["list_revision"]
     parent_page, _ = setting_page("food/meat", category_opening=True)
     assert parent_page["ok"] and lua.globals().last_settings_mode == 1

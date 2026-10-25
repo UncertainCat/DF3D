@@ -177,12 +177,14 @@ func native_filter_lists(pile: int) -> void:
 			var page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query},"settings")
 			if stopped: return
 			if query.is_empty() and not page.settings.is_empty(): first_row = int(page.settings[0].index)
+			if not check(int(page.get("settings_count",-1)) == page.settings.size(),"filtered count must equal the complete native visible list"): return
 			await native("filter_rows",{"id":pile,"mode":mode,"list_key":key,"query":query,"rows":page.settings})
 			var parent_modes := {2:1,22:21,30:29,40:39,45:44,52:51,60:57,64:63,73:72,76:75,87:86,95:94,107:106}
 			if parent_modes.has(mode):
 				await native("guard_before")
 				var parent_page := await pages({"action":9,"id":pile,"operation":1,"list_key":key,"query":query,"category_opening":true},"settings")
 				if stopped: return
+				if not check(int(parent_page.get("settings_count",-1)) == parent_page.settings.size(),"parent filtered count must equal the complete native visible list"): return
 				await native("guard_after")
 				await native("filter_rows",{"id":pile,"mode":parent_modes[mode],"list_key":key,"query":query,"rows":parent_page.settings})
 				if not check(parent_page.list_revision != page.list_revision,"opening context must change receipt even for an empty search result"): return

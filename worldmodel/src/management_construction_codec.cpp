@@ -140,6 +140,7 @@ AreaState decodeArea(const m::AreaState* a) {
     out.locationCatalog=std::move(catalog);
   }
   out.listRevision=int64_t(a->list_revision());out.buildPhase=a->build_phase();out.buildDone=a->build_done();
+  out.settingsCount=a->settings_count();
   out.buildTotal=a->build_total();out.omitted=a->omitted();out.capturedTick=a->captured_tick();
   if(a->settings())for(const auto* v:*a->settings())out.settings.push_back({text(v->key()),v->index(),text(v->label()),v->kind(),v->state(),v->estimated()});
   if(a->locations())for(const auto* v:*a->locations())out.locations.push_back({v->id(),text(v->name()),v->location_kind(),text(v->religion()),v->guild_profession(),v->location_tier(),v->site_id()});

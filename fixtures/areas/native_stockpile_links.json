@@ -2414,11 +2414,41 @@
     },
     "omissions": [
       "OS wheel delivery",
-      "Elapsed-time held-repeat cadence",
       "Scaled UI",
       "Exact row artwork token identity",
       "Production scrollbar parity"
     ],
     "offline": "build/qa/stockpile-link-scroll-oracle"
+  },
+  "elapsed_held_input": {
+    "run": "build/stockpile-storage-native-links-20261025-162058",
+    "result_sha256": "3416676fbacf4baf784a08234d1c81225d92458a957c39bb4e0d71839de13966",
+    "scope": "Native _MOUSE_L press followed by _MOUSE_L_DOWN across actual rendered frames; no repeat for at least 2200ms. Does not cover OS event delivery.",
+    "cases": [
+      {
+        "arrow": "up",
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2204,
+        "samples": 223,
+        "observed_positions": [
+          4
+        ]
+      },
+      {
+        "arrow": "down",
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2203,
+        "samples": 221,
+        "observed_positions": [
+          6
+        ]
+      }
+    ],
+    "source_unchanged": true,
+    "owned_df_closed_without_saving": true
   }
 }

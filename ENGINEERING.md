@@ -172,8 +172,9 @@ and dragging maps to whole-row positions. With mouse tracking enabled,
 CONTEXT_SCROLL_UP/DOWN move one and PAGEUP/PAGEDOWN move nine; standard scroll
 commands do nothing. The installed interface bindings map these context commands
 to ordinary/modified mouse-wheel input. This verifies the native command path,
-not OS event delivery. Twelve immediate held-arrow feeds do not repeat; elapsed
-repeat cadence is unverified. The fixture retains drag destinations and native
+not OS event delivery. Twelve immediate held-arrow feeds do not repeat. The
+elapsed-input oracle below now covers holding across actual frames. The fixture
+retains drag destinations and native
 scrollbar tiles at top/middle/bottom. The top capture was inspected. Owned
 DF80444 closed unsaved with source unchanged; offline
 `build/qa/stockpile-link-scroll-oracle` passes root CTest19/19.
@@ -208,8 +209,16 @@ PowerShell log, which can briefly deny its writer access.
 This earlier scaled-input test scales the links view directly. The responsive
 acceptance below now covers link input through the product canvas at four sizes;
 producer replacement and malformed/capacity boundaries are covered above.
-Elapsed held-arrow cadence and unloaded in-map target coverage remain unfinished.
+Unloaded in-map target coverage remains unfinished.
 Stockpiles stays hidden.
+
+`build/stockpile-storage-native-links-20261025-162058` separately tests elapsed
+arrow holds. After a press moves position5 to4 or6, held input is fed across
+actual frames, recording223/221 samples over2204/2203ms. Every position stays4/6;
+there is no additional repeat in that interval. The fixture's
+`elapsed_held_input` records the bounded digest and raw result hash. The source
+save is unchanged and owned DF103528 closed unsaved. These are native input
+handler observations, not OS mouse automation or arbitrary-duration guarantees.
 
 ## Native stockpile storage input (DF 53.16)
 
@@ -964,8 +973,8 @@ rows. Source and clone manifests were unchanged; owned DF closed unsaved. The
 sole diagnostic was the known separate-thread notice. Bounded provenance is in
 `native_stockpile_scroll.json.range_loading_acceptance`. This proves endpoint
 functionality, not exact native drag mapping. Responsive settings acceptance
-below adds wheel modifiers and scaled viewport behavior. Held repeat remains
-unverified.
+below adds wheel modifiers and scaled viewport behavior. The elapsed-input
+oracle below separately covers native arrow holds.
 
 Gameplay summary pages call DF's sublist summary routine at `0x55a6d0` with
 independently owned settings. Its109 mode slots return0 none/empty,1 mixed or2
@@ -1092,8 +1101,19 @@ visible settings row counts are14,12,21 and14 respectively. These are viewer
 clearance adaptations, not whole-screen native pixel parity. The640 window is
 below DF's observed minimum. Matching-scale native geometry fixtures remain
 unchanged. Fractional placement no longer introduces a false outer scrollbar;
-real overflow retains scrolling. Held-arrow timing, text-input boundaries and
+real overflow retains scrolling. Text-input boundaries and
 the remaining stockpile audit are still required before launcher exposure.
+
+Protected `build/stockpile-layout-native-20261025-162235` repeats native Food
+leaf arrow holds at all six native layout configurations. Each press moves5
+to4 or6, then221..224 samples across2203..2219ms of held input remain at that
+position. `native_stockpile_layout.json.elapsed_held_input` retains per-layout
+digests and result hashes. The source save is unchanged; owned DF117536 closed
+unsaved. Together with the link-list oracle, this supports the viewer's current
+press-only arrows without adding a repeat timer. OS event delivery remains
+outside these simulated native input-handler checks. Offline
+`build/qa/stockpile-held-scroll-final` passes root CTest19/19 and the existing
+stockpile scrollbar regression. No production behavior changed for this audit.
 
 Stockpile search input follows native letters/space/uppercase flags and a fixed
 76-character limit. It does not apply general Unicode uppercasing. The native

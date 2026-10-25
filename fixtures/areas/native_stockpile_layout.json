@@ -4,7 +4,6 @@
   "oracle": "tools/smoke/stockpile_layout_native.ps1",
   "scope": "Native settings resize and manual scale; actual context page-down after pointer selection of Food. Paused, source unchanged, owned DF closed unsaved.",
   "omissions": [
-    "Elapsed held repeat",
     "Minimum-grid behavior below native window limits",
     "Product-wide scale preference parity"
   ],
@@ -141,5 +140,169 @@
       "leaf_width": 88,
       "screenshot_sha256": "c75c79ec20e725c3032dbf76e4a4401f485110fdac2876a87c86beddb6b3237d"
     }
-  ]
+  ],
+  "elapsed_held_input": {
+    "run": "build/stockpile-layout-native-20261025-162235",
+    "scope": "Native leaf arrow press then held input across actual rendered frames; six layout configurations. OS event delivery is not covered.",
+    "cases": [
+      {
+        "layout": "1200x800-0",
+        "direction": -1,
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2203,
+        "samples": 224,
+        "observed_positions": [
+          4
+        ],
+        "result_sha256": "f8777141eb164335ef206905fab0cbe8b6ef17b6a3a19431b8d71ad2916d0f14"
+      },
+      {
+        "layout": "1200x800-0",
+        "direction": 1,
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2203,
+        "samples": 221,
+        "observed_positions": [
+          6
+        ],
+        "result_sha256": "f8777141eb164335ef206905fab0cbe8b6ef17b6a3a19431b8d71ad2916d0f14"
+      },
+      {
+        "layout": "1200x800-150",
+        "direction": -1,
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2203,
+        "samples": 223,
+        "observed_positions": [
+          4
+        ],
+        "result_sha256": "b935c2650a75a587fb00f034119a4787ccdf8e56dbd84d47dd7a02315853de09"
+      },
+      {
+        "layout": "1200x800-150",
+        "direction": 1,
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2203,
+        "samples": 221,
+        "observed_positions": [
+          6
+        ],
+        "result_sha256": "b935c2650a75a587fb00f034119a4787ccdf8e56dbd84d47dd7a02315853de09"
+      },
+      {
+        "layout": "1920x1080-0",
+        "direction": -1,
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2203,
+        "samples": 221,
+        "observed_positions": [
+          4
+        ],
+        "result_sha256": "7a545c0183b4fae311ef191c6c24ca525a3e65228d5f834f28a283fed8c96260"
+      },
+      {
+        "layout": "1920x1080-0",
+        "direction": 1,
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2204,
+        "samples": 221,
+        "observed_positions": [
+          6
+        ],
+        "result_sha256": "7a545c0183b4fae311ef191c6c24ca525a3e65228d5f834f28a283fed8c96260"
+      },
+      {
+        "layout": "1920x1080-150",
+        "direction": -1,
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2203,
+        "samples": 223,
+        "observed_positions": [
+          4
+        ],
+        "result_sha256": "12004cfd7356954cde583810351d51d00c306feaab6d12f3226d7de495baa678"
+      },
+      {
+        "layout": "1920x1080-150",
+        "direction": 1,
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2218,
+        "samples": 222,
+        "observed_positions": [
+          6
+        ],
+        "result_sha256": "12004cfd7356954cde583810351d51d00c306feaab6d12f3226d7de495baa678"
+      },
+      {
+        "layout": "800x600-0",
+        "direction": -1,
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2219,
+        "samples": 223,
+        "observed_positions": [
+          4
+        ],
+        "result_sha256": "eb3b971e842441ac4301c537641b0b4d1e3c9103675fc311bdaab6eca1a53dca"
+      },
+      {
+        "layout": "800x600-0",
+        "direction": 1,
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2218,
+        "samples": 223,
+        "observed_positions": [
+          6
+        ],
+        "result_sha256": "eb3b971e842441ac4301c537641b0b4d1e3c9103675fc311bdaab6eca1a53dca"
+      },
+      {
+        "layout": "960x600-0",
+        "direction": -1,
+        "start": 5,
+        "after_press": 4,
+        "after_hold": 4,
+        "elapsed_ms": 2203,
+        "samples": 222,
+        "observed_positions": [
+          4
+        ],
+        "result_sha256": "ff3b921bae6c030f6d0fcd20e17ed7a208e0c89f3184a6f3c44d209e3dce71b8"
+      },
+      {
+        "layout": "960x600-0",
+        "direction": 1,
+        "start": 5,
+        "after_press": 6,
+        "after_hold": 6,
+        "elapsed_ms": 2203,
+        "samples": 221,
+        "observed_positions": [
+          6
+        ],
+        "result_sha256": "ff3b921bae6c030f6d0fcd20e17ed7a208e0c89f3184a6f3c44d209e3dce71b8"
+      }
+    ],
+    "source_unchanged": true,
+    "owned_df_closed_without_saving": true
+  }
 }

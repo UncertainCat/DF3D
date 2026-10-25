@@ -249,6 +249,23 @@ require('gui.script').start(function()
     records[#records+1]={name='link-scroll-held',y=y,values=values}
     enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
    end
+   -- Separate wall-clock probe: immediate feeds do not establish repeat
+   -- behavior. Keep feeding the held input across actual rendered frames.
+   for _,y in ipairs{11,37}do
+    ui.scroll_position_link_list=5;ui.scrolling_link_list=false;scroll_point(85,y)
+    enabler.mouse_lbut_lift=0;gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+    local started=dfhack.getTickCount()
+    local samples={{ms=0,first=ui.scroll_position_link_list}}
+    while dfhack.getTickCount()-started<2200 do
+     require('gui.script').sleep(1,'frames')
+     scroll_point(85,y);enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,{'_MOUSE_L_DOWN'});view:render(dfhack.getTickCount())
+     samples[#samples+1]={ms=dfhack.getTickCount()-started,first=ui.scroll_position_link_list}
+    end
+    enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+    records[#records+1]={name='link-scroll-held-elapsed',y=y,start=5,samples=samples,
+     elapsed_ms=dfhack.getTickCount()-started,after=ui.scroll_position_link_list}
+   end
    enabler.mouse_lbut_lift=old_lift
    for first=0,11 do
     ui.scroll_position_link_list=first;ui.scrolling_link_list=false;scroll_point(0,0);view:render(dfhack.getTickCount())

@@ -71,6 +71,27 @@ require('gui.script').start(function()
   local page=(g.dimy-16)//3
   assert(c.scroll_position_spec==page,'native page size differs: '..c.scroll_position_spec..' vs '..page)
   records[#records+1]={probe='leaf_page_down',page=page,observed=c.scroll_position_spec,count=c.cur_spec_item_sz}
+  local enabler=df.global.enabler;local old_lift=enabler.mouse_lbut_lift
+  for _,direction in ipairs{-1,1}do
+   local x,y=g.dimx-31,direction<0 and 9 or 8+3*page
+   local function point_arrow()
+    g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*(g.screen_pixel_x//g.dimx)+4;g.precise_mouse_y=y*(g.screen_pixel_y//g.dimy)+6
+    enabler.tracking_on=1;enabler.mouse_lbut_lift=0
+   end
+   c.scroll_position_spec=5;c.scrolling_spec=false;view:render(dfhack.getTickCount())
+   point_arrow();gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+   assert(c.scroll_position_spec==5+direction,'leaf arrow location did not move one row')
+   local started=dfhack.getTickCount();local samples={{ms=0,first=c.scroll_position_spec}}
+   while dfhack.getTickCount()-started<2200 do
+    require('gui.script').sleep(1,'frames');point_arrow()
+    gui.simulateInput(view,{'_MOUSE_L_DOWN'});view:render(dfhack.getTickCount())
+    samples[#samples+1]={ms=dfhack.getTickCount()-started,first=c.scroll_position_spec}
+   end
+   enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+   records[#records+1]={probe='leaf_held_elapsed',direction=direction,x=x,y=y,start=5,
+    elapsed_ms=dfhack.getTickCount()-started,after=c.scroll_position_spec,samples=samples}
+  end
+  enabler.mouse_lbut_lift=old_lift
   label_click('Ammo');view:render(dfhack.getTickCount())
   assert(frame==df.global.world.frame_counter,'simulation advanced')
  end)

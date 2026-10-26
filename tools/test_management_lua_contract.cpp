@@ -252,6 +252,12 @@ int main(int argc,char** argv) {
       for(size_t i=0;i<buffer.GetSize();++i){if(i)blob+=",";blob+=std::to_string(buffer.GetBufferPointer()[i]);}blob+=")";
       for(int kind:{1,2})test(A::AreaCandidates,("return {"+envelope+"candidate_kind="+std::to_string(kind)+",candidates={{id=998,name='native',profession='',sheet_icon="+blob+"}}}").c_str(),kind==1,O::CandidateList);
     }
+    for(const char* raw:{"''","string.char(195)","string.rep('x',33)"})
+      test(A::AreaCandidates,("return {"+envelope+"area_id=7,candidate_kind=1,query_bytes="+raw+"}").c_str(),true,O::CandidateList);
+    for(const char* raw:{"false","{}","string.rep('x',34)"})
+      test(A::AreaCandidates,("return {"+envelope+"area_id=7,candidate_kind=1,query_bytes="+raw+"}").c_str(),false,O::CandidateList);
+    for(const char* extra:{"candidate_kind=2","area_id=-1","query='mixed'"})
+      test(A::AreaCandidates,("return {"+envelope+"area_id=7,candidate_kind=1,query_bytes='',"+extra+"}").c_str(),false,O::CandidateList);
     for(const char* icon:{"false","{}","''","'malformed'","string.rep('x',230000)"})
       test(A::AreaCandidates,("return {"+envelope+"candidate_kind=1,candidates={{id=998,name='native',profession='',sheet_icon="+icon+"}}}").c_str(),false,O::CandidateList);
     test(A::AreaInspect,("return {"+envelope+"steps=513}").c_str(),true,O::None,512);

@@ -3665,5 +3665,85 @@
     ],
     "gpu_check": "build/qa/owner-text-focus",
     "scope": "Enter-to-unfocus integrated. Full byte editing, header/blank focus, unfocused activation and Escape lifecycle remain unfinished. Direct viewscreen feed bypasses native outer textbox handling."
+  },
+  "owner_raw_query_integration": {
+    "run": "build/areas-acceptance-20261026-041837",
+    "owned_df_pid": 126316,
+    "plugin_sha256": "c26e5118bfd97de15e9e40ac9e9c28293bc1eb94e79ef680a7a87c550576f559",
+    "management_version": 66,
+    "cases": [
+      {
+        "bytes": [],
+        "count": 172,
+        "order_exact": true
+      },
+      {
+        "bytes": [
+          195
+        ],
+        "count": 0,
+        "order_exact": true
+      },
+      {
+        "bytes": [
+          195,
+          169
+        ],
+        "count": 0,
+        "order_exact": true
+      },
+      {
+        "bytes": [
+          77,
+          73,
+          78,
+          69,
+          82
+        ],
+        "count": 5,
+        "order_exact": true
+      },
+      {
+        "bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "count": 0,
+        "order_exact": true
+      }
+    ],
+    "save_preservation": "Both manifests unchanged; owned process closed unsaved",
+    "scope": "Semantic candidate requests and exact raw echo. Byte editor remains pending."
   }
 }

@@ -294,6 +294,7 @@ struct NativeAreaPage {
   m::AreaOperation operation=m::AreaOperation::None;
   int32_t id=-1;
   std::string listKey,query;
+  std::optional<std::string> queryBytes;
   uint8_t candidateKind=0,sort=0,buildPhase=0;
   bool sortDescending=false;
   int64_t listRevision=0,capturedTick=-1;
@@ -469,7 +470,8 @@ void publish() {
       uint64_t(areaPage.listRevision),areaPage.buildPhase,areaPage.buildDone,areaPage.buildTotal,areaPage.omitted,areaPage.capturedTick,
       areaPage.interactionId,areaPage.undoToken,areaPage.roomOutcome,areaPage.roomsCreated,
       areaPage.roomsInUse,areaPage.roomsUnenclosed,areaPage.roomsRemoved,areaPage.roomsDormitories,
-      areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount);
+      areaPage.countGeneration,areaPage.paintedCount,areaPage.previewCount,locationCatalog,locationDetails,areaPage.locationEntryOutcome,areaPage.locationEditOutcome,staffCandidates,areaPage.settingsCount,
+      areaPage.queryBytes?b.CreateVector(reinterpret_cast<const uint8_t*>(areaPage.queryBytes->data()),areaPage.queryBytes->size()):flatbuffers::Offset<flatbuffers::Vector<uint8_t>>{});
   auto reqs=[&](const std::vector<ProductionRequirement>& values){
     std::vector<flatbuffers::Offset<m::ProductionRequirement>> out;
     for(const auto& v:values) out.push_back(m::CreateProductionRequirement(b,b.CreateString(v.description),v.quantity,v.itemType));
@@ -2324,6 +2326,9 @@ void run(color_ostream& out) {
     field(L,"links_only",a->links_only());field(L,"active",a->active());field(L,"owner_id",a->owner_id());
     field(L,"link_id",a->link_id());field(L,"give",a->give());field(L,"unlink",a->unlink());
     field(L,"query",a->query()?a->query()->str():"");field(L,"cursor",a->cursor());
+    if(const auto* bytes=a->query_bytes()) {
+      lua_pushlstring(L,reinterpret_cast<const char*>(bytes->data()),bytes->size());lua_setfield(L,-2,"query_bytes");
+    }
     field(L,"operation",int(a->operation()));field(L,"expected_revision",a->expected_revision());field(L,"expected_list_revision",a->expected_list_revision());field(L,"category_opening",a->category_opening());
     field(L,"list_key",a->list_key()?a->list_key()->str():"");field(L,"row_key",a->row_key()?a->row_key()->str():"");
     field(L,"scope",a->scope());field(L,"value",a->value());field(L,"preset",a->preset());field(L,"name",a->name()?a->name()->str():"");
@@ -2526,6 +2531,8 @@ void run(color_ostream& out) {
     };
     const auto ints=[&](const char* key,auto& values){each(key,[&](){values.push_back(typename std::decay_t<decltype(values)>::value_type(lua_tointeger(L,-1)));});};
     areaPage.operation=m::AreaOperation(number(L,"operation"));areaPage.id=int32_t(number(L,"area_id",-1));
+    lua_getfield(L,-1,"query_bytes");const bool rawQuery=!lua_isnil(L,-1);lua_pop(L,1);
+    if(rawQuery)areaPage.queryBytes=str("query_bytes");
     areaPage.listKey=str("list_key");areaPage.query=str("query");areaPage.candidateKind=uint8_t(number(L,"candidate_kind"));
     areaPage.sort=uint8_t(number(L,"sort"));areaPage.sortDescending=boolean(L,"sort_descending");
     areaPage.listRevision=number(L,"list_revision");areaPage.buildPhase=uint8_t(number(L,"build_phase"));

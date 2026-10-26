@@ -724,6 +724,15 @@ def main():
     # An unrelated successful area edit invalidates cached area lists too.
     assert call(11, {"operation": 13, "organic": 1, "expected_revision": revision()})["ok"]
     assert not raw_call(14, dict(selector, expected_list_revision=refreshed["list_revision"]))["ok"]
+    for raw in [b"", b"\xc3", b"\xc3\xa9", b"x" * 33]:
+        raw_result = call(14, dict(selector, query_bytes=raw))
+        assert raw_result["ok"] and raw_result["query"] == ""
+        assert lua.eval("function(t) return #t.query_bytes end")(raw_result) == len(raw)
+        if raw:
+            assert lua.eval("function(t) return t.query_bytes:byte(1) end")(raw_result) == raw[0]
+    for fields in [dict(query_bytes=b"x" * 34), dict(query_bytes=3),
+                   dict(query_bytes=b"x", query="mixed"), dict(query_bytes=b"x", candidate_kind=2)]:
+        assert not call(14, dict(selector, **fields))["ok"]
     lua.execute("""
     df.global.cur_year_tick=4000;zone.type=2;df.civzone_type[2]='Pond'
     df.global.world.units.active={

@@ -422,11 +422,22 @@ bytes. Absence retains the legacy text path, while a present empty vector is an
 explicit empty raw query. Model values own their vectors and Godot uses
 PackedByteArray, preserving partial UTF-8 without decoding or replacement.
 The protocol region is Local\df3d_management_v66; version65 peers must rebuild.
-Bridge production handling and the byte editor must be integrated before use.
+The bridge retains optional owned binary strings through Lua and readback, calls
+the existing native normalizer on those bytes and echoes them on pending and
+complete pages. Lua input/result boundaries enforce the same33-byte owner scope.
+The byte editor remains to be integrated.
 `build/qa/owner-query-bytes-contract-fixed` passes core19/19 and the real Godot
 adapter test: partial byte195 survives request and response unchanged. Boundary
 checks cover absent/empty/maximal input, oversized vectors, wrong scope and
 conflicting text queries. This is transport acceptance, not editor acceptance.
+Protected `build/areas-acceptance-20261026-041837` additionally verifies production
+requests for empty bytes,195,195/169,ASCII MINER and33 x bytes. They return the
+same native sets and order (172/0/0/5/0 candidates), with exact byte echoes.
+DF126316 closes unsaved and both save manifests match; diagnostics are clean.
+`build/qa/owner-query-bytes-bridge-fixed` passes core19/19, Lua boundary and adapter
+checks. MSVC output is recorded in `build/notes/pm/owner-query-bytes-msvc.log`.
+This establishes production transport and filtering, not native textbox rendering.
+
 
 Hover probes034258/034611 retain injected coordinates but lack a positive
 hover control; unchanged sampled artwork is inconclusive. No hover claim.

@@ -101,6 +101,13 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
         !number("operation",0,26) || !number("area_id",-1,INT32_MAX) || !number("candidate_kind",0,3) ||
         !number("sort",0,value("candidate_kind")==1?4:3) || !number("next_cursor",0,UINT32_MAX) ||
         !boolean("sort_descending") || !boolean("truncated") || !text("list_key",64,false) || !text("query",128,false))return error;
+    if(!text("query_bytes",33,false))return error;
+    lua_getfield(L,-1,"query_bytes");const bool rawQuery=!lua_isnil(L,-1);lua_pop(L,1);
+    if(rawQuery) {
+      lua_getfield(L,-1,"query");const bool mixed=lua_rawlen(L,-1)>0;lua_pop(L,1);
+      if(operation!=df3d::mirror::AreaOperation::CandidateList || value("candidate_kind")!=1 ||
+         value("area_id",-1)<0 || mixed)return "invalid owner query echo";
+    }
     if(value("build_done")>value("build_total"))return "build_done exceeds build_total";
     lua_getfield(L,-1,"pending");const bool pending=lua_toboolean(L,-1);lua_pop(L,1);
     if(pending)return "pending is not valid for area results";

@@ -215,8 +215,9 @@ elseif request.op=='zone_owner_candidates' then
  for _,id in ipairs(request.ids)do assert(not actual[id],'duplicate owner candidate');actual[id]=true end
  local order_text,order_code=dfhack.run_command_silent('df3d','zone-owner-order-read',tostring(request.id));assert(order_code==0,order_text)
  local facts=json.decode(order_text)
- if request.query and request.query~='' then
-  local normalized,normalized_code=dfhack.run_command_silent('df3d','zone-owner-query-read',request.query);assert(normalized_code==0,normalized)
+ local query=request.query_bytes and string.char(table.unpack(request.query_bytes)) or request.query or ''
+ if query~='' then
+  local normalized,normalized_code=dfhack.run_command_silent('df3d','zone-owner-query-read',query);assert(normalized_code==0,normalized)
   local key=string.char(table.unpack(json.decode(normalized)));local selected={};expected={}
   for _,row in ipairs(facts)do
    if string.char(table.unpack(row[7])):find(key,1,true)then selected[#selected+1]=row;expected[#expected+1]=row[1]end

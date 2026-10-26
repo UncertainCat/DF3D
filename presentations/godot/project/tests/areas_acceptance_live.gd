@@ -475,6 +475,13 @@ func zone_owner_effects() -> void:
 			var candidate_ids: Array=[]
 			for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
 			await native("zone_owner_candidates",{"id":id,"ids":candidate_ids,"query":query})
+	for bytes in [PackedByteArray(),PackedByteArray([195]),PackedByteArray([195,169]),"MINER".to_utf8_buffer(),"x".repeat(33).to_utf8_buffer()]:
+		var candidates:=await pages({"action":14,"operation":14,"kind":1,"id":ids[0],"candidate_kind":1,"query_bytes":bytes},"candidates")
+		if stopped:return
+		if not check(candidates.get("query_bytes")==bytes and candidates.query=="","owner raw query echo differs"):return
+		var candidate_ids: Array=[]
+		for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
+		await native("zone_owner_candidates",{"id":ids[0],"ids":candidate_ids,"query_bytes":Array(bytes)})
 	# Native reference: assign, replace, transfer, clear bedroom, clear empty bedroom.
 	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
 		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0],[ids[2],-1,-1,0,0]]:

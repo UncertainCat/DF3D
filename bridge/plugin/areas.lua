@@ -95,6 +95,7 @@ local function validate_operation(r,a)
   if default(a,'expected_revision',0)==0 or default(a,'cursor',0)~=0 or default(a,'query','')~='' or
    type(default(a,'give',true))~='boolean' then return 'invalid stockpile link target request' end
  end
+ if a.query_bytes~=nil and (type(a.query_bytes)~='string' or #a.query_bytes>33 or r.action~=14 or op~=14 or a.kind~=1 or a.candidate_kind~=1 or default(a,'query','')~='') then return 'invalid owner query bytes' end
  for _,key in ipairs{'list_key','row_key','name','query'} do
   local v=default(a,key,'');local cap=(key=='name' and 512) or (key=='query' and 128) or 64
   if type(v)~='string' or #v>cap then return key=='name' and 'area name too long' or 'area key too long' end
@@ -828,7 +829,7 @@ local function candidate_page(r,a,b,area_revision,available)
  local query=default(a,'query',''):lower()
  if not legacy and not links and not locations and candidate_kind==1 then
   if type(r.owner_query)~='function' then return fail('Native area helper unavailable'),0 end
-  local worked,value=pcall(r.owner_query,default(a,'query',''))
+  local worked,value=pcall(r.owner_query,a.query_bytes~=nil and a.query_bytes or default(a,'query',''))
   if not worked or type(value)~='string' then return fail('Native area helper unavailable'),0 end
   query=value
  end
@@ -874,7 +875,7 @@ local function candidate_page(r,a,b,area_revision,available)
  list_serial=list_serial+1;job.used=list_serial
  if job.error then area_lists[key]=nil;return fail(job.error),0 end
  local out={ok=true,message=locations and 'Building area locations' or links and 'Building area links' or 'Building area candidates',candidate_kind=legacy and 0 or candidate_kind,
-  sort=job.sort,sort_descending=job.descending,query=default(a,'query',''),captured_tick=job.built_tick or -1,
+  sort=job.sort,sort_descending=job.descending,query=default(a,'query',''),query_bytes=a.query_bytes,captured_tick=job.built_tick or -1,
   build_phase=job.phase,build_done=job.done,build_total=job.total,next_cursor=0}
  if not job.complete then return out,0 end
  if expected~=0 and expected~=job.revision then return fail('List changed; refresh'),0 end

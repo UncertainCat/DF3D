@@ -210,6 +210,7 @@ local function hash_integer(hash,value)
  return hash
 end
 local function source(job)
+ if job.native_animals then return job.animal_candidates end
  if job.locations then
   local site=dfhack.world.getCurrentSite()
   if not site or site.id~=job.site_id then job.error='Location site changed; refresh';return {} end
@@ -523,7 +524,21 @@ local function location_row(v,site_id)
   guild_profession=k==4 and v.contents.profession or -1,location_tier=k==4 and v.contents.location_tier or -1}
 end
 local function candidate_row(job,v,r,refresh_display)
- local order_facts,display
+ local order_facts,display,animal_assigned
+ if job.native_animals then
+  local entry=v
+  animal_assigned=entry.assigned
+  if entry.entity==2 then
+   local item=df.item.find(entry.id)
+   if not item then job.error='List changed; refresh';return nil end
+   local text=type(r.animal_item_text)=='function' and r.animal_item_text(item) or nil
+   if type(text)~='string' then job.error='Native area helper unavailable';return nil end
+   return {id=entry.id,entity=2,name=text,profession='',sex=-1,mood=0,grazer=false,
+    assigned=animal_assigned,squad_use=-1}
+  end
+  v=df.unit.find(entry.id)
+  if not v then job.error='List changed; refresh';return nil end
+ end
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
  if job.candidate_kind==3 then
@@ -569,15 +584,14 @@ local function candidate_row(job,v,r,refresh_display)
    type(order_facts.profession_key)~='string' or #order_facts.profession_key>2048 then
    job.error='Native area helper unavailable';return nil
   end
- else
-  if not U.isActive(v) or U.isDead(v) then return nil end
-  if job.candidate_kind~=2 or U.isCitizen(v) or not (U.isTame(v) or v.flags1.caged) then return nil end
+ elseif not job.native_animals then
+  return nil
  end
  local label=display and display.name or job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
  return {id=v.id,entity=1,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,sheet_icon=display and display.sheet_icon or nil,
   mood=U.getStressCategory(v)+1,grazer=job.candidate_kind==2 and U.isGrazer(v) or false,
-  assigned=job.candidate_kind==1 and v.id==job.owner_id or (job.assigned~=nil and job.assigned[v.id]~=nil),squad_use=-1,owner_order=order_facts}
+  assigned=job.native_animals and animal_assigned or job.candidate_kind==1 and v.id==job.owner_id or (job.assigned~=nil and job.assigned[v.id]~=nil),squad_use=-1,owner_order=order_facts}
 end
 local function candidate_text_valid(row)
  return type(row.name)=='string' and #row.name<=512 and type(row.profession or '')=='string' and #(row.profession or '')<=512 and
@@ -591,7 +605,7 @@ local function append_candidate(job,row)
  if not candidate_text_valid(row) then
   job.error='Candidate label exceeds 512 bytes';return
  end
- local identity=job.links and table.concat({row.kind,row.direction,row.id},':') or row.id
+ local identity=job.links and table.concat({row.kind,row.direction,row.id},':') or job.native_animals and table.concat({row.entity,row.id},':') or row.id
  if job.ids[identity] then job.error=job.links and 'Duplicate link identity' or 'Duplicate candidate identity';return end
  job.ids[identity]=true;row.ordinal=#job.rows+1;job.rows[#job.rows+1]=row
 end
@@ -714,6 +728,7 @@ local function step_list(job,r)
   if label:find(job.query,1,true) or not job.native_owner and tostring(row.id)==job.query then
    job.filtered[#job.filtered+1]=row
    job.hash=hash_integer(job.hash,row.id)
+   if job.native_animals then job.hash=hash_integer(hash_integer(job.hash,row.entity),row.assigned and 1 or 0) end
    if job.links then job.hash=hash_integer(hash_integer(job.hash,row.kind),row.direction) end
    if job.locations then
     job.hash=hash_integer(hash_integer(hash_integer(job.hash,row.location_kind),row.guild_profession),row.location_tier)
@@ -846,7 +861,7 @@ local function candidate_page(r,a,b,area_revision,available)
  -- Reopening a chooser must observe current metadata even while DF is paused.
  -- Keep the completed snapshot for continuation pages; only a new first-page
  -- interaction retires an already delivered owner/location snapshot.
- if (locations or (not legacy and candidate_kind==1)) and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
+ if (locations or (not legacy and (candidate_kind==1 or candidate_kind==2))) and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
  if job and job.complete then
   -- An open owner picker keeps its frozen membership/order while reading fresh
   -- facts. Successful reads renew that lease; abandoned lists still expire.
@@ -870,7 +885,16 @@ local function candidate_page(r,a,b,area_revision,available)
    job.owner_id=b.assigned_unit_id
    job.native_owner=not legacy and candidate_kind==1
    job.zone_type=b.type
-   if candidate_kind==2 then job.assign_total=#b.assigned_units
+   if candidate_kind==2 then
+    local entries=type(r.animal_candidates)=='function' and r.animal_candidates(b) or nil
+    if type(entries)~='table' or #entries>4096 then return fail('Native area helper unavailable'),0 end
+    for _,entry in ipairs(entries)do
+     if type(entry)~='table' or not integer(entry.id) or entry.id<0 or entry.id>2147483647 or
+      (entry.entity~=1 and entry.entity~=2) or type(entry.assigned)~='boolean' then
+      return fail('Native area helper unavailable'),0
+     end
+    end
+    job.native_animals=true;job.animal_candidates=entries
    elseif candidate_kind==3 then job.assign_total=#b.squad_room_info end
   end
   if job.assign_total>4096 then return fail('Zone exceeds 4,096 assigned units'),0 end
@@ -933,7 +957,7 @@ local function candidate_page(r,a,b,area_revision,available)
   end
  end
  out[locations and 'locations' or links and 'links' or legacy and 'choices' or 'candidates']=rows;out.truncated=out.next_cursor~=0
- if locations or job.native_owner then job.delivered=true end
+ if locations or job.native_owner or job.native_animals then job.delivered=true end
  if job.native_owner then job.read_tick=tick() end
  return out,used
 end

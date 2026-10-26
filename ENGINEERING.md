@@ -1,3 +1,37 @@
+## Native animal candidates in the product chooser
+
+Animal candidate jobs retain the native reader's owned typed identities and
+assigned flags. They no longer filter units through reconstructed active,
+citizen or tame rules. Item rows resolve through df.item and use the native
+decorated text reader; unit display metadata remains subject to the unfinished
+animal display audit. Duplicate identity checks and list revisions distinguish
+(entity,id); revisions include assignment state. A fresh open rebuilds native
+membership even while paused, while continuation pages retain their snapshot.
+Missing targets or unavailable native helpers refuse the list.
+
+Unit assignment now checks current native admission before mutation, matching
+the existing item admission guard. A stale chooser cannot newly assign a unit
+that native excludes. Protected094220 exposed an old fixture assumption: its
+grazer6821 is admitted by Pen but excluded by Pond. That session exited unsaved
+with both manifests unchanged. The test now asserts Pond refusal and preserved
+Pen membership, then clears Pen; caged6960 still exercises Pen-to-Pond transfer.
+
+Protected build/areas-acceptance-20261026-094335 passes cleanly with DF114076.
+Typed lists, raw order and item text match the independently native-verified
+readers; unit/item assignment, transfer, clear, stale and wrong-zone refusal,
+cage/chain cleanup and containment checks pass. Both save manifests remain
+unchanged. This is semantic acceptance, not full animal picker UI acceptance.
+Search normalization, displayed sorting, unit display, item artwork, colors,
+grazer indicators, input and hover still require native parity work.
+
+Root CTest19/19, areas adapter, candidate state and management contract pass
+in build/qa/animal-native-product-final. Adapter cases include colliding IDs,
+native admission overriding former tame/caged heuristics, malformed native
+results, duplicate typed identity, missing units and paused reopening.
+MSVC builds in build/notes/pm/animal-candidates-product-final-build.log.
+Management remains68. Installed plugin SHA256:
+8425fab8efd3dcdab7ecbe1f5b6fb9a9c3dc9eb54e7a2004205ae11450699d2d.
+
 ## Native animal item text
 
 The item-name widget render1423fe0 calls native decorated description c65450
@@ -21,8 +55,9 @@ named/quality/decoration variants and PET subtype still require coverage.
 Core19/19 and areas adapter pass in build/qa/animal-item-text. MSVC builds in
 build/notes/pm/zone-animal-item-text-build.log. Installed plugin SHA256:
 e84a44bc037f92461d524374e8db5c5ecb4e157f795d65c0c560f61a1ae0a22b.
-Management remains68. zone-animal-item-text-read is diagnostic; candidate
-integration, display search/order and full picker acceptance remain pending.
+Management remains68. zone-animal-item-text-read is the diagnostic comparison
+endpoint. Product candidate integration is covered above; display search/order
+and full picker acceptance remain pending.
 
 ## Typed animal chooser selection
 
@@ -38,7 +73,8 @@ area_menus_capture passes with the three documented Godot shutdown/thread
 signatures: actual rendered callbacks retain typed identities, the item button
 emits only item_id, and only the unit row requests a creature portrait.
 This is identity/input coverage; full native animal layout, item artwork and
-connected candidate workflow remain unfinished. No bridge/schema change.
+full native candidate workflow remain unfinished. This selection change has no
+bridge/schema change; the later semantic integration is covered above.
 
 ## Native zone animal candidate reader
 
@@ -67,8 +103,8 @@ MSVC builds in build/notes/pm/zone-animal-candidates-final-build.log.
 Installed plugin SHA256:
 6372bec1504b9285a0a72c44dc665e6047837d6d0704bb3e00cb3a7e0e80f758.
 Management remains68. The diagnostic zone-animal-candidates-read exposes
-the reader for native comparisons; product candidate integration and item display
-are still pending.
+the reader for native comparisons. Product candidate integration is covered
+above; complete item display remains pending.
 
 ## Typed area candidate identities (Management 68)
 
@@ -81,7 +117,8 @@ AreaCandidateRow appends entity: Unknown, Unit, Item or Squad. The row id is
 interpreted only within that entity namespace. Equal unit/item numeric IDs are
 distinct candidates. Absent entity fields in older records remain Unknown;
 the decoder does not invent a unit type. Existing product unit and squad rows
-now supply their explicit entity. No native item rows are emitted yet.
+now supply their explicit entity. Native animal item rows are emitted by the
+product integration documented above.
 
 AreaRequest appends item_id with default -1. AssignUnits requires exactly one
 nonnegative unit_id or item_id, with all other operations rejecting item_id.
@@ -90,7 +127,7 @@ Item requests dispatch through a separate native item handler; there is no
 unit lookup or handler fallback. Chooser selection keys use (entity,id), dispatching exactly one unit_id or
 item_id. Missing/Unknown identities cannot submit edits. Item rows never
 request a creature portrait by their numeric ID. Native item candidate
-generation and display remain unfinished.
+generation is integrated; complete animal display remains unfinished.
 
 Core CTest 19/19, areas adapter and the headless Godot management contract pass
 in build/qa/area-typed-candidates-final. Tests cover ambiguous/missing IDs,

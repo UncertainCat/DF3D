@@ -303,24 +303,51 @@ func animal_assignments() -> void:
 	var candidates := await pages({"action":14,"kind":1,"id":pen,"operation":14,"candidate_kind":2}, "candidates")
 	if stopped: return
 	if not check(not candidates.candidates.is_empty(), "animal candidates missing"): return
+	await native("animal_candidates",{"id":pen,"rows":candidates.candidates})
+	if stopped: return
 	for candidate in candidates.candidates:
 		if not check(candidate.entity == Contract.AreaCandidateEntity.Unit, "unit candidate identity missing"): return
 	for key in ["grazer", "caged"]:
 		var unit := int(fixture[key])
 		if not check(unit >= 0, "animal fixture missing: " + key): return
 		await native("assignment_before", {"unit_id":unit})
-		for operation in [[pen,1],[pond,1],[pond,0]]:
-			var id: int = operation[0]
-			var value: int = operation[1]
-			await edit(id, 1, {"operation":11, "unit_id":unit, "assign":value})
-			await native("assignment", {"id":id, "unit_id":unit, "assign":value == 1})
-			if stopped: return
+		await edit(pen,1,{"operation":11,"unit_id":unit,"assign":1})
+		await native("assignment",{"id":pen,"unit_id":unit,"assign":true})
+		if stopped: return
+		var pond_rows := await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2},"candidates")
+		if stopped: return
+		await native("animal_candidates",{"id":pond,"rows":pond_rows.candidates})
+		var eligible := false
+		for row in pond_rows.candidates:
+			if row.entity == Contract.AreaCandidateEntity.Unit and row.id == unit: eligible = true
+		if eligible:
+			await edit(pond,1,{"operation":11,"unit_id":unit,"assign":1})
+			await native("assignment",{"id":pond,"unit_id":unit,"assign":true})
+			await edit(pond,1,{"operation":11,"unit_id":unit,"assign":0})
+			await native("assignment",{"id":pond,"unit_id":unit,"assign":false})
+		else:
+			if not check(key == "grazer","caged transfer fixture must be Pond eligible"): return
+			var before := await inspect(pond,1)
+			await refusal({"action":11,"kind":1,"id":pond,"operation":11,"unit_id":unit,"assign":1,
+				"expected_revision":before.revision},"Invalid area unit assignment")
+			await native("assignment",{"id":pen,"unit_id":unit,"assign":true})
+			await edit(pen,1,{"operation":11,"unit_id":unit,"assign":0})
+			await native("assignment",{"id":pen,"unit_id":unit,"assign":false})
+		if stopped: return
 
 func item_assignments() -> void:
 	step = "item assignment effects"
 	var pond := zone("Pond")
 	var item := int(fixture.get("critter",-1))
 	if not check(pond>=0 and item>=0,"native critter fixture missing"): return
+	var candidates := await pages({"action":14,"kind":1,"id":pond,"operation":14,"candidate_kind":2},"candidates")
+	if stopped: return
+	await native("animal_candidates",{"id":pond,"rows":candidates.candidates})
+	if stopped: return
+	var found := false
+	for row in candidates.candidates:
+		if row.entity == Contract.AreaCandidateEntity.Item and row.id == item: found = true
+	if not check(found,"Pond critter item candidate missing"): return
 	await native("item_assignment_before",{"item_id":item})
 	var source := await inspect(pond,1)
 	if stopped: return
@@ -349,6 +376,9 @@ func item_assignments() -> void:
 	if stopped: return
 	var cleared := await inspect(second,1)
 	check(cleared.assigned_count==baseline.assigned_count,"item clear count differs")
+	var refreshed := await pages({"action":14,"kind":1,"id":second,"operation":14,"candidate_kind":2},"candidates")
+	if stopped: return
+	await native("animal_candidates",{"id":second,"rows":refreshed.candidates})
 
 func workshop_links() -> void:
 	step = "8 workshop links"

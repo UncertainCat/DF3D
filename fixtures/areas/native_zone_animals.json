@@ -6,7 +6,7 @@
   "evidence": "build/stockpile-storage-native-zone-animals-20261026-080835",
   "owned_df_pid": 128092,
   "source_unchanged": true,
-  "status": "Native unit/item assignment integrated; typed item candidates and full animal UI parity pending",
+  "status": "Native typed candidates, item text and assignment integrated; full animal UI parity pending",
   "ranges": [
     {
       "name": "pen_picker_builder",
@@ -1639,5 +1639,57 @@
     ],
     "scope": "Full displayed text bytes and unchanged gps/main_interface memory; diagnostic bridge reader only.",
     "limits": "Observed vermin item5969 only. Named/quality/other decoration variants, PET subtype and product candidate integration remain pending."
+  },
+  "product_candidates": {
+    "evidence": "build/areas-acceptance-20261026-094335",
+    "owned_df_pid": 114076,
+    "status": "passed",
+    "save_manifests_unchanged": 2,
+    "plugin_sha256": "8425fab8efd3dcdab7ecbe1f5b6fb9a9c3dc9eb54e7a2004205ae11450699d2d",
+    "management_version": 68,
+    "comparisons": [
+      {
+        "zone": 1496,
+        "response": {
+          "count": 16,
+          "exact": true,
+          "status": "passed"
+        }
+      },
+      {
+        "zone": 1497,
+        "response": {
+          "count": 7,
+          "exact": true,
+          "status": "passed"
+        }
+      },
+      {
+        "zone": 1497,
+        "response": {
+          "count": 7,
+          "exact": true,
+          "status": "passed"
+        }
+      },
+      {
+        "zone": 1511,
+        "response": {
+          "count": 7,
+          "exact": true,
+          "status": "passed"
+        }
+      },
+      {
+        "zone": 1497,
+        "response": {
+          "count": 7,
+          "exact": true,
+          "status": "passed"
+        }
+      }
+    ],
+    "scope": "Typed native Pen/Pond membership and raw order, assigned state, item description, unit/item assignment/transfer/clear and ineligible Pond unit refusal.",
+    "limits": "No complete animal visual/search/sort parity claim."
   }
 }

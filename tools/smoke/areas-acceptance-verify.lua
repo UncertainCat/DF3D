@@ -655,6 +655,24 @@ elseif request.op=='zone_settings' then
  elseif typ=='Tomb' then actual.tomb_citizens=v.tomb.flags.no_citizens and 0 or 1;actual.tomb_pets=v.tomb.flags.no_pets and 0 or 1
  elseif typ=='PlantGathering' then actual.gather_trees=v.gather.flags.pick_trees and 1 or 0;actual.gather_shrubs=v.gather.flags.pick_shrubs and 1 or 0;actual.gather_fallen=v.gather.flags.gather_fallen and 1 or 0 end
  check_properties(actual,request.expected,'zone_settings')
+elseif request.op=='animal_candidates' then
+ local b=building()
+ local text,code=dfhack.run_command_silent('df3d','zone-animal-candidates-read',tostring(b.id))
+ assert(code==0,text)
+ local expected=require('json').decode(text)
+ assert(#expected==#request.rows,'native animal candidate count differs')
+ for i,entry in ipairs(expected)do
+  local row=request.rows[i]
+  assert(row.id==entry.id and row.entity==entry.kind+1 and row.assigned==entry.assigned,
+   'native animal candidate identity/order/assignment differs')
+  if entry.kind==1 then
+   local value,status=dfhack.run_command_silent('df3d','zone-animal-item-text-read',tostring(entry.id))
+   assert(status==0,value)
+   local bytes=require('json').decode(value)
+   assert(row.name==dfhack.df2utf(string.char(table.unpack(bytes))),'native animal item text differs')
+  end
+ end
+ result.count=#expected;result.exact=true
 elseif request.op=='candidates' then
  local b=building();local rows={};local U=dfhack.units
  if request.kind==3 then

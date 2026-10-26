@@ -158,11 +158,14 @@ def main():
      p.name='Linked fixture'
      return {ok=true,steps=31,work_unknown=budget==nil}
     end
+    function animal_candidates(b)return animal_fixture or {}end
+    function animal_item_text(item)return item.label end
     function owner_eligible(b,u) return u.citizen==true end
     local old_request=request
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
+     r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -290,7 +293,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "animal_item_text": lua.globals().animal_item_text}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -767,10 +770,30 @@ def main():
      {id=11,label='Caged visitor',active=true,sex=0,flags1={caged=true}},
      {id=12,label='Wild visitor',active=true,sex=0,flags1={caged=false}}}
     zone.assigned_units={10}
+    animal_fixture={{id=10,entity=1,assigned=true},{id=12,entity=1,assigned=false},
+     {id=10,entity=2,assigned=false}}
+    df.item={find=function(id)if id==10 then return {id=10,label='Native critter'}end end}
     """)
     animals = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})
-    assert [v["id"] for v in animals["candidates"].values()] == [10, 11]
+    assert [(v["entity"], v["id"]) for v in animals["candidates"].values()] == [(1, 10), (1, 12), (2, 10)]
     assert animals["candidates"][1]["grazer"] and animals["candidates"][1]["assigned"]
+    assert animals["candidates"][3]["name"] == "Native critter"
+    assert not animals["candidates"][3]["assigned"]
+    animal_request = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2}
+    # Reopening at the same paused tick reads current native membership.
+    lua.execute("animal_fixture={{id=10,entity=2,assigned=true}}")
+    reopened_animals = call(14, animal_request)
+    assert len(reopened_animals["candidates"]) == 1 and reopened_animals["candidates"][1]["assigned"]
+    assert reopened_animals["list_revision"] != animals["list_revision"]
+    lua.execute("animal_fixture={{id=10,entity=0,assigned=false}}")
+    assert not call(14, animal_request)["ok"]
+    lua.execute("animal_fixture={{id=10,entity=2,assigned=false},{id=10,entity=2,assigned=false}}")
+    assert not call(14, animal_request)["ok"]
+    lua.execute("animal_fixture={{id=999,entity=1,assigned=false}}")
+    assert not call(14, animal_request)["ok"]
+    lua.execute("animal_fixture={};local old_animal_candidates=animal_candidates;animal_candidates=function()return nil end")
+    assert not call(14, animal_request)["ok"]
+    lua.execute("animal_candidates=function()return animal_fixture end")
     lua.execute("""
     df.global.cur_year_tick=5000;zone.type=6;df.civzone_type[6]='Barracks'
     df.global.world.squads.all={{id=20,entity_id=7,alias='Guard',name='A'},

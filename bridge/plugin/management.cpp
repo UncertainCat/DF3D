@@ -1317,6 +1317,25 @@ int areaCreate(lua_State* L) {
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
   field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
 }
+int areaAnimalCandidates(lua_State* L) {
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  std::optional<std::vector<df3d_area::ZoneAnimalCandidate>> rows;
+  if(zone) {try {rows=df3d_area::nativeZoneAnimalCandidates(*zone);} catch(...) {}}
+  if(!rows){lua_pushnil(L);return 1;}
+  lua_newtable(L);int index=0;
+  for(const auto& row:*rows) {
+    lua_newtable(L);field(L,"id",row.id);field(L,"entity",row.item?2:1);field(L,"assigned",row.assigned);
+    lua_rawseti(L,-2,++index);
+  }
+  return 1;
+}
+int areaAnimalItemText(lua_State* L) {
+  auto* item=Lua::GetDFObject<df::item>(L,1);
+  std::optional<std::string> text;
+  if(item) {try {text=df3d_area::nativeZoneAnimalItemText(*item);} catch(...) {}}
+  if(!text){lua_pushnil(L);return 1;}
+  const auto utf=DF2UTF(*text);lua_pushlstring(L,utf.data(),utf.size());return 1;
+}
 int areaOwnerEligible(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   auto* unit=Lua::GetDFObject<df::unit>(L,2);
@@ -1491,6 +1510,13 @@ int areaAssignUnit(lua_State* L) {
     return fail("Unit assignment request required");
   if(zone->type!=df::civzone_type::Pen && zone->type!=df::civzone_type::Pond)return fail("This operation does not apply to this zone type");
   if(!df3d_area::nativeZoneAnimalAssignmentReady())return fail("Native animal assignment unavailable");
+  if(assign) {
+    std::optional<std::vector<df3d_area::ZoneAnimalCandidate>> candidates;
+    try {candidates=df3d_area::nativeZoneAnimalCandidates(*zone);} catch(...) {}
+    if(!candidates)return fail("Native animal assignment unavailable");
+    if(std::none_of(candidates->begin(),candidates->end(),[&](const auto& row){return !row.item && row.id==unit->id;}))
+      return fail("Invalid area unit assignment");
+  }
   using ScanError=df3d_area::AssignmentScanError;
   const auto referenceScan=df3d_area::scanZoneReferences(unit->general_refs,
       [](auto* ref){return virtual_cast<df::general_ref_building_civzone_assignedst>(ref)!=nullptr;},budget-1);
@@ -2282,7 +2308,9 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
     lua_pushcfunction(L,areaAssignItem);lua_setfield(L,-2,"assign_item");
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
-    lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
+    lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
+      lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
+      lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
     lua_pushcfunction(L,areaNewOwnerEligible);lua_setfield(L,-2,"new_owner_eligible");
     lua_pushcfunction(L,areaOwnerQuery);lua_setfield(L,-2,"owner_query");
     lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
@@ -2903,6 +2931,8 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     lua_rawgeti(L,LUA_REGISTRYINDEX,helper);lua_newtable(L);
     field(L,"step",share);field(L,"builder_kind",kind);field(L,"epoch",epoch);
     if(kind==7){
+      lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
+      lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
       lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
       lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
       lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");

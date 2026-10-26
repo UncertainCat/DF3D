@@ -20,6 +20,7 @@ var content: VBoxContainer
 var stockpile_help: Control
 var stockpile_view: Control
 var candidates_state = preload("res://scripts/area_candidates_state.gd").new()
+var owner_refresh = preload("res://scripts/area_owner_refresh.gd").new()
 var candidates_view: PanelContainer
 var portraits = preload("res://scripts/area_portraits.gd").new()
 var portrait_timer := 0.0
@@ -137,6 +138,7 @@ func option(parent: Node) -> OptionButton:
 func _ready() -> void:
 	details_state.configure(action_service)
 	paint_counts.service = action_service
+	owner_refresh.configure(action_service,candidates_state)
 	paint_counts.changed.connect(_show_paint_counts)
 	action_service.session_changed.connect(_session_changed)
 	tree_exiting.connect(_detach_draft)
@@ -1287,6 +1289,7 @@ func _poll_portraits(delta: float) -> void:
 	portraits.poll(world,slots)
 
 func _exit_tree() -> void:
+	owner_refresh.clear()
 	_release_paint_session("exit")
 	portraits.clear(world)
 
@@ -1402,6 +1405,9 @@ func _process(delta: float) -> void:
 			# elevation. Recenter must not discard an in-flight assignment receipt.
 			cancel_drag(stockpile_page != "owner"); update_controls()
 	if stockpile_page in ["owner","animals","squads"] and request_ticket == 0: candidates_state.poll(delta)
+	if stockpile_page == "owner" and candidates_view.is_visible_in_tree():
+		owner_refresh.poll(delta,maxi(0,int(candidates_view.scroll.scroll_vertical/36)-(1 if candidates_view.remove.visible else 0)))
+	else: owner_refresh.clear()
 	_sync_paint_counts()
 	paint_counts.poll(delta)
 	if stockpile_page == "location" and request_ticket == 0: locations_state.poll(delta)
@@ -1808,6 +1814,7 @@ func draw_outline() -> void:
 
 
 func _detach_draft() -> void:
+	owner_refresh.clear()
 	_release_rename()
 	storage_values.clear(); storage_sending = false; storage_failed = false
 	if details_parent_ticket!=0 and action_service!=null:action_service.detach(details_parent_ticket)

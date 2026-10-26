@@ -1254,6 +1254,17 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
+	var refreshed_unit := int(editor.candidates_state.rows[0].id)
+	var refreshed_button: Button = editor.candidates_view.choices[0]
+	var refresh_receipt := int(editor.candidates_state.receipt)
+	var original_line := str(editor.candidates_state.rows[0].owner_display.first_line)
+	editor.candidates_view.owner_search.grab_focus()
+	await native("owner_fact_name",{"unit_id":refreshed_unit,"name":"OwnerFactsLive"})
+	if not await wait_ui(func():return str(editor.candidates_state.rows[0].owner_display.first_line).contains("OwnerFactsLive"),"automatic owner name refresh"):return
+	if not check(editor.candidates_view.choices[0]==refreshed_button and editor.candidates_state.receipt==refresh_receipt and editor.candidates_view.owner_search.has_focus() and not editor.candidates_state.busy(),"background owner refresh changed controls, receipt or input"):return
+	await capture("zone_owner_facts_refreshed")
+	await native("owner_fact_restore")
+	if not await wait_ui(func():return str(editor.candidates_state.rows[0].owner_display.first_line)==original_line,"automatic owner name restoration"):return
 	var shortcut := InputEventKey.new(); shortcut.pressed=true; shortcut.keycode=KEY_F; shortcut.ctrl_pressed=true
 	root.push_input(shortcut,true)
 	if not check(editor.candidates_view.owner_search.has_focus(),"Ctrl+F did not focus owner filter"):return

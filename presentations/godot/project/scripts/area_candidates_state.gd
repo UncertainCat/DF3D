@@ -2,6 +2,7 @@ extends RefCounted
 # Selector reads own their query/order and list receipt; controller owns tickets.
 signal request_ready(request: Dictionary)
 signal changed
+signal facts_changed
 signal failed_page(message: String)
 const C = preload("res://scripts/management_contract.gd")
 var area: Dictionary = {}
@@ -115,6 +116,25 @@ func accept(page: Dictionary, sent: Dictionary) -> void:
 
 func more() -> void:
 	if not busy() and cursor != 0: read(cursor)
+
+func accept_owner_facts(page: Dictionary, sent: Dictionary) -> void:
+	if busy() or kind != 1 or receipt == 0 or int(sent.get("expected_list_revision",0)) != receipt: return
+	if int(sent.get("id",-1)) != int(area.id) or sent.get("query_bytes") != query_bytes: return
+	if str(sent.get("query","")) != query or int(sent.get("sort",-1)) != sort or bool(sent.get("sort_descending")) != descending: return
+	if int(page.get("operation",-1)) != C.AreaOperation.CandidateList or int(page.get("list_revision",0)) != receipt: return
+	for key in ["candidate_kind","query","sort","sort_descending"]:
+		if page.get(key) != sent.get(key): return
+	if page.get("query_bytes") != sent.get("query_bytes"): return
+	var first := int(sent.get("cursor",-1))
+	var values: Array = page.get("candidates",[])
+	if first < 0 or first >= rows.size() or values.is_empty(): return
+	var count := mini(values.size(),rows.size()-first)
+	# Validate the entire overlap before changing any row. Never append or sort
+	# on a fact refresh: DF retains the open selector's membership and order.
+	for index in count:
+		if int(values[index].get("id",-1)) != int(rows[first+index].id): return
+	for index in count: rows[first+index] = values[index].duplicate(true)
+	facts_changed.emit()
 
 func reject(reason: String) -> void:
 	pending = {}; delay = -1; search_delay = -1; failed = true; mutating = false

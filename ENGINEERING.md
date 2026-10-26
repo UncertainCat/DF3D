@@ -444,8 +444,26 @@ match and diagnostics are empty. Plugin SHA256 is
 41a2e1baee2d0715427af1e0eceb433cdaf413c10e75db9a20ea7cbed710a284,
 Management66 unchanged. Adapter tests verify current text, stable IDs/revision,
 bounded display-provider calls, inactive candidates and page payload limits.
-The Godot picker still lacks automatic background refresh; its selection, scroll,
-request ownership and retained-list expiry handling must be preserved when wired.
+The Godot owner picker refreshes loaded rows starting at the visible ordinal once
+per second through a separate action-service read owner. Refresh never disables
+input or rebuilds row controls. Matching IDs/receipt/query are required before
+applying any overlapping rows; selection, scroll, filter focus and pagination
+remain local. Changed recipes invalidate only the affected portrait slots.
+Query/order changes, assignment, closure and session changes detach the read;
+late replies cannot update a replacement picker. Bridge rejection fails the
+selector closed rather than silently rebuilding its native retained order.
+The bridge's fixed cache lifetime still needs an active-read lease, and viewer
+recipe retention and refresh payload size still need review before acceptance.
+
+Protected main-scene060552 changes unit7348's name while the picker remains open.
+Automatic refresh displays OwnerFactsLive and then the restored name, preserving
+the same controls, receipt and filter focus. The rendered capture was inspected;
+assignment/removal and recenter/input workflows pass20 native observations.
+Owned DF128584 closes unsaved and both save manifests match. Diagnostics contain
+only the known Godot thread notice. owner-background-state-final passes core19/19
+and candidate lifecycle tests; owner-background-verified passes areas and GPU
+control-identity/scroll/focus checks with known engine notices. Full picker
+acceptance remains outstanding.
 
 The owner view routes unfocused arrow/numpad and page keys through the main
 controller, updates selection artwork and scrolls in36-pixel rows with a16-row

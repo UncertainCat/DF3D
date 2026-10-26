@@ -73,7 +73,7 @@ func configure(source, model) -> void:
 	owner_search.position = search.position; owner_search.size = search.size; owner_search.theme = art.theme
 	body.add_child(owner_search); owner_search.configure(inset,native_colors)
 	owner_search.edited.connect(state.queue_owner_search)
-	state.changed.connect(refresh); refresh()
+	state.changed.connect(refresh); state.facts_changed.connect(refresh_owner_facts); refresh()
 
 func row_style(selected: bool = false) -> StyleBoxTexture:
 	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else ("BUTTON_RECTANGLE" if state.kind == 1 else "BUTTON_RECTANGLE_DARK"),8)
@@ -182,8 +182,10 @@ func refresh() -> void:
 			focus.set_meta("unit_id",int(row.id))
 			focus.pressed.connect(func(): focus_unit(int(row.id)))
 			var mood := int(row.get("mood",0))
-			if state.kind == 1 and mood in range(1,8):
-				var icon := TextureRect.new(); icon.texture = art.texture("BUTTON_STRESS_%d" % (7-mood))
+			if state.kind == 1:
+				var icon := TextureRect.new(); icon.name = "OwnerStress"
+				icon.visible = mood in range(1,8)
+				if icon.visible: icon.texture = art.texture("BUTTON_STRESS_%d" % (7-mood))
 				icon.position = Vector2(440,0); icon.size = Vector2(16,16)
 				icon.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(icon)
 			if state.kind == 2:
@@ -271,7 +273,37 @@ func add_owner_text(button: Button, display: Dictionary) -> void:
 			background.mouse_filter = Control.MOUSE_FILTER_IGNORE; background.show_behind_parent = true
 			background.size = Vector2(mini(line.text.length(),int(display.columns))*8,12)
 			line.add_child(background); colored.append(line)
-	owner_color_rows.append({"description":display.get("name_color",{}),"lines":colored,"last":[]})
+	owner_color_rows.append({"button":button,"description":display.get("name_color",{}),"lines":colored,"last":[]})
+	apply_owner_colors(Time.get_ticks_msec())
+
+func refresh_owner_facts() -> void:
+	if state.kind != 1 or choices.size() != state.rows.size(): return
+	for index in state.rows.size():
+		var row: Dictionary = state.rows[index]
+		if int(row.id) != int(cached_rows[index].id): return
+	for index in state.rows.size():
+		var row: Dictionary = state.rows[index]
+		if row == cached_rows[index]: continue
+		var display: Dictionary = row.get("owner_display",{})
+		var button: Button = choices[index]
+		for line_index in 3:
+			var line := button.get_node_or_null(["OwnerStatus","OwnerFirst","OwnerSecond"][line_index]) as Label
+			if line == null: continue
+			line.text = str(display.get(["status","first_line","second_line"][line_index],""))
+			line.size.x = int(display.get("columns",0))*8
+			if line_index > 0: line.get_node("GlyphBackground").size.x = mini(line.text.length(),int(display.get("columns",0)))*8
+		if not display.is_empty() and not button.has_node("OwnerFirst"): add_owner_text(button,display)
+		for colored in owner_color_rows:
+			if colored.button == button:
+				colored.description = display.get("name_color",{}); colored.last = []
+		var stress := button.get_node("OwnerStress") as TextureRect
+		var mood := int(row.get("mood",0))
+		stress.visible = mood in range(1,8)
+		stress.texture = art.texture("BUTTON_STRESS_%d" % (7-mood)) if stress.visible else null
+		for slot in portrait_slots:
+			if int(slot.id) == int(row.id) and slot.recipe != row.get("sheet_icon",{}):
+				slot.recipe = row.get("sheet_icon",{}); slot.loaded = false
+		cached_rows[index] = row.duplicate(true)
 	apply_owner_colors(Time.get_ticks_msec())
 
 func _process(_delta: float) -> void:

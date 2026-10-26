@@ -277,6 +277,19 @@ func run() -> void:
 	var filter_shortcut := InputEventKey.new(); filter_shortcut.keycode = KEY_F; filter_shortcut.ctrl_pressed = true; filter_shortcut.pressed = true
 	root.push_input(filter_shortcut,true)
 	if not controller.candidates_view.owner_search.has_focus(): push_error("Ctrl+F did not focus owner filter"); quit(1); return
+	var preserved_button: Button = controller.candidates_view.choices[0]
+	var preserved_scroll: int = controller.candidates_view.scroll.scroll_vertical
+	var preserved_selection: int = controller.candidates_view.owner_selected
+	var refreshed: Array = controller.candidates_state.rows.duplicate(true)
+	refreshed[0].owner_display.first_line = "Updated name"
+	refreshed[0].mood = 7
+	controller.candidates_state.accept_owner_facts({"operation":14,"candidate_kind":1,"query":"","sort":2,"sort_descending":false,"list_revision":101,"candidates":refreshed},
+		{"id":int(controller.candidates_state.area.id),"query":"","sort":2,"sort_descending":false,"candidate_kind":1,"expected_list_revision":101,"cursor":0})
+	await process_frame; await RenderingServer.frame_post_draw
+	if controller.candidates_view.choices[0] != preserved_button or preserved_button.get_node("OwnerFirst").text != "Updated name":
+		push_error("Owner facts rebuilt controls or failed to update text"); quit(1); return
+	if controller.candidates_view.scroll.scroll_vertical != preserved_scroll or controller.candidates_view.owner_selected != preserved_selection or not controller.candidates_view.owner_search.has_focus():
+		push_error("Owner facts changed scroll, selection or filter focus"); quit(1); return
 	var leave_filter := InputEventMouseButton.new(); leave_filter.button_index=MOUSE_BUTTON_RIGHT;leave_filter.pressed=true;leave_filter.position=Vector2(800,700)
 	root.push_input(leave_filter,true);leave_filter.pressed=false;root.push_input(leave_filter,true)
 	if controller.candidates_view.owner_search.has_focus() or controller.stockpile_page != "owner":

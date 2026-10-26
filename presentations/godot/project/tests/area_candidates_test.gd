@@ -1,5 +1,14 @@
 extends SceneTree
 var failures := 0
+class RefreshService extends RefCounted:
+	signal session_changed
+	var calls: Array = []
+	var detached: Array = []
+	func submit(_domain, request, observer) -> int:
+		calls.append({"request":request,"observer":observer}); return calls.size()
+	func detach(ticket) -> void: detached.append(ticket)
+	func reply(index: int, page: Dictionary) -> void:
+		calls[index].observer.call(index+1,{"status":2,"action":14,"area":page},calls[index].request)
 func check(value: bool, message: String) -> void:
 	if not value: failures += 1; push_error(message)
 func _initialize() -> void: call_deferred("run")
@@ -19,6 +28,33 @@ func run() -> void:
 	var state := preload("res://scripts/area_candidates_state.gd").new()
 	var sent: Array = []; state.request_ready.connect(func(request): sent.append(request))
 	var area := {"id":82,"kind":1,"revision":9007199254740993,"owner_allowed":true,"owner_id":17,"zone_type":92}
+	var fresh = preload("res://scripts/area_candidates_state.gd").new()
+	var service := RefreshService.new()
+	var refresh = preload("res://scripts/area_owner_refresh.gd").new()
+	refresh.configure(service,fresh)
+	fresh.open(area)
+	fresh.accept({"list_revision":123,"candidates":[{"id":21,"name":"Before"},{"id":22,"name":"Second"}],"next_cursor":2},fresh.pending.duplicate(true))
+	refresh.poll(0.9,0); check(service.calls.is_empty(),"owner refresh cadence is bounded")
+	refresh.poll(0.1,0); check(service.calls.size()==1 and not fresh.busy(),"background facts do not block assignment")
+	var facts := {"operation":14,"candidate_kind":1,"query":"","sort":2,"sort_descending":false,"list_revision":123,"candidates":[{"id":21,"name":"After"},{"id":22,"name":"Second"}]}
+	service.reply(0,facts)
+	check(fresh.rows[0].name=="After" and fresh.receipt==123 and fresh.cursor==2,"facts update without changing pagination")
+	refresh.poll(1,0)
+	var wrong: Dictionary = facts.duplicate(true); wrong.candidates[1].id=23; wrong.candidates[0].name="Partial"
+	service.reply(1,wrong)
+	check(fresh.rows[0].name=="After","mismatched membership rejects entire page")
+	refresh.poll(1,0); fresh.queue_owner_search(PackedByteArray([195]))
+	check(service.detached.has(3),"search immediately detaches background read")
+	service.reply(2,facts); check(fresh.rows.is_empty(),"late facts cannot replace query")
+	fresh.open(area); fresh.accept({"list_revision":123,"candidates":[{"id":21}]},fresh.pending.duplicate(true))
+	refresh.poll(1,0); fresh.assign_owner(21); service.reply(3,facts)
+	check(fresh.mutating and not fresh.rows[0].has("name"),"assignment retires background facts")
+	fresh.open(area); fresh.accept({"list_revision":123,"candidates":[{"id":21}]},fresh.pending.duplicate(true))
+	refresh.poll(1,0); service.session_changed.emit(); service.reply(4,facts)
+	check(not fresh.rows[0].has("name"),"session invalidation retires background facts")
+	refresh.poll(1,0); fresh.clear(); service.reply(5,facts)
+	check(fresh.rows.is_empty() and refresh.ticket==0,"closed picker rejects background facts")
+	service.calls.clear()
 	state.open(area)
 	check(sent[-1] == {"action":14,"operation":14,"id":82,"kind":1,"candidate_kind":1,"query":"","sort":2,"sort_descending":false,"cursor":0},"owner selector uses enriched native candidate request")
 	state.accept({"build_phase":1,"build_done":1,"build_total":20},sent[-1])

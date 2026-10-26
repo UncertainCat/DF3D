@@ -1327,6 +1327,16 @@ int areaOwnerEligible(lua_State* L) {
   if(eligible.has_value())lua_pushboolean(L,*eligible);else lua_pushnil(L);
   return 1;
 }
+int areaNewOwnerEligible(lua_State* L) {
+  const auto type=lua_tointeger(L,1);
+  auto* unit=Lua::GetDFObject<df::unit>(L,2);
+  std::optional<bool> eligible;
+  if(lua_isnumber(L,1) && type>=0 && type<=INT32_MAX && unit) {
+    try {eligible=df3d_area::nativeZoneNewOwnerEligible(int32_t(type),*unit);} catch(...) {}
+  }
+  if(eligible.has_value())lua_pushboolean(L,*eligible);else lua_pushnil(L);
+  return 1;
+}
 int areaOwnerQuery(lua_State* L) {
   size_t size=0;const char* value=lua_tolstring(L,1,&size);
   std::optional<std::string> normalized;
@@ -2240,6 +2250,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
+    lua_pushcfunction(L,areaNewOwnerEligible);lua_setfield(L,-2,"new_owner_eligible");
     lua_pushcfunction(L,areaOwnerQuery);lua_setfield(L,-2,"owner_query");
     lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
     lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");

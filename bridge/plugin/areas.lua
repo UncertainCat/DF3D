@@ -569,9 +569,7 @@ local function candidate_row(job,v,r,refresh_display)
   end
  else
   if not U.isActive(v) or U.isDead(v) then return nil end
-  if job.candidate_kind==1 then
-   if not U.isCitizen(v) then return nil end
-  elseif U.isCitizen(v) or not (U.isTame(v) or v.flags1.caged) then return nil end
+  if job.candidate_kind~=2 or U.isCitizen(v) or not (U.isTame(v) or v.flags1.caged) then return nil end
  end
  local label=display and display.name or job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
@@ -1093,6 +1091,7 @@ local function native_operation(r)
   return finish{ok=true,message='Observed overlapping areas',areas=rows,next_cursor=next_cursor,truncated=next_cursor~=0}
  end
  if r.action==14 and op==0 then
+  if a.kind~=0 then return reject('Unsupported area operation') end
   local page,used=candidate_page(r,a,nil,0,budget-steps);steps=steps+used;return finish(page)
  end
  if r.action==10 then
@@ -1117,8 +1116,12 @@ local function native_operation(r)
    if owner~=-2 then
     if not owner_types[df.civzone_type[zone_type]] then return reject('This zone type has no single owner') end
     new_owner=owner>=0 and df.unit.find(owner) or nil
-    if owner>=0 and (not new_owner or not U.isCitizen(new_owner) or not U.isActive(new_owner) or U.isDead(new_owner)) then
-     return reject('Owner must be an active living citizen of this fortress')
+    if owner>=0 then
+     if not new_owner then return reject('Native owner assignment failed') end
+     if type(r.new_owner_eligible)~='function' then return reject('Native area helper unavailable') end
+     local worked,eligible=pcall(r.new_owner_eligible,zone_type,new_owner)
+     if not worked or eligible==nil then return reject('Native area helper unavailable') end
+     if not eligible then return reject('Native owner assignment failed') end
     end
    end
   end

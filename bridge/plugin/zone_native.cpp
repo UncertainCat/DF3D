@@ -147,19 +147,39 @@ bool nativeZoneOwnerCandidatesReady() {
     }(base);
     return compatible;
 }
-std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::unit& candidate) {
+static std::optional<bool> zoneOwnerEligible(int32_t type,bool spouseShared,df::unit* owner,const void* zoneFacts,df::unit& candidate) {
     if(!df::global::world || !df::global::plotinfo || !nativeZoneOwnerCandidatesReady())return std::nullopt;
-    struct Context {int32_t type;bool spouseShared;uint8_t padding[3];df::unit* owner;df::building_civzonest* zone;};
+    struct Context {int32_t type;bool spouseShared;uint8_t padding[3];df::unit* owner;const void* zone;};
     struct Entry {df::unit* unit;uint8_t isItem;uint8_t padding[7];};
     static_assert(sizeof(Context)==24 && offsetof(Context,owner)==8 && offsetof(Context,zone)==16);
     static_assert(sizeof(Entry)==16 && offsetof(Entry,isItem)==8);
-    Context context{int32_t(zone.type),zone.canUseSpouseRoom(),{},df::unit::find(zone.assigned_unit_id),&zone};
+    Context context{type,spouseShared,{},owner,zoneFacts};
     Entry entry{&candidate,0,{}};
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     using Exclude=bool (*)(const Context*,const Entry*);
     // Global reads are game mode, economy activation, civilization/group IDs
     // and semantic history/entity records. No widget/menu/search state is used.
     return !reinterpret_cast<Exclude>(const_cast<uint8_t*>(base+0x3a6610))(&context,&entry);
+}
+std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::unit& candidate) {
+    if(!df::global::world || !df::global::plotinfo || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    return zoneOwnerEligible(int32_t(zone.type),zone.canUseSpouseRoom(),
+        df::unit::find(zone.assigned_unit_id),&zone,candidate);
+}
+std::optional<bool> nativeZoneNewOwnerEligible(int32_t type,df::unit& candidate) {
+    switch(static_cast<df::civzone_type>(type)) {
+        case df::civzone_type::Bedroom:case df::civzone_type::DiningHall:
+        case df::civzone_type::Office:case df::civzone_type::Tomb:break;
+        default:return false;
+    }
+    // The fully pinned predicate reads only assigned_unit_id from this pointer
+    // (3a6645..3a6655); all helper calls receive the candidate, never the zone.
+    // With no owner the spouse branch is unreachable. No DF object is constructed.
+    static_assert(offsetof(df::building_civzonest,assigned_unit_id)==0x1a0);
+    struct Facts {std::array<uint8_t,0x1a0> padding{};int32_t assigned=-1;};
+    static_assert(offsetof(Facts,assigned)==0x1a0);
+    const Facts facts;
+    return zoneOwnerEligible(type,false,nullptr,&facts,candidate);
 }
 std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzonest& zone,df::unit& candidate) {
     if(!df::global::world || !df::global::plotinfo || !nativeZoneOwnerCandidatesReady())return std::nullopt;

@@ -75,9 +75,10 @@ world.units.all and call the verified predicate with request-local callbacks.
 Builders retain semantic IDs/type only, reject owner/type changes during scanning,
 and refresh delivered first pages on reopening even while paused. Continuation
 pages retain their revision snapshot. Existing-zone assignments revalidate with
-the same predicate immediately before mutation. The unscoped legacy chooser and
-creation-time explicit owner validation still use their old citizen checks;
-those routes need separate integration before full assignment UI acceptance.
+the same predicate immediately before mutation. Creation-time explicit owner
+validation now uses the new-zone owned context described below. The unscoped
+legacy owner chooser is retired; callers must supply an existing zone through
+CandidateList. Stockpile legacy link choices remain unchanged.
 MSVC and `build/qa/zone-owner-candidate-predicate` core19/19 plus adapter pass.
 
 Protected semantic `build/areas-acceptance-20261025-233316` passes155 observations
@@ -91,6 +92,38 @@ both save manifests remain unchanged. MSVC and
 coverage includes native admission of an inactive deceased non-citizen, native
 exclusion of an apparent citizen, and paused picker refresh. This establishes
 eligibility and assignment integration, not native order, query or rendered UI.
+
+Creation-time owner admission uses the same pinned native predicate with owned
+facts for an unassigned zone. Its only zone-memory read is assigned_unit_id at
+offset 0x1a0 (instructions 0x3a6645..0x3a6655). All helper calls receive the
+candidate; a null owner skips spouse comparison. The helper supplies the requested
+zone type and an owned field value of -1, without constructing or publishing a
+building or borrowing native presentation state. Lua validates admission before
+calling the creation helper; unavailable or negative native results leave the
+world unchanged. Native assignment after publication retains its existing
+unknown-outcome policy because it can transfer ownership from another Tomb.
+
+Protected native run build/stockpile-storage-native-zone-owner-20261026-075257
+matches the new-zone context to actual unassigned-zone candidate sets in all 84
+comparisons: Tomb (172), Bedroom, Dining Hall and Office (141), and economy-enabled
+Bedroom (18). The existing oracle also checks actual native widget membership.
+Owned DF124612 closes unsaved with its source manifest unchanged; the economy
+capture was inspected. Compact provenance is in native_zone_assignment.json under
+new_owner_context.
+
+Protected semantic run build/areas-acceptance-20261026-075522 passes 211 native
+observations with clean diagnostics. Creation assigns native-only candidate 996
+to Tomb 1549, clears prior Tomb 1546, and preserves native restriction flags 3.
+The retired unscoped owner request is rejected. All prior assignment, removal,
+spouse, ordering, filter and creation checks still pass; map search guards remain
+unchanged. Owned DF100356 closes unsaved and both save manifests match.
+MSVC and build/qa/new-owner-native-final pass, including root CTest (19/19),
+areas controller checks and adapter coverage for native admission despite old
+citizen/activity/death flags, refusal before creation, unavailable helpers and
+unknown assignment outcomes. Management version 67 is unchanged. Installed plugin
+SHA-256 is 63aa80ad6936aba867f17200a797add6d329ecca27011b6945afff817434f260.
+The old Godot owner-search actions and controls are removed; scoped native owner
+selection remains the supported path. Broader Zones/Locations remains staged.
 
 Default scoped owner ordering now calls native0x3d0440 for the room-ownership
 partition and native0x134bc90 for entity-position priority with explicit civ/group

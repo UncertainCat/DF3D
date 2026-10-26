@@ -18,6 +18,8 @@ bool nativeZoneOwnerReady();
 // Native may refresh semantic historical-figure/position lookup indices.
 bool nativeZoneOwnerCandidatesReady();
 std::optional<bool> nativeZoneOwnerEligible(df::building_civzonest& zone,df::unit& candidate);
+// New-zone admission uses owned unassigned-owner facts; no allocation/publication.
+std::optional<bool> nativeZoneNewOwnerEligible(int32_t zoneType,df::unit& candidate);
 struct ZoneOwnerOrderFacts {
     bool withoutRoom;int32_t priority;int32_t category;int32_t categoryStatus;
     int32_t stress;std::string nameKey,professionKey;

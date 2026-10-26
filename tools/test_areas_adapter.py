@@ -163,6 +163,7 @@ def main():
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
      r.owner_eligible=owner_eligible
+     r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
      r.owner_query=function(query)return query:lower()end
      r.link_areas=workshop_link
@@ -294,10 +295,9 @@ def main():
         raise AssertionError("candidate builder did not finish")
     catalog = call(7)
     assert catalog["ok"] and len(catalog["choices"]) == 2
-    candidates = call(14, {"kind": 1})
-    assert [r["id"] for r in candidates["choices"].values()] == [2, 100]
-    assert call(14, {"kind": 1, "cursor": 50})["choices"][1]["id"] == 100
-    assert call(14, {"kind": 1, "query": "Later"})["choices"][1]["name"] == "Later citizen #100"
+    for legacy in [{"kind": 1}, {"kind": 1, "cursor": 50}, {"kind": 1, "query": "Later"}]:
+        refused = call(14, legacy)
+        assert not refused["ok"] and refused["message"] == "Unsupported area operation"
     lua.execute("df.global.world.units.active[1].readable_label='Later citizen \"English\", Worker'")
     observed = call(9, {"kind": 1, "id": 6})
     assert observed["ok"] and observed["areas"][1]["owner_name"] == "Later citizen"
@@ -406,13 +406,6 @@ def main():
     footprint = call(9, {"kind": 1, "id": 6})["areas"][1]["extents"]
     assert list(footprint.values()) == [0, 0, 0, 0, 1, 0, 0, 1, 1]
     lua.execute("df.global.cur_year_tick=2401;df.global.world.units.active={};for id=260,1,-1 do table.insert(df.global.world.units.active,{id=id,label='Citizen',citizen=true,active=true}) end")
-    page = call(14, {"kind": 1})
-    assert len(page["choices"]) == 128 and page["next_cursor"] == 129
-    later = call(14, {"kind": 1, "cursor": page["next_cursor"]})
-    assert later["choices"][1]["id"] == 129 and later["next_cursor"] == 257
-    last = call(14, {"kind": 1, "cursor": later["next_cursor"]})
-    assert [r["id"] for r in last["choices"].values()] == [257, 258, 259, 260]
-    assert last["next_cursor"] == 0
     def revision():
         return call(9)["areas"][1]["revision"]
 
@@ -1797,7 +1790,7 @@ def main():
     end
     """)
     settings_adapter = lua.execute((Path(__file__).resolve().parents[1] / "bridge/plugin/areas.lua").read_text())
-    candidates = settings_adapter(lua.globals().request(14, lua.table_from({"kind": 1})))
+    candidates = settings_adapter(lua.globals().request(14, lua.table_from({"kind": 0})))
     assert candidates["active_kinds"] == 128
     for builder in [5, 6]:
         step = settings_adapter(lua.table_from({"step": 2048, "builder_kind": builder, "epoch": 1}))
@@ -2685,7 +2678,7 @@ def main():
                             ({"kind": 1, "zone_type": 255}, "Unsupported zone type"),
                             ({"kind": 1, "zone_type": 0, "bins": 1}, "Stockpile-only fields on zone"),
                             ({"kind": 1, "zone_type": 2, "owner_id": -1}, "This zone type has no single owner"),
-                            ({"kind": 1, "zone_type": 0, "owner_id": 999}, "Owner must be an active living citizen of this fortress")]:
+                            ({"kind": 1, "zone_type": 0, "owner_id": 999}, "Native owner assignment failed")]:
         result = settings_adapter(create_request(**values))
         assert not result["ok"] and result["message"] == message, dict(result)
     assert lua.globals().create_calls == before
@@ -2736,8 +2729,20 @@ def main():
     native_range = settings_adapter(create_request(kind=1, zone_type=3))
     assert native_range["ok"] and native_range["areas"][1]["zone_settings"]["facing"] == 1
     lua.execute("native_range_x=nil")
+    # Admission comes exclusively from native new-zone context, before creation.
+    before = lua.globals().create_calls
+    lua.execute("df.unit.find(20).new_native_eligible=false")
+    rejected_owner = settings_adapter(create_request(kind=1, zone_type=0, owner_id=20))
+    assert not rejected_owner["ok"] and rejected_owner["message"] == "Native owner assignment failed"
+    assert lua.globals().create_calls == before
+    unavailable = create_request(kind=1, zone_type=0, owner_id=20)
+    unavailable["new_owner_eligible"] = None
+    assert settings_adapter(unavailable)["message"] == "Native area helper unavailable"
+    assert lua.globals().create_calls == before
+    lua.execute("local u=df.unit.find(20);u.new_native_eligible=true;u.citizen=false;u.active=false;u.dead=true")
     owner = settings_adapter(create_request(kind=1, zone_type=0, owner_id=20, active=0))
     assert owner["ok"] and owner["areas"][1]["owner_id"] == 20 and not owner["areas"][1]["active"]
+    lua.execute("local u=df.unit.find(20);u.citizen=true;u.active=true;u.dead=false;u.new_native_eligible=nil")
     lua.execute("fail_owner=true")
     expected_id = lua.globals().next_area_id
     untouched_owner = settings_adapter(create_request(kind=1, zone_type=0))

@@ -241,6 +241,12 @@ local function capture(name)
    records[#records+1]={name=name..'-filter-parity',input=last_search_input,query=list.filter_str,key=query_bytes,ids=displayed,exact=true}
   end
   for _,v in ipairs(guards)do assert(dfhack.internal.memcmp(v.copy,v.address,v.size)==0,'candidate query changed native UI/search scratch');df.delete(v.copy)end
+  if ui.cur_bld.assigned_unit_id==-1 then
+   local fresh_text,fresh_code=dfhack.run_command_silent('df3d','zone-new-owner-candidates-read',tostring(ui.cur_bld.type))
+   assert(fresh_code==0,fresh_text)
+   assert(fresh_text==text,'new-zone semantic context differs from unassigned native zone')
+   records[#records+1]={name=name..'-new-owner-context',zone_type=ui.cur_bld.type,exact=true,count=#require('json').decode(fresh_text)}
+  end
   local eligible=require('json').decode(text)
   records[#records+1]={name=name..'-candidates',source_ids=ids,displayed_ids=displayed,eligible_ids=eligible,query=list.filter_str,unchanged_guards=#guards}
   if name:find('%-sort%-') then

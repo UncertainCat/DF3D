@@ -79,7 +79,6 @@ var zone_box: VBoxContainer
 var links_only: CheckBox
 var active: CheckBox
 var link_row: VBoxContainer
-var owner_row: HBoxContainer
 var create_button: Button
 var apply_button: Button
 var remove_button: Button
@@ -290,9 +289,6 @@ func _ready() -> void:
 	create_button = button(actions, "Create area", create_area)
 	apply_button = button(actions, "Apply edits", apply_edits)
 	remove_button = button(actions, "Remove area", remove_area)
-	var target_label := Label.new()
-	target_label.text = "Link / owner search"
-	box.add_child(target_label)
 	search = LineEdit.new()
 	search.placeholder_text = "Name or numeric ID"
 	search.max_length = 128
@@ -314,10 +310,6 @@ func _ready() -> void:
 	link_row.add_child(take_row)
 	button(take_row, "Take from", func(): link(false, false))
 	button(take_row, "Stop taking", func(): link(false, true))
-	owner_row = HBoxContainer.new()
-	box.add_child(owner_row)
-	button(owner_row, "Assign owner", assign_owner)
-	button(owner_row, "Clear owner", func(): assign_owner(true))
 	message = Label.new()
 	message.custom_minimum_size.x = 310
 	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1071,7 +1063,7 @@ func inspect_tile(tile: Vector3i, cursor := 0) -> void:
 
 
 func search_candidates(cursor := 0) -> void:
-	if selected.is_empty():
+	if selected.is_empty() or int(selected.kind) != 0:
 		return
 	if request_ticket != 0 and _request_action == Action.AreaCandidates:
 		_detach_draft()
@@ -1086,16 +1078,6 @@ func link(give: bool, unlink: bool) -> void:
 	data.link_id = choices[candidate_picker.selected].id
 	data.give = give
 	data.unlink = unlink
-	send(data)
-
-
-func assign_owner(clear := false) -> void:
-	if selected.is_empty() or not selected.owner_allowed:
-		return
-	if not clear and candidate_picker.selected < 0:
-		return
-	var data := selected_request(Action.AreaUpdate)
-	data.owner_id = -1 if clear else choices[candidate_picker.selected].id
 	send(data)
 
 
@@ -1171,7 +1153,6 @@ func update_controls() -> void:
 	zone_picker.visible = not pile and selected.is_empty()
 	area_picker.visible = not areas.is_empty()
 	link_row.visible = pile and not selected.is_empty()
-	owner_row.visible = not selected.is_empty() and bool(selected.get("owner_allowed", false))
 	create_button.disabled = (
 		not available or request_ticket != 0 or not selected.is_empty() or not rectangle.has_area()
 	)

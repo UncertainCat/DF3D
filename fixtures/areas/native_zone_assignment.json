@@ -8443,5 +8443,74 @@
         "existing assignment/removal/recenter/hover/refresh workflows"
       ]
     }
+  },
+  "new_owner_context": {
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-075257",
+    "owned_df_pid": 124612,
+    "source_unchanged": true,
+    "native_predicate_rva": "0x3a6610",
+    "zone_fact_read_rva": "0x3a6645..0x3a6655",
+    "owned_zone_facts": {
+      "assigned_unit_id_offset": "0x1a0",
+      "assigned_unit_id": -1
+    },
+    "context": {
+      "zone_type": "requested semantic type",
+      "owner": "null",
+      "spouse_shared": false
+    },
+    "ownership": "The pinned predicate reads only assigned_unit_id from zone facts; helper calls receive the candidate. Null owner skips spouse comparison. No building allocation, publication, widget, menu or search scratch is involved.",
+    "exact_comparisons": 84,
+    "representative_samples": [
+      {
+        "count": 172,
+        "exact": true,
+        "name": "tomb-picker-new-owner-context",
+        "zone_type": 97
+      },
+      {
+        "count": 141,
+        "exact": true,
+        "name": "bedroom-picker-new-owner-context",
+        "zone_type": 92
+      },
+      {
+        "count": 18,
+        "exact": true,
+        "name": "bedroom-economy-picker-new-owner-context",
+        "zone_type": 92
+      },
+      {
+        "count": 141,
+        "exact": true,
+        "name": "office-picker-display-default-new-owner-context",
+        "zone_type": 93
+      },
+      {
+        "count": 141,
+        "exact": true,
+        "name": "dining-picker-display-default-new-owner-context",
+        "zone_type": 80
+      }
+    ],
+    "semantic_evidence": "build/areas-acceptance-20261026-075522",
+    "semantic_owned_df_pid": 100356,
+    "semantic_observations": 211,
+    "semantic_save_manifests_unchanged": 2,
+    "semantic_effects": {
+      "owner_unit": 996,
+      "previous_tomb": 1546,
+      "created_tomb": 1549,
+      "previous_owner_after": -1,
+      "created_owner_after": 996,
+      "tomb_settings_after": 3
+    },
+    "retired_route": "AreaCandidates operation None with kind Zone is rejected; use scoped CandidateList.",
+    "plugin_sha256": "63aa80ad6936aba867f17200a797add6d329ecca27011b6945afff817434f260",
+    "offline": "build/qa/new-owner-native-final",
+    "limits": [
+      "Broader Zones/Locations UI remains staged.",
+      "Animal candidate admission is a separate pending audit."
+    ]
   }
 }

@@ -2091,17 +2091,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="zone-owner-candidates-read") {
+      if(parameters[0]=="zone-owner-candidates-read" || parameters[0]=="zone-new-owner-candidates-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
         const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
         if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
-        auto* zone=virtual_cast<df::building_civzonest>(df::building::find(id));
-        if(!zone || !df::global::world || !df3d_area::nativeZoneOwnerCandidatesReady())return CR_FAILURE;
+        const bool unassigned=parameters[0]=="zone-new-owner-candidates-read";
+        auto* zone=unassigned?nullptr:virtual_cast<df::building_civzonest>(df::building::find(id));
+        if((!unassigned && !zone) || !df::global::world || !df3d_area::nativeZoneOwnerCandidatesReady())return CR_FAILURE;
         std::vector<int32_t> ids;
         for(auto* unit:df::global::world->units.all) {
           if(!unit)continue;
-          auto eligible=df3d_area::nativeZoneOwnerEligible(*zone,*unit);
+          auto eligible=unassigned?df3d_area::nativeZoneNewOwnerEligible(id,*unit):df3d_area::nativeZoneOwnerEligible(*zone,*unit);
           if(!eligible)return CR_FAILURE;
           if(*eligible)ids.push_back(unit->id);
         }
@@ -2365,6 +2366,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d track-material-candidates-read <sx> <sy> <sz> <tx> <ty> <tz> <candidate-limit> (read-only)\n"
         "df3d room-read <x> <y> <z>\n"
         "df3d zone-owner-candidates-read <zone id>\n"
+        "df3d zone-new-owner-candidates-read <zone type>\n"
         "df3d zone-owner-order-read <zone id>\n"
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"

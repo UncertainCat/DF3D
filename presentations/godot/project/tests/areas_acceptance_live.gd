@@ -432,6 +432,8 @@ func zone_owner_effects() -> void:
 	for choice in catalog.choices:kinds[str(choice.name)]=int(choice.id)
 	var p: Dictionary=fixture.origin
 	var origin:=Vector3i(int(p.x)+27,int(p.y)+4,int(p.z))
+	await request({"action":14,"kind":1},"Unsupported area operation")
+	if stopped:return
 	var owners:=await native("zone_owner_prepare")
 	if stopped:return
 	await native("overlap_prepare",{"scenario":"floor","site":{"x":origin.x,"y":origin.y,"z":origin.z}})
@@ -524,6 +526,14 @@ func zone_owner_effects() -> void:
 	await request({"action":11,"kind":1,"id":ids[0],"owner_id":tomb_extra_owner,"expected_revision":tomb_current.revision})
 	if stopped:return
 	await native("zone_owner_result",{"id":ids[0],"owner":tomb_extra_owner,"settings":3,"count_a":0,"count_b":0})
+	# Creation must accept the same native-only candidate and preserve native
+	# transfer effects; this candidate was excluded by the old citizen filter.
+	var fresh_tomb:=await request({"action":10,"kind":1,"zone_type":kinds.Tomb,"origin":origin,"width":1,"height":1,"owner_id":tomb_extra_owner})
+	if stopped:return
+	ids.append(int(fresh_tomb.areas[0].id))
+	await native("zone_owner_result",{"id":ids[-1],"owner":tomb_extra_owner,"settings":3,"count_a":0,"count_b":0})
+	await native("zone_owner_result",{"id":ids[0],"owner":-1,"settings":3,"count_a":0,"count_b":0})
+
 	for id in ids:
 		var current:=await inspect(id,1)
 		if stopped:return

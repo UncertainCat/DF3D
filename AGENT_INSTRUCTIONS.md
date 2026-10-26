@@ -132,6 +132,11 @@ copy, fabricated progress percentages or broader native-UI departures.
   the parent zone while the open picker continues assigning to its original
   zone. Preserve focus release and assignment semantics; this exception covers
   the panel's input boundary only. Record it in the native bug register.
+- Maintainer decision, 2026-10-26: close the animal picker when map selection
+  changes to another zone or empty terrain. Do not retain an active picker
+  assigning to the old, no-longer-shown zone as native DF does. This exception
+  covers picker retirement on selection changes; record it in the native bug
+  register separately from the inside-panel click boundary correction.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

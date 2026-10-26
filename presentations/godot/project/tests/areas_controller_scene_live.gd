@@ -1803,3 +1803,43 @@ func pointer_animals(id: int) -> void:
 		editor.open_panel()
 		if not await wait_ui(func():return settled() and editor.available,"animal Zones reopen"):return
 		editor.use_area(escape_area);editor._process(0)
+
+	step="animal picker closes on map selection change"
+	var original_area:Dictionary=editor.selected.duplicate(true)
+	var original_tile:Vector3i=original_area.origin
+	var other_tile:Vector3i=original_tile+Vector3i(2,0,0)
+	var empty_tile:Vector3i=original_tile+Vector3i(4,0,0)
+	scene.camera_rig.focus_on(Vector3(original_tile.x-8+0.5,original_tile.z+1.0,original_tile.y+0.5),30)
+	await process_frame;await process_frame
+	for probe_tile in [original_tile,other_tile,empty_tile]:
+		var pixel:Vector2=tile_screen(probe_tile)
+		if not check(pixel.x>760 and pixel.x<1180 and pixel.y>220 and pixel.y<760,"map-selection fixture is behind UI: "+str(pixel)):return
+	await click_control(editor.zone_menu.buttons.Pond)
+	await pointer_click(tile_screen(other_tile))
+	if not await wait_ui(func():return settled(),"second Pond first corner"):return
+	await pointer_click(tile_screen(other_tile))
+	if not await wait_ui(func():return settled() and editor.paint_state.cells.size()==1,"second Pond second corner"):return
+	await click_control(editor.paint_view.accept_button)
+	if not await wait_ui(func():return settled() and not editor.selected.is_empty(),"second Pond creation"):return
+	var other_area:Dictionary=editor.selected.duplicate(true)
+	if not check(int(other_area.id)!=id,"second Pond reused original identity"):return
+	await pointer_click(tile_screen(original_tile))
+	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"original Pond selection"):return
+	for map_target in [other_tile,empty_tile]:
+		await click_control(editor.zone_menu.controls.animals)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"selection-change picker"):return
+		await pointer_click(tile_screen(map_target))
+		if not await wait_ui(func():return settled() and not view.visible,"selection-change closes picker"):return
+		if not check(editor.candidates_state.rows.is_empty() and editor.candidates_state.area.is_empty(),"selection-change retained assignment map_target"):return
+		if map_target==other_tile:
+			if not check(int(editor.selected.get("id",-1))==int(other_area.id),"map did not select second Pond"):return
+		elif not check(editor.selected.is_empty(),"empty map retained selected zone"):return
+		updates=receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()
+		await pointer_key(KEY_ENTER)
+		if not check(receipts.filter(func(value):return int(value.get("action",0)) in [11,13]).size()==updates,"closed picker accepted Enter assignment"):return
+		await capture("animal_selection_change_"+("zone" if map_target==other_tile else "empty"))
+	editor.use_area(other_area);editor._process(0)
+	await click_control(editor.zone_menu.controls.remove)
+	if not await wait_ui(func():return settled() and editor.selected.is_empty(),"remove second Pond"):return
+	await native("removed",{"id":int(other_area.id)})
+	editor.use_area(original_area);editor._process(0)

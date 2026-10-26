@@ -984,7 +984,8 @@ end
 -- Restore the parent pointer between independent probes; no runtime code reads it.
 do
  local zone=assert(ui.cur_bld)
- for _,probe in ipairs{{'blank-center',500,700},{'blank-right',740,700},{'outside-map',800,700}}do
+ for _,probe in ipairs{{'blank-center',500,700},{'blank-right',740,700},{'outside-map',800,700},
+  {'outside-upper',800,250},{'outside-center',1000,400},{'outside-lower',1100,700}}do
   ui.cur_bld=zone;main.bottom_mode_selected=3;view:render(dfhack.getTickCount())
   pixel(336,154)
   local before=capture('Pond-'..probe[1]..'-before')
@@ -999,10 +1000,11 @@ do
    end
    records[#records+1]={name='animal-blank-input',probe=probe[1],stage=label,
     pointer={probe[2],probe[3]},picker_zone=zone.id,parent_zone=ui.cur_bld and ui.cur_bld.id or -1,
+    parent_type=ui.cur_bld and tostring(ui.cur_bld.type) or '',
     active=main.unit_selector.flag.VISIBILITY_ACTIVE,focused=df.global.gview.cur_textbox~=nil,
     mode=main.bottom_mode_selected,cursor=list.cursor_idx,target=target.id,assigned_zones=assigned}
   end
-  observe('clicked')
+  observe('clicked');capture('Pond-'..probe[1]..'-after-click')
   gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());observe('selected')
   gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());observe('cleared')
   assert(not contains(zone.assigned_units,target.id),'blank probe left assignment')

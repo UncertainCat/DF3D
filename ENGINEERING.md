@@ -13,6 +13,7 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Narrow stockpile item columns acquire negative widths and spill names onto the map. | Clip item names inside their panel. | Implemented; `fixtures/areas/native_stockpile_search.json`. |
 | Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Implemented; `fixtures/areas/native_zone_animals.json` field `animal_containment_hover_reference`, GPU `build/qa/animal-containment-hover` and `build/qa/animal-containment-click`. |
 | Animal picker blank right edge lets clicks select the map behind the visible panel, changing the parent zone while assignments still target the original zone. | Consume clicks inside the visible panel while releasing search focus and preserving the picker target. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_blank_input`, native `build/stockpile-storage-native-zone-animals-20261026-150439`, rendered `build/areas-acceptance-20261026-150814`. |
+| Animal picker remains active after selecting another zone or empty terrain, so Enter assigns to an old, no-longer-shown zone. | Close the picker and retire its assignment target when map selection changes. | Implemented and verified; `fixtures/areas/native_zone_animals.json` field `animal_outside_panel_selection`, native `build/stockpile-storage-native-zone-animals-20261026-153041`, rendered `build/areas-acceptance-20261026-153847`. |
 
 ## Animal keyboard activation and portrait reference
 
@@ -158,9 +159,18 @@ with focused headless and rendered coverage recorded above. Native blank-center
 clicks release focus only; blank-right clicks inside the visible panel also
 select a map zone behind it, while subsequent assignment still targets the
 original picker zone. The approved inside-panel correction is recorded in the
-native bug register. Clicks outside the panel also change the native parent
-while retaining the picker target; that separate interaction remains unresolved
-and is outside this exception.
+native bug register. Protected `build/stockpile-storage-native-zone-animals-20261026-153041`
+confirms that outside-panel clicks select three other zones or empty terrain,
+while Enter still assigns to the original Pond1493 and a second Enter clears
+it. The picker stays active even with no selected parent. The source save is
+unchanged; `animal_outside_panel_selection` retains all twelve observations.
+The maintainer separately approved retaining DF3D's close-on-map-selection
+behavior. Rendered `build/areas-acceptance-20261026-153847` verifies actual
+exposed-map clicks selecting a second Pond or empty terrain: the picker closes,
+its rows and assignment target clear, and Enter submits no assignment. Both
+save manifests remain unchanged; only the known separate-thread notice remains.
+Core passes in `build/qa/animal-selection-close`. No production change was
+needed; the regression protects the existing correction.
 
 Animal status references in `native_zone_animals.json.animal_status_reference`
 cover caged units, pasture assignment, pit/filled-pond picker context and assigned

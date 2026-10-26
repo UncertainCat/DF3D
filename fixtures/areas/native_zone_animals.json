@@ -16924,5 +16924,250 @@
         }
       ]
     }
+  },
+  "animal_outside_panel_selection": {
+    "provenance": "build/stockpile-storage-native-zone-animals-20261026-153041",
+    "owned_df_pid": 135208,
+    "source_unchanged_unsaved_exit": true,
+    "records": [
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "93",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          700
+        ],
+        "probe": "outside-map",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "93",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          700
+        ],
+        "probe": "outside-map",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "93",
+        "parent_zone": 77,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          700
+        ],
+        "probe": "outside-map",
+        "stage": "cleared",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "80",
+        "parent_zone": 76,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          250
+        ],
+        "probe": "outside-upper",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "80",
+        "parent_zone": 76,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          250
+        ],
+        "probe": "outside-upper",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "80",
+        "parent_zone": 76,
+        "picker_zone": 1493,
+        "pointer": [
+          800,
+          250
+        ],
+        "probe": "outside-upper",
+        "stage": "cleared",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "87",
+        "parent_zone": 956,
+        "picker_zone": 1493,
+        "pointer": [
+          1000,
+          400
+        ],
+        "probe": "outside-center",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "87",
+        "parent_zone": 956,
+        "picker_zone": 1493,
+        "pointer": [
+          1000,
+          400
+        ],
+        "probe": "outside-center",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "87",
+        "parent_zone": 956,
+        "picker_zone": 1493,
+        "pointer": [
+          1000,
+          400
+        ],
+        "probe": "outside-center",
+        "stage": "cleared",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "",
+        "parent_zone": -1,
+        "picker_zone": 1493,
+        "pointer": [
+          1100,
+          700
+        ],
+        "probe": "outside-lower",
+        "stage": "clicked",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [
+          1493
+        ],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "",
+        "parent_zone": -1,
+        "picker_zone": 1493,
+        "pointer": [
+          1100,
+          700
+        ],
+        "probe": "outside-lower",
+        "stage": "selected",
+        "target": 6960
+      },
+      {
+        "active": true,
+        "assigned_zones": [],
+        "cursor": 0,
+        "focused": false,
+        "mode": 3,
+        "name": "animal-blank-input",
+        "parent_type": "",
+        "parent_zone": -1,
+        "picker_zone": 1493,
+        "pointer": [
+          1100,
+          700
+        ],
+        "probe": "outside-lower",
+        "stage": "cleared",
+        "target": 6960
+      }
+    ],
+    "finding": "Selecting another zone or empty terrain changes/removes the parent selection, but leaves the picker active and assignment targeting the original Pond.",
+    "decision": "Maintainer approved 2026-10-26: close the picker when map selection changes to another zone or empty terrain.",
+    "rendered_regression": {
+      "provenance": "build/areas-acceptance-20261026-153847",
+      "owned_df_pid": 133648,
+      "result": "passed_with_known_issues",
+      "save_manifests_unchanged": 2,
+      "checks": [
+        "Real map clicks on exposed terrain select a second Pond or empty terrain.",
+        "Picker closes and clears candidate rows and assignment target.",
+        "Enter after closure submits no assignment.",
+        "Temporary second Pond is removed and original selection restored."
+      ]
+    }
   }
 }

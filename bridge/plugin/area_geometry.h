@@ -14,10 +14,6 @@ namespace df3d_area {
 // rather than requiring presentation-side partial commits.
 constexpr uint32_t kMaxSide=256,kMaxCells=32768,kMaxSpans=kMaxCells,kMaxPaintTiles=kMaxCells,kMaxRaws=65536;
 constexpr uint32_t bulkSteps(size_t count) { return uint32_t((count+255)/256); }
-constexpr uint32_t assignmentPreparationSteps(size_t refs,size_t targetUnits,size_t oldUnits,
-                                             size_t cagesChanged,size_t cageEntries) {
-  return 5+uint32_t(cagesChanged)+bulkSteps(cageEntries)+bulkSteps(refs+1)+bulkSteps(targetUnits+oldUnits+1);
-}
 template<class T> std::vector<T> withoutValue(const std::vector<T>& source,T ignored,size_t extra=0) {
   std::vector<T> values;values.reserve(source.size()+extra);
   for(auto value:source)if(value!=ignored)values.push_back(value);
@@ -67,12 +63,6 @@ CageAssignmentScan<Cage> scanAssignedCages(const std::vector<Cage*>& cages,int32
     if(found)result.affected.push_back(cage);
   }
   return result;
-}
-template<class Cage>
-auto prepareCageAssignments(const std::vector<Cage*>& affected,int32_t unit) {
-  std::vector<std::pair<Cage*,std::vector<int32_t>>> plans;plans.reserve(affected.size());
-  for(auto* cage:affected)plans.emplace_back(cage,withoutValue(cage->assigned_units,unit));
-  return plans;
 }
 struct LocationMembership {
   std::vector<int32_t> previous,next;

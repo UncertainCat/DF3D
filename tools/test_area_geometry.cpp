@@ -25,18 +25,12 @@ TEST_CASE("location membership prepares sorted relationships before either endpo
   CHECK(plan.previous.empty());CHECK(plan.next==std::vector<int32_t>{6});CHECK(previous.size()==5000);
 }
 
-TEST_CASE("unit assignment filtered copies preserve other identities within the handler budget") {
+TEST_CASE("filtered location membership copies preserve other identities") {
   const std::vector<int32_t> source{7,9,7,4,7};
   CHECK(area::withoutValue(source,int32_t(7),1)==std::vector<int32_t>{9,4});
   CHECK(area::withoutValue(source,int32_t(8))==source);
   CHECK(source==std::vector<int32_t>{7,9,7,4,7});
   CHECK(area::withoutValue(std::vector<int32_t>{7,7},int32_t(7)).empty());
-  const uint32_t scan=1+256+256+256; // base, references, cages, total cage entries
-  const auto prepared=area::assignmentPreparationSteps(256,4096,4096,256,256);
-  CHECK(prepared==297);
-  // Both snapshots, handler checks and a 65536-location lookup still fit. This
-  // catches accidental extra full-vector passes in the native preparation.
-  CHECK(10+282+154+19+scan+prepared<=1536);
 }
 
 TEST_CASE("area revision hashing keeps integer bits and a nonzero signed range") {
@@ -280,7 +274,7 @@ TEST_CASE("native assignment reference scan checks every reference and preserves
   CHECK(scan.error==area::AssignmentScanError::None);CHECK(scan.previous==nullptr);CHECK(scan.steps==0);
 }
 
-TEST_CASE("native cage scan prepares all memberships without requiring a containing cage") {
+TEST_CASE("native cage scan finds all memberships without requiring a containing cage") {
   struct Cage {std::vector<int32_t> assigned_units;};
   Cage first{{7,9,7}},second{{4,7,5}},unrelated{{2,3}};
   std::vector<Cage*> cages{&first,&unrelated,&second};
@@ -288,15 +282,11 @@ TEST_CASE("native cage scan prepares all memberships without requiring a contain
   auto scan=area::scanAssignedCages(cages,7,11);
   REQUIRE(scan.error==area::AssignmentScanError::None);CHECK(scan.steps==11);CHECK(scan.entries==8);
   CHECK(scan.affected==std::vector<Cage*>{&first,&second});
-  const auto plans=area::prepareCageAssignments(scan.affected,7);
-  REQUIRE(plans.size()==2);CHECK(plans[0].first==&first);CHECK(plans[0].second==std::vector<int32_t>{9});
-  CHECK(plans[1].first==&second);CHECK(plans[1].second==std::vector<int32_t>{4,5});
   CHECK(first.assigned_units==originalFirst);CHECK(second.assigned_units==originalSecond);
   // No cage-item holder is an input: a loose-caged unit's assignments in any
   // built cage are found, while the containing-item reference remains native.
   auto absent=area::scanAssignedCages(cages,99,11);
   CHECK(absent.error==area::AssignmentScanError::None);CHECK(absent.affected.empty());
-  CHECK(area::prepareCageAssignments(absent.affected,99).empty());
   auto low=area::scanAssignedCages(cages,7,10);CHECK(low.error==area::AssignmentScanError::Budget);CHECK(low.steps==10);
   CHECK(first.assigned_units==originalFirst);CHECK(second.assigned_units==originalSecond);
 }
@@ -307,8 +297,7 @@ TEST_CASE("native cage scan enforces aggregate cage and membership bounds before
   for(int i=0;i<256;++i){storage[i].assigned_units={7};cages.push_back(&storage[i]);}
   auto scan=area::scanAssignedCages(cages,7,512);
   REQUIRE(scan.error==area::AssignmentScanError::None);CHECK(scan.steps==512);CHECK(scan.entries==256);CHECK(scan.affected.size()==256);
-  auto plans=area::prepareCageAssignments(scan.affected,7);REQUIRE(plans.size()==256);
-  for(const auto& plan:plans){CHECK(plan.second.empty());CHECK(plan.first->assigned_units==std::vector<int32_t>{7});}
+  for(const auto* cage:scan.affected)CHECK(cage->assigned_units==std::vector<int32_t>{7});
   CHECK(area::scanAssignedCages(cages,7,511).error==area::AssignmentScanError::Budget);
   cages.push_back(&storage[256]);scan=area::scanAssignedCages(cages,7,1000);
   CHECK(scan.error==area::AssignmentScanError::Limit);CHECK(scan.steps==0);

@@ -738,6 +738,15 @@ and stale removal, and never reinterpret an item ID as a unit. Physical
 containment is not changed. Existing Pen assigned items can be cleared; new
 admission follows the producer's assigned-first/Pond-ANY_CRITTER rules.
 
+Obsolete cage-vector preparation and its old assignment budget estimator have
+been removed; neither had runtime callers after native assignment integration.
+The active reference/cage scans and their budget, bounds and non-mutation
+regressions remain. Core `build/qa/native-assignment-cleanup` and the rebuilt
+MSVC bridge pass. Protected rendered
+`build/areas-acceptance-20261026-152803` passes the animal workflow, including
+unit, PET and VERMIN assignment/clearing, with both save manifests unchanged
+and only the known separate-thread notice.
+
 Unit and item assignment use the synchronous native-write accounting path.
 Measured validation work and opaque native work are reported separately;
 native failures after entry retain uncertain effects, invalidate lists, and

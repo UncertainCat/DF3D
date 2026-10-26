@@ -1,0 +1,121 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "pe_timestamp": "0x6a70a6d9",
+  "image_size": "0x2711000",
+  "status": "static audit only; runtime replacement and live acceptance pending",
+  "ranges": [
+    {
+      "name": "set_owner",
+      "rva": "0x557a60",
+      "size": "0x430",
+      "fnv1a64": "3e0ce87555a6acb4",
+      "role": "semantic candidate"
+    },
+    {
+      "name": "unit_lookup",
+      "rva": "0x14dc10",
+      "size": "0x6a",
+      "fnv1a64": "4236d6a46ef2b909",
+      "role": "semantic lookup"
+    },
+    {
+      "name": "ownable_zone",
+      "rva": "0x28b6d0",
+      "size": "0x25",
+      "fnv1a64": "548f955775d99314",
+      "role": "virtual leaf"
+    },
+    {
+      "name": "unique_tomb",
+      "rva": "0x28b700",
+      "size": "0xb",
+      "fnv1a64": "0212e826f13a713b",
+      "role": "virtual leaf"
+    },
+    {
+      "name": "spouse_shared",
+      "rva": "0x28b6c0",
+      "size": "0xb",
+      "fnv1a64": "05a3e126f1ce8880",
+      "role": "virtual leaf"
+    },
+    {
+      "name": "zone_subtype",
+      "rva": "0x28b680",
+      "size": "0x8",
+      "fnv1a64": "4072f6cfbb0db12e",
+      "role": "virtual leaf"
+    },
+    {
+      "name": "pointer_vector_insert",
+      "rva": "0xbad30",
+      "size": "0x118",
+      "fnv1a64": "ea445ea01cfc50c1",
+      "role": "native allocation helper"
+    },
+    {
+      "name": "pointer_vector_replace",
+      "rva": "0x717a0",
+      "size": "0x88",
+      "fnv1a64": "1f072fdf02087d16",
+      "role": "native allocation helper"
+    },
+    {
+      "name": "allocate",
+      "rva": "0x707d0",
+      "size": "0x59",
+      "fnv1a64": "eaa671999c0fd514",
+      "role": "native allocation helper"
+    },
+    {
+      "name": "picker_assign",
+      "rva": "0x3cff10",
+      "size": "0x45",
+      "fnv1a64": "2288389197f32e24",
+      "role": "reference only: native UI"
+    },
+    {
+      "name": "picker_clear",
+      "rva": "0x3cff90",
+      "size": "0x34",
+      "fnv1a64": "95a6565ce0c2c8a5",
+      "role": "reference only: native UI"
+    }
+  ],
+  "signature": "void(building_civzonest*, unit*); null unit clears ownership",
+  "ownership": {
+    "inputs": [
+      "supplied zone",
+      "supplied unit or null",
+      "world.units.all and unit spouse/owned_buildings fields"
+    ],
+    "scratch": "No native menu or map search scratch referenced in the audited semantic body.",
+    "allocation": "Native vector insertion may allocate after ownership mutation. Enter with unknown-outcome handling; do not retry or roll back automatically.",
+    "ui_callers": "Assign and clear call 0x557a60 directly, then close the picker and request redraw. They do not call notifyCivzoneModified."
+  },
+  "effects": [
+    "Ownability virtual accepts types 80,87,92,93,97; other types return without mutation.",
+    "Old owner lookup validates the cached unit index, then searches world.units.all.",
+    "Removes the first matching old-owner owned_buildings entry and, only for spouse-shared zone types, the first matching spouse entry.",
+    "Assigns the new owner ID and invalidates the cached index; clear writes both fields to -1.",
+    "For Tomb only, recursively clears the first existing owned building with the same subtype before appending the new tomb.",
+    "For Tomb, sets no_pets and no_citizens on both assignment and clearing.",
+    "Appends the zone to the new owner and eligible spouse only when absent; Tomb is never spouse-shared.",
+    "There is no same-owner early return."
+  ],
+  "reconstructed_helper_differences": [
+    "DFHack Buildings::setOwner returns early on unchanged owner.",
+    "DFHack omits the prior-tomb transfer and tomb restriction updates.",
+    "DFHack removes old spouse membership without checking canUseSpouseRoom.",
+    "DFHack pushes new-owner membership without checking duplicates.",
+    "DF3D follows owner updates with reconstructed notifyCivzoneModified despite no such native picker call."
+  ],
+  "acceptance_required": [
+    "Actual native picker assignment, transfer and clear captures for spouse-shared rooms and tombs.",
+    "Controlled native effects compared with the bridge, including same-owner assignment, prior tomb, spouse membership and flags.",
+    "Search-array preservation and protected save manifests.",
+    "Candidate eligibility/order audit: current bridge universally requires active living citizens; native Tomb handling must be established independently.",
+    "Creation initializer semantics: do not blindly clear a new tomb owner and thereby replace native defaults.",
+    "Full Zones/Locations rendered and lifecycle acceptance remains outstanding."
+  ]
+}

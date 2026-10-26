@@ -1,3 +1,23 @@
+## Native zone owner assignment audit
+
+`fixtures/areas/native_zone_assignment.json` retains the supported executable's
+semantic owner entry point, virtual leaves, allocation helpers and picker call
+sites. This compatibility evidence is maintained to guide the replacement of
+DFHack's reconstructed owner helper; it is not live acceptance.
+
+Native0x557a60 takes a zone and optional unit, reads semantic ownership records,
+and updates owner/spouse membership. Tomb assignment additionally clears the
+first prior owned tomb and sets both tomb admission restriction bits. Clearing
+also sets those bits. The native picker calls this routine directly without
+rebuilding zone membership. These effects differ from Buildings::setOwner.
+
+The current runtime still uses that DFHack helper. Native picker captures,
+candidate eligibility/order, protected effect comparisons and full assignment
+UI acceptance remain required before replacement. In particular, creation must
+not unconditionally clear an unspecified owner: native clear changes tomb
+defaults. Native allocation can fail after mutation, requiring unknown-outcome
+handling without automatic retry or rollback.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

@@ -46,9 +46,8 @@ MSVC builds and `build/qa/zone-owner-native-final` core19/19 plus adapter pass.
 Adapter coverage also checks unknown assignment outcomes preserve the newly
 created zone and owner-only input never invokes the notification helper.
 
-Candidate eligibility/order and full assignment UI acceptance remain required,
-including native deceased/non-citizen Tomb choices and existing-room grouping.
-Zones/Locations remains staged; this verifies the mutation route only.
+Candidate ordering, existing-room grouping and full assignment UI acceptance
+remain required. Zones/Locations remains staged.
 
 
 The independent owner-candidate predicate0x3a6610 is exposed through
@@ -71,9 +70,27 @@ query rows and full row order are recorded but query/order parity is not claimed
 The raw native entry_list contains339 unfiltered source units, so it cannot
 establish candidate parity. The oracle traverses active name widgets, including
 rows outside the viewport; presentation visibility alone clips to16 rows.
-This native widget observation is test-only. Product lists still use the old
-filter until their native predicate/grouping/order integration is complete.
+This native widget observation is test-only. Modern zone owner lists enumerate
+world.units.all and call the verified predicate with request-local callbacks.
+Builders retain semantic IDs/type only, reject owner/type changes during scanning,
+and refresh delivered first pages on reopening even while paused. Continuation
+pages retain their revision snapshot. Existing-zone assignments revalidate with
+the same predicate immediately before mutation. The unscoped legacy chooser and
+creation-time explicit owner validation still use their old citizen checks;
+those routes need separate integration before full assignment UI acceptance.
 MSVC and `build/qa/zone-owner-candidate-predicate` core19/19 plus adapter pass.
+
+Protected semantic `build/areas-acceptance-20261025-233316` passes155 observations
+with clean diagnostics. Both Tomb lists contain the same172 eligible units as
+the verified predicate; the occupied Bedroom contains139 with owner/spouse
+excluded. Tomb assignment to unit996, outside the old active-living-citizen
+filter, succeeds and preserves the native restriction flags. Existing transfer,
+spouse membership and removal checks still pass. Owned DF129408 closes unsaved;
+both save manifests remain unchanged. MSVC and
+`build/qa/owner-picker-integration-final` core19/19 plus adapter pass. Adapter
+coverage includes native admission of an inactive deceased non-citizen, native
+exclusion of an apparent citizen, and paused picker refresh. This establishes
+eligibility and assignment integration, not native order, query or rendered UI.
 
 ## Native zone repaint effects
 

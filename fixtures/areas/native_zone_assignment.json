@@ -374,7 +374,7 @@
     "unknown_outcome": "Marked before native entry. No automatic replay or rollback."
   },
   "candidate_predicate": {
-    "status": "native predicate verified through diagnostic; product list integration and ordering pending",
+    "status": "native predicate integrated into scoped owner lists and existing-zone assignment validation; ordering and full UI pending",
     "entry": "0x3a6610",
     "inputs": "Owned 24-byte context: type, spouse-sharing flag, current owner pointer, zone pointer; owned 16-byte unit/non-item entry. No native widget or picker object is supplied.",
     "globals": [
@@ -461,6 +461,22 @@
       }
     ],
     "oracle": "Actual native widget_unit_name rows, including active rows outside the scroll viewport. Raw entry_list is an unfiltered 339-unit source and is not a parity oracle. Widget traversal exists only in the protected native capture script.",
-    "scope": "Unqueried Tomb/Bedroom sets, owner/spouse exclusions and economy-active Bedroom branch. Query captures retain native filtered rows but do not claim query parity. Exact native row order is recorded for future integration; diagnostic returns source order."
+    "scope": "Unqueried Tomb/Bedroom sets, owner/spouse exclusions and economy-active Bedroom branch. Query captures retain native filtered rows but do not claim query parity. Exact native row order is recorded for future integration; diagnostic returns source order.",
+    "integration": {
+      "evidence": "build/areas-acceptance-20261025-233316",
+      "owned_df_pid": 129408,
+      "closed_unsaved": true,
+      "save_manifests_unchanged": 2,
+      "observations": 155,
+      "candidate_counts": [
+        172,
+        172,
+        139
+      ],
+      "assignment_outside_legacy_filter": 996,
+      "bridge_sha256": "cf5c3738202a8c61f91b5541918b0045585486d26a9d20fb8baf476d2a2332d3",
+      "result_sha256": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "scope": "Eligibility sets and existing-zone assignment only; ordering, query, rendered UI, legacy unscoped chooser and creation-time validation remain open."
+    }
   }
 }

@@ -157,10 +157,12 @@ def main():
      p.name='Linked fixture'
      return {ok=true,steps=31,work_unknown=budget==nil}
     end
+    function owner_eligible(b,u) return u.citizen==true end
     local old_request=request
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
+     r.owner_eligible=owner_eligible
      r.link_areas=workshop_link
      r.settings_layout=settings_layout
      r.settings_preset=settings_preset
@@ -284,7 +286,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -620,6 +622,7 @@ def main():
     dfhack.translation={translateName=function(n)return n end}
     for _,u in ipairs(df.global.world.units.active)do u.sex=1;u.flags1={caged=false};u.profession='Worker';u.stress=u.id%7 end
     """)
+    lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -637,6 +640,23 @@ def main():
     assert len(searched["candidates"]) == 1 and searched["candidates"][1]["id"] == 260
     category = call(14, dict(selector, sort=2))
     assert category["candidates"][1]["mood"] == 1
+    # Native eligibility is authoritative even for units absent from active.
+    lua.execute("""
+    local units=df.global.world.units.all
+    units[1].native_eligible=false
+    table.insert(units,{id=9000,label='Native-only candidate',active=false,dead=true,citizen=false,
+      sex=1,profession='Worker',stress=0,flags1={caged=false}})
+    df.global.world.units.active={}
+    """)
+    native_only = call(14, dict(selector, query="Native-only"))
+    assert native_only["ok"] and native_only["candidates"][1]["id"] == 9000
+    excluded = call(14, dict(selector, query="260"))
+    assert excluded["ok"] and len(excluded["candidates"]) == 0
+    lua.execute("""
+    table.remove(df.global.world.units.all)
+    df.global.world.units.all[1].native_eligible=nil
+    df.global.world.units.active=df.global.world.units.all
+    """)
     lua.execute("df.global.cur_year_tick=4400")
     assert raw_call(14, dict(selector, expected_list_revision=owners["list_revision"]))["ok"]
     lua.execute("df.global.cur_year_tick=4401")
@@ -687,6 +707,7 @@ def main():
     for id=1,4097 do df.global.world.units.active[id]={id=id,label='Citizen',citizen=true,active=true,
      sex=1,flags1={caged=false},profession='Worker',stress=0} end
     """)
+    lua.execute("df.global.world.units.all=df.global.world.units.active")
     over_cap = call(14, selector)
     assert not over_cap["ok"] and over_cap["message"] == "Candidate list exceeds 4,096 entries"
     lua.execute("table.remove(df.global.world.units.active)")
@@ -926,10 +947,13 @@ def main():
     assert owned["ok"] and owned["steps"] == 17 and owned["work_unknown"] and owned["areas"][1]["owner_id"] == 22
     assert not owned["areas"][1]["active"] and lua.eval("owner_calls") == 1
     assert not call(11, owner_request)["ok"]
+    # Selection-time validation uses the same native predicate, not citizen flags.
+    lua.execute("df.unit.find(20).citizen=false;df.unit.find(20).active=false;df.unit.find(20).dead=true")
     # Large owner/spouse vectors do not cause timing-only refusals.
     lua.execute("local v=df.unit.find(23).owned_buildings;for i=1,200000 do v[i]=zone end")
     large_owner = call(11, {"kind": 1, "id": 6, "owner_id": 20, "active": 0, "expected_revision": zone_revision()})
     assert large_owner["ok"] and large_owner["work_unknown"]
+    lua.execute("df.unit.find(20).citizen=true;df.unit.find(20).active=true;df.unit.find(20).dead=false")
     assert lua.eval("owner_calls") == 2 and not lua.eval("zone.spec_sub_flag.active")
     # Owner-only input follows the native picker and never rebuilds membership.
     notifications_before = lua.eval("notification_calls")

@@ -444,6 +444,14 @@ func zone_owner_effects() -> void:
 		ids.append(int(made.areas[0].id))
 	await native("zone_owner_result",{"id":ids[0],"owner":-1,"settings":1,"count_a":0,"count_b":0})
 	await native("zone_owner_result",{"id":ids[2],"owner":int(owners.owner_a),"count_a":1,"count_b":1})
+	var tomb_extra_owner: int=-1
+	for id in ids:
+		var candidates:=await pages({"action":14,"operation":14,"kind":1,"id":id,"candidate_kind":1},"candidates")
+		if stopped:return
+		var candidate_ids: Array=[]
+		for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
+		var compared:=await native("zone_owner_candidates",{"id":id,"ids":candidate_ids})
+		if id==ids[0]:tomb_extra_owner=int(compared.nonliving_or_noncitizen)
 	# Native reference: assign, replace, transfer to second tomb, clear bedroom.
 	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
 		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0]]:
@@ -456,6 +464,12 @@ func zone_owner_effects() -> void:
 		await native("zone_owner_result",expected)
 		await native("overlap_measure",{"require_unchanged":true})
 	await native("zone_owner_result",{"id":ids[0],"owner":-1,"settings":3,"count_a":0,"count_b":0})
+	if not check(tomb_extra_owner>=0,"native Tomb candidate outside living citizens required"):return
+	var tomb_current:=await inspect(ids[0],1)
+	if stopped:return
+	await request({"action":11,"kind":1,"id":ids[0],"owner_id":tomb_extra_owner,"expected_revision":tomb_current.revision})
+	if stopped:return
+	await native("zone_owner_result",{"id":ids[0],"owner":tomb_extra_owner,"settings":3,"count_a":0,"count_b":0})
 	for id in ids:
 		var current:=await inspect(id,1)
 		if stopped:return

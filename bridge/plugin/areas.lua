@@ -212,6 +212,7 @@ local function source(job)
  end
  if job.legacy and job.kind==0 then return df.global.world.buildings.other.STOCKPILE end
  if job.candidate_kind==3 then return df.global.world.squads.all end
+ if job.native_owner then return df.global.world.units.all end
  return df.global.world.units.active
 end
 local function element(vector,index)
@@ -516,7 +517,7 @@ local function location_row(v,site_id)
  return {id=v.id,site_id=site_id,name=dfhack.df2utf(dfhack.translation.translateName(v.name,true)),location_kind=k,religion=religion,
   guild_profession=k==4 and v.contents.profession or -1,location_tier=k==4 and v.contents.location_tier or -1}
 end
-local function candidate_row(job,v)
+local function candidate_row(job,v,r)
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
  if job.candidate_kind==3 then
@@ -525,10 +526,21 @@ local function candidate_row(job,v)
   return {id=v.id,name=dfhack.df2utf(label),profession='',sex=-1,mood=0,grazer=false,
    assigned=job.assigned[v.id]~=nil,squad_use=job.assigned[v.id] or 0}
  end
- if not U.isActive(v) or U.isDead(v) then return nil end
- if job.candidate_kind==1 then
-  if not U.isCitizen(v) then return nil end
- elseif U.isCitizen(v) or not (U.isTame(v) or v.flags1.caged) then return nil end
+ if job.native_owner then
+  local b=df.building.find(job.area_id)
+  if not b or kind(b)~=1 or b.type~=job.zone_type or b.assigned_unit_id~=job.owner_id then
+   job.error='List changed; refresh';return nil
+  end
+  local eligible
+  if type(r.owner_eligible)=='function' then eligible=r.owner_eligible(b,v) end
+  if eligible==nil then job.error='Native area helper unavailable';return nil end
+  if not eligible then return nil end
+ else
+  if not U.isActive(v) or U.isDead(v) then return nil end
+  if job.candidate_kind==1 then
+   if not U.isCitizen(v) then return nil end
+  elseif U.isCitizen(v) or not (U.isTame(v) or v.flags1.caged) then return nil end
+ end
  local label=job.candidate_kind==1 and not job.legacy and unit_name(v) or dfhack.df2utf(U.getReadableName(v))
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
  return {id=v.id,name=label,profession=dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,
@@ -570,7 +582,7 @@ local function start_filter(job)
  job.hash=hash_integer(job.hash,job.candidate_kind)
  if job.locations then job.hash=hash_integer(job.hash,job.site_id) end
 end
-local function step_list(job)
+local function step_list(job,r)
  if job.phase==1 then
   if job.links then
    local b=df.building.find(job.area_id)
@@ -605,7 +617,7 @@ local function step_list(job)
    end
    local x,y=job.pile_x+job.cell%job.pile_w,job.pile_y+job.cell//job.pile_w
    job.cell=job.cell+1
-   if occupies(b,x,y) and visible{x=x,y=y,z=b.z} then append_candidate(job,candidate_row(job,b));job.pile_id=nil
+   if occupies(b,x,y) and visible{x=x,y=y,z=b.z} then append_candidate(job,candidate_row(job,b,r));job.pile_id=nil
    elseif job.cell==job.pile_w*job.pile_h then job.pile_id=nil end
    return
   end
@@ -620,7 +632,7 @@ local function step_list(job)
     job.error='This area exceeds the bounded extent inspector (256 per side, 32768 tiles)';return
    end
    job.pile_z=value.z;job.pile_id=value.id;job.pile_x=value.x1;job.pile_y=value.y1;job.pile_w=w;job.pile_h=h;job.cell=0
-  else append_candidate(job,candidate_row(job,value)) end
+  else append_candidate(job,candidate_row(job,value,r)) end
  elseif job.phase==2 then
   local n=#job.rows
   if job.width>=n then start_filter(job);return end
@@ -669,7 +681,7 @@ local function advance_lists(r)
    if steps==r.step then break end
    local job=area_lists[entry.key]
    if job and not job.complete and not job.error then
-    local ok=pcall(step_list,job);steps=steps+1
+    local ok=pcall(step_list,job,r);steps=steps+1
     if not ok then job.error='Area list source changed; refresh' end
    end
   end
@@ -771,8 +783,8 @@ local function candidate_page(r,a,b,area_revision,available)
  local job=area_lists[key];local expected=default(a,'expected_list_revision',0)
  -- Reopening a chooser must observe current metadata even while DF is paused.
  -- Keep the completed snapshot for continuation pages; only a new first-page
- -- interaction retires an already delivered location snapshot.
- if locations and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
+ -- interaction retires an already delivered owner/location snapshot.
+ if (locations or (not legacy and candidate_kind==1)) and job and job.complete and job.delivered and expected==0 and default(a,'cursor',0)==0 then area_lists[key]=nil;job=nil end
  if job and job.complete and (tick()<job.built_tick or tick()-job.built_tick>candidate_max_age) then area_lists[key]=nil;job=nil end
  if not job then
   if expected~=0 then return fail('List changed; refresh'),0 end
@@ -788,6 +800,8 @@ local function candidate_page(r,a,b,area_revision,available)
   end
   if b and not links and not locations then
    job.owner_id=b.assigned_unit_id
+   job.native_owner=not legacy and candidate_kind==1
+   job.zone_type=b.type
    if candidate_kind==2 then job.assign_total=#b.assigned_units
    elseif candidate_kind==3 then job.assign_total=#b.squad_room_info end
   end
@@ -833,7 +847,7 @@ local function candidate_page(r,a,b,area_revision,available)
   end
  end
  out[locations and 'locations' or links and 'links' or legacy and 'choices' or 'candidates']=rows;out.truncated=out.next_cursor~=0
- if locations then job.delivered=true end
+ if locations or job.native_owner then job.delivered=true end
  return out,used
 end
 
@@ -1294,8 +1308,12 @@ local function native_operation(r)
    if not owned(b) then return reject('This zone type has no single owner') end
    steps=steps+1
    new_owner=owner>=0 and df.unit.find(owner) or nil
-   if owner>=0 and (not new_owner or not U.isCitizen(new_owner) or not U.isActive(new_owner) or U.isDead(new_owner)) then
-    return reject('Owner must be an active living citizen of this fortress')
+   if owner>=0 then
+    if not new_owner then return reject('Native owner assignment failed') end
+    if type(r.owner_eligible)~='function' then return reject('Native area helper unavailable') end
+    local worked,eligible=pcall(r.owner_eligible,b,new_owner)
+    if not worked or eligible==nil then return reject('Native area helper unavailable') end
+    if not eligible then return reject('Native owner assignment failed') end
    end
 
   end

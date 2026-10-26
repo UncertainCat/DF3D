@@ -1308,6 +1308,16 @@ int areaCreate(lua_State* L) {
   lua_newtable(L);field(L,"ok",reason==nullptr);field(L,"message",reason?reason:"");
   field(L,"steps",steps);field(L,"work_unknown",unknownWork);field(L,"building_id",createdId);field(L,"paint_noop",noOp);return 1;
 }
+int areaOwnerEligible(lua_State* L) {
+  auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
+  auto* unit=Lua::GetDFObject<df::unit>(L,2);
+  std::optional<bool> eligible;
+  if(zone && unit) {
+    try {eligible=df3d_area::nativeZoneOwnerEligible(*zone,*unit);} catch(...) {}
+  }
+  if(eligible.has_value())lua_pushboolean(L,*eligible);else lua_pushnil(L);
+  return 1;
+}
 int areaSetOwner(lua_State* L) {
   bool attempted=false;
   const auto result=[&](bool ok,const char* reason) {
@@ -2173,6 +2183,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSquadUse);lua_setfield(L,-2,"squad_use");
     lua_pushcfunction(L,areaAssignUnit);lua_setfield(L,-2,"assign_unit");
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
+    lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
   }
   if(citizenAction(action)) {
     field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());
@@ -2761,6 +2772,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     if(helper==LUA_NOREF){builderActive &= ~entry.domainMask;return 0;}
     lua_rawgeti(L,LUA_REGISTRYINDEX,helper);lua_newtable(L);
     field(L,"step",share);field(L,"builder_kind",kind);field(L,"epoch",epoch);
+    if(kind==7){lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");}
     if(kind==4){field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());citizenHelperGeneration=helpers.generation();}
     uint32_t used=0;
     if(Lua::SafeCall(out,L,1,1) && lua_istable(L,-1)) {

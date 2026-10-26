@@ -209,6 +209,18 @@ elseif request.op=='zone_owner_prepare' then
  _G.df3d_zone_owner_fixture={a=units[1],b=units[2],spouse_a=units[1].relationship_ids.Spouse,spouse_b=units[2].relationship_ids.Spouse}
  units[1].relationship_ids.Spouse=units[2].id;units[2].relationship_ids.Spouse=units[1].id
  result.owner_a=units[1].id;result.owner_b=units[2].id
+elseif request.op=='zone_owner_candidates' then
+ local text,code=dfhack.run_command_silent('df3d','zone-owner-candidates-read',tostring(request.id));assert(code==0,text)
+ local expected=json.decode(text);local actual={}
+ for _,id in ipairs(request.ids)do assert(not actual[id],'duplicate owner candidate');actual[id]=true end
+ assert(#expected==#request.ids,'owner candidate count differs')
+ for _,id in ipairs(expected)do assert(actual[id],'native owner candidate missing')end
+ result.count=#expected
+ result.nonliving_or_noncitizen=-1
+ for _,id in ipairs(expected)do
+  local u=assert(df.unit.find(id))
+  if not dfhack.units.isCitizen(u) or not dfhack.units.isActive(u) or dfhack.units.isDead(u) then result.nonliving_or_noncitizen=id;break end
+ end
 elseif request.op=='zone_owner_result' then
  local saved=assert(_G.df3d_zone_owner_fixture)
  local b=building();assert(b.assigned_unit_id==request.owner,'native owner differs')

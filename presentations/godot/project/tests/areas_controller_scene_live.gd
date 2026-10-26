@@ -75,10 +75,11 @@ func pointer_areas() -> void:
 	world.set_top_z(origin.z)
 	scene.camera_rig.focus_on(Vector3(origin.x+0.5,origin.z+1.0,origin.y+0.5),30)
 	var stockpiles_only := FileAccess.file_exists(directory+"/stockpiles-only.json")
+	var zone_owner_only := FileAccess.file_exists(directory+"/zone-owner-only.json")
 	var zone_rename_only := FileAccess.file_exists(directory+"/zone-rename-only.json")
 	var zone_gather_only := FileAccess.file_exists(directory+"/zone-gather-only.json")
 	var zone_overlap_only := FileAccess.file_exists(directory+"/zone-overlap-only.json")
-	var destinations := ["Zones"] if zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
+	var destinations := ["Zones"] if zone_owner_only or zone_rename_only or zone_gather_only or zone_overlap_only else (["Stockpiles"] if stockpiles_only else ["Stockpiles","Zones"])
 	for destination in destinations:
 		step = "viewport "+destination
 		var launcher: Button = scene._fortress_hud.navigation[destination]
@@ -123,6 +124,12 @@ func pointer_areas() -> void:
 				if stopped: return
 				await click_control(editor.zone_menu.controls.remove)
 				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove gathering zone"): return
+				await native("removed",{"id":id}); await native("final"); return
+			if zone_owner_only:
+				await pointer_owner(id,origin)
+				if stopped: return
+				await click_control(editor.zone_menu.controls.remove)
+				if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove owner test zone"): return
 				await native("removed",{"id":id}); await native("final"); return
 			await pointer_stockpile_name(origin)
 			if stopped: return
@@ -1247,6 +1254,30 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	step = "pointer owner selector"
 	await click_control(editor.zone_menu.controls.owner)
 	if not await wait_ui(func(): return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"owner rows"): return
+	await click_control(editor.candidates_view.owner_search)
+	for sample in [233,-1,-1,77,73,78,69,82]:
+		var key := InputEventKey.new(); key.pressed = true
+		if sample < 0: key.keycode = KEY_BACKSPACE
+		else: key.unicode = sample
+		root.push_input(key,true)
+		if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"owner byte filter"): return
+		var ids: Array=[]
+		for row in editor.candidates_state.rows: ids.append(int(row.id))
+		# These samples are small except the empty query, which must page fully.
+		while editor.candidates_state.cursor != 0:
+			editor.candidates_state.more()
+			if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"owner filtered continuation"): return
+		ids=[]
+		for row in editor.candidates_state.rows: ids.append(int(row.id))
+		await native("zone_owner_candidates",{"id":id,"ids":ids,"query_bytes":Array(editor.candidates_state.query_bytes)})
+		if stopped: return
+	await capture("zone_owner_byte_filter")
+	var enter := InputEventKey.new(); enter.pressed=true; enter.keycode=KEY_ENTER;root.push_input(enter,true)
+	if not check(not editor.candidates_view.owner_search.has_focus() and editor.stockpile_page=="owner","focused Enter assigned owner"):return
+	await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
+	# Cancel and reopen restores the unfiltered candidate snapshot.
+	editor.handle_back(); await click_control(editor.zone_menu.controls.owner)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"reopened owner rows"):return
 	await verify_candidate_rows(id,1)
 	if stopped: return
 	if not await wait_ui(func():

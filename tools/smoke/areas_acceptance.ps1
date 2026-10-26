@@ -1,6 +1,6 @@
 # Protected, owned, never-saved acceptance. SaveId names a NEW disposable copy
 # of region5; existing saves are refused. The copy is retained for inspection.
-param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
+param([Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()][string]$SaveId,[switch]$Controller,[switch]$ControllerScene,[switch]$ControllerRestart,[switch]$BoundaryOnly,[switch]$ZoneRenameOnly,[switch]$ZoneGatherOnly,[switch]$ZoneOverlapOnly,[switch]$ZoneDefaultsOnly,[switch]$ZoneOwnerOnly,[switch]$StockpilesOnly,[switch]$StockpilePaintOnly,[switch]$StockpileFitOnly,[switch]$StockpileResizeOnly,[switch]$MultiOnly,[switch]$PaintCountsOnly,[switch]$LocationScene,[switch]$StaffOnly,[switch]$StaffScene,[string]$DfPath=$(if($env:DF3D_DF_PATH){$env:DF3D_DF_PATH}else{'C:/Program Files (x86)/Steam/steamapps/common/Dwarf Fortress'}))
 $ErrorActionPreference='Stop'
 $repo=(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent).Replace('\','/')
 Import-Module "$PSScriptRoot/Df3dLane.psm1" -Force
@@ -32,6 +32,10 @@ function Invoke-LuaFile([string]$Name,[string]$Arguments) {
  return $r
 }
 try {
+ if($ZoneOwnerOnly) {
+  if(-not $ControllerScene -or $Controller -or $ControllerRestart -or $BoundaryOnly -or $ZoneRenameOnly -or $ZoneGatherOnly -or $ZoneOverlapOnly -or $ZoneDefaultsOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'ZoneOwnerOnly requires ControllerScene without other scopes'}
+  Write-Lf "$out/zone-owner-only.json" '{"scope":"zone owner filter and assignment through main-scene viewport input"}'
+ }
  if($ZoneOverlapOnly) {
   if(-not $ControllerScene -or $Controller -or $ControllerRestart -or $ZoneDefaultsOnly -or $ZoneGatherOnly -or $ZoneRenameOnly -or $BoundaryOnly -or $StockpilesOnly -or $StockpilePaintOnly -or $StockpileFitOnly -or $StockpileResizeOnly -or $MultiOnly -or $PaintCountsOnly -or $LocationScene -or $StaffOnly -or $StaffScene){throw 'ZoneOverlapOnly requires ControllerScene without other scopes'}
   Write-Lf "$out/zone-overlap-only.json" '{"scope":"native zone overlap heading, selection and stale revision through main scene"}'

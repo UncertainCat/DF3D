@@ -3664,7 +3664,38 @@
       }
     ],
     "gpu_check": "build/qa/owner-text-focus",
-    "scope": "Enter-to-unfocus integrated. Full byte editing, header/blank focus, unfocused activation and Escape lifecycle remain unfinished. Direct viewscreen feed bypasses native outer textbox handling."
+    "scope": "Byte editing and focused Enter integrated; header and blank-area focus tested. Unfocused activation, Ctrl+F and Escape lifecycle remain unfinished.",
+    "rendered_editor": {
+      "native_run": "build/stockpile-storage-native-zone-owner-20261026-042540",
+      "owned_df_pid": 130820,
+      "native_origin": [
+        408,
+        724
+      ],
+      "view_relative_origin": [
+        16,
+        12
+      ],
+      "height": 12,
+      "samples": [
+        {
+          "name": "nonascii",
+          "width": 16,
+          "different_pixels": 0,
+          "sha256": "0dd158fb2edf9db6aa2416cd89901c7afed292292d73fbdc9ce6339c23b2aea9"
+        },
+        {
+          "name": "partial",
+          "width": 8,
+          "different_pixels": 0,
+          "sha256": "abfc0ec8e09dc44c0c2187b37fec1939460231e01db7f1427246d7ff8fecdda9"
+        }
+      ],
+      "live_run": "build/areas-acceptance-20261026-043030",
+      "live_df_pid": 85284,
+      "save_preservation": "Both manifests unchanged; owned DF closed unsaved",
+      "scope": "33-byte editing, partial UTF-8, focus and exact glyphs; control-F, unfocused Enter and Escape remain open."
+    }
   },
   "owner_raw_query_integration": {
     "run": "build/areas-acceptance-20261026-041837",

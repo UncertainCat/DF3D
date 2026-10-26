@@ -392,6 +392,12 @@ func verify_candidate_rows(id: int, kind: int) -> void:
 	while not stopped and editor.candidates_state.cursor != 0:
 		editor.candidates_state.more()
 		if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"complete candidates"): return
+	if kind == 1:
+		var ids: Array=[]
+		for row in editor.candidates_state.rows:ids.append(int(row.id))
+		var request := {"id":id,"ids":ids,"sort":editor.candidates_state.sort,"descending":editor.candidates_state.descending,"query":editor.candidates_state.query}
+		if editor.candidates_state.query_bytes is PackedByteArray:request.query_bytes=Array(editor.candidates_state.query_bytes)
+		await native("zone_owner_candidates",request);return
 	await native("candidates",{"id":id,"kind":kind,"sort":editor.candidates_state.sort,
 		"descending":editor.candidates_state.descending,"query":editor.candidates_state.query,
 		"rows":editor.candidates_state.rows})

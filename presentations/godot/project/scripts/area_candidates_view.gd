@@ -5,6 +5,7 @@ var state
 var world
 var body: Control
 var search: LineEdit
+var owner_search
 var scroll: ScrollContainer
 var rows_box: VBoxContainer
 var headers: Array[Button] = []
@@ -68,6 +69,10 @@ func configure(source, model) -> void:
 	for side in [SIDE_TOP,SIDE_BOTTOM]: inset.set_texture_margin(side,12); inset.set_content_margin(side,0)
 	inset.set_content_margin(SIDE_LEFT,8); inset.set_content_margin(SIDE_RIGHT,40)
 	for key in ["normal","focus"]: search.add_theme_stylebox_override(key,inset)
+	owner_search = preload("res://scripts/area_owner_filter.gd").new()
+	owner_search.position = search.position; owner_search.size = search.size; owner_search.theme = art.theme
+	body.add_child(owner_search); owner_search.configure(inset,native_colors)
+	owner_search.edited.connect(state.queue_owner_search)
 	state.changed.connect(refresh); refresh()
 
 func row_style(selected: bool = false) -> StyleBoxTexture:
@@ -98,11 +103,15 @@ func refresh() -> void:
 	scroll.size = Vector2(body.custom_minimum_size.x,360 if state.kind == 3 else 600)
 	squad_prompt.visible = state.kind == 3
 	squad_prompt.text = "Select the squads to train here." if state.squad_mask == 2 else "Select how squads will use this space."
-	search.visible = state.kind != 3
+	search.visible = state.kind == 2
+	owner_search.visible = state.kind == 1
+	owner_search.set_bytes(state.query_bytes if state.query_bytes is PackedByteArray else state.query.to_utf8_buffer())
 	remove.visible = state.can_remove_owner()
 	if search.text != state.query: search.text = state.query
 	search.editable = not state.failed and not state.mutating and not state.area.is_empty()
+	owner_search.editable = search.editable
 	for index in headers.size():
+		headers[index].focus_mode = Control.FOCUS_NONE if state.kind == 1 else Control.FOCUS_ALL
 		headers[index].visible = state.kind != 3 and (index < 3 or state.kind == 1)
 		headers[index].disabled = not search.editable
 		var active := "ACTIVE" if state.sort == index+1 else "INACTIVE"
@@ -199,14 +208,19 @@ func refresh() -> void:
 
 # Local selection follows the native STANDARDSCROLL bindings. Receipt changes
 # reset it; continuation pages retain the same receipt and selection.
+func owner_pointer(event: InputEvent) -> void:
+	if not is_visible_in_tree() or state.kind != 1 or not owner_search.has_focus(): return
+	if not event is InputEventMouseButton or not event.pressed or event.button_index != MOUSE_BUTTON_LEFT: return
+	if owner_search.get_global_rect().has_point(event.position): return
+	for header in headers:
+		if header.visible and header.get_global_rect().has_point(event.position): return
+	owner_search.release_focus()
+
 func feed_owner_key(event: InputEvent) -> bool:
 	if not is_visible_in_tree() or state.kind != 1 or not event is InputEventKey or not event.pressed: return false
+	if owner_search.has_focus():
+		owner_search.feed_key(event); return true
 	if event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
-	if search.has_focus():
-		if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
-			if not event.echo: search.release_focus()
-			return true
-		return false
 	var delta := 0
 	match event.keycode:
 		KEY_UP,KEY_8,KEY_KP_8: delta = -1

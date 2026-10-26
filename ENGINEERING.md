@@ -397,8 +397,8 @@ controller, updates selection artwork and scrolls in36-pixel rows with a16-row
 page. New receipts reset selection; continuation pages retain it. Pending
 requests suppress navigation. `build/qa/owner-keyboard-final` passes root19/19
 and actual viewport key routing, selected-frame pixels, paging and pending-write
-checks, with only the three documented Godot notices. Enter, textbox editing,
-full scrollbar/end-of-list geometry and focus behavior remain unfinished.
+checks, with only the three documented Godot notices. Unfocused Enter and full
+scrollbar/end-of-list geometry remain unfinished.
 Owner textbox window-input capture040328 verifies focused Down retains cursor0,
 Enter releases focus without assignment, a blank interior click unfocuses and a
 header click retains focus. Forty ASCII bytes stop at33; Backspace leaves32.
@@ -408,12 +408,29 @@ assertions pass; owned DF111748 closes unsaved with its source manifest unchange
 Direct viewscreen SELECT bypasses the outer text handler and is unsuitable for
 this focus test. The protected runner now delivers real window key/text messages.
 
-DF3D consumes Enter from a focused owner filter and releases focus without a
-command; repeated key events do not submit. `build/qa/owner-text-focus` passes
-root19/19 and main-controller GPU focus/navigation checks with known notices only.
-The current128-character LineEdit and UTF-8 query contract remain incomplete:
-full parity requires33-byte editing and transport preserving partial UTF-8.
-Header/blank focus and unfocused Enter/real Escape lifecycle need integration.
+The owner filter uses a dedicated33-byte editor with CP437 glyph display, a
+blinking underscore and16-pixel text inset. It appends SDL UTF-8 bytes up to the
+limit and removes one byte per Backspace, preserving even partial sequences.
+Focused navigation keys are consumed; Enter releases focus without assignment.
+Header clicks retain focus and other left clicks release it. Animal filtering
+retains its existing separate LineEdit. Ctrl+F, unfocused Enter and real Escape
+lifecycle remain unfinished.
+
+The candidate state owns raw query bytes, debounces edits, rejects old-query
+replies and requires an exact raw echo on both builder and completed replies.
+Continuation and retained navigation preserve bytes; close clears them. No
+query normalization is reconstructed in the editor.
+
+Native042540 captures two-byte195/169 and partial195 text. The GPU regression
+matches all288 RGB glyph pixels exactly and verifies byte33 truncation, focus,
+header/blank clicks and stale reply handling. `build/qa/owner-byte-editor-final2`
+passes core19/19 and candidate tests; GPU passes with known notices only.
+Protected main-scene043030 types/deletes those bytes plus MINER via viewport
+input, compares actual results with native, checks focused Enter sends no owner
+assignment, reopens unfiltered and exercises recenter/assign/remove. Owned
+DF85284 closes unsaved; both save manifests match. Its only diagnostics are
+known Godot notices. Run this focused lane with `areas_acceptance.ps1
+-ControllerScene -ZoneOwnerOnly -SaveId <new df3d-areas- name>`.
 
 Management66 appends optional `query_bytes` to AreaRequest and AreaState. It is
 limited to33 bytes and scoped to an identified Zone owner CandidateList; a
@@ -425,7 +442,7 @@ The protocol region is Local\df3d_management_v66; version65 peers must rebuild.
 The bridge retains optional owned binary strings through Lua and readback, calls
 the existing native normalizer on those bytes and echoes them on pending and
 complete pages. Lua input/result boundaries enforce the same33-byte owner scope.
-The byte editor remains to be integrated.
+The owner editor sends the optional raw field after editing.
 `build/qa/owner-query-bytes-contract-fixed` passes core19/19 and the real Godot
 adapter test: partial byte195 survives request and response unchanged. Boundary
 checks cover absent/empty/maximal input, oversized vectors, wrong scope and

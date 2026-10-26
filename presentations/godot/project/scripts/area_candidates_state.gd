@@ -11,6 +11,7 @@ var receipt := 0
 var cursor := 0
 var kind := 1
 var query := ""
+var query_bytes: Variant = null
 var sort := 0
 var descending := false
 var sort_directions: Array = [false,false,false,false,false]
@@ -22,7 +23,7 @@ var squad_mask := 15
 
 func clear() -> void:
 	area = {}; rows = []; pending = {}; receipt = 0; cursor = 0
-	kind = 1; query = ""; sort = 0; descending = false
+	kind = 1; query = ""; query_bytes = null; sort = 0; descending = false
 	sort_directions = [false,false,false,false,false]
 	delay = -1; search_delay = -1; failed = false; mutating = false
 	squad_mask = 15
@@ -31,6 +32,8 @@ func clear() -> void:
 func open(value: Dictionary, candidate_kind := 1, navigation: Dictionary = {}) -> void:
 	clear(); area = value.duplicate(true); kind = candidate_kind
 	query = str(navigation.get("query","")); sort = int(navigation.get("sort",2 if kind == 1 else 0))
+	query_bytes = navigation.get("query_bytes") if kind == 1 else null
+	if query_bytes is PackedByteArray: query_bytes = query_bytes.duplicate(); query = ""
 	if kind == 1 and sort == 0: sort = 2
 	descending = bool(navigation.get("descending",false))
 	if navigation.get("sort_directions") is Array and navigation.sort_directions.size() == 5:
@@ -49,12 +52,17 @@ func read(next_cursor := 0) -> void:
 	pending = {"action":C.ManagementAction.AreaCandidates,"operation":C.AreaOperation.CandidateList,
 		"id":int(area.id),"kind":1,"candidate_kind":kind,"query":query,"sort":sort,
 		"sort_descending":descending,"cursor":next_cursor}
+	if query_bytes is PackedByteArray: pending.query_bytes = query_bytes.duplicate()
 	if next_cursor != 0: pending.expected_list_revision = receipt
 	delay = -1; changed.emit(); request_ready.emit(pending.duplicate(true))
 
 func queue_search(value: String) -> void:
-	if area.is_empty() or failed or mutating or value == query: return
-	query = value; invalidate(0.25)
+	if area.is_empty() or failed or mutating or (value == query and query_bytes == null): return
+	query = value; query_bytes = null; invalidate(0.25)
+
+func queue_owner_search(value: PackedByteArray) -> void:
+	if kind != 1 or area.is_empty() or failed or mutating or value.size() > 33 or value == query_bytes: return
+	query = ""; query_bytes = value.duplicate(); invalidate(0.25)
 
 func order(value: int) -> void:
 	if area.is_empty() or failed or mutating: return
@@ -89,8 +97,10 @@ func poll(delta: float) -> void:
 
 func accept(page: Dictionary, sent: Dictionary) -> void:
 	if pending.is_empty() or sent != pending: return
-	if str(sent.query) != query or int(sent.sort) != sort or bool(sent.sort_descending) != descending:
+	if sent.get("query_bytes") != query_bytes or str(sent.query) != query or int(sent.sort) != sort or bool(sent.sort_descending) != descending:
 		pending = {}; delay = -1; changed.emit(); return
+	if sent.has("query_bytes") and page.get("query_bytes") != sent.query_bytes:
+		reject("Candidate page changed; refresh"); return
 	for key in ["candidate_kind","query","sort","sort_descending"]:
 		if page.get(key,sent[key]) != sent[key]:
 			reject("Candidate page changed; refresh"); return

@@ -1577,7 +1577,7 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 			var keep_assignments := stockpile_page in ["animals","squads"] and action == Action.AreaUpdate and int(_request.get("operation",0)) in [Contract.AreaOperation.AssignUnits,Contract.AreaOperation.SquadUse]
 			var selector_page := stockpile_page
 			var selector_kind: int = candidates_state.kind
-			var selector_navigation := {"query":candidates_state.query,"sort":candidates_state.sort,"descending":candidates_state.descending,"sort_directions":candidates_state.sort_directions.duplicate(),"squad_mask":candidates_state.squad_mask}
+			var selector_navigation := {"query":candidates_state.query,"query_bytes":candidates_state.query_bytes,"sort":candidates_state.sort,"descending":candidates_state.descending,"sort_directions":candidates_state.sort_directions.duplicate(),"squad_mask":candidates_state.squad_mask}
 			use_area(areas[0], action != Action.AreaInspect)
 			if keep_assignments:
 				stockpile_page = selector_page; candidates_state.open(selected,selector_kind,selector_navigation)
@@ -1607,6 +1607,7 @@ func _input(event: InputEvent) -> void:
 		handle_back()
 		get_viewport().set_input_as_handled()
 		return
+	if panel.visible: candidates_view.owner_pointer(event)
 	if panel.visible and candidates_view.feed_owner_key(event):
 		get_viewport().set_input_as_handled()
 		return

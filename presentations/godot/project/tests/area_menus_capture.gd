@@ -45,6 +45,15 @@ func owner_frame_pixels(view, reference: Dictionary, selected: bool) -> bool:
 		push_error("Native owner picture frame differs: "+str(sample.state)); return false
 	return true
 
+func owner_filter_pixels(view, reference: Dictionary, sample_index: int) -> bool:
+	var sample: Dictionary = reference.owner_textbox_input.rendered_editor.samples[sample_index]
+	var image := root.get_texture().get_image(); image.convert(Image.FORMAT_RGB8)
+	var crop := image.get_region(Rect2i(Vector2i(view.owner_search.global_position)+Vector2i(16,12),Vector2i(int(sample.width),12)))
+	var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(crop.get_data())
+	if digest.finish().hex_encode() != str(sample.sha256):
+		push_error("Native owner filter byte glyphs differ"); return false
+	return true
+
 func _initialize() -> void:
 	call_deferred("run")
 
@@ -265,13 +274,13 @@ func run() -> void:
 			var selected_button: Button = controller.candidates_view.choices[15]
 			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
 				push_error("Owner keyboard selection is outside viewport"); quit(1); return
-	controller.candidates_view.search.grab_focus()
+	controller.candidates_view.owner_search.grab_focus()
 	var before_focus_calls: int = world.calls.size()
 	for code in [KEY_DOWN,KEY_ENTER]:
 		var focused_key := InputEventKey.new(); focused_key.keycode = code; focused_key.pressed = true
 		root.push_input(focused_key,true)
 		await process_frame
-	if controller.candidates_view.search.has_focus() or controller.candidates_view.owner_selected != 0 or world.calls.size() != before_focus_calls:
+	if controller.candidates_view.owner_search.has_focus() or controller.candidates_view.owner_selected != 0 or world.calls.size() != before_focus_calls:
 		push_error("Owner textbox Enter assigned or retained focus"); quit(1); return
 	controller.candidates_state.mutating = true
 	var blocked := InputEventKey.new(); blocked.keycode = KEY_DOWN; blocked.pressed = true
@@ -279,6 +288,42 @@ func run() -> void:
 	if controller.candidates_view.owner_selected != 0:
 		push_error("Pending assignment moved keyboard selection"); quit(1); return
 	controller.candidates_state.mutating = false
+	controller.set_process(false)
+	controller.candidates_view.owner_search.grab_focus()
+	controller.candidates_view.owner_search.ticks_override = 750
+	var owner_typed := InputEventKey.new(); owner_typed.pressed = true; owner_typed.unicode = 233
+	root.push_input(owner_typed,true)
+	if controller.candidates_state.query_bytes != PackedByteArray([195,169]):
+		push_error("Owner editor converted native bytes to Unicode"); quit(1); return
+	await process_frame; await RenderingServer.frame_post_draw
+	if not owner_filter_pixels(controller.candidates_view,header_reference,0): quit(1); return
+	var owner_filter_box: Rect2 = controller.candidates_view.owner_search.get_global_rect()
+	if root.get_texture().get_image().get_region(Rect2i(owner_filter_box)).save_png(directory.path_join("owner_filter_nonascii.png")) != OK: quit(1); return
+	var owner_erase := InputEventKey.new(); owner_erase.pressed = true; owner_erase.keycode = KEY_BACKSPACE
+	root.push_input(owner_erase,true)
+	if controller.candidates_state.query_bytes != PackedByteArray([195]):
+		push_error("Owner Backspace removed a character instead of a byte"); quit(1); return
+	await process_frame; await RenderingServer.frame_post_draw
+	if not owner_filter_pixels(controller.candidates_view,header_reference,1): quit(1); return
+	if root.get_texture().get_image().get_region(Rect2i(owner_filter_box)).save_png(directory.path_join("owner_filter_partial.png")) != OK: quit(1); return
+	controller.candidates_state.queue_owner_search("x".repeat(32).to_utf8_buffer())
+	root.push_input(owner_typed,true)
+	if controller.candidates_state.query_bytes != "x".repeat(32).to_utf8_buffer()+PackedByteArray([195]):
+		push_error("Owner limit did not truncate at byte33"); quit(1); return
+	root.push_input(owner_typed,true)
+	if controller.candidates_state.query_bytes.size() != 33: push_error("Owner filter exceeded33 bytes"); quit(1); return
+	var owner_point: Vector2 = controller.candidates_view.headers[0].get_global_rect().get_center()
+	var owner_click := InputEventMouseButton.new(); owner_click.position=owner_point; owner_click.global_position=owner_point; owner_click.button_index=MOUSE_BUTTON_LEFT; owner_click.pressed=true
+	root.push_input(owner_click,true); owner_click.pressed=false; root.push_input(owner_click,true)
+	if not controller.candidates_view.owner_search.has_focus(): push_error("Owner header lost textbox focus"); quit(1); return
+	owner_point = controller.candidates_view.global_position+Vector2(400,636)
+	owner_click.position=owner_point; owner_click.global_position=owner_point; owner_click.pressed=true; root.push_input(owner_click,true);owner_click.pressed=false;root.push_input(owner_click,true)
+	if controller.candidates_view.owner_search.has_focus(): push_error("Owner blank owner_click retained focus"); quit(1); return
+	controller.candidates_state.query_bytes = null; controller.candidates_state.query = ""
+	controller.candidates_state.search_delay = -1; controller.candidates_state.pending = {}
+	controller.candidates_state.sort = 2; controller.candidates_state.descending = false
+	controller.candidates_state.sort_directions = [false,false,false,false,false]
+	controller.set_process(true)
 	controller.candidates_state.rows = header_rows; controller.candidates_state.receipt = 95
 	controller.candidates_state.changed.emit()
 	await process_frame; await RenderingServer.frame_post_draw

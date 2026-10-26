@@ -228,6 +228,14 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
         for(auto c:d.nameColor->color)primary.push_back(int(c));for(auto c:d.nameColor->alternate)alternate.push_back(int(c));
         color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor->effect);display["name_color"]=color;}
       row["owner_display"]=display;}
+    if(v.sheetIcon) {Dictionary icon;Array pages,palettes,layers;
+      for(const auto& name:v.sheetIcon->tilePages)pages.push_back(String::utf8(name.c_str()));
+      for(const auto& name:v.sheetIcon->palettes)palettes.push_back(String::utf8(name.c_str()));
+      for(const auto& l:v.sheetIcon->layers) {Array layer;
+        for(int value:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(value);
+        layers.push_back(layer);}
+      icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;
+    }
     candidates.push_back(row);
   }
   for(const auto& v:s.links) {

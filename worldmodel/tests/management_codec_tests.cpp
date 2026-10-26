@@ -2599,3 +2599,29 @@ TEST_CASE("fallen gathering flag preserves unknown and rejects invalid wire valu
   old.Finish(wire::CreateAreaZoneSettings(old,0,0,-1,-1,1,0));
   CHECK(flatbuffers::GetRoot<wire::AreaZoneSettings>(old.GetBufferPointer())->gather_fallen()==-1);
 }
+
+TEST_CASE("owner candidate appearance is optional scoped bounded and lossless") {
+  for(int mode=0;mode<11;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::SelectionAppearance> icon;
+    if(mode!=0) {
+      std::vector<std::string> pages(mode==6?257:1,mode==7?std::string(257,'x'):"PAGE");
+      std::vector<std::string> palettes(mode==9?256:1,mode==9?std::string(512,'p'):"PALETTE");
+      std::vector<wire::AppearanceLayer> layers(mode==8?257:1,wire::AppearanceLayer(mode==2?1:0,2,3,mode==3?0:1,1,mode==4?1:0,4,5,-1,2));
+      icon=wire::CreateSelectionAppearance(b,b.CreateVectorOfStrings(pages),b.CreateVectorOfStrings(palettes),b.CreateVectorOfStructs(layers));
+    }
+    const auto row=wire::CreateAreaCandidateRow(b,998,0,0,-1,0,false,false,-1,0,icon);
+    const auto rows=b.CreateVector(std::vector(mode==9?2:1,row));
+    wire::AreaStateBuilder area(b);area.add_operation(mode==10?wire::AreaOperation::None:wire::AreaOperation::CandidateList);
+    area.add_candidate_kind(mode==5?2:1);area.add_candidates(rows);const auto a=area.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(mode>=2));
+    if(mode<2) {
+      const auto decoded=codec::decodeArea(value->area());REQUIRE(decoded.candidates.size()==1);
+      const auto& image=decoded.candidates[0].sheetIcon;CHECK(image.has_value()==(mode==1));
+      if(image) {CHECK(image->tilePages==std::vector<std::string>{"PAGE"});CHECK(image->palettes==std::vector<std::string>{"PALETTE"});
+        REQUIRE(image->layers.size()==1);CHECK(image->layers[0]==wm::AppearanceLayer{0,2,3,1,1,0,4,5,-1,2});}
+    }
+  }
+}

@@ -118,7 +118,12 @@ flatbuffers::Offset<m::AreaState> areaOperationFixture(flatbuffers::FlatBufferBu
   if(q.operation()==m::AreaOperation::CandidateList && q.candidate_kind()==1)
     ownerDisplay=m::CreateAreaOwnerDisplay(b,45,b.CreateString("Native first line"),b.CreateString("Native second line"),b.CreateString("Has Quarters"),343,
       m::CreateAreaNameColor(b,3,3,1,0,3,0,1));
-  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay);const auto candidates=b.CreateVector(std::vector{candidate});
+  flatbuffers::Offset<m::SelectionAppearance> ownerIcon;
+  if(q.operation()==m::AreaOperation::CandidateList && q.candidate_kind()==1)
+    ownerIcon=m::CreateSelectionAppearance(b,b.CreateVectorOfStrings(std::vector<std::string>{"OWNER_PAGE"}),
+      b.CreateVectorOfStrings(std::vector<std::string>{"OWNER_PALETTE"}),
+      b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{m::AppearanceLayer(0,2,3,1,1,0,4,5,-1,2)}));
+  const auto candidate=m::CreateAreaCandidateRow(b,8,name,name,1,7,true,true,15,ownerDisplay,ownerIcon);const auto candidates=b.CreateVector(std::vector{candidate});
   const auto link=m::CreateAreaLinkRow(b,9,m::AreaKind::Workshop,2,name);const auto links=b.CreateVector(std::vector{link});
   const auto query=b.CreateString(q.query()->str());
   m::AreaStateBuilder area(b);area.add_areas(areas);area.add_operation(q.operation());area.add_area_id(7);

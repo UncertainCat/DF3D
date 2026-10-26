@@ -151,6 +151,13 @@ AreaState decodeArea(const m::AreaState* a) {
       if(const auto* c=d->name_color())row.ownerDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
         {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
     }
+    if(const auto* p=v->sheet_icon()) {
+      row.sheetIcon.emplace();
+      for(const auto* t:*p->tile_pages())row.sheetIcon->tilePages.push_back(t->str());
+      for(const auto* t:*p->palettes())row.sheetIcon->palettes.push_back(t->str());
+      for(const auto* l:*p->layers())row.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+        l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+    }
     out.candidates.push_back(std::move(row));
   }
   if(a->links())for(const auto* v:*a->links())out.links.push_back({v->id(),AreaKind(v->kind()),v->direction(),text(v->name())});

@@ -743,9 +743,26 @@ contract decoder, including both color alternatives and their effect. Boundary
 checks reject out-of-range components/effects and unequal steady alternatives;
 missing historical color records remain absent.
 
-Bridge, model and Godot must be rebuilt together. The current live region is
-`Local\df3d_management_v64`; version63 peers cannot share it. Historical version62
-evidence below describes the earlier overlap migration.
+Management65 adds optional `AreaCandidateRow.sheet_icon`, an owned original-asset
+recipe using SelectionAppearance. It is restricted to owner CandidateList rows
+with nonnegative IDs. Each recipe has at most256 page names, palettes and layers;
+page/palette text limits are256/512 bytes. Layer references must resolve within
+that recipe, with nonzero cell dimensions. Recipe strings and layers count
+against the existing224KiB area-response payload limit. Missing historical
+recipes remain absent; they are never inferred from names or map visibility.
+Godot receives page names, palette names and ten integer values per layer in
+schema order, preserving signed palette rows and offsets. This establishes the
+transport; production collection, rendering and native-image parity remain to
+be integrated before exposing the owner picker.
+`build/qa/owner-icon-contract-fixed` passes root CTest19/19 and the real Godot
+contract test. It checks lossless recipe decoding, historical absence, wrong
+operation/kind, invalid indices/cell sizes, per-recipe caps and aggregate payload
+limits. These transport tests do not establish native image parity.
+
+Bridge, model and Godot must be rebuilt together. The current contract region is
+`Local\df3d_management_v65`; version64 peers cannot share it. The installed
+version64 development plugin must be rebuilt before subsequent live checks.
+Historical version62 evidence below describes the earlier overlap migration.
 
 `build/qa/owner-display-contract-final` passes root CTest19/19 and the Godot
 contract check. Coverage includes native lines through the real engine decoder,

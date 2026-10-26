@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 64;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v64";
+inline constexpr uint32_t kManagementVersion = 65;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v65";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -977,6 +977,16 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
             return "invalid owner name color";
           payload+=7;
         }
+      }
+      if(const auto* p=row->sheet_icon()) {
+        if(a->operation()!=AreaOperation::CandidateList || a->candidate_kind()!=1 || row->id()<0 ||
+           !p->tile_pages() || p->tile_pages()->size()>256 || !p->palettes() || p->palettes()->size()>256 ||
+           !p->layers() || p->layers()->size()>256)return "invalid owner sheet icon references";
+        payload+=12+p->layers()->size()*sizeof(AppearanceLayer);
+        for(const auto* t:*p->tile_pages()) {if(!t || textSize(t)>256)return "invalid owner sheet icon page";payload+=4+textSize(t);}
+        for(const auto* t:*p->palettes()) {if(!t || textSize(t)>512)return "invalid owner sheet icon palette";payload+=4+textSize(t);}
+        for(const auto* l:*p->layers())if(l->page()>=p->tile_pages()->size() || !l->cells_x() || !l->cells_y() ||
+           (l->palette()!=65535 && l->palette()>=p->palettes()->size()))return "invalid owner sheet icon layer";
       }
       payload+=9+textSize(row->name())+textSize(row->profession());
     }

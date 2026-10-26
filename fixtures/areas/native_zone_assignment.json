@@ -3990,6 +3990,65 @@
         ]
       }
     ],
-    "scope": "Maintained native GPS pointer/focus plus native input/render loop. Recenter hover234 and rendered help are the positive control; all tested row/portrait/header hovers retain cursor0. Text sampled immediately after native render; asynchronous screenshots are not accepted hover appearance evidence. Filter activation remains unresolved. Recenter close-menu effect and Ctrl+c still need native action checks."
+    "scope": "Maintained native GPS pointer/focus plus native input/render loop. Recenter hover234 and rendered help are the positive control; all tested row/portrait/header hovers retain cursor0. Text sampled immediately after native render; asynchronous screenshots are not accepted hover appearance evidence. Filter activation remains unresolved. Recenter actions are checked separately below."
+  },
+  "owner_recenter_actions": {
+    "native_run": "build/stockpile-storage-native-zone-owner-20261026-052404",
+    "native_owned_df_pid": 127916,
+    "observations": [
+      {
+        "after": [
+          125,
+          90,
+          165
+        ],
+        "before": [
+          111,
+          87,
+          165
+        ],
+        "bottom_mode": -1,
+        "name": "owner-recenter-click",
+        "owner": -1,
+        "position": [
+          137,
+          98,
+          165
+        ],
+        "selector_active": false,
+        "unit_id": 5981
+      },
+      {
+        "after": [
+          125,
+          90,
+          165
+        ],
+        "before": [
+          111,
+          87,
+          165
+        ],
+        "bottom_mode": -1,
+        "name": "owner-recenter-control-c",
+        "owner": -1,
+        "position": [
+          137,
+          98,
+          165
+        ],
+        "selector_active": false,
+        "unit_id": 5981
+      }
+    ],
+    "live_run": "build/areas-acceptance-20261026-052716",
+    "live_owned_df_pid": 126212,
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "save_preservation": "Native source and both live manifests unchanged; owned processes closed unsaved.",
+    "scope": "Actual native click and unfocused Control+C close selector and Zones and recenter without changing owner. Main-scene click/keyboard, camera target, released host, no mutation, reopening and subsequent assignment/removal verified. Focused Control+C and tooltip appearance remain outside this acceptance.",
+    "offline": "owner-recenter-final: core19/19 and viewport tests passed, with known GPU notices; Remove row and missing unit position remain open without recenter."
   }
 }

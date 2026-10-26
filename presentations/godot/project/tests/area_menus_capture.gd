@@ -408,6 +408,24 @@ func run() -> void:
 		if controller.panel.visible or host.active != null or options_events[0] != (2 if focus_filter else 1) or world.calls.size()!=before_escape_calls:
 			push_error("Owner Escape state: "+str([focus_filter,controller.panel.visible,host.active,options_events,world.calls.size(),before_escape_calls,controller.stockpile_page,controller.request_ticket]));quit(1);return
 		host.activate(controller); controller.panel.show(); controller.available=true
+	var recentered_tiles: Array = []
+	controller.focus_requested.connect(func(tile): recentered_tiles.append(tile))
+	controller.use_area(bedroom); controller.zone_menu.controls.owner.pressed.emit(); service.poll()
+	world.state = {"world_epoch":42,"revision":int(world.state.revision)+1,"request_seq":world.seq,"action":14,"status":2,
+		"area":{"list_revision":101,"candidates":header_rows}}
+	service.poll();controller._process(0)
+	var recenter_key := InputEventKey.new();recenter_key.pressed=true;recenter_key.keycode=KEY_C;recenter_key.ctrl_pressed=true
+	root.push_input(recenter_key,true)
+	if not controller.panel.visible or not recentered_tiles.is_empty():push_error("Remove row must not recenter");quit(1);return
+	controller.candidates_view.owner_selected=1
+	root.push_input(recenter_key,true)
+	if not controller.panel.visible or not recentered_tiles.is_empty():push_error("Missing unit position must not close Zones");quit(1);return
+	world.unit_tiles[int(header_rows[0].id)]=Vector3i(8,9,3)
+	var recenter_before_calls: int=world.calls.size()
+	root.push_input(recenter_key,true)
+	if controller.panel.visible or host.active!=null or recentered_tiles!=[Vector3i(8,9,3)] or world.calls.size()!=recenter_before_calls:
+		push_error("Ctrl+C must leave Zones and recenter without a mutation");quit(1);return
+	host.activate(controller);controller.panel.show();controller.available=true
 	# Capture each observed zone type, including panels with no extra controls.
 	for definition in controller.zone_types:
 		var type_name: String = definition.name

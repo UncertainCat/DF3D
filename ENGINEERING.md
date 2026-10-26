@@ -398,8 +398,22 @@ providing a positive control; third-row, portrait and header hovers retain
 selection0. Plain posted motion is insufficient on the hidden desktop: SDL
 resets GPS coordinates to-1. Rendered glyph observations are retained in
 native_zone_assignment.json; asynchronous hover screenshots are not appearance
-acceptance. Filter hover activation, recenter tooltip styling, Ctrl+c and the
-recenter instruction's leave-menu effect remain unresolved.
+acceptance. Filter hover activation and recenter tooltip styling remain unresolved.
+Native052404 verifies both recenter click and unfocused Ctrl+c close the selector
+and Zones (bottom mode-1), move the map to the selected creature, and leave
+ownership unchanged. Reopening rebuilds the textbox widget; native tests must
+refresh its reference rather than retaining the destroyed widget.
+
+DF3D closes Zones before emitting the recenter target. Unfocused Ctrl+C uses the
+selected candidate's stable ID; Remove assignment and unavailable positions do
+nothing. Position is resolved again at activation, and busy/repeated commands
+are suppressed. Protected main-scene052716 verifies both routes, released panel
+ownership, camera position, no mutation, reopening and subsequent assignment/
+removal. Owned DF126212 closes unsaved; both manifests match, with only the known
+rendering-thread notice. Native DF127916 also closes unsaved with source
+unchanged. Offline owner-recenter-final passes core19/19 and viewport keyboard
+checks, including Remove and missing-position cases; GPU has known notices only.
+Focused Ctrl+C behavior is outside this native activation check.
 
 The owner view routes unfocused arrow/numpad and page keys through the main
 controller, updates selection artwork and scrolls in36-pixel rows with a16-row

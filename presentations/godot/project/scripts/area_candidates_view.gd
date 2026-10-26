@@ -223,6 +223,11 @@ func feed_owner_key(event: InputEvent) -> bool:
 		return true
 	if owner_search.has_focus():
 		owner_search.feed_key(event); return true
+	if event.keycode == KEY_C and event.ctrl_pressed and not (event.alt_pressed or event.meta_pressed or event.shift_pressed):
+		if not event.echo and not state.busy():
+			var index := owner_selected - (1 if remove.visible else 0)
+			if index >= 0 and index < state.rows.size(): focus_unit(int(state.rows[index].id))
+		return true
 	if event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
 	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
 		if event.echo or state.busy(): return true

@@ -394,6 +394,26 @@ for _,probe in ipairs{{'recenter',796,106},{'filter',500,730},{'filter-icon',688
 end
 df.global.enabler.tracking_on=previous_tracking;df.global.enabler.mouse_focus=previous_focus
 gui.simulateInput(view,'STANDARDSCROLL_PAGEUP');view:render(dfhack.getTickCount())
+-- Controlled native picker setup, then actual click/key activation. Restore the
+-- selected zone and map only between probes; no recenter output is synthesized.
+for _,method in ipairs{'click','control-c'}do
+ local rows={};widget_rows(assert(unit_list(selector,0)),rows,0)
+ local target;for _,row in ipairs(rows)do if row.unit_id and row.visible then target=df.unit.find(row.unit_id);break end end
+ assert(target,'no recenter candidate')
+ local before={df.global.window_x,df.global.window_y,df.global.window_z}
+ if method=='click' then pixel(796,106)else window_input('recenter','control-c',false)end
+ script.sleep(3,'frames');view:render(dfhack.getTickCount())
+ records[#records+1]={name='owner-recenter-'..method,unit_id=target.id,position={target.pos.x,target.pos.y,target.pos.z},
+  before=before,after={df.global.window_x,df.global.window_y,df.global.window_z},selector_active=selector.flag.VISIBILITY_ACTIVE,
+  bottom_mode=df.global.game.main_interface.bottom_mode_selected,owner=zone.assigned_unit_id}
+ assert(zone.assigned_unit_id==-1,'recenter assigned owner')
+ assert(not selector.flag.VISIBILITY_ACTIVE and df.global.game.main_interface.bottom_mode_selected==-1,'recenter did not leave Zones')
+ assert(df.global.window_z==target.pos.z,'recenter elevation differs')
+ capture('owner-recenter-'..method)
+ selector.flag.VISIBILITY_ACTIVE=false;df.global.game.main_interface.bottom_mode_selected=3;ui.cur_bld=zone
+ dfhack.gui.revealInDwarfmodeMap(p,true);view:render(dfhack.getTickCount());pixel(336,154)
+end
+filter=df.reinterpret_cast(df.widget_textbox,assert(dfhack.gui.getWidget(assert(dfhack.gui.getWidget(selector,'Unit selector')),'Filter box')))
 input_state('initial')
 window_input('ctrl-f','control-f')
 -- PostMessage modifier state is tracked by SDL, but Windows TranslateMessage

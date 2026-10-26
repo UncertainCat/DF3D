@@ -64,6 +64,13 @@ public static class Shot {
    if(!PostMessage(h,0x101,(IntPtr)17,(IntPtr)(1L+(29L<<16)+0xc0000000L))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
    System.Threading.Thread.Sleep(80);
   }
+  public static void ControlC(IntPtr h) {
+   if(!PostMessage(h,0x100,(IntPtr)17,(IntPtr)(1L+(29L<<16)))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+   Key(h,67,46);
+   if(!PostMessage(h,0x101,(IntPtr)17,(IntPtr)(1L+(29L<<16)+0xc0000000L))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+  }
   public static void RightClick(IntPtr h) {
    IntPtr point=(IntPtr)(800+(700<<16));
    if(!PostMessage(h,0x204,(IntPtr)2,point)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
@@ -116,6 +123,7 @@ try {
     'enter' {[Shot]::Key($window,13,28)}
     'escape' {[Shot]::Key($window,27,1)}
     'control-f' {[Shot]::ControlF($window)}
+    'control-c' {[Shot]::ControlC($window)}
     'right-click' {[Shot]::RightClick($window)}
     'limit' {[Shot]::Text($window,('x'*40))}
     'backspace' {[Shot]::Key($window,8,14)}

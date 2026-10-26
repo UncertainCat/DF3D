@@ -1305,9 +1305,28 @@ func pointer_owner(id: int, origin: Vector3i) -> void:
 	var unit := int(editor.candidates_state.rows[index].id)
 	await capture("zone_owner_candidates")
 	var tile: Vector3i = world.unit_tile(unit)
-	await click_control(editor.candidates_view.focus_buttons[index])
-	if not check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5),"owner recenter did not focus observed unit"): return
-	await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
+	var recenter_area: Dictionary = editor.selected.duplicate(true)
+	for method in ["click","control-c"]:
+		var before_recenter := receipts.size()
+		if method=="click": await click_control(editor.candidates_view.focus_buttons[index])
+		else:
+			for row_step in index+1:
+				var navigation := InputEventKey.new();navigation.pressed=true;navigation.keycode=KEY_DOWN;root.push_input(navigation,true)
+			var recenter := InputEventKey.new();recenter.pressed=true;recenter.keycode=KEY_C;recenter.ctrl_pressed=true;root.push_input(recenter,true)
+		if not check(not editor.panel.visible and host.active==null,"owner recenter did not leave Zones: "+method):return
+		if not check(is_equal_approx(scene.camera_rig.position.x,tile.x+0.5) and is_equal_approx(scene.camera_rig.position.z,tile.y+0.5),"owner recenter did not focus observed unit"): return
+		if not check(receipts.size()==before_recenter,"owner recenter submitted a mutation"):return
+		await capture("zone_owner_recenter_"+method)
+		await native("snapshot",{"id":id,"expected":{"owner_id":-1}})
+		editor.open_panel()
+		if not await wait_ui(func(): return settled() and editor.available,"owner recenter reopen Zones"):return
+		editor.use_area(recenter_area);editor._process(0)
+		await click_control(editor.zone_menu.controls.owner)
+		if not await wait_ui(func(): return settled() and not editor.candidates_state.busy(),"owner recenter reopen picker"):return
+		index=-1
+		for candidate in editor.candidates_state.rows.size():
+			if int(editor.candidates_state.rows[candidate].id)==unit:index=candidate;break
+		if not check(index>=0,"recenter target absent from reopened owner list"):return
 	write_json("owner-key-before.json",{"index":index,"selected":editor.candidates_view.owner_selected,"busy":editor.candidates_state.busy(),"focused":editor.candidates_view.owner_search.has_focus(),"allowed":host.allows_panel_input(editor),"visible":editor.candidates_view.is_visible_in_tree(),"ticket":editor.request_ticket,"page":editor.stockpile_page})
 	for row_step in index+1:
 		var down := InputEventKey.new(); down.pressed=true; down.keycode=KEY_DOWN;root.push_input(down,true)

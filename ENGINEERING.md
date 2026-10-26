@@ -25,10 +25,10 @@ nonintegral values and bytes outside0..255. The model and Godot binding retain
 absence when no symbol is supplied. Old recordings cannot establish missing
 symbol data; no migration invents it. Rebuild/install bridge and viewer together
 for `Local\\df3d_management_v69`. Snapshot/grid/session versions are unchanged.
-The bridge reads the seven saved fields directly after supported-build and
-offset checks; it never calls the allocating native renderer or reads cached
-texture handles. Uninitialized/out-of-range indices currently make candidate
-reads unavailable; their native lazy-initialization lifecycle remains unfinished.
+The bridge reads the seven saved fields after supported-build, identity and
+offset checks. Invalid indices are initialized at the safe point using DF's
+RNG and owned native swatches as described below. It never calls the allocating
+native renderer or reads cached texture handles.
 Core19/19 and Lua contract checks pass in `build/qa/squad-symbol-protocol69`.
 The Godot contract passes cleanly in its `-contract-final` rerun, after updating
 the fake producer's expected request sequence and payload checks for squads.
@@ -185,10 +185,28 @@ passes in `build/qa/squad-owned-swatches`; MSVC passes. The fixture's
 `symbol_initialization_reference` retains compact provenance and observations.
 The prior `173716` run matched outputs but lacked a random contrast-retry case;
 it is not counted as passing the complete initialization check.
-Product initialization remains unfinished: native RNG entry0xeb68b0 and the
-inline range/retry selection need integration and direct live comparison,
-including a stream refill boundary. The owned swatch generator does not itself
-change a squad or consume RNG.
+Product initialization calls pinned native RNG entry0xeb68b0 and the owned
+swatch generator. Only the small inline range/contrast selection from0x40aa30
+is translated: the whole native initializer tail-calls the prohibited texture
+allocator. The installed supported symbol set contains23 entries. All fallible
+preparation precedes RNG entry; selection and committing the seven saved fields
+allocate nothing and do not yield. A lost reply leaves a valid saved symbol,
+which subsequent reads reuse without RNG consumption. Native UI, palette arrays,
+RNG storage and generated texture handles are never product inputs.
+
+Protected `build/stockpile-storage-native-zone-squads-20261026-174618` directly
+compares product initialization with native rendering from identical RNG state.
+Nine cases include -1,23,INT_MAX, forced contrast rejection and a cursor2496
+refill boundary. Every symbol and complete post-call RNG state matches. Repeated
+valid reads consume no RNG. UI/gps bytes and unrelated squad bytes, including
+texture caches, remain unchanged. All31 prior symbol pixel cases still pass;
+DF139320 exits unsaved and source preservation passes. Core19/19 and adapter
+checks pass in `build/qa/squad-symbol-initialization`; the MSVC build passes.
+Full semantic `build/areas-acceptance-20261026-174752` passes cleanly with
+three deliberately invalid saved symbols before candidate requests. The bridge
+initializes and transports their actual saved fields; assignments, simulation
+and restart from DF138208 to DF142040 pass. Both save manifests remain unchanged
+(1,368 files). This does not establish the remaining squad tooltip/input parity.
 
 ## Animal keyboard activation and portrait reference
 

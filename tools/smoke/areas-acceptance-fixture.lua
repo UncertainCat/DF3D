@@ -68,6 +68,18 @@ assert(state.link_door,'link fixture requires a revealed non-linkable door')
 for _,s in ipairs(df.global.world.squads.all) do
  if s.entity_id==df.global.plotinfo.group_id then state.squad=s.id;break end
 end
+-- Exercise lazy semantic initialization through real candidate requests.
+-- Owned unsaved clone only; no native picker/cache access is needed.
+state.uninitialized_squads={}
+for _,id in ipairs(df.global.plotinfo.main.fortress_entity.squads)do
+ local squad=df.squad.find(id)
+ if squad and #state.uninitialized_squads<3 then
+  squad.symbol=({-1,23,2147483647})[#state.uninitialized_squads+1]
+  state.uninitialized_squads[#state.uninitialized_squads+1]=id
+  print('FIXTURE_WRITE invalid saved squad symbol '..id)
+ end
+end
+assert(#state.uninitialized_squads==3,'symbol initialization fixture needs three squads')
 for _,key in ipairs{'owner','grazer','caged','workshop','squad'} do
  if state[key]<0 then missing(key,'no eligible native '..key..' in clone') end
 end

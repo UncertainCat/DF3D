@@ -48,9 +48,11 @@ def verify_initialization(records: list) -> list:
             background = color()
         assert sample['symbol'] == [index] + foreground + background, 'native initialized symbol differs'
         assert after['cursor'] == cursor * 4 and after['words'] == words, 'native RNG consumption differs'
+        assert sample['product'] == sample['symbol'] and sample['product_rng'] == after, 'product/native initialization differs'
         observations.append(dict(capture=record['name'], invalid=sample['invalid'], symbol=sample['symbol'],
-                                 draws=draws, controlled=sample['controlled'], swatches_sha256=hashlib.sha256(bytes(palette)).hexdigest()))
-    assert len(observations) == 8 and any(s['draws'] > 5 for s in observations), 'missing initialization/retry cases'
+                                 draws=draws, controlled=sample['controlled'], refill=sample['refill'],
+                                 swatches_sha256=hashlib.sha256(bytes(palette)).hexdigest()))
+    assert len(observations) == 9 and any(s['draws'] > 5 for s in observations) and any(s['refill'] for s in observations), 'missing initialization/retry/refill cases'
     return observations
 
 

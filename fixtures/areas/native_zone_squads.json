@@ -3340,8 +3340,8 @@
     }
   },
   "symbol_initialization_reference": {
-    "run": "build/stockpile-storage-native-zone-squads-20261026-173918",
-    "scope": "Eight native invalid-index initializations with exact RNG consumption and colors from owned native swatches; final controlled stream forces contrast retry and original stream is restored. Existing reader still refuses invalid indices; initializer integration remains pending.",
+    "run": "build/stockpile-storage-native-zone-squads-20261026-174618",
+    "scope": "Nine direct product/native comparisons from identical RNG state; invalid indices -1,23,INT_MAX, forced contrast retry, RNG refill. Exact symbol/RNG equality, valid-read idempotence and no UI/gps/unrelated squad/cache writes. Diagnostic RNG restoration only; source unchanged and owned DF139320 exited unsaved.",
     "swatch_generator": {
       "rva": "0x43be70",
       "size": "0xaa0",
@@ -3354,119 +3354,126 @@
       "size": "0x1e3",
       "fnv1a64": "4bcd46a418e7a7bb",
       "sha256": "18472a552b158ec001ae3ae6aa6b551277c210397e527193f0a5413c73849ce9",
-      "scope": "Read-only static audit plus diagnostic before/after active stream observations. Product RNG invocation and twist-boundary parity not established yet."
+      "scope": "Product calls pinned native RNG; direct equality against native initialization includes cursor2496 refill. No product RNG-state access."
     },
     "observations": [
       {
         "capture": "Barracks-initialize-1",
         "invalid": -1,
         "symbol": [
-          7,
-          64,
-          64,
-          255,
-          31,
-          21,
-          84
+          3,
+          84,
+          63,
+          42,
+          170,
+          106,
+          42
         ],
-        "draws": 5,
+        "draws": 7,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
         "capture": "Barracks-initialize-2",
         "invalid": 23,
         "symbol": [
-          19,
-          42,
-          170,
-          42,
+          21,
+          21,
+          31,
           84,
-          42,
-          84
+          113,
+          170,
+          85
         ],
-        "draws": 5,
+        "draws": 7,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
         "capture": "Barracks-initialize-3",
         "invalid": 2147483647,
         "symbol": [
-          1,
-          84,
-          73,
-          21,
-          28,
-          0,
-          170
+          5,
+          63,
+          42,
+          170,
+          255,
+          64,
+          191
         ],
         "draws": 5,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
         "capture": "Barracks-initialize-4",
         "invalid": -1,
         "symbol": [
-          14,
-          95,
-          64,
-          255,
+          11,
           84,
-          41,
-          21
+          0,
+          0,
+          127,
+          0,
+          255
         ],
         "draws": 5,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
         "capture": "Barracks-initialize-5",
         "invalid": -1,
         "symbol": [
-          11,
-          21,
-          21,
-          84,
+          18,
           0,
-          142,
-          170
+          69,
+          84,
+          170,
+          85,
+          0
         ],
         "draws": 5,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
         "capture": "Barracks-initialize-6",
         "invalid": -1,
         "symbol": [
-          19,
-          128,
-          255,
-          255,
-          170,
-          255,
-          0
+          15,
+          49,
+          42,
+          84,
+          211,
+          211,
+          211
         ],
-        "draws": 5,
+        "draws": 7,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
         "capture": "Barracks-initialize-7",
         "invalid": -1,
         "symbol": [
-          22,
-          189,
-          189,
-          189,
+          16,
+          170,
           42,
+          85,
+          52,
           84,
-          84
+          21
         ],
         "draws": 5,
         "controlled": false,
+        "refill": false,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       },
       {
@@ -3483,14 +3490,61 @@
         ],
         "draws": 7,
         "controlled": true,
+        "refill": false,
+        "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
+      },
+      {
+        "capture": "Barracks-initialize-9",
+        "invalid": -1,
+        "symbol": [
+          8,
+          56,
+          84,
+          42,
+          128,
+          149,
+          255
+        ],
+        "draws": 7,
+        "controlled": false,
+        "refill": true,
         "swatches_sha256": "05435b439ff68cd5b338aefb67106e24f7207d8cc4fc0c7a8440c325df2cb227"
       }
     ],
     "files_sha256": {
-      "result.json": "a46676fb90be3b1a45062f1d7acb04a793e00398327bd947b6af30b36d89e6cd",
-      "symbol-pixels.json": "4e9c21cfce72a751e8d08b44c73b5fa0b64a09d778424847c77bd3122a5703c2",
+      "result.json": "a049c6dee87e246ad6cdbed77de28917296df714841f23507156d0d22dcb0a89",
+      "symbol-pixels.json": "f76edbc0cf2827e3ee57dfbe9305e9748593fe6a4d5f69d7c570006577b01079",
       "summary.txt": "c9d7a0682d275afe0a4d41a00294f56d6d82783a4de393ea188806cc8b3ee509",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "initializer": {
+      "rva": "0x40aa30",
+      "size": "0x21f",
+      "fnv1a64": "55359dc0781afdcb",
+      "ownership": "Only inline range/contrast selection translated; actual native RNG and owned swatch producer invoked. Global rendering tail call excluded."
+    },
+    "bridge_acceptance": {
+      "run": "build/areas-acceptance-20261026-174752",
+      "status": "passed",
+      "invalid_squad_ids": [
+        120,
+        125,
+        128
+      ],
+      "invalid_indices": [
+        -1,
+        23,
+        2147483647
+      ],
+      "initial_pid": 138208,
+      "replacement_pid": 142040,
+      "scope": "Real candidate transport after invalid symbols seeded in owned clone; assignments, simulation and restart; both source and owned-clone save manifests unchanged (1368 files).",
+      "files_sha256": {
+        "fixture.log": "207881beadfe5ec79ad789f94b5b0c444358cbae7c9cce89bbfaff9f95611a52",
+        "summary.txt": "2700165975f68815c97d605c56eca8e90d497ade1264b6282401d13fee99ac27",
+        "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+        "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+      }
     }
   }
 }

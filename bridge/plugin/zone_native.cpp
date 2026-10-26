@@ -135,10 +135,42 @@ std::optional<std::string> nativeZoneSquadName(const df::squad& squad) {
     if(text.size()>512)return std::nullopt;
     return text;
 }
-std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(const df::squad& squad) {
+std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(df::squad& squad) {
     static_assert(offsetof(df::squad,symbol)==0x1dc);
     static_assert(offsetof(df::squad,foreground_r)==0x1e0 && offsetof(df::squad,background_b)==0x1e5);
-    if(!df::global::world || !nativeZoneDefaultsReady() || squad.symbol<0 || squad.symbol>22)return std::nullopt;
+    if(!df::global::world || !nativeZoneDefaultsReady() || df::squad::find(squad.id)!=&squad)return std::nullopt;
+    if(squad.symbol<0 || squad.symbol>22) {
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        static const bool compatible=hash(base+0x40aa30,0x21f)==0x55359dc0781afdcbULL &&
+            hash(base+0xeb68b0,0x1e3)==0x4bcd46a418e7a7bbULL;
+        if(!compatible)return std::nullopt;
+        const auto swatches=nativeZoneSquadSwatches();
+        if(!swatches)return std::nullopt;
+        // Native40aa30's inline range/contrast selection surrounds a tail call
+        // to the global texture allocator, so that whole routine is unusable.
+        // Call the actual RNG and palette producer; translate only that inline
+        // selection. The supported installed CUSTOM_SYMBOL set has 23 entries.
+        const auto draw=[base](uint32_t count) {
+            const auto raw=reinterpret_cast<uint32_t (*)()>(base+0xeb68b0)();
+            return (raw%0x7fffffffU)/(0x7fffffffU/count+1);
+        };
+        const auto color=[&]() {
+            const auto hue=draw(36),level=draw(10);
+            const auto at=hue*10+level;
+            return std::array<uint8_t,3>{(*swatches)[at],(*swatches)[360+at],(*swatches)[720+at]};
+        };
+        // All fallible compatibility/preparation work precedes RNG entry.
+        // No allocation, yielding or failure return occurs from here to commit.
+        const auto index=draw(23);
+        const auto foreground=color();
+        auto background=color();
+        while(std::abs(int(foreground[0])-background[0])<64 &&
+              std::abs(int(foreground[1])-background[1])<64 &&
+              std::abs(int(foreground[2])-background[2])<64)background=color();
+        squad.foreground_r=foreground[0];squad.foreground_g=foreground[1];squad.foreground_b=foreground[2];
+        squad.background_r=background[0];squad.background_g=background[1];squad.background_b=background[2];
+        squad.symbol=int32_t(index);
+    }
     // Native40ac50 reads these saved fields to recolor the installed mask.
     // Its texture allocation path must never be invoked by a semantic read.
     return std::array<uint8_t,7>{uint8_t(squad.symbol),squad.foreground_r,squad.foreground_g,squad.foreground_b,

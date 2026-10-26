@@ -111,8 +111,10 @@ bool nativeZoneSquadAssignmentReady();
 std::optional<std::vector<int32_t>> nativeZoneSquadCandidates();
 // Full native squad caption in DF encoding, before viewport truncation.
 std::optional<std::string> nativeZoneSquadName(const df::squad& squad);
-// Saved index, foreground RGB, background RGB; no generated texture handles.
-std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(const df::squad& squad);
+// Saved index, foreground RGB, background RGB; lazily initializes invalid saved
+// symbols using native RNG and owned swatches. Safe point only. No UI caches.
+// A completed initialization survives a lost reply; subsequent reads reuse it.
+std::optional<std::array<uint8_t,7>> nativeZoneSquadSymbol(df::squad& squad);
 // Native swatch generator with owned storage: 360 red, green, blue bytes.
 std::optional<std::array<uint8_t,1080>> nativeZoneSquadSwatches();
 // Semantic set converted to DF's XOR toggle using current squad room state.

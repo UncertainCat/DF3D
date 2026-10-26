@@ -226,22 +226,50 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
    named.background_r=233;named.background_g=61;named.background_b=7
    capture(kind..'-symbol-'..index,b)
   end
-  for index,invalid in ipairs{-1,23,2147483647,-1,-1,-1,-1,-1}do
+  for index,invalid in ipairs{-1,23,2147483647,-1,-1,-1,-1,-1,-1}do
    named.symbol=invalid;named.solid_texpos=0;named.blended_texpos=0
    local saved_rng
-   if index==8 then
+   if index>=8 then
     -- Controlled native contrast rejection: identical black first pair, then
     -- white background. Restore the owned session's original RNG afterward.
     saved_rng=rng_snapshot();local controlled=rng_snapshot();controlled.cursor=0
-    for i,value in ipairs{0,0,9*214748365,0,9*214748365,35*59652324,9*214748365}do controlled.words[i]=value end
+    if index==8 then
+     for i,value in ipairs{0,0,9*214748365,0,9*214748365,35*59652324,9*214748365}do controlled.words[i]=value end
+    else controlled.cursor=2496 end
     restore_rng(controlled)
    end
    local before=rng_snapshot()
+   local guards={}
+   for _,value in ipairs{main,g,named}do
+    local size,address=df.sizeof(value);local bytes=df.new('uint8_t',size)
+    dfhack.internal.memmove(bytes,address,size);guards[#guards+1]={bytes=bytes,address=address,size=size}
+   end
+   local text,code=dfhack.run_command_silent('df3d','zone-squad-symbol-read',tostring(named.id));assert(code==0,text)
+   local product=require('json').decode(text);local product_rng=rng_snapshot()
+   for i,guard in ipairs(guards)do
+    if i==3 then
+     -- Only the saved symbol and six color bytes may change, never cache IDs.
+     for offset=0,guard.size-1 do if offset<0x1dc or offset>=0x1e6 then
+      assert(guard.bytes[offset]==df.reinterpret_cast('uint8_t',guard.address+offset).value,'initializer changed unrelated squad field')
+     end end
+    else assert(dfhack.internal.memcmp(guard.bytes,guard.address,guard.size)==0,'initializer changed native UI/gps')end
+    df.delete(guard.bytes)
+   end
+   local text,code=dfhack.run_command_silent('df3d','zone-squad-symbol-read',tostring(named.id));assert(code==0,text)
+   local repeated=require('json').decode(text);local repeated_rng=rng_snapshot()
+   for i=1,7 do assert(product[i]==repeated[i],'valid symbol rerolled')end
+   assert(product_rng.cursor==repeated_rng.cursor,'valid symbol consumed RNG')
+   for i=1,624 do assert(product_rng.words[i]==repeated_rng.words[i],'valid symbol changed RNG')end
+   restore_rng(before);named.symbol=invalid
    view:render(dfhack.getTickCount())
    local after=rng_snapshot()
    local initialized=capture(kind..'-initialize-'..index,b)
-   initialized.initialization={invalid=invalid,before=before,after=after,swatches=swatches,controlled=index==8,
+   initialized.initialization={invalid=invalid,before=before,after=after,swatches=swatches,controlled=index==8,refill=index==9,
+    product=product,product_rng=product_rng,
     symbol={named.symbol,named.foreground_r,named.foreground_g,named.foreground_b,named.background_r,named.background_g,named.background_b}}
+   for i,value in ipairs(initialized.initialization.symbol)do assert(value==product[i],'product initialization differs from native')end
+   assert(after.context==product_rng.context and after.cursor==product_rng.cursor,'product RNG cursor differs from native')
+   for i=1,624 do assert(after.words[i]==product_rng.words[i],'product RNG stream differs from native')end
    assert(named.symbol>=0 and named.symbol<23,'native failed to initialize symbol')
    if saved_rng then restore_rng(saved_rng)end
   end

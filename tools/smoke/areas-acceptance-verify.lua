@@ -827,6 +827,7 @@ elseif request.op=='candidates' then
  local text,code=dfhack.run_command_silent('df3d','zone-squad-candidates-read');assert(code==0,text)
  for _,id in ipairs(json.decode(text))do
   local s=assert(df.squad.find(id))
+  assert(s.symbol>=0 and s.symbol<23,'candidate read failed to initialize saved squad symbol')
   local use=0;for _,v in ipairs(b.squad_room_info) do if v.squad_id==s.id then use=v.mode.whole end end
   local name_text,name_code=dfhack.run_command_silent('df3d','zone-squad-name-read',tostring(s.id));assert(name_code==0,name_text)
   rows[#rows+1]={id=s.id,entity=3,name=dfhack.df2utf(string.char(table.unpack(json.decode(name_text)))),

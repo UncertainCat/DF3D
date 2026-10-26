@@ -1019,7 +1019,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
       if(const auto* p=row->sheet_icon()) {
         if(a->operation()!=AreaOperation::CandidateList || (a->candidate_kind()!=1 &&
-           !(a->candidate_kind()==2 && row->entity()==AreaCandidateEntity::Unit)) || row->id()<0 ||
+           !(a->candidate_kind()==2 && (row->entity()==AreaCandidateEntity::Unit || row->entity()==AreaCandidateEntity::Item))) || row->id()<0 ||
            !p->tile_pages() || p->tile_pages()->size()>256 || !p->palettes() || p->palettes()->size()>256 ||
            !p->layers() || p->layers()->size()>256)return "invalid owner sheet icon references";
         if(const auto* error=validateOwnerAppearance(*p,payload))return error;

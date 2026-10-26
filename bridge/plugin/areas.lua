@@ -533,8 +533,14 @@ local function candidate_row(job,v,r,refresh_display)
    if not item then job.error='List changed; refresh';return nil end
    local text=type(r.animal_item_text)=='function' and r.animal_item_text(item) or nil
    if type(text)~='string' then job.error='Native area helper unavailable';return nil end
+   local icon
+   if refresh_display then
+    if type(r.animal_item_icon)~='function' then job.error='Native area helper unavailable';return nil end
+    icon=r.animal_item_icon(item)
+    if icon~=nil and (type(icon)~='string' or #icon>200*1024)then job.error='Native area helper unavailable';return nil end
+   end
    return {id=entry.id,entity=2,name=text,profession='',sex=-1,mood=0,grazer=false,
-    assigned=animal_assigned,squad_use=-1}
+    assigned=animal_assigned,squad_use=-1,sheet_icon=icon}
   end
   v=df.unit.find(entry.id)
   if not v then job.error='List changed; refresh';return nil end

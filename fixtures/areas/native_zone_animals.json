@@ -11503,6 +11503,48 @@
         },
         "selected": false,
         "rgb_sha256": "8c8f9cba58e471cb4262e897f4ea52282c67e757c82d25f7fe5d5e912f8df51b"
+      },
+      {
+        "picker": "Pond-item",
+        "selected": false,
+        "row": {
+          "assigned": false,
+          "entity": 2,
+          "grazer": false,
+          "id": 5969,
+          "mood": 0,
+          "name": "(tame masked lovebird)",
+          "profession": "",
+          "sex": -1,
+          "sheet_icon": {
+            "layers": [
+              [
+                0,
+                0,
+                69,
+                1,
+                1,
+                65535,
+                -1,
+                -1,
+                0,
+                0
+              ]
+            ],
+            "palettes": [],
+            "tile_pages": [
+              "CREATURES_SMALL"
+            ]
+          },
+          "squad_use": -1
+        },
+        "rgb_sha256": "7918a2ec4b5e7f3633f3516540353ae054dacbf2c916df246c9a2f838087d2a6",
+        "native_evidence": "build/stockpile-storage-native-zone-animals-20261026-112207",
+        "recipe_evidence": "build/areas-acceptance-20261026-113050/request-11.json",
+        "pixel_origin": [
+          376,
+          304
+        ]
       }
     ],
     "coverage": "Complete40x36 unit picture/frame crop; item portraits and cage/status icons are separate."
@@ -11578,7 +11620,6 @@
     ],
     "limitations": [
       "Actual captured items are PET; VERMIN dispatch shares this static branch but needs a live fixture.",
-      "No product item recipe or rendering integration yet.",
       "Native cached texture exports stay ignored and are never runtime inputs."
     ]
   }

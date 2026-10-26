@@ -160,6 +160,8 @@ def main():
     end
     function animal_candidates(b,sort,descending,query) animal_args={sort,descending,query};return animal_fixture or {}end
     function animal_item_text(item)return item.label end
+    animal_item_icon_reads=0
+    function animal_item_icon(item)animal_item_icon_reads=animal_item_icon_reads+1;return 'owned item recipe' end
     animal_icon_reads=0
     function animal_unit_display(unit,include_icon)if include_icon then animal_icon_reads=animal_icon_reads+1 end;return {sheet_icon=include_icon and 'owned recipe' or nil,columns=27,name='Native animal',profession='Native profession',first_line='',second_line='Native shortened',combined_fits=false,grazer=true,warning='Grazer: requires pasture',name_color={foreground=6,background=0,bright=0,alternate_foreground=6,alternate_background=0,alternate_bright=0,effect=0}}end
     function owner_eligible(b,u) return u.citizen==true end
@@ -167,7 +169,7 @@ def main():
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
-     r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_unit_display=animal_unit_display
+     r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_item_icon=animal_item_icon;r.animal_unit_display=animal_unit_display
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -295,7 +297,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "animal_unit_display": lua.globals().animal_unit_display, "animal_item_text": lua.globals().animal_item_text}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "animal_unit_display": lua.globals().animal_unit_display, "animal_item_icon": lua.globals().animal_item_icon, "animal_item_text": lua.globals().animal_item_text}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -776,9 +778,11 @@ def main():
      {id=10,entity=2,assigned=false}}
     df.item={find=function(id)if id==10 then return {id=10,label='Native critter'}end end}
     """)
-    lua.execute("animal_icon_reads=0")
+    lua.execute("animal_icon_reads=0;animal_item_icon_reads=0")
     animals = call(14, {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2})
     assert lua.globals().animal_icon_reads == 2
+    assert lua.globals().animal_item_icon_reads == 1
+    assert animals["candidates"][3]["sheet_icon"] == "owned item recipe"
     assert animals["candidates"][1]["sheet_icon"] == "owned recipe"
     assert [(v["entity"], v["id"]) for v in animals["candidates"].values()] == [(1, 10), (1, 12), (2, 10)]
     assert animals["candidates"][1]["grazer"] and animals["candidates"][1]["assigned"]

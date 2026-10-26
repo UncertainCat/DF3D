@@ -1346,6 +1346,15 @@ int areaAnimalItemText(lua_State* L) {
   if(!text){lua_pushnil(L);return 1;}
   const auto utf=DF2UTF(*text);lua_pushlstring(L,utf.data(),utf.size());return 1;
 }
+int areaAnimalItemIcon(lua_State* L) {
+  auto* item=Lua::GetDFObject<df::item>(L,1);
+  df3d_appearance::Result source;
+  if(!df3d_appearance::resolveCritterItemSelector(item,source)){lua_pushnil(L);return 1;}
+  ResidentAppearanceRecipe icon;
+  for(const auto& layer:source.layers)appendAppearanceLayer(icon.pages,icon.palettes,icon.layers,layer);
+  flatbuffers::FlatBufferBuilder buffer;buffer.Finish(icon.build(buffer));
+  lua_pushlstring(L,reinterpret_cast<const char*>(buffer.GetBufferPointer()),buffer.GetSize());return 1;
+}
 int areaOwnerEligible(lua_State* L) {
   auto* zone=Lua::GetDFObject<df::building_civzonest>(L,1);
   auto* unit=Lua::GetDFObject<df::unit>(L,2);
@@ -2341,6 +2350,7 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
+      lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
       lua_pushcfunction(L,areaAnimalUnitDisplay);lua_setfield(L,-2,"animal_unit_display");
       lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
     lua_pushcfunction(L,areaNewOwnerEligible);lua_setfield(L,-2,"new_owner_eligible");
@@ -2975,6 +2985,7 @@ void stepBuilder(color_ostream& out,uint32_t budget) {
     if(kind==7){
       lua_pushcfunction(L,areaAnimalCandidates);lua_setfield(L,-2,"animal_candidates");
       lua_pushcfunction(L,areaAnimalItemText);lua_setfield(L,-2,"animal_item_text");
+      lua_pushcfunction(L,areaAnimalItemIcon);lua_setfield(L,-2,"animal_item_icon");
       lua_pushcfunction(L,areaAnimalUnitDisplay);lua_setfield(L,-2,"animal_unit_display");
       lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
       lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");

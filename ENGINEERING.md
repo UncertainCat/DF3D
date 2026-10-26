@@ -7,8 +7,18 @@ page's `creature_small_texpos[VERMIN]` entry. Native PET/VERMIN dispatch at
 `c874b7` selects a nonzero caste entry before the creature entry. The field at
 `creature_raw_graphics+0xffd8` is the small VERMIN tile, not a composed list icon.
 The fixture records original page coordinates and geometry; texture exports
-remain ignored diagnostics. Item recipe/rendering integration, missing-art
-fallback and a live VERMIN case remain unfinished.
+remain ignored diagnostics. `resolveCritterItemSelector` now publishes that
+original tile as an owned recipe for returned Item rows. Typed Unit and Item
+animal rows accept `sheet_icon`; Unknown/Squad rows remain rejected. The viewer
+uses the same 40x36 picture frame and 32x32 inset image as the native item widget.
+Protected `build/areas-acceptance-20261026-113050` verifies the returned item
+recipe and existing animal effects; both save manifests are unchanged after
+unsaved exit. GPU `build/qa/animal-item-portrait-pixels-centered` matches the
+complete captured PET frame (and all 22 unit frames), with only the three known
+Godot diagnostics. The 1200x800 native screenshot centers its character grid
+with a four-pixel top margin; fixture pixel coordinates include that margin.
+Core and adapter checks pass in `build/qa/animal-item-portraits-fixed`.
+Missing-art fallback, a live VERMIN case and selected-item capture remain open.
 
 Enter/keypad Enter activates the locally selected animal through the existing
 typed unit/item toggle. It suppresses key repeats and sends nothing while busy.

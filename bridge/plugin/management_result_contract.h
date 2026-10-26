@@ -148,6 +148,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       payload+=9;
       if(!table() || !number("id",-1,INT32_MAX,true) || !text("name",512) || !text("profession",512) || !number("sex",-1,1) || !number("mood",0,7) || !boolean("grazer") || !boolean("assigned") || !number("squad_use",-1,15))return false;
       const int top=lua_gettop(L);
+      const bool animalItem=value("entity")==2 && value("id")>=0;
       const bool animalUnit=value("entity")==1 && value("id")>=0;lua_getfield(L,-1,"grazer");const bool grazer=lua_toboolean(L,-1);lua_pop(L,1);
       lua_getfield(L,-1,"animal_display");
       if(!lua_isnil(L,-1)) {
@@ -187,7 +188,7 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
       lua_getfield(L,-1,"sheet_icon");
       if(!lua_isnil(L,-1)) {
         size_t size=0;const auto* bytes=reinterpret_cast<const uint8_t*>(lua_type(L,-1)==LUA_TSTRING?lua_tolstring(L,-1,&size):nullptr);
-        valid=bytes && size<=224*1024 && operation==df3d::mirror::AreaOperation::CandidateList && (candidateKind==1 || (candidateKind==2 && animalUnit));
+        valid=bytes && size<=224*1024 && operation==df3d::mirror::AreaOperation::CandidateList && (candidateKind==1 || (candidateKind==2 && (animalUnit || animalItem)));
         if(valid) {flatbuffers::Verifier verifier(bytes,size);valid=verifier.VerifyBuffer<df3d::mirror::SelectionAppearance>(nullptr);}
         if(valid)valid=df3d::mirror::validateOwnerAppearance(*flatbuffers::GetRoot<df3d::mirror::SelectionAppearance>(bytes),payload)==nullptr;
       }

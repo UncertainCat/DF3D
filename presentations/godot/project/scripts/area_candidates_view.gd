@@ -185,7 +185,7 @@ func refresh() -> void:
 			if state.kind == 2 and row.get("animal_display") is Dictionary:
 				add_animal_text(button,row.animal_display)
 			var owner: bool = state.kind == 1
-			var selector_icon: bool = owner or int(row.get("entity",0)) == Contract.AreaCandidateEntity.Unit
+			var selector_icon: bool = owner or state.kind == 2
 			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(40 if selector_icon else 32,36)
 			var frame_style := art.make_style("BUTTON_PICTURE_BOX",8)
 			if selector_icon: frame_style.texture = picture.texture(false)
@@ -193,7 +193,7 @@ func refresh() -> void:
 			frame.add_theme_stylebox_override("panel",frame_style)
 			frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(frame)
 			owner_frames.append(frame)
-			if world.has_method("candidate_icon") and (owner or int(row.get("entity",0)) == Contract.AreaCandidateEntity.Unit):
+			if world.has_method("candidate_icon") and selector_icon:
 				var portrait := TextureRect.new()
 				portrait.texture = null
 				portrait.position = Vector2(2,2)
@@ -234,7 +234,7 @@ func refresh() -> void:
 		for index in choices.size():
 			style_row(choices[index],index == owner_selected)
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
-			if int(state.rows[index].get("entity",0)) == Contract.AreaCandidateEntity.Unit: frame_style.texture = picture.texture(index == owner_selected)
+			frame_style.texture = picture.texture(index == owner_selected)
 	for button in choices: button.disabled = state.busy()
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:

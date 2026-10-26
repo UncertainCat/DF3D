@@ -671,6 +671,7 @@ elseif request.op=='animal_candidates' then
    local bytes=require('json').decode(value)
    assert(row.name==dfhack.df2utf(string.char(table.unpack(bytes))),'native animal item text differs')
    assert(not row.animal_display,'item received unit display')
+   assert(row.sheet_icon and #row.sheet_icon.layers==1,'animal item selector recipe absent')
   else
    local value,status=dfhack.run_command_silent('df3d','zone-animal-unit-display-read',tostring(entry.id),'27')
    assert(status==0,value);local native=require('json').decode(value)

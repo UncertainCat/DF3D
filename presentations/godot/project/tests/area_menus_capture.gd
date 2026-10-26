@@ -648,7 +648,7 @@ func run() -> void:
 		{"id":24,"entity":2,"name":"Fixture item","assigned":true},
 		{"id":24,"entity":1,"name":"Fixture unit","assigned":false}]},animal_requests[-1])
 	await process_frame; await RenderingServer.frame_post_draw
-	if animal_view.choices.size() != 2 or not world.portrait_requests.is_empty() or animal_view.portrait_slots.size() != 1:
+	if animal_view.choices.size() != 2 or not world.portrait_requests.is_empty() or animal_view.portrait_slots.size() != 2:
 		push_error("Animal view confused typed portrait identities"); quit(1); return
 	for index in 2:
 		var expected: Array = [2 if index == 0 else 1,24]
@@ -731,8 +731,9 @@ func run() -> void:
 	var animal_portraits: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_portrait_pixels
 	for sample in animal_portraits.samples:
 		var row: Dictionary = sample.row
-		for key in ["color","alternate"]:
-			for component in 3: row.animal_display.name_color[key][component]=int(row.animal_display.name_color[key][component])
+		if row.has("animal_display"):
+			for key in ["color","alternate"]:
+				for component in 3: row.animal_display.name_color[key][component]=int(row.animal_display.name_color[key][component])
 		for layer in row.sheet_icon.layers:
 			for component in layer.size(): layer[component]=int(layer[component])
 		animal_state.pending={}; animal_state.mutating=false

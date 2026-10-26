@@ -62,6 +62,8 @@ bool resolve(df::unit* u, Result& out);
 bool resolvePortrait(df::unit* u, Result& out);
 // Full-body selector image: native raw conditions, without map-only anatomy masks.
 bool resolveUnitSelector(df::unit* u, Result& out);
+// PET/VERMIN selector artwork from original small-creature tile pages.
+bool resolveCritterItemSelector(df::item* item, Result& out);
 
 // Cheap per-frame change hint: a hash of the unit fields the layer
 // conditions read that can change between frames (profession, inventory

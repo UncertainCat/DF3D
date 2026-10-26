@@ -782,6 +782,30 @@ bool resolveUnitSelector(df::unit* u, Result& out) {
     return buildCtx(u,c) && resolveCtx(c,out,false,false);
 }
 
+bool resolveCritterItemSelector(df::item* item, Result& out) {
+    out = Result{};
+    if (!item || (item->getType()!=df::item_type::PET && item->getType()!=df::item_type::VERMIN)) return false;
+    // DF53.16 c83890/c874b7, reached from widget_item_portrait14236b0.
+    // Protected112207 proves this is the original VERMIN page tile, not a
+    // composed sheet icon. Preserve caste-before-creature nonzero selection.
+    static_assert(offsetof(df::creature_raw_graphics,creature_small_texpos)==0xffd8);
+    const auto* raw=df::creature_raw::find(item->getMaterial());
+    if (!raw) return false;
+    const auto caste=item->getMaterialIndex();
+    const auto* selected=caste>=0 && static_cast<size_t>(caste)<raw->caste.size()?raw->caste[caste]:nullptr;
+    const auto* graphics=selected?selected->caste_graphics:nullptr;
+    int32_t tile=graphics?graphics->creature_small_texpos[0]:0;
+    if (!tile && raw->graphics) tile=raw->graphics->creature_small_texpos[0];
+    Layer layer;
+    const df::tile_pagest* page=nullptr;
+    int32_t x=0,y=0;
+    // Missing-art fallback remains unexposed until its native asset is audited.
+    if (tile<=0 || !texposToTile(tile,page,x,y)) return false;
+    layer.page=page;layer.tileX=static_cast<uint16_t>(x);layer.tileY=static_cast<uint16_t>(y);
+    out.layers.push_back(layer);
+    return true;
+}
+
 bool resolvePortrait(df::unit* u, Result& out) {
     out = Result{};
     Ctx c;

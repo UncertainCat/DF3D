@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <array>
+#include <vector>
 namespace df { struct building_civzonest; struct unit; struct item; }
 namespace df3d_area {
 // Caller supplies a newly allocated zone and its selected type, at one safe point.
@@ -69,6 +70,10 @@ bool nativeZoneSetOwner(df::building_civzonest& zone,df::unit* owner);
 // Call only at a safe point after request/admission/staleness validation.
 // Entering this function can partially mutate; never retry an unknown result.
 bool nativeZoneAnimalAssignmentReady();
+struct ZoneAnimalCandidate { int32_t id; bool item; bool assigned; };
+// Raw native producer order, before widget search/sorting. Owns all output;
+// never reads the native selector. Unsupported/oversized lists fail closed.
+std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const df::building_civzonest& zone);
 bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item);
 bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assign);
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign);

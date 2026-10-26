@@ -1,3 +1,33 @@
+## Native zone animal candidate reader
+
+The independent reader uses native fortress-control predicate 0x138ed20 and
+the pinned inline admission branches of Pen producer 0x3a5e30 and Pond
+producer 0x3a6780. The producers themselves are UI builders and are never
+called by the reader. It owns its output and assigned-ID sets, reading only
+semantic zone membership, active units and ANY_CRITTER items.
+
+Existing assigned units precede assigned items; missing objects are skipped.
+Fresh units exclude inactive/trade-locked units. Fortress-controlled units
+must be undead or lack effective CAN_LEARN; other units must be caged.
+Pond additionally excludes units with a PetOwner and appends ANY_CRITTER.
+Assigned objects retain admission independently of those fresh-unit rules.
+Combined assigned membership and output are bounded at4096; oversized lists
+fail instead of truncating. Struct offsets and producer/helper hashes are
+checked against the supported build.
+
+Protected build/stockpile-storage-native-zone-animals-20261026-092742 passes
+with DF93036 and unchanged source after unsaved exit. Five native picker
+captures match the reader's exact typed raw entry order, including reopened
+assigned-unit and assigned-item lists. This does not establish displayed
+sorting/search parity. Earlier092610 passed the three initial picker cases.
+Root CTest19/19 and areas adapter pass in build/qa/zone-animal-candidates;
+MSVC builds in build/notes/pm/zone-animal-candidates-final-build.log.
+Installed plugin SHA256:
+6372bec1504b9285a0a72c44dc665e6047837d6d0704bb3e00cb3a7e0e80f758.
+Management remains68. The diagnostic zone-animal-candidates-read exposes
+the reader for native comparisons; product chooser integration, item display
+and typed selection are still pending.
+
 ## Typed area candidate identities (Management 68)
 
 Management 68 uses Local\df3d_management_v68. Rebuild and replace the bridge,

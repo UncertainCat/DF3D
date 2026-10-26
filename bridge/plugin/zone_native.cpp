@@ -44,6 +44,7 @@
 #include <climits>
 #include <cstring>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace df3d_area {
@@ -128,6 +129,48 @@ bool nativeZoneAnimalAssignmentReady() {
         hash(base+0x5be930,0x4)==0x1d6faef6ff900168ULL &&
         hash(base+0x723f0,0x2b)==0x025ba84042f1157dULL;
     return compatible;
+}
+std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalCandidates(const df::building_civzonest& zone) {
+    static_assert(offsetof(df::unit,flags1)==0x110);
+    static_assert(offsetof(df::unit,flags2)==0x114);
+    static_assert(offsetof(df::unit,relationship_ids)==0x3bc);
+    static_assert(offsetof(df::unit,uwss_add_caste_flag)==0x828);
+    static_assert(offsetof(df::unit,uwss_remove_caste_flag)==0x82c);
+    static_assert(offsetof(df::unit,enemy)+offsetof(df::unit::T_enemy,undead)==0xd80);
+    static_assert(offsetof(df::unit,enemy)+offsetof(df::unit::T_enemy,caste_flags)==0x1278);
+    static_assert(int(df::caste_raw_flags::CAN_LEARN)==58);
+    if(!df::global::world || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x3a5e30,0x498)==0xfebd497fb8d62a98ULL &&
+        hash(base+0x3a6780,0x567)==0x8e96382099041ad4ULL;
+    if(!compatible || (zone.type!=df::civzone_type::Pen && zone.type!=df::civzone_type::Pond))return std::nullopt;
+    if(zone.assigned_units.size()>4096 || zone.assigned_items.size()>4096-zone.assigned_units.size())return std::nullopt;
+    std::vector<ZoneAnimalCandidate> result;
+    std::unordered_set<int32_t> units(zone.assigned_units.begin(),zone.assigned_units.end());
+    std::unordered_set<int32_t> items(zone.assigned_items.begin(),zone.assigned_items.end());
+    const auto append=[&](int32_t id,bool item,bool assigned) {
+        if(result.size()>=4096)return false;
+        result.push_back({id,item,assigned});return true;
+    };
+    // Assigned objects precede fresh admissions, even if their present state
+    // would exclude them. Missing IDs are skipped, as in both native producers.
+    for(auto id:zone.assigned_units)if(df::unit::find(id) && !append(id,false,true))return std::nullopt;
+    for(auto id:zone.assigned_items)if(df::item::find(id) && !append(id,true,true))return std::nullopt;
+    for(auto* unit:df::global::world->units.active) {
+        if(!unit || unit->flags1.bits.inactive || unit->flags2.bits.locked_in_for_trading)continue;
+        const bool controlled=reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit);
+        if(controlled) {
+            const bool learns=(unit->enemy.caste_flags.is_set(df::caste_raw_flags::CAN_LEARN) ||
+                unit->uwss_add_caste_flag.bits.CAN_LEARN) && !unit->uwss_remove_caste_flag.bits.CAN_LEARN;
+            if(!unit->enemy.undead && learns)continue;
+        } else if(!unit->flags1.bits.caged)continue;
+        // PetOwner is relationship slot0 in the pinned producer.
+        if(zone.type==df::civzone_type::Pond && unit->relationship_ids[0]!=-1)continue;
+        if(!units.count(unit->id) && !append(unit->id,false,false))return std::nullopt;
+    }
+    if(zone.type==df::civzone_type::Pond)for(auto* item:df::global::world->items.other.ANY_CRITTER)
+        if(item && !items.count(item->id) && !append(item->id,true,false))return std::nullopt;
+    return result;
 }
 bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item) {
     if(!df::global::world || !nativeZoneAnimalAssignmentReady())return false;

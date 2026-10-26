@@ -1042,5 +1042,311 @@
     "scope": "Cage-to-Pond item assignment, second-Pond transfer, clear, reference/membership/containment checks, counts and revision invalidation, stale and wrong-zone clear refusal.",
     "offline": "build/qa/zone-item-native-verified",
     "limits": "Item candidates and rendered picker workflow remain pending; this is semantic effect acceptance."
+  },
+  "native_candidate_reader": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-092742",
+    "owned_df_pid": 93036,
+    "source_unchanged": true,
+    "status": "passed",
+    "plugin_sha256": "6372bec1504b9285a0a72c44dc665e6047837d6d0704bb3e00cb3a7e0e80f758",
+    "checks": [
+      {
+        "name": "Pen-picker",
+        "zone": 1490,
+        "entries": [
+          {
+            "assigned": false,
+            "id": 6545,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6548,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6686,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6821,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7119,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7121,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7265,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7269,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7270,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7347,
+            "kind": 0
+          }
+        ]
+      },
+      {
+        "name": "Pen-assigned-picker",
+        "zone": 1490,
+        "entries": [
+          {
+            "assigned": true,
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6545,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6548,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6686,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6821,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7119,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7121,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7265,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7269,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7270,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7347,
+            "kind": 0
+          }
+        ]
+      },
+      {
+        "name": "Pond-picker",
+        "zone": 1492,
+        "entries": [
+          {
+            "assigned": false,
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 5969,
+            "kind": 1
+          }
+        ]
+      },
+      {
+        "name": "Pond-assigned-picker",
+        "zone": 1492,
+        "entries": [
+          {
+            "assigned": true,
+            "id": 5969,
+            "kind": 1
+          },
+          {
+            "assigned": false,
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7346,
+            "kind": 0
+          }
+        ]
+      },
+      {
+        "name": "Pond-transfer-picker",
+        "zone": 1493,
+        "entries": [
+          {
+            "assigned": false,
+            "id": 6960,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 6961,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7122,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7264,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7277,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 7346,
+            "kind": 0
+          },
+          {
+            "assigned": false,
+            "id": 5969,
+            "kind": 1
+          }
+        ]
+      }
+    ],
+    "scope": "Exact typed raw producer order on Pen/Pond open and assigned-unit/item reopen. No native widget state is consumed by the bridge reader.",
+    "limits": "Reader not connected to product chooser yet. Search, displayed ordering, item names, typed click handling and broader eligibility variants remain pending."
   }
 }

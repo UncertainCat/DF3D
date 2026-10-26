@@ -78,6 +78,17 @@ local function capture(label)
   local _,address=df.sizeof(list.is_selected);record.callbacks.is_selected=callback_at(address)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
   record.cursor=list.cursor_idx;record.query=list.filter_str
+  if label:find('%-picker$')then
+   local text,code=dfhack.run_command_silent('df3d','zone-animal-candidates-read',tostring(record.zone))
+   assert(code==0,text)
+   local candidates=require('json').decode(text)
+   assert(#candidates==#record.entries,'animal candidate count differs: '..label)
+   for i,candidate in ipairs(candidates)do
+    local entry=record.entries[i]
+    assert(candidate.kind==entry.kind and candidate.id==entry.id,'animal raw candidate order differs: '..label..' at '..i)
+   end
+   record.semantic_candidates=candidates;record.exact_candidate_parity=true
+  end
  end
  records[#records+1]=record
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(label);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
@@ -172,6 +183,10 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
    unit=animal.id,cancelled_job=cancelled,retained_job=retained}
   effects('unit-before-pen',0,chosen_unit)
   click_entry(opened,0,chosen_unit);capture('Pen-assigned')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+  local assigned_picker=capture('Pen-assigned-picker')
+  assert(assigned_picker.semantic_candidates[1].assigned and assigned_picker.entries[1].id==chosen_unit,
+   'native Pen did not retain assigned unit first')
   local after=effects('unit-after-pen',0,chosen_unit)
   assert(#after.zones==1 and after.zones[1]==pen_zone,'native pen assignment did not select sole zone')
   assert(not contains(cage.assigned_units,animal.id),'native assignment retained cage membership')
@@ -217,6 +232,10 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   assert(chosen_item,'native vermin item required')
   effects('item-before-pond',1,chosen_item)
   click_entry(opened,1,chosen_item);capture('Pond-item-assigned')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
+  local assigned_picker=capture('Pond-assigned-picker')
+  assert(assigned_picker.semantic_candidates[1].assigned and assigned_picker.entries[1].kind==1 and
+   assigned_picker.entries[1].id==chosen_item,'native Pond did not retain assigned item first')
   local after_item=effects('item-after-pond',1,chosen_item)
   assert(#after_item.zones==1 and after_item.zones[1]==pond_zone,'native item assignment did not select sole zone')
  else

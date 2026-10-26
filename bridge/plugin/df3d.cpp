@@ -2091,6 +2091,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-animal-candidates-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* zone=virtual_cast<df::building_civzonest>(df::building::find(id));
+        if(!zone)return CR_FAILURE;
+        const auto candidates=df3d_area::nativeZoneAnimalCandidates(*zone);
+        if(!candidates)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);
+        for(const auto& candidate:*candidates) {
+          Json::Value row;row["id"]=candidate.id;row["kind"]=candidate.item?1:0;row["assigned"]=candidate.assigned;
+          output.append(row);
+        }
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-candidates-read" || parameters[0]=="zone-new-owner-candidates-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];

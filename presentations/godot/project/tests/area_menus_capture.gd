@@ -244,6 +244,36 @@ func run() -> void:
 		push_error("Native owner status glyph positions or colors differ"); quit(1); return
 	if not owner_header_pixels(header_reference,"default"): quit(1); return
 	var header_rows: Array = controller.candidates_state.rows.duplicate(true)
+	# Exercise actual main-controller key routing and native selected artwork.
+	var navigation_rows: Array = header_rows.duplicate(true)
+	while navigation_rows.size() < 24:
+		var row: Dictionary = header_rows[0].duplicate(true); row.id = 10000+navigation_rows.size()
+		navigation_rows.append(row)
+	controller.candidates_state.rows = navigation_rows
+	controller.candidates_state.receipt = 101; controller.candidates_state.changed.emit()
+	await process_frame; await RenderingServer.frame_post_draw
+	for probe in [[KEY_DOWN,1],[KEY_UP,0],[KEY_PAGEDOWN,16],[KEY_PAGEUP,0],[KEY_UP,0]]:
+		var key := InputEventKey.new(); key.keycode = probe[0]; key.pressed = true
+		root.push_input(key,true)
+		await process_frame; await RenderingServer.frame_post_draw
+		if controller.candidates_view.owner_selected != probe[1]:
+			push_error("Owner keyboard selection differs from native"); quit(1); return
+		if probe[1] == 1 and not owner_frame_pixels(controller.candidates_view,header_reference,true): quit(1); return
+		if probe[1] == 16:
+			if controller.candidates_view.scroll.scroll_vertical != 36:
+				push_error("Owner page navigation did not advance one whole row"); quit(1); return
+			var selected_button: Button = controller.candidates_view.choices[15]
+			if not controller.candidates_view.scroll.get_global_rect().encloses(selected_button.get_global_rect()):
+				push_error("Owner keyboard selection is outside viewport"); quit(1); return
+	controller.candidates_state.mutating = true
+	var blocked := InputEventKey.new(); blocked.keycode = KEY_DOWN; blocked.pressed = true
+	root.push_input(blocked,true)
+	if controller.candidates_view.owner_selected != 0:
+		push_error("Pending assignment moved keyboard selection"); quit(1); return
+	controller.candidates_state.mutating = false
+	controller.candidates_state.rows = header_rows; controller.candidates_state.receipt = 95
+	controller.candidates_state.changed.emit()
+	await process_frame; await RenderingServer.frame_post_draw
 	for sample in header_reference.owner_header_order.sequences:
 		var sort: int = {"Name":1,"Cat":2,"Prof":3,"Stress":4}[sample.header]
 		var button: Button = controller.candidates_view.headers[sort-1]

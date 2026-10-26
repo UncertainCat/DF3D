@@ -1607,6 +1607,9 @@ func _input(event: InputEvent) -> void:
 		handle_back()
 		get_viewport().set_input_as_handled()
 		return
+	if panel.visible and candidates_view.feed_owner_key(event):
+		get_viewport().set_input_as_handled()
+		return
 	if panel.visible and rename_field.editing and event is InputEventKey and event.pressed:
 		rename_field.feed_key(event)
 		get_viewport().set_input_as_handled()

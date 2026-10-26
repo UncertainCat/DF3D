@@ -327,8 +327,13 @@ local zone=assert(ui.cur_bld);assert(zone.type==df.civzone_type.Tomb)
 pixel(304,114)
 records[#records+1]={name='new-tomb',id=zone.id,owner=zone.assigned_unit_id,settings=zone.zone_settings.whole.i1}
 pixel(336,154);capture('tomb-picker')
-gui.simulateInput(view,'CURSOR_DOWN');capture('tomb-picker-row-down')
-gui.simulateInput(view,'CURSOR_UP');capture('tomb-picker-row-up')
+-- Native list navigation uses STANDARDSCROLL, not map CURSOR bindings.
+for _,probe in ipairs{{'down','STANDARDSCROLL_DOWN',1},{'up','STANDARDSCROLL_UP',0},{'pagedown','STANDARDSCROLL_PAGEDOWN',16},{'pageup','STANDARDSCROLL_PAGEUP',0}}do
+ gui.simulateInput(view,probe[2]);capture('tomb-picker-row-'..probe[1])
+ local list=assert(unit_list(df.global.game.main_interface.unit_selector,0))
+ records[#records+1]={name='owner-navigation-'..probe[1],cursor=list.cursor_idx,expected=probe[3]}
+ assert(list.cursor_idx==probe[3],'native owner navigation changed: '..probe[1])
+end
 -- Isolate retained candidates without changing eligibility or appearance.
 local inactive=assert(df.unit.find(996),'inactive owner fixture missing')
 assert(inactive.flags1.inactive,'inactive fixture unexpectedly active')

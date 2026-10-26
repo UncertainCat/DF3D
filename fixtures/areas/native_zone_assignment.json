@@ -3435,5 +3435,32 @@
       "save_preservation": "Owned DF119600 closed unsaved; both source/clone manifests unchanged.",
       "plugin_sha256": "204a4d4cfbadcb2c6c7f1c473f6b87e5ff808a6db7e05d0b384c5fb57279d022"
     }
+  },
+  "owner_keyboard_navigation": {
+    "native_run": "build/stockpile-storage-native-zone-owner-20261026-035141",
+    "owned_df_pid": 113784,
+    "save_preservation": "Owned source unchanged; closed unsaved",
+    "steps": [
+      {
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 1
+      },
+      {
+        "key": "STANDARDSCROLL_UP",
+        "cursor": 0
+      },
+      {
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "cursor": 16
+      },
+      {
+        "key": "STANDARDSCROLL_PAGEUP",
+        "cursor": 0
+      }
+    ],
+    "page_rows": 16,
+    "page_down_first_visible_ordinal": 1,
+    "gpu_check": "build/qa/owner-keyboard-final",
+    "limits": "Unfocused navigation only. Enter, textbox focus/editing, hover, full scrollbar and end-of-list geometry remain unverified."
   }
 }

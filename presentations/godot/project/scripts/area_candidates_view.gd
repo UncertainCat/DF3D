@@ -16,6 +16,8 @@ var owner_frames: Array[Panel] = []
 var picture = preload("res://scripts/native_unit_picture_frame.gd").new()
 var remove: Button
 var cached_rows: Array = []
+var owner_selected := 0
+var owner_receipt := 0
 var strips: Dictionary = {}
 var squad_prompt: Label
 var squad_buttons: Array[Button] = []
@@ -89,6 +91,8 @@ func row_button(text: String) -> Button:
 	return button
 
 func refresh() -> void:
+	if owner_receipt != state.receipt or state.rows.is_empty():
+		owner_selected = 0; owner_receipt = state.receipt
 	body.custom_minimum_size = Vector2(564,400) if state.kind == 3 else Vector2(376 if state.kind == 2 else 576,684)
 	scroll.position.y = 36 if state.kind == 3 else 24
 	scroll.size = Vector2(body.custom_minimum_size.x,360 if state.kind == 3 else 600)
@@ -179,9 +183,9 @@ func refresh() -> void:
 				check.position = Vector2(280,0); check.size = Vector2(32,36)
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
 	if state.kind == 1:
-		style_row(remove,remove.visible)
+		style_row(remove,remove.visible and owner_selected == 0)
 		for index in choices.size():
-			var selected := index == 0 and not remove.visible
+			var selected := index + (1 if remove.visible else 0) == owner_selected
 			style_row(choices[index],selected)
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
 			frame_style.texture = picture.texture(selected)
@@ -192,6 +196,29 @@ func refresh() -> void:
 		button.modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE
 	# A short bridge page must not strand the cursor below an absent scrollbar.
 	if not state.busy() and state.cursor != 0 and state.rows.size() < 16: state.call_deferred("more")
+
+# Local selection follows the native STANDARDSCROLL bindings. Receipt changes
+# reset it; continuation pages retain the same receipt and selection.
+func feed_owner_key(event: InputEvent) -> bool:
+	if not is_visible_in_tree() or state.kind != 1 or not event is InputEventKey or not event.pressed: return false
+	if search.has_focus() or event.alt_pressed or event.ctrl_pressed or event.meta_pressed or event.shift_pressed: return false
+	var delta := 0
+	match event.keycode:
+		KEY_UP,KEY_8,KEY_KP_8: delta = -1
+		KEY_DOWN,KEY_2,KEY_KP_2: delta = 1
+		KEY_PAGEUP,KEY_9,KEY_KP_9: delta = -16
+		KEY_PAGEDOWN,KEY_3,KEY_KP_3: delta = 16
+	if delta == 0: return false
+	if state.busy(): return true
+	var count: int = choices.size() + (1 if remove.visible else 0)
+	if count == 0: return true
+	owner_selected = clampi(owner_selected + delta,0,count-1)
+	refresh()
+	var first := int(scroll.scroll_vertical / 36)
+	if owner_selected < first: first = owner_selected
+	elif owner_selected >= first + 16: first = owner_selected - 15
+	scroll.scroll_vertical = first * 36
+	return true
 
 func add_owner_text(button: Button, display: Dictionary) -> void:
 	# Native status occupies the first cell row; the two name lines follow it.

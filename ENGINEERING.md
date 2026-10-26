@@ -386,10 +386,21 @@ BUTTON_RECTANGLE_SELECTED on the first entry (Remove assignment when present).
 Rows remain552x36 rather than stretching into the scrollbar column. Native
 capture `build/stockpile-storage-native-zone-owner-20261026-024801/tomb-picker.png`
 and `build/qa/owner-row-original` match both88x36 right-edge background regions
-exactly. The GPU check passes with the three documented Godot notices. Protected
-025247 additionally observes unchanged native cursor0 after CURSOR_DOWN/UP;
-this does not establish complete keyboard behavior. Attempted hidden-window
-hover injection did not reach native mouse state and provides no hover evidence.
+exactly. The GPU check passes with the three documented Godot notices.
+Protected native035141 verifies STANDARDSCROLL Down/Up moves the cursor1/0,
+and PageDown/PageUp moves16/0. PageDown reveals ordinal1 as the first row.
+DF113784 closes unsaved and the source manifest matches. CURSOR_DOWN/UP are
+map bindings and do not establish picker navigation.
+
+The owner view routes unfocused arrow/numpad and page keys through the main
+controller, updates selection artwork and scrolls in36-pixel rows with a16-row
+page. New receipts reset selection; continuation pages retain it. Pending
+requests suppress navigation. `build/qa/owner-keyboard-final` passes root19/19
+and actual viewport key routing, selected-frame pixels, paging and pending-write
+checks, with only the three documented Godot notices. Enter, textbox editing,
+full scrollbar/end-of-list geometry and focus behavior remain unfinished.
+Hover probes034258/034611 retain injected coordinates but lack a positive
+hover control; unchanged sampled artwork is inconclusive. No hover claim.
 Owner portrait frames reuse the original nine BUTTON_PICTURE_BOX cells and the
 selected variant, at40x36. Native025944 records anchored offsets2,2 for the first
 two rows; the GPU check matches all288 outer-border pixels per frame state.

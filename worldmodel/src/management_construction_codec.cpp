@@ -146,7 +146,11 @@ AreaState decodeArea(const m::AreaState* a) {
   if(a->locations())for(const auto* v:*a->locations())out.locations.push_back({v->id(),text(v->name()),v->location_kind(),text(v->religion()),v->guild_profession(),v->location_tier(),v->site_id()});
   if(a->candidates())for(const auto* v:*a->candidates()) {
     AreaCandidateRow row{v->id(),text(v->name()),text(v->profession()),v->sex(),v->mood(),v->grazer(),v->assigned(),v->squad_use()};
-    if(const auto* d=v->owner_display())row.ownerDisplay=AreaOwnerDisplay{d->columns(),text(d->first_line()),text(d->second_line()),text(d->status()),d->room_value()};
+    if(const auto* d=v->owner_display()) {
+      row.ownerDisplay=AreaOwnerDisplay{d->columns(),text(d->first_line()),text(d->second_line()),text(d->status()),d->room_value()};
+      if(const auto* c=d->name_color())row.ownerDisplay->nameColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
+        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+    }
     out.candidates.push_back(std::move(row));
   }
   if(a->links())for(const auto* v:*a->links())out.links.push_back({v->id(),AreaKind(v->kind()),v->direction(),text(v->name())});

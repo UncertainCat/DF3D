@@ -223,7 +223,11 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
     row["sex"]=v.sex;row["mood"]=v.mood;row["grazer"]=v.grazer;row["assigned"]=v.assigned;row["squad_use"]=v.squadUse;
     if(v.ownerDisplay) {const auto& d=*v.ownerDisplay;Dictionary display;
       display["columns"]=d.columns;display["first_line"]=String::utf8(d.firstLine.c_str());display["second_line"]=String::utf8(d.secondLine.c_str());
-      display["status"]=String::utf8(d.status.c_str());display["room_value"]=d.roomValue;row["owner_display"]=display;}
+      display["status"]=String::utf8(d.status.c_str());display["room_value"]=d.roomValue;
+      if(d.nameColor) {Dictionary color;Array primary,alternate;
+        for(auto c:d.nameColor->color)primary.push_back(int(c));for(auto c:d.nameColor->alternate)alternate.push_back(int(c));
+        color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor->effect);display["name_color"]=color;}
+      row["owner_display"]=display;}
     candidates.push_back(row);
   }
   for(const auto& v:s.links) {

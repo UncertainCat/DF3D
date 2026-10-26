@@ -6,8 +6,8 @@
 #include "location_details_util.h"
 #include "location_staff_candidates_util.h"
 namespace df3d::mirror {
-inline constexpr uint32_t kManagementVersion = 63;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v63";
+inline constexpr uint32_t kManagementVersion = 64;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v64";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -970,6 +970,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            textSize(display->first_line())>384 || textSize(display->second_line())>384 || textSize(display->status())>256 ||
            ((display->room_value()==0)!=(textSize(display->status())==0)))return "invalid owner display";
         payload+=6+textSize(display->first_line())+textSize(display->second_line())+textSize(display->status());
+        if(const auto* c=display->name_color()) {
+          if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||
+             c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3 ||
+             (c->effect()==0 && (c->foreground()!=c->alternate_foreground() || c->background()!=c->alternate_background() || c->bright()!=c->alternate_bright())))
+            return "invalid owner name color";
+          payload+=7;
+        }
       }
       payload+=9+textSize(row->name())+textSize(row->profession());
     }

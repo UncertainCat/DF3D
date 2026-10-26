@@ -1196,7 +1196,9 @@ table AreaZoneSettings {
 table AreaSettingRow { key:string; index:int32 = -1; label:string; kind:uint8; state:uint8; estimated:bool; }
 table AreaLocationRow { id:int32 = -1; name:string; location_kind:uint8; religion:string; guild_profession:int16 = -1; location_tier:int32 = -1; site_id:int32 = -1; }
 // Absent in legacy recordings: unavailable, not an empty native row.
-table AreaOwnerDisplay { columns:uint16; first_line:string; second_line:string; status:string; room_value:int32; }
+// Installed palette components; effect0 steady,1 legendary,2 nemesis,3 fire.
+table AreaNameColor { foreground:uint8; background:uint8; bright:uint8; alternate_foreground:uint8; alternate_background:uint8; alternate_bright:uint8; effect:uint8; }
+table AreaOwnerDisplay { columns:uint16; first_line:string; second_line:string; status:string; room_value:int32; name_color:AreaNameColor; }
 table AreaCandidateRow { id:int32 = -1; name:string; profession:string; sex:int8 = -1; mood:uint8; grazer:bool; assigned:bool; squad_use:int8 = -1; owner_display:AreaOwnerDisplay; }
 table AreaLinkRow { id:int32 = -1; kind:AreaKind; direction:uint8; name:string; }
 table AreaPaintPreview { x:int16; y:int16; width:uint16; height:uint16; }
@@ -1709,7 +1711,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 63;
+  schema_version:uint32 = 64;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -1755,7 +1757,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 63;
+  schema_version:uint32 = 64;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

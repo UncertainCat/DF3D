@@ -41,6 +41,28 @@ TEST_CASE("owner display preserves native lines and unknown legacy rows") {
   }
 }
 
+TEST_CASE("owner name color bounds effects and absent historical facts") {
+  for(int mode=0;mode<13;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::AreaNameColor> color;
+    const int effect=mode>=1 && mode<=4?mode-1:mode==11?4:1;
+    if(mode!=0)color=wire::CreateAreaNameColor(b,mode==5?8:3,mode==6?8:3,mode==7?2:1,
+      mode==8?8:effect==0?3:0,mode==9?8:3,mode==10?2:effect==0?1:0,effect);
+    if(mode==12)color=wire::CreateAreaNameColor(b,3,3,1,0,3,0,0);
+    const auto display=wire::CreateAreaOwnerDisplay(b,45,b.CreateString("Observed"),0,0,0,color);
+    const auto row=wire::CreateAreaCandidateRow(b,21,0,0,-1,0,false,false,-1,display);
+    const auto rows=b.CreateVector(std::vector{row});wire::AreaStateBuilder area(b);
+    area.add_operation(wire::AreaOperation::CandidateList);area.add_candidate_kind(1);area.add_candidates(rows);
+    const auto a=area.Finish();wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_area(a);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(mode>=5));
+    const auto decoded=codec::decodeArea(value->area());const auto& name=decoded.candidates[0].ownerDisplay->nameColor;
+    CHECK(name.has_value()==(mode!=0));
+    if(mode>=1 && mode<=4) {REQUIRE(name);CHECK(name->effect==effect);CHECK(name->color[0]==3);CHECK(name->color[1]==3);CHECK(name->color[2]==1);
+      CHECK(name->alternate[0]==(effect==0?3:0));CHECK(name->alternate[1]==3);CHECK(name->alternate[2]==(effect==0?1:0));}
+  }
+}
+
 TEST_CASE("verified category default lists accept parent ordering") {
   for(const char* key:{"food/meat","furniture/type","refuse/type","stone/metal_ores","ammo/type","bars_blocks/bars_metal","gems/rough_gem","finished_goods/type","leather/type","cloth/thread_silk","weapons/weapons","armor/body","sheet/paper"}) {
     wm::ManagementRequest q;q.action=wm::ManagementAction::AreaInspect;

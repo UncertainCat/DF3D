@@ -1,6 +1,7 @@
 #pragma once
 #include "wm/types.h"
 #include <cstdint>
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -111,7 +112,8 @@ struct LocationCatalog {
   uint8_t kind=0; int64_t revision=0; uint32_t cursor=0,total=0,nextCursor=0;
   std::vector<LocationReligion> religions; std::vector<LocationGuild> guilds;
 };
-struct AreaOwnerDisplay { uint16_t columns=0; std::string firstLine,secondLine,status; int32_t roomValue=0; };
+struct AreaNameColor { std::array<uint8_t,3> color{},alternate{}; uint8_t effect=0; };
+struct AreaOwnerDisplay { uint16_t columns=0; std::string firstLine,secondLine,status; int32_t roomValue=0; std::optional<AreaNameColor> nameColor; };
 struct AreaCandidateRow {
   int32_t id=-1;
   std::string name,profession;

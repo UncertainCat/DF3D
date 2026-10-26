@@ -672,8 +672,22 @@ must not carry this record. Missing records in older recordings remain unknown,
 not empty native rows. This migration establishes transport only; production
 reader and renderer integration is verified in the native owner audit above.
 
+Management64 adds optional `AreaOwnerDisplay.name_color`: two owned foreground,
+background and brightness triplets plus effect0..3 (steady, legendary, nemesis,
+fire). Foreground/background are palette indices0..7; brightness is0..1. Steady
+records require identical alternatives. The record adds seven bytes to bounded
+payload accounting. Missing records remain unknown, including historical owner
+rows with text but no color. No clock, RNG, native pointer or renderer state is
+transported. This contract change does not itself connect the production reader
+or authorize exposing the staged picker.
+
+`build/qa/owner-color-contract` passes root CTest19/19 and the real Godot
+contract decoder, including both color alternatives and their effect. Boundary
+checks reject out-of-range components/effects and unequal steady alternatives;
+missing historical color records remain absent.
+
 Bridge, model and Godot must be rebuilt together. The current live region is
-`Local\df3d_management_v63`; version62 peers cannot share it. Historical version62
+`Local\df3d_management_v64`; version63 peers cannot share it. Historical version62
 evidence below describes the earlier overlap migration.
 
 `build/qa/owner-display-contract-final` passes root CTest19/19 and the Godot

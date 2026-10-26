@@ -44,8 +44,19 @@ GPU `build/qa/animal-container-pixels-utf8` matches all 4096 RGBA bytes and each
 40x36 displayed row region for two metal cages, wood, glass and an inactive
 occupant. It passes with the three known Godot diagnostics. The initial pixel
 run found a test-fixture UTF-8 decoding mistake, corrected before acceptance.
-Actual empty-reference and critter-item cages, restraint artwork, fallback art
-and status hover help still need coverage/integration.
+Status kind5 now draws the original `MISSING_BUILDING` tile (`DEFAULTS:0:1`).
+`build/qa/animal-container-fallback` passes core and matches the complete native
+40x36 fallback row region, with only the three known Godot diagnostics.
+Protected `build/stockpile-storage-native-zone-animals-20261026-125123` also
+captures real copper-chain and pig-tail-rope items. Their native keys select
+`ITEM_CHAIN_METAL` / `ITEM_CHAIN_ROPE` (`ITEM_CONSTRUCTION:2:5` / `1:5`). The
+compiled compositor reproduces both 4096-byte textures from installed sprites
+and the first18 DEFAULT palette pairs with a transparent body. Restraints do
+not composite an animal; native rendering clears RGB for transparent pixels.
+This establishes the reference, not product restraint transport/rendering.
+Actual empty-reference and critter-item cages and status hover help remain open.
+The four containment hover IDs and strings are located, but controlled probes
+at the rendered indicators did not activate them; no hover parity is claimed.
 `nativeZoneAnimalContainer` reads cage material family, solid color token and
 first qualifying occupant from semantic material/reference data. It calls only
 pinned native material leaves; cached graphics and widgets are never runtime

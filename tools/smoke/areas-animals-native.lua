@@ -76,7 +76,20 @@ local function callbacks(value,stride)
 end
 local function capture(label,keep_mouse)
  if not keep_mouse then g.mouse_x=0;g.mouse_y=0;g.precise_mouse_x=0;g.precise_mouse_y=0 end
- for i=1,3 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
+ local mouse={g.precise_mouse_x,g.precise_mouse_y,g.mouse_x,g.mouse_y}
+ for i=1,3 do
+  if keep_mouse then
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=mouse[1];g.precise_mouse_y=mouse[2];g.mouse_x=mouse[3];g.mouse_y=mouse[4]
+   gui.simulateInput(view,{})
+  end
+  view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ end
+ if keep_mouse then
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=mouse[1];g.precise_mouse_y=mouse[2];g.mouse_x=mouse[3];g.mouse_y=mouse[4]
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+ end
  local rows={};local list=walk(main.unit_selector,rows,0,true)
  local record={name=label,zone=ui.cur_bld and ui.cur_bld.id or -1,widgets=rows,callbacks={},entries={},assigned={}}
  if ui.cur_bld then for _,id in ipairs(ui.cur_bld.assigned_units)do record.assigned[#record.assigned+1]=id end end
@@ -87,6 +100,10 @@ local function capture(label,keep_mouse)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
   record.cursor=list.cursor_idx;record.query=list.filter_str
   record.hover=main.current_hover;record.hover_enabled=main.hover_instructions_on
+  record.hover_input={gate=df.reinterpret_cast('uint8_t',image_base+0x23905d5).value,x=g.mouse_x,y=g.mouse_y}
+  record.native_mouse={df.reinterpret_cast('int32_t',image_base+0x264a5b0).value,df.reinterpret_cast('int32_t',image_base+0x264a5b4).value}
+  local _,gps_address=df.sizeof(g);local _,mouse_address=df.sizeof(g:_field('mouse_x'))
+  record.gps_rva=gps_address-image_base;record.mouse_x_rva=mouse_address-image_base
   record.help_cells={}
   if keep_mouse then for y=0,17 do for x=g.dimx-24,g.dimx-1 do
    local tile=dfhack.screen.readTile(x,y)
@@ -202,7 +219,7 @@ local function capture(label,keep_mouse)
   if label=='Pen-picker' or label=='Pond-picker' or label=='Pen-assigned-picker' or label=='Pond-assigned-picker' or label=='Pond-filled-status' or label:find('^Pen%-status%-') then
    record.status_icons={}
    record.status_globals={}
-   for key,rva in pairs{pasture=0x264aff8,pit=0x264affc,pond=0x264b000,fallback=0x2687a00,cage_base=0x2684bdc,cage_100=0x2684bd8,cage_200=0x2684be0,cage_occupied=0x2684be8,cage_occupied_100=0x2684be4,cage_occupied_200=0x2684bec}do
+   for key,rva in pairs{pasture=0x264aff8,pit=0x264affc,pond=0x264b000,fallback=0x2687a00,chain_rope=0x2684b7c,chain_metal=0x2684b78,cage_base=0x2684bdc,cage_100=0x2684bd8,cage_200=0x2684be0,cage_occupied=0x2684be8,cage_occupied_100=0x2684be4,cage_occupied_200=0x2684bec}do
     local texpos=df.reinterpret_cast('int32_t',image_base+rva).value
     local source={texture=texpos}
     for _,page in ipairs(df.global.texture.page)do
@@ -304,12 +321,29 @@ local function capture(label,keep_mouse)
      if expected==4 then
       local item_id=-1
       for _,ref in ipairs(status.refs)do if ref.kind==11 then item_id=ref.item;break end end
-      local expected_relation=label=='Pen-status-current-chain' and status.id==chosen_status_unit and 1 or
-       label=='Pen-status-pending-chain' and status.id==chosen_status_unit and 3 or
-       label=='Pen-status-pending-cage' and status.id==chosen_status_unit and 4 or 2
+      local expected_relation=label:find('^Pen%-status%-current%-chain') and status.id==chosen_status_unit and 1 or
+       label:find('^Pen%-status%-pending%-chain') and status.id==chosen_status_unit and 3 or
+       label:find('^Pen%-status%-pending%-cage') and status.id==chosen_status_unit and 4 or 2
       if expected_relation~=2 then item_id=chosen_status_item end
       assert(semantic.containment==expected_relation and semantic.item_id==item_id and item_id>=0,'native container subject differs')
      else assert(semantic.containment==0 and semantic.item_id==-1,'non-container status retained item facts') end
+     if semantic.kind==4 and df.item.find(semantic.item_id):getType()==df.item_type.CHAIN then
+      local item=df.item.find(semantic.item_id);local material=assert(dfhack.matinfo.decode(item))
+      local pattern=df.global.world.raws.descriptors.patterns[material.material.state_color.Solid]
+      local color_id=#pattern.colors>0 and pattern.colors[0] or -1
+      local rope=material.material.flags.THREAD_PLANT or material.material.flags.LEATHER or material.material.flags.SILK or material.material.flags.YARN
+      local key=(rope and 1 or 2)|((color_id+1)<<2)
+      local vector=image_base+0x24ed2f0;local first=df.reinterpret_cast('uint64_t',vector).value;local last=df.reinterpret_cast('uint64_t',vector+8).value
+      assert(last>=first and (last-first)//8<100000,'invalid restraint diagnostic cache')
+      local native_key
+      for address=first,last-8,8 do
+       local entry=df.reinterpret_cast('uint64_t',address).value
+       if df.reinterpret_cast('int32_t',entry+4).value==status.cells[1].texture then native_key=df.reinterpret_cast('int32_t',entry).value;break end
+      end
+      assert(native_key==key,'restraint rendered key differs')
+      status.restraint={item_id=item.id,material_type=item:getMaterial(),material_index=item:getMaterialIndex(),rope=rope,
+       solid_color=color_id>=0 and df.global.world.raws.descriptors.colors[color_id].id or '',color_id=color_id,native_key=native_key}
+     end
      status.semantic=semantic;status.ui_unchanged=true
      record.status_icons[#record.status_icons+1]=status
     end
@@ -424,6 +458,30 @@ local function controls(prefix,searches)
   end
  end
  reopen()
+end
+local function status_hover(label,id,expected)
+ local rows={};walk(main.unit_selector,rows,0,true)
+ local target
+ for _,row in ipairs(rows)do if row.unit_id==id then target=row;break end end
+ assert(target,'missing status hover subject')
+ local px,py=(target.x+25)*8+4,(target.y-2)*12+8
+ local deadline=dfhack.getTickCount()+900
+ repeat
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=px;g.precise_mouse_y=py;g.mouse_x=px//8;g.mouse_y=(py-4)//12
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ until dfhack.getTickCount()>=deadline
+ g.precise_mouse_x=px;g.precise_mouse_y=py;g.mouse_x=px//8;g.mouse_y=(py-4)//12
+ local record=capture(label,true)
+ record.expected_hover=expected;record.hover_match=record.hover==expected and record.hover_enabled
+ -- Help activation remains an observation, not an acceptance assertion: DF's
+ -- containment instruction is not activated by these known screen coordinates.
+ record.help_text={}
+ for y=0,17 do
+  local chars={};for x=1,24 do chars[x]=' 'end
+  for _,cell in ipairs(record.help_cells)do if cell.y==y then chars[cell.x-(g.dimx-24)+1]=string.char(cell.ch)end end
+  record.help_text[#record.help_text+1]=dfhack.df2utf(table.concat(chars))
+ end
 end
 local function navigation(prefix,opened)
  assert(opened.cursor==0,'animal picker did not initially select first row')
@@ -598,19 +656,34 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   animal.flags1.inactive=true
   capture('Pen-status-inactive-cage')
   animal.flags1.whole=original_flags
+  status_hover('Pen-status-current-cage-hover',animal.id,0x170)
   local chain_item=df.buildingitemst:new();chain_item.item=contained:getItem();chain.contained_items:insert('#',chain_item)
   local chain_ref=df.general_ref_building_chainst:new();chain_ref.building_id=chain.id
   animal.general_refs:insert('#',chain_ref);animal.flags1.chained=true
   chosen_status_item=original_item_id
   capture('Pen-status-current-chain')
+  status_hover('Pen-status-current-chain-hover',animal.id,0x16f)
+  local made={}
+  for _,token in ipairs{'INORGANIC:COPPER','PLANT:GRASS_TAIL_PIG:THREAD'}do
+   local material=assert(dfhack.matinfo.find(token),'restraint fixture material missing')
+   local items=dfhack.items.createItem(animal,df.item_type.CHAIN,-1,material.type,material.index)
+   assert(#items==1,'restraint fixture creation failed')
+   local item=items[1];made[#made+1]=item
+   chain_item.item=item;chosen_status_item=item.id
+   capture('Pen-status-current-chain-'..(material.material.flags.THREAD_PLANT and 'rope' or 'metal'))
+  end
+  chain_item.item=container;chosen_status_item=original_item_id
+  for _,item in ipairs(made)do assert(dfhack.items.remove(item),'restraint fixture cleanup failed')end
   animal.flags1.whole=original_flags
   animal.general_refs:erase(#animal.general_refs-1);chain_ref:delete()
   contained.item_id=-1
   capture('Pen-status-pending-chain')
+  status_hover('Pen-status-pending-chain-hover',animal.id,0x171)
   chain.assigned=nil
   assert(#cage.contained_items>0 and cage.contained_items[0].item,'status fixture needs installed cage item')
   chosen_status_item=cage.contained_items[0].item.id
   capture('Pen-status-pending-cage')
+  status_hover('Pen-status-pending-cage-hover',animal.id,0x172)
   cage.assigned_units:erase(#cage.assigned_units-1)
   capture('Pen-status-missing-container')
   chain.assigned=animal

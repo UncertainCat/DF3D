@@ -790,6 +790,18 @@ func run() -> void:
 		crop.save_png(directory.path_join("animal-container-"+str(sample.capture)+".png"))
 		digest=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
 		if digest.finish().hex_encode()!=str(sample.rgb_sha256): push_error("Native cage row pixels differ: "+str(sample.capture));quit(1);return
+	var fallback: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_fallback_pixels.sample
+	for key in ["color","alternate"]:
+		for component in 3: fallback.row.animal_display.name_color[key][component]=int(fallback.row.animal_display.name_color[key][component])
+	animal_state.rows=[fallback.row,{"id":-1,"entity":0}];animal_view.owner_selected=1;animal_state.changed.emit()
+	var fallback_indicator = animal_view.choices[0].get_node_or_null("AnimalStatus")
+	if fallback_indicator==null or fallback_indicator.texture==null:push_error("Native missing container artwork absent");quit(1);return
+	await process_frame;await RenderingServer.frame_post_draw
+	var fallback_image := root.get_texture().get_image();fallback_image.convert(Image.FORMAT_RGB8)
+	var fallback_crop := fallback_image.get_region(Rect2i(Vector2i(animal_view.choices[0].global_position)+Vector2i(240,0),Vector2i(40,36)))
+	fallback_crop.save_png(directory.path_join("animal-container-fallback.png"))
+	var fallback_digest := HashingContext.new();fallback_digest.start(HashingContext.HASH_SHA256);fallback_digest.update(fallback_crop.get_data())
+	if fallback_digest.finish().hex_encode()!=str(fallback.rgb_sha256):push_error("Native missing container pixels differ");quit(1);return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

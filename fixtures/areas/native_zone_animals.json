@@ -13180,5 +13180,129 @@
       "Wood/glass/inactive variants use controlled native semantic facts with the same live owned occupant recipe.",
       "Restraints and fallback artwork are not covered."
     ]
+  },
+  "animal_fallback_pixels": {
+    "provenance": "build\\stockpile-storage-native-zone-animals-20261026-125123",
+    "original_token": "MISSING_BUILDING",
+    "original": {
+      "page": "DEFAULTS",
+      "texture": 119269,
+      "x": 0,
+      "y": 1
+    },
+    "sample": {
+      "capture": "Pen-status-missing-container",
+      "row": {
+        "animal_display": {
+          "columns": 27,
+          "combined_fits": true,
+          "first_line": "Stray Drake, \u2642 (Tame)",
+          "name_color": {
+            "alternate": [
+              2,
+              0,
+              0
+            ],
+            "color": [
+              2,
+              0,
+              0
+            ],
+            "effect": 0
+          },
+          "second_line": "",
+          "warning": ""
+        },
+        "animal_status": {
+          "containment": 0,
+          "item_id": -1,
+          "kind": 5
+        },
+        "assigned": false,
+        "entity": 1,
+        "grazer": false,
+        "id": 6960,
+        "mood": 0,
+        "name": "Stray Drake, \u2642 (Tame)",
+        "profession": "Stray Drake, \u2642 (Tame)",
+        "sex": 1,
+        "sheet_icon": {
+          "layers": [
+            [
+              0,
+              0,
+              7,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "CREATURES_DOMESTIC"
+          ]
+        },
+        "squad_use": -1
+      },
+      "native_pixel_origin": [
+        616,
+        232
+      ],
+      "rgb_sha256": "0c3f34fb247dba118458cfe5b5a007790ca7a9b55e08a34678bdf52346ce410b"
+    }
+  },
+  "animal_restraint_reference": {
+    "provenance": "build\\stockpile-storage-native-zone-animals-20261026-125123",
+    "source_unchanged_unsaved_exit": true,
+    "samples": [
+      {
+        "capture": "Pen-status-current-chain-metal",
+        "facts": {
+          "color_id": 26,
+          "item_id": 48521,
+          "material_index": 3,
+          "material_type": 0,
+          "native_key": 110,
+          "rope": false,
+          "solid_color": "COPPER"
+        },
+        "native_rgba_sha256": "b1d9e085236962d57461b9ad41dc43de1d34414aa834ba129e345b346d0067fd",
+        "original": {
+          "page": "ITEM_CONSTRUCTION",
+          "texture": 42299,
+          "x": 2,
+          "y": 5
+        }
+      },
+      {
+        "capture": "Pen-status-current-chain-rope",
+        "facts": {
+          "color_id": 49,
+          "item_id": 48522,
+          "material_index": 174,
+          "material_type": 422,
+          "native_key": 201,
+          "rope": true,
+          "solid_color": "GRAY"
+        },
+        "native_rgba_sha256": "7c4948517ae07f96a7be0621ccfc439d6872abcca64b0f84708e5a7ff3331ad0",
+        "original": {
+          "page": "ITEM_CONSTRUCTION",
+          "texture": 42298,
+          "x": 1,
+          "y": 5
+        }
+      }
+    ],
+    "limitations": [
+      "Native rendering reference only; product restraint facts and rendering remain unimplemented.",
+      "Hover probes did not activate the four containment instructions; no hover parity claimed."
+    ],
+    "compiled_compositor_rgba_exact": true,
+    "compositor_evidence": "build/notes/pm/container-parity/check.exe: transparent body plus original ITEM_CONSTRUCTION sprite and first 18 DEFAULT palette pairs exactly match both native textures"
   }
 }

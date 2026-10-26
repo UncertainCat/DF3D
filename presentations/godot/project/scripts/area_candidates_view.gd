@@ -225,9 +225,10 @@ func refresh() -> void:
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
 				var status: Dictionary = row.get("animal_status",{})
 				var status_kind := int(status.get("kind",0))
-				if status_kind in [1,2,3] or (status_kind == 4 and row.has("animal_container") and world.has_method("animal_container_icon")):
+				if status_kind in [1,2,3,5] or (status_kind == 4 and row.has("animal_container") and world.has_method("animal_container_icon")):
 					var indicator := TextureRect.new(); indicator.name = "AnimalStatus"
-					if status_kind == 4: indicator.texture = world.animal_container_icon(row.animal_container)
+					if status_kind == 5: indicator.texture = art.texture("MISSING_BUILDING")
+					elif status_kind == 4: indicator.texture = world.animal_container_icon(row.animal_container)
 					else: indicator.texture = art.texture(["UNIT_SELECTOR_PASTURE","UNIT_SELECTOR_PIT","UNIT_SELECTOR_POND"][status_kind-1])
 					indicator.position = Vector2(242,2); indicator.size = Vector2(32,32)
 					indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE

@@ -29,7 +29,7 @@ navigation is enabled. Core19/19, state and controller checks pass in
 scrollbar crops exactly and verify complete-row clipping, keyboard paging and
 drag destinations. `build/qa/animal-long-scroll-pointer` additionally verifies
 actual viewport wheel events, shifted paging and outside-pointer exclusion.
-Both GPU runs retain only the three known Godot diagnostics. Animal full live controller coverage remains outstanding; this is component
+Both GPU runs retain only the three known Godot diagnostics. Rendered main-scene animal acceptance remains outstanding; this is component
 scrolling acceptance, not full Zones acceptance.
 
 The existing candidate_limit request (1..128; zero retains the default) is now
@@ -52,8 +52,19 @@ facts. Changed containment clears its old tooltip. Core19/19, state, controller
 and GPU checks pass in `build/qa/animal-refresh`; additional GPU
 `build/qa/animal-refresh-interaction` verifies stable interaction nodes, native
 restraint pixels after refresh, portrait eviction and tooltip retirement.
-Both GPU runs have only the three known diagnostics. Full live controller
-refresh/scroll effects remain part of the outstanding Zones acceptance.
+Both GPU runs have only the three known diagnostics. Headless live controller
+coverage now passes in `build/areas-acceptance-20261026-144723`, using
+`areas_acceptance.ps1 -Controller -ZoneAnimalsOnly`. It verifies Pen assignment
+and sort/search preservation, a temporary native name change and restoration
+through periodic background refresh, and keyboard Pond item assignment/clearing.
+A71-row list of temporary critter items exercises tail/top scrolling, reacquiring
+visible recipes while retaining at most36, preserving button/receipt identities,
+comparing visible rows with native facts, and closing without a refresh ticket.
+The driver waits for layout before scrolling newly created controls. Both save
+manifests remain unchanged; core19/19 passes in
+`build/qa/animal-controller-live-reference`. This headless lane invokes controller
+controls and keyboard handlers; main-scene pointer routing and full panel parity
+remain separate acceptance requirements.
 
 
 `native_zone_animals.json.animal_search_input` records real Windows/SDL input

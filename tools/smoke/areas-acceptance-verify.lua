@@ -695,6 +695,25 @@ elseif request.op=='animal_restraint_end' then
  end
  saved.chain.contained_items:erase(0);saved.contained:delete();saved.chain:delete();assert(dfhack.items.remove(saved.item))
  _G.df3d_restraint_fixture=nil;result.restored=true
+elseif request.op=='animal_long_list' then
+ assert(df.global.pause_state,'long animal fixture requires paused disposable session')
+ local original=assert(df.item.find(request.item_id))
+ local pet=df.item_petst:is_instance(original)
+ assert(pet or df.item_verminst:is_instance(original),'long animal fixture requires critter item')
+ local ids={}
+ for index=1,64 do
+  local extra=pet and df.item_petst:new() or df.item_verminst:new()
+  extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+  extra.race=original.race;extra.caste=original.caste
+  extra.flags.whole=original.flags.whole;extra.flags2.whole=original.flags2.whole
+  extra.pos:assign(original.pos)
+  df.global.world.items.all:insert('#',extra)
+  df.global.world.items.other.ANY_CRITTER:insert('#',extra)
+  df.global.world.items.other[pet and 'PET' or 'VERMIN']:insert('#',extra)
+  ids[#ids+1]=extra.id
+ end
+ -- Keep allocations valid for retained native widget entries until unsaved exit.
+ result.ids=ids
 elseif request.op=='animal_query_name' then
  local unit=assert(df.unit.find(request.unit_id));assert(not _G.df3d_animal_query_name)
  _G.df3d_animal_query_name={unit=unit,first_name=unit.name.first_name,nickname=unit.name.nickname,has_name=unit.name.has_name}

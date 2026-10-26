@@ -46,6 +46,8 @@ func exercise() -> void:
 	if not stopped: print("AREAS_CONTROLLER_LIVE_PASS")
 
 func exercise_ui(origin: Vector3i) -> void:
+	if FileAccess.file_exists(directory+"/zone-animals-only.json"):
+		await animal_controller_workflow(origin);return
 	step = "controller cancel draft"
 	await native("guard_before")
 	editor.paint_pointer(origin,true); editor.paint_pointer(origin+Vector3i(1,1,0),false)
@@ -313,6 +315,7 @@ func assignment_selectors() -> void:
 			await native("assignment",{"id":pen,"unit_id":unit,"assign":assigned})
 			if stopped: return
 	editor.handle_back()
+	if FileAccess.file_exists(directory+"/zone-animals-only.json"): return
 	step = "controller squad room use"
 	if not await select_fixture_zone("Barracks"): return
 	var barracks := int(editor.selected.id)
@@ -407,3 +410,74 @@ func verify_candidate_rows(id: int, kind: int) -> void:
 	await native("candidates",{"id":id,"kind":kind,"sort":editor.candidates_state.sort,
 		"descending":editor.candidates_state.descending,"query":editor.candidates_state.query,
 		"rows":editor.candidates_state.rows})
+
+func animal_controller_workflow(origin: Vector3i) -> void:
+	step="animal controller setup"
+	editor.close_panel();editor.set_area_kind(1);editor.open_panel()
+	if not await wait_ui(func():return editor.available and settled(),"animal zone catalog"):return
+	editor.inspect_tile(origin+Vector3i(21,0,0))
+	if not await wait_ui(func():return settled() and not editor.selected.is_empty(),"animal overlap lookup"):return
+	await assignment_selectors()
+	if stopped:return
+	if not await select_fixture_zone("Pond"):return
+	var pond:=int(editor.selected.id)
+	editor.zone_menu.controls.animals.pressed.emit()
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"Pond candidates"):return
+	step="animal controller background facts"
+	var index:=await candidate_index(int(fixture.caged))
+	if index<0:return
+	var button:Button=editor.candidates_view.choices[index]
+	var original_name:String=editor.candidates_state.rows[index].name
+	var receipt:int=editor.candidates_state.receipt
+	await native("animal_query_name",{"unit_id":int(fixture.caged)})
+	if not await wait_ui(func():return str(editor.candidates_state.rows[index].name).contains("ByteProbe"),"animal live name refresh"):return
+	if not check(editor.candidates_view.choices[index]==button and editor.candidates_state.receipt==receipt and not editor.candidates_state.busy(),"background refresh changed button/receipt or blocked input"):return
+	await native("animal_query_restore")
+	if not await wait_ui(func():return editor.candidates_state.rows[index].name==original_name,"animal name restoration refresh"):return
+	await verify_candidate_rows(pond,2)
+	if stopped:return
+	step="animal controller nonfirst keyboard item"
+	var item:=int(fixture.critter)
+	await native("item_assignment_before",{"item_id":item})
+	for assigned in [true,false]:
+		index=-1
+		for at in editor.candidates_state.rows.size():
+			var row:Dictionary=editor.candidates_state.rows[at]
+			if int(row.get("entity",0))==2 and int(row.id)==item:index=at;break
+		if not check(index>=0,"native item missing from controller"):return
+		editor.candidates_view.owner_search.release_focus()
+		editor.candidates_view.owner_selected=0
+		var down:=InputEventKey.new();down.keycode=KEY_DOWN;down.pressed=true
+		for at in index:editor.candidates_view.feed_animal_key(down)
+		if not check(editor.candidates_view.owner_selected==index,"keyboard did not select item"):return
+		var enter:=InputEventKey.new();enter.keycode=KEY_ENTER;enter.pressed=true
+		editor.candidates_view.feed_animal_key(enter)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"keyboard item assignment"):return
+		await native("item_assignment",{"id":pond,"item_id":item,"assign":assigned})
+		if stopped:return
+	editor.handle_back()
+	step="animal controller long-list refresh"
+	await native("animal_long_list",{"item_id":item})
+	editor.zone_menu.controls.animals.pressed.emit()
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"long animal candidates"):return
+	if not check(editor.candidates_state.rows.size()>64,"long animal membership missing"):return
+	await process_frame;await process_frame
+	var retained_receipt:int=editor.candidates_state.receipt
+	var retained_button:Button=editor.candidates_view.choices[0]
+	var tail:int=editor.candidates_state.rows.size()-16
+	for first in [tail,0]:
+		editor.candidates_view.owner_scrollbar.move_to(first)
+		await process_frame
+		print("ANIMAL_SCROLL first=",first," bar=",editor.candidates_view.owner_scrollbar.first," pixels=",editor.candidates_view.scroll.scroll_vertical," rows=",editor.candidates_state.rows.size())
+		if not await wait_ui(func():return editor.owner_refresh.ticket==0 and editor.candidates_state.rows[first].has("sheet_icon"),"scrolled animal portrait refresh"):return
+		if not check(editor.candidates_view.choices[0]==retained_button and editor.candidates_state.receipt==retained_receipt,"scroll refresh replaced interaction or membership"):return
+		var recipes:=0
+		for row in editor.candidates_state.rows:
+			if row.has("sheet_icon") or row.has("animal_container"):recipes+=1
+		if not check(recipes<=36,"animal long list retained distant recipes"):return
+		var distant:int=0 if first==tail else tail
+		if not check(not editor.candidates_state.rows[distant].has("sheet_icon"),"distant animal portrait was not evicted"):return
+		await native("animal_candidates",{"id":pond,"rows":editor.candidates_state.rows.slice(first,first+16),"first":first,"limit":16,"sort":editor.candidates_state.sort,"descending":editor.candidates_state.descending})
+		if stopped:return
+	editor.close_panel()
+	if not check(editor.owner_refresh.ticket==0 and editor.candidates_state.rows.is_empty(),"closing animal picker retained refresh ownership"):return

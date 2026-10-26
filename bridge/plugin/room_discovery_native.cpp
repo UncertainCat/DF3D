@@ -23,8 +23,7 @@ RoomCell observeCell(int32_t x,int32_t y,int32_t z) {
   if(!DFHack::Maps::isValidTilePos(x,y,z))return RoomCell::Unobserved;
   const auto* block=DFHack::Maps::getTileBlock(x,y,z);
   if(!block)return RoomCell::Unobserved;
-  const auto designation=block->designation[x&15][y&15];
-  if(designation.bits.hidden)return RoomCell::Unobserved;
+  // Native Multi ignores visibility for discovery without revealing tiles.
   if(!nativeZoneTileEligible(int16_t(x),int16_t(y),int16_t(z)))return RoomCell::Boundary;
   // Native355c53..355e23: after the semantic predicate, nonzero occupancy
   // checks the actual door vector for a matching center. Door animation and
@@ -72,6 +71,9 @@ NativeRoomObservation observeNativeRoom(int32_t seedX,int32_t seedY,int32_t seed
     const int32_t tx=out.x+int32_t(x),ty=out.y+int32_t(y);
     out.cells[size_t(y)*side+x]=observeCell(tx,ty,seedZ);
   }
+  // Native3557d3..35591f seeds the furniture before testing any neighbor.
+  // A wall/liquid at that center does not suppress the initial expansion.
+  out.cells[21*side+21]=RoomCell::Open;
   out.traversal=traverseRoom(out.cells,side,side,21,21);
   return out;
 }

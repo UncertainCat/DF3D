@@ -136,8 +136,9 @@ false/0 arguments, shared with owned overlap. It replaces reconstructed terrain,
 occupancy and liquid classification. The subsequent native door rule is inline:
 when occupancy is nonzero, a matching center in world.buildings.other.DOOR stops
 expansion regardless of animation. Its reference0x355c53..0x355e23 is pinned.
-The flood queue and visited cells remain independently owned. Existing missing/
-hidden-map observation guards remain; their full traversal audit is outstanding.
+The flood queue and visited cells remain independently owned. Missing-map observation guards remain. Hidden-map and seed behavior is verified
+below; remaining traversal boundaries and multiple-seed propagation still need
+final full-Multi audit.
 
 Protected `build/areas-acceptance-20261025-220802` passes193 observations with
 clean diagnostics, including exact masks from36 recorded native terrain,
@@ -147,7 +148,40 @@ all edited tiletype/designation/occupancy fields on both success and failure.
 All52 guards preserve55,584 map search arrays, including the tile replay. Owned
 DF126720 closes unsaved and both save manifests match. Runtime no longer uses
 the historical classifier; its fixture decoder remains only in traversal tests.
-This does not establish full hidden-map traversal or Zones/Locations acceptance.
+This does not establish full traversal or Zones/Locations acceptance.
+
+## Multi visibility and furniture seeds
+
+Native Multi ignores hidden designations during discovery without revealing
+them. It also enqueues furniture centers before neighbor eligibility checks at
+0x3557d3..0x35591f. The bridge now follows both behaviors: hidden tiles retain
+their semantic eligibility, and a wall or liquid at the supplied seed does not
+suppress initial expansion. Neighbor rules and owned search storage stay intact.
+
+Protected native `build/stockpile-storage-native-multi-discovery-20261025-221602`
+uses actual two-corner Bedroom Multi input and Undo between eight cases. A visible
+room, hidden floor, hidden boundary, hidden seed, entirely hidden room, wall seed,
+water7 seed and magma seed all produce the same25-cell footprint. Hidden flags
+remain set. Owned DF129976 closes unsaved; its source manifest is unchanged.
+The earlier221242 hidden-seed capture was inspected. Native222018 records full
+seed effects: wall430 becomes427, while designations stay unchanged in every
+case. Owned DF23808 closes unsaved with its source unchanged. The native fixture
+restores original seed terrain/designations between cases.
+
+The first DF3D hidden-only run221417 passes229 observations, with60 search guards
+unchanged. The expanded221815 run correctly caught an overly strict test that
+required wall tile430 to remain unchanged; its source and clone saves stayed
+unchanged after failure. The verifier now checks the native430-to427 completion
+effect instead of asserting that native creation cannot change terrain.
+
+Protected DF3D `build/areas-acceptance-20261025-222140` passes256 observations
+with clean diagnostics. Actual creation and scoped Undo match all seven hidden/
+blocked-seed cases, including exact native room geometry, defaults, relationships,
+wall normalization and designation preservation. All66 guards preserve55,584
+map search arrays. Owned DF118444 closes unsaved and both save manifests match.
+MSVC builds; `build/qa/multi-hidden-seed` core19/19 and Lua adapter checks pass.
+`fixtures/areas/native_zone_publication.json` retains compact native results,
+source hashes, the seed-initialization fingerprint and verification scope.
 
 ## Zone repaint Location refresh
 

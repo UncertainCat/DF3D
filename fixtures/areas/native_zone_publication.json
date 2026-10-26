@@ -117,7 +117,7 @@
       "bridge_sha256": "d844e07e4a37d3dcb1f61e45d94bee5dc9189ef6cd077bda5664b05585f91be7"
     },
     "native_reference": "tools/smoke/areas-multi-reference.json",
-    "remaining_scope": "Hidden-map/traversal audit and full Zones/Locations lifecycle acceptance remain outstanding.",
+    "remaining_scope": "Remaining traversal boundaries, multiple-seed propagation and full Zones/Locations lifecycle acceptance remain outstanding.",
     "viewport_evidence": {
       "directory": "build/areas-acceptance-20261025-220051",
       "observations": 35,
@@ -160,7 +160,7 @@
     },
     "tile_reference": "tools/smoke/areas-multi-tiles-reference.json",
     "remaining_scope": [
-      "Hidden/unobserved tile handling and owned traversal boundaries still need final full-Multi audit.",
+      "Remaining traversal boundaries and multiple-seed propagation need final full-Multi audit.",
       "Zone assignment and full Zones/Locations lifecycle acceptance remain outstanding."
     ],
     "semantic_evidence": {
@@ -176,6 +176,223 @@
       "diagnostics": "clean",
       "bridge_sha256": "f35387c44c961804b13e1d914b548d2731877d8ddf57853398d8d15b4c76fc59",
       "tile_restoration": "All edited tiletype/designation/occupancy values restored and verified even on assertion failure."
+    },
+    "hidden_and_seed_reference": {
+      "directory": "build\\stockpile-storage-native-multi-discovery-20261025-221602",
+      "owned_df_pid": 129976,
+      "closed_unsaved": true,
+      "source_save_unchanged": true,
+      "native_input": "actual Bedroom Multi two-corner clicks; native Undo between cases",
+      "visibility": "Every hidden designation stayed hidden during native creation. Fixture restored original designations and seed terrain after each case.",
+      "seed_initialization_pin": {
+        "rva": "0x3557d3",
+        "size": 332,
+        "fnv1a64": "0x653b8536a1033853"
+      },
+      "earlier_hidden_reference": "build/stockpile-storage-native-multi-discovery-20261025-221242",
+      "capture_inspected": "hidden-seed.png from221242",
+      "effects_reference": {
+        "directory": "build/stockpile-storage-native-multi-discovery-20261025-222018",
+        "owned_df_pid": 23808,
+        "closed_unsaved": true,
+        "source_save_unchanged": true,
+        "wall_effect": "Native completion changes controlled seed tile430 to427 while preserving designation; runtime fixture checks that effect.",
+        "baseline_room": {
+          "height": 5,
+          "width": 5,
+          "x": 169,
+          "y": 56,
+          "z": 164,
+          "extent_mask": "1111111111111111111111111"
+        },
+        "cases": [
+          {
+            "after_designation": 561152,
+            "after_tile": 43,
+            "before_designation": 561152,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "visible",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 561152,
+            "after_tile": 43,
+            "before_designation": 561152,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "hidden-floor",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 561152,
+            "after_tile": 43,
+            "before_designation": 561152,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "hidden-boundary",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 561664,
+            "after_tile": 43,
+            "before_designation": 561664,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "hidden-seed",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 561664,
+            "after_tile": 43,
+            "before_designation": 561664,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "hidden-room",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 561152,
+            "after_tile": 427,
+            "before_designation": 561152,
+            "before_tile": 430,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "wall-seed",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 561159,
+            "after_tile": 43,
+            "before_designation": 561159,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "water7-seed",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          },
+          {
+            "after_designation": 2658305,
+            "after_tile": 43,
+            "before_designation": 2658305,
+            "before_tile": 43,
+            "bridge_status": 0,
+            "in_use": 0,
+            "name": "magma-seed",
+            "unenclosed": 0,
+            "room_count": 1,
+            "matches_baseline_room": true
+          }
+        ],
+        "result_sha256": "08c560cb2f7fcd7f48bea49fd4cfdc0198014efdad9abdfebeaf70cc2e5bc9f9"
+      },
+      "baseline_room": {
+        "height": 5,
+        "width": 5,
+        "x": 169,
+        "y": 56,
+        "z": 164,
+        "extent_mask": "1111111111111111111111111"
+      },
+      "cases": [
+        {
+          "bridge_status": 0,
+          "in_use": 0,
+          "name": "visible",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 0,
+          "in_use": 0,
+          "name": "hidden-floor",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 0,
+          "in_use": 0,
+          "name": "hidden-boundary",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 0,
+          "in_use": 0,
+          "name": "hidden-seed",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 0,
+          "in_use": 0,
+          "name": "hidden-room",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 3,
+          "in_use": 0,
+          "name": "wall-seed",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 3,
+          "in_use": 0,
+          "name": "water7-seed",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        },
+        {
+          "bridge_status": 3,
+          "in_use": 0,
+          "name": "magma-seed",
+          "unenclosed": 0,
+          "room_count": 1,
+          "matches_baseline_room": true
+        }
+      ],
+      "result_sha256": "dabca2ea4f34d6aaa1c6bed841a361f93a1aac0f4fe3e1b87bbcce8f5823b0d7",
+      "df3d_verification": {
+        "directory": "build/areas-acceptance-20261025-222140",
+        "native_observations": 256,
+        "guarded_operations": 66,
+        "map_search_arrays_per_operation": 55584,
+        "changed_arrays": 0,
+        "owned_df_pid": 118444,
+        "closed_unsaved": true,
+        "unchanged_save_manifests": 2,
+        "diagnostics": "clean",
+        "bridge_sha256": "b56550de91e59fc016d507f21e457ff930a805172a93c3af3d960ca2c216117f",
+        "coverage": "Actual creation and scoped Undo in four hidden cases and three blocked-seed cases; exact room footprint/defaults/relationships, native terrain effects, hidden flags and designation preservation."
+      }
     }
   }
 }

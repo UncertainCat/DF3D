@@ -116,6 +116,50 @@ local ok,err=pcall(function()
     v.b.occupancy[v.x][v.y].whole==v.occupancy,'tile reference restoration failed')
   end
   result.cases=passed;assert(matched,why)
+ elseif request.op=='multi_seed_prepare' then
+  assert(not _G.df3d_multi_seed,'seed fixture already active')
+  local b=assert(dfhack.maps.getTileBlock({x=172,y=57,z=164}));local d=b.designation[12][9]
+  local saved={b=b,tile=b.tiletype[12][9],designation=d.whole};_G.df3d_multi_seed=saved
+  if request.case=='wall-seed'then
+   local wall=dfhack.maps.getTileBlock({x=173,y=58,z=164}).tiletype[13][10]
+   assert(df.tiletype.attrs[wall].shape==df.tiletype_shape.WALL);b.tiletype[12][9]=wall
+  elseif request.case=='water7-seed'then d.flow_size=7;d.liquid_type=df.tile_liquid.Water
+  elseif request.case=='magma-seed'then d.flow_size=1;d.liquid_type=df.tile_liquid.Magma
+  else error('unknown seed fixture')end
+  saved.expected_tile=b.tiletype[12][9];saved.expected_designation=d.whole
+  if request.case=='wall-seed'then
+   -- Native222018 completion normalizes this controlled wall430 to427.
+   assert(saved.expected_tile==430,'recorded wall fixture changed');saved.expected_tile=427
+  end
+ elseif request.op=='multi_seed_check' or request.op=='multi_seed_restore' then
+  local saved=assert(_G.df3d_multi_seed,'missing seed fixture')
+  result.expected_tile=saved.expected_tile;result.actual_tile=saved.b.tiletype[12][9]
+  result.expected_designation=saved.expected_designation;result.actual_designation=saved.b.designation[12][9].whole
+  assert(result.actual_tile==result.expected_tile and result.actual_designation==result.expected_designation,'Multi seed effects differ from native')
+  if request.op=='multi_seed_restore'then
+   saved.b.tiletype[12][9]=saved.tile;saved.b.designation[12][9].whole=saved.designation;_G.df3d_multi_seed=nil
+  end
+ elseif request.op=='multi_hidden_prepare' then
+  assert(not _G.df3d_multi_hidden,'hidden fixture already active')
+  local saved={};_G.df3d_multi_hidden=saved
+  local function hide(x,y)
+   local b=assert(dfhack.maps.getTileBlock({x=x,y=y,z=164}));local d=b.designation[x%16][y%16]
+   saved[#saved+1]={d=d,hidden=d.hidden};d.hidden=true
+  end
+  if request.case=='hidden-floor'then hide(172,58)
+  elseif request.case=='hidden-boundary'then hide(169,56)
+  elseif request.case=='hidden-seed'then hide(172,57)
+  elseif request.case=='hidden-room'then for y=56,60 do for x=169,173 do hide(x,y)end end
+  else error('unknown hidden fixture')end
+  result.hidden_tiles=#saved
+ elseif request.op=='multi_hidden_check' or request.op=='multi_hidden_restore' then
+  local saved=assert(_G.df3d_multi_hidden,'missing hidden fixture')
+  for _,v in ipairs(saved)do assert(v.d.hidden,'Multi revealed native hidden terrain')end
+  result.hidden_tiles=#saved
+  if request.op=='multi_hidden_restore'then
+   for _,v in ipairs(saved)do v.d.hidden=v.hidden end
+   _G.df3d_multi_hidden=nil
+  end
  elseif request.op=='multi_begin' then
   local bed=assert(df.building.find(1310),'source bed missing')
   assert(df.building_bedst:is_instance(bed) and bed.centerx==172 and bed.centery==57 and bed.z==164,'source bed changed')

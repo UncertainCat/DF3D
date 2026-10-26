@@ -47,6 +47,32 @@ func exercise() -> void:
 	if not stopped: await native("multi_search_end")
 	if stopped: return
 	step = "Multi native baseline"; await native("multi_begin")
+	for case_name in ["hidden-floor","hidden-boundary","hidden-seed","hidden-room"]:
+		if stopped: return
+		step = case_name
+		await native("multi_hidden_prepare",{"case":case_name})
+		var created := await create_room(99)
+		if stopped: return
+		if not check(int(created.get("rooms_created",0)) == 1 and int(created.get("undo_token",0)) > 0,"native hidden room creation differs"): return
+		await native("multi_check",{"count":1})
+		await native("multi_hidden_check")
+		await undo_room(99,int(created.undo_token))
+		if stopped: return
+		await native("multi_check",{"count":0})
+		await native("multi_hidden_restore")
+	for case_name in ["wall-seed","water7-seed","magma-seed"]:
+		if stopped: return
+		step = case_name
+		await native("multi_seed_prepare",{"case":case_name})
+		var created := await create_room(98)
+		if stopped: return
+		if not check(int(created.get("rooms_created",0)) == 1 and int(created.get("undo_token",0)) > 0,"native furniture seed creation differs"): return
+		await native("multi_check",{"count":1})
+		await native("multi_seed_check")
+		await undo_room(98,int(created.undo_token))
+		if stopped: return
+		await native("multi_check",{"count":0})
+		await native("multi_seed_restore")
 	for scenario in ["undo","empty","in_use","stale","done","foreign_scope"]:
 		if stopped: return
 		step = scenario

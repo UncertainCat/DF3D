@@ -165,7 +165,8 @@ bool nativeZoneMultiReady() {
     if(!nativeZoneCreateReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool compatible=hash(base+0x356ee8,0x3f1)==0xe4ddd80a024ca99ULL &&
-          hash(base+0x355c53,0x1d0)==0xcda8023a0a668bcfULL;
+          hash(base+0x355c53,0x1d0)==0xcda8023a0a668bcfULL &&
+          hash(base+0x3557d3,0x14c)==0x653b8536a1033853ULL;
     return compatible;
 }
 bool nativeZoneCompleteMulti(df::building_civzonest& zone) {

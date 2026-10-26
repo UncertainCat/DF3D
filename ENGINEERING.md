@@ -381,6 +381,17 @@ The descriptor is integrated through Management64 below. Invalid raw/material
 fallbacks have static audit only; this API intentionally rejects Adventure mode
 outside the fortress picker.
 
+Owner rows use the installed original BUTTON_RECTANGLE artwork, with
+BUTTON_RECTANGLE_SELECTED on the first entry (Remove assignment when present).
+Rows remain552x36 rather than stretching into the scrollbar column. Native
+capture `build/stockpile-storage-native-zone-owner-20261026-024801/tomb-picker.png`
+and `build/qa/owner-row-original` match both88x36 right-edge background regions
+exactly. The GPU check passes with the three documented Godot notices. Protected
+025247 additionally observes unchanged native cursor0 after CURSOR_DOWN/UP;
+this does not establish complete keyboard behavior. Attempted hidden-window
+hover injection did not reach native mouse state and provides no hover evidence.
+Portraits, hover and remaining input/lifecycle acceptance are still pending.
+
 Production owner rows now carry the native reader's color alternatives/effect
 through request-local callbacks, validated Lua data, DTOs, the model and Godot.
 The view uses the installed palette, colors both name lines together and limits

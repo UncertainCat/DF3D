@@ -88,6 +88,7 @@ local function capture(name)
  for i=1,3 do view:render(dfhack.getTickCount());script.sleep(1,'frames')end
  if name:find('picker') or name:find('candidate') then
   local list=assert(unit_list(df.global.game.main_interface.unit_selector,0),'native unit list missing')
+  records[#records+1]={name=name..'-row-cursor',cursor=list.cursor_idx,mouse_x=g.mouse_x,mouse_y=g.mouse_y}
   local ids={}
   for _,entry in ipairs(list.entry_list)do if entry.t==0 and entry.u then ids[#ids+1]=entry.u.id end end
   local rows={};widget_rows(list,rows,0);assert(#rows<2000,'widget observation truncated')
@@ -310,6 +311,8 @@ local zone=assert(ui.cur_bld);assert(zone.type==df.civzone_type.Tomb)
 pixel(304,114)
 records[#records+1]={name='new-tomb',id=zone.id,owner=zone.assigned_unit_id,settings=zone.zone_settings.whole.i1}
 pixel(336,154);capture('tomb-picker')
+gui.simulateInput(view,'CURSOR_DOWN');capture('tomb-picker-row-down')
+gui.simulateInput(view,'CURSOR_UP');capture('tomb-picker-row-up')
 snapshot('before-assignment')
 pixel(520,106)
 assert(zone.assigned_unit_id>=0 and zone.zone_settings.whole.i1==3,'native tomb assignment failed')

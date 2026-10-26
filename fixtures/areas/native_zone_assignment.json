@@ -2885,5 +2885,43 @@
     "animation": "Pure injected-time tests cover333/500ms transitions and1000ms rollover plus injected fire choices; actual view applies both legendary phases to both lines with stable nonzero background. Runtime uses local presentation clock/RNG and only changes label colors when the selected alternative changes.",
     "checks": "MSVC bridge build; root CTest19/19; real Godot Management64 decoder; Lua result boundary; area adapter; candidate state/animation; GPU menu/header/pointer/name pixels. GPU has only documented separate-thread/device-finalize/shutdown notices.",
     "remaining": "No claim of full Zones/Locations acceptance. Native semantics are sampled on candidate requests; open-panel semantic refresh remains required alongside portraits, row states, textbox/creation/legacy routes and lifecycle."
+  },
+  "owner_row_background": {
+    "capture": "build/stockpile-storage-native-zone-owner-20261026-024801/tomb-picker.png",
+    "scope": "Initial selected first row and unselected background only; hover and keyboard behavior require separate evidence.",
+    "samples": [
+      {
+        "state": "selected",
+        "box": [
+          840,
+          88,
+          928,
+          124
+        ],
+        "relative_box": [
+          464,
+          0,
+          88,
+          36
+        ],
+        "rgb_sha256": "4396335a3dcb6bb98af6ab7dcee098ad5f00b73127b6aa3a9dd70cb5715372ea"
+      },
+      {
+        "state": "normal",
+        "box": [
+          840,
+          124,
+          928,
+          160
+        ],
+        "relative_box": [
+          464,
+          0,
+          88,
+          36
+        ],
+        "rgb_sha256": "ce1610eef6904956e28f024f7491897fea8693661800820c2f833e35d433cfa7"
+      }
+    ]
   }
 }

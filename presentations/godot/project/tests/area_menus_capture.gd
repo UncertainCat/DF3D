@@ -187,6 +187,15 @@ func run() -> void:
 	if controller.candidates_view.choices[2].has_node("OwnerFirst") or not controller.candidates_view.choices[2].text.is_empty():
 		push_error("Absent owner display was invented"); quit(1); return
 	var header_reference: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_assignment.json"))
+	# Bedroom starts on Remove assignment; owner rows use the unselected artwork.
+	for sample in header_reference.owner_row_background.samples:
+		var target: Button = controller.candidates_view.remove if sample.state == "selected" else controller.candidates_view.choices[0]
+		var box: Array = sample.relative_box
+		var image := root.get_texture().get_image(); image.convert(Image.FORMAT_RGB8)
+		var crop := image.get_region(Rect2i(Vector2i(target.global_position)+Vector2i(int(box[0]),int(box[1])),Vector2i(int(box[2]),int(box[3]))))
+		var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(crop.get_data())
+		if digest.finish().hex_encode() != str(sample.rgb_sha256):
+			push_error("Native owner row background differs: "+str(sample.state)); quit(1); return
 	var status_reference: Dictionary = header_reference.owner_colors.status_pixels
 	var status_box: Array = status_reference.box
 	var status_rgb: Array = status_reference.foreground_rgb

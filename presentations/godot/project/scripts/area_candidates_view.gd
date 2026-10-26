@@ -65,16 +65,24 @@ func configure(source, model) -> void:
 	for key in ["normal","focus"]: search.add_theme_stylebox_override(key,inset)
 	state.changed.connect(refresh); refresh()
 
-func row_button(text: String) -> Button:
-	var button := Button.new(); button.custom_minimum_size = Vector2(352 if state.kind == 2 else 552,36)
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT; button.text = text
-	button.add_theme_font_size_override("font_size",12)
-	var style := art.make_style("BUTTON_RECTANGLE_DARK",8)
+func row_style(selected: bool = false) -> StyleBoxTexture:
+	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else ("BUTTON_RECTANGLE" if state.kind == 1 else "BUTTON_RECTANGLE_DARK"),8)
 	style.set_texture_margin(SIDE_TOP,12); style.set_texture_margin(SIDE_BOTTOM,12)
 	style.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
 	for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,0)
 	style.set_content_margin(SIDE_LEFT,40); style.set_content_margin(SIDE_RIGHT,80 if state.kind == 2 else 144)
+	return style
+
+func style_row(button: Button, selected: bool) -> void:
+	var style := row_style(selected)
 	for key in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(key,style)
+
+func row_button(text: String) -> Button:
+	var button := Button.new(); button.custom_minimum_size = Vector2(352 if state.kind == 2 else 552,36)
+	if state.kind == 1: button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT; button.text = text
+	button.add_theme_font_size_override("font_size",12)
+	style_row(button,false)
 	return button
 
 func refresh() -> void:
@@ -161,6 +169,9 @@ func refresh() -> void:
 				check.texture = art.texture("LABOR_WORKER_ASSIGNED" if bool(row.get("assigned",false)) else "LABOR_WORKER_UNASSIGNED")
 				check.position = Vector2(280,0); check.size = Vector2(32,36)
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
+	if state.kind == 1:
+		style_row(remove,remove.visible)
+		for index in choices.size(): style_row(choices[index],index == 0 and not remove.visible)
 	for button in choices: button.disabled = state.busy()
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:

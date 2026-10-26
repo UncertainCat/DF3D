@@ -14,15 +14,27 @@ func run() -> void:
 	var font:=Image.load_from_file(assets.ui_font_path())
 	var mapping={119352:Vector2i(0,12),119353:Vector2i(8,12),119416:Vector2i(0,24),119417:Vector2i(8,24)}
 	var modes=["LOCATION_DETAILS_VISITORS_ALLOWED","LOCATION_DETAILS_RESIDENTS_ALLOWED","LOCATION_DETAILS_CITIZENS_ONLY","LOCATION_DETAILS_MEMBERS_ONLY","OWNER_RECENTER"]
+	var animals: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_containment_hover_reference
+	for sample in animals.samples:
+		var relation: int=int(sample.instruction)-366
+		var key: String="CONTAINMENT_"+str(relation)
+		modes.append(key)
+		var cells: Array=[]
+		for y in sample.text_lines.size():
+			var text: String=sample.text_lines[y]
+			for x in text.length(): cells.append({"x":126+x,"y":y,"ch":text.unicode_at(x),"fg":7,"bg":0,"bold":true})
+		data.panels.append({"key":key,"lines":sample.text_lines,"text_cells":cells,"frame_cells":owner.recenter.frame_cells,"relation":relation})
 	var directory:=ProjectSettings.globalize_path("res://../../../build/qa/native-hover-render")
 	DirAccess.make_dir_recursive_absolute(directory)
 	for panel in data.panels:
 		var mode:=modes.find(str(panel.key))
-		if mode<0 or (View.OWNER_RECENTER_HELP if mode==4 else View.ACCESS_HELP[mode])!=panel.lines:push_error("Native help wording/wrapping differs");quit(1);return
+		var expected_lines: Array=View.CONTAINMENT_HELP[int(panel.relation)-1] if panel.has("relation") else (View.OWNER_RECENTER_HELP if mode==4 else View.ACCESS_HELP[mode])
+		if mode<0 or expected_lines!=panel.lines:push_error("Native help wording/wrapping differs");quit(1);return
 		var letters: Dictionary={}
 		for cell in panel.text_cells:
 			letters[Vector2i(int(cell.x),int(cell.y))]=cell
-		view.state.enter(1,"owner_recenter" if mode==4 else str(mode),Time.get_ticks_msec()-500);view._process(0)
+		var hover_key: String="containment_"+str(panel.relation) if panel.has("relation") else ("owner_recenter" if mode==4 else str(mode))
+		view.state.enter(1,hover_key,Time.get_ticks_msec()-500);view._process(0)
 		for i in 3: await process_frame;await RenderingServer.frame_post_draw
 		var image:=root.get_texture().get_image()
 		for cell in panel.frame_cells:

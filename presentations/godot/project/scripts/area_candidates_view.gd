@@ -106,6 +106,21 @@ func row_style(selected: bool = false) -> StyleBoxTexture:
 	style.set_content_margin(SIDE_LEFT,40); style.set_content_margin(SIDE_RIGHT,80 if state.kind == 2 else 144)
 	return style
 
+func bind_containment_help(button: Button, relation: int) -> void:
+	if native_help == null or relation not in [1,2,3,4]: return
+	var target := Control.new(); target.name = "AnimalContainmentHover"
+	# Approved native bug correction: retain the native 4x3-cell bounds at the
+	# drawn indicator, instead of swapping their X/Y coordinates.
+	target.position = Vector2(240,0); target.size = Vector2(32,36)
+	target.mouse_filter = Control.MOUSE_FILTER_PASS; button.add_child(target)
+	var owner := target.get_instance_id()
+	target.mouse_entered.connect(func():
+		if not button.disabled: native_help.enter_containment(owner,relation))
+	target.mouse_exited.connect(func(): native_help.leave(owner))
+	target.visibility_changed.connect(func():
+		if not target.is_visible_in_tree(): native_help.leave(owner))
+	target.tree_exiting.connect(func(): native_help.leave(owner))
+
 func style_row(button: Button, selected: bool) -> void:
 	var style := row_style(selected)
 	for key in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(key,style)
@@ -234,6 +249,7 @@ func refresh() -> void:
 					indicator.position = Vector2(242,2); indicator.size = Vector2(32,32)
 					indicator.expand_mode = TextureRect.EXPAND_IGNORE_SIZE; indicator.stretch_mode = TextureRect.STRETCH_SCALE
 					indicator.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(indicator)
+					if status_kind == 4: bind_containment_help(button,int(status.get("containment",0)))
 	if state.kind == 1:
 		style_row(remove,remove.visible and owner_selected == 0)
 		for index in choices.size():
@@ -246,7 +262,10 @@ func refresh() -> void:
 			style_row(choices[index],index == owner_selected)
 			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
 			frame_style.texture = picture.texture(index == owner_selected)
-	for button in choices: button.disabled = state.busy()
+	for button in choices:
+		button.disabled = state.busy()
+		var hover = button.get_node_or_null("AnimalContainmentHover")
+		if button.disabled and hover != null and native_help != null: native_help.leave(hover.get_instance_id())
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:
 		button.disabled = state.busy() or unit_tile(int(button.get_meta("unit_id"))).x < 0

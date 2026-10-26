@@ -9,9 +9,9 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 | Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
 | First Track preview overwrites active search costs during lazy walkability rebuilding. | Preserve the stable route on the first preview. | Implemented; Track initialization evidence below and `fixtures/construction/track_route_initialization_probes.json.gz`. |
 | Stair redraw hides intermediate-floor validation errors. | Keep errors for the full selected span visible. | Implemented; `fixtures/construction/stairs_placement.json`. Placement rules are unchanged. |
-| Five-to-ten raised spikes select incorrect lower artwork. | Select the correct installed artwork. | Implemented; construction upright-weapon rendering evidence below. Trap behavior is unchanged. |
+| Five-to-ten raised spikes select incorrect lower artwork. | Select the correct installed artwork. | Implemented; `fixtures/construction/weapon_rendering.json.gz`. Trap behavior is unchanged. |
 | Narrow stockpile item columns acquire negative widths and spill names onto the map. | Clip item names inside their panel. | Implemented; `fixtures/areas/native_stockpile_search.json`. |
-| Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Approved, pending implementation; `fixtures/areas/native_zone_animals.json.animal_containment_hover_reference`. |
+| Animal containment tooltip callbacks swap X/Y hitbox coordinates. | Activate all four native messages on the visible cage/chain icons. | Implemented; `fixtures/areas/native_zone_animals.json` field `animal_containment_hover_reference`, GPU `build/qa/animal-containment-hover` and `build/qa/animal-containment-click`. |
 
 ## Animal keyboard activation and portrait reference
 
@@ -90,7 +90,7 @@ then restores its unit references/flags and removes the fixture before the
 existing assignment tests. Both save manifests remain unchanged after unsaved exit. The five
 actual Godot rows are retained in `animal_restraint_pixels`; final core and GPU
 `build/qa/animal-restraint-live-pixels` pass with the same known diagnostics.
-Actual empty-reference and critter-item cages and status hover help remain open.
+Actual empty-reference and critter-item cage coverage remains open.
 `nativeZoneAnimalItemColor` exposes native creature/caste palette facts for
 PET/VERMIN item names. Both supported item vtables use `c7b200`, which delegates
 to the graphics-writing `7022c0`; the reader instead follows the pinned semantic
@@ -120,8 +120,15 @@ activate all four after dwell, preserve the source and exit unsaved. Native
 icon at (77,19) has no help, while mouse (19,77) activates the instruction.
 Recorded native screen cells establish exact text and wrapping; asynchronous
 PNG captures do not retain this off-window hover state. Callback inspection
-is diagnostic only. Product hover remains unfinished, and correcting the
-hitbox is authorized by the maintainer; implementation and verification remain open.
+is diagnostic only. With maintainer approval, the viewer uses the native32x36
+hitbox at row offset (240,0), correcting only the swapped coordinates. The
+existing shared native hover timer and minimap-replacement view display all four
+verbatim instructions. `build/qa/animal-containment-hover` passes core, real
+pointer entry/leave, delay, busy/hide/row-retirement checks and GPU native text
+and frame comparisons; `build/qa/animal-containment-click` also verifies that
+clicking the hover area still submits the normal animal assignment. GPU checks
+retain only the three documented Godot diagnostics. These component checks do
+not expose the unfinished Zones workflow.
 `nativeZoneAnimalContainer` reads cage material family, solid color token and
 first qualifying occupant from semantic material/reference data. It calls only
 pinned native material leaves; cached graphics and widgets are never runtime

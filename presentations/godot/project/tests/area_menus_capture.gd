@@ -831,7 +831,41 @@ func run() -> void:
 		crop.save_png(directory.path_join("animal-item-text-"+str(sample.capture)+".png"))
 		var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
 		if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Native item text pixels differ: "+str(sample.capture));quit(1);return
-	animal_view.free()
+	var containment_help=preload("res://scripts/native_hover_view.gd").new()
+	root.add_child(containment_help);containment_help.configure(world);containment_help.layout(Vector2(root.size));containment_help.set_process(false)
+	animal_view.native_help=containment_help
+	for relation in [1,2,3,4]:
+		var row: Dictionary=restraints.samples[0].row.duplicate(true);row.animal_status.containment=relation
+		animal_state.pending={};animal_state.mutating=false;animal_state.rows=[row];animal_state.changed.emit()
+		await process_frame
+		var target=animal_view.choices[0].get_node_or_null("AnimalContainmentHover")
+		if target==null or target.position!=Vector2(240,0) or target.size!=Vector2(32,36):push_error("Containment hitbox differs");quit(1);return
+		containment_help.reset()
+		var outside: Vector2=target.global_position-Vector2(8,0)
+		var motion:=InputEventMouseMotion.new();motion.position=outside;motion.global_position=outside;root.push_input(motion,true)
+		motion=InputEventMouseMotion.new();motion.position=target.get_global_rect().get_center();motion.global_position=motion.position;root.push_input(motion,true)
+		if containment_help.state.key!="containment_"+str(relation) or containment_help.visible:push_error("Containment hover target/delay differs");quit(1);return
+		containment_help.state.started=Time.get_ticks_msec()-500;containment_help._process(0)
+		if not containment_help.visible:push_error("Containment hover failed after dwell");quit(1);return
+		motion=InputEventMouseMotion.new();motion.position=outside;motion.global_position=outside;root.push_input(motion,true)
+		if containment_help.visible:push_error("Containment hover survived pointer leave");quit(1);return
+		target.mouse_entered.emit();containment_help._process(0)
+		animal_state.mutating=true;animal_state.changed.emit()
+		if containment_help.visible:push_error("Busy row retained containment hover");quit(1);return
+		animal_state.mutating=false;animal_state.changed.emit();target.mouse_entered.emit()
+		animal_view.hide()
+		if containment_help.visible:push_error("Hidden row retained containment hover");quit(1);return
+		animal_view.show();target.mouse_entered.emit()
+		animal_state.rows=[];animal_state.changed.emit();await process_frame
+		if containment_help.visible or not containment_help.state.key.is_empty():push_error("Retired row retained containment hover");quit(1);return
+	animal_state.pending={};animal_state.mutating=false;animal_state.rows=[restraints.samples[0].row];animal_state.changed.emit();await process_frame
+	var click_target=animal_view.choices[0].get_node("AnimalContainmentHover")
+	var before_click:=animal_requests.size()
+	for pressed in [true,false]:
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=pressed
+		click.position=click_target.get_global_rect().get_center();click.global_position=click.position;root.push_input(click,true)
+	if animal_requests.size()!=before_click+1 or int(animal_requests[-1].get("unit_id",-1))!=int(restraints.samples[0].row.id):push_error("Containment hover swallowed animal assignment");quit(1);return
+	animal_view.free();containment_help.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")
 	quit()

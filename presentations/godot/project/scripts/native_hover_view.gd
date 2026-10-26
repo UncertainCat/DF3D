@@ -9,6 +9,9 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
+const CONTAINMENT_HELP = [
+	["The creature is chained."], ["The creature is caged."],
+	["The creature is set to","be chained."], ["The creature is set to","be caged."]]
 var state=State.new()
 var art=preload("res://scripts/original_ui.gd").new()
 var displayed := ""
@@ -35,6 +38,10 @@ func leave(owner: int) -> void:
 
 func enter_owner_recenter(owner: int) -> void:
 	state.enter(owner,"owner_recenter",Time.get_ticks_msec());_process(0)
+
+func enter_containment(owner: int, relation: int) -> void:
+	if relation in [1,2,3,4]: state.enter(owner,"containment_"+str(relation),Time.get_ticks_msec())
+	_process(0)
 
 func enter_owner_filter(owner: int) -> void:
 	# Native textbox widget logic activates immediately; it does not warm the
@@ -63,7 +70,9 @@ func _draw() -> void:
 		for x in 25:
 			var frame_y := 0 if displayed=="owner_filter" and y==0 else (24 if y==17 else 12)
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
-	var lines: Array=OWNER_RECENTER_HELP if displayed=="owner_recenter" else (OWNER_FILTER_HELP if displayed=="owner_filter" else ACCESS_HELP[int(displayed)])
+	var lines: Array
+	if displayed.begins_with("containment_"): lines=CONTAINMENT_HELP[int(displayed.trim_prefix("containment_"))-1]
+	else: lines=OWNER_RECENTER_HELP if displayed=="owner_recenter" else (OWNER_FILTER_HELP if displayed=="owner_filter" else ACCESS_HELP[int(displayed)])
 	var offset := 1 if displayed=="owner_filter" else 0
 	for row in lines.size():
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,(row+1+offset)*12),lines[row],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)

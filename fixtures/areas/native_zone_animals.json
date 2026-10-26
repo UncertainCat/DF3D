@@ -13892,7 +13892,7 @@
       }
     ],
     "finding": "Native 3d0260 draws at (77,19) but passes y in r8 and x in r9 to 3acdc0; its 4x3-cell hover test therefore activates at (19,77). All four native instructions appear after dwell at that transposed location.",
-    "scope": "Diagnostic evidence only; product correction requires maintainer decision. No runtime widget or render-cache access."
+    "scope": "Native diagnostic evidence. Maintainer approved correcting the swapped hitbox on 2026-10-26. Product uses the visible icon's native 4x3-cell bounds, unchanged native text/timing, and no runtime widget or render-cache access. GPU and lifecycle checks: build/qa/animal-containment-hover; click-through assignment: build/qa/animal-containment-click."
   },
   "animal_item_color_reader": {
     "evidence": "build/stockpile-storage-native-zone-animals-20261026-133119",

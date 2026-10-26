@@ -224,8 +224,24 @@ cleanup for each observed control. Rendered help images were inspected. Native
 tooltip screenshot parity remains unverified: hidden-window captures lose the
 hover even though the diagnostic glyph rows show the expected help. Attempts to
 retain input or render repeatedly did not establish a valid native screenshot;
-those images are not accepted tooltip evidence. Long-name clipping, full-name
-hover behavior and broader picker input/lifecycle remain unfinished.
+those images are not accepted tooltip evidence. Broader picker input/lifecycle
+remains unfinished.
+
+Squad names now reproduce native3ac445..3ac4cf at the supported fixed picker
+width: lengths below55 cells remain intact; longer names become51 cells followed
+by three dots. Use controls draw over the name in Barracks, as in native DF.
+DF2UTF maps each CP437 cell to one Unicode codepoint, including extended letters.
+Native `build/stockpile-storage-native-zone-squads-20261026-180054` confirms the
+54/55/56-cell boundary, long extended-character names, and absence of name/emblem
+hover in both pickers. Source preservation passes; DF125164 exits unsaved.
+
+`native_zone_squads.json.name_render_reference` retains20 native RGB strip hashes.
+GPU `build/qa/squad-native-names-colors` matches all20 byte-for-byte, covering
+aliases, lowercase, CP437, native formatted names and clipping. The first run
+exposed a darker background and cream glyphs despite correct glyph placement;
+the squad rows now use the standard native row background and white glyphs.
+The unsourced full-name tooltip is removed. Final GPU acceptance retains only
+the three known Godot diagnostics; core19/19 passes in `build/qa/squad-native-names`.
 
 ## Animal keyboard activation and portrait reference
 

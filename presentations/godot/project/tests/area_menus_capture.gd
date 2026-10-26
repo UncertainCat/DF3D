@@ -545,6 +545,22 @@ func run() -> void:
 			crop.save_png(directory.path_join("squad-symbol-"+str(sample.capture)+"-"+str(sample.id)+".png"))
 			if str(sample.capture)==type_name+"-picker" and int(sample.id)==120:
 				root.get_texture().get_image().save_png(directory.path_join("controller_squad_symbol_"+type_name.to_lower()+".png"))
+		var name_reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_squads.json")).name_render_reference
+		for sample in name_reference.observations:
+			if not str(sample.capture).begins_with(type_name+"-"):continue
+			var facts:Dictionary={"index":int(sample.symbol[0]),"foreground":[],"background":[]}
+			for n in 3:
+				facts.foreground.append(int(sample.symbol[n+1]));facts.background.append(int(sample.symbol[n+4]))
+			controller.candidates_state.rows=[{"id":int(sample.id),"entity":3,"name":str(sample.caption),"squad_use":int(sample.squad_use),"squad_symbol":facts}]
+			controller.candidates_state.changed.emit()
+			await process_frame;await RenderingServer.frame_post_draw
+			var button:Button=controller.candidates_view.choices[0]
+			if not button.tooltip_text.is_empty():push_error("Squad name exposes absent native tooltip");quit(1);return
+			var rendered:=root.get_texture().get_image();rendered.convert(Image.FORMAT_RGB8)
+			var crop:=rendered.get_region(Rect2i(Vector2i(button.global_position)+Vector2i(56,12),Vector2i(int(sample.width),12)))
+			crop.save_png(directory.path_join("squad-name-"+str(sample.capture)+".png"))
+			var digest:=HashingContext.new();digest.start(HashingContext.HASH_SHA256);digest.update(crop.get_data())
+			if digest.finish().hex_encode()!=str(sample.rgb_sha256):push_error("Rendered squad name differs from native: "+str(sample.capture));quit(1);return
 		for sample in squad_hover_reference.observations:
 			if not str(sample.capture).begins_with(type_name+"-"):continue
 			var target:Button

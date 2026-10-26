@@ -3757,5 +3757,387 @@
         "godot-shutdown-objects"
       ]
     }
+  },
+  "name_render_reference": {
+    "run": "build/stockpile-storage-native-zone-squads-20261026-180054",
+    "scope": "Twenty native name strips at the supported fixed picker width, including54/55/56-cell boundary and extended CP437. All rendered Godot strips exactly match native RGB. Barracks crop ends where use controls overdraw the name; Archery includes all54 cells. Name/emblem hover stays -1 in both pickers.",
+    "observations": [
+      {
+        "capture": "Barracks-name-alias",
+        "caption": "Squad Alias",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "3b46ec21d7a75a5baaabd74663b24190b371d3293e47b2a356f9be2fdb17b4d6",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-lowercase",
+        "caption": "lowercase guard",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "3dd16241d801338a79321b12da3e3e00bfb0af6ec893aa8cfd91e063c996b5b2",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-cp437",
+        "caption": "G\u00fcard \u00e9\u00e4\u00f6",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "afa96557a89bb1602a7759b4665f6513bc2b0c1039af3a6fe698df618692d8a9",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-long",
+        "caption": "123456789012345678901234567890123456789012345678901234567890",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "a21c89322cd1bd26986b1130711d074f0c6da531d5850758da69eb1bdcd1c67c",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-54",
+        "caption": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "4c624f6b709427f2cde4259289dd59950c85939383854e11c99fff6a63181b42",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-55",
+        "caption": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "6c1e1bb753e68cfafb635b51dbfefaf1ccbd1dc11b224b6e5a782add294a7a35",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-56",
+        "caption": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "ef3441673fcdf139366df38ebd66011895cc84abbea5b9d666b969d229c1e49c",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-long-cp437",
+        "caption": "\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "bacb99cbdd46dcfc23d518c976ded0c6795d6b3ef32281ca3ba9c4fd8807972f",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-first-nickname",
+        "caption": "`nickname' the Golden Beaks",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "dfdd1871f3a3d2421868c7218899bbe6c16a4fbbc6103a15740425ebfd28d0e7",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "Barracks-name-restored",
+        "caption": "The Golden Beaks",
+        "id": 120,
+        "width": 368,
+        "rgb_sha256": "13703a7eb51f723d792fab8531d1f2df1626190d9d77787c37b66af3db709eff",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 14
+      },
+      {
+        "capture": "ArcheryRange-name-alias",
+        "caption": "Squad Alias",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "ee2471260cf449dcb065a19146712d5e35c9b772743290f424a167e73e689070",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-lowercase",
+        "caption": "lowercase guard",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "94c3822aa151c602c0c4c87957b6fe1e1eb0d81c8c68caaaebb91806a5c25953",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-cp437",
+        "caption": "G\u00fcard \u00e9\u00e4\u00f6",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "d095661e0cac747663589885fdfcf6d6dacd04263b3921b41cc51211f666de42",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-long",
+        "caption": "123456789012345678901234567890123456789012345678901234567890",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "f234289f9bbf3ebdf68f7ce8ad1482779968c8766e4f50293e3b52faee20b1f0",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-54",
+        "caption": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "5695113b6985e3a44e6ae46462f4a21fb2c091944f729a05bc20e244f70357a5",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-55",
+        "caption": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "ad2d9d1b3382701fce0871e16ce3f3415218943cb8ca24aa021fa6d6946dbea2",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-56",
+        "caption": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "70db2475987d0e66ce175d6c23d3ef16c7c15f72523beb51c8aef11f7fd7d3a4",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-long-cp437",
+        "caption": "\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc\u00fc",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "58f01b17ae8fc632df4dcaa9f2b53b3d7d39edd3ae00c8e7b7b326439d72415d",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-first-nickname",
+        "caption": "`nickname' the Golden Beaks",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "d7683e73b968c8a7108d7d338f4e680f20ba3a059ac180f7923435a2f8ac29fe",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      },
+      {
+        "capture": "ArcheryRange-name-restored",
+        "caption": "The Golden Beaks",
+        "id": 120,
+        "width": 432,
+        "rgb_sha256": "b101383ecb18a79ff09ffe7fb09188027002004c7fff2f0268d458030e95c2d9",
+        "symbol": [
+          22,
+          21,
+          84,
+          63,
+          84,
+          0,
+          13
+        ],
+        "squad_use": 0
+      }
+    ],
+    "no_hover": [
+      {
+        "capture": "Barracks-hover-name",
+        "hover": -1
+      },
+      {
+        "capture": "Barracks-hover-emblem",
+        "hover": -1
+      },
+      {
+        "capture": "ArcheryRange-hover-name",
+        "hover": -1
+      },
+      {
+        "capture": "ArcheryRange-hover-emblem",
+        "hover": -1
+      }
+    ],
+    "result_sha256": "53fe0b038d6f37737305d8f03113bb034221112ad8575c76885342e8226d2a8b",
+    "gpu": {
+      "run": "build/qa/squad-native-names-colors",
+      "status": "passed_with_known_issues",
+      "known": [
+        "godot-separate-thread-notice",
+        "godot-device-finalize",
+        "godot-shutdown-objects"
+      ],
+      "comparisons": 20,
+      "corrections": [
+        "54-cell native ellipsis at length55",
+        "standard row background",
+        "white native glyphs",
+        "removed nonexistent full-name tooltip"
+      ],
+      "summary_sha256": "819fabc6201bbcaa2a8c7f4d3678f9e5e3bbc1e648b09778a457d210ec8e5c07"
+    }
   }
 }

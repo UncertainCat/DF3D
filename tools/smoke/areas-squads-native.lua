@@ -179,7 +179,9 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  assert(#opened.ids>=2,'squad fixture needs two squads')
  rack_fixture.start(b,{opened.ids[1],opened.ids[2]})
  local columns=kind=='Barracks' and {{'sleep',816,1},{'train',848,2},{'equipment',880,4},{'individual',912,8}} or {{'train',912,2}}
- for _,column in ipairs(columns)do
+ local hover_columns={};for _,column in ipairs(columns)do hover_columns[#hover_columns+1]=column end
+ hover_columns[#hover_columns+1]={'name',440,0};hover_columns[#hover_columns+1]={'emblem',392,0}
+ for _,column in ipairs(hover_columns)do
   local deadline=dfhack.getTickCount()+900
   repeat
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -188,8 +190,8 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
   until dfhack.getTickCount()>=deadline
   g.precise_mouse_x=column[2];g.precise_mouse_y=118;g.mouse_x=column[2]//8;g.mouse_y=9
   local observed=capture(kind..'-hover-'..column[1],b,true)
-  local expected=({[1]=0x15d,[2]=0x15e,[4]=0x15f,[8]=0x160})[column[3]]
-  assert(observed.hover_enabled and observed.hover==expected,'native squad hover differs')
+  local expected=({[0]=-1,[1]=0x15d,[2]=0x15e,[4]=0x15f,[8]=0x160})[column[3]]
+  assert(observed.hover==expected and (expected==-1 or observed.hover_enabled),'native squad hover differs')
   observed.hover_text={}
   for y=1,18 do
    local line={};for x=g.dimx-24,g.dimx-1 do local ch=observed.lines[y][x+1];line[#line+1]=ch>=33 and ch<=255 and string.char(ch) or ' ' end
@@ -225,7 +227,9 @@ for _,kind in ipairs{'Barracks','ArcheryRange'}do
  local alias,first,nick=named.alias,named.name.first_name,named.name.nickname
  for _,case in ipairs{{'alias','Squad Alias'},{'lowercase','lowercase guard'},
   {'cp437','G'..string.char(129)..'ard '..string.char(130,132,148)},
-  {'long',string.rep('1234567890',6)}}do
+  {'long',string.rep('1234567890',6)},
+  {'54',string.rep('A',54)},{'55',string.rep('B',55)},{'56',string.rep('C',56)},
+  {'long-cp437',string.rep(string.char(129),56)}}do
   named.alias=case[2]
   capture(kind..'-name-'..case[1],b)
  end

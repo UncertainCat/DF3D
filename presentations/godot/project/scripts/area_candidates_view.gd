@@ -103,7 +103,7 @@ func bind_owner_help(control: Control, recenter: bool) -> void:
 	control.tree_exiting.connect(func():native_help.leave(owner))
 
 func row_style(selected: bool = false) -> StyleBoxTexture:
-	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else ("BUTTON_RECTANGLE" if state.kind in [1,2] else "BUTTON_RECTANGLE_DARK"),8)
+	var style := art.make_style("BUTTON_RECTANGLE_SELECTED" if selected else "BUTTON_RECTANGLE",8)
 	style.set_texture_margin(SIDE_TOP,12); style.set_texture_margin(SIDE_BOTTOM,12)
 	style.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE
 	for side in [SIDE_TOP,SIDE_BOTTOM]: style.set_content_margin(side,0)
@@ -509,10 +509,18 @@ func apply_owner_colors(time_ms: int, fire_choice: int = -1) -> void:
 			background.color = native_colors[int(color[1])]
 
 func add_squad(row: Dictionary) -> void:
-	var button := row_button(str(row.get("name","")))
-	button.clip_text = true; button.tooltip_text = str(row.get("name",""))
+	# Native3ac445..3ac4cf: this fixed-width picker keeps names shorter than55
+	# cells, otherwise54 with the final three replaced by dots. DF2UTF preserves
+	# one codepoint per source CP437 cell. Use controls overdraw the name afterward.
+	var caption := str(row.get("name",""))
+	if caption.length() >= 55: caption = caption.left(51)+"..."
+	var button := row_button(caption)
+	button.clip_text = true
+	for key in ["font_color","font_hover_color","font_pressed_color","font_hover_pressed_color","font_focus_color","font_disabled_color"]:
+		button.add_theme_color_override(key,Color.WHITE)
 	var style: StyleBox = button.get_theme_stylebox("normal").duplicate()
 	style.set_content_margin(SIDE_LEFT,56)
+	style.set_content_margin(SIDE_RIGHT,8)
 	for key in ["normal","hover","pressed","disabled","focus"]: button.add_theme_stylebox_override(key,style)
 	rows_box.add_child(button); choices.append(button)
 	var entries := [[1,"SLEEP"],[2,"TRAIN"],[4,"INDIV_EQ"],[8,"SQUAD_EQ"]]

@@ -3,6 +3,17 @@
 #include "df/building_archerytargetst.h"
 #include "df/building_doorst.h"
 #include "df/world.h"
+#include "df/unit.h"
+#include "df/item.h"
+#include "df/job.h"
+#include "df/plotinfost.h"
+#include "df/punishment.h"
+#include "df/historical_figure.h"
+#include "df/histfig_site_link.h"
+#include "df/squad.h"
+#include "df/squad_barracks_infost.h"
+#include "df/building_squad_infost.h"
+#include <algorithm>
 #include <windows.h>
 #include <cstdint>
 #include <cstdlib>
@@ -18,7 +29,7 @@ uint64_t hash(const uint8_t* bytes,size_t size) {
     while(size--){value^=*bytes++;value*=1099511628211ULL;}
     return value;
 }
-bool refreshOverlaps(const uint8_t* base) {
+bool refreshOverlaps(const uint8_t* base,const df::building_civzonest* excluded=nullptr) {
     const auto& zones=df::global::world->buildings.other.ANY_ZONE;
     std::vector<bool> collisions(zones.size(),false);
     // Nativeac8490 uses map_block.path_cost as an ownership grid, with door
@@ -39,6 +50,7 @@ bool refreshOverlaps(const uint8_t* base) {
     for(size_t i=zones.size();i-->0;) {
         const auto* zone=zones[i];
         if(!zone)return false;
+        if(zone==excluded)continue;
         const int type=int(zone->type);
         // Immutable native dispatch: eight room types participate. Other
         // zone flags are still cleared, as in native's initial all-zone pass.
@@ -155,6 +167,90 @@ bool nativeZoneComplete(df::building_civzonest& zone) {
     reinterpret_cast<Complete>(base+0x577040)(&zone,true);
     zone.categorize(true);
     return nativeZoneRefresh(zone);
+}
+bool nativeZoneRemoveReady() {
+    if(!nativeZoneCreateReady())return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=
+        hash(base+0x587d80,0xc98)==0x0f7410a976032a15ULL &&
+        hash(base+0x5874f0,0x335)==0x5897323f436cb82fULL &&
+        hash(base+0x586ac0,0x205)==0x963ec0e2ff50cf12ULL &&
+        hash(base+0xcb1420,0xe2)==0x5d444e44fe3e3f89ULL &&
+        hash(base+0x13969f0,0xde)==0xc1ab930415137e8fULL &&
+        hash(base+0xd09860,0xe4)==0xfcb5fa4617e93dbbULL &&
+        hash(base+0xb98640,0x3a5)==0x724b201c98c64573ULL &&
+        hash(base+0x7db20,0xb6)==0x4ee4244d4f7af0aeULL &&
+        hash(base+0x6ff00,0xa8)==0x95c810961f82c229ULL &&
+        hash(base+0x5a78e0,0xce)==0x3d9bdaeb35702e06ULL &&
+        hash(base+0x582e00,0xbb)==0x33e9a77fb397d8eaULL &&
+        hash(base+0x28b7d0,0x18e)==0x94d00db7f2604223ULL &&
+        hash(base+0x583430,0x216)==0x8b65477dae955283ULL;
+    return compatible;
+}
+bool nativeZoneRemove(df::building_civzonest& zone) {
+    if(!df::global::world || !df::global::plotinfo || !nativeZoneRemoveReady())return false;
+    if(zone.flags.bits.almost_deleted)return true;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const int32_t id=zone.id;
+    zone.flags.bits.almost_deleted=true;
+    // Zone-specific branch of587d80. The generic entry calls removeUses,
+    // whose overlap calculation borrows global pathfinding scratch. Keep
+    // the independent semantic cleanup calls and own the inline orchestration.
+    using Mark=void (*)(df::building*,bool);
+    reinterpret_cast<Mark>(base+0x586ac0)(&zone,true);
+    using Relationships=void (*)(df::building*);
+    reinterpret_cast<Relationships>(base+0x558690)(&zone);
+    using ItemRef=bool (*)(df::item*,int32_t,int32_t);
+    for(const auto itemId:zone.assigned_items)
+        if(auto* item=df::item::find(itemId))
+            reinterpret_cast<ItemRef>(base+0xcb1420)(item,31,id);
+    using UnitRef=bool (*)(df::unit*,int32_t,int32_t);
+    for(const auto unitId:zone.assigned_units)
+        if(auto* unit=df::unit::find(unitId))
+            reinterpret_cast<UnitRef>(base+0x13969f0)(unit,0,id);
+    using SiteLink=void (*)(df::historical_figure*,int32_t,bool);
+    for(const auto hfId:zone.home_general_hf)if(auto* hf=df::historical_figure::find(hfId)) {
+        for(size_t i=hf->site_links.size();i-->0;) {
+            auto* link=hf->site_links[i];
+            if(link && int(link->getType())==7 &&
+               (zone.site_id==-1 || link->site==zone.site_id) &&
+               (id==-1 || link->sub_id==id))
+                reinterpret_cast<SiteLink>(base+0xb98640)(hf,int32_t(i),false);
+        }
+    }
+    zone.home_general_hf.clear();
+    reinterpret_cast<Relationships>(base+0x558550)(&zone);
+    // Retain DFHack's reciprocal squad cleanup. Native destruction frees
+    // zone-side records but does not remove squad.rooms. Native destruction
+    // itself now handles all unit.owned_buildings pointers (including duplicates).
+    for(auto* info:zone.squad_room_info)if(info) {
+        if(auto* squad=df::squad::find(info->squad_id))
+            for(size_t i=squad->rooms.size();i-->0;)
+                if(squad->rooms[i] && squad->rooms[i]->building_id==id) {
+                    auto* room=squad->rooms[i];
+                    squad->rooms.erase(squad->rooms.begin()+i);
+                    delete room;
+                }
+    }
+    for(auto* unit:df::global::world->units.active)
+        if(unit && unit->job.destroy_target==&zone)unit->job.destroy_target=nullptr;
+    auto& taxRooms=df::global::plotinfo->tax_collection.rooms;
+    taxRooms.erase(std::remove(taxRooms.begin(),taxRooms.end(),id),taxRooms.end());
+    for(auto* punishment:df::global::plotinfo->punishments)
+        if(punishment && punishment->chain==id)punishment->chain=-1;
+    using JobRef=bool (*)(df::job*,int32_t,int32_t);
+    for(auto* job:df::global::world->jobs.list)
+        if(job && (job->flags.bits.dessource || job->flags.bits.special))
+            reinterpret_cast<JobRef>(base+0xd09860)(job,36,id);
+    // All remaining furniture/map branches of587d80 are inapplicable to a
+    // civzone. Preserve its deferred-retirement contract during building update.
+    // Refresh before retirement with an excluded identity, never a freed pointer.
+    const bool overlapOk=refreshOverlaps(base,&zone);
+    if(!zone.flags.bits.in_update) {
+        using Retire=void (*)(df::building*);
+        reinterpret_cast<Retire>(base+0x5a78e0)(&zone);
+    }
+    return overlapOk;
 }
 bool nativeZoneRefresh(df::building_civzonest& zone) {
     if(!df::global::world || !nativeZoneCreateReady())return false;

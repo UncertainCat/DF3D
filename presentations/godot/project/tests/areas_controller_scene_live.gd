@@ -1389,8 +1389,19 @@ func pointer_zone_overlap(origin: Vector3i, first_id: int) -> void:
 	if not await wait_ui(settled,"previous overlapping zone"): return
 	if not check(int(editor.selected.id) == first_id and int(editor.selected.revision) != first_revision and int(editor.selected.overlapping) == 1,"old zone overlap/revision did not refresh"): return
 	await capture("zone_overlap_previous")
-	# A new isolated zone clears presentation state without assuming removal's
-	# separate collision lifecycle, which remains under native audit.
+	await native("overlap_prepare",{"scenario":"floor","site":{"x":origin.x,"y":origin.y,"z":origin.z}})
+	await click_control(editor.zone_menu.controls.repaint)
+	await click_control(editor.paint_view.buttons.remove)
+	if not await wait_ui(func(): return settled() and editor.selected.is_empty(),"remove overlapping zone"): return
+	await native("removed",{"id":first_id})
+	await native("snapshot",{"id":second_id,"expected":{"overlapping":0}})
+	await native("overlap_measure",{"require_unchanged":true})
+	await native("overlap_clear")
+	await pointer_click(position)
+	if not await wait_ui(func(): return settled() and int(editor.selected.get("id",-1)) == second_id,"select surviving zone"): return
+	if not check(int(editor.selected.overlapping)==0 and not editor.zone_menu.overlap_label.visible and not editor.zone_menu.type_label.has_theme_color_override("font_color"),"survivor retained overlap heading after removal"): return
+	await capture("zone_overlap_survivor")
+	# An unrelated isolated selection must also remain clear.
 	await click_control(editor.zone_menu.buttons.Bedroom)
 	var isolated := origin+Vector3i(2,0,0)
 	position = editor.camera.unproject_position(Vector3(isolated.x+0.5,isolated.z+float(world.floor_height()),isolated.y+0.5))
@@ -1436,6 +1447,16 @@ func pointer_zone_overlap_repaint(origin: Vector3i, first_id: int, second_id: in
 	await native("snapshot",{"id":second_id,"expected":{"overlapping":0,"tile_count":0}})
 	await native("overlap_result",{"ids":[first_id,second_id],"expected":false})
 	if not check(editor.paint_session != null and int(editor.paint_session.area.overlapping) == 0 and editor.paint_view.accept_button.disabled,"empty repaint must retain clear zone with disabled Accept"): return
+	# The native reference capture moves the pointer off the map. Match that
+	# state rather than comparing a live hover preview against an idle caption.
+	var motion := InputEventMouseMotion.new()
+	motion.position = editor.paint_view.accept_button.get_global_rect().get_center()
+	motion.global_position = motion.position; root.push_input(motion,true)
+	await process_frame
+	if not await wait_ui(func(): return settled() and not editor.paint_counts.values.is_empty(),"empty repaint count observation"): return
+	write_json("zone_empty_paint_counts.json",{"values":editor.paint_counts.values,"caption":editor.paint_view.zone_caption.text})
+	if not check(int(editor.paint_counts.values.get("painted",-1)) == 0 and int(editor.paint_counts.values.get("preview",-1)) == 0,"empty repaint count differs from native 0 + 0"): return
+	if not check(editor.paint_view.zone_caption.text.ends_with(": 0 + 0"),"empty repaint count caption missing"): return
 	await capture("zone_repaint_overlap_erased")
 	await click_control(editor.paint_view.buttons.erase)
 	for corner in 2:

@@ -178,6 +178,7 @@ elseif request.op=='overlap_measure' then
  local saved=assert(_G.df3d_overlap_fixture);local changed=0
  for _,guard in ipairs(saved.guards)do if dfhack.internal.memcmp(guard.copy,guard.address,guard.size)~=0 then changed=changed+1 end end
  result.scratch_guards=#saved.guards;result.changed_guards=changed
+ if request.require_unchanged then assert(changed==0,"zone removal changed map search scratch")end
  -- Read-only identity evidence for the removal audit; these addresses never
  -- cross the gameplay protocol and are not runtime command inputs.
  local base=dfhack.internal.getImageBase();result.vectors={}
@@ -191,6 +192,65 @@ elseif request.op=='overlap_clear' then
  for _,guard in ipairs(saved.guards)do df.delete(guard.copy)end
  if saved.door then local doors=df.global.world.buildings.other.DOOR;assert(doors[#doors-1]==saved.door);doors:erase(#doors-1);saved.door:delete()end
  saved.block.tiletype[saved.x][saved.y]=saved.tile;_G.df3d_overlap_fixture=nil
+elseif request.op=='zone_removal_prepare' then
+ local b=building()
+ assert(not _G.df3d_zone_removal_fixture,'removal fixture already active')
+ local unit=assert(df.global.world.units.active[0],'removal fixture needs a unit')
+ local item=assert(df.global.world.items.all[0],'removal fixture needs an item')
+ local squad=assert(df.global.world.squads.all[0],'removal fixture needs a squad')
+ local hf=assert(df.historical_figure.find(unit.hist_figure_id),'removal fixture needs a historical figure')
+ local saved={zone=b,id=b.id,unit=unit,item=item,squad=squad,hf=hf,
+  unit_refs=#unit.general_refs,item_refs=#item.general_refs,owners=#unit.owned_buildings,
+  squad_rooms=#squad.rooms,hf_links=#hf.site_links,tax_rooms=#df.global.plotinfo.tax_collection.rooms,
+  destroy_target=unit.job.destroy_target}
+ _G.df3d_zone_removal_fixture=saved
+ local function ref(kind,target)
+  local r=kind:new();r.building_id=b.id;target:insert('#',r)
+ end
+ ref(df.general_ref_building_civzone_assignedst,unit.general_refs);b.assigned_units:insert('#',unit.id)
+ ref(df.general_ref_building_civzone_assignedst,item.general_refs);b.assigned_items:insert('#',item.id)
+ unit.owned_buildings:insert('#',b);unit.owned_buildings:insert('#',b)
+ unit.job.destroy_target=b
+ local info=df.building_squad_infost:new();info.squad_id=squad.id;b.squad_room_info:insert('#',info)
+ for i=1,2 do local room=df.squad_barracks_infost:new();room.building_id=b.id;squad.rooms:insert('#',room)end
+ local link=df.histfig_site_link_home_site_saved_civzonest:new();link.site=b.site_id;link.sub_id=b.id
+ hf.site_links:insert('#',link);b.home_general_hf:insert('#',hf.id)
+ for i=1,2 do df.global.plotinfo.tax_collection.rooms:insert('#',b.id)end
+ local punishment=df.punishment:new();punishment.chain=b.id;df.global.plotinfo.punishments:insert('#',punishment);saved.punishment=punishment
+ local owned=df.job:new();owned.job_type=df.job_type.ConstructBuilding;owned.posting_index=-1
+ ref(df.general_ref_building_holderst,owned.general_refs);assert(dfhack.job.linkIntoWorld(owned,true));b.jobs:insert('#',owned);saved.owned_job=owned.id
+ local external=df.job:new();external.job_type=df.job_type.ConstructBuilding;external.posting_index=-1;external.flags.dessource=true
+ ref(df.general_ref_building_holderst,external.general_refs);assert(dfhack.job.linkIntoWorld(external,true));saved.external_job=external.id
+ result.unit=unit.id;result.item=item.id;result.squad=squad.id;result.historical_figure=hf.id
+ result.owned_job=owned.id;result.external_job=external.id
+elseif request.op=='zone_removal_result' then
+ local saved=assert(_G.df3d_zone_removal_fixture)
+ assert(not df.building.find(saved.id),'removed zone remains in all buildings')
+ for _,v in pairs(df.global.world.buildings.other)do
+  for _,b in ipairs(v)do assert(b.id~=saved.id,'removed zone remains in a typed building list')end
+ end
+ assert(#saved.unit.general_refs==saved.unit_refs,'assigned unit reference remains')
+ assert(#saved.item.general_refs==saved.item_refs,'assigned item reference remains')
+ assert(#saved.unit.owned_buildings==saved.owners,'duplicate ownership pointers remain')
+ assert(saved.unit.job.destroy_target==nil,'destroy target remains')
+ assert(#saved.squad.rooms==saved.squad_rooms,'reciprocal squad rooms remain')
+ assert(#saved.hf.site_links==saved.hf_links,'historical-figure site link remains')
+ assert(#df.global.plotinfo.tax_collection.rooms==saved.tax_rooms,'tax-room entries remain')
+ assert(saved.punishment.chain==-1,'punishment chain remains')
+ local function find_job(id)
+  local link=df.global.world.jobs.list.next
+  while link do if link.item and link.item.id==id then return link.item end;link=link.next end
+ end
+ assert(not find_job(saved.owned_job),'owned job not retired')
+ local external=assert(find_job(saved.external_job),'independent job incorrectly retired')
+ assert(#external.general_refs==0,'independent job holder reference remains')
+ saved.unit.job.destroy_target=saved.destroy_target
+ assert(dfhack.job.removeJob(external),'fixture independent-job cleanup failed')
+ local punishments=df.global.plotinfo.punishments
+ assert(punishments[#punishments-1]==saved.punishment);punishments:erase(#punishments-1);saved.punishment:delete()
+ result.effects={'typed registration','assigned unit','assigned item','duplicate ownership','destroy target',
+  'duplicate squad rooms','historical-figure link','duplicate tax rooms','punishment chain','owned job','independent job reference'}
+ _G.df3d_zone_removal_fixture=nil
 elseif request.op=='zone_membership_site' then
  for _,candidate in ipairs(df.global.world.buildings.other.IN_PLAY)do
   if candidate:canMakeRoom() then

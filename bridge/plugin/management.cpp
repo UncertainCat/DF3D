@@ -1315,11 +1315,13 @@ int areaRemove(lua_State* L) {
   auto* target=Lua::GetDFObject<df::building>(L,1);
   if(!target || (!virtual_cast<df::building_stockpilest>(target) && !virtual_cast<df::building_civzonest>(target)))
     return result(false,"Area no longer exists");
+  auto* zone=virtual_cast<df::building_civzonest>(target);
+  if(zone && !df3d_area::nativeZoneRemoveReady())return result(false,"Native zone removal unavailable");
   bool removed=false;
   try {
-    // Native deconstruction owns occupancy, relationships and destruction.
+    // Native semantic cleanup owns relationships and destruction.
     // It can mutate before failing; refresh even if no success reply survives.
-    mutated=true;removed=Buildings::deconstruct(target);
+    mutated=true;removed=zone?df3d_area::nativeZoneRemove(*zone):Buildings::deconstruct(target);
   } catch(...) {
     return result(false,"Native area removal failed; inspect before retrying");
   }

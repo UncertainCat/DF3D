@@ -21,9 +21,8 @@ session and Lua adapter; the matching MSVC bridge builds. Main-scene
 erase/regrow and55,584 guards covering all loaded map-block path_cost/path_tag
 arrays. Those arrays remain unchanged. Owned DF125888 closes unsaved and both
 save manifests match; only the known Godot separate-thread notice remains.
-The empty-paint and regrown-heading captures were inspected. This run does
-not prove the asynchronous paint-count caption: its empty capture precedes
-that observation and shows no count, which needs focused verification.
+The empty-paint and regrown-heading captures were inspected. Its empty-paint count capture precedes the asynchronous observation. The
+focused212258 run below closes that evidence gap with matched pointer state.
 
 Semantic `build/areas-acceptance-20261025-205211` passes117 observations with
 clean diagnostics, including real furniture membership and reciprocal
@@ -31,28 +30,54 @@ relations removed on erase and restored on regrow. Owned DF84644 closes
 unsaved and both manifests match. Evidence is retained in
 `fixtures/areas/native_zone_overlap.json`.
 
-Removal remains unfinished: Buildings::deconstruct invokes native zone
-removeUses0x5874f0, whose0x58752a call enters shared-search overlap recomputation.
-Calling the generic native destructor0x587d80 has the same virtual call and
-cannot solve that ownership issue.
-Protected diagnostic `build/areas-acceptance-20261025-210041` confirms this:
-creation guards pass, then each of five deletion pairs changes42–43 of55,584
-guarded path_cost/path_tag arrays. Its passing status means the diagnostic
-completed, not that deletion meets the ownership contract. Owned DF110920
-closes unsaved, both manifests match and diagnostics are clean. The recorded
-world-list addresses also identify the native cleanup's item, unit, punishment,
-tax-room and historical-figure sources. `fixtures/areas/native_zone_removal_audit.json`
-retains observations and exact helper ranges. Independent item/unit/job
-reference removal and final registration/destruction helpers are identified;
-the complete replacement still needs implementation and effect verification.
-The current native zone destructor removes all matching ownership pointers from
-world.units.all, including duplicates; DFHack's older dangling-owner comment
-does not describe this build. It frees zone-side squad records but does not
-visit squad.rooms, so reciprocal squad cleanup must be retained. The historical-
-figure type-7 removal path uses call-free semantic site lookups and skips history
-event creation. These are static findings, not live deletion acceptance.
-Audit/replace this route before exposing Zones. Location-specific repaint effects after the relationship sequence,
-Multi, assignment and full Zones acceptance remain separate work.
+Zone removal now uses a zone-specific sequence around independent native
+cleanup helpers. It replaces Buildings::deconstruct on the zone route because
+native removeUses0x5874f0 calls shared-search overlap recomputation at0x58752a;
+the generic native removal entry0x587d80 has the same unsafe virtual call.
+The bridge preserves native relationship cleanup, item/unit reference removal,
+historical-figure link removal, tax-room/punishment/job-reference effects and
+native final retirement. The owned overlap calculation excludes the retiring
+zone. Native already-deleted and in-update retirement branches are preserved;
+callers never inspect a pointer after retirement. Compatibility is checked
+before mutation and partial failures remain unknown outcomes without replay.
+
+The current native destructor removes all matching ownership pointers from
+world.units.all, including duplicates. DFHack's older dangling-owner comment
+does not describe this build. Native frees zone-side squad records but does not
+visit squad.rooms, so the existing reciprocal squad cleanup is retained. The
+historical-figure type-7 path uses semantic site lookups and skips history-event
+creation. Native base destruction retains its existing owned-job cancellation
+and storage cleanup; the change does not substitute a bridge job destructor.
+
+Protected diagnostic `build/areas-acceptance-20261025-210041` established the
+original defect: five deletion pairs changed42–43 of55,584 guarded map search
+arrays while preceding creation guards passed. Its passing status meant the
+diagnostic completed, not ownership compliance. The replacement's semantic
+`build/areas-acceptance-20261025-211743` passes127 observations with clean
+diagnostics. All five pairs plus the linked-cleanup case now change zero arrays.
+The cleanup case verifies typed registration, item/unit references, duplicate
+ownership and squad links, destroy target, figure link, duplicate tax entries,
+punishment chain, owned-job retirement and independent-job reference removal.
+Owned DF124108 closes unsaved; both save manifests match. Initial211638 failed
+in the verifier because Lua has no df.job.find; linked-list traversal fixes it.
+
+Main-scene `build/areas-acceptance-20261025-212258` passes31 observations through
+viewport input, including deletion and reselection of the surviving zone with
+its red overlap warning cleared. It also confirms the empty repaint caption
+Meeting Area:0+0 (with native spacing) after awaiting its asynchronous count.
+The native capture moves its pointer off map; matching that state corrects the
+211959 harness comparison against a hovered preview tile. Both captures were
+inspected. Owned DF41604 closes unsaved, both manifests match, and only the
+known Godot separate-thread notice remains. MSVC bridge build and offline
+`build/qa/zone-native-removal` core19/19 plus Lua adapter checks pass.
+`fixtures/areas/native_zone_removal_audit.json` retains exact native ranges,
+the original defect and replacement evidence.
+
+These controlled link fixtures do not accept assignment UI workflows. They do
+not create a reciprocal site-building inhabitant record, and the in-update
+branch has static coverage only. Location-specific repaint effects, Multi,
+assignment and full Zones/Locations acceptance remain separate work. Zones
+remains staged.
 
 ## Native zone headings
 

@@ -1,6 +1,6 @@
 {
   "supported_df": "53.16 Steam Windows x64",
-  "status": "confirmed_runtime_ownership_defect",
+  "status": "replacement_verified_for_recorded_removal_cases",
   "evidence": "build/areas-acceptance-20261025-210041",
   "owned_df_pid": 110920,
   "closed_unsaved": true,
@@ -186,9 +186,96 @@
       "Do not derive function size from only the first PE unwind entry: 7db20, 28b7d0 and 586ac0 have split unwind ranges. Recorded ranges include their reachable normal branches."
     ],
     "remaining": [
-      "Audit base-destructor owned-job cancellation and all reachable virtual cleanup effects before treating final retirement as accepted.",
-      "Implement the zone-specific removal sequence without invoking removeUses/ac8490, then verify actual assignments, squad links, historical-figure/site links, registration and search-array guards.",
-      "Preserve deferred retirement when in_update and the already-deleted early return; no target dereference after final retirement."
+      "Complete assignment/Location workflows and their native effect acceptance; these deletion fixtures are not acceptance for those UIs.",
+      "Exercise reciprocal site-building and deferred-retirement branches where applicable."
+    ]
+  },
+  "resolution": {
+    "runtime": "zone-specific orchestration of pinned native semantic cleanup helpers, native final retirement, and owned overlap refresh excluding the retiring zone",
+    "bridge_sha256": "61c9985c4e588a406839eb5be93145de4096a14fe0fe7feda07b9fc02c1abe2a",
+    "basic_evidence": "build/areas-acceptance-20261025-211414",
+    "effects_evidence": "build/areas-acceptance-20261025-211743",
+    "owned_df_pid": 124108,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 127,
+    "diagnostics": "clean",
+    "effects": [
+      "typed registration",
+      "assigned unit",
+      "assigned item",
+      "duplicate ownership",
+      "destroy target",
+      "duplicate squad rooms",
+      "historical-figure link",
+      "duplicate tax rooms",
+      "punishment chain",
+      "owned job",
+      "independent job reference"
+    ],
+    "guards": [
+      {
+        "response": 97,
+        "scratch_guards": 55584,
+        "changed_guards": 0
+      },
+      {
+        "response": 103,
+        "scratch_guards": 55584,
+        "changed_guards": 0
+      },
+      {
+        "response": 109,
+        "scratch_guards": 55584,
+        "changed_guards": 0
+      },
+      {
+        "response": 115,
+        "scratch_guards": 55584,
+        "changed_guards": 0
+      },
+      {
+        "response": 121,
+        "scratch_guards": 55584,
+        "changed_guards": 0
+      },
+      {
+        "response": 126,
+        "scratch_guards": 55584,
+        "changed_guards": 0
+      }
+    ],
+    "limitations": [
+      "Controlled semantic assignment/link fixtures; this does not accept the assignment UI workflows.",
+      "Historical-figure fixture verifies removal of the figure link; it does not create a reciprocal site-building inhabitant record.",
+      "The in_update deferred-retirement branch follows the pinned native branch but has not been exercised by this paused safe-point lane."
+    ],
+    "main_scene": {
+      "evidence": "build/areas-acceptance-20261025-212258",
+      "owned_df_pid": 41604,
+      "closed_unsaved": true,
+      "save_manifests_unchanged": 2,
+      "native_observations": 31,
+      "diagnostics": "passed_with_known_issues: godot-separate-thread-notice only",
+      "captures_inspected": [
+        "scene_zone_overlap_survivor.png",
+        "scene_zone_repaint_overlap_erased.png"
+      ],
+      "empty_paint_counts": {
+        "painted": 0,
+        "preview": 0
+      },
+      "pointer_state": "off map, matching native reference capture"
+    },
+    "harness_corrections": [
+      {
+        "evidence": "build/areas-acceptance-20261025-211638",
+        "failure": "df.job.find is unavailable in this DFHack Lua API; verifier now traverses the world job linked list"
+      },
+      {
+        "evidence": "build/areas-acceptance-20261025-211959",
+        "failure": "Compared live map-hover preview against native capture with pointer moved off map; verifier now matches pointer state"
+      }
     ]
   }
 }

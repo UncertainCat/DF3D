@@ -152,6 +152,14 @@ local function capture(name)
      local effective_profession=sources.identity_profession>=0 and sources.identity_profession or unit.profession
      local color_text,color_code=dfhack.run_command_silent('df3d','zone-owner-profession-color-read',tostring(row.unit_id),tostring(effective_profession));assert(color_code==0,color_text)
      sources.profession_color=require('json').decode(color_text)
+     local name_text,name_code=dfhack.run_command_silent('df3d','zone-owner-name-color-read',tostring(row.unit_id));assert(name_code==0,name_text)
+     sources.name_color=require('json').decode(name_text)
+     local function same_color(a,b)return a[1]==b[1] and a[2]==b[2] and a[3]==(b[3]~=0)end
+     for line=2,3 do for x,ch in ipairs(lines[line].bytes)do if ch~=0 then
+      assert(same_color(lines[line].colors[x],sources.name_color.color) or
+       (sources.name_color.effect~=0 and same_color(lines[line].colors[x],sources.name_color.alternate)),
+       'native name color differs: '..name..'/'..row.unit_id..'/'..line..'/'..x)
+     end end end
      local hf=df.historical_figure.find(unit.hist_figure_id)
      local function strength(links,kind)
       if links then for _,link in ipairs(links)do if link:getType()==kind then return link.link_strength end end end
@@ -395,7 +403,7 @@ local ok,why=pcall(function()
  local old_color={first_unit.uwss_display_tile,first_unit.uwss_display_color_f,
   first_unit.uwss_display_color_b,first_unit.uwss_display_color_br,first_unit.flags3.ghostly}
  local color_ok,color_error=pcall(function()
-  local function color_case(name,fg,bg,bright)
+  local function color_case(name,fg,bg,bright,effect,source)
    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
    search(first_unit.name.first_name);capture('tomb-picker-display-color-'..name)
    local sample
@@ -409,12 +417,14 @@ local ok,why=pcall(function()
    for i,ch in ipairs(sample.lines[2].bytes)do
     if ch~=0 then
      local color=sample.lines[2].colors[i]
-     assert(color[1]==fg and color[2]==bg and color[3]==bright,'native color precedence differs: '..name)
+     if fg then assert(color[1]==fg and color[2]==bg and color[3]==bright,'native color precedence differs: '..name)end
      observed=true
     end
    end
    assert(observed,'color fixture has no glyphs')
-   if name~='override' and name~='override-before-ghost' and name~='ghost' then
+   if effect then assert(sample.color_facts.native_sources.name_color.effect==effect,'native effect differs: '..name)end
+   if source then assert(sample.color_facts.native_sources.name_color.source==source,'native color source differs: '..name)end
+   if sample.color_facts.native_sources.name_color.source==0 and sample.color_facts.native_sources.name_color.effect==0 then
     local ordinary=sample.color_facts.native_sources.ordinary_color
     assert(ordinary[1]==fg and ordinary[2]==bg and (ordinary[3]~=0)==bright,'owned ordinary color differs: '..name)
    end
@@ -422,6 +432,45 @@ local ok,why=pcall(function()
     local base=sample.color_facts.native_sources.profession_color
     assert(base[1]==fg and base[2]==bg and (base[3]~=0)==bright,'owned base color differs: '..name)
    end
+  end
+  -- Oracle-only standalone native name widget for states excluded by the
+  -- owner eligibility predicate. Never use this as evidence of picker admission.
+  local function standalone_color_case(name,fg,bg,bright,effect,source)
+   view:render(dfhack.getTickCount())
+   local widget=df.widget_unit_name:new()
+   widget.u=first_unit;widget.show_gender=true;widget.show_profession=true;widget.one_line_only=false
+   widget.flag.whole=7;widget.rect.x1=52;widget.rect.x2=96;widget.rect.y1=20;widget.rect.y2=21
+   local ok,why=pcall(function()
+    for y=19,20 do for x=52,96 do dfhack.screen.paintTile({ch=0,fg=0,bg=0},x,y)end end
+    local observed={}
+    local seen={};local began=dfhack.getTickCount()
+    repeat
+     widget:render(dfhack.getTickCount())
+     for y=19,20 do for x=52,96 do
+      local tile=dfhack.screen.readTile(x,y)
+      if tile.ch~=0 then
+       local key=tile.fg..'/'..tile.bg..'/'..tostring(tile.bold)
+       if not seen[key]then seen[key]=true;observed[#observed+1]={tile.fg,tile.bg,tile.bold}end
+      end
+     end end
+     if effect~=1 and effect~=2 or #observed>=2 then break end
+     script.sleep(1,'frames')
+    until dfhack.getTickCount()-began>=2500
+    assert(#observed>0,'standalone native name has no glyphs: '..name)
+    if effect==1 or effect==2 then assert(#observed==2,'native flash did not show both phases: '..name)end
+    local size,address=df.sizeof(df.global.gps);local saved=df.new('uint8_t',size);dfhack.internal.memmove(saved,address,size)
+    local text,code=dfhack.run_command_silent('df3d','zone-owner-name-color-read',tostring(owner))
+    local unchanged=dfhack.internal.memcmp(saved,address,size)==0;df.delete(saved);assert(unchanged,'color reader changed gps')
+    assert(code==0,text);local color=require('json').decode(text)
+    assert(color.effect==effect and color.source==source,'standalone native color effect/source differs: '..name)
+    local function matches(a,b)return a[1]==b[1] and a[2]==b[2] and a[3]==(b[3]~=0)end
+    for _,actual in ipairs(observed)do
+     assert(matches(actual,color.color) or (color.effect~=0 and matches(actual,color.alternate)),'standalone native color differs: '..name)
+     if fg then assert(actual[1]==fg and actual[2]==bg and actual[3]==bright,'standalone fixed color differs: '..name)end
+    end
+    records[#records+1]={name='standalone-name-color-'..name,unit_id=owner,color=color,observed=observed,unchanged_gps=true}
+   end)
+   widget:delete();assert(ok,why)
   end
   first_unit.uwss_display_tile=88;first_unit.uwss_display_color_f=1
   first_unit.uwss_display_color_b=2;first_unit.uwss_display_color_br=1
@@ -510,6 +559,73 @@ local ok,why=pcall(function()
    end
    hf.flags.deity=saved_deity
    assert(relation_ok,relation_error)
+   reputation.cur_identity=-1
+   local block=assert(dfhack.maps.getTileBlock(first_unit.pos))
+   local above=assert(dfhack.maps.getTileBlock(first_unit.pos.x,first_unit.pos.y,first_unit.pos.z+1))
+   local x,y=first_unit.pos.x%16,first_unit.pos.y%16
+   local water,water_above=block.designation[x][y],above.designation[x][y]
+   local saved_special={water.whole,water_above.whole,first_unit.flags1.whole,first_unit.flags2.whole,
+    caste.flags.AQUATIC_UNDERSWIM,caste.flags.HAS_BLOOD,first_unit.enemy.undead,
+    caste.misc.remains_color[0],caste.misc.remains_color[1],caste.misc.remains_color[2]}
+   local part=assert(first_unit.body.components.body_part_status[0]);local saved_part=part.whole
+   local undead=df.unit_active_animationst:new();undead.root_body_part_id=1
+   local special_ok,special_error=pcall(function()
+    first_unit.enemy.undead=nil;first_unit.flags1.inactive=false;first_unit.flags1.projectile=false;first_unit.flags1.caged=false
+    water.flow_size=7;water.liquid_type=false;water_above.flow_size=0;water_above.liquid_type=false
+    caste.flags.AQUATIC_UNDERSWIM=false;first_unit.flags2.swimming=false
+    color_case('water-submerged',1,1,true,0,4)
+    first_unit.flags2.swimming=true;color_case('water-surface-swimmer',5,0,true,0,0)
+    water_above.flow_size=1;color_case('water-swimmer-covered',1,1,true,0,4)
+    water_above.flow_size=0;caste.flags.AQUATIC_UNDERSWIM=true;color_case('water-aquatic',1,1,true,0,4)
+    first_unit.flags1.caged=true;color_case('water-caged-excluded',5,0,true,0,0)
+    first_unit.flags1.caged=false;water.liquid_type=true;color_case('water-magma-excluded',5,0,true,0,0)
+    water.flow_size=0;water.liquid_type=false
+    first_unit.enemy.undead=undead;caste.flags.HAS_BLOOD=false
+    caste.misc.remains_color[0]=2;caste.misc.remains_color[1]=3;caste.misc.remains_color[2]=0
+    standalone_color_case('undead-remains',2,3,false,0,3)
+    caste.misc.remains_color[0]=3;standalone_color_case('undead-remains-contrast',3,3,true,0,3)
+    caste.flags.HAS_BLOOD=true;standalone_color_case('undead-blood',nil,nil,nil,0,3)
+    first_unit.enemy.undead=nil
+    part.missing=false;part.on_fire=true;color_case('fire-body',nil,nil,nil,3,5)
+    part.missing=true;color_case('fire-missing-part',5,0,true,0,0)
+    local item=assert(first_unit.inventory[0]).item;local old_item_fire=item.flags.on_fire
+    local item_ok,item_error=pcall(function()item.flags.on_fire=true;color_case('fire-inventory',nil,nil,nil,3,5)end)
+    item.flags.on_fire=old_item_fire;assert(item_ok,item_error)
+    part.whole=saved_part
+    local skill=assert(first_unit.status.current_soul.skills[0]);local saved_rating=skill.rating
+    skill.rating=15
+    local legendary_ok,legendary_error=pcall(function()
+     color_case('legendary',nil,nil,nil,1,0)
+     standalone_color_case('legendary-phases',nil,nil,nil,1,0)
+     local raw_saved={caste.caste_color[0],caste.caste_color[1],caste.caste_color[2],caste.flags.HAS_COLOR,caste.flags.NO_UNIT_TYPE_COLOR}
+     local contrast_ok,contrast_error=pcall(function()
+      reputation.cur_identity=identity.id;identity.profession=0;identity.impersonated_hf=-1
+      caste.flags.HAS_COLOR=true;caste.flags.NO_UNIT_TYPE_COLOR=true
+      caste.caste_color[0]=3;caste.caste_color[1]=3;caste.caste_color[2]=1
+      standalone_color_case('legendary-contrast-phases',nil,nil,nil,1,0)
+     end)
+     for i=0,2 do caste.caste_color[i]=raw_saved[i+1]end
+     caste.flags.HAS_COLOR=raw_saved[4];caste.flags.NO_UNIT_TYPE_COLOR=raw_saved[5];reputation.cur_identity=-1
+     assert(contrast_ok,contrast_error)
+    end)
+    skill.rating=saved_rating;assert(legendary_ok,legendary_error)
+    local nemesis=assert(dfhack.units.getNemesis(first_unit));local old_flashes=nemesis.flags.FLASHES
+    local flash_ok,flash_error=pcall(function()
+     first_unit.flags1.merchant=true;first_unit.flags1.important_historical_figure=true;nemesis.flags.FLASHES=true
+     standalone_color_case('nemesis-flashes',nil,nil,nil,2,0)
+     first_unit.flags1.important_historical_figure=false;standalone_color_case('nemesis-unimportant',5,0,true,0,0)
+     first_unit.flags1.important_historical_figure=true
+     reputation.cur_identity=identity.id;identity.profession=1;identity.impersonated_hf=-1
+     standalone_color_case('identity-before-nemesis',6,0,true,0,0)
+    end)
+    nemesis.flags.FLASHES=old_flashes;assert(flash_ok,flash_error)
+   end)
+   first_unit.enemy.undead=saved_special[7];undead:delete();part.whole=saved_part
+   water.whole=saved_special[1];water_above.whole=saved_special[2]
+   first_unit.flags1.whole=saved_special[3];first_unit.flags2.whole=saved_special[4]
+   caste.flags.AQUATIC_UNDERSWIM=saved_special[5];caste.flags.HAS_BLOOD=saved_special[6]
+   for i=0,2 do caste.misc.remains_color[i]=saved_special[i+8]end
+   assert(special_ok,special_error)
   end)
   reputation.cur_identity=old_identity
   if inserted then

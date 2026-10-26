@@ -40,6 +40,7 @@ struct ZoneOwnerColorSources {
     bool deity=false;
     // Ordinary stage only: early overrides and animated effects are separate.
     std::array<uint8_t,3> ordinaryColor{};
+    std::array<uint8_t,3> ordinaryFlashColor{};
 };
 // Native identity, noble position and historical-link strengths, plus owned
 // ordinary color precedence. Early overrides and animated effects are separate.
@@ -47,6 +48,16 @@ std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candi
 // Base profession/raw color from pinned native inline dispatch, with the
 // owner widget's background0. No identity/noble/status precedence or animation.
 std::optional<std::array<uint8_t,3>> nativeZoneOwnerProfessionColor(const df::unit& candidate,int16_t profession);
+struct ZoneOwnerNameColor {
+    std::array<uint8_t,3> color{},alternate{};
+    // Effect:0 steady,1 legendary (333/1000ms),2 nemesis (500/1000ms),3 fire.
+    uint8_t effect=0;
+    // Source:0 ordinary,1 unit override,2 ghost,3 undead part,4 water,5 fire.
+    uint8_t source=0;
+};
+// Fortress owner-name color/effect facts. Never reads drawing globals or consumes
+// native clock/RNG; animation remains presentation-owned.
+std::optional<ZoneOwnerNameColor> nativeZoneOwnerNameColor(df::unit& candidate);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

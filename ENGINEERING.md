@@ -350,6 +350,38 @@ The deity impersonation capture was inspected. MSVC and
 animation and production rendering remain unfinished; this is not final row
 acceptance or permission to expose the staged picker.
 
+`df3d zone-owner-name-color-read <unit id>` now returns owned fortress name
+colors and effects. It follows unit override, ghost, undead-part, water and fire
+precedence before ordinary colors and legendary/nemesis flashing. Water depth
+uses the existing native designation-only leaf; blood color uses the independent
+material resolver. Nemesis lookup reuses the guarded semantic lookup helper.
+The slower flash checks an important historical figure's nemesis FLASHES flag,
+not tame status. The reader never samples the native clock, consumes simulation
+RNG, calls drawing functions or reads graphics/menu/search state. Fire exposes
+its two native alternatives for presentation-owned animation. Legendary/nemesis
+phase lengths are pinned at333/500ms per1000ms, respectively. The alternate
+color preserves native black-on-black and equal foreground/background contrast.
+
+Protected `build/stockpile-storage-native-zone-owner-20261026-021253` compares
+all199 sampled picker rows' name/profession glyphs with the returned colors.
+Ten new picker cases cover submerged/surface/covered/aquatic water behavior,
+caged and magma exclusions, body/inventory fire, missing-part exclusion and
+legendary coloring. Eight oracle-only standalone native-name-widget cases cover
+undead blood/remains, nemesis gating and both flash phases. Equal-color flashing
+changes3/3/1 to0/3/0. These standalone cases do not establish picker admission:
+native excludes undead and nonmember non-ghost units. Earlier020232 failed that
+admission assumption;020638 exposed an oracle y-origin error. Both closed
+unsaved with sources preserved. The final fixture restores all changed semantic
+fields, deletes its owned widgets/undead record and leaves UI/gps/search guards
+unchanged. DF59472 closes unsaved with source unchanged. Water and inventory-fire
+captures were inspected. MSVC and `build/qa/owner-name-color-final` core19/19 pass.
+
+Compact evidence is in `native_zone_assignment.json.owner_name_color`.
+The descriptor is not yet in the production row contract or Godot rendering.
+Presentation animation, portraits, row backgrounds, input and full lifecycle
+acceptance remain required. Invalid raw/material fallbacks have static audit
+only; this API intentionally rejects Adventure mode outside the fortress picker.
+
 ## Native zone repaint effects
 
 Zone repaint now shares the native relationship sequence used by creation:

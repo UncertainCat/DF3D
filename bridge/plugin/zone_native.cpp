@@ -23,6 +23,15 @@
 #include "df/histfig_site_link.h"
 #include "df/histfig_entity_link.h"
 #include "df/histfig_hf_link.h"
+#include "df/unit_active_animationst.h"
+#include "df/unit_inventory_item.h"
+#include "df/unit_skill.h"
+#include "df/material.h"
+#include "df/descriptor_pattern.h"
+#include "df/descriptor_color.h"
+#include "df/general_ref.h"
+#include "df/nemesis_record.h"
+#include "df/game_mode.h"
 #include "df/squad.h"
 #include "df/squad_barracks_infost.h"
 #include "df/building_squad_infost.h"
@@ -292,7 +301,89 @@ std::optional<ZoneOwnerColorSources> nativeZoneOwnerColorSources(df::unit& candi
         if(result.slaveStrength>0 || result.prisonerStrength>0 || result.imprisonerStrength>0)result.ordinaryColor={7,0,0};
     }
     if(result.deity)result.ordinaryColor={6,0,1};
+    result.ordinaryFlashColor=result.ordinaryColor;
+    result.ordinaryFlashColor[2]=uint8_t(1-result.ordinaryFlashColor[2]);
+    if(!result.ordinaryFlashColor[0] && !result.ordinaryFlashColor[1] && !result.ordinaryFlashColor[2])result.ordinaryFlashColor[0]=7;
+    if(result.ordinaryFlashColor[0]==result.ordinaryFlashColor[1] && !result.ordinaryFlashColor[2] && result.ordinaryFlashColor[1])result.ordinaryFlashColor[0]=0;
     if(result.ordinaryColor[0]==result.ordinaryColor[1] && !result.ordinaryColor[2] && result.ordinaryColor[1])result.ordinaryColor[0]=0;
+    return result;
+}
+std::optional<ZoneOwnerNameColor> nativeZoneOwnerNameColor(df::unit& candidate) {
+    if(!df::global::world || !df::global::plotinfo || !df::global::gamemode || int(*df::global::gamemode)!=0 || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x1333bc0,0xa0d)==UINT64_C(0x8d3fa1210a66c482) &&
+        hash(base+0x247d80,0xbf)==UINT64_C(0xc034bea0c49abf36) &&
+        hash(base+0x14add70,0x12f)==UINT64_C(0x01f897b15772d540) &&
+        hash(base+0xedfca0,0x17)==UINT64_C(0x275e5d9367823fc0) &&
+        std::memcmp(base+0x67520,"\xb8\x03\x00\x00\x00\xc3",6)==0;
+    if(!compatible)return std::nullopt;
+    static_assert(offsetof(df::unit,uwss_display_tile)==0x8a0 && offsetof(df::unit_active_animationst,root_body_part_id)==0x18);
+    static_assert(offsetof(df::caste_raw,misc)+offsetof(df::caste_raw::T_misc,remains_color)==0x48a);
+    static_assert(offsetof(df::caste_raw,extracts)+offsetof(df::caste_raw::T_extracts,blood_state)==0x3c74);
+    static_assert(offsetof(df::material,state_color)==0x9c && offsetof(df::descriptor_color,color)==0x70 && offsetof(df::descriptor_color,bold)==0x71);
+    static_assert(int(df::caste_raw_flags::HAS_BLOOD)==69 && int(df::caste_raw_flags::AQUATIC_UNDERSWIM)==62);
+    static_assert(offsetof(df::nemesis_record,flags)==0x58 && int(df::nemesis_flags::FLASHES)==7);
+    const auto steady=[](std::array<uint8_t,3> color,uint8_t source) {return ZoneOwnerNameColor{color,color,0,source};};
+    if(candidate.uwss_display_tile)return steady({uint8_t(candidate.uwss_display_color_f),uint8_t(candidate.uwss_display_color_b),uint8_t(candidate.uwss_display_color_br)},1);
+    if(candidate.flags3.bits.ghostly)return steady({7,0,1},2);
+    const df::caste_raw* caste=nullptr;
+    const auto& creatures=df::global::world->raws.creatures.all;
+    if(candidate.race>=0 && size_t(candidate.race)<creatures.size() && creatures[candidate.race]) {
+        const auto& castes=creatures[candidate.race]->caste;
+        if(candidate.caste>=0 && size_t(candidate.caste)<castes.size())caste=castes[candidate.caste];
+    }
+    if(candidate.enemy.undead && candidate.enemy.undead->root_body_part_id>=1) {
+        if(caste && caste->flags.is_set(df::caste_raw_flags::HAS_BLOOD)) {
+            using Material=df::material* (*)(df::world*,int16_t,int32_t);
+            auto* material=reinterpret_cast<Material>(base+0x14add70)(df::global::world,caste->extracts.blood_mat,caste->extracts.blood_matidx);
+            const int state=int(caste->extracts.blood_state);
+            if(material && state>=0 && size_t(state)<material->state_color.size()) {
+                const int patternId=material->state_color[state];const auto& descriptors=df::global::world->raws.descriptors;
+                if(patternId>=0 && size_t(patternId)<descriptors.patterns.size()) {
+                    const auto* pattern=descriptors.patterns[patternId];
+                    if(pattern && !pattern->colors.empty()) {
+                        const int colorId=pattern->colors[0];
+                        if(colorId>=0 && size_t(colorId)<descriptors.colors.size() && descriptors.colors[colorId]) {
+                            const auto* color=descriptors.colors[colorId];
+                            return steady({uint8_t(color->color),0,uint8_t(int(color->color)==0?1:color->bold)},3);
+                        }
+                    }
+                }
+            }
+            return steady({4,0,1},3);
+        }
+        std::array<uint8_t,3> color{5,0,0};
+        if(caste)for(size_t i=0;i<3;++i)color[i]=uint8_t(caste->misc.remains_color[i]);
+        if(color[0]==color[1])color[2]=1;
+        return steady(color,3);
+    }
+    using Depth=uint8_t (*)(df::world*,int16_t,int16_t,int16_t);
+    const auto depth=reinterpret_cast<Depth>(base+0x247d80);
+    if(!(candidate.flags1.whole&0x2010002) && depth(df::global::world,candidate.pos.x,candidate.pos.y,candidate.pos.z)==7 &&
+       ((caste && caste->flags.is_set(df::caste_raw_flags::AQUATIC_UNDERSWIM)) || !candidate.flags2.bits.swimming ||
+        depth(df::global::world,candidate.pos.x,candidate.pos.y,int16_t(candidate.pos.z+1))>0))return steady({1,1,1},4);
+    bool fire=false;
+    for(const auto* entry:candidate.inventory)if(entry && entry->item && entry->item->flags.bits.on_fire){fire=true;break;}
+    if(!fire)for(const auto& part:candidate.body.components.body_part_status)if(!part.bits.missing && part.bits.on_fire){fire=true;break;}
+    // Native selects these alternatives via simulation RNG. Expose the effect
+    // without advancing that RNG merely because a viewer requests its rows.
+    if(fire)return ZoneOwnerNameColor{{4,0,1},{6,0,1},3,5};
+    const auto ordinary=nativeZoneOwnerColorSources(candidate);if(!ordinary)return std::nullopt;
+    auto result=steady(ordinary->ordinaryColor,0);
+    using Member=bool (*)(df::unit*);
+    const bool member=reinterpret_cast<Member>(base+0x138ed20)(&candidate);
+    if(member && candidate.status.current_soul) {
+        for(const auto* skill:candidate.status.current_soul->skills)if(skill && skill->rating>=15 && int(skill->id)!=114){result.effect=1;break;}
+    }
+    if(!member && ordinary->identityProfession==-1 && candidate.flags1.bits.important_historical_figure) {
+        for(auto* ref:candidate.general_refs)if(ref && ref->getType()==df::general_ref_type::IS_NEMESIS) {
+            using Nemesis=df::nemesis_record* (*)(df::general_ref*);
+            const auto* nemesis=reinterpret_cast<Nemesis>(base+0xedfca0)(ref);
+            if(nemesis && nemesis->flags.is_set(df::nemesis_flags::FLASHES))result.effect=2;
+            break;
+        }
+    }
+    if(result.effect)result.alternate=ordinary->ordinaryFlashColor;
     return result;
 }
 std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate) {

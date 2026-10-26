@@ -1999,6 +1999,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(unsigned char byte:result->label)bytes.append(int(byte));output.append(bytes);
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-owner-name-color-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& text=parameters[1];const auto parsed=std::from_chars(text.data(),text.data()+text.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=text.data()+text.size())return CR_WRONG_USAGE;
+        auto* unit=df::unit::find(id);if(!unit)return CR_FAILURE;
+        const auto color=df3d_area::nativeZoneOwnerNameColor(*unit);if(!color)return CR_FAILURE;
+        Json::Value output;output["effect"]=int(color->effect);output["source"]=int(color->source);
+        for(auto c:color->color)output["color"].append(int(c));for(auto c:color->alternate)output["alternate"].append(int(c));
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-profession-color-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t values[2];
@@ -2359,6 +2369,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"
         "df3d zone-owner-color-sources-read <unit id>\n"
+        "df3d zone-owner-name-color-read <unit id>\n"
         "df3d zone-owner-profession-color-read <unit id> <profession>\n"
         "df3d zone-owner-query-read <query>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"

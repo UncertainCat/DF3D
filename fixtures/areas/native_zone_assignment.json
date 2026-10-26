@@ -2410,6 +2410,432 @@
     "ownership": "Native link helpers read semantic historical records and return first-match strength without mutation. Inline ordinary precedence reads owned source values; full1333bc0 fingerprint guards reference behavior but the drawing routine is never executed. No UI/gps/search state is borrowed.",
     "fixture": "Paused king; legendary skills temporarily lowered. Appended owned slave/prisoner/imprisoner links erased and deleted in reverse order even after failure; original deity flag restored. Existing temporary identity cleanup restores reputation and skills. Includes first zero before positive duplicate, negative strength, identity precedence and identity deity source selection.",
     "checks": "All139 previous and30 additional display samples pass text/status/source checks; all ordinary controlled colors match native glyphs. UI/gps and initial map search guards unchanged. Deity impersonation capture inspected. MSVC build and core19/19 pass.",
-    "remaining": "Unit-specific override/ghost/undead/water/fire precedence, legendary/tame animation, production contract/rendering, portraits, background/input/lifecycle and remaining management goal."
+    "remaining": "Complete name-color/effect reader evidence follows. Production contract/rendering, portraits, background/input/lifecycle and remaining management goal are unfinished."
+  },
+  "owner_name_color": {
+    "status": "Fortress name-color/effect reader verified against native glyphs; production contract/rendering pending",
+    "diagnostic": "df3d zone-owner-name-color-read <unit id>",
+    "native_evidence": "build/stockpile-storage-native-zone-owner-20261026-021253",
+    "result_sha256": "c2eb2f4e4a0bfa44e2a3d6acefd0764d7145bc615e27f5489d0c68723acfa83d",
+    "plugin_sha256": "24ad84145ce9b256a171236db2d4b56c7a4075100d51bb8f8e2ca118230def9c",
+    "owned_df_pid": 59472,
+    "closed_unsaved": true,
+    "source_manifest_unchanged": true,
+    "display_samples": 199,
+    "picker_cases": [
+      {
+        "case": "water-submerged",
+        "alternate": [
+          1,
+          1,
+          1
+        ],
+        "color": [
+          1,
+          1,
+          1
+        ],
+        "effect": 0,
+        "source": 4
+      },
+      {
+        "case": "water-surface-swimmer",
+        "alternate": [
+          5,
+          0,
+          1
+        ],
+        "color": [
+          5,
+          0,
+          1
+        ],
+        "effect": 0,
+        "source": 0
+      },
+      {
+        "case": "water-swimmer-covered",
+        "alternate": [
+          1,
+          1,
+          1
+        ],
+        "color": [
+          1,
+          1,
+          1
+        ],
+        "effect": 0,
+        "source": 4
+      },
+      {
+        "case": "water-aquatic",
+        "alternate": [
+          1,
+          1,
+          1
+        ],
+        "color": [
+          1,
+          1,
+          1
+        ],
+        "effect": 0,
+        "source": 4
+      },
+      {
+        "case": "water-caged-excluded",
+        "alternate": [
+          5,
+          0,
+          1
+        ],
+        "color": [
+          5,
+          0,
+          1
+        ],
+        "effect": 0,
+        "source": 0
+      },
+      {
+        "case": "water-magma-excluded",
+        "alternate": [
+          5,
+          0,
+          1
+        ],
+        "color": [
+          5,
+          0,
+          1
+        ],
+        "effect": 0,
+        "source": 0
+      },
+      {
+        "case": "fire-body",
+        "alternate": [
+          6,
+          0,
+          1
+        ],
+        "color": [
+          4,
+          0,
+          1
+        ],
+        "effect": 3,
+        "source": 5
+      },
+      {
+        "case": "fire-missing-part",
+        "alternate": [
+          5,
+          0,
+          1
+        ],
+        "color": [
+          5,
+          0,
+          1
+        ],
+        "effect": 0,
+        "source": 0
+      },
+      {
+        "case": "fire-inventory",
+        "alternate": [
+          6,
+          0,
+          1
+        ],
+        "color": [
+          4,
+          0,
+          1
+        ],
+        "effect": 3,
+        "source": 5
+      },
+      {
+        "case": "legendary",
+        "alternate": [
+          5,
+          0,
+          0
+        ],
+        "color": [
+          5,
+          0,
+          1
+        ],
+        "effect": 1,
+        "source": 0
+      }
+    ],
+    "standalone_native_widget_cases": [
+      {
+        "case": "undead-remains",
+        "color": {
+          "alternate": [
+            2,
+            3,
+            0
+          ],
+          "color": [
+            2,
+            3,
+            0
+          ],
+          "effect": 0,
+          "source": 3
+        },
+        "observed": [
+          [
+            2,
+            3,
+            false
+          ]
+        ]
+      },
+      {
+        "case": "undead-remains-contrast",
+        "color": {
+          "alternate": [
+            3,
+            3,
+            1
+          ],
+          "color": [
+            3,
+            3,
+            1
+          ],
+          "effect": 0,
+          "source": 3
+        },
+        "observed": [
+          [
+            3,
+            3,
+            true
+          ]
+        ]
+      },
+      {
+        "case": "undead-blood",
+        "color": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 3
+        },
+        "observed": [
+          [
+            4,
+            0,
+            false
+          ]
+        ]
+      },
+      {
+        "case": "legendary-phases",
+        "color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            1
+          ],
+          "effect": 1,
+          "source": 0
+        },
+        "observed": [
+          [
+            5,
+            0,
+            true
+          ],
+          [
+            5,
+            0,
+            false
+          ]
+        ]
+      },
+      {
+        "case": "legendary-contrast-phases",
+        "color": {
+          "alternate": [
+            0,
+            3,
+            0
+          ],
+          "color": [
+            3,
+            3,
+            1
+          ],
+          "effect": 1,
+          "source": 0
+        },
+        "observed": [
+          [
+            0,
+            3,
+            false
+          ],
+          [
+            3,
+            3,
+            true
+          ]
+        ]
+      },
+      {
+        "case": "nemesis-flashes",
+        "color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            1
+          ],
+          "effect": 2,
+          "source": 0
+        },
+        "observed": [
+          [
+            5,
+            0,
+            false
+          ],
+          [
+            5,
+            0,
+            true
+          ]
+        ]
+      },
+      {
+        "case": "nemesis-unimportant",
+        "color": {
+          "alternate": [
+            5,
+            0,
+            1
+          ],
+          "color": [
+            5,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        },
+        "observed": [
+          [
+            5,
+            0,
+            true
+          ]
+        ]
+      },
+      {
+        "case": "identity-before-nemesis",
+        "color": {
+          "alternate": [
+            6,
+            0,
+            1
+          ],
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        },
+        "observed": [
+          [
+            6,
+            0,
+            true
+          ]
+        ]
+      }
+    ],
+    "effects": {
+      "0": "steady",
+      "1": "legendary: alternate during first333ms of1000ms cycle",
+      "2": "nemesis FLASHES: alternate during first500ms of1000ms cycle",
+      "3": "fire: native randomly selects bright red or bright brown"
+    },
+    "sources": {
+      "0": "ordinary",
+      "1": "unit override",
+      "2": "ghost",
+      "3": "undead body part",
+      "4": "water",
+      "5": "fire"
+    },
+    "ranges": [
+      {
+        "rva": "0x247d80",
+        "length": "0xbf",
+        "fnv1a64": "c034bea0c49abf36",
+        "role": "water depth leaf; excludes magma"
+      },
+      {
+        "rva": "0xedfca0",
+        "length": "0x17",
+        "fnv1a64": "275e5d9367823fc0",
+        "role": "general_ref_is_nemesis getter; tail calls guarded lookup0xb9dc0"
+      },
+      {
+        "rva": "0x14add70",
+        "length": "0x12f",
+        "fnv1a64": "01f897b15772d540",
+        "role": "bounds-checked material resolver for blood descriptor"
+      },
+      {
+        "rva": "0x1333bc0",
+        "length": "0xa0d",
+        "fnv1a64": "8d3fa1210a66c482",
+        "role": "reference-only full native name-color function; never called"
+      }
+    ],
+    "ownership": "Uses semantic unit/raw/material/map/nemesis facts and independent native depth/material/lookup/member helpers. Returns owned base/alternate colors and effect. Never reads gps/menu/search state, calls drawing routines, samples native clock or consumes native RNG. Native widget rendering occurs only in the test oracle.",
+    "checks": "All199 picker samples compare every name/profession glyph with returned steady or animated alternatives. Eight standalone native-widget cases compare excluded/general states and observe both legendary/nemesis phases. Contrast phase changes3/3/1 to0/3/0. UI/gps and initial map-search guards unchanged. Water and inventory-fire captures inspected. MSVC and core19/19 pass.",
+    "fixture": "Restores designation words, raw flags/colors, unit flags, body-part/item fire flags, skill ratings, identity, nemesis FLASHES and undead pointer. Deletes owned temporary undead structure. Standalone name widgets are oracle-only and deleted even on failure; they do not establish picker eligibility.",
+    "diagnostic_runs": [
+      {
+        "evidence": "build/stockpile-storage-native-zone-owner-20261026-020232",
+        "reason": "Native picker excludes undead; candidate not admitted. Closed unsaved/source unchanged."
+      },
+      {
+        "evidence": "build/stockpile-storage-native-zone-owner-20261026-020638",
+        "reason": "Standalone oracle initially read wrong y range; native name begins rect.y1-1. Closed unsaved/source unchanged."
+      }
+    ],
+    "remaining": "Production contract/rendering with presentation-owned animation and injected-time checks; portraits, backgrounds, input and full picker lifecycle. Native phase duty cycles are pinned-code evidence; sampled phase alternation is live evidence. Invalid raw/material fallback paths have static audit only; Adventure mode is outside the fortress picker scope."
   }
 }

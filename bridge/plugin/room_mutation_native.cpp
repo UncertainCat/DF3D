@@ -1,4 +1,5 @@
 #include "room_mutation_native.h"
+#include "zone_native.h"
 #include "modules/Buildings.h"
 #include "df/building.h"
 #include "df/building_civzonest.h"
@@ -75,6 +76,7 @@ uint64_t observeNativeRoomRevision(int32_t id) {
   return hash.finish();
 }
 RoomUndoResult undoNativeRooms(RoomUndoReceipt& receipt,RoomUndoScope scope,uint64_t token,RoomEffectObserver effects) {
+  if(!nativeZoneRemoveReady())return {};
   return receipt.undo(scope,token,[&](int32_t id) {
     const auto revision=observeNativeRoomRevision(id);
     if(revision && effects) {
@@ -84,7 +86,8 @@ RoomUndoResult undoNativeRooms(RoomUndoReceipt& receipt,RoomUndoScope scope,uint
     return revision;
   },[](int32_t id) {
     auto* zone=df::building::find(id);
-    return zone && zone->getType()==df::building_type::Civzone && DFHack::Buildings::deconstruct(zone);
+    return zone && zone->getType()==df::building_type::Civzone &&
+      nativeZoneRemove(*static_cast<df::building_civzonest*>(zone),ZoneRemovalKind::MultiUndo);
   });
 }
 NativeRoomCreation createNativeRooms(RoomFurniture kind,const Bounds& selection,int32_t z,RoomEffectObserver effects) {
@@ -93,7 +96,7 @@ NativeRoomCreation createNativeRooms(RoomFurniture kind,const Bounds& selection,
   std::vector<df::building*> existingCollisions;
   try {
     out.plan=observeNativeRoomPlan(kind,selection,z);
-    if(out.plan.status!=RoomPlanStatus::Complete || !df::global::world ||
+    if(out.plan.status!=RoomPlanStatus::Complete || !nativeZoneRemoveReady() || !df::global::world ||
        !df::global::plotinfo || !df::global::building_next_id) {
       out.error=RoomCreationError::InvalidPlan;return out;
     }

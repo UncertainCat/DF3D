@@ -44,7 +44,23 @@ end
 local result={status='passed'}
 local ok,err=pcall(function()
  assert(df.global.pause_state,'fixture must remain paused')
- if request.op=='multi_begin' then
+ if request.op=='multi_search_begin' then
+  assert(not _G.df3d_multi_search_guards,'search guard already active')
+  local guards={};_G.df3d_multi_search_guards=guards
+  for _,b in ipairs(df.global.world.map.map_blocks)do for _,field in ipairs{'path_cost','path_tag'}do
+   local size,address=df.sizeof(b[field]);local copy=df.new('uint8_t',size)
+   dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
+  end end
+  result.scratch_guards=#guards
+ elseif request.op=='multi_search_end' then
+  local guards=assert(_G.df3d_multi_search_guards);local changed=0
+  for _,g in ipairs(guards)do
+   if dfhack.internal.memcmp(g.copy,g.address,g.size)~=0 then changed=changed+1 end
+   df.delete(g.copy)
+  end
+  _G.df3d_multi_search_guards=nil;result.scratch_guards=#guards;result.changed_guards=changed
+  assert(changed==0,'Multi Undo changed map search scratch')
+ elseif request.op=='multi_begin' then
   local bed=assert(df.building.find(1310),'source bed missing')
   assert(df.building_bedst:is_instance(bed) and bed.centerx==172 and bed.centery==57 and bed.z==164,'source bed changed')
   for _,b in ipairs(df.global.world.buildings.other.BED)do assert(b.centerx~=0 or b.centery~=0 or b.z~=164,'empty selection contains a bed')end

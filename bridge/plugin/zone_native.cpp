@@ -179,6 +179,7 @@ bool nativeZoneRemoveReady() {
     if(!nativeZoneCreateReady())return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool compatible=
+        hash(base+0x34cb5f,0xf9)==0x87ac923b4a09daddULL &&
         hash(base+0x587d80,0xc98)==0x0f7410a976032a15ULL &&
         hash(base+0x5874f0,0x335)==0x5897323f436cb82fULL &&
         hash(base+0x586ac0,0x205)==0x963ec0e2ff50cf12ULL &&
@@ -194,7 +195,7 @@ bool nativeZoneRemoveReady() {
         hash(base+0x583430,0x216)==0x8b65477dae955283ULL;
     return compatible;
 }
-bool nativeZoneRemove(df::building_civzonest& zone) {
+bool nativeZoneRemove(df::building_civzonest& zone,ZoneRemovalKind kind) {
     if(!df::global::world || !df::global::plotinfo || !nativeZoneRemoveReady())return false;
     if(zone.flags.bits.almost_deleted)return true;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -252,7 +253,10 @@ bool nativeZoneRemove(df::building_civzonest& zone) {
     // All remaining furniture/map branches of587d80 are inapplicable to a
     // civzone. Preserve its deferred-retirement contract during building update.
     // Refresh before retirement with an excluded identity, never a freed pointer.
-    const bool overlapOk=refreshOverlaps(base,&zone);
+    // Native Multi Undo34cb5f..34cc58 calls587d80 for each history entry
+    // and exits without a final overlap refresh. Preserve that timing using
+    // owned scratch; do not silently substitute ordinary-panel behavior.
+    const bool overlapOk=refreshOverlaps(base,kind==ZoneRemovalKind::MultiUndo?nullptr:&zone);
     if(!zone.flags.bits.in_update) {
         using Retire=void (*)(df::building*);
         reinterpret_cast<Retire>(base+0x5a78e0)(&zone);

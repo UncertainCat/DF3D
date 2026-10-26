@@ -14,7 +14,10 @@ bool nativeZoneDefaults(df::building_civzonest& zone);
 bool nativeZoneCreateReady();
 bool nativeZoneRemoveReady();
 // May retire the object. Never inspect zone after this call.
-bool nativeZoneRemove(df::building_civzonest& zone);
+// Multi Undo observes overlap before each retirement; ordinary Remove
+// refreshes surviving zones as the native ordinary panel does.
+enum class ZoneRemovalKind { Ordinary, MultiUndo };
+bool nativeZoneRemove(df::building_civzonest& zone,ZoneRemovalKind kind=ZoneRemovalKind::Ordinary);
 // The factory publishes an ID immediately. DF owns the returned pointer;
 // callers must prepare all local allocations before entering and never delete it.
 df::building_civzonest* nativeZoneAllocate();

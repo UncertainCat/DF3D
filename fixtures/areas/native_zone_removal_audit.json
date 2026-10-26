@@ -277,5 +277,25 @@
         "failure": "Compared live map-hover preview against native capture with pointer moved off map; verifier now matches pointer state"
       }
     ]
+  },
+  "multi_undo": {
+    "native_handler": {
+      "rva": "0x34cb5f",
+      "size": "0xf9",
+      "fnv1a64": "0x87ac923b4a09dadd",
+      "sha256": "8423bddeceda15c6188eaee794a8bb44abbc7d792417d3ba1dd6393c3ec6ae74"
+    },
+    "semantics": "Iterate native history forward, call generic deletion for each zone, clear history and counters, return without final overlap refresh. Owned overlap uses the pre-retirement set for this mode. Runtime never reads native history.",
+    "evidence": "build/areas-acceptance-20261025-214440",
+    "owned_df_pid": 118636,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "native_observations": 140,
+    "guarded_undo_requests": 26,
+    "scratch_guards_each": 55584,
+    "changed_guards_each": 0,
+    "diagnostics": "clean",
+    "bridge_sha256": "b0323ea0b4422d2a8b7301e7f49a323c7cf4c4cc80a81a8384ef903cb7fe679d",
+    "scope": "Successful Undo and rejected stale/scoped requests across existing native reference cases. Publication/rollback still use the prior DFHack path and remain unfinished; these guards surround normal Undo only."
   }
 }

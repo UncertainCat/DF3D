@@ -27,7 +27,11 @@ func create_room(interaction: int, empty := false) -> Dictionary:
 		"interaction_id":interaction,"room_furniture":1,"origin":Vector3i(0,0,164) if empty else Vector3i(172,57,164),"width":1,"height":1})
 
 func undo_room(interaction: int, token: int, expected := Outcome.Completed) -> Dictionary:
-	return await multi({"action":Contract.ManagementAction.AreaUpdate,"kind":1,"operation":Op.MultiUndo,"interaction_id":interaction,"undo_token":token},expected)
+	await native("multi_search_begin")
+	if stopped: return {}
+	var result:=await multi({"action":Contract.ManagementAction.AreaUpdate,"kind":1,"operation":Op.MultiUndo,"interaction_id":interaction,"undo_token":token},expected)
+	if not stopped: await native("multi_search_end")
+	return result
 
 func exercise() -> void:
 	await seed_catalog()

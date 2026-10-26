@@ -79,6 +79,36 @@ branch has static coverage only. Multi, assignment and full Zones/Locations
 acceptance remain separate work. Location repaint refresh is covered below. Zones
 remains staged.
 
+## Multi Undo native cleanup
+
+Normal Multi Undo now uses the verified zone cleanup helpers with owned overlap
+scratch. Its native handler0x34cb5f..0x34cc58 iterates history forward, calls
+removal for each entry, clears history/counters and returns without a final
+overlap refresh. This differs from ordinary-panel removal: Multi retains the
+pre-retirement overlap observation for each deletion. The bridge preserves that
+timing through ZoneRemovalKind::MultiUndo, without reading native history or
+borrowing native map search arrays. Its existing scoped receipt still validates
+the complete target set before deleting anything and consumes authority before
+mutation. Compatibility rejection occurs before consuming that receipt.
+
+Protected `build/areas-acceptance-20261025-214440` passes140 observations with
+clean diagnostics. All26 successful/rejected Undo requests preserve55,584
+path_cost/path_tag guards. Existing native reference checks cover room defaults,
+footprints, furniture links, mixed sets, stale targets and foreign scopes.
+Owned DF118636 closes unsaved and both save manifests match. MSVC builds and
+`build/qa/multi-native-undo-final` core19/19 pass. Evidence and the exact native
+handler fingerprint are retained in `fixtures/areas/native_zone_removal_audit.json`.
+
+Multi creation/publication/rollback still use the prior DFHack implementation
+and remain under audit. In particular, rollback can receive an unpublished or
+partially linked object; it cannot be replaced by a registered-zone retirement
+call without changing its ownership contract. Native Multi creation at0x356ee8
+uses the factory that publishes immediately, then defaults/completion and room
+relationships; Bedroom-to-Dormitory conversion occurs after categorization at
+0x35729d..0x3572b9, followed by a final overlap pass at0x3572d3. Its discovery
+is inline and uses shared search generations. These findings guide the next
+creation/discovery change; normal Undo acceptance does not establish full Multi.
+
 ## Zone repaint Location refresh
 
 After zone relationship and overlap updates, the bridge now follows native

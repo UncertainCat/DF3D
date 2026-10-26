@@ -89,6 +89,15 @@ local function capture(name)
  if name:find('picker') or name:find('candidate') then
   local list=assert(unit_list(df.global.game.main_interface.unit_selector,0),'native unit list missing')
   records[#records+1]={name=name..'-row-cursor',cursor=list.cursor_idx,mouse_x=g.mouse_x,mouse_y=g.mouse_y}
+  if name=='tomb-picker' then
+   local cells={}
+   for y=7,12 do for x=47,51 do
+    local idx=x*g.dimy+y;local cell={x=x,y=y,tile=dfhack.screen.readTile(x,y).tile}
+    for _,field in ipairs{'screentexpos_anchored','screentexpos_anchored_x','screentexpos_anchored_y','screentexpos_top_anchored','screentexpos_top_anchored_x','screentexpos_top_anchored_y'}do cell[field]=g[field][idx]end
+    cells[#cells+1]=cell
+   end end
+   records[#records+1]={name=name..'-portrait-anchors',cells=cells}
+  end
   local ids={}
   for _,entry in ipairs(list.entry_list)do if entry.t==0 and entry.u then ids[#ids+1]=entry.u.id end end
   local rows={};widget_rows(list,rows,0);assert(#rows<2000,'widget observation truncated')

@@ -12,6 +12,8 @@ var header_backgrounds: Array[Panel] = []
 var choices: Array[Button] = []
 var focus_buttons: Array[Button] = []
 var portrait_slots: Array = []
+var owner_frames: Array[Panel] = []
+var picture = preload("res://scripts/native_unit_picture_frame.gd").new()
 var remove: Button
 var cached_rows: Array = []
 var strips: Dictionary = {}
@@ -26,6 +28,7 @@ func configure(source, model) -> void:
 	owner_color_random.randomize()
 	world = source; state = model; art.configure(source); theme = art.theme
 	if world.has_method("assets_root"): native_colors = art.installed_palette(world.assets_root())
+	if world.has_method("ui_texture"): picture.configure(world)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	body = Control.new(); body.custom_minimum_size = Vector2(576,684); add_child(body)
 	squad_prompt = Label.new(); squad_prompt.position = Vector2(8,0); squad_prompt.size = Vector2(544,36)
@@ -120,6 +123,7 @@ func refresh() -> void:
 		choices.clear()
 		focus_buttons.clear()
 		portrait_slots.clear()
+		owner_frames.clear()
 		owner_color_rows.clear()
 		squad_buttons.clear()
 		for row in state.rows:
@@ -138,18 +142,23 @@ func refresh() -> void:
 			rows_box.add_child(button); choices.append(button)
 			if state.kind == 1 and row.get("owner_display") is Dictionary:
 				add_owner_text(button,row.owner_display)
-			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(32,36)
-			var picture := art.make_style("BUTTON_PICTURE_BOX",8)
-			picture.set_texture_margin(SIDE_TOP,12); picture.set_texture_margin(SIDE_BOTTOM,12)
-			frame.add_theme_stylebox_override("panel",picture)
+			var owner: bool = state.kind == 1
+			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(40 if owner else 32,36)
+			var frame_style := art.make_style("BUTTON_PICTURE_BOX",8)
+			if owner: frame_style.texture = picture.texture(false)
+			frame_style.set_texture_margin(SIDE_TOP,12); frame_style.set_texture_margin(SIDE_BOTTOM,12)
+			frame.add_theme_stylebox_override("panel",frame_style)
 			frame.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(frame)
-			if world.has_method("creature_portrait"):
-				var portrait := TextureRect.new(); portrait.texture = world.creature_portrait(int(row.id))
-				portrait.position = Vector2(0,0); portrait.size = Vector2(32,36)
+			if owner: owner_frames.append(frame)
+			if (owner and world.has_method("selection_icon")) or (not owner and world.has_method("creature_portrait")):
+				var portrait := TextureRect.new()
+				portrait.texture = world.selection_icon(1,int(row.id),true) if owner else world.creature_portrait(int(row.id))
+				portrait.position = Vector2(2,2) if owner else Vector2.ZERO
+				portrait.size = Vector2(32,32) if owner else Vector2(32,36)
 				portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-				portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				portrait.stretch_mode = TextureRect.STRETCH_SCALE if owner else TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 				portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(portrait)
-				portrait_slots.append({"id":int(row.id),"view":portrait})
+				portrait_slots.append({"id":int(row.id),"view":portrait,"body":owner})
 			var focus := Button.new(); focus.position = Vector2(408,6); focus.size = Vector2(24,24)
 			focus.tooltip_text = "Show on map"
 			for key in ["normal","hover","pressed","disabled","focus"]: focus.add_theme_stylebox_override(key,StyleBoxEmpty.new())
@@ -171,7 +180,11 @@ func refresh() -> void:
 				check.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(check)
 	if state.kind == 1:
 		style_row(remove,remove.visible)
-		for index in choices.size(): style_row(choices[index],index == 0 and not remove.visible)
+		for index in choices.size():
+			var selected := index == 0 and not remove.visible
+			style_row(choices[index],selected)
+			var frame_style: StyleBoxTexture = owner_frames[index].get_theme_stylebox("panel")
+			frame_style.texture = picture.texture(selected)
 	for button in choices: button.disabled = state.busy()
 	for button in squad_buttons: button.disabled = state.busy() or bool(button.get_meta("unknown",false))
 	for button in focus_buttons:

@@ -2923,5 +2923,40 @@
         "rgb_sha256": "ce1610eef6904956e28f024f7491897fea8693661800820c2f833e35d433cfa7"
       }
     ]
+  },
+  "owner_picture_frame": {
+    "capture": "build/stockpile-storage-native-zone-owner-20261026-025944/tomb-picker.png",
+    "native_observation": "build/stockpile-storage-native-zone-owner-20261026-025944/result.json",
+    "size": [
+      40,
+      36
+    ],
+    "body_offset": [
+      2,
+      2
+    ],
+    "samples": [
+      {
+        "state": "selected",
+        "box": [
+          376,
+          88,
+          416,
+          124
+        ],
+        "rgb_sha256": "7eed9e9a6376cdf2a144fc61ccc3e65452ab847b359f47952a845b32d63e1bd3"
+      },
+      {
+        "state": "normal",
+        "box": [
+          376,
+          124,
+          416,
+          160
+        ],
+        "rgb_sha256": "8ee1cc1d3196b8ab036c5d98a7a2c2cf437a6968fa273ddc76497cb920fd18ca"
+      }
+    ],
+    "scope": "Exact two-pixel outer border of first selected and second normal frame (288 pixels each); native anchored offsets2,2 observed for both rows. Unit image content and full picker acceptance remain separate."
   }
 }

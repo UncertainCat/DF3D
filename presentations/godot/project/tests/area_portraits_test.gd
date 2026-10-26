@@ -4,6 +4,8 @@ class World extends RefCounted:
 	var calls: Array = []
 	var images: Dictionary = {}
 	var states: Dictionary = {}
+	var bodies: Dictionary = {}
+	func selection_icon(kind, id, body): return bodies.get(id) if kind == 1 and body else null
 	func demand_creature_info(id): calls.append(id)
 	func creature_portrait(id): return images.get(id)
 	func creature_info_state(id): return states.get(id,{})
@@ -35,6 +37,14 @@ func run() -> void:
 	check(reader.active==8,"Explicit reopening can request fresh detail")
 	reader.clear(world)
 	check(reader.active==-1 and reader.attempted.is_empty() and world.calls[-1]==-1,"Close/session retirement releases demand and identities")
+	world.calls.clear(); world.bodies[7] = GradientTexture2D.new()
+	var bodies := [{"id":7,"view":first,"body":true}]
+	reader.poll(world,bodies)
+	check(first.texture == world.bodies[7] and world.calls.is_empty(),"Full-body rows use resident art without detail demand")
+	world.bodies[7] = GradientTexture2D.new(); reader.poll(world,bodies)
+	check(first.texture == world.bodies[7],"Full-body rows refresh changed appearance")
+	world.bodies.clear(); reader.poll(world,bodies)
+	check(first.texture == null and world.calls.is_empty(),"Unavailable full-body art clears rather than retaining or requesting a portrait")
 	first.free(); second.free()
 	print("AREA_PORTRAITS_PASS" if failures==0 else "AREA_PORTRAITS_FAIL")
 	quit(failures)

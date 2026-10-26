@@ -6,6 +6,7 @@ class CaptureWorld extends Test.FakeWorld:
 	func ui_texture(token: String, index := -1): return assets.ui_texture(token,index)
 	func ui_font_path(): return assets.ui_font_path()
 	func assets_root(): return assets.assets_root()
+	func selection_icon(_kind, _id, _body): return null
 
 func settings_reply(controller, world, service, rows: Array) -> void:
 	service.poll()
@@ -23,6 +24,25 @@ func owner_header_pixels(reference: Dictionary, state_name: String) -> bool:
 		var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(region.get_data())
 		if digest.finish().hex_encode() != str(evidence.reference_hashes[state_name][index]):
 			push_error("Native owner header pixels differ: "+state_name+" "+str(index)); return false
+	return true
+
+func owner_frame_pixels(view, reference: Dictionary, selected: bool) -> bool:
+	var image := root.get_texture().get_image(); image.convert(Image.FORMAT_RGB8)
+	var frame: Panel = view.owner_frames[0]
+	if frame.size != Vector2(40,36): push_error("Owner picture frame dimensions differ"); return false
+	var slot: Dictionary = view.portrait_slots[0]
+	if not slot.body or slot.view.position != Vector2(2,2) or slot.view.size != Vector2(32,32):
+		push_error("Owner full-body anchor differs"); return false
+	var bytes := PackedByteArray()
+	for y in 36:
+		for x in 40:
+			if x not in [0,1,38,39] and y not in [0,1,34,35]: continue
+			var color := image.get_pixel(int(frame.global_position.x)+x,int(frame.global_position.y)+y)
+			bytes.append(color.r8); bytes.append(color.g8); bytes.append(color.b8)
+	var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(bytes)
+	var sample: Dictionary = reference.owner_picture_frame.samples[0 if selected else 1]
+	if digest.finish().hex_encode() != str(sample.rgb_sha256):
+		push_error("Native owner picture frame differs: "+str(sample.state)); return false
 	return true
 
 func _initialize() -> void:
@@ -196,6 +216,7 @@ func run() -> void:
 		var digest := HashingContext.new(); digest.start(HashingContext.HASH_SHA256); digest.update(crop.get_data())
 		if digest.finish().hex_encode() != str(sample.rgb_sha256):
 			push_error("Native owner row background differs: "+str(sample.state)); quit(1); return
+	if not owner_frame_pixels(controller.candidates_view,header_reference,false): quit(1); return
 	var status_reference: Dictionary = header_reference.owner_colors.status_pixels
 	var status_box: Array = status_reference.box
 	var status_rgb: Array = status_reference.foreground_rgb
@@ -246,6 +267,7 @@ func run() -> void:
 			if controller.candidates_view.remove.visible != clear_expected or (clear_expected and controller.candidates_view.remove.disabled):
 				push_error("Native owner clear availability differs: "+type_name); quit(1); return
 			if type_name == "Tomb" and owner == -1:
+				if not owner_frame_pixels(controller.candidates_view,header_reference,true): quit(1); return
 				if root.get_texture().get_image().save_png(directory.path_join("controller_zone_tomb_owner.png")) != OK: quit(1); return
 			var button: Button = controller.candidates_view.remove if clear_expected else controller.candidates_view.choices[0]
 			var point: Vector2 = button.get_global_rect().get_center()

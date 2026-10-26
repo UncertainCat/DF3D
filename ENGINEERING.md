@@ -390,7 +390,19 @@ exactly. The GPU check passes with the three documented Godot notices. Protected
 025247 additionally observes unchanged native cursor0 after CURSOR_DOWN/UP;
 this does not establish complete keyboard behavior. Attempted hidden-window
 hover injection did not reach native mouse state and provides no hover evidence.
-Portraits, hover and remaining input/lifecycle acceptance are still pending.
+Owner portrait frames now reuse the original nine BUTTON_PICTURE_BOX cells and
+the selected variant, at40x36. Native025944 records anchored offsets2,2 for the
+first two rows; GPU `build/qa/owner-picture-frame-fixed` matches all288 outer
+border pixels for each frame state and checks32x32 image placement. Owner slots
+use resident `selection_icon(1,id,true)` full-body art rather than framed creature
+portraits. Visible slots refresh every100ms, replacing changed or unavailable
+art without detail RPCs; deterministic tests cover replacement and disappearance.
+Core19/19 and candidate/portrait checks pass; GPU has only the three known notices.
+Native025944 DF59136 closes unsaved with its source manifest unchanged.
+This verifies frame/placement and refresh wiring, not live owner image content.
+The resident thumbnail API requires a known map actor: deceased/off-map Tomb
+candidate imagery remains unresolved. Hover, full input, semantic refresh and
+complete assignment lifecycle acceptance are also still pending.
 
 Production owner rows now carry the native reader's color alternatives/effect
 through request-local callbacks, validated Lua data, DTOs, the model and Godot.

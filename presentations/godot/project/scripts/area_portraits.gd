@@ -6,6 +6,14 @@ func clear(world) -> void:
 	if active >= 0 and is_instance_valid(world): world.demand_creature_info(-1)
 	active = -1; attempted.clear()
 func poll(world, slots: Array) -> void:
+	var detail_slots: Array = []
+	for slot in slots:
+		if bool(slot.get("body",false)):
+			# Resident full-body art is refreshed even when previously available.
+			# A vanished actor must not keep its last thumbnail or start detail RPCs.
+			slot.view.texture = world.selection_icon(1,int(slot.id),true) if world.has_method("selection_icon") else null
+		else: detail_slots.append(slot)
+	slots = detail_slots
 	if not world.has_method("demand_creature_info"): return
 	var wanted: Dictionary = {}
 	for slot in slots: wanted[int(slot.id)] = true

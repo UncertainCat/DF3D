@@ -16891,6 +16891,38 @@
         29
       ]
     },
-    "scope": "Real VERMIN instance with the existing PET creature/caste; native portrait tile and text/color compared with semantic facts. Original fixture species is unchanged."
+    "scope": "Real VERMIN instance with the existing PET creature/caste; native portrait tile and text/color compared with semantic facts. Original fixture species is unchanged.",
+    "rendered_transport_assignment": {
+      "provenance": "build/areas-acceptance-20261026-152352",
+      "owned_df_pid": 60380,
+      "save_manifests_unchanged": 2,
+      "result": "passed_with_known_issues",
+      "known_diagnostics": [
+        "godot-separate-thread-notice"
+      ],
+      "item_id": 48520,
+      "zone_id": 1509,
+      "previous_cage_id": 261,
+      "checks": [
+        "Transported item recipe page and coordinates equal native creature/caste tile.",
+        "Actual viewer portrait loads before viewport keyboard selection.",
+        "Enter assigns and clears; native readback validates reciprocal zone references, removal of prior cage assignment, and unchanged physical containment references.",
+        "Full candidate list matches native before and after assignments."
+      ],
+      "assignment_observations": [
+        {
+          "assigned": true,
+          "assigned_count": 1,
+          "item": 48520,
+          "status": "passed"
+        },
+        {
+          "assigned": false,
+          "assigned_count": 0,
+          "item": 48520,
+          "status": "passed"
+        }
+      ]
+    }
   }
 }

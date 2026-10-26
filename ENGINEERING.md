@@ -37,8 +37,15 @@ facts. Core and GPU `build/qa/animal-vermin-reference-pixels` pass, matching the
 VERMIN portrait, text crop, full cage RGBA texture and rendered cage region.
 Both GPU runs retain only the three known Godot diagnostics. These component
 comparisons use the existing owned recipe for that same creature/caste, with
-native tile equality checked; they do not replace live VERMIN recipe transport
-and assignment acceptance.
+native tile equality checked. Rendered protected
+`build/areas-acceptance-20261026-152352` additionally verifies real VERMIN
+recipe transport and assignment through the bridge and main viewer. The actual
+portrait loads, viewport keyboard selection/Enter assigns and clears the item,
+and native readback verifies reciprocal zone references and removal of its
+prior cage assignment. Every item recipe page/coordinate is compared with the
+native creature/caste tile before and after assignment. Both save manifests
+remain unchanged; the only diagnostic is the known separate-thread notice.
+Core passes in `build/qa/animal-vermin-live`.
 
 
 Rendered main-scene Pond acceptance passes in

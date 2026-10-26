@@ -695,6 +695,23 @@ elseif request.op=='animal_restraint_end' then
  end
  saved.chain.contained_items:erase(0);saved.contained:delete();saved.chain:delete();assert(dfhack.items.remove(saved.item))
  _G.df3d_restraint_fixture=nil;result.restored=true
+elseif request.op=='animal_vermin_fixture' then
+ assert(df.global.pause_state,'VERMIN fixture requires paused disposable session')
+ local original=assert(df.item.find(request.item_id))
+ local extra=df.item_verminst:new()
+ extra.id=df.global.item_next_id;df.global.item_next_id=extra.id+1
+ extra.race=original.race;extra.caste=original.caste
+ extra.flags.whole=original.flags.whole;extra.flags2.whole=original.flags2.whole
+ extra.pos:assign(original.pos)
+ df.global.world.items.all:insert('#',extra)
+ df.global.world.items.other.ANY_CRITTER:insert('#',extra)
+ df.global.world.items.other.VERMIN:insert('#',extra)
+ local cage=assert(df.global.world.buildings.other.CAGE[0])
+ local ref=df.general_ref_building_cagedst:new();ref.building_id=cage.id
+ extra.general_refs:insert('#',ref);cage.assigned_items:insert('#',extra.id)
+ assert(extra:isLiveAnimal(),'VERMIN fixture must be alive')
+ -- Retain allocation until unsaved exit; picker membership can retain its pointer.
+ result.item_id=extra.id;result.cage_id=cage.id;result.item_type='VERMIN'
 elseif request.op=='animal_long_list' then
  assert(df.global.pause_state,'long animal fixture requires paused disposable session')
  local original=assert(df.item.find(request.item_id))
@@ -765,6 +782,25 @@ elseif request.op=='animal_candidates' then
    assert(row.animal_item_color and row.animal_item_color.foreground==color[1] and
     row.animal_item_color.background==color[2] and row.animal_item_color.bright==color[3],'native item color transport differs')
    assert(row.sheet_icon and #row.sheet_icon.layers==1,'animal item selector recipe absent')
+   local item=assert(df.item.find(entry.id))
+   local creature=assert(df.global.world.raws.creatures.all[item:getMaterial()])
+   local caste=item:getMaterialIndex()>=0 and creature.caste[item:getMaterialIndex()] or nil
+   local graphics=caste and caste.caste_graphics or nil
+   if not graphics or graphics.creature_small_texpos[0]==0 then graphics=creature.graphics end
+   local tile=assert(graphics).creature_small_texpos[0];assert(tile>0,'fixture needs original critter art')
+   local matched=false
+   for _,page in ipairs(df.global.texture.page)do
+    for index,value in ipairs(page.texpos)do if value==tile then
+     local layer=row.sheet_icon.layers[1]
+     assert(row.sheet_icon.tile_pages[layer[1]+1]==page.token and
+      layer[2]==index%page.page_dim_x and layer[3]==index//page.page_dim_x,
+      'native critter tile differs from transported recipe')
+     matched=true;break
+    end end
+    if matched then break end
+   end
+   assert(matched,'native critter tile page absent')
+
   else
    local value,status=dfhack.run_command_silent('df3d','zone-animal-unit-display-read',tostring(entry.id),'27')
    assert(status==0,value);local native=require('json').decode(value)

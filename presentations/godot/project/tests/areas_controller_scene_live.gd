@@ -1752,6 +1752,34 @@ func pointer_animals(id: int) -> void:
 	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
 	if not check(editor.stockpile_page=="types" and not view.visible,"animal right-click did not close selector"):return
 
+	step="live VERMIN portrait and assignment"
+	var vermin_fixture:Dictionary=await native("animal_vermin_fixture",{"item_id":item})
+	if stopped:return
+	var vermin:int=int(vermin_fixture.item_id)
+	await click_control(editor.zone_menu.controls.animals)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"VERMIN picker membership"):return
+	await verify_candidate_rows(id,2)
+	if stopped:return
+	await native("item_assignment_before",{"item_id":vermin})
+	for assigned in [true,false]:
+		var vermin_index:int=-1
+		for index in editor.candidates_state.rows.size():
+			var row:Dictionary=editor.candidates_state.rows[index]
+			if int(row.get("entity",0))==2 and int(row.id)==vermin:vermin_index=index;break
+		if not check(vermin_index>=0,"live VERMIN missing from picker"):return
+		if not await wait_ui(func():return view.portrait_slots[vermin_index].loaded and view.portrait_slots[vermin_index].view.texture!=null,"live VERMIN portrait"):return
+		await pointer_key(KEY_PAGEUP)
+		for index in vermin_index:await pointer_key(KEY_DOWN)
+		if not check(view.owner_selected==vermin_index,"keyboard selected wrong VERMIN"):return
+		await capture("animal_vermin_"+str(assigned))
+		await pointer_key(KEY_ENTER)
+		if not await wait_ui(func():return settled() and not editor.candidates_state.busy(),"live VERMIN assignment"):return
+		await native("item_assignment",{"id":id,"item_id":vermin,"assign":assigned})
+		await verify_candidate_rows(id,2)
+		if stopped:return
+	await pointer_click(Vector2(800,700),MOUSE_BUTTON_RIGHT)
+	if not check(editor.stockpile_page=="types" and not view.visible,"VERMIN picker closure failed"):return
+
 	step="animal viewport long list"
 	await native("animal_long_list",{"item_id":item})
 	await click_control(editor.zone_menu.controls.animals)

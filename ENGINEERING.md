@@ -23,6 +23,25 @@ but complete helper ownership and failure behavior still need auditing before
 runtime use. Some helpers span multiple unwind records; their first unwind
 extent is not the complete body.
 
+The complete cage/chain helpers are now bounded in the fixture. Item cleanup
+removes cage membership and the BUILDING_CAGED reference; unit cleanup removes
+cage membership only. Chain cleanup clears the assigned pointer and cancels
+ChainAnimal jobs, leaving the chained pointer untouched. These distinctions
+must survive integration; the current bridge does not cancel chain jobs.
+
+The dependency audit found a runtime ownership obstacle: chain cleanup calls
+job deletion 0xa67820, then job detachment 0xd022c0. The latter spans multiple
+unwind records and its building-holder branch at 0xd02575..0xd025b0 reads native
+mode/selected building and can update ui_workshop_job_cursor. Therefore the
+top-level action cannot yet be treated as independent of native UI. Resolve
+this through independent semantic entries or verified semantic leaves with
+owned orchestration; do not borrow UI state, patch code or omit chain cleanup.
+DFHack Job::removeJob is not an independent alternative: its cancel_job virtual
+at 0xd032a0 tail-calls the same 0xa67820. The helper-audit offline gate passes
+root CTest 19/19 in build/qa/zone-animal-helper-audit.
+Assignment also removes old membership before native allocation/append, so
+failure after entry must remain unknown and must not be automatically replayed.
+
 Candidate producers 0x3a5e30 and 0x3a6780 are UI builders and must not be invoked
 by the product. They retain assigned units/items and gather further candidates.
 Filter callback 0x1435b40 invokes widget-dependent search 0x1424c30; it is not an

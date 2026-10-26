@@ -482,6 +482,19 @@ func zone_owner_effects() -> void:
 		var candidate_ids: Array=[]
 		for candidate in candidates.candidates:candidate_ids.append(int(candidate.id))
 		await native("zone_owner_candidates",{"id":ids[0],"ids":candidate_ids,"query_bytes":Array(bytes)})
+	await native("owner_fact_name",{"unit_id":int(owners.owner_a),"name":"OwnerFactsProbe"})
+	var fact_query: Dictionary={"action":14,"operation":14,"kind":1,"id":ids[0],"candidate_kind":1,"query":"OwnerFactsProbe"}
+	var fact_initial:=await pages(fact_query,"candidates")
+	if stopped:return
+	if not check(fact_initial.candidates.size()==1 and int(fact_initial.candidates[0].id)==int(owners.owner_a),"fact probe did not isolate native candidate"):return
+	await native("owner_fact_name",{"unit_id":int(owners.owner_a),"name":"OwnerFactsChanged"})
+	fact_query.expected_list_revision=int(fact_initial.list_revision)
+	var fact_current:=await request(fact_query)
+	if stopped:return
+	if not check(fact_current.candidates.size()==1 and int(fact_current.candidates[0].id)==int(owners.owner_a) and int(fact_current.list_revision)==int(fact_initial.list_revision),"fact refresh changed retained membership"):return
+	if not check(str(fact_current.candidates[0].owner_display.first_line).contains("OwnerFactsChanged"),"retained owner page returned stale native display"):return
+	write_json("owner-current-facts.json",{"id":int(owners.owner_a),"revision":int(fact_current.list_revision),"before":fact_initial.candidates[0].owner_display.first_line,"after":fact_current.candidates[0].owner_display.first_line,"membership_retained":true})
+	await native("owner_fact_restore")
 	# Native reference: assign, replace, transfer, clear bedroom, clear empty bedroom.
 	for sample in [[ids[0],int(owners.owner_a),3,1,0],[ids[0],int(owners.owner_b),3,0,1],
 		[ids[1],int(owners.owner_b),3,0,1],[ids[2],-1,-1,0,0],[ids[2],-1,-1,0,0]]:

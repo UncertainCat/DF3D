@@ -444,6 +444,40 @@ local rename_ok,rename_error=pcall(function()
  capture('owner-open-name-refresh')
 end)
 named.name.first_name=old_name;assert(rename_ok,rename_error)
+local function visible_owner_ids()
+ view:render(dfhack.getTickCount())
+ local widgets={};widget_rows(assert(unit_list(selector,0)),widgets,0)
+ local ids={};for _,row in ipairs(widgets)do if row.unit_id and row.visible then ids[#ids+1]=row.unit_id end end
+ return ids
+end
+local function reopen_owner()
+ selector.flag.VISIBILITY_ACTIVE=false;df.global.game.main_interface.bottom_mode_selected=3;ui.cur_bld=zone
+ view:render(dfhack.getTickCount());pixel(336,154)
+end
+pixel(464,70);script.sleep(3,'frames')
+local sorted_before=visible_owner_ids();local sorted_unit=assert(df.unit.find(sorted_before[7]))
+local sorted_name=sorted_unit.name.first_name
+sorted_unit.name.first_name='zzzzOwnerRefreshOrder'
+local order_ok,order_error=pcall(function()
+ script.sleep(3,'frames')
+ local retained=visible_owner_ids()
+ capture('owner-open-name-order')
+ reopen_owner();pixel(464,70);script.sleep(3,'frames')
+ records[#records+1]={name='owner-open-name-order',id=sorted_unit.id,before=sorted_before,after=retained,reopened=visible_owner_ids()}
+ capture('owner-reopened-name-order')
+end)
+sorted_unit.name.first_name=sorted_name;assert(order_ok,order_error)
+named.name.first_name='OwnerRefreshFilter'
+local filter_ok,filter_error=pcall(function()
+ reopen_owner();search('OwnerRefreshFilter');script.sleep(3,'frames')
+ local before=visible_owner_ids()
+ named.name.first_name='OwnerRefreshChanged'
+ script.sleep(3,'frames')
+ records[#records+1]={name='owner-open-filter-membership',id=named.id,before=before,after=visible_owner_ids(),text=name_text(),query=assert(unit_list(selector,0)).filter_str}
+ capture('owner-open-filter-membership')
+end)
+named.name.first_name=old_name;assert(filter_ok,filter_error)
+reopen_owner()
 filter=df.reinterpret_cast(df.widget_textbox,assert(dfhack.gui.getWidget(assert(dfhack.gui.getWidget(selector,'Unit selector')),'Filter box')))
 input_state('initial')
 window_input('ctrl-f','control-f')

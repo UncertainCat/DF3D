@@ -27,7 +27,7 @@ def main():
     df.global.world.units.active={{id=100,label='Later citizen',citizen=true,active=true},{id=2,label='Early citizen',citizen=true,active=true},{id=3,label='Visitor',citizen=false,active=true}}
     df.unit_relationship_type={Spouse=0}
     for _,unit in ipairs(df.global.world.units.active)do unit.relationship_ids={[0]=-1};unit.owned_buildings={};unit.sex=1 end
-    df.unit={find=function(id)for _,u in ipairs(df.global.world.units.active)do if u.id==id then return u end end end}
+    df.unit={find=function(id)for _,source in ipairs{df.global.world.units.active,df.global.world.units.all or {}}do for _,u in ipairs(source)do if u.id==id then return u end end end end}
     pile={id=5,kind=0,name='Custom pile',x1=0,x2=2,y1=0,y2=2,z=1,room={},settings={flags={wood=true,food=true},food={meat={true,false,true}},wood={mats={false,true}}},storage={max_bins=4,max_barrels=2,max_wheelbarrows=1},stockpile_flag={use_links_only=false},links={give_to_pile={},take_from_pile={}}}
     zone={id=6,kind=1,name='Bedroom',type=0,x1=0,x2=2,y1=0,y2=2,z=1,room={},spec_sub_flag={active=true},assigned_unit_id=100}
     df.building={find=function(id) if id==5 then return pile elseif id==6 then return zone end end}
@@ -163,6 +163,7 @@ def main():
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
      r.owner_eligible=owner_eligible
+     r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
      r.owner_query=function(query)return query:lower()end
      r.link_areas=workshop_link
      r.settings_layout=settings_layout
@@ -625,7 +626,7 @@ def main():
     """)
     lua.execute("df.global.world.units.all=df.global.world.units.active;function owner_eligible(b,u) return u.native_eligible~=false end")
     lua.execute("function owner_order_facts(b,u) return {without_room=true,priority=0,category=u.id,category_status=0,stress=u.id%7,name_key=string.lower(u.label or '')..string.format('%04d',u.id),profession_key='worker'} end")
-    lua.execute("function owner_display(b,u) return {columns=45,first_line='Native first',second_line='Native second',status='Has Quarters',room_value=343,name='Native name',profession='Native profession',name_color={foreground=3,background=3,bright=1,alternate_foreground=0,alternate_background=3,alternate_bright=0,effect=1}} end")
+    lua.execute("owner_display_calls=0;function owner_display(b,u) owner_display_calls=owner_display_calls+1;return {columns=45,first_line='Native first',second_line='Native second',status='Has Quarters',room_value=343,name='Native name',profession='Native profession',name_color={foreground=3,background=3,bright=1,alternate_foreground=0,alternate_background=3,alternate_bright=0,effect=1}} end")
     selector = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 1, "sort": 1}
     pending = raw_call(14, selector)
     assert pending["ok"] and pending["build_phase"] == 1 and pending["build_done"] == 0
@@ -639,6 +640,15 @@ def main():
     assert owners["candidates"][1]["owner_display"]["name_color"]["effect"] == 1
     assert owners["candidates"][1]["name"] == "Native name"
     assert owners["candidates"][1]["profession"] == "Native profession"
+    # Building the full 260-ID snapshot must not retain 260 portrait recipes.
+    assert lua.globals().owner_display_calls <= 129
+    lua.execute("saved_live_display=owner_display;function owner_display(b,u)local d=saved_live_display(b,u);d.first_line='Changed while open';d.name='Changed native name';return d end")
+    refreshed = call(14, dict(selector, expected_list_revision=owners["list_revision"]))
+    assert refreshed["ok"] and refreshed["list_revision"] == owners["list_revision"]
+    assert refreshed["candidates"][1]["owner_display"]["first_line"] == "Changed while open"
+    assert refreshed["candidates"][1]["name"] == "Changed native name"
+    assert [r["id"] for r in refreshed["candidates"].values()] == [r["id"] for r in owners["candidates"].values()]
+    lua.execute("owner_display=saved_live_display")
     next_selector = dict(selector, cursor=128, expected_list_revision=owners["list_revision"])
     owner_page = call(14, next_selector)
     assert owner_page["candidates"][1]["id"] == 129 and owner_page["next_cursor"] == 256
@@ -982,6 +992,7 @@ def main():
     zone.type=0;zone.assigned_unit_id=20;zone.spec_sub_flag.active=true
     df.global.world.buildings.other.IN_PLAY={}
     df.global.world.units.active={}
+    df.global.world.units.all=df.global.world.units.active
     for i=20,23 do
      local u={id=i,label='Owner '..i,citizen=true,active=true,relationship_ids={[0]=-1},owned_buildings={zone}}
      table.insert(df.global.world.units.active,u)

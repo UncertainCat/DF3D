@@ -4111,6 +4111,53 @@
     ],
     "scope": "Focused Ctrl+C leaves picker/focus/map unchanged. The query c is a posted-key Windows translation artifact, not an accepted product behavior. Changing the first visible unit name updates the same open native row while cursor0 remains selected. Native screenshot inspected. Filter/order/eligibility changes and other live metadata are not established by this name-only probe.",
     "offline": "owner-focused-recenter core19/19 and actual viewport focus routing passed; GPU has three known notices.",
-    "production_gap": "DF3D owner candidate display is a snapshot; no open-panel metadata refresh is implemented yet."
+    "production_gap": "Bridge returned pages now obtain fresh native facts; automatic Godot open-panel refresh remains unfinished."
+  },
+  "owner_retained_list_refresh": {
+    "native_run": "build/stockpile-storage-native-zone-owner-20261026-054226",
+    "native_owned_df_pid": 123508,
+    "order": {
+      "id": 7202,
+      "before_ordinal": 6,
+      "after_ordinal": 6,
+      "reopened_ordinal": 170,
+      "entire_order_retained": true
+    },
+    "filter": {
+      "after": [
+        5981
+      ],
+      "before": [
+        5981
+      ],
+      "id": 5981,
+      "name": "owner-open-filter-membership",
+      "query": "ownerrefreshfilter",
+      "text": [
+        "                                             ",
+        "                                             ",
+        "OwnerRefreshChanged Rakustazin, king,        ",
+        "                                             ",
+        "                                             ",
+        "                                             ",
+        "                                             ",
+        "                                             ",
+        "                                             "
+      ]
+    },
+    "live_run": "build/areas-acceptance-20261026-055208",
+    "live_owned_df_pid": 88684,
+    "live_observation": {
+      "after": "OwnerFactsChanged Unibmamot, Dwarven Child, \u2640",
+      "before": "OwnerFactsProbe Unibmamot, Dwarven Child, \u2640",
+      "id": 988,
+      "membership_retained": true,
+      "revision": 1439539657656293267
+    },
+    "plugin_sha256": "41a2e1baee2d0715427af1e0eceb433cdaf413c10e75db9a20ea7cbed710a284",
+    "management_version": 66,
+    "status": "passed",
+    "save_preservation": "Controlled names restored; native source and both live manifests unchanged; owned processes closed unsaved.",
+    "scope": "Native name mutation retains open order and filter membership; bridge retained-page read returns fresh native display with same IDs/revision. Automatic Godot refresh, eligibility-change behavior and long-lived cache expiry are not accepted by this check."
   }
 }

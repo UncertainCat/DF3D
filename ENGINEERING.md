@@ -422,10 +422,30 @@ has known notices only.
 The same native run changes the first visible creature's first name while the
 picker stays open. Rendered glyphs and its screenshot show the new name in the
 same selected row without reopening. The fixture restores the name; DF70688
-closes unsaved and the source manifest matches. DF3D still holds candidate display
-snapshots, so this is evidence of a remaining live-refresh gap. Preserve local
-selection and scroll when refreshing facts; this probe does not establish native
-resorting, filter membership or eligibility-change behavior.
+closes unsaved and the source manifest matches. Native054226 additionally changes
+a normally sorted candidate: its ordinal stays6 while open and becomes170 after
+reopening. A filtered row also remains present after its changed name no longer
+matches the unchanged query. These captures establish retaining the open list's
+order and membership while refreshing displayed facts; eligibility changes remain
+outside this name-change evidence.
+
+Owner candidate builders now cache ordering/filter facts without portrait recipes
+or owner-display snapshots. Each returned page obtains fresh native owner display,
+color and appearance through independently owned semantic inputs. A read with the
+existing expected_list_revision preserves the cached ordered IDs and query;
+missing/ineligible units or changed zone context reject the read. The existing
+cache lifetime and payload caps remain. This bounds recipe residency to returned
+pages rather than eight full candidate caches; viewer retention still needs review.
+
+Protected semantic055208 retains a filtered candidate's list revision across a
+controlled rename and returns the new native first line even though it no longer
+matches the query. The name is restored; DF88684 closes unsaved, both manifests
+match and diagnostics are empty. Plugin SHA256 is
+41a2e1baee2d0715427af1e0eceb433cdaf413c10e75db9a20ea7cbed710a284,
+Management66 unchanged. Adapter tests verify current text, stable IDs/revision,
+bounded display-provider calls, inactive candidates and page payload limits.
+The Godot picker still lacks automatic background refresh; its selection, scroll,
+request ownership and retained-list expiry handling must be preserved when wired.
 
 The owner view routes unfocused arrow/numpad and page keys through the main
 controller, updates selection artwork and scrolls in36-pixel rows with a16-row

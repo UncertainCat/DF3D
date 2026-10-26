@@ -2241,6 +2241,8 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaSetOwner);lua_setfield(L,-2,"set_owner");
     lua_pushcfunction(L,areaOwnerEligible);lua_setfield(L,-2,"owner_eligible");
     lua_pushcfunction(L,areaOwnerQuery);lua_setfield(L,-2,"owner_query");
+    lua_pushcfunction(L,areaOwnerOrderFacts);lua_setfield(L,-2,"owner_order_facts");
+    lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");
   }
   if(citizenAction(action)) {
     field(L,"restart_recalc",citizenRecalcPending && citizenHelperGeneration!=helpers.generation());

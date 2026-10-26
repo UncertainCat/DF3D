@@ -518,7 +518,7 @@ local function location_row(v,site_id)
  return {id=v.id,site_id=site_id,name=dfhack.df2utf(dfhack.translation.translateName(v.name,true)),location_kind=k,religion=religion,
   guild_profession=k==4 and v.contents.profession or -1,location_tier=k==4 and v.contents.location_tier or -1}
 end
-local function candidate_row(job,v,r)
+local function candidate_row(job,v,r,refresh_display)
  local order_facts,display
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
@@ -539,25 +539,27 @@ local function candidate_row(job,v,r)
   if not eligible then return nil end
   if type(r.owner_order_facts)=='function' then order_facts=r.owner_order_facts(b,v) end
   if not order_facts then job.error='Native area helper unavailable';return nil end
-  if type(r.owner_display)=='function' then display=r.owner_display(b,v) end
-  if type(display)~='table' or display.columns~=45 or type(display.room_value)~='number' or
-   display.room_value<0 or display.room_value%1~=0 or display.room_value>2147483647 or
-   type(display.first_line)~='string' or #display.first_line>384 or
-   type(display.second_line)~='string' or #display.second_line>384 or
-   type(display.status)~='string' or #display.status>256 or
-   ((display.room_value==0)~=(display.status=='')) or
-   type(display.name)~='string' or type(display.profession)~='string' then
-   job.error='Native area helper unavailable';return nil
-  end
-  if display.sheet_icon~=nil and (type(display.sheet_icon)~='string' or #display.sheet_icon>200*1024)then job.error='Native area helper unavailable';return nil end
-  local color=display.name_color
-  if type(color)~='table' then job.error='Native area helper unavailable';return nil end
-  for key,limit in pairs{foreground=7,background=7,bright=1,alternate_foreground=7,alternate_background=7,alternate_bright=1,effect=3}do
-   local value=color[key]
-   if type(value)~='number' or value%1~=0 or value<0 or value>limit then job.error='Native area helper unavailable';return nil end
-  end
-  if color.effect==0 and (color.foreground~=color.alternate_foreground or color.background~=color.alternate_background or color.bright~=color.alternate_bright)then
-   job.error='Native area helper unavailable';return nil
+  if refresh_display then
+   if type(r.owner_display)=='function' then display=r.owner_display(b,v) end
+   if type(display)~='table' or display.columns~=45 or type(display.room_value)~='number' or
+    display.room_value<0 or display.room_value%1~=0 or display.room_value>2147483647 or
+    type(display.first_line)~='string' or #display.first_line>384 or
+    type(display.second_line)~='string' or #display.second_line>384 or
+    type(display.status)~='string' or #display.status>256 or
+    ((display.room_value==0)~=(display.status=='')) or
+    type(display.name)~='string' or type(display.profession)~='string' then
+    job.error='Native area helper unavailable';return nil
+   end
+   if display.sheet_icon~=nil and (type(display.sheet_icon)~='string' or #display.sheet_icon>200*1024)then job.error='Native area helper unavailable';return nil end
+   local color=display.name_color
+   if type(color)~='table' then job.error='Native area helper unavailable';return nil end
+   for key,limit in pairs{foreground=7,background=7,bright=1,alternate_foreground=7,alternate_background=7,alternate_bright=1,effect=3}do
+    local value=color[key]
+    if type(value)~='number' or value%1~=0 or value<0 or value>limit then job.error='Native area helper unavailable';return nil end
+   end
+   if color.effect==0 and (color.foreground~=color.alternate_foreground or color.background~=color.alternate_background or color.bright~=color.alternate_bright)then
+    job.error='Native area helper unavailable';return nil
+   end
   end
   if type(order_facts.name_key)~='string' or #order_facts.name_key>2048 or
    type(order_facts.profession_key)~='string' or #order_facts.profession_key>2048 then
@@ -573,15 +575,18 @@ local function candidate_row(job,v,r)
  if job.legacy then return {id=v.id,name=label..' #'..v.id,label=''} end
  return {id=v.id,name=label,profession=display and display.profession or dfhack.df2utf(U.getProfessionName(v)),sex=v.sex,owner_display=display,sheet_icon=display and display.sheet_icon or nil,
   mood=U.getStressCategory(v)+1,grazer=job.candidate_kind==2 and U.isGrazer(v) or false,
-  assigned=job.candidate_kind==1 and v.id==job.owner_id or job.assigned[v.id]~=nil,squad_use=-1,owner_order=order_facts}
+  assigned=job.candidate_kind==1 and v.id==job.owner_id or (job.assigned~=nil and job.assigned[v.id]~=nil),squad_use=-1,owner_order=order_facts}
+end
+local function candidate_text_valid(row)
+ return type(row.name)=='string' and #row.name<=512 and type(row.profession or '')=='string' and #(row.profession or '')<=512 and
+  type(row.religion or '')=='string' and #(row.religion or '')<=512
 end
 local function append_candidate(job,row)
  if not row then return end
  if #job.rows==(job.locations and 65536 or 4096) then
   job.error=job.locations and 'List exceeds 65,536 entries' or job.links and 'Link list exceeds 4,096 entries' or 'Candidate list exceeds 4,096 entries';return
  end
- if type(row.name)~='string' or #row.name>512 or type(row.profession or '')~='string' or #(row.profession or '')>512 or
-  type(row.religion or '')~='string' or #(row.religion or '')>512 then
+ if not candidate_text_valid(row) then
   job.error='Candidate label exceeds 512 bytes';return
  end
  local identity=job.links and table.concat({row.kind,row.direction,row.id},':') or row.id
@@ -896,6 +901,15 @@ local function candidate_page(r,a,b,area_revision,available)
  if first<=#job.rows and used==available then return fail('Area page exceeds remaining step budget'),used end
  for index=first,#job.rows do
   local row=job.rows[index]
+  if job.native_owner then
+   -- The open native picker retains ordering/filter membership but renders live
+   -- unit facts. Cache IDs/order keys, not per-unit portrait recipe snapshots.
+   local unit=df.unit.find(row.id)
+   if not unit then return fail('List changed; refresh'),used end
+   row=candidate_row(job,unit,r,true)
+   if not row then return fail(job.error or 'List changed; refresh'),used end
+   if not candidate_text_valid(row) then return fail('Candidate label exceeds 512 bytes'),used end
+  end
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')
    if row.owner_display then local d=row.owner_display;row_bytes=row_bytes+13+#d.first_line+#d.second_line+#d.status end

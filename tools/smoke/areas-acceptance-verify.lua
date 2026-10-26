@@ -12,7 +12,12 @@ local function restore_link_block()
  _G.df3d_link_unloaded=nil
 end
 if index=='pause' then df.global.pause_state=true;print('SEMANTIC_PASS paused');return end
+local function restore_owner_fact_name()
+ local saved=_G.df3d_owner_fact_name
+ if saved then saved.unit.name.first_name=saved.name;_G.df3d_owner_fact_name=nil end
+end
 if index=='final' then
+ restore_owner_fact_name()
  restore_link_block()
  assert(df.global.pause_state,'DF must be paused before teardown')
  assert(df.global.d_init.feature.autosave==df.d_init_autosave.NONE,'autosave must remain disabled')
@@ -209,6 +214,14 @@ elseif request.op=='zone_owner_prepare' then
  _G.df3d_zone_owner_fixture={a=units[1],b=units[2],spouse_a=units[1].relationship_ids.Spouse,spouse_b=units[2].relationship_ids.Spouse}
  units[1].relationship_ids.Spouse=units[2].id;units[2].relationship_ids.Spouse=units[1].id
  result.owner_a=units[1].id;result.owner_b=units[2].id
+elseif request.op=='owner_fact_name' then
+ local unit=assert(df.unit.find(request.unit_id),'missing fact probe unit')
+ if not _G.df3d_owner_fact_name then _G.df3d_owner_fact_name={unit=unit,name=unit.name.first_name}end
+ assert(_G.df3d_owner_fact_name.unit.id==unit.id,'fact probe unit changed')
+ unit.name.first_name=assert(request.name)
+ result.unit_id=unit.id
+elseif request.op=='owner_fact_restore' then
+ restore_owner_fact_name()
 elseif request.op=='zone_owner_candidates' then
  local text,code=dfhack.run_command_silent('df3d','zone-owner-candidates-read',tostring(request.id));assert(code==0,text)
  local expected=json.decode(text);local actual={}

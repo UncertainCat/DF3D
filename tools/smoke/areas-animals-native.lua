@@ -98,7 +98,8 @@ local function capture(label,keep_mouse)
   record.callbacks.sorting_by=callbacks(list.sorting_by,96)
   local _,address=df.sizeof(list.is_selected);record.callbacks.is_selected=callback_at(address)
   for _,entry in ipairs(list.entry_list)do record.entries[#record.entries+1]={kind=entry.t,id=entry.t==0 and entry.u and entry.u.id or entry.t==1 and entry.i and entry.i.id or -1}end
-  record.cursor=list.cursor_idx;record.query=list.filter_str
+  record.cursor=list.cursor_idx;record.query=dfhack.df2utf(list.filter_str)
+  record.query_bytes={list.filter_str:byte(1,#list.filter_str)}
   record.hover=main.current_hover;record.hover_enabled=main.hover_instructions_on
   record.hover_input={gate=df.reinterpret_cast('uint8_t',image_base+0x23905d5).value,x=g.mouse_x,y=g.mouse_y}
   record.native_mouse={df.reinterpret_cast('int32_t',image_base+0x264a5b0).value,df.reinterpret_cast('int32_t',image_base+0x264a5b4).value}
@@ -157,7 +158,7 @@ local function capture(label,keep_mouse)
     dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
    end
    local text,code=dfhack.run_command_silent('df3d','zone-animal-picker-read',tostring(record.zone),
-    tostring(sort),tostring(descending),record.query)
+    tostring(sort),tostring(descending),list.filter_str)
    assert(code==0,text);local expected=require('json').decode(text)
    assert(#expected==#record.displayed,'native animal picker count differs: '..label)
    for i,entry in ipairs(expected)do
@@ -477,6 +478,56 @@ end
 local function reopen()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());pixel(336,154)
 end
+local function animal_window_input(action)
+ local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do
+  local ack=io.open(out..'/owner-input-ack','r');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'animal window input timeout');script.sleep(1,'frames')
+ end
+ assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames')
+end
+local function animal_search_input(prefix)
+ local selector=main.unit_selector
+ local filter=df.reinterpret_cast(df.widget_textbox,assert(dfhack.gui.getWidget(assert(dfhack.gui.getWidget(selector,'Unit selector')),'Filter box')))
+ local zone=assert(ui.cur_bld);local before={}
+ for _,id in ipairs(zone.assigned_units)do before[#before+1]=id end
+ local function observe(label)
+  view:render(dfhack.getTickCount())
+  local rows={};local list=assert(walk(selector,rows,0,true));local bytes={}
+  for i=1,#filter.str do bytes[#bytes+1]=filter.str:byte(i)end
+  records[#records+1]={name=prefix..'-input-'..label,active=selector.flag.VISIBILITY_ACTIVE,
+   focused=df.global.gview.cur_textbox==filter,listening=df.global.enabler.listening_to_text,
+   bytes=bytes,query_bytes={list.filter_str:byte(1,#list.filter_str)},cursor=list.cursor_idx,maxlen=filter.maxlen,
+   rect={filter.rect.x1,filter.rect.y1,filter.rect.x2,filter.rect.y2}}
+  assert(selector.flag.VISIBILITY_ACTIVE and ui.cur_bld==zone,'animal input closed picker')
+  assert(filter.maxlen==33 and list.cursor_idx==0,'animal filter limit/navigation changed')
+  assert((df.global.gview.cur_textbox==filter)==(label~='initial' and label~='focused-enter'),'animal filter focus changed: '..label)
+  local length=({limit=33,backspace=32,clear=0,nonascii=2,['partial-utf8']=1})[label]
+  if length then assert(#bytes==length,'animal filter byte count changed: '..label)end
+  if label=='nonascii' or label=='partial-utf8' then assert(bytes[1]==195 and (label~='nonascii' or bytes[2]==169),'animal filter input bytes changed')end
+  assert(#zone.assigned_units==#before,'animal textbox input changed assignment')
+  for i,id in ipairs(before)do assert(zone.assigned_units[i-1]==id,'animal textbox changed membership')end
+ end
+ observe('initial')
+ animal_window_input('control-f');observe('ctrl-f')
+ -- Windows TranslateMessage may emit a plain f without physical Control.
+ animal_window_input('clear');observe('clear')
+ animal_window_input('down');observe('focused-down')
+ animal_window_input('enter');observe('focused-enter')
+ -- Blank panel clicks can change civzone.cur_bld while retaining the selector;
+ -- that parent-selection interaction needs a separate fixture.
+ pixel(500,730);pixel(464,70);observe('header-click')
+ pixel(500,730)
+ for i,action in ipairs{'limit','backspace','clear','nonascii','backspace'}do
+  animal_window_input(action);observe(i==5 and 'partial-utf8' or action)
+ end
+ capture(prefix..'-input-partial-utf8')
+ animal_window_input('clear');animal_window_input('enter')
+ reopen()
+ capture(prefix..'-input-reset-picker')
+end
 local function controls(prefix,searches)
  for _,header in ipairs{{'name',464},{'category',544},{'profession',608}}do
   for click=1,2 do
@@ -687,6 +738,7 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  pixel(304,114);capture(probe[1]..'-zone')
  pixel(336,154);local opened=capture(probe[1]..'-picker')
  if probe[1]=='Pen' or probe[1]=='Pond' then navigation(probe[1],opened) end
+ if probe[1]=='Pen' or probe[1]=='Pond' then animal_search_input(probe[1]) end
  if probe[1]=='Pond' then
   local previous=zone.zone_settings.pond.flag.keep_filled
   zone.zone_settings.pond.flag.keep_filled=true
@@ -868,3 +920,18 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
  end
  gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
 end
+
+-- Real window closing keys are observed after the assignment fixtures finish.
+pixel(336,154)
+local function closing(label)
+ records[#records+1]={name='animal-closing-'..label,active=main.unit_selector.flag.VISIBILITY_ACTIVE,
+  selected_id=ui.cur_bld and ui.cur_bld.id or -1,focused=df.global.gview.cur_textbox~=nil,
+  bottom_mode=main.bottom_mode_selected}
+end
+pixel(500,730);closing('focused')
+animal_window_input('right-click');closing('right-click')
+animal_window_input('right-click');closing('second-right-click')
+if main.bottom_mode_selected==3 then pixel(336,154)end
+pixel(500,730);closing('before-escape')
+animal_window_input('escape');closing('escape')
+capture('animal-after-real-escape')

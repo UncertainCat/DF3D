@@ -15,6 +15,22 @@ authorize unrelated departures. Keep status and evidence current as fixes land.
 
 ## Animal keyboard activation and portrait reference
 
+`native_zone_animals.json.animal_search_input` records real Windows/SDL input
+for both Pen and Pond in protected
+`build/stockpile-storage-native-zone-animals-20261026-135542`. Both textboxes
+retain at most33 bytes; Backspace removes one byte, allowing partial UTF-8.
+Ctrl+F focuses, focused Down leaves the list cursor unchanged, Enter releases
+focus without assignment, and header clicks retain focus. First focused
+right-click releases focus; a second closes the selector while retaining Zones.
+Escape closes both selector and Zones even from the focused textbox. The native
+animal filter help matches the owner-filter200x216 crop byte-for-byte. The
+recorder stores raw query bytes separately from UTF-8 display text. Source
+preservation and core checks (`build/qa/animal-search-native-reference`) pass.
+Product animal search still needs the byte-preserving editor/transport and
+matching keyboard routing. Blank panel clicks changing the selected parent zone
+while leaving the selector active are an unresolved separate interaction, not
+an approved departure or a confirmed defect in the native bug register.
+
 Animal status references in `native_zone_animals.json.animal_status_reference`
 cover caged units, pasture assignment, pit/filled-pond picker context and assigned
 items. Protected `build/stockpile-storage-native-zone-animals-20261026-113847`

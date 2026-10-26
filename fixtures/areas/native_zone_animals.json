@@ -14225,5 +14225,726 @@
       }
     ],
     "scope": "Native item text and row background region; excludes portrait, checkbox and status art."
+  },
+  "animal_search_input": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-135542",
+    "owned_df_pid": 126144,
+    "source_unchanged": true,
+    "status": "passed",
+    "result_sha256": "c8aaf78f3cee51b59d42c8e2b0199b41962db07f475d32d9d5120a82b445568f",
+    "samples": [
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": false,
+        "listening": false,
+        "maxlen": 33,
+        "name": "Pen-input-initial",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          102
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-ctrl-f",
+        "query_bytes": [
+          102
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-clear",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-focused-down",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": false,
+        "listening": false,
+        "maxlen": 33,
+        "name": "Pen-input-focused-enter",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": false,
+        "maxlen": 33,
+        "name": "Pen-input-header-click",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-limit",
+        "query_bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-backspace",
+        "query_bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-clear",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          195,
+          169
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-nonascii",
+        "query_bytes": [
+          195,
+          169
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          195
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pen-input-partial-utf8",
+        "query_bytes": [
+          195
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": false,
+        "listening": false,
+        "maxlen": 33,
+        "name": "Pond-input-initial",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          102
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-ctrl-f",
+        "query_bytes": [
+          102
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-clear",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-focused-down",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": false,
+        "listening": false,
+        "maxlen": 33,
+        "name": "Pond-input-focused-enter",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": false,
+        "maxlen": 33,
+        "name": "Pond-input-header-click",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-limit",
+        "query_bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-backspace",
+        "query_bytes": [
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120,
+          120
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-clear",
+        "query_bytes": [],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          195,
+          169
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-nonascii",
+        "query_bytes": [
+          195,
+          169
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      },
+      {
+        "active": true,
+        "bytes": [
+          195
+        ],
+        "cursor": 0,
+        "focused": true,
+        "listening": true,
+        "maxlen": 33,
+        "name": "Pond-input-partial-utf8",
+        "query_bytes": [
+          195
+        ],
+        "rect": [
+          49,
+          59,
+          87,
+          61
+        ]
+      }
+    ],
+    "closing": [
+      {
+        "active": true,
+        "bottom_mode": 3,
+        "focused": true,
+        "name": "animal-closing-focused",
+        "selected_id": 1493
+      },
+      {
+        "active": true,
+        "bottom_mode": 3,
+        "focused": false,
+        "name": "animal-closing-right-click",
+        "selected_id": 1493
+      },
+      {
+        "active": false,
+        "bottom_mode": 3,
+        "focused": false,
+        "name": "animal-closing-second-right-click",
+        "selected_id": 1493
+      },
+      {
+        "active": true,
+        "bottom_mode": 3,
+        "focused": true,
+        "name": "animal-closing-before-escape",
+        "selected_id": 1493
+      },
+      {
+        "active": false,
+        "bottom_mode": -1,
+        "focused": false,
+        "name": "animal-closing-escape",
+        "selected_id": 1493
+      }
+    ],
+    "findings": [
+      "Both Pen and Pond native textboxes have maxlen33 and rect49,59,87,61.",
+      "Ctrl+F focuses; injected Windows modifier translation can additionally insert plain f, cleared before subsequent probes.",
+      "Focused Down retains cursor0; Enter releases focus without assigning. Header clicks preserve textbox focus.",
+      "Backspace removes one byte, including the final byte of UTF-8 C3 A9; partial C3 remains query data and is rendered as a DF byte glyph.",
+      "First focused right-click releases focus; second closes the selector and retains Zones. Escape from focused textbox closes both selector and Zones."
+    ],
+    "scope": "Native reference only; product still uses generic animal search. Blank-space clicks that change the selected parent zone while leaving selector active remain an unresolved separate interaction, not a confirmed native bug or approved departure.",
+    "visual": {
+      "capture": "Pond-input-partial-utf8.png",
+      "filter_rect_pixels": [
+        392,
+        712,
+        312,
+        36
+      ],
+      "filter_rgb_sha256": "53ef5a3dc8a99141fcfcc9cfb45f07f307bcd095acf3145c3be6a996c0e03eab",
+      "help_rect_pixels": [
+        1000,
+        4,
+        200,
+        216
+      ],
+      "help_rgb_sha256": "6f09b227ca8988053c5782057fb6516ff819cf957523cd6b7ead7d74f849517e",
+      "help_matches": "native_zone_assignment.json.owner_tooltips.filter.rgb_sha256",
+      "scope": "Exact native screenshot hashes; textbox cursor blink phase must be matched or isolated during viewer comparisons."
+    }
   }
 }

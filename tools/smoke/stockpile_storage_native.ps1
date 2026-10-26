@@ -116,7 +116,7 @@ try {
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
-  if($ZoneOwner -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals) -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {

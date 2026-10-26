@@ -13893,5 +13893,283 @@
     ],
     "finding": "Native 3d0260 draws at (77,19) but passes y in r8 and x in r9 to 3acdc0; its 4x3-cell hover test therefore activates at (19,77). All four native instructions appear after dwell at that transposed location.",
     "scope": "Diagnostic evidence only; product correction requires maintainer decision. No runtime widget or render-cache access."
+  },
+  "animal_item_color_reader": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-133119",
+    "owned_df_pid": 129952,
+    "source_unchanged": true,
+    "status": "passed",
+    "plugin_sha256": "550948EE4E7D615DEE3D059DED39FFF4B868DFDCA21EC722F894B3836229870C",
+    "ranges": [
+      {
+        "rva": "0xc7b200",
+        "size": "0x1f",
+        "fnv1a64": "5c74bfc3e8d4ddf4"
+      },
+      {
+        "rva": "0x7022c0",
+        "size": "0xe5",
+        "fnv1a64": "b01a72d65e66e9a3"
+      }
+    ],
+    "branches": [
+      {
+        "color": [
+          2,
+          0,
+          1
+        ],
+        "exact": true,
+        "gps_unchanged": true,
+        "item": 5969,
+        "name": "item-color-baseline"
+      },
+      {
+        "color": [
+          2,
+          0,
+          1
+        ],
+        "exact": true,
+        "gps_unchanged": true,
+        "item": 5969,
+        "name": "item-color-creature"
+      },
+      {
+        "color": [
+          6,
+          3,
+          0
+        ],
+        "exact": true,
+        "gps_unchanged": true,
+        "item": 5969,
+        "name": "item-color-caste-background"
+      },
+      {
+        "color": [
+          3,
+          3,
+          1
+        ],
+        "exact": true,
+        "gps_unchanged": true,
+        "item": 5969,
+        "name": "item-color-equal-colors-force-bold"
+      },
+      {
+        "color": [
+          2,
+          0,
+          1
+        ],
+        "exact": true,
+        "gps_unchanged": true,
+        "item": 5969,
+        "name": "item-color-missing-caste"
+      },
+      {
+        "color": [
+          4,
+          4,
+          1
+        ],
+        "exact": true,
+        "gps_unchanged": true,
+        "item": 5969,
+        "name": "item-color-missing-race"
+      }
+    ],
+    "scope": "Owned semantic reader only; viewer transport and native item text layout remain unfinished. Both supported item vtables share c7b200; live samples use the fixture PET item.",
+    "visible_row_comparisons": 70,
+    "visible_rows_sha256": "f01239e7eed6b5eb99d978db8a1d05afdc13d8cc0c2aa189b178cda9d0e56580",
+    "samples": [
+      {
+        "name": "Pond-picker",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "color": [
+              2,
+              0,
+              1
+            ],
+            "exact": true,
+            "id": 5969,
+            "text_origin": [
+              52,
+              26
+            ],
+            "ui_unchanged": true,
+            "widget_rect": [
+              52,
+              27,
+              72,
+              26
+            ]
+          },
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "color": [
+              2,
+              0,
+              1
+            ],
+            "exact": true,
+            "id": 48520,
+            "text_origin": [
+              52,
+              29
+            ],
+            "ui_unchanged": true,
+            "widget_rect": [
+              52,
+              30,
+              72,
+              29
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Pond-item-assigned",
+        "items": [
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "color": [
+              2,
+              0,
+              1
+            ],
+            "exact": true,
+            "id": 5969,
+            "text_origin": [
+              52,
+              26
+            ],
+            "ui_unchanged": true,
+            "widget_rect": [
+              52,
+              27,
+              72,
+              26
+            ]
+          },
+          {
+            "bytes": [
+              40,
+              116,
+              97,
+              109,
+              101,
+              32,
+              109,
+              97,
+              115,
+              107,
+              101,
+              100,
+              32,
+              108,
+              111,
+              118,
+              101,
+              98,
+              105,
+              114,
+              100,
+              41
+            ],
+            "color": [
+              2,
+              0,
+              1
+            ],
+            "exact": true,
+            "id": 48520,
+            "text_origin": [
+              52,
+              29
+            ],
+            "ui_unchanged": true,
+            "widget_rect": [
+              52,
+              30,
+              72,
+              29
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

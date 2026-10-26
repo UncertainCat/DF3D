@@ -230,6 +230,29 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates
     candidates->clear();for(const auto& row:rows)candidates->push_back(row.candidate);
     return candidates;
 }
+std::optional<std::array<uint8_t,3>> nativeZoneAnimalItemColor(df::item& item) {
+    if(!df::global::world || !nativeZoneOwnerCandidatesReady())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0x1423fe0,0xe8)==0x4440bb550e8d935cULL &&
+        hash(base+0xc7b200,0x1f)==0x5c74bfc3e8d4ddf4ULL &&
+        hash(base+0x7022c0,0xe5)==0xb01a72d65e66e9a3ULL;
+    if(!compatible)return std::nullopt;
+    const auto* table=*reinterpret_cast<const uint8_t* const*>(&item);
+    if(table!=base+0x165cd68 && table!=base+0x16bbad0)return std::nullopt;
+    static_assert(offsetof(df::item_critter,race)==0xb8 && offsetof(df::item_critter,caste)==0xba);
+    static_assert(offsetof(df::creature_raw,color)==0x138 && offsetof(df::caste_raw,caste_color)==0x46e);
+    static_assert(int(df::caste_raw_flags::HAS_COLOR)==128);
+    const auto& critter=static_cast<const df::item_critter&>(item);
+    const auto& creatures=df::global::world->raws.creatures.all;
+    if(critter.race<0 || size_t(critter.race)>=creatures.size())return std::array<uint8_t,3>{4,4,1};
+    const auto* creature=creatures[critter.race];if(!creature)return std::nullopt;
+    const df::caste_raw* caste=nullptr;
+    if(critter.caste>=0 && size_t(critter.caste)<creature->caste.size())caste=creature->caste[critter.caste];
+    // Widget passes background0. A nonzero raw background replaces it; equal
+    // foreground/background forces bold, exactly as native7022c0.
+    const auto& color=caste && caste->flags.is_set(df::caste_raw_flags::HAS_COLOR)?caste->caste_color:creature->color;
+    return std::array<uint8_t,3>{uint8_t(color[0]),uint8_t(color[1]),uint8_t(color[0]==color[1]?1:color[2])};
+}
 std::optional<std::string> nativeZoneAnimalItemText(df::item& item) {
     if(!nativeZoneOwnerCandidatesReady())return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

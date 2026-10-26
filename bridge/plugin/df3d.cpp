@@ -2151,12 +2151,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         }
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
-      if(parameters[0]=="zone-animal-item-text-read") {
+      if(parameters[0]=="zone-animal-item-text-read" || parameters[0]=="zone-animal-item-color-read") {
         if(parameters.size()!=2)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
         const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
         if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
         auto* item=df::item::find(id);if(!item)return CR_FAILURE;
+        if(parameters[0]=="zone-animal-item-color-read") {
+          const auto color=df3d_area::nativeZoneAnimalItemColor(*item);if(!color)return CR_FAILURE;
+          Json::Value values(Json::arrayValue);for(auto value:*color)values.append(int(value));
+          out.print("{}",Json::FastWriter().write(values));return CR_OK;
+        }
         const auto text=df3d_area::nativeZoneAnimalItemText(*item);if(!text)return CR_FAILURE;
         Json::Value bytes(Json::arrayValue);for(unsigned char byte:*text)bytes.append(int(byte));
         out.print("{}",Json::FastWriter().write(bytes));return CR_OK;

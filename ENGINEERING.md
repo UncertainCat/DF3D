@@ -76,6 +76,17 @@ existing assignment tests. Both save manifests remain unchanged after unsaved ex
 actual Godot rows are retained in `animal_restraint_pixels`; final core and GPU
 `build/qa/animal-restraint-live-pixels` pass with the same known diagnostics.
 Actual empty-reference and critter-item cages and status hover help remain open.
+`nativeZoneAnimalItemColor` exposes native creature/caste palette facts for
+PET/VERMIN item names. Both supported item vtables use `c7b200`, which delegates
+to the graphics-writing `7022c0`; the reader instead follows the pinned semantic
+raw selection without executing either routine or accessing drawing state.
+Protected `build/stockpile-storage-native-zone-animals-20261026-133119` matches
+six controlled color branches and all70 visible item-name cell sequences,
+including native text origins. Drawing-state guards pass and the source remains
+unchanged after unsaved exit. `animal_item_color_reader` retains the evidence;
+core and adapter checks pass in `build/qa/animal-item-color-reader`. Live samples
+use PET items; VERMIN shares the pinned routine but lacks separate live coverage.
+Transport and viewer item text color/layout remain unfinished.
 The four containment instructions are recorded in
 `native_zone_animals.json.animal_containment_hover_reference`. Protected
 `build/stockpile-storage-native-zone-animals-20261026-132146` and the final

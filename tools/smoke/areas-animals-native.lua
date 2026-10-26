@@ -439,15 +439,21 @@ local function capture(label,keep_mouse)
     end
     local text,code=dfhack.run_command_silent('df3d','zone-animal-item-text-read',tostring(row.item_id))
     assert(code==0,text);local bytes=require('json').decode(text)
+    local color_text,color_code=dfhack.run_command_silent('df3d','zone-animal-item-color-read',tostring(row.item_id))
+    assert(color_code==0,color_text);local color=require('json').decode(color_text)
     for _,guard in ipairs(guards)do
      assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'item text reader changed native drawing/UI state')
      df.delete(guard.copy)
     end
     assert(#bytes>0 and row.x+#bytes<=g.dimx,'item text fixture must fit completely')
     for i,byte in ipairs(bytes)do
-     assert(dfhack.screen.readTile(row.x+i-1,row.y-1).ch==byte,'native item text differs: '..label..' byte '..i)
+     local cell=dfhack.screen.readTile(row.x+i-1,row.y-1)
+     assert(cell.ch==byte,'native item text differs: '..label..' byte '..i)
+     assert(cell.fg==color[1] and cell.bg==color[2] and (cell.bold and 1 or 0)==color[3],
+      'native item text color differs: '..label..' byte '..i)
     end
-    record.item_text[#record.item_text+1]={id=row.item_id,bytes=bytes,exact=true,ui_unchanged=true}
+    record.item_text[#record.item_text+1]={id=row.item_id,bytes=bytes,color=color,
+     text_origin={row.x,row.y-1},widget_rect={row.x,row.y,row.x2,row.y2},exact=true,ui_unchanged=true}
    end
   end
   if label:find('%-picker$')then
@@ -570,6 +576,41 @@ local function navigation(prefix,opened)
   assert(#zone.assigned_units==0,'SELECT did not clear focused animal')
   assert(assigned.cursor==0 and cleared.cursor==0,'SELECT moved first-row cursor')
  end
+end
+-- Diagnostic-only native color writes are compared with the owned reader,
+-- then drawing state and raw facts are restored before the visible oracle.
+do
+ local item=assert(df.global.world.items.other.ANY_CRITTER[0])
+ local race,caste_id=item.race,item.caste
+ local creature=assert(df.global.world.raws.creatures.all[race])
+ local caste=assert(creature.caste[caste_id])
+ local creature_color={creature.color[0],creature.color[1],creature.color[2]}
+ local caste_color={caste.caste_color[0],caste.caste_color[1],caste.caste_color[2]}
+ local had_color=caste.flags.HAS_COLOR
+ local size,address=df.sizeof(g);local saved=df.new('uint8_t',size)
+ dfhack.internal.memmove(saved,address,size)
+ local function check(name)
+  local before=df.new('uint8_t',size);dfhack.internal.memmove(before,address,size)
+  local text,code=dfhack.run_command_silent('df3d','zone-animal-item-color-read',tostring(item.id))
+  assert(code==0,text);local actual=require('json').decode(text)
+  assert(dfhack.internal.memcmp(before,address,size)==0,'item color reader changed drawing state')
+  df.delete(before)
+  item:setDisplayColor(0)
+  local expected={g.screenf,g.screenb,g.screenbright and 1 or 0}
+  for i=1,3 do assert(actual[i]==expected[i],'native item color branch differs: '..name)end
+  records[#records+1]={name='item-color-'..name,item=item.id,color=actual,exact=true,gps_unchanged=true}
+ end
+ check('baseline')
+ caste.flags.HAS_COLOR=false
+ creature.color[0]=2;creature.color[1]=0;creature.color[2]=1;check('creature')
+ caste.flags.HAS_COLOR=true
+ caste.caste_color[0]=6;caste.caste_color[1]=3;caste.caste_color[2]=0;check('caste-background')
+ caste.caste_color[0]=3;check('equal-colors-force-bold')
+ item.caste=-1;check('missing-caste')
+ item.race=-1;check('missing-race')
+ item.race=race;item.caste=caste_id;caste.flags.HAS_COLOR=had_color
+ for i=0,2 do creature.color[i]=creature_color[i+1];caste.caste_color[i]=caste_color[i+1]end
+ dfhack.internal.memmove(address,saved,size);df.delete(saved)
 end
 -- Paused disposable-clone fixture: a second critter with the same description
 -- exercises equal text keys and native item Category address ordering.

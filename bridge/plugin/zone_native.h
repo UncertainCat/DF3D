@@ -117,6 +117,9 @@ std::optional<std::vector<ZoneAnimalCandidate>> nativeZoneAnimalPickerCandidates
 // Native decorated critter text in DF encoding, written to an owned string.
 // Does not call the item-name widget or its display-color method.
 std::optional<std::string> nativeZoneAnimalItemText(df::item& item);
+// Creature/caste palette facts used by the native item-name widget, without
+// executing setDisplayColor or touching drawing state.
+std::optional<std::array<uint8_t,3>> nativeZoneAnimalItemColor(df::item& item);
 bool nativeZoneItemEligible(const df::building_civzonest& zone,const df::item& item);
 bool nativeZoneAssignItem(df::building_civzonest& zone,df::item& item,bool assign);
 bool nativeZoneAssignUnit(df::building_civzonest& zone,df::unit& unit,bool assign);

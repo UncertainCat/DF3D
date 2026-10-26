@@ -160,12 +160,13 @@ def main():
     end
     function animal_candidates(b,sort,descending,query) animal_args={sort,descending,query};return animal_fixture or {}end
     function animal_item_text(item)return item.label end
+    function animal_unit_display(unit)return {columns=27,name='Native animal',profession='Native profession',first_line='',second_line='Native shortened',combined_fits=false,grazer=true,warning='Grazer: requires pasture',name_color={foreground=6,background=0,bright=0,alternate_foreground=6,alternate_background=0,alternate_bright=0,effect=0}}end
     function owner_eligible(b,u) return u.citizen==true end
     local old_request=request
     function request(action,extra)
      local r=old_request(action,extra)
      r.step_budget=1536;r.epoch=1;r.area_retire_capacity=1024;r.area_snapshot=area_snapshot;r.repaint=repaint
-     r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text
+     r.animal_candidates=animal_candidates;r.animal_item_text=animal_item_text;r.animal_unit_display=animal_unit_display
      r.owner_eligible=owner_eligible
      r.new_owner_eligible=function(zone_type,u)return u.new_native_eligible~=false end
      r.owner_order_facts=owner_order_facts;r.owner_display=owner_display
@@ -293,7 +294,7 @@ def main():
         for _ in range(10000):
             if not result["ok"] or not result["build_phase"]:
                 return result
-            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "animal_item_text": lua.globals().animal_item_text}))
+            stepped = adapter(lua.table_from({"step": 64, "builder_kind": 7, "epoch": 1, "owner_eligible": lua.globals().owner_eligible, "owner_order_facts": lua.globals().owner_order_facts, "owner_display": lua.globals().owner_display, "animal_unit_display": lua.globals().animal_unit_display, "animal_item_text": lua.globals().animal_item_text}))
             assert 0 <= stepped["steps"] <= 64 and stepped["active_kinds"] in (0, 128)
             result = raw_call(action, values)
         raise AssertionError("candidate builder did not finish")
@@ -779,11 +780,26 @@ def main():
     assert animals["candidates"][1]["grazer"] and animals["candidates"][1]["assigned"]
     assert animals["candidates"][3]["name"] == "Native critter"
     assert not animals["candidates"][3]["assigned"]
+    display = animals["candidates"][1]["animal_display"]
+    assert display["first_line"] == "" and display["second_line"] == "Native shortened"
+    assert not display["combined_fits"] and display["name_color"]["foreground"] == 6
+    assert animals["candidates"][1]["name"] == "Native animal"
+    assert animals["candidates"][2]["grazer"]  # Native cached flag overrides mock helper's false value.
+    assert animals["candidates"][3]["animal_display"] is None
+
     animal_request = {"operation": 14, "kind": 1, "id": 6, "candidate_kind": 2}
     # Native results are authoritative even when local names/order would differ.
     native_ordered = call(14, dict(animal_request, sort=1, sort_descending=True, query="Native Search"))
     assert [(v["entity"], v["id"]) for v in native_ordered["candidates"].values()] == [(1, 10), (1, 12), (2, 10)]
     assert list(lua.globals().animal_args.values()) == [1, True, "Native Search"]
+    lua.execute("saved_animal_display=animal_unit_display")
+    for mutation in ["return nil", "local d=saved_animal_display(u);d.first_line=string.rep('x',385);return d",
+                     "local d=saved_animal_display(u);d.combined_fits=true;return d",
+                     "local d=saved_animal_display(u);d.warning='';return d",
+                     "local d=saved_animal_display(u);d.name_color.foreground=8;return d"]:
+        lua.execute("animal_unit_display=function(u) " + mutation + " end")
+        assert not call(14, animal_request)["ok"]
+    lua.execute("animal_unit_display=saved_animal_display")
     # Reopening at the same paused tick reads current native membership.
     lua.execute("animal_fixture={{id=10,entity=2,assigned=true}}")
     reopened_animals = call(14, animal_request)

@@ -538,6 +538,23 @@ local function candidate_row(job,v,r,refresh_display)
   end
   v=df.unit.find(entry.id)
   if not v then job.error='List changed; refresh';return nil end
+  local d=type(r.animal_unit_display)=='function' and r.animal_unit_display(v) or nil
+  if type(d)~='table' or d.columns~=27 or type(d.name)~='string' or type(d.profession)~='string' or
+   type(d.first_line)~='string' or #d.first_line>384 or type(d.second_line)~='string' or #d.second_line>384 or
+   type(d.combined_fits)~='boolean' or type(d.grazer)~='boolean' or type(d.warning)~='string' or #d.warning>256 or
+   (d.grazer~=(d.warning~='')) or (d.combined_fits and d.second_line~='') or type(d.name_color)~='table' then
+   job.error='Native area helper unavailable';return nil
+  end
+  local c=d.name_color
+  for key,limit in pairs{foreground=7,background=7,bright=1,alternate_foreground=7,alternate_background=7,alternate_bright=1,effect=3}do
+   local value=c[key]
+   if type(value)~='number' or value%1~=0 or value<0 or value>limit then job.error='Native area helper unavailable';return nil end
+  end
+  if c.effect==0 and (c.foreground~=c.alternate_foreground or c.background~=c.alternate_background or c.bright~=c.alternate_bright)then
+   job.error='Native area helper unavailable';return nil
+  end
+  return {id=v.id,entity=1,name=d.name,profession=d.profession,sex=v.sex,mood=0,grazer=d.grazer,
+   assigned=animal_assigned,squad_use=-1,animal_display=d}
  end
  if job.locations then return location_row(v,job.site_id) end
  if job.legacy and job.kind==0 then return {id=v.id,name=name(v)..' #'..v.id,label=''} end
@@ -949,6 +966,7 @@ local function candidate_page(r,a,b,area_revision,available)
   if not legacy or row.id>=cursor then
    local row_bytes=9+#row.name+#(row.profession or '')
    if row.owner_display then local d=row.owner_display;row_bytes=row_bytes+13+#d.first_line+#d.second_line+#d.status end
+   if row.animal_display then local d=row.animal_display;row_bytes=row_bytes+10+#d.first_line+#d.second_line+#d.warning end
    -- Encoded recipes include their alignment/table overhead and exceed the
    -- semantic payload charge. Keep room for the surrounding response too.
    row_bytes=row_bytes+#(row.sheet_icon or '')+64

@@ -8671,5 +8671,926 @@
       "warning_bytes": 24,
       "plugin_sha256": "7879b4d34c569ed43f4c9937e5e89ab57e266eba400673b74bf7bdaf45d96849"
     }
+  },
+  "animal_text_pixels": {
+    "evidence": "build/stockpile-storage-native-zone-animals-20261026-102030",
+    "samples": [
+      {
+        "picker": "Pen-picker",
+        "id": 6545,
+        "crop": [
+          416,
+          88,
+          216,
+          36
+        ],
+        "rgb_sha256": "25bc24837dcf1cea05d47749b075535834647e507629c1ab2415b6f78b78c36c",
+        "display": {
+          "columns": 27,
+          "first_line": "Ral Zudenavuz",
+          "second_line": "Turkey Hen, \u2640 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              1
+            ],
+            "color": [
+              4,
+              0,
+              1
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "76c5c6fc0c3aa5efaf3caeac7fb7db8ee2921fe7bcd2d28b338d61e7ec90a036",
+        "foreground_rgb": [
+          [
+            255,
+            113,
+            17
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 6548,
+        "crop": [
+          416,
+          124,
+          216,
+          36
+        ],
+        "rgb_sha256": "f23185d90b4924ee54f33c7bd079447dc151093c59919d1b80dad2efa3016f84",
+        "display": {
+          "columns": 27,
+          "first_line": "\u00efngiz Lelumerush",
+          "second_line": "Dog, \u2642 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "401e48e0322da4088e614190a6390b132891c812ce7f2a7099d10d07bc8600ec",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 6686,
+        "crop": [
+          416,
+          160,
+          216,
+          36
+        ],
+        "rgb_sha256": "e4c0d3005f6c0f97e8f7dca42b27b29ae84ff82235aa10f4229e4715892569c5",
+        "display": {
+          "columns": 27,
+          "first_line": "Tekkud Olonabod",
+          "second_line": "Turkey Hen, \u2640 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              1
+            ],
+            "color": [
+              4,
+              0,
+              1
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "1a9bf90edf7593d69cd99e74a61f1b5610c2ac1486dd9a7169aead74253795ce",
+        "foreground_rgb": [
+          [
+            255,
+            113,
+            17
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 6821,
+        "crop": [
+          416,
+          196,
+          216,
+          36
+        ],
+        "rgb_sha256": "dcc5af313c4567cfd0534e3cabf36b7256b44b196ff7915a60e2df3d6be7b7de",
+        "display": {
+          "columns": 27,
+          "first_line": "Nomal Stulth\u00eekut",
+          "second_line": "Billy Goat, \u2642 (Tame)",
+          "combined_fits": false,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "d8e9591ce9d32ab15ccb5efa1fe94f56ad881b0b73ded08d7c6ab4285909feb3",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 6960,
+        "crop": [
+          416,
+          232,
+          216,
+          36
+        ],
+        "rgb_sha256": "b2245f845698459fedfdd17b0ef52fe2a381a07128e64a5823b09344331b64b7",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Drake, \u2642 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              2,
+              0,
+              0
+            ],
+            "color": [
+              2,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "390a265f2f98e35e6613b156280d0b2429ee8251e05283325edd4ae979e57e68",
+        "foreground_rgb": [
+          [
+            162,
+            220,
+            52
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 6961,
+        "crop": [
+          416,
+          268,
+          216,
+          36
+        ],
+        "rgb_sha256": "d7fdd8482e591974f1cf8b0c70a40882ecaaef084e5a19670bb053a1a771900e",
+        "display": {
+          "columns": 27,
+          "first_line": "",
+          "second_line": "Stray Blue Peacock, \u2642 (Tam)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              1,
+              0,
+              1
+            ],
+            "color": [
+              1,
+              0,
+              1
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6e78715e47360dce3e0626dab0e2b53e0f33c74812cac4e32cae9c7a9db6ce1b",
+        "foreground_rgb": [
+          [
+            140,
+            102,
+            255
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7119,
+        "crop": [
+          416,
+          304,
+          216,
+          36
+        ],
+        "rgb_sha256": "91ba03d11527524d72c302d111d23866de576d833484a6831c794f16bcf3847b",
+        "display": {
+          "columns": 27,
+          "first_line": "Ducim Erushstin",
+          "second_line": "Boar, \u2642 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              5,
+              0,
+              1
+            ],
+            "color": [
+              5,
+              0,
+              1
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "1f7a25b86e9b63fa1c5e8a41af9281f5265e8140dff67be1d8949e95b872f18a",
+        "foreground_rgb": [
+          [
+            232,
+            17,
+            255
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7121,
+        "crop": [
+          416,
+          340,
+          216,
+          36
+        ],
+        "rgb_sha256": "fc9ad21af9838cea4988ae9321f3360d1be3acbe60d8d3ff02fd116da9371156",
+        "display": {
+          "columns": 27,
+          "first_line": "Mist\u00eam Sherikal\u00e5th",
+          "second_line": "Cat, \u2642 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              0,
+              0,
+              1
+            ],
+            "color": [
+              0,
+              0,
+              1
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "735a5e67bd97dfb20fab5710ab9640f3cd5a00d086579625965d4febfc7727e2",
+        "foreground_rgb": [
+          [
+            160,
+            160,
+            160
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7122,
+        "crop": [
+          416,
+          376,
+          216,
+          36
+        ],
+        "rgb_sha256": "014aa8270e375c7ceee5e58756bc42b3d753c3bca37c4fae6c720e2e095af905",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Blue Peahen, \u2640 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6c89e72120646896d50319aa132305d895c7f0b63dcac3d021e3ca7dc494287d",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7269,
+        "crop": [
+          416,
+          412,
+          216,
+          36
+        ],
+        "rgb_sha256": "98311c660ffe35da6d1b44dbe0d7f610796b553e736ee3e71e9631e787a904e2",
+        "display": {
+          "columns": 27,
+          "first_line": "Tulon Udibatham",
+          "second_line": "Nanny Goat, \u2640 (Tame)",
+          "combined_fits": false,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6143a9d650f5dc7441326b65ee169fa2ec0b409d39b03c2dcdde02ff1e95537e",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7270,
+        "crop": [
+          416,
+          448,
+          216,
+          36
+        ],
+        "rgb_sha256": "484b7747257faeff3904377d5df7c303e00667f859a4e8b98d71d66445c437bf",
+        "display": {
+          "columns": 27,
+          "first_line": "\u00e8rith Loloklitast",
+          "second_line": "Nanny Goat, \u2640 (Tame)",
+          "combined_fits": false,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "bc78dffb5954250c200baa068bac80f2ec30081079da9a10a963b121531a35e8",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7277,
+        "crop": [
+          416,
+          484,
+          216,
+          36
+        ],
+        "rgb_sha256": "eccb40f6bd308e94b9672e49f9add3cfab98f1d8c8a78f8909e0fc01165af86e",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Yak Bull, \u2642 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "b7a799453bbdad1604a22983e1038a2c1badca57b65f1589861e1f416bbf2d5c",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7264,
+        "crop": [
+          416,
+          520,
+          216,
+          36
+        ],
+        "rgb_sha256": "399495e34f5fbcfe42d1e0ca8808e3cef0f8698068eae10f24b8f4ced91668b5",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Kitten, \u2640 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              0
+            ],
+            "color": [
+              4,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "f4f7d185e2c8f3db7a7e73bf32a651a91d7677aad00203ba381ce8f7a100102c",
+        "foreground_rgb": [
+          [
+            255,
+            17,
+            58
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7265,
+        "crop": [
+          416,
+          556,
+          216,
+          36
+        ],
+        "rgb_sha256": "8d50b416dc7006335385f204fa36954496d4c7cc09f389fd835c3cf82d40af8f",
+        "display": {
+          "columns": 27,
+          "first_line": "Deg\u00ebl Uvarstinth\u00e4d",
+          "second_line": "Poult, \u2640 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              0
+            ],
+            "color": [
+              4,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "e6e2a4cec811ec878365d869f88d2daea56f29ff04e26dc90c27f83f05436c97",
+        "foreground_rgb": [
+          [
+            255,
+            17,
+            58
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7346,
+        "crop": [
+          416,
+          592,
+          216,
+          36
+        ],
+        "rgb_sha256": "3bcd2a52b246afb39e3072e6760fe4c3dc1bf80d3412bfc5db5ac7c2f3b679e5",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Donkey Foal, \u2642 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              0
+            ],
+            "color": [
+              4,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6194cf53a93b85a3e9f0a79642b7fe128539c164aa4b7702bbb7229cea7dd14f",
+        "foreground_rgb": [
+          [
+            255,
+            17,
+            58
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      },
+      {
+        "picker": "Pen-picker",
+        "id": 7347,
+        "crop": [
+          416,
+          628,
+          216,
+          36
+        ],
+        "rgb_sha256": "12afbbe1fcb85997e0ca2c549fe992fb99287e0cd8db097ec0b19291956ade55",
+        "display": {
+          "columns": 27,
+          "first_line": "Vucar Ral\u00eebmat",
+          "second_line": "Gosling, \u2640 (Tame)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              0
+            ],
+            "color": [
+              4,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "bc702a0892517710bf1d90e4a200502706988865650d7dfe91cf4addb5ab54b9",
+        "foreground_rgb": [
+          [
+            255,
+            17,
+            58
+          ]
+        ]
+      },
+      {
+        "picker": "Pond-picker",
+        "id": 6960,
+        "crop": [
+          416,
+          88,
+          216,
+          36
+        ],
+        "rgb_sha256": "7b81a11ddaf67258d7b39c6bdf272441bf4b392c512988f5bfb19123f4ff4f93",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Drake, \u2642 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              2,
+              0,
+              0
+            ],
+            "color": [
+              2,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "390a265f2f98e35e6613b156280d0b2429ee8251e05283325edd4ae979e57e68",
+        "foreground_rgb": [
+          [
+            162,
+            220,
+            52
+          ]
+        ]
+      },
+      {
+        "picker": "Pond-picker",
+        "id": 6961,
+        "crop": [
+          416,
+          124,
+          216,
+          36
+        ],
+        "rgb_sha256": "d7fdd8482e591974f1cf8b0c70a40882ecaaef084e5a19670bb053a1a771900e",
+        "display": {
+          "columns": 27,
+          "first_line": "",
+          "second_line": "Stray Blue Peacock, \u2642 (Tam)",
+          "combined_fits": false,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              1,
+              0,
+              1
+            ],
+            "color": [
+              1,
+              0,
+              1
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6e78715e47360dce3e0626dab0e2b53e0f33c74812cac4e32cae9c7a9db6ce1b",
+        "foreground_rgb": [
+          [
+            140,
+            102,
+            255
+          ]
+        ]
+      },
+      {
+        "picker": "Pond-picker",
+        "id": 7122,
+        "crop": [
+          416,
+          160,
+          216,
+          36
+        ],
+        "rgb_sha256": "014aa8270e375c7ceee5e58756bc42b3d753c3bca37c4fae6c720e2e095af905",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Blue Peahen, \u2640 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6c89e72120646896d50319aa132305d895c7f0b63dcac3d021e3ca7dc494287d",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ]
+        ]
+      },
+      {
+        "picker": "Pond-picker",
+        "id": 7277,
+        "crop": [
+          416,
+          196,
+          216,
+          36
+        ],
+        "rgb_sha256": "eccb40f6bd308e94b9672e49f9add3cfab98f1d8c8a78f8909e0fc01165af86e",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Yak Bull, \u2642 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              6,
+              0,
+              0
+            ],
+            "color": [
+              6,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "b7a799453bbdad1604a22983e1038a2c1badca57b65f1589861e1f416bbf2d5c",
+        "foreground_rgb": [
+          [
+            215,
+            155,
+            45
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      },
+      {
+        "picker": "Pond-picker",
+        "id": 7264,
+        "crop": [
+          416,
+          232,
+          216,
+          36
+        ],
+        "rgb_sha256": "399495e34f5fbcfe42d1e0ca8808e3cef0f8698068eae10f24b8f4ced91668b5",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Kitten, \u2640 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              0
+            ],
+            "color": [
+              4,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "f4f7d185e2c8f3db7a7e73bf32a651a91d7677aad00203ba381ce8f7a100102c",
+        "foreground_rgb": [
+          [
+            255,
+            17,
+            58
+          ]
+        ]
+      },
+      {
+        "picker": "Pond-picker",
+        "id": 7346,
+        "crop": [
+          416,
+          268,
+          216,
+          36
+        ],
+        "rgb_sha256": "3bcd2a52b246afb39e3072e6760fe4c3dc1bf80d3412bfc5db5ac7c2f3b679e5",
+        "display": {
+          "columns": 27,
+          "first_line": "Stray Donkey Foal, \u2642 (Tame)",
+          "second_line": "",
+          "combined_fits": true,
+          "warning": "Grazer: requires pasture",
+          "name_color": {
+            "alternate": [
+              4,
+              0,
+              0
+            ],
+            "color": [
+              4,
+              0,
+              0
+            ],
+            "effect": 0,
+            "source": 0
+          }
+        },
+        "glyph_rgb_sha256": "6194cf53a93b85a3e9f0a79642b7fe128539c164aa4b7702bbb7229cea7dd14f",
+        "foreground_rgb": [
+          [
+            255,
+            17,
+            58
+          ],
+          [
+            19,
+            253,
+            101
+          ]
+        ]
+      }
+    ],
+    "comparison": "Exact foreground glyph raster in first25 columns (200px). Native cage artwork can overlap columns26-27; full text bytes are covered by live reader assertions. Backgrounds, borders, cage artwork and overlaps remain separate unfinished work."
   }
 }

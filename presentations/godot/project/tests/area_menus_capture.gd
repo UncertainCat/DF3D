@@ -670,6 +670,29 @@ func run() -> void:
 	animal_view.choices[0].pressed.emit()
 	if animal_requests[-1].get("item_id",-1) != 24 or animal_requests[-1].has("unit_id") or animal_requests[-1].assign != 0:
 		push_error("Rendered item button dispatched a unit request"); quit(1); return
+	animal_state.pending = {}; animal_state.mutating = false
+	var animal_text: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/areas/native_zone_animals.json")).animal_text_pixels
+	for sample in animal_text.samples:
+		for key in ["color","alternate"]:
+			for component in 3: sample.display.name_color[key][component] = int(sample.display.name_color[key][component])
+		animal_state.rows = [{"id":int(sample.id),"entity":1,"animal_display":sample.display,"assigned":false}]
+		animal_state.changed.emit()
+		await process_frame; await RenderingServer.frame_post_draw
+		var text_image := root.get_texture().get_image(); text_image.convert(Image.FORMAT_RGB8)
+		var text_crop := text_image.get_region(Rect2i(Vector2i(animal_view.choices[0].global_position)+Vector2i(40,0),Vector2i(200,36)))
+		# Text-only comparison: native selection/background artwork is a separate unfinished surface.
+		var glyph_bytes := text_crop.get_data()
+		for pixel in 200*36:
+			var offset := pixel*3
+			var foreground := false
+			for rgb in sample.foreground_rgb:
+				if glyph_bytes[offset]==int(rgb[0]) and glyph_bytes[offset+1]==int(rgb[1]) and glyph_bytes[offset+2]==int(rgb[2]): foreground=true
+			if not foreground:
+				glyph_bytes[offset]=0; glyph_bytes[offset+1]=0; glyph_bytes[offset+2]=0
+		var text_hash := HashingContext.new(); text_hash.start(HashingContext.HASH_SHA256); text_hash.update(glyph_bytes)
+		text_crop.save_png(directory.path_join("animal-"+str(sample.picker)+"-"+str(sample.id)+".png"))
+		if text_hash.finish().hex_encode() != str(sample.glyph_rgb_sha256):
+			push_error("Native animal text pixels differ: "+str(sample.picker)+"/"+str(sample.id)); quit(1); return
 	animal_view.free()
 	assets.free(); await process_frame
 	print("AREA_MENUS_CAPTURE_PASS")

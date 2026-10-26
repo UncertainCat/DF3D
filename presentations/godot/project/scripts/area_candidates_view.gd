@@ -174,17 +174,16 @@ func refresh() -> void:
 			if state.kind == 3:
 				add_squad(row); continue
 			var label := ""
-			if state.kind == 2:
+			if state.kind == 2 and int(row.get("entity",0)) == Contract.AreaCandidateEntity.Item:
 				label = str(row.get("name",""))
-				if not str(row.get("profession","")).is_empty(): label += "\n" + str(row.profession)
-				if int(row.get("sex",-1)) in [0,1]: label += ", " + ("♀" if int(row.sex) == 0 else "♂")
-				if bool(row.get("grazer",false)): label += "\nGrazer: requires pasture"
 			var button := row_button(label); button.clip_text = true; button.tooltip_text = label
 			var unit_id := int(row.id)
 			button.pressed.connect(state.toggle_animal.bind(int(row.get("entity",0)),unit_id) if state.kind == 2 else state.assign_owner.bind(unit_id))
 			rows_box.add_child(button); choices.append(button)
 			if state.kind == 1 and row.get("owner_display") is Dictionary:
 				add_owner_text(button,row.owner_display)
+			if state.kind == 2 and row.get("animal_display") is Dictionary:
+				add_animal_text(button,row.animal_display)
 			var owner: bool = state.kind == 1
 			var frame := Panel.new(); frame.position = Vector2.ZERO; frame.size = Vector2(40 if owner else 32,36)
 			var frame_style := art.make_style("BUTTON_PICTURE_BOX",8)
@@ -298,6 +297,27 @@ func feed_owner_key(event: InputEvent) -> bool:
 	elif owner_selected >= first + 16: first = owner_selected - 15
 	owner_scrollbar.move_to(first)
 	return true
+
+func add_animal_text(button: Button, display: Dictionary) -> void:
+	var colored: Array = []
+	var first_row := 1 if bool(display.combined_fits) or str(display.warning).is_empty() else 0
+	for index in 2:
+		var line := Label.new(); line.name = "AnimalFirst" if index == 0 else "AnimalSecond"
+		line.text = str(display.first_line if index == 0 else display.second_line)
+		line.add_theme_font_size_override("font_size",12); line.clip_text = true
+		line.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(line)
+		line.position = Vector2(40,(first_row+index)*12); line.size = Vector2(int(display.columns)*8,12)
+		var background := ColorRect.new(); background.name = "GlyphBackground"
+		background.mouse_filter = Control.MOUSE_FILTER_IGNORE; background.show_behind_parent = true
+		background.size = Vector2(mini(line.text.length(),int(display.columns))*8,12)
+		line.add_child(background); colored.append(line)
+	var warning := Label.new(); warning.name = "AnimalWarning"; warning.text = str(display.warning)
+	warning.add_theme_font_size_override("font_size",12); warning.clip_text = true
+	warning.mouse_filter = Control.MOUSE_FILTER_IGNORE; button.add_child(warning)
+	warning.position = Vector2(48,24); warning.size = Vector2((int(display.columns)-1)*8,12)
+	if native_colors.size() == 16: warning.add_theme_color_override("font_color",native_colors[10])
+	owner_color_rows.append({"button":button,"description":display.name_color,"lines":colored,"last":[]})
+	apply_owner_colors(Time.get_ticks_msec())
 
 func add_owner_text(button: Button, display: Dictionary) -> void:
 	# Native status occupies the first cell row; the two name lines follow it.

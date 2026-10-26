@@ -670,6 +670,20 @@ elseif request.op=='animal_candidates' then
    assert(status==0,value)
    local bytes=require('json').decode(value)
    assert(row.name==dfhack.df2utf(string.char(table.unpack(bytes))),'native animal item text differs')
+   assert(not row.animal_display,'item received unit display')
+  else
+   local value,status=dfhack.run_command_silent('df3d','zone-animal-unit-display-read',tostring(entry.id),'27')
+   assert(status==0,value);local native=require('json').decode(value)
+   local function utf(bytes)return dfhack.df2utf(string.char(table.unpack(bytes)))end
+   local d=assert(row.animal_display,'animal display absent')
+   assert(d.columns==27 and d.first_line==utf(native.text[4]) and d.second_line==utf(native.text[5]),'animal native lines differ')
+   assert(d.combined_fits==(#native.text[1]<=27) and d.warning==utf(native.warning) and row.grazer==native.grazer,'animal layout facts differ')
+   assert(row.name==utf(native.text[1]) and row.profession==utf(native.text[3]),'animal native name/profession differ')
+   assert(d.name_color.effect==native.name_color.effect,'animal color effect differs')
+   for component=1,3 do
+    assert(d.name_color.color[component]==native.name_color.color[component] and
+     d.name_color.alternate[component]==native.name_color.alternate[component],'animal color differs')
+   end
   end
  end
  result.count=#expected;result.exact=true

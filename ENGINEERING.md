@@ -10,8 +10,9 @@ Owner room value/status remain separate.
 Wire and Lua result validation restrict animal display to a nonnegative Unit
 candidate in an animal CandidateList. They bound text/width/color values,
 require warning presence to agree with the row's grazer flag, and reject a
-second line when combined text fitted. Native display production and rendered
-animal rows are still pending; accepting this field does not expose a screen.
+second line when combined text fitted. Native unit production now supplies this field. The viewer renders its lines
+and warning with installed fonts and native color facts; the complete animal
+selector remains staged until its remaining artwork and interactions are done.
 
 Verification: build/qa/animal-display-contract-verified passes core CTest19/19
 and the end-to-end Godot management contract, including blank first-line
@@ -23,8 +24,38 @@ build/areas-acceptance-20261026-103300 passes with DF129800, exercising existing
 assignments, sorting/search and refusal behavior. Both save manifests remain
 unchanged after unsaved exit. Installed plugin SHA256:
 496d44da4b26ee7ebeff4bcd6d5e836d27a6cc3c36fb8fe0a717389cedddd4c7.
-This live run verifies compatibility of existing workflows; the optional new
-field is exercised by contract fixtures until native production is connected.
+This live run verifies compatibility of existing workflows before native
+production was connected. Current production evidence follows.
+
+## Native animal unit display integration
+
+Both request and builder callbacks provide owned 27-column native text, color,
+combined-fit and cached grazer facts. Lua fails closed on unavailable/malformed
+facts and includes display strings in page byte accounting. Unit names and
+professions come from DF; the viewer no longer appends its own gender or warning.
+Item rows retain their separate native description path. The viewer places
+combined/split text and the warning on the native three-cell layout, including
+blank first lines and the warning's one-column inset, and shares the verified
+native name-color animation renderer.
+
+Protected build/areas-acceptance-20261026-103724 passes with DF126080. Returned
+Godot rows match the native display diagnostic across all existing animal
+sort/search and assignment/refusal cases. Both save manifests remain unchanged.
+Core19/19 and adapter tests pass in build/qa/animal-display-final; candidate
+state passes in animal-display-render. MSVC builds in
+build/notes/pm/animal-display-producer-build.log. Installed plugin SHA256:
+6fdca0ec1f559c24d26f763525996473ceef496c5ff1e2fc465c241d66ec4a95.
+
+GPU build/qa/animal-display-visible-glyphs passes with the three known engine
+signatures. All22 native samples match foreground glyph raster/color in the
+first25 columns (200x36 pixels); the full strings are checked by live byte
+comparisons. The last two columns are excluded from this text-only pixel check
+because native cage artwork can overlap them. Full row/background/selection,
+portraits and cage artwork are not covered or complete. Initial whole-row
+checks exposed those gaps; JSON fixture colors also needed integer conversion
+before the strict color renderer accepted them. Split and combined grazer crops
+were visually inspected. Item text layout, textbox editing, scrolling, hover
+and lifecycle parity remain required before the selector is exposed.
 
 ## Native animal unit text reference
 
@@ -63,8 +94,8 @@ exact text/layout/colors and UI-state preservation pass, and the source save
 is unchanged. MSVC builds in build/notes/pm/animal-unit-display-build.log;
 core verification is build/qa/animal-unit-display-reader. Installed plugin SHA256:
 7879b4d34c569ed43f4c9937e5e89ab57e266eba400673b74bf7bdaf45d96849.
-The semantic reader still needs a separate animal display wire field and viewer
-integration; it is not yet used to render product rows.
+The semantic reader supplies the separate animal display wire field and viewer
+unit text. Item artwork and full selector interactions remain unfinished.
 
 ## Native animal sort headers
 

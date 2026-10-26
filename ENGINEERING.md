@@ -44,8 +44,14 @@ world-list addresses also identify the native cleanup's item, unit, punishment,
 tax-room and historical-figure sources. `fixtures/areas/native_zone_removal_audit.json`
 retains observations and exact helper ranges. Independent item/unit/job
 reference removal and final registration/destruction helpers are identified;
-the complete replacement still needs implementation and effect verification. Audit/replace this route before exposing
-Zones. Location-specific repaint effects after the relationship sequence,
+the complete replacement still needs implementation and effect verification.
+The current native zone destructor removes all matching ownership pointers from
+world.units.all, including duplicates; DFHack's older dangling-owner comment
+does not describe this build. It frees zone-side squad records but does not
+visit squad.rooms, so reciprocal squad cleanup must be retained. The historical-
+figure type-7 removal path uses call-free semantic site lookups and skips history
+event creation. These are static findings, not live deletion acceptance.
+Audit/replace this route before exposing Zones. Location-specific repaint effects after the relationship sequence,
 Multi, assignment and full Zones acceptance remain separate work.
 
 ## Native zone headings

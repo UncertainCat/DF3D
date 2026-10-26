@@ -150,5 +150,45 @@
     "response-109.json": "542db0529a5fe890b8dfee6c0477ad661f9c3709d33d51266d86bd359c279985",
     "response-115.json": "ea2a9368cbad36e8d02f7b5084d60bb312453cfb2afa287a6305aa99ca502d9f",
     "response-121.json": "542db0529a5fe890b8dfee6c0477ad661f9c3709d33d51266d86bd359c279985"
+  },
+  "additional_static_audit": {
+    "ranges": [
+      {
+        "rva": "0x7db20",
+        "size": "0xb6",
+        "fnv1a64": "0x4ee4244d4f7af0ae",
+        "sha256": "3afd57b6d4d1fb8bda77ac53a138c3e00f89f337f32a5734c479a91deb752fb1"
+      },
+      {
+        "rva": "0x6ff00",
+        "size": "0xa8",
+        "fnv1a64": "0x95c810961f82c229",
+        "sha256": "949a3c521c0af8c5aac7868458e19ee0a6831508cd36ab29aa6f6fc97a8157b6"
+      },
+      {
+        "rva": "0x28b7d0",
+        "size": "0x18e",
+        "fnv1a64": "0x94d00db7f2604223",
+        "sha256": "36a7557bc99a21fad07232e1d41ba0d7a8958691e1f948aa01667c0130a2b13d"
+      },
+      {
+        "rva": "0x586ac0",
+        "size": "0x205",
+        "fnv1a64": "0x963ec0e2ff50cf12",
+        "sha256": "7bcb647fcb102d6cff3d8113fdc270559c0633c81491105e5f5a6485f865a8a2"
+      }
+    ],
+    "findings": [
+      "7db20 is a call-free site lookup over the supplied world-data sites vector; 6ff00 is a call-free lookup over a supplied vector. Neither touches menu or search state.",
+      "b98640(historical_figure,index,false) skips history-event creation. For HOME_SITE_SAVED_CIVZONE (type 7), it uses the two semantic lookups to remove reciprocal site links and deletes the supplied figure link; its separate type-0 residence branch is unreachable.",
+      "28b7d0 visits world.units.all at RVA 0x23e50b0 and removes every matching zone pointer from unit.owned_buildings (offset 0x450), including duplicates. The older DFHack comment about dangling unit ownership is not accurate for this destructor. This is static evidence; live deletion effects still need verification.",
+      "The zone destructor frees its squad_room_info records but does not visit squad.rooms. Preserve the existing reciprocal squad cleanup when replacing DFHack deconstruction.",
+      "Do not derive function size from only the first PE unwind entry: 7db20, 28b7d0 and 586ac0 have split unwind ranges. Recorded ranges include their reachable normal branches."
+    ],
+    "remaining": [
+      "Audit base-destructor owned-job cancellation and all reachable virtual cleanup effects before treating final retirement as accepted.",
+      "Implement the zone-specific removal sequence without invoking removeUses/ac8490, then verify actual assignments, squad links, historical-figure/site links, registration and search-array guards.",
+      "Preserve deferred retirement when in_update and the already-deleted early return; no target dereference after final retirement."
+    ]
   }
 }

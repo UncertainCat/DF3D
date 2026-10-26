@@ -359,7 +359,8 @@ elseif request.op=='preset' then
 elseif request.op=='zone_settings' then
  local b=building();local v=b.zone_settings;local actual={}
  local typ=df.civzone_type[b.type]
- if typ=='Pond' then actual.pond_mode=v.pond.flag.keep_filled and 2 or 1
+ if typ=='Pen' then actual.check_occupants=v.pen.flags.check_occupants
+ elseif typ=='Pond' then actual.pond_mode=v.pond.flag.keep_filled and 2 or 1;actual.check_occupants=v.pond.flag.check_occupants
  elseif typ=='ArcheryRange' then
   local x,y=v.archery.dir_x,v.archery.dir_y
   actual.facing=x==-1 and y==0 and 1 or x==1 and y==0 and 2 or x==0 and y==-1 and 3 or x==0 and y==1 and 4 or 0

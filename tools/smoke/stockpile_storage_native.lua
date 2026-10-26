@@ -1,7 +1,7 @@
 -- Protected owned lane only: pause, disable autosave, preserve save manifests,
 -- and close without saving. Mutates the first pile (or ZoneRename zone) through native clicks.
 -- Run with an output directory; result.json is published atomically.
-local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips,test_rename_text,test_zone_rename,test_zone_gather=...
+local out,repaint,gestures,eligibility_case,test_predicates,test_links,test_rename,test_tooltips,test_rename_text,test_zone_rename,test_zone_gather,test_zone_defaults=...
 require('gui.script').start(function()
  local records={}
  local ok,why=pcall(function()
@@ -9,7 +9,7 @@ require('gui.script').start(function()
   local view=dfhack.gui.getDFViewscreen(true)
   assert(df.global.pause_state);local frame=df.global.world.frame_counter
   assert(dfhack.run_command('disable','overlay')==0)
-  local b=assert((test_zone_rename or test_zone_gather) and df.global.world.buildings.other.ANY_ZONE[0] or df.global.world.buildings.other.STOCKPILE[0])
+  local b=assert((test_zone_rename or test_zone_gather or test_zone_defaults) and df.global.world.buildings.other.ANY_ZONE[0] or df.global.world.buildings.other.STOCKPILE[0])
   local pile_id=b.id
   if test_predicates then
    local guards={}
@@ -34,7 +34,7 @@ require('gui.script').start(function()
    records[#records+1]={name='native-tile-predicates',tested=65536,allowed=allowed,guards_unchanged=true}
   end
   local point={x=b.centerx,y=b.centery,z=b.z}
-  if test_zone_rename or test_zone_gather then df.global.game.main_interface.bottom_mode_selected=-1;gui.simulateInput(view,'D_CIVZONE')
+  if test_zone_rename or test_zone_gather or test_zone_defaults then df.global.game.main_interface.bottom_mode_selected=-1;gui.simulateInput(view,'D_CIVZONE')
   else gui.simulateInput(view,'D_STOCKPILES');df.global.game.main_interface.bottom_mode_selected=-1 end
   dfhack.gui.revealInDwarfmodeMap(point,true);view:render(dfhack.getTickCount())
   local function click(x,y)
@@ -48,7 +48,7 @@ require('gui.script').start(function()
    if p and p.x==point.x and p.y==point.y and p.z==point.z then map_x=x;map_y=y;click(x,y);found=true;break end
   end if found then break end end
   assert(found,'no pile pointer');require('gui.script').sleep(2,'frames');view:render(dfhack.getTickCount())
-  if test_zone_rename or test_zone_gather then b=assert(df.global.game.main_interface.civzone.cur_bld,'no selected zone');pile_id=b.id end
+  if test_zone_rename or test_zone_gather or test_zone_defaults then b=assert(df.global.game.main_interface.civzone.cur_bld,'no selected zone');pile_id=b.id end
   local function capture(name,keep_pointer)
    if not keep_pointer then g.mouse_x=0;g.mouse_y=0 end
    for i=1,3 do if keep_pointer then keep_pointer()end;view:render(dfhack.getTickCount());require('gui.script').sleep(1,'frames')end
@@ -56,7 +56,7 @@ require('gui.script').start(function()
    local lines={};for y=0,g.dimy-1 do local line={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);line[#line+1]=(t.ch>=32 and t.ch<127)and string.char(t.ch)or' ' end;lines[#lines+1]=table.concat(line)end
    local f=assert(io.open(out..'/'..name..'.txt','w'));f:write(table.concat(lines,'\n'));f:close()
    local alive=df.building.find(pile_id)
-   records[#records+1]=alive and ((test_zone_rename or test_zone_gather) and {name=name,id=alive.id,zone_type=df.civzone_type[alive.type]} or {name=name,barrels=alive.storage.max_barrels,bins=alive.storage.max_bins,wheelbarrows=alive.storage.max_wheelbarrows}) or {name=name,removed=true}
+   records[#records+1]=alive and ((test_zone_rename or test_zone_gather or test_zone_defaults) and {name=name,id=alive.id,zone_type=df.civzone_type[alive.type]} or {name=name,barrels=alive.storage.max_barrels,bins=alive.storage.max_bins,wheelbarrows=alive.storage.max_wheelbarrows}) or {name=name,removed=true}
    -- Tooltip text/state is sampled immediately after native render. The hidden
    -- desktop's next SDL poll can replace the pointer before a GPU screenshot.
    if test_tooltips and keep_pointer then return end
@@ -65,6 +65,22 @@ require('gui.script').start(function()
    while not io.open(out..'/ack-'..name,'r')do assert(dfhack.getTickCount()<limit,'capture timeout');if keep_pointer then keep_pointer();view:render(dfhack.getTickCount())end;require('gui.script').sleep(1,'frames')end
   end
   capture('pile')
+  if test_zone_defaults then
+   local ui=df.global.game.main_interface.civzone
+   for _,entry in ipairs{{'Pen',7,33,1},{'Pond',7,36,2},{'Tomb',26,42,1},{'PlantGathering',26,45,7},{'ArcheryRange',26,33,1}} do
+    click(entry[2],entry[3]);click(map_x,map_y);click(map_x,map_y)
+    b=assert(ui.cur_bld,'no created zone');pile_id=b.id
+    assert(b.type==df.civzone_type[entry[1]],'wrong created zone type '..entry[1])
+    click(38,9)
+    local raw=b.zone_settings.whole
+    assert(raw.i1==entry[4],entry[1]..' default mismatch: '..raw.i1)
+    records[#records+1]={name='defaults-'..entry[1],id=b.id,type=entry[1],first=raw.i1,second=raw.i2,
+     active=b.spec_sub_flag.active,frame=df.global.world.frame_counter}
+    assert(df.global.pause_state and df.global.world.frame_counter==frame)
+    capture('defaults-'..entry[1])
+   end
+   return
+  end
   if test_zone_gather then
    local ui=df.global.game.main_interface.civzone
    click(26,45) -- Gather Fruit in the observed native chooser.

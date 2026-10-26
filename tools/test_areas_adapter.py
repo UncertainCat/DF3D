@@ -2516,8 +2516,8 @@ def main():
       type=a.zone_type or -1,settings={flags={},misc={allow_organic=true,allow_inorganic=true}},
       storage={max_barrels=0,max_bins=0,max_wheelbarrows=0},stockpile_flag={use_links_only=false},
       links={give_to_pile={},take_from_pile={}},spec_sub_flag={active=false},assigned_unit_id=-1,
-      zone_settings={pen={flags={}},pond={flag={keep_filled=true}},archery={dir_x=0,dir_y=0},
-       tomb={flags={no_pets=false,no_citizens=false}},gather={flags={}}}}
+      zone_settings={pen={flags={check_occupants=true}},pond={flag={keep_filled=false,check_occupants=true}},archery={dir_x=native_range_x or 1,dir_y=0},
+       tomb={flags={no_pets=true,no_citizens=false}},gather={flags={pick_trees=true,pick_shrubs=true,gather_fallen=true}}}}
      local cats={'animals','food','furniture','corpses','refuse','stone','ammo','coins','bars_blocks','gems','finished_goods','leather','cloth','wood','weapons','armor','sheet'}
      if a.kind==0 then for i,cat in ipairs(cats)do created_areas[id].settings.flags[cat]=((a.categories or 0)&(1<<(i-1)))~=0 end end
      return {ok=true,building_id=id,steps=7,work_unknown=true}
@@ -2589,6 +2589,11 @@ def main():
             assert settings["tomb_pets"] == 0
         if zone_type == 5:
             assert settings["gather_trees"] == 1 and settings["gather_shrubs"] == 1 and settings["gather_fallen"] == 1
+    # An authoritative creation result must survive the Lua post-processing.
+    lua.execute("native_range_x=-1")
+    native_range = settings_adapter(create_request(kind=1, zone_type=3))
+    assert native_range["ok"] and native_range["areas"][1]["zone_settings"]["facing"] == 1
+    lua.execute("native_range_x=nil")
     owner = settings_adapter(create_request(kind=1, zone_type=0, owner_id=20, active=0))
     assert owner["ok"] and owner["areas"][1]["owner_id"] == 20 and not owner["areas"][1]["active"]
     lua.execute("force_notification_error=true")

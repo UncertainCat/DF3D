@@ -1054,14 +1054,8 @@ local function native_operation(r)
      b.settings.flags[cat]=(default(a,'categories',0) & (1 << (i-1)))~=0
     end end
    else
-    local t=df.civzone_type[b.type]
-    if t=='Pen' then b.zone_settings.pen.flags.check_occupants=true
-    elseif t=='Pond' then b.zone_settings.pond.flag.keep_filled=false
-    elseif t=='ArcheryRange' then b.zone_settings.archery.dir_x=1;b.zone_settings.archery.dir_y=0
-    elseif t=='Tomb' then b.zone_settings.tomb.flags.no_pets=true
-    elseif t=='PlantGathering' then
-     b.zone_settings.gather.flags.pick_trees=true;b.zone_settings.gather.flags.pick_shrubs=true;b.zone_settings.gather.flags.gather_fallen=true
-    end
+    -- Creation obtains settings from DF's initializer before publication.
+    -- Preserve them here; only apply explicit request fields.
     b.spec_sub_flag.active=default(a,'active',-1)~=0
     if not B.setOwner(b,new_owner) then error('Native owner assignment failed',0) end
     B.notifyCivzoneModified(b)

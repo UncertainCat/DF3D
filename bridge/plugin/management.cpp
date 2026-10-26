@@ -1,6 +1,7 @@
 #include "area_links.h"
 #include "bed_appearance_native.h"
 #include "stockpile_native.h"
+#include "zone_native.h"
 #include <json/json.h>
 #include "tile_description_native.h"
 #include "management.h"
@@ -1179,6 +1180,7 @@ int areaCreate(lua_State* L) {
     if(!df::global::world || !df::global::plotinfo || !df::global::building_next_id)return "World is not loaded";
     if(*df::global::building_next_id<0 || *df::global::building_next_id==INT32_MAX)return "Building IDs exhausted";
     const bool pile=a->kind()==m::AreaKind::Stockpile;
+    if(!pile && !df3d_area::nativeZoneDefaultsReady())return "";
     const int32_t z=a->operation()==m::AreaOperation::Paint?a->paint_z():a->origin()->z();
     if(pile && a->categories()) {
       std::array<size_t,78> counts{};size_t index=0;
@@ -1300,6 +1302,7 @@ int areaCreate(lua_State* L) {
     for(size_t i=0;i<size_t(bounds.width)*bounds.height;++i)actualTiles+=b->room.extents[i]!=df::building_extents_type::None;
     steps+=df3d_area::bulkSteps(size_t(bounds.width)*bounds.height);
     if(actualTiles!=expectedTiles)return "Native area construction changed the selected footprint";
+    if(!df3d_area::nativeZoneDefaults(*static_cast<df::building_civzonest*>(b)))return "";
     // Keep refresh hints even if construction or later Lua initialization fails.
     for(int by=bounds.y>>4;by<=(bounds.y+bounds.height-1)>>4;++by)
       for(int bx=bounds.x>>4;bx<=(bounds.x+bounds.width-1)>>4;++bx)areaHints.push_back({bx<<4,by<<4,z});

@@ -1,3 +1,40 @@
+## Native zone creation defaults
+
+Single-zone creation calls DF53.16's initializer at0x30f550 with the new,
+unpublished zone and its selected type. The complete leaf writes only that
+zone's type/settings; it has no global reads, calls or scratch dependencies.
+The executable identity and complete leaf bytes are checked before allocation.
+The inline native creation effects at0x3579af..0x357a2f are also pinned:
+Pen and Pond request occupant checks. Pond's check bit is separate from its
+fill-mode bit and was previously omitted. Lua preserves these initialized
+settings and applies only requested active/owner fields.
+
+Protected native capture `build/stockpile-storage-native-zone-defaults-20261025-195335`
+creates Pen, Pond, Tomb, PlantGathering and ArcheryRange through native clicks.
+Their settings words are respectively1,2,1,7,1 with second words0, all active
+at paused frame0. Owned DF121632 closes unsaved; the source manifest is unchanged.
+The Pond capture was inspected. `fixtures/areas/native_zone_defaults.json`
+retains exact observations, executable/entry hashes and evidence hashes.
+Run the shared capture harness with exclusive `-ZoneDefaults` to repeat it.
+
+Offline `build/qa/zone-native-defaults` passes root CTest19/19 and the Lua
+adapter regression, including preservation of an authoritative nondefault
+range direction. The MSVC bridge builds successfully. Protected semantic
+`build/areas-acceptance-20261025-195748` passes creation/default/readback/removal
+for all18 supported zone types, including Pen/Pond occupant-check bits.
+Owned DF108320 closes unsaved and both save manifests match; diagnostics are
+clean. Repeat with `areas_acceptance.ps1 -ZoneDefaultsOnly -SaveId <new-name>`.
+This focused scope bypasses unrelated tests; the earlier broad195640 run failed
+its legacy wood-list oracle before reaching Zones and is not a passing result.
+The broader harness oracle still needs reconciliation with the native provider.
+
+This migrates defaults only. Single-zone allocation/publication still uses
+DFHack helpers; Multi is separate. Native Archery Range creation additionally
+infers direction from contained targets inline at0x357a2f..0x357e90; that behavior
+is still unimplemented and the empty-range capture does not establish it.
+Owner assignment and membership notification remain under audit. Zones remains
+staged until the complete workflow is verified.
+
 ## Zone gathering settings contract
 
 Management61 adds `AreaZoneSettings.gather_fallen` to observation and command

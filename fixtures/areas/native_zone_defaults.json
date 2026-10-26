@@ -1,0 +1,96 @@
+{
+  "supported_df": "53.16 Steam Windows x64",
+  "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+  "native_capture": "build/stockpile-storage-native-zone-defaults-20261025-195335",
+  "native_capture_df_pid": 121632,
+  "owned_process_closed_unsaved": true,
+  "source_manifest_unchanged": true,
+  "observations": [
+    {
+      "active": true,
+      "first": 1,
+      "frame": 0,
+      "id": 1490,
+      "name": "defaults-Pen",
+      "second": 0,
+      "type": "Pen"
+    },
+    {
+      "active": true,
+      "first": 2,
+      "frame": 0,
+      "id": 1491,
+      "name": "defaults-Pond",
+      "second": 0,
+      "type": "Pond"
+    },
+    {
+      "active": true,
+      "first": 1,
+      "frame": 0,
+      "id": 1492,
+      "name": "defaults-Tomb",
+      "second": 0,
+      "type": "Tomb"
+    },
+    {
+      "active": true,
+      "first": 7,
+      "frame": 0,
+      "id": 1493,
+      "name": "defaults-PlantGathering",
+      "second": 0,
+      "type": "PlantGathering"
+    },
+    {
+      "active": true,
+      "first": 1,
+      "frame": 0,
+      "id": 1494,
+      "name": "defaults-ArcheryRange",
+      "second": 0,
+      "type": "ArcheryRange"
+    }
+  ],
+  "evidence_sha256": {
+    "result.json": "e0667a6227a4f5b4b2cc3d9f381795ef01b7f0e6a4f4e12acf592baf3301fc40",
+    "capture-inputs.json": "de29575bedbef690d7f1a11fc3bb2af5191889c68631535e042385f3ba05b459",
+    "defaults-Pond.png": "436690a08e2fcde391f75e1f7b7fce8a931710453a9bcb540a5379d4b82250c1",
+    "defaults-ArcheryRange.png": "d85b50cf004a09f25f30043ef28470f1e6ac2ee71941300d2d672f1af58a8a8e"
+  },
+  "native_entries": [
+    {
+      "rva": "0x30f550",
+      "size": 91,
+      "sha256": "f325e8a1f406f2ddd719c91850fd7c9025ea6bed7f3613ab54b0fdf6627228f5",
+      "ownership": "Leaf writes only supplied zone.type and zone_settings; no reads of global state, calls, or scratch."
+    },
+    {
+      "rva": "0x3579af",
+      "size": 128,
+      "sha256": "23ea9b05916906d680f910cfa6be112c5667b275e2c19fcc419c2a20e8e0648d",
+      "ownership": "Native creation inline dispatch sets Pen check_occupants and Pond check_occupants after publication."
+    }
+  ],
+  "limits": [
+    "No target-based Archery Range direction coverage. Native inline selection at0x357a2f..0x357e90 remains pending.",
+    "Allocation/publication still uses DFHack allocInstance/setSize/constructAbstract; Multi creation is separate and unchanged.",
+    "Existing owner assignment and room-membership notification remain pending audit."
+  ],
+  "df3d_verification": {
+    "path": "build/areas-acceptance-20261025-195748",
+    "status": "passed",
+    "native_observations": 41,
+    "coverage": "Create, verify defaults, and remove all18 supported zone types, including Pen/Pond occupant checks. No archery target geometry or full Zones workflow coverage.",
+    "bridge_sha256": "09987088ee1438ebeba72c1964ba0ef6fa86b542f06d36461a357d1d4f4d5b90",
+    "owned_df_pid": 108320,
+    "closed_unsaved": true,
+    "evidence_sha256": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "diagnostics.json": "becad2818f5b478ba5585ee618b35041c7bd29bf39cda49f28780c44af7e2dd6",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "source-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48",
+      "clone-manifest.txt": "5ff8c8e0a1459ea41fbee828713cc56c9bbeb4434394bf0b62bf771227119b48"
+    }
+  }
+}

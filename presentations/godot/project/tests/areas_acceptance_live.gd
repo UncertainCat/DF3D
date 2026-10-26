@@ -334,7 +334,7 @@ func created_zone_defaults() -> void:
 		if not check(made.areas.size() == 1, "new zone absent"): return
 		var area: Dictionary = made.areas[0]
 		await native("snapshot", {"id":int(area.id), "expected":{"zone_type":int(choice.id), "active":true, "tile_count":4}})
-		var defaults: Dictionary = {"Pond":{"pond_mode":1}, "ArcheryRange":{"facing":2},
+		var defaults: Dictionary = {"Pen":{"check_occupants":true}, "Pond":{"pond_mode":1,"check_occupants":true}, "ArcheryRange":{"facing":2},
 			"Tomb":{"tomb_citizens":1, "tomb_pets":0}, "PlantGathering":{"gather_trees":1, "gather_shrubs":1, "gather_fallen":1}}
 		if defaults.has(choice.name): await native("zone_settings", {"id":int(area.id), "expected":defaults[choice.name]})
 		await request({"action":12, "kind":1, "id":int(area.id), "expected_revision":area.revision})
@@ -430,6 +430,9 @@ func exercise() -> void:
 	await seed_catalog()
 	if stopped: return
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
+	if FileAccess.file_exists(directory + "/zone-defaults-only.json"):
+		await created_zone_defaults()
+		return
 	for key in fixture.missing:
 		incomplete(str(key) + ": " + str(fixture.missing[key]))
 	var initial := await native("status")

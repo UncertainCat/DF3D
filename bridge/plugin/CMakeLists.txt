@@ -40,7 +40,7 @@ add_dependencies(df3d df3d_generate_mirror)
 # or presentation state. The same source is exercised by the core native fixtures.
 target_sources(df3d PRIVATE construction_track_route.cpp "${DF3D_ROOT}/worldmodel/src/track_path.cpp")
 target_sources(df3d PRIVATE construction_material_native.cpp construction_site_native.cpp bed_appearance_native.cpp)
-target_sources(df3d PRIVATE tile_description_native.cpp stockpile_native.cpp)
+target_sources(df3d PRIVATE tile_description_native.cpp stockpile_native.cpp zone_native.cpp)
 target_include_directories(df3d PRIVATE "${DF3D_ROOT}/worldmodel/include")
 add_executable(df3d_track_callback_test EXCLUDE_FROM_ALL
     tests/construction_track_route_test.cpp construction_track_route.cpp

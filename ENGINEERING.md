@@ -53,7 +53,13 @@ captures real copper-chain and pig-tail-rope items. Their native keys select
 compiled compositor reproduces both 4096-byte textures from installed sprites
 and the first18 DEFAULT palette pairs with a transparent body. Restraints do
 not composite an animal; native rendering clears RGB for transparent pixels.
-This establishes the reference, not product restraint transport/rendering.
+`nativeZoneAnimalRestraint` now exposes rope-vs-metal and solid color from
+owned item inputs using pinned native material leaves. Protected
+`build/stockpile-storage-native-zone-animals-20261026-125857` verifies the reader
+against native cache keys for metal, plant thread, leather, silk and yarn;
+UI/gps byte guards pass and the source remains unchanged after unsaved exit.
+The cache is a diagnostic oracle only. This establishes the reference and
+semantic reader, not product restraint transport/rendering.
 Actual empty-reference and critter-item cages and status hover help remain open.
 The four containment hover IDs and strings are located, but controlled probes
 at the rendered indicators did not activate them; no hover parity is claimed.

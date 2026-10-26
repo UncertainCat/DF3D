@@ -91,6 +91,12 @@ struct ZoneAnimalContainer {
     int32_t occupantId=-1;
 };
 std::optional<ZoneAnimalContainer> nativeZoneAnimalContainer(df::item& container);
+struct ZoneAnimalRestraint {
+    bool rope=false;
+    std::string solidColor;
+    int32_t colorId=-1;
+};
+std::optional<ZoneAnimalRestraint> nativeZoneAnimalRestraint(df::item& item);
 // Normalize caller-owned textbox bytes with the native search routine.
 std::optional<std::string> nativeZoneOwnerQuery(std::string query);
 // Native may allocate and transfer ownership from another tomb. Callers mark

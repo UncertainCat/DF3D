@@ -809,6 +809,34 @@ std::optional<ZoneAnimalContainer> nativeZoneAnimalContainer(df::item& container
     }
     return result;
 }
+std::optional<ZoneAnimalRestraint> nativeZoneAnimalRestraint(df::item& item) {
+    if(!df::global::world || !nativeZoneDefaultsReady() || item.getType()!=df::item_type::CHAIN)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool compatible=hash(base+0xc80d35,0xf9)==UINT64_C(0x5f3bf541f6208ac1) &&
+        hash(base+0x145bee0,0x5e)==UINT64_C(0x6abc4e374e372eef) &&
+        hash(base+0x14add70,0x12f)==UINT64_C(0x01f897b15772d540);
+    if(!compatible)return std::nullopt;
+    const int16_t type=item.getMaterial();const int32_t index=item.getMaterialIndex();
+    using Flag=bool (*)(df::world*,int32_t,int16_t,int32_t);
+    using Material=df::material* (*)(df::world*,int16_t,int32_t);
+    const auto flag=[&](int32_t value){return reinterpret_cast<Flag>(const_cast<uint8_t*>(base+0x145bee0))(df::global::world,value,type,index);};
+    ZoneAnimalRestraint result;
+    // DF's item branch tests THREAD_PLANT, LEATHER, SILK, YARN in that order.
+    // No renderer/cache entry point is called, and no occupant is composed.
+    result.rope=flag(24) || flag(29) || flag(30) || flag(62);
+    auto* material=reinterpret_cast<Material>(const_cast<uint8_t*>(base+0x14add70))(df::global::world,type,index);
+    if(material) {
+        const auto* pattern=df::descriptor_pattern::find(material->state_color[df::matter_state::Solid]);
+        if(pattern && !pattern->colors.empty()) {
+            const auto color=pattern->colors.front();
+            const auto& colors=df::global::world->raws.descriptors.colors;
+            if(color>=0 && color<255 && size_t(color)<colors.size() && colors[color]) {
+                result.colorId=color;result.solidColor=colors[color]->id;
+            }
+        }
+    }
+    return result;
+}
 std::optional<std::string> nativeZoneOwnerQuery(std::string query) {
     const auto& order=staffOrderingFunctions();
     if(!order)return std::nullopt;

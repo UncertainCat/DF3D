@@ -341,6 +341,18 @@ local function capture(label,keep_mouse)
        if df.reinterpret_cast('int32_t',entry+4).value==status.cells[1].texture then native_key=df.reinterpret_cast('int32_t',entry).value;break end
       end
       assert(native_key==key,'restraint rendered key differs')
+      local guards={}
+      for _,value in ipairs{g,main}do
+       local size,address=df.sizeof(value);local copy=df.new('uint8_t',size)
+       dfhack.internal.memmove(copy,address,size);guards[#guards+1]={copy=copy,address=address,size=size}
+      end
+      local data,rc=dfhack.run_command_silent('df3d','zone-animal-restraint-read',tostring(item.id))
+      assert(rc==0,data);local owned=require('json').decode(data)
+      assert(owned.rope==rope and owned.color_id==color_id and owned.solid_color==df.global.world.raws.descriptors.colors[color_id].id,'owned restraint facts differ')
+      for _,guard in ipairs(guards)do
+       assert(dfhack.internal.memcmp(guard.copy,guard.address,guard.size)==0,'restraint reader changed native UI/drawing state');df.delete(guard.copy)
+      end
+      status.restraint_reader={semantic=owned,exact=true,ui_unchanged=true}
       status.restraint={item_id=item.id,material_type=item:getMaterial(),material_index=item:getMaterialIndex(),rope=rope,
        solid_color=color_id>=0 and df.global.world.raws.descriptors.colors[color_id].id or '',color_id=color_id,native_key=native_key}
      end
@@ -664,13 +676,25 @@ for _,probe in ipairs{{'Pen',60,402},{'Pond',60,438},{'Pond-transfer',60,438}}do
   capture('Pen-status-current-chain')
   status_hover('Pen-status-current-chain-hover',animal.id,0x16f)
   local made={}
-  for _,token in ipairs{'INORGANIC:COPPER','PLANT:GRASS_TAIL_PIG:THREAD'}do
-   local material=assert(dfhack.matinfo.find(token),'restraint fixture material missing')
+  local restraint_materials={{'metal','INORGANIC:COPPER'},{'rope','PLANT:GRASS_TAIL_PIG:THREAD'}}
+  for _,flag in ipairs{'LEATHER','SILK','YARN'}do
+   local token
+   for _,raw in ipairs(df.global.world.raws.creatures.all)do
+    for _,material in ipairs(raw.material)do
+     if material.flags[flag] then token='CREATURE:'..raw.creature_id..':'..material.id;break end
+    end
+    if token then break end
+   end
+   assert(token,'restraint fixture needs '..flag..' material')
+   restraint_materials[#restraint_materials+1]={flag:lower(),token}
+  end
+  for _,entry in ipairs(restraint_materials)do
+   local material=assert(dfhack.matinfo.find(entry[2]),'restraint fixture material missing')
    local items=dfhack.items.createItem(animal,df.item_type.CHAIN,-1,material.type,material.index)
    assert(#items==1,'restraint fixture creation failed')
    local item=items[1];made[#made+1]=item
    chain_item.item=item;chosen_status_item=item.id
-   capture('Pen-status-current-chain-'..(material.material.flags.THREAD_PLANT and 'rope' or 'metal'))
+   capture('Pen-status-current-chain-'..entry[1])
   end
   chain_item.item=container;chosen_status_item=original_item_id
   for _,item in ipairs(made)do assert(dfhack.items.remove(item),'restraint fixture cleanup failed')end
